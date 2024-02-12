@@ -1,6 +1,6 @@
 # Current Logic Implementation | v0.1-alpha
 
-## Unclocking Banjo Tooie Worlds
+## Unlocking Banjo Tooie Worlds
 
 <Use br tag to have multiple lines in Tables>
 
