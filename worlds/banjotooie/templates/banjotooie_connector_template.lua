@@ -20,7 +20,7 @@ local STATE_OK = "Ok"
 local STATE_TENTATIVELY_CONNECTED = "Tentatively Connected"
 local STATE_INITIAL_CONNECTION_MADE = "Initial Connection Made"
 local STATE_UNINITIALIZED = "Uninitialized"
-local DEBUG = true
+local DEBUG = false
 local DEBUGLVL2 = false
 
 local prevstate = ""
