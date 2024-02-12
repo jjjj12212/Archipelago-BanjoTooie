@@ -22,6 +22,8 @@ Banjo Tooie for Archipelago
 6. Once you are in the game Select screen, apply the banjotooie_connector lua script (drag and drop)
 
 # Future Implementation
+- Implement End Goal (defeating HAG1)
+- Skippable Quiz Show **(if Possible)**
 - Jinjos are scattered throughout Archipelago games 
 - Doubloons are scattered throughout Archipelago games
 - Cheato Pages are scattered throughout Archipelago games
