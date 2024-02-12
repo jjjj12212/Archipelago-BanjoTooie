@@ -34,7 +34,7 @@ Banjo Tooie for Archipelago
 - Musical Notes/Treble Clef are scattered throughout Archipelago games **(if Possible / requires feedback if its a good option)**
 
 # Shoutouts
-Huge thank you for the following individuals / teams. Without them, this project would not gotten this far:
+Huge thank you for the following individuals / teams. Without them, this project would not have gotten this far:
  - @OktoRose
  - <a href='https://github.com/Isotarge/ScriptHawk'>ScriptHawk</a>
  - <a href="https://github.com/kaptainkohl/BTRandoLUA">Kaptainkohl - Banjo Tooie Randomizer</a>
