@@ -290,10 +290,6 @@ IHCTLoc_table = {
 
 }
 
-boss_table = {
-    locationName.HAG1:      LocationData(1230027, 0x03, 3)
-}
-
 
 all_location_table = {
     **SMLoc_table,
@@ -309,7 +305,6 @@ all_location_table = {
     **TLLoc_table,
     **GILoc_table,
     **HPLoc_table,
-    **CCLoc_table,
-    **boss_table
+    **CCLoc_table
 }
 

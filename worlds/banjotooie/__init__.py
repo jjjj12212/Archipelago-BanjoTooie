@@ -54,7 +54,7 @@ class BanjoTooieWorld(World):
     
 
     def create_item(self, item: str) -> Item:
-        if item.type in {'progress', 'victory'}:
+        if item.type == 'progress':
             item_classification = ItemClassification.progression
         if item.type == 'useful':
             item_classification = ItemClassification.useful

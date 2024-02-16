@@ -270,6 +270,3 @@ CEGGS = "Ability: Clockwork Kazooie Eggs"
 IEGGS = "Ability: Ice Eggs"
 FSWIM = "Ability: Fast Swimming"
 BBASH = "Ability: Breegull Bash"
-
-#Bosses
-HAG1 = "Hag 1 Defeated"
