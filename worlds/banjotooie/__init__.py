@@ -42,9 +42,19 @@ class BanjoTooieWorld(World):
     topology_preset = True
     kingjingalingjiggy = False
 
-    item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
+    #item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
+    item_name_to_id = {}
+    for name, data in all_item_table.items():
+        if data.btid == 1230028: #Skip Victory Item
+            continue
+        item_name_to_id[name] = data.btid
 
-    location_name_to_id = {name: data.btid for name, data in all_location_table.items()}
+    #location_name_to_id = {name: data.btid for name, data in all_location_table.items()}
+    location_name_to_id = {}
+    for name, data in all_location_table.items():
+        if data.btid == 1230027:  #Skip Victory Location
+            continue
+        location_name_to_id[name] = data.btid
 
     item_name_groups = {
         "Jiggy": all_group_table["jiggy"],
