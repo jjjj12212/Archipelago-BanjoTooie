@@ -179,6 +179,7 @@ def get_payload(ctx: BanjoTooieContext):
         ctx.messages = ""
     if len(ctx.items_received) > 0:
         ctx.items_received = []
+
     return payload
 
 
@@ -202,14 +203,6 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         await ctx.update_death_link(True)
         ctx.deathlink_enabled = True
 
-    # Game completion handling
-    if payload['gameComplete'] and not ctx.finished_game:
-        await ctx.send_msgs([{
-            "cmd": "StatusUpdate",
-            "status": 30
-        }])
-        ctx.finished_game = True
-
     # Locations handling
     locations = payload['locations']
 
@@ -227,6 +220,14 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             "cmd": "LocationChecks",
             "locations": locs1
         }])
+
+    # Game completion handling
+        if 1230027 in locs1 and not ctx.finished_game:
+            await ctx.send_msgs([{
+                "cmd": "StatusUpdate",
+                "status": 30
+            }])
+            ctx.finished_game = True
 
     # Deathlink handling
     if ctx.deathlink_enabled:
