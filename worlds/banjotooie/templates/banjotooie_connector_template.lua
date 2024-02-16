@@ -1558,8 +1558,8 @@ local MASTER_MAP = {
             ['locationId'] = 1230751
         },
     },
-	["H1"] = {
-		['Hag 1 Defeated'] = {
+	  ["H1"] = {
+	 	['Hag 1 Defeated'] = {
 			['addr'] = 0x03,
 			['bit'] = 3,
 			['locationId'] = 1230027
@@ -2211,11 +2211,6 @@ function receive()
     retTable["playerName"] = player_name;
     retTable["deathlinkActive"] = deathlink;
     retTable['locations'] = locationControl()
-	if checkFlag(0x03, 3) then
-		retTable["gameComplete"] = true
-	else
-		retTable['gameComplete'] = false
-	end
     retTable["isDead"] = isBanjoDed;
  
     msg = json.encode(retTable).."\n"
