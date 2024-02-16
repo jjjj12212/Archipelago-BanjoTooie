@@ -112,8 +112,6 @@ class BanjoTooieWorld(World):
         rules = Rules.BanjoTooieRules(self)
         return rules.set_rules()
 
-    # def generate_basic(self) -> None:
-
 
     def fill_slot_data(self) -> dict[str, any]:
         btoptions = dict[str, any]()
@@ -122,16 +120,6 @@ class BanjoTooieWorld(World):
         btoptions["deathlink"] = "true" if self.options.death_link.value == 1 else "false"
         return btoptions
 
-    def generate_output(self, output_directory: str) -> None:
-        player_name = self.multiworld.player_name[self.player]
-        death_link = "true" if self.options.death_link.value == 1 else "false"
-        file_loader = FileSystemLoader("worlds/banjotooie/templates")
-        env = Environment(loader=file_loader)
-        template = env.get_template("banjotooie_connector_template.lua")
-        output = template.render(Player=player_name, seed=random.randint(12212, 69996), deathlink=death_link)
-        f = open(output_directory + "\\banjotooie_connector_" + player_name + ".lua", "w")
-        f.write(output)
-        f.close()
 
 
     
