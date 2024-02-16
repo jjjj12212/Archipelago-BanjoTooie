@@ -45,5 +45,4 @@ class BanjoTooieRules:
             region = self.world.multiworld.get_region(region_name, self.player)
             for entrance in region.entrances:
                 entrance.access_rule = rules
-    ## Here where you should add the Victory Condition / Victory Item
-    ##
+        self.world.multiworld.completion_condition[self.player] = lambda state: state.has("Kick Around", self.player)

@@ -1,6 +1,6 @@
 import typing
 from BaseClasses import Region
-from .Names import regionName, locationName
+from .Names import regionName, locationName, itemName
 from .Locations import BanjoTooieLocation
 
 BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
@@ -268,7 +268,9 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOCC3
     ],
     regionName.CK: [],
-    regionName.H1: []
+    regionName.H1: [
+        locationName.HAG1
+    ]
 }
 
 BANJOTOOIECONNECTIONS: typing.Dict[str, typing.Set[str]] = {
@@ -308,6 +310,9 @@ def create_regions(self):
     multiworld.regions += [create_region(multiworld, player, active_locations, region, locations) for region, locations in
                            BANJOTOOIEREGIONS.items()]
 
+    multiworld.get_location(locationName.HAG1, player).place_locked_item(
+        multiworld.worlds[player].create_event_item(itemName.VICTORY))
+
 
 def create_region(multiworld, player: int, active_locations, name: str, locations=None):
     ret = Region(name, player, multiworld)
@@ -317,6 +322,7 @@ def create_region(multiworld, player: int, active_locations, name: str, location
         # loc_to_event = {loc: active_locations.get(loc, None) for loc in locations if
         #                 not active_locations.get(loc, None)}
         # ret.add_locations(loc_to_event, BanjoTooieLocation)
+        ret.add_locations({locationName.HAG1: None})
     return ret
 
 def connect_regions(self):

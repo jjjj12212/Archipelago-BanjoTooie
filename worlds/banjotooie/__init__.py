@@ -43,9 +43,20 @@ class BanjoTooieWorld(World):
     kingjingalingjiggy = False
     slot_data = []
 
-    item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
+    # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
+    item_name_to_id = {}
+    for name, data in all_item_table.items():
+        if data.btid == 1230028:  # Skip Victory Item
+            continue
+        item_name_to_id[name] = data.btid
 
-    location_name_to_id = {name: data.btid for name, data in all_location_table.items()}
+
+    #location_name_to_id = {name: data.btid for name, data in all_location_table.items()}
+    location_name_to_id = {}
+    for name, data in all_location_table.items():
+        if data.btid == 1230027:  #Skip Victory Location
+            continue
+        location_name_to_id[name] = data.btid
 
     item_name_groups = {
         "Jiggy": all_group_table["jiggy"],
@@ -59,6 +70,10 @@ class BanjoTooieWorld(World):
             item_classification = ItemClassification.progression
         if item.type == 'useful':
             item_classification = ItemClassification.useful
+
+        if item.type == "victory":
+            victory_item = BanjoTooieItem("Kick Around", ItemClassification.filler, None, self.player)
+            return victory_item
 
         created_item = BanjoTooieItem(self.item_id_to_name[item.btid], item_classification, item.btid, self.player)
         if(item.btid == 1230685 and self.kingjingalingjiggy == False and self.options.jingaling_jiggy == True):
@@ -90,6 +105,12 @@ class BanjoTooieWorld(World):
             junk_item = BanjoTooieItem("Junk", ItemClassification.filler, 0, self.player)
             return junk_item
 
+
+        return created_item
+
+    def create_event_item(self, name: str) -> Item:
+        item_classification = ItemClassification.progression
+        created_item = BanjoTooieItem(name, item_classification, None, self.player)
         return created_item
     
     def create_items(self) -> None:
@@ -97,7 +118,7 @@ class BanjoTooieWorld(World):
         itempool = []
         itempool += [self.create_item(id) for id, id in all_item_table.items() for qty in range(id.qty)]
         for item in itempool:
-            if(item.code == 0):
+            if(item.code == 0 or item.code == None):
                 continue
             self.multiworld.itempool.append(item)
         #  for item in map(self.create_item, all_item_table.items()):
