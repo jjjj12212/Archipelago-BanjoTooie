@@ -1557,7 +1557,14 @@ local MASTER_MAP = {
             ['bit'] = 2,
             ['locationId'] = 1230751
         },
-    }
+    },
+	["H1"] = {
+		['Hag 1 Defeated'] = {
+			['addr'] = 0x03,
+			['bit'] = 3,
+			['locationId'] = 1230027
+		},
+	}
 }
 
 local read_SM_checks = function(type)
@@ -1882,6 +1889,29 @@ local read_CC_checks = function(type)
     return checks
 end
 
+local read_H1_checks = function(type)
+    local checks = {}
+    if type == "AMM"
+    then
+        for k,v in pairs(MASTER_MAP['H1'])
+        do
+            checks[k] = checkFlag(v['addr'], v['bit'])
+        end
+        AMM['H1'] = checks;
+    elseif type == "BMM"
+    then
+        checks = BMM['H1']
+    elseif type == "AGI" -- should only run for initialization
+    then
+        for k,v in pairs(MASTER_MAP['H1'])
+        do
+            checks[k] = false
+        end
+        AGI['H1'] = checks;
+    end
+    return checks
+end
+
 function locationControl()
     local mapaddr = getMap()
     if isBackup == true
@@ -1999,7 +2029,7 @@ end
 function all_location_checks(type)
     local location_checks = {}
     local MM = { ['SM']  = {}, ['JV'] = {}, ['WH'] = {}, ['MT'] = {}, ['PL'] = {}, ['GM'] = {}, ['WW'] = {},
-        ['CT'] = {}, ['JR'] = {}, ['WL'] = {}, ['TL'] = {}, ['GI'] = {}, ['HP'] = {}, ['CC'] = {}
+        ['CT'] = {}, ['JR'] = {}, ['WL'] = {}, ['TL'] = {}, ['GI'] = {}, ['HP'] = {}, ['CC'] = {}, ['H1'] = {}
     };
     for k,v in pairs(read_SM_checks(type))
     do 
@@ -2070,6 +2100,11 @@ function all_location_checks(type)
     do
         location_checks[k] = v;
         MM['CC'][k] = v;
+    end
+	for k,v in pairs(read_H1_checks(type)) 
+    do
+        location_checks[k] = v;
+        MM['H1'][k] = v;
     end
 
     if next(AMM) == nil then
@@ -2176,9 +2211,12 @@ function receive()
     retTable["playerName"] = player_name;
     retTable["deathlinkActive"] = deathlink;
     retTable['locations'] = locationControl()
-    retTable["gameComplete"] = false
+	if checkFlag(0x03, 3) then
+		retTable["gameComplete"] = true
+	else
+		retTable['gameComplete'] = false
+	end
     retTable["isDead"] = isBanjoDed;
-
  
     msg = json.encode(retTable).."\n"
     local ret, error = btSocket:send(msg)
