@@ -10,9 +10,9 @@ require('common')
 local last_modified_date = '2024-01-19' -- Should be the last modified date
 local script_version = 3
 -- Template Variables
-local player_name = "{{Player}}"
-local seed = "{{seed}}"
-local deathlink = {{deathlink}}
+local player_name = ""
+local seed = 0
+local deathlink = false
 
 local btSocket = nil
 
@@ -2121,6 +2121,10 @@ function process_block(block)
     if block == nil then
         return
     end
+    if block['slot_player'] ~= nil
+    then
+        return
+    end
     if next(block['items']) ~= nil
     then
         processAGIItem(block['items'])
@@ -2132,6 +2136,20 @@ function process_block(block)
     if block['triggerDeath'] == true
     then
         killBTFlag = true;
+    end
+    if block['slot_player'] ~= nil and block['slot_player'] ~= "" 
+    then
+        player_name = block['slot_player']
+        print("Player is")
+        print(player_name)
+    end
+    if block['slot_seed'] ~= nil and block['slot_seed'] ~= "" 
+    then
+        seed = block['slot_seed']
+    end
+    if block['slot_deathlink'] ~= nil and block['slot_deathlink'] ~= false 
+    then
+        deathlink = true
     end
     -- Write player names on first connect or after reset (N64 logo, title screen, file select)
     -- Queue item for receiving, if one exists
@@ -2150,50 +2168,57 @@ function process_block(block)
 end
 
 function receive()
-    l, e = btSocket:receive()
-    -- Handle incoming message
-    if e == 'closed' then
-        if curstate == STATE_OK then
-            archipelago_msg_box("Connection closed")
-            print("Connection closed")
-        end
-        curstate = STATE_UNINITIALIZED
-        return
-    elseif e == 'timeout' then
-        archipelago_msg_box("timeout")
-        print("timeout")
-        return
-    elseif e ~= nil then
-        print(e)
-        curstate = STATE_UNINITIALIZED
-        return
-    end
-    process_block(json.decode(l))
-
-    -- Send the message
-    local retTable = {}
-    retTable["scriptVersion"] = script_version;
-    retTable["playerName"] = player_name;
-    retTable["deathlinkActive"] = deathlink;
-    retTable['locations'] = locationControl()
-    retTable["gameComplete"] = false
-    retTable["isDead"] = isBanjoDed;
-
- 
-    msg = json.encode(retTable).."\n"
-    local ret, error = btSocket:send(msg)
-    if ret == nil then
-        print(error)
-    elseif curstate == STATE_INITIAL_CONNECTION_MADE then
-        curstate = STATE_TENTATIVELY_CONNECTED
-    elseif curstate == STATE_TENTATIVELY_CONNECTED then
-        archipelago_msg_box("Connected to the Banjo Tooie Client!");
-        print("Connected!")
-        curstate = STATE_OK
-    end
-    if isBanjoDed == true
+    if player_name == "" and seed == 0
     then
-        isBanjoDed = false;
+        getSlotData()
+    else
+        -- Send the message
+        local retTable = {}
+        retTable["scriptVersion"] = script_version;
+        retTable["playerName"] = player_name;
+        retTable["deathlinkActive"] = deathlink;
+        retTable['locations'] = locationControl()
+        retTable["gameComplete"] = false
+        retTable["isDead"] = isBanjoDed;
+
+    
+        msg = json.encode(retTable).."\n"
+        local ret, error = btSocket:send(msg)
+        if ret == nil then
+            print(error)
+        elseif curstate == STATE_INITIAL_CONNECTION_MADE then
+            curstate = STATE_TENTATIVELY_CONNECTED
+        elseif curstate == STATE_TENTATIVELY_CONNECTED then
+            archipelago_msg_box("Connected to the Banjo Tooie Client!");
+            print("Connected!")
+            curstate = STATE_OK
+        end
+
+        l, e = btSocket:receive()
+        -- Handle incoming message
+        if e == 'closed' then
+            if curstate == STATE_OK then
+                archipelago_msg_box("Connection closed")
+                print("Connection closed")
+            end
+            curstate = STATE_UNINITIALIZED
+            return
+        elseif e == 'timeout' then
+            archipelago_msg_box("timeout")
+            print("timeout")
+            return
+        elseif e ~= nil then
+            print(e)
+            curstate = STATE_UNINITIALIZED
+            return
+        end
+        process_block(json.decode(l))
+
+
+        if isBanjoDed == true
+        then
+            isBanjoDed = false;
+        end
     end
 end
 
@@ -2360,17 +2385,73 @@ function killBT()
     end
 end
 
-function main()
-    local f = io.open("BT" .. player_name .. "_" .. seed .. ".AGI", "r") --generate #BTplayer_seed.AGI
-    if f==nil then
-        all_location_checks("AGI")
-        f = io.open("BT" .. player_name .. "_" .. seed .. ".AGI", "w")
-        f:write(json.encode(AGI))
-        f:close()
-    else
-        AGI = json.decode(f:read())
-        f:close()
+function getSlotData()
+    local retTable = {}
+    retTable["getSlot"] = true;
+ 
+    msg = json.encode(retTable).."\n"
+    local ret, error = btSocket:send(msg)
+
+    l, e = btSocket:receive()
+    -- Handle incoming message
+    if e == 'closed' then
+        if curstate == STATE_OK then
+            archipelago_msg_box("Connection closed")
+            print("Connection closed")
+        end
+        curstate = STATE_UNINITIALIZED
+        return
+    elseif e == 'timeout' then
+        archipelago_msg_box("timeout")
+        print("timeout")
+        return
+    elseif e ~= nil then
+        print(e)
+        curstate = STATE_UNINITIALIZED
+        return
     end
+    process_slot(json.decode(l))
+end
+
+function process_slot(block)
+    
+    if DEBUGLVL2 == true then
+        print(block)
+    end
+
+    if block['slot_player'] ~= nil and block['slot_player'] ~= ""
+    then
+        player_name = block['slot_player']
+    end
+    if block['slot_seed'] ~= nil and block['slot_seed'] ~= ""
+    then
+        seed = block['slot_seed']
+    end
+    if block['slot_deathlink'] ~= nil and block['slot_deathlink'] ~= false
+    then
+        deathlink = true
+    end
+
+    if seed ~= 0
+    then
+        local f = io.open("BT" .. player_name .. "_" .. seed .. ".AGI", "r") --generate #BTplayer_seed.AGI
+        if f==nil then
+            all_location_checks("AGI")
+            f = io.open("BT" .. player_name .. "_" .. seed .. ".AGI", "w")
+            f:write(json.encode(AGI))
+            f:close()
+        else
+            AGI = json.decode(f:read())
+            f:close()
+        end
+    else
+        return false
+    end
+    return true
+end
+
+function main()
+    
 
     if not checkBizHawkVersion() then
         return
@@ -2402,7 +2483,8 @@ function main()
                     btSocket = client
                     btSocket:settimeout(0)
                 else
-                    archipelago_msg_box('Connection failed, ensure Banjo Tooie Client is running and rerun banjotooie_connector.lua')
+                    archipelago_msg_box('Connection failed, ensure Banjo Tooie Client is running, connected and rerun banjotooie_connector.lua')
+                    print('Connection failed, ensure Banjo Tooie Client is running, connected and rerun banjotooie_connector.lua')
                     return
                 end
             end

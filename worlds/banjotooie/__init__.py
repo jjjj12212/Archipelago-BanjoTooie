@@ -41,6 +41,7 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
     topology_preset = True
     kingjingalingjiggy = False
+    slot_data = []
 
     item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
 
@@ -114,7 +115,12 @@ class BanjoTooieWorld(World):
     # def generate_basic(self) -> None:
 
 
-    
+    def fill_slot_data(self) -> dict[str, any]:
+        btoptions = dict[str, any]()
+        btoptions["player_name"] = self.multiworld.player_name[self.player]
+        btoptions["seed"] = random.randint(12212, 69996)
+        btoptions["deathlink"] = "true" if self.options.death_link.value == 1 else "false"
+        return btoptions
 
     def generate_output(self, output_directory: str) -> None:
         player_name = self.multiworld.player_name[self.player]
