@@ -65,47 +65,18 @@ class BanjoTooieWorld(World):
     # location_name_to_id = {}
     
 
-    def create_item(self, item: str) -> Item:
-        if item.type == 'progress':
+    def create_item(self, itemname: str) -> Item:
+        banjoItem = all_item_table.get(itemname)
+        if banjoItem.type == 'progress':
             item_classification = ItemClassification.progression
-        if item.type == 'useful':
+        if banjoItem.type == 'useful':
             item_classification = ItemClassification.useful
 
-        if item.type == "victory":
+        if banjoItem.type == "victory":
             victory_item = BanjoTooieItem("Kick Around", ItemClassification.filler, None, self.player)
             return victory_item
 
-        created_item = BanjoTooieItem(self.item_id_to_name[item.btid], item_classification, item.btid, self.player)
-        if(item.btid == 1230685 and self.kingjingalingjiggy == False and self.options.jingaling_jiggy == True):
-            #Below give the king a guarentee Jiggy if option is set
-            self.multiworld.get_location(self.location_id_to_name[1230685], self.player).place_locked_item(created_item)
-            self.kingjingalingjiggy = True
-            junk_item = BanjoTooieItem("Junk", ItemClassification.filler, 0, self.player)
-            return junk_item
-        
-        if(item.btid == 1230514 and self.options.multiworld_dabloons == False) :
-            junk_item = BanjoTooieItem("Junk", ItemClassification.filler, 0, self.player)
-            return junk_item
-        
-        if(item.btid == 1230513 and self.options.mutliworld_cheato == False) :
-            junk_item = BanjoTooieItem("Junk", ItemClassification.filler, 0, self.player)
-            return junk_item
-        
-        if(item.btid == 1230512 and self.options.multiworld_honeycombs == False) :
-            junk_item = BanjoTooieItem("Junk", ItemClassification.filler, 0, self.player)
-            return junk_item
-        
-        if(item.btid == 1230511 and self.options.multiworld_glowbos == False) :
-            junk_item = BanjoTooieItem("Junk", ItemClassification.filler, 0, self.player)
-            return junk_item
-        
-        if((item.btid == 1230501 or item.btid == 1230502 or item.btid == 1230503 or item.btid == 1230504 or
-            item.btid == 1230505 or item.btid == 1230506 or item.btid == 1230507 or item.btid == 1230508 or
-            item.btid == 1230509 ) and self.options.multiworld_jinjos == False) :
-            junk_item = BanjoTooieItem("Junk", ItemClassification.filler, 0, self.player)
-            return junk_item
-
-
+        created_item = BanjoTooieItem(self.item_id_to_name[banjoItem.btid], item_classification, banjoItem.btid, self.player)
         return created_item
 
     def create_event_item(self, name: str) -> Item:
@@ -114,17 +85,48 @@ class BanjoTooieWorld(World):
         return created_item
     
     def create_items(self) -> None:
-        # self.multiworld.itempool += [self.create_item(id) for id, id in all_item_table.items() for qty in range(id.qty)]
         itempool = []
-        itempool += [self.create_item(id) for id, id in all_item_table.items() for qty in range(id.qty)]
+        for name,id in all_item_table.items():
+            item = self.create_item(name)
+            if self.item_filter(item):
+                itempool += [self.create_item(name)]
+        
         for item in itempool:
-            if(item.code == 0 or item.code == None):
-                continue
+            # if(item.code == 0 or item.code == None):
+            #     continue
             self.multiworld.itempool.append(item)
-        #  for item in map(self.create_item, all_item_table.items()):
-        #     for x in range(all_item_table[item.name].qty):
-        #         self.multiworld.itempool.append(item)
+
     
+
+    def item_filter(self, item: Item) -> Item:
+        if(item.code == 1230685 and self.kingjingalingjiggy == False and self.options.jingaling_jiggy == True):
+            #Below give the king a guarentee Jiggy if option is set
+            self.multiworld.get_location(self.location_id_to_name[1230685], self.player).place_locked_item(item)
+            self.kingjingalingjiggy = True
+            return False #doesn't need to be in the Pool.
+        
+        if item.code == 0: #Events
+            return False
+        
+        if(item.code == 1230514 and self.options.multiworld_dabloons == False) :
+            return False
+        
+        if(item.code == 1230513 and self.options.mutliworld_cheato == False) :
+            return False
+        
+        if(item.code == 1230512 and self.options.multiworld_honeycombs == False) :
+            return False
+        
+        if(item.code == 1230511 and self.options.multiworld_glowbos == False) :
+            return False
+        
+        if((item.code == 1230501 or item.code == 1230502 or item.code == 1230503 or item.code == 1230504 or
+            item.code == 1230505 or item.code == 1230506 or item.code == 1230507 or item.code == 1230508 or
+            item.code == 1230509 ) and self.options.multiworld_jinjos == False) :
+            return False
+
+        return True
+
     def create_regions(self) -> None:
         create_regions(self)
         connect_regions(self)
