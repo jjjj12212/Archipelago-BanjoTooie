@@ -127,13 +127,16 @@ misc_collectable_table = {
     itemName.DOUBLOON:      ItemData(1230514, 30, "useful")
 }
 
-
+victory_table = {
+    itemName.VICTORY:       ItemData(1230028, 1, "victory")
+}
 
 all_item_table = {
     **jinjo_table,
     **level_progress_table,
     **misc_collectable_table,
-    **jiggy_table
+    **jiggy_table,
+    **victory_table
 }
 
 all_group_table = {
