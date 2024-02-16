@@ -16,9 +16,9 @@ from worlds import network_data_package
 
 SYSTEM_MESSAGE_ID = 0
 
-CONNECTION_TIMING_OUT_STATUS = "Connection timing out. Please restart your emulator, then restart connector_oot.lua"
-CONNECTION_REFUSED_STATUS = "Connection refused. Please start your emulator and make sure connector_oot.lua is running"
-CONNECTION_RESET_STATUS = "Connection was reset. Please restart your emulator, then restart connector_oot.lua"
+CONNECTION_TIMING_OUT_STATUS = "Connection timing out. Please restart your emulator, then restart banjoTooie_connector.lua"
+CONNECTION_REFUSED_STATUS = "Connection refused. Please start your emulator and make sure banjoTooie_connector.lua is running"
+CONNECTION_RESET_STATUS = "Connection was reset. Please restart your emulator, then restart banjoTooie_connector.lua"
 CONNECTION_TENTATIVE_STATUS = "Initial Connection Made"
 CONNECTION_CONNECTED_STATUS = "Connected"
 CONNECTION_INITIAL_STATUS = "Connection has not been initiated"
@@ -76,7 +76,7 @@ class BanjoTooieCommandProcessor(ClientCommandProcessor):
 
 class BanjoTooieContext(CommonContext):
     command_processor = BanjoTooieCommandProcessor
-    items_handling = 0b001  # full local
+    items_handling = 0b001 #full
 
     def __init__(self, server_address, password):
         super().__init__(server_address, password)
@@ -86,23 +86,25 @@ class BanjoTooieContext(CommonContext):
         self.n64_status = CONNECTION_INITIAL_STATUS
         self.awaiting_rom = False
         self.location_table = {}
-        self.collectible_table = {}
         self.deathlink_enabled = False
         self.deathlink_pending = False
         self.deathlink_sent_this_death = False
         self.deathlink_client_override = False
         self.version_warning = False
         self.messages = ""
+        self.slot_data = {}
+        self.sendSlot = False
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
             await super(BanjoTooieContext, self).server_auth(password_requested)
         if not self.auth:
+            await self.get_username()
+            await self.send_connect()
             self.awaiting_rom = True
-            logger.info('Awaiting connection to EmuHawk to get player information')
+            # logger.info('Awaiting connection to EmuHawk to get player information')
             return
-
-        await self.send_connect()
+        return
 
     def _set_message(self, msg: str, msg_id: int):
         self.messages = msg
@@ -125,7 +127,10 @@ class BanjoTooieContext(CommonContext):
 
     def on_package(self, cmd, args):
         if cmd == 'Connected':
-            slot_data = args.get('slot_data', None)
+            self.slot_data = args.get('slot_data', None)
+            self.deathlink_enabled = self.slot_data["deathlink"]
+            logger.info("Please open Banjo Tooie and load banjoTooie_connector.lua")
+            self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
         elif cmd == 'Print':
             msg = args['text']
             if ': !' not in msg:
@@ -173,13 +178,22 @@ def get_payload(ctx: BanjoTooieContext):
             "items": [get_item_value(item.item) for item in ctx.items_received],
             "playerNames": [name for (i, name) in ctx.player_names.items() if i != 0],
             "triggerDeath": trigger_death,
-            "messages": ctx.messages
+            "messages": ctx.messages,
         })
     if len(ctx.messages) > 0:
         ctx.messages = ""
     if len(ctx.items_received) > 0:
         ctx.items_received = []
 
+    return payload
+
+def get_slot_payload(ctx: BanjoTooieContext):
+    payload = json.dumps({
+            "slot_player": ctx.slot_data["player_name"],
+            "slot_seed": ctx.slot_data["seed"],
+            "slot_deathlink": ctx.deathlink_enabled
+        })
+    ctx.sendSlot = False
     return payload
 
 
@@ -246,7 +260,10 @@ async def n64_sync_task(ctx: BanjoTooieContext):
         error_status = None
         if ctx.n64_streams:
             (reader, writer) = ctx.n64_streams
-            msg = get_payload(ctx).encode()
+            if ctx.sendSlot == True:
+                msg = get_slot_payload(ctx).encode()
+            else:
+                msg = get_payload(ctx).encode()
             writer.write(msg)
             writer.write(b'\n')
             try:
@@ -255,7 +272,10 @@ async def n64_sync_task(ctx: BanjoTooieContext):
                     data = await asyncio.wait_for(reader.readline(), timeout=10)
                     data_decoded = json.loads(data.decode())
                     reported_version = data_decoded.get('scriptVersion', 0)
-                    if reported_version >= script_version:
+                    getSlotData = data_decoded.get('getSlot', 0)
+                    if getSlotData == True:
+                        ctx.sendSlot = True
+                    elif reported_version >= script_version:
                         if ctx.game is not None and 'locations' in data_decoded:
                             # Not just a keep alive ping, parse
                             async_start(parse_payload(data_decoded, ctx, False))
@@ -327,8 +347,6 @@ if __name__ == '__main__':
         if gui_enabled:
             ctx.run_gui()
         ctx.run_cli()
-
-        ctx.n64_sync_task = asyncio.create_task(n64_sync_task(ctx), name="N64 Sync")
 
         await ctx.exit_event.wait()
         ctx.server_address = None
