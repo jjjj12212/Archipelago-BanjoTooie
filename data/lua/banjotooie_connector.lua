@@ -423,62 +423,62 @@ local MASTER_MAP = {
         },
     },
     ['WH'] = {
-        ['Wooded Hollow: Jinjo'] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 4,
-            ['locationId'] = 1230591
-        }
+        -- ['Wooded Hollow: Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230591
+        -- }
     },
     ['SM'] = {
-        ['Spiral Mountain: Cheato Page'] = {
-            ['addr'] = 0x59,
-            ['bit'] = 3,
-            ['locationId'] = 1230752
-        },
-        ['Spiral Mountain: Jinjo'] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 0,
-            ['locationId'] = 1230595
-        }
+        -- ['Spiral Mountain: Cheato Page'] = {
+        --     ['addr'] = 0x59,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230752
+        -- },
+        -- ['Spiral Mountain: Jinjo'] = {
+        --     ['addr'] = 0x3F,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230595
+        -- }
     },
     ['PL'] = {
-        ['Plateau: Jinjo'] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 7,
-            ['locationId'] = 1230594
-        },
-        ['Plateau: Honeycomb'] = {
-            ['addr'] = 0x42,
-            ['bit'] = 2,
-            ['locationId'] = 1230727
-        }
+        -- ['Plateau: Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230594
+        -- },
+        -- ['Plateau: Honeycomb'] = {
+        --     ['addr'] = 0x42,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230727
+        -- }
     },
     ['MT'] = {
-        ['Mayhem Temple: Jade Snake Grove Jinjo'] = {
-            ['addr'] = 0x39,
-            ['bit'] = 4,
-            ['locationId'] = 1230551
-        },
-        ['Mayhem Temple: Stadium Jinjo'] = {
-            ['addr'] = 0x39,
-            ['bit'] = 5,
-            ['locationId'] = 1230552
-        },
-        ['Mayhem Temple: Targitzan Temple Jinjo'] = {
-            ['addr'] = 0x39,
-            ['bit'] = 6,
-            ['locationId'] = 1230553
-        },
-        ['Mayhem Temple: Water Pool Jinjo'] = {
-            ['addr'] = 0x39,
-            ['bit'] = 7,
-            ['locationId'] = 1230554
-        },
-        ['Mayhem Temple: Bridge Jinjo'] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 0,
-            ['locationId'] = 1230555
-        },
+        -- ['Mayhem Temple: Jade Snake Grove Jinjo'] = {
+        --     ['addr'] = 0x39,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230551
+        -- },
+        -- ['Mayhem Temple: Stadium Jinjo'] = {
+        --     ['addr'] = 0x39,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230552
+        -- },
+        -- ['Mayhem Temple: Targitzan Temple Jinjo'] = {
+        --     ['addr'] = 0x39,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230553
+        -- },
+        -- ['Mayhem Temple: Water Pool Jinjo'] = {
+        --     ['addr'] = 0x39,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230554
+        -- },
+        -- ['Mayhem Temple: Bridge Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230555
+        -- },
         ['Mayhem Temple: Targitzan Jiggy'] = {
             ['addr'] = 0x45,
             ['bit'] = 0,
@@ -529,73 +529,73 @@ local MASTER_MAP = {
             ['bit'] = 1,
             ['locationId'] = 1230605
         },
-        ['Mayhem Temple: Mumbo Skull Glowbo'] = {
-            ['addr'] = 0x42,
-            ['bit'] = 7,
-            ['locationId'] = 1230686
-        },
-        ['Mayhem Temple: Behind Wumba Wigwam Glowbo'] = {
-            ['addr'] = 0x43,
-            ['bit'] = 0,
-            ['locationId'] = 1230687
-        },
-        ['Mayhem Temple: Entrance Honeycomb'] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 2,
-            ['locationId'] = 1230703
-        },
-        ['Mayhem Temple: Bovina Honeycomb'] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 3,
-            ['locationId'] = 1230704
-        },
-        ['Mayhem Temple: Treasure Chamber Honeycomb'] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 4,
-            ['locationId'] = 1230705
-        },
-        ['Mayhem Temple: Snake Head Cheato Page'] = {
-            ['addr'] = 0x56,
-            ['bit'] = 3,
-            ['locationId'] = 1230728
-        },
-        ['Mayhem Temple: Prison Compound Cheato Page'] = {
-            ['addr'] = 0x56,
-            ['bit'] = 4,
-            ['locationId'] = 1230729
-        },
-        ['Mayhem Temple: Jade Snake Grove Cheato Page'] = {
-            ['addr'] = 0x56,
-            ['bit'] = 5,
-            ['locationId'] = 1230730
-        },
+        -- ['Mayhem Temple: Mumbo Skull Glowbo'] = {
+        --     ['addr'] = 0x42,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230686
+        -- },
+        -- ['Mayhem Temple: Behind Wumba Wigwam Glowbo'] = {
+        --     ['addr'] = 0x43,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230687
+        -- },
+        -- ['Mayhem Temple: Entrance Honeycomb'] = {
+        --     ['addr'] = 0x3F,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230703
+        -- },
+        -- ['Mayhem Temple: Bovina Honeycomb'] = {
+        --     ['addr'] = 0x3F,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230704
+        -- },
+        -- ['Mayhem Temple: Treasure Chamber Honeycomb'] = {
+        --     ['addr'] = 0x3F,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230705
+        -- },
+        -- ['Mayhem Temple: Snake Head Cheato Page'] = {
+        --     ['addr'] = 0x56,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230728
+        -- },
+        -- ['Mayhem Temple: Prison Compound Cheato Page'] = {
+        --     ['addr'] = 0x56,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230729
+        -- },
+        -- ['Mayhem Temple: Jade Snake Grove Cheato Page'] = {
+        --     ['addr'] = 0x56,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230730
+        -- },
     },
     ['GM'] = {
-        ['Glitter Gultch Mine: Water Storage Jinjo'] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 1,
-            ['locationId'] = 1230556
-        },
-        ['Glitter Gultch Mine: Jail Jinjo'] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 2,
-            ['locationId'] = 1230557
-        },
-        ['Glitter Gultch Mine: Toxic Gas Cave Jinjo'] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 3,
-            ['locationId'] = 1230558
-        },
-        ['Glitter Gultch Mine: Boulder Jinjo'] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 4,
-            ['locationId'] = 1230559
-        },
-        ['Glitter Gultch Mine: Mine Tracks Jinjo'] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 5,
-            ['locationId'] = 1230560
-        },
+        -- ['Glitter Gultch Mine: Water Storage Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230556
+        -- },
+        -- ['Glitter Gultch Mine: Jail Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230557
+        -- },
+        -- ['Glitter Gultch Mine: Toxic Gas Cave Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230558
+        -- },
+        -- ['Glitter Gultch Mine: Boulder Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230559
+        -- },
+        -- ['Glitter Gultch Mine: Mine Tracks Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230560
+        -- },
         ['Glitter Gultch Mine: King Coal Jiggy'] = {
             ['addr'] = 0x46,
             ['bit'] = 2,
@@ -646,73 +646,73 @@ local MASTER_MAP = {
             ['bit'] = 3,
             ['locationId'] = 1230615
         },
-        ['Glitter Gultch Mine: Near Entrance Glowbo'] = {
-            ['addr'] = 0x43,
-            ['bit'] = 1,
-            ['locationId'] = 1230688
-        },
-        ['Glitter Gultch Mine: Mine Entrance Glowbo'] = {
-            ['addr'] = 0x43,
-            ['bit'] = 2,
-            ['locationId'] = 1230689
-        },
-        ['Glitter Gultch Mine: Toxic Gas Cave Honeycomb'] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 5,
-            ['locationId'] = 1230706
-        },
-        ['Glitter Gultch Mine: Boulder Honeycomb'] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 6,
-            ['locationId'] = 1230707
-        },
-        ['Glitter Gultch Mine: Train Station Honeycomb'] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 7,
-            ['locationId'] = 1230708
-        },
-        ['Glitter Gultch Mine: Canary Mary Cheato Page'] = {
-            ['addr'] = 0x56,
-            ['bit'] = 6,
-            ['locationId'] = 1230731
-        },
-        ['Glitter Gultch Mine: Entrance Cheato Page'] = {
-            ['addr'] = 0x56,
-            ['bit'] = 7,
-            ['locationId'] = 1230732
-        },
-        ['Glitter Gultch Mine: Water Storage Cheato Page'] = {
-            ['addr'] = 0x57,
-            ['bit'] = 0,
-            ['locationId'] = 1230733
-        },
+        -- ['Glitter Gultch Mine: Near Entrance Glowbo'] = {
+        --     ['addr'] = 0x43,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230688
+        -- },
+        -- ['Glitter Gultch Mine: Mine Entrance Glowbo'] = {
+        --     ['addr'] = 0x43,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230689
+        -- },
+        -- ['Glitter Gultch Mine: Toxic Gas Cave Honeycomb'] = {
+        --     ['addr'] = 0x3F,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230706
+        -- },
+        -- ['Glitter Gultch Mine: Boulder Honeycomb'] = {
+        --     ['addr'] = 0x3F,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230707
+        -- },
+        -- ['Glitter Gultch Mine: Train Station Honeycomb'] = {
+        --     ['addr'] = 0x3F,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230708
+        -- },
+        -- ['Glitter Gultch Mine: Canary Mary Cheato Page'] = {
+        --     ['addr'] = 0x56,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230731
+        -- },
+        -- ['Glitter Gultch Mine: Entrance Cheato Page'] = {
+        --     ['addr'] = 0x56,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230732
+        -- },
+        -- ['Glitter Gultch Mine: Water Storage Cheato Page'] = {
+        --     ['addr'] = 0x57,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230733
+        -- },
     },
     ['WW'] = {
-        ['Witchy World: Big Top Jinjo'] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 6,
-            ['locationId'] = 1230561
-        },
-        ['Witchy World: Cave of Horrors Jinjo'] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 7,
-            ['locationId'] = 1230562
-        },
-        ['Witchy World: Van Door Jinjo'] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 0,
-            ['locationId'] = 1230563
-        },
-        ['Witchy World: Dodgem Dome Jinjo'] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 1,
-            ['locationId'] = 1230564
-        },
-        ['Witchy World: Cactus of Strength Jinjo'] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 2,
-            ['locationId'] = 1230565
-        },
+        -- ['Witchy World: Big Top Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230561
+        -- },
+        -- ['Witchy World: Cave of Horrors Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230562
+        -- },
+        -- ['Witchy World: Van Door Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230563
+        -- },
+        -- ['Witchy World: Dodgem Dome Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230564
+        -- },
+        -- ['Witchy World: Cactus of Strength Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230565
+        -- },
         ['Witchy World: Hoop Hurry Jiggy'] = {
             ['addr'] = 0x47,
             ['bit'] = 4,
@@ -763,235 +763,235 @@ local MASTER_MAP = {
             ['bit'] = 5,
             ['locationId'] = 1230625
         },
-        ['Witchy World: The Inferno Glowbo'] = {
-            ['addr'] = 0x43,
-            ['bit'] = 3,
-            ['locationId'] = 1230690
-        },
-        ['Witchy World: Inside Wumba Wigwam Glowbo'] = {
-            ['addr'] = 0x43,
-            ['bit'] = 4,
-            ['locationId'] = 1230691
-        },
-        ['Witchy World: Space Zone Honeycomb'] = {
-            ['addr'] = 0x40,
-            ['bit'] = 0,
-            ['locationId'] = 1230709
-        },
-        ['Witchy World: Mumbo Skull Honeycomb'] = {
-            ['addr'] = 0x40,
-            ['bit'] = 1,
-            ['locationId'] = 1230710
-        },
-        ['Witchy World: Crazy Castle Honeycomb'] = {
-            ['addr'] = 0x40,
-            ['bit'] = 2,
-            ['locationId'] = 1230711
-        },
-        ['Witchy World: Haunted Cavern Cheato Page'] = {
-            ['addr'] = 0x57,
-            ['bit'] = 1,
-            ['locationId'] = 1230734
-        },
-        ['Witchy World: The Inferno Cheato Page'] = {
-            ['addr'] = 0x57,
-            ['bit'] = 2,
-            ['locationId'] = 1230735
-        },
-        ['Witchy World: Saucer of Peril Cheato Page'] = {
-            ['addr'] = 0x57,
-            ['bit'] = 3,
-            ['locationId'] = 1230736
-        },
+        -- ['Witchy World: The Inferno Glowbo'] = {
+        --     ['addr'] = 0x43,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230690
+        -- },
+        -- ['Witchy World: Inside Wumba Wigwam Glowbo'] = {
+        --     ['addr'] = 0x43,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230691
+        -- },
+        -- ['Witchy World: Space Zone Honeycomb'] = {
+        --     ['addr'] = 0x40,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230709
+        -- },
+        -- ['Witchy World: Mumbo Skull Honeycomb'] = {
+        --     ['addr'] = 0x40,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230710
+        -- },
+        -- ['Witchy World: Crazy Castle Honeycomb'] = {
+        --     ['addr'] = 0x40,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230711
+        -- },
+        -- ['Witchy World: Haunted Cavern Cheato Page'] = {
+        --     ['addr'] = 0x57,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230734
+        -- },
+        -- ['Witchy World: The Inferno Cheato Page'] = {
+        --     ['addr'] = 0x57,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230735
+        -- },
+        -- ['Witchy World: Saucer of Peril Cheato Page'] = {
+        --     ['addr'] = 0x57,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230736
+        -- },
     },
     ['CT'] = {
-        ['Cliff Top: Jinjo'] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 6,
-            ['locationId'] = 1230593
-        },
-        ['Cliff Top: Glowbo'] = {
-            ['addr'] = 0x44,
-            ['bit'] = 7,
-            ['locationId'] = 1230702
-        },
+        -- ['Cliff Top: Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230593
+        -- },
+        -- ['Cliff Top: Glowbo'] = {
+        --     ['addr'] = 0x44,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230702
+        -- },
     },
     ['JR'] = {
-        ['Jolly Rodgers: Town Center Pole 1 Doubloon'] = {
-            ['addr'] = 0x22,
-            ['bit'] = 7,
-            ['locationId'] = 1230521
-        },
-        ['Jolly Rodgers: Town Center Pole 2 Doubloon'] = {
-            ['addr'] = 0x23,
-            ['bit'] = 0,
-            ['locationId'] = 1230522
-        },
-        ['Jolly Rodgers: Town Center Pole 3 Doubloon'] = {
-            ['addr'] = 0x23,
-            ['bit'] = 1,
-            ['locationId'] = 1230523
-        },
-        ['Jolly Rodgers: Town Center Pole 4 Doubloon'] = {
-            ['addr'] = 0x23,
-            ['bit'] = 2,
-            ['locationId'] = 1230524
-        },
-        ['Jolly Rodgers: Town Center Pole 5 Doubloon'] = {
-            ['addr'] = 0x23,
-            ['bit'] = 3,
-            ['locationId'] = 1230525
-        },
-        ['Jolly Rodgers: Town Center Pole 6 Doubloon'] = {
-            ['addr'] = 0x23,
-            ['bit'] = 4,
-            ['locationId'] = 1230526
-        },
-        ['Jolly Rodgers: Silo 1 Doubloon'] = {
-            ['addr'] = 0x23,
-            ['bit'] = 5,
-            ['locationId'] = 1230527
-        },
-        ['Jolly Rodgers: Silo 2 Doubloon'] = {
-            ['addr'] = 0x23,
-            ['bit'] = 6,
-            ['locationId'] = 1230528
-        },
-        ['Jolly Rodgers: Silo 3 Doubloon'] = {
-            ['addr'] = 0x23,
-            ['bit'] = 7,
-            ['locationId'] = 1230529
-        },
-        ['Jolly Rodgers: Silo 4 Doubloon'] = {
-            ['addr'] = 0x24,
-            ['bit'] = 0,
-            ['locationId'] = 1230530
-        },
-        ['Jolly Rodgers: Toxic Pool 1 Doubloon'] = {
-            ['addr'] = 0x24,
-            ['bit'] = 1,
-            ['locationId'] = 1230531
-        },
-        ['Jolly Rodgers: Toxic Pool 2 Doubloon'] = {
-            ['addr'] = 0x24,
-            ['bit'] = 2,
-            ['locationId'] = 1230532
-        },
-        ['Jolly Rodgers: Toxic Pool 3 Doubloon'] = {
-            ['addr'] = 0x24,
-            ['bit'] = 3,
-            ['locationId'] = 1230533
-        },
-        ['Jolly Rodgers: Toxic Pool 4 Doubloon'] = {
-            ['addr'] = 0x24,
-            ['bit'] = 4,
-            ['locationId'] = 1230534
-        },
-        ['Jolly Rodgers: Mumbo Skull 1 Doubloon'] = {
-            ['addr'] = 0x24,
-            ['bit'] = 5,
-            ['locationId'] = 1230535
-        },
-        ['Jolly Rodgers: Mumbo Skull 2 Doubloon'] = {
-            ['addr'] = 0x24,
-            ['bit'] = 6,
-            ['locationId'] = 1230536
-        },
-        ['Jolly Rodgers: Mumbo Skull 3 Doubloon'] = {
-            ['addr'] = 0x24,
-            ['bit'] = 7,
-            ['locationId'] = 1230537
-        },
-        ['Jolly Rodgers: Mumbo Skull 4 Doubloon'] = {
-            ['addr'] = 0x25,
-            ['bit'] = 0,
-            ['locationId'] = 1230538
-        },
-        ['Jolly Rodgers: Underground 1 Doubloon'] = {
-            ['addr'] = 0x25,
-            ['bit'] = 1,
-            ['locationId'] = 1230539
-        },
-        ['Jolly Rodgers: Underground 2 Doubloon'] = {
-            ['addr'] = 0x25,
-            ['bit'] = 2,
-            ['locationId'] = 1230540
-        },
-        ['Jolly Rodgers: Underground 3 Doubloon'] = {
-            ['addr'] = 0x25,
-            ['bit'] = 3,
-            ['locationId'] = 1230541
-        },
-        ['Jolly Rodgers: Alcove 1 Doubloon'] = {
-            ['addr'] = 0x25,
-            ['bit'] = 4,
-            ['locationId'] = 1230542
-        },
-        ['Jolly Rodgers: Alcove 2 Doubloon'] = {
-            ['addr'] = 0x25,
-            ['bit'] = 5,
-            ['locationId'] = 1230543
-        },
-        ['Jolly Rodgers: Alcove 3 Doubloon'] = {
-            ['addr'] = 0x25,
-            ['bit'] = 6,
-            ['locationId'] = 1230544
-        },
-        ['Jolly Rodgers: Capt Blackeye 1 Doubloon'] = {
-            ['addr'] = 0x25,
-            ['bit'] = 7,
-            ['locationId'] = 1230545
-        },
-        ['Jolly Rodgers: Capt Blackeye 2 Doubloon'] = {
-            ['addr'] = 0x26,
-            ['bit'] = 0,
-            ['locationId'] = 1230546
-        },
-        ['Jolly Rodgers: Near Jinjo 1 Doubloon'] = {
-            ['addr'] = 0x26,
-            ['bit'] = 1,
-            ['locationId'] = 1230547
-        },
-        ['Jolly Rodgers: Near Jinjo 2 Doubloon'] = {
-            ['addr'] = 0x26,
-            ['bit'] = 2,
-            ['locationId'] = 1230548
-        },
-        ['Jolly Rodgers: Near Jinjo 3 Doubloon'] = {
-            ['addr'] = 0x26,
-            ['bit'] = 3,
-            ['locationId'] = 1230549
-        },
-        ['Jolly Rodgers: Near Jinjo 4 Doubloon'] = {
-            ['addr'] = 0x26,
-            ['bit'] = 4,
-            ['locationId'] = 1230550
-        },
-        ['Jolly Rodgers: Lagoon Alcove Jinjo'] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 3,
-            ['locationId'] = 1230566
-        },
-        ['Jolly Rodgers: Blubber Jinjo'] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 4,
-            ['locationId'] = 1230567
-        },
-        ['Jolly Rodgers: Big Fish Jinjo'] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 5,
-            ['locationId'] = 1230568
-        },
-        ['Jolly Rodgers: Seaweed Sanctum Jinjo'] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 6,
-            ['locationId'] = 1230569
-        },
-        ['Jolly Rodgers: Sunken Ship Jinjo'] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 7,
-            ['locationId'] = 1230570
-        },
+        -- ['Jolly Rodgers: Town Center Pole 1 Doubloon'] = {
+        --     ['addr'] = 0x22,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230521
+        -- },
+        -- ['Jolly Rodgers: Town Center Pole 2 Doubloon'] = {
+        --     ['addr'] = 0x23,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230522
+        -- },
+        -- ['Jolly Rodgers: Town Center Pole 3 Doubloon'] = {
+        --     ['addr'] = 0x23,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230523
+        -- },
+        -- ['Jolly Rodgers: Town Center Pole 4 Doubloon'] = {
+        --     ['addr'] = 0x23,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230524
+        -- },
+        -- ['Jolly Rodgers: Town Center Pole 5 Doubloon'] = {
+        --     ['addr'] = 0x23,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230525
+        -- },
+        -- ['Jolly Rodgers: Town Center Pole 6 Doubloon'] = {
+        --     ['addr'] = 0x23,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230526
+        -- },
+        -- ['Jolly Rodgers: Silo 1 Doubloon'] = {
+        --     ['addr'] = 0x23,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230527
+        -- },
+        -- ['Jolly Rodgers: Silo 2 Doubloon'] = {
+        --     ['addr'] = 0x23,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230528
+        -- },
+        -- ['Jolly Rodgers: Silo 3 Doubloon'] = {
+        --     ['addr'] = 0x23,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230529
+        -- },
+        -- ['Jolly Rodgers: Silo 4 Doubloon'] = {
+        --     ['addr'] = 0x24,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230530
+        -- },
+        -- ['Jolly Rodgers: Toxic Pool 1 Doubloon'] = {
+        --     ['addr'] = 0x24,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230531
+        -- },
+        -- ['Jolly Rodgers: Toxic Pool 2 Doubloon'] = {
+        --     ['addr'] = 0x24,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230532
+        -- },
+        -- ['Jolly Rodgers: Toxic Pool 3 Doubloon'] = {
+        --     ['addr'] = 0x24,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230533
+        -- },
+        -- ['Jolly Rodgers: Toxic Pool 4 Doubloon'] = {
+        --     ['addr'] = 0x24,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230534
+        -- },
+        -- ['Jolly Rodgers: Mumbo Skull 1 Doubloon'] = {
+        --     ['addr'] = 0x24,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230535
+        -- },
+        -- ['Jolly Rodgers: Mumbo Skull 2 Doubloon'] = {
+        --     ['addr'] = 0x24,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230536
+        -- },
+        -- ['Jolly Rodgers: Mumbo Skull 3 Doubloon'] = {
+        --     ['addr'] = 0x24,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230537
+        -- },
+        -- ['Jolly Rodgers: Mumbo Skull 4 Doubloon'] = {
+        --     ['addr'] = 0x25,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230538
+        -- },
+        -- ['Jolly Rodgers: Underground 1 Doubloon'] = {
+        --     ['addr'] = 0x25,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230539
+        -- },
+        -- ['Jolly Rodgers: Underground 2 Doubloon'] = {
+        --     ['addr'] = 0x25,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230540
+        -- },
+        -- ['Jolly Rodgers: Underground 3 Doubloon'] = {
+        --     ['addr'] = 0x25,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230541
+        -- },
+        -- ['Jolly Rodgers: Alcove 1 Doubloon'] = {
+        --     ['addr'] = 0x25,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230542
+        -- },
+        -- ['Jolly Rodgers: Alcove 2 Doubloon'] = {
+        --     ['addr'] = 0x25,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230543
+        -- },
+        -- ['Jolly Rodgers: Alcove 3 Doubloon'] = {
+        --     ['addr'] = 0x25,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230544
+        -- },
+        -- ['Jolly Rodgers: Capt Blackeye 1 Doubloon'] = {
+        --     ['addr'] = 0x25,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230545
+        -- },
+        -- ['Jolly Rodgers: Capt Blackeye 2 Doubloon'] = {
+        --     ['addr'] = 0x26,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230546
+        -- },
+        -- ['Jolly Rodgers: Near Jinjo 1 Doubloon'] = {
+        --     ['addr'] = 0x26,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230547
+        -- },
+        -- ['Jolly Rodgers: Near Jinjo 2 Doubloon'] = {
+        --     ['addr'] = 0x26,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230548
+        -- },
+        -- ['Jolly Rodgers: Near Jinjo 3 Doubloon'] = {
+        --     ['addr'] = 0x26,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230549
+        -- },
+        -- ['Jolly Rodgers: Near Jinjo 4 Doubloon'] = {
+        --     ['addr'] = 0x26,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230550
+        -- },
+        -- ['Jolly Rodgers: Lagoon Alcove Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230566
+        -- },
+        -- ['Jolly Rodgers: Blubber Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230567
+        -- },
+        -- ['Jolly Rodgers: Big Fish Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230568
+        -- },
+        -- ['Jolly Rodgers: Seaweed Sanctum Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230569
+        -- },
+        -- ['Jolly Rodgers: Sunken Ship Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230570
+        -- },
         ['Jolly Rodgers: Mini-Sub Challenge Jiggy'] = {
             ['addr'] = 0x48,
             ['bit'] = 6,
@@ -1042,80 +1042,80 @@ local MASTER_MAP = {
             ['bit'] = 7,
             ['locationId'] = 1230635
         },
-        ['Jolly Rodgers: Pawnos Emporium Glowbo'] = {
-            ['addr'] = 0x43,
-            ['bit'] = 5,
-            ['locationId'] = 123069
-        },
-        ['Jolly Rodgers: Under Wumba Wigwam Glowbo'] = {
-            ['addr'] = 0x43,
-            ['bit'] = 6,
-            ['locationId'] = 123070
-        },
-        ['Jolly Rodgers: Seemee Honeycomb'] = {
-            ['addr'] = 0x40,
-            ['bit'] = 3,
-            ['locationId'] = 1230712
-        },
-        ['Jolly Rodgers: Atlantis Honeycomb'] = {
-            ['addr'] = 0x40,
-            ['bit'] = 4,
-            ['locationId'] = 1230713
-        },
-        ['Jolly Rodgers: Waste Pipe Honeycomb'] = {
-            ['addr'] = 0x40,
-            ['bit'] = 5,
-            ['locationId'] = 1230714
-        },
-        ['Jolly Rodgers: Pawnos Cheato Page'] = {
-            ['addr'] = 0x57,
-            ['bit'] = 4,
-            ['locationId'] = 1230737
-        },
-        ['Jolly Rodgers: Seemee Cheato Page'] = {
-            ['addr'] = 0x57,
-            ['bit'] = 5,
-            ['locationId'] = 1230738
-        },
-        ['Jolly Rodgers: Ancient Baths Cheato Page'] = {
-            ['addr'] = 0x57,
-            ['bit'] = 6,
-            ['locationId'] = 1230739
-        },
+        -- ['Jolly Rodgers: Pawnos Emporium Glowbo'] = {
+        --     ['addr'] = 0x43,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 123069
+        -- },
+        -- ['Jolly Rodgers: Under Wumba Wigwam Glowbo'] = {
+        --     ['addr'] = 0x43,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 123070
+        -- },
+        -- ['Jolly Rodgers: Seemee Honeycomb'] = {
+        --     ['addr'] = 0x40,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230712
+        -- },
+        -- ['Jolly Rodgers: Atlantis Honeycomb'] = {
+        --     ['addr'] = 0x40,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230713
+        -- },
+        -- ['Jolly Rodgers: Waste Pipe Honeycomb'] = {
+        --     ['addr'] = 0x40,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230714
+        -- },
+        -- ['Jolly Rodgers: Pawnos Cheato Page'] = {
+        --     ['addr'] = 0x57,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230737
+        -- },
+        -- ['Jolly Rodgers: Seemee Cheato Page'] = {
+        --     ['addr'] = 0x57,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230738
+        -- },
+        -- ['Jolly Rodgers: Ancient Baths Cheato Page'] = {
+        --     ['addr'] = 0x57,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230739
+        -- },
     },
     ['WL'] = {
-        ['Wasteland: Jinjo'] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 5,
-            ['locationId'] = 1230592
-        },
+        -- ['Wasteland: Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230592
+        -- },
     },
     ['TL'] = {
-        ['Terrydactyland: Talon Torp Jinjo'] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 0,
-            ['locationId'] = 1230571
-        },
-        ['Terrydactyland: Cutscene Skip Jinjo'] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 1,
-            ['locationId'] = 1230572
-        },
-        ['Terrydactyland: Beside Rocknut Jinjo'] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 2,
-            ['locationId'] = 1230573
-        },
-        ['Terrydactyland: Big T. Rex Skip Jinjo'] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 3,
-            ['locationId'] = 1230574
-        },
-        ['Terrydactyland: Stomping Plains Jinjo'] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 4,
-            ['locationId'] = 1230575
-        },
+        -- ['Terrydactyland: Talon Torp Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230571
+        -- },
+        -- ['Terrydactyland: Cutscene Skip Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230572
+        -- },
+        -- ['Terrydactyland: Beside Rocknut Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230573
+        -- },
+        -- ['Terrydactyland: Big T. Rex Skip Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230574
+        -- },
+        -- ['Terrydactyland: Stomping Plains Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230575
+        -- },
         ['Terrydactyland: Under Terrys Nest Jiggy'] = {
             ['addr'] = 0x4A,
             ['bit'] = 0,
@@ -1166,73 +1166,73 @@ local MASTER_MAP = {
             ['bit'] = 1,
             ['locationId'] = 1230645
         },
-        ['Terrydactyland: Unga Bunga Cave Entrance Glowbo'] = {
-            ['addr'] = 0x43,
-            ['bit'] = 7,
-            ['locationId'] = 1230694
-        },
-        ['Terrydactyland: Behind Mumbo Skull Glowbo'] = {
-            ['addr'] = 0x44,
-            ['bit'] = 0,
-            ['locationId'] = 1230695
-        },
-        ['Terrydactyland: Central Area Honeycomb'] = {
-            ['addr'] = 0x40,
-            ['bit'] = 6,
-            ['locationId'] = 1230715
-        },
-        ['Terrydactyland: S. Family Cave Honeycomb'] = {
-            ['addr'] = 0x40,
-            ['bit'] = 7,
-            ['locationId'] = 1230716
-        },
-        ['Terrydactyland: River Passage Honeycomb'] = {
-            ['addr'] = 0x41,
-            ['bit'] = 0,
-            ['locationId'] = 1230717
-        },
-        ['Terrydactyland: Dippys Pool Cheato Page'] = {
-            ['addr'] = 0x57,
-            ['bit'] = 7,
-            ['locationId'] = 1230740
-        },
-        ['Terrydactyland: Inside the Mountain Cheato Page'] = {
-            ['addr'] = 0x58,
-            ['bit'] = 0,
-            ['locationId'] = 1230741
-        },
-        ['Terrydactyland: Boulder Cheato Page'] = {
-            ['addr'] = 0x58,
-            ['bit'] = 1,
-            ['locationId'] = 1230742
-        }
+        -- ['Terrydactyland: Unga Bunga Cave Entrance Glowbo'] = {
+        --     ['addr'] = 0x43,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230694
+        -- },
+        -- ['Terrydactyland: Behind Mumbo Skull Glowbo'] = {
+        --     ['addr'] = 0x44,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230695
+        -- },
+        -- ['Terrydactyland: Central Area Honeycomb'] = {
+        --     ['addr'] = 0x40,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230715
+        -- },
+        -- ['Terrydactyland: S. Family Cave Honeycomb'] = {
+        --     ['addr'] = 0x40,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230716
+        -- },
+        -- ['Terrydactyland: River Passage Honeycomb'] = {
+        --     ['addr'] = 0x41,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230717
+        -- },
+        -- ['Terrydactyland: Dippys Pool Cheato Page'] = {
+        --     ['addr'] = 0x57,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230740
+        -- },
+        -- ['Terrydactyland: Inside the Mountain Cheato Page'] = {
+        --     ['addr'] = 0x58,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230741
+        -- },
+        -- ['Terrydactyland: Boulder Cheato Page'] = {
+        --     ['addr'] = 0x58,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230742
+        -- }
     },
     ['GI'] = {
-        ['Gruntys Industries: Floor 5 Jinjo'] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 5,
-            ['locationId'] = 1230576
-        },
-        ['Gruntys Industries: Leg Spring Jinjo'] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 6,
-            ['locationId'] = 1230577
-        },
-        ['Gruntys Industries: Toxic Waste Jinjo'] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 7,
-            ['locationId'] = 1230578
-        },
-        ['Gruntys Industries: Boiler Plant Jinjo'] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 0,
-            ['locationId'] = 1230579
-        },
-        ['Gruntys Industries: Outside Jinjo'] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 1,
-            ['locationId'] = 1230580
-        },
+        -- ['Gruntys Industries: Floor 5 Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230576
+        -- },
+        -- ['Gruntys Industries: Leg Spring Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230577
+        -- },
+        -- ['Gruntys Industries: Toxic Waste Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230578
+        -- },
+        -- ['Gruntys Industries: Boiler Plant Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230579
+        -- },
+        -- ['Gruntys Industries: Outside Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230580
+        -- },
         ['Gruntys Industries: Waste Disposal Jiggy'] = {
             ['addr'] = 0x4B,
             ['bit'] = 2,
@@ -1283,73 +1283,73 @@ local MASTER_MAP = {
             ['bit'] = 3,
             ['locationId'] = 1230655
         },
-        ['Gruntys Industries: Floor 2 Glowbo'] = {
-            ['addr'] = 0x44,
-            ['bit'] = 1,
-            ['locationId'] = 1230696
-        },
-        ['Gruntys Industries: Floor 3 Glowbo'] = {
-            ['addr'] = 0x44,
-            ['bit'] = 2,
-            ['locationId'] = 1230697
-        },
-        ['Gruntys Industries: Floor 3 Honeycomb'] = {
-            ['addr'] = 0x41,
-            ['bit'] = 1,
-            ['locationId'] = 1230718
-        },
-        ['Gruntys Industries: Train Station Honeycomb'] = {
-            ['addr'] = 0x41,
-            ['bit'] = 2,
-            ['locationId'] = 1230719
-        },
-        ['Gruntys Industries: Chimney Honeycomb'] = {
-            ['addr'] = 0x41,
-            ['bit'] = 3,
-            ['locationId'] = 1230720
-        },
-        ['Gruntys Industries: Logo Cheato Page'] = {
-            ['addr'] = 0x58,
-            ['bit'] = 2,
-            ['locationId'] = 1230743
-        },
-        ['Gruntys Industries: Floor 2 Cheato Page'] = {
-            ['addr'] = 0x58,
-            ['bit'] = 3,
-            ['locationId'] = 1230744
-        },
-        ['Gruntys Industries: Repair Depot Cheato Page'] = {
-            ['addr'] = 0x58,
-            ['bit'] = 4,
-            ['locationId'] = 1230745
-        },
+        -- ['Gruntys Industries: Floor 2 Glowbo'] = {
+        --     ['addr'] = 0x44,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230696
+        -- },
+        -- ['Gruntys Industries: Floor 3 Glowbo'] = {
+        --     ['addr'] = 0x44,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230697
+        -- },
+        -- ['Gruntys Industries: Floor 3 Honeycomb'] = {
+        --     ['addr'] = 0x41,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230718
+        -- },
+        -- ['Gruntys Industries: Train Station Honeycomb'] = {
+        --     ['addr'] = 0x41,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230719
+        -- },
+        -- ['Gruntys Industries: Chimney Honeycomb'] = {
+        --     ['addr'] = 0x41,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230720
+        -- },
+        -- ['Gruntys Industries: Logo Cheato Page'] = {
+        --     ['addr'] = 0x58,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230743
+        -- },
+        -- ['Gruntys Industries: Floor 2 Cheato Page'] = {
+        --     ['addr'] = 0x58,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230744
+        -- },
+        -- ['Gruntys Industries: Repair Depot Cheato Page'] = {
+        --     ['addr'] = 0x58,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230745
+        -- },
     },
     ['HP'] = {
-        ['Hailfire Peaks: Lava Waterfall Jinjo'] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 2,
-            ['locationId'] = 1230581
-        },
-        ['Hailfire Peaks: Boiling Hot Pool Jinjo'] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 3,
-            ['locationId'] = 1230582
-        },
-        ['Hailfire Peaks: Windy Hole Jinjo'] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 4,
-            ['locationId'] = 1230583
-        },
-        ['Hailfire Peaks: Icicle Grotto Jinjo'] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 5,
-            ['locationId'] = 1230584
-        },
-        ['Hailfire Peaks: Mildred Ice Cube Jinjo'] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 6,
-            ['locationId'] = 1230585
-        },
+        -- ['Hailfire Peaks: Lava Waterfall Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230581
+        -- },
+        -- ['Hailfire Peaks: Boiling Hot Pool Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230582
+        -- },
+        -- ['Hailfire Peaks: Windy Hole Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230583
+        -- },
+        -- ['Hailfire Peaks: Icicle Grotto Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230584
+        -- },
+        -- ['Hailfire Peaks: Mildred Ice Cube Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230585
+        -- },
         ['Hailfire Peaks: Dragon Brothers Jiggy'] = {
             ['addr'] = 0x4C,
             ['bit'] = 4,
@@ -1400,73 +1400,73 @@ local MASTER_MAP = {
             ['bit'] = 5,
             ['locationId'] = 1230665
         },
-        ['Hailfire Peaks: Lava Side Glowbo'] = {
-            ['addr'] = 0x44,
-            ['bit'] = 3,
-            ['locationId'] = 1230698
-        },
-        ['Hailfire Peaks: Icy Side Glowbo'] = {
-            ['addr'] = 0x44,
-            ['bit'] = 4,
-            ['locationId'] = 1230699
-        },
-        ['Hailfire Peaks: Inside the Volcano Honeycomb'] = {
-            ['addr'] = 0x41,
-            ['bit'] = 4,
-            ['locationId'] = 1230721
-        },
-        ['Hailfire Peaks: Train Station Honeycomb'] = {
-            ['addr'] = 0x41,
-            ['bit'] = 5,
-            ['locationId'] = 1230722
-        },
-        ['Hailfire Peaks: Lava Side Honeycomb'] = {
-            ['addr'] = 0x41,
-            ['bit'] = 6,
-            ['locationId'] = 1230723
-        },
-        ['Hailfire Peaks: Lava Side Cheato Page'] = {
-            ['addr'] = 0x58,
-            ['bit'] = 5,
-            ['locationId'] = 1230746
-        },
-        ['Hailfire Peaks: Icicle Grotto Cheato Page'] = {
-            ['addr'] = 0x58,
-            ['bit'] = 6,
-            ['locationId'] = 1230747
-        },
-        ['Hailfire Peaks: Icy Side Cheato Page'] = {
-            ['addr'] = 0x58,
-            ['bit'] = 7,
-            ['locationId'] = 1230748
-        },
+        -- ['Hailfire Peaks: Lava Side Glowbo'] = {
+        --     ['addr'] = 0x44,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230698
+        -- },
+        -- ['Hailfire Peaks: Icy Side Glowbo'] = {
+        --     ['addr'] = 0x44,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230699
+        -- },
+        -- ['Hailfire Peaks: Inside the Volcano Honeycomb'] = {
+        --     ['addr'] = 0x41,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230721
+        -- },
+        -- ['Hailfire Peaks: Train Station Honeycomb'] = {
+        --     ['addr'] = 0x41,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230722
+        -- },
+        -- ['Hailfire Peaks: Lava Side Honeycomb'] = {
+        --     ['addr'] = 0x41,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230723
+        -- },
+        -- ['Hailfire Peaks: Lava Side Cheato Page'] = {
+        --     ['addr'] = 0x58,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230746
+        -- },
+        -- ['Hailfire Peaks: Icicle Grotto Cheato Page'] = {
+        --     ['addr'] = 0x58,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230747
+        -- },
+        -- ['Hailfire Peaks: Icy Side Cheato Page'] = {
+        --     ['addr'] = 0x58,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230748
+        -- },
     },
     ["CC"] = {
-        ['Cloud Cuckcooland: Trash Can Jinjo'] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 7,
-            ['locationId'] = 1230586
-        },
-        ['Cloud Cuckcooland: Cheese Wedge Jinjo'] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 0,
-            ['locationId'] = 1230587
-        },
-        ['Cloud Cuckcooland: Central Cavern Jinjo'] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 1,
-            ['locationId'] = 1230588
-        },
-        ['Cloud Cuckcooland: Fake Mumbo Skull Jinjo'] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 2,
-            ['locationId'] = 1230589
-        },
-        ['Cloud Cuckcooland: Wumba Jinjo'] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 3,
-            ['locationId'] = 1230590
-        },
+        -- ['Cloud Cuckcooland: Trash Can Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230586
+        -- },
+        -- ['Cloud Cuckcooland: Cheese Wedge Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230587
+        -- },
+        -- ['Cloud Cuckcooland: Central Cavern Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230588
+        -- },
+        -- ['Cloud Cuckcooland: Fake Mumbo Skull Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230589
+        -- },
+        -- ['Cloud Cuckcooland: Wumba Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230590
+        -- },
         ['Cloud Cuckcooland: Mingy Jongo Jiggy'] = {
             ['addr'] = 0x4D,
             ['bit'] = 6,
@@ -1517,46 +1517,46 @@ local MASTER_MAP = {
             ['bit'] = 7,
             ['locationId'] = 1230675
         },
-        ['Cloud Cuckcooland: Overworld Glowbo'] = {
-            ['addr'] = 0x44,
-            ['bit'] = 5,
-            ['locationId'] = 1230700
-        },
-        ['Cloud Cuckcooland: Central Cavern Glowbo'] = {
-            ['addr'] = 0x44,
-            ['bit'] = 6,
-            ['locationId'] = 1230701
-        },
-        ['Cloud Cuckcooland: Underground Honeycomb'] = {
-            ['addr'] = 0x41,
-            ['bit'] = 7,
-            ['locationId'] = 1230724
-        },
-        ['Cloud Cuckcooland: Trash Can Honeycomb'] = {
-            ['addr'] = 0x42,
-            ['bit'] = 0,
-            ['locationId'] = 1230725
-        },
-        ['Cloud Cuckcooland: Pot Ol Gold Honeycomb'] = {
-            ['addr'] = 0x42,
-            ['bit'] = 1,
-            ['locationId'] = 1230726
-        },
-        ['Cloud Cuckcooland: Canary Mary Cheato Page'] = {
-            ['addr'] = 0x59,
-            ['bit'] = 0,
-            ['locationId'] = 1230749
-        },
-        ['Cloud Cuckcooland: Pot Ol Gold Cheato Page'] = {
-            ['addr'] = 0x59,
-            ['bit'] = 1,
-            ['locationId'] = 1230750
-        },
-        ['Cloud Cuckcooland: Zubbas Nest Cheato Page'] = {
-            ['addr'] = 0x59,
-            ['bit'] = 2,
-            ['locationId'] = 1230751
-        },
+        -- ['Cloud Cuckcooland: Overworld Glowbo'] = {
+        --     ['addr'] = 0x44,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230700
+        -- },
+        -- ['Cloud Cuckcooland: Central Cavern Glowbo'] = {
+        --     ['addr'] = 0x44,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230701
+        -- },
+        -- ['Cloud Cuckcooland: Underground Honeycomb'] = {
+        --     ['addr'] = 0x41,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230724
+        -- },
+        -- ['Cloud Cuckcooland: Trash Can Honeycomb'] = {
+        --     ['addr'] = 0x42,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230725
+        -- },
+        -- ['Cloud Cuckcooland: Pot Ol Gold Honeycomb'] = {
+        --     ['addr'] = 0x42,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230726
+        -- },
+        -- ['Cloud Cuckcooland: Canary Mary Cheato Page'] = {
+        --     ['addr'] = 0x59,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230749
+        -- },
+        -- ['Cloud Cuckcooland: Pot Ol Gold Cheato Page'] = {
+        --     ['addr'] = 0x59,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230750
+        -- },
+        -- ['Cloud Cuckcooland: Zubbas Nest Cheato Page'] = {
+        --     ['addr'] = 0x59,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230751
+        -- },
     },
 	  ["H1"] = {
 	 	['Hag 1 Defeated'] = {
