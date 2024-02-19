@@ -2154,6 +2154,15 @@ function all_location_checks(type)
         AGI = location_checks
     end
     checkHoneycombs(location_checks)
+    if checkFlag(0x1F, 0) == true
+    then
+        local DEMO = { ['DEMO'] = true}
+        if DEBUG == true
+        then
+            print("Running Demo File. Return DEMO to BTClient")
+        end
+        return DEMO
+    end
     return location_checks
 end
 

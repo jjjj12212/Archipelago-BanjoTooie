@@ -224,24 +224,24 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     if isinstance(locations, list):
         locations = {}
 
+    if "DEMO" not in locations:
+        if ctx.location_table != locations:
+            ctx.location_table = locations
 
-    if ctx.location_table != locations:
-        ctx.location_table = locations
+            locs1 = [bt_loc_name_to_id[loc] for loc, b in ctx.location_table.items() if b]
 
-        locs1 = [bt_loc_name_to_id[loc] for loc, b in ctx.location_table.items() if b]
-
-        await ctx.send_msgs([{
-            "cmd": "LocationChecks",
-            "locations": locs1
-        }])
-
-    # Game completion handling
-        if 1230027 in locs1 and not ctx.finished_game:
             await ctx.send_msgs([{
-                "cmd": "StatusUpdate",
-                "status": 30
+                "cmd": "LocationChecks",
+                "locations": locs1
             }])
-            ctx.finished_game = True
+
+            # Game completion handling
+            if 1230027 in locs1 and not ctx.finished_game:
+                await ctx.send_msgs([{
+                    "cmd": "StatusUpdate",
+                    "status": 30
+                }])
+                ctx.finished_game = True
 
     # Deathlink handling
     if ctx.deathlink_enabled:
