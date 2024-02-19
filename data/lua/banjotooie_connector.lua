@@ -1954,7 +1954,6 @@ function locationControl()
     if isBackup == true
     then
         if ((last_map == 335 or last_map == 337) and (mapaddr ~= 335 and mapaddr ~= 337)) -- Wooded Hollow
-            or (last_map == 339 and mapaddr ~= 339)                                       -- Honey B Hive
         then
             BMMRestore()
             last_map = mapaddr
@@ -1976,14 +1975,6 @@ function locationControl()
             end
             nearWHJinjo()
             return all_location_checks("BMM");
-        elseif mapaddr == 339              -- Honey Bs Hive
-        then
-            if last_map ~= 339 then
-                BMMBackup();
-                useAGI();
-                last_map = mapaddr
-            end
-            return all_location_checks("BMM")
         else
             last_map = mapaddr
             getAltar()
@@ -2335,7 +2326,7 @@ function checkPause()
         then
             print("Game Unpaused");
         end
-        if isBackup == true and (last_map ~= 335 and last_map ~= 337 and last_map ~= 339)  -- Don't want to restore while in WH zone
+        if isBackup == true and (last_map ~= 335 and last_map ~= 337)  -- Don't want to restore while in WH zone
         then
             BMMRestore()
         end

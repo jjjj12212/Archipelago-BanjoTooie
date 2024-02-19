@@ -117,34 +117,6 @@ jiggy_table = {
     itemName.JIGGYCC10: ItemData(1230675, 1, "progress"),
 }
 
-# honeycomb_table = {
-#     itemName.HONEYCMT1:     ItemData(1230703, 1, "useful"),
-#     itemName.HONEYCMT2:     ItemData(1230704, 1, "useful"),
-#     itemName.HONEYCMT3:     ItemData(1230705, 1, "useful"),
-#     itemName.HONEYCGM1:     ItemData(1230706, 1, "useful"),
-#     itemName.HONEYCGM2:     ItemData(1230707, 1, "useful"),
-#     itemName.HONEYCGM3:     ItemData(1230708, 1, "useful"),
-#     itemName.HONEYCWW1:     ItemData(1230709, 1, "useful"),
-#     itemName.HONEYCWW2:     ItemData(1230710, 1, "useful"),
-#     itemName.HONEYCWW3:     ItemData(1230711, 1, "useful"),
-#     itemName.HONEYCJR1:     ItemData(1230712, 1, "useful"),
-#     itemName.HONEYCJR2:     ItemData(1230713, 1, "useful"),
-#     itemName.HONEYCJR3:     ItemData(1230714, 1, "useful"),
-#     itemName.HONEYCTL1:     ItemData(1230715, 1, "useful"),
-#     itemName.HONEYCTL2:     ItemData(1230716, 1, "useful"),
-#     itemName.HONEYCTL3:     ItemData(1230717, 1, "useful"),
-#     itemName.HONEYCGI1:     ItemData(1230718, 1, "useful"),
-#     itemName.HONEYCGI2:     ItemData(1230719, 1, "useful"),
-#     itemName.HONEYCGI3:     ItemData(1230720, 1, "useful"),
-#     itemName.HONEYCHP1:     ItemData(1230721, 1, "useful"),
-#     itemName.HONEYCHP2:     ItemData(1230722, 1, "useful"),
-#     itemName.HONEYCHP3:     ItemData(1230723, 1, "useful"),
-#     itemName.HONEYCCC1:     ItemData(1230724, 1, "useful"),
-#     itemName.HONEYCCC2:     ItemData(1230725, 1, "useful"),
-#     itemName.HONEYCCC3:     ItemData(1230726, 1, "useful"),
-#     itemName.HONEYCIH1:     ItemData(1230727, 1, "useful"),
-# }
-
 level_progress_table = {
     itemName.GLOWBO:        ItemData(1230511, 17, "progress"),
 }
@@ -161,13 +133,11 @@ all_item_table = {
     **jinjo_table,
     **level_progress_table,
     **misc_collectable_table,
-    **jiggy_table,
-    # **honeycomb_table
+    **jiggy_table
 }
 
 all_group_table = {
     'jiggy' : jiggy_table,
-    # 'honeycombs' : honeycomb_table,
     'jinjo' : jinjo_table,
     'misc' : misc_collectable_table
 }

@@ -50,20 +50,12 @@ class BanjoTooieWorld(World):
             continue
         item_name_to_id[name] = data.btid
 
-
     location_name_to_id = {name: data.btid for name, data in all_location_table.items()}
-    #location_name_to_id = {}
-    # for name, data in all_location_table.items():
-    #     if data.btid == 1230027:  #Skip Victory Location
-    #         continue
-    #     location_name_to_id[name] = data.btid
 
     item_name_groups = {
         "Jiggy": all_group_table["jiggy"],
         "Jinjo": all_group_table["jinjo"],
-        # "Honeycombs": all_group_table["honeycombs"]
     }
-    # location_name_to_id = {}
     
 
     def create_item(self, itemname: str) -> Item:
