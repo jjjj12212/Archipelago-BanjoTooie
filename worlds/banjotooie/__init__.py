@@ -60,7 +60,8 @@ class BanjoTooieWorld(World):
 
     item_name_groups = {
         "Jiggy": all_group_table["jiggy"],
-        "Jinjo": all_group_table["jinjo"]
+        "Jinjo": all_group_table["jinjo"],
+        # "Honeycombs": all_group_table["honeycombs"]
     }
     # location_name_to_id = {}
     
@@ -89,11 +90,10 @@ class BanjoTooieWorld(World):
         for name,id in all_item_table.items():
             item = self.create_item(name)
             if self.item_filter(item):
-                itempool += [self.create_item(name)]
+                for i in range(id.qty):
+                    itempool += [self.create_item(name)]
         
         for item in itempool:
-            # if(item.code == 0 or item.code == None):
-            #     continue
             self.multiworld.itempool.append(item)
 
     
@@ -114,6 +114,7 @@ class BanjoTooieWorld(World):
         if(item.code == 1230513 and self.options.mutliworld_cheato == False) :
             return False
         
+        # if((1230703 <= item.code <= 1230727) and self.options.multiworld_honeycombs == False) :
         if(item.code == 1230512 and self.options.multiworld_honeycombs == False) :
             return False
         

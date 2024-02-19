@@ -4,7 +4,7 @@ Banjo Tooie:
   multiworld_jinjos: 'false'
   multiworld_dabloon: 'false'
   multiworld_cheato: 'false'
-  multiworld_honeycombs: 'false'
+  multiworld_honeycombs: 'true'
   multiworld_glowbos: 'false'
   jingaling_jiggy: 'true'
 description: 'Created By jjjj12212'
