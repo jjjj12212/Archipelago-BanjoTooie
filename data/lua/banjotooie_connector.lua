@@ -81,6 +81,21 @@ function dereferencePointer(address)
     end
 end
 
+local consumeTable = {
+    [9] = {key=0x3C0C, name="Empty Honeycombs"}
+}
+
+function setHoneycomb(value)
+    local consumablesBlock = dereferencePointer(0x12B250);
+    mainmemory.write_u16_be(consumablesBlock + 9 * 2, value ~ 0x3C0C);
+    mainmemory.write_u16_be(0x11B080 + 9 * 0x0C, value);
+end
+
+function getHoneycomb()
+    local normalValue = mainmemory.read_u16_be(0x11B080 + 9 * 0x0C);
+	return normalValue;
+end
+
 function banjoPTR()
     local playerPointerIndex = mainmemory.readbyte(player_pointer_index);
 	local banjo = dereferencePointer(player_pointer + 4 * playerPointerIndex);
@@ -1912,6 +1927,28 @@ local read_H1_checks = function(type)
     return checks
 end
 
+function checkHoneycombs(location_checks)
+    for zone, table in pairs(AGI)
+    do
+        for location_name, value in pairs(table)
+        do
+            if(string.find(location_name, "Honeycomb"))
+            then
+                if(isBackup == false and (value == false and location_checks[location_name] == true))
+                then
+                    if(DEBUG == true)
+                    then
+                        print("Obtained local Honeycomb. Remove from Inventory")
+                    end
+                    setHoneycomb(getHoneycomb() - 1)
+                    AGI[zone][location_name] = true
+                    savingAGI()
+                end
+            end
+        end
+    end
+end
+
 function locationControl()
     local mapaddr = getMap()
     if isBackup == true
@@ -2125,6 +2162,7 @@ function all_location_checks(type)
     if next(AGI) == nil then --only happens once when you first play
         AGI = location_checks
     end
+    checkHoneycombs(location_checks)
     return location_checks
 end
 
@@ -2140,12 +2178,23 @@ function archipelago_msg_box(msg)
 end
 
 function processAGIItem(item_list)
+    for ap_id, memlocation in pairs(item_list) -- Items unrelated to AGI_MAP like Consumables
+    do
+        if(memlocation == 1230512)  -- Honeycomb Item
+        then
+            if DEBUG == true
+            then
+                print("HC Obtained")
+            end
+            setHoneycomb(getHoneycomb() + 1)
+        end
+    end
     for zones, location in pairs(MASTER_MAP)
     do
         for loc, v in pairs(location)
         do
             for ap_id, memlocation in pairs(item_list)
-            do
+            do    
                 if v['locationId'] == memlocation
                 then
                     if DEBUG == true
@@ -2494,8 +2543,6 @@ function process_slot(block)
 end
 
 function main()
-    
-
     if not checkBizHawkVersion() then
         return
     end
