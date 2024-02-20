@@ -2,11 +2,17 @@ Banjo Tooie:
   death_link: 'false'
   multiworld_moves: 'false'
   multiworld_jinjos: 'false'
-  multiworld_dabloon: 'false'
+  multiworld_doubloons: 'false'
   multiworld_cheato: 'false'
   multiworld_honeycombs: 'true'
   multiworld_glowbos: 'false'
   jingaling_jiggy: 'true'
+  
+  # skip: skip whole quiz show
+  # round 3: skip to the lightning round
+  # full: play full quiz show
+  
+  skip_tower_of_tragedy: 'skip'
 description: 'Created By jjjj12212'
 game: Banjo Tooie
 name: jjjj12212
