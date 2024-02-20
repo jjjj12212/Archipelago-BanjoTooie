@@ -1953,6 +1953,10 @@ function locationControl()
     local mapaddr = getMap()
     if isBackup == true
     then
+        if checkFlag(0x1F, 0)== true -- DEMO FILE
+        then
+            return all_location_checks("BMM")
+        end
         if ((last_map == 335 or last_map == 337) and (mapaddr ~= 335 and mapaddr ~= 337)) -- Wooded Hollow
         then
             BMMRestore()
