@@ -7,8 +7,8 @@ local json = require('json')
 local math = require('math')
 require('common')
 
-local last_modified_date = '2024-01-19' -- Should be the last modified date
-local script_version = 3
+local last_modified_date = '2024-02-20' -- Should be the last modified date
+local script_version = 3 -- If I push this does that make it 4? -Unalive
 -- Template Variables
 local player_name = ""
 local seed = 0
@@ -26,6 +26,9 @@ local DEBUGLVL2 = false
 local prevstate = ""
 local curstate =  STATE_UNINITIALIZED
 local frame = 0
+
+local skip_tot = ""
+local flag_init_complete = false
 
 --From BTRando.lua
 local RDRAMBase = 0x80000000;
@@ -2252,6 +2255,10 @@ function process_slot(block)
     then
         deathlink = true
     end
+    if block['slot_skip_tot'] ~= nil and block['slot_skip_tot'] ~= ""
+    then
+        skip_tot = block['slot_skip_tot']
+    end
 
     if seed ~= 0
     then
@@ -2271,6 +2278,45 @@ function process_slot(block)
     return true
 end
 
+function initializeFlags()
+	-- Use Cutscene: "2 Years Have Passed..." to check for fresh save
+	local current_map = getMap();
+	if (current_map == 0xA1) then
+		-- Jinjo First Time Flags
+		setFlag(0x01, 5)
+		setFlag(0x6E, 6)
+		setFlag(0x82, 4)
+		setFlag(0x82, 5)
+		if (skip_tot ~= "false") then
+			-- ToT Misc Flags
+			setFlag(0xAB, 2)
+			setFlag(0xAB, 3)
+			setFlag(0xAB, 4)
+			setFlag(0xAB, 5)
+			if (skip_tot == "true") then
+			-- ToT Complete Flags
+				setFlag(0x83, 0)
+				setFlag(0x83, 4)
+			else
+				setFlag(0x83, 2)
+				setFlag(0x83, 3)
+			end
+		end
+		flag_init_complete = true
+	-- Otherwise, the flags were already set, so just stop checking
+	elseif (current_map == 0xAF or current_map == 0x142) then
+		flag_init_complete = true
+	end
+end
+
+function setToTComplete()
+	-- this fixes a bug that messes up game progression
+	current_map = getMap();
+	if (current_map == 0x15E and checkFlag(0x83, 1) == false) then -- CK Klungo Boss Room
+		setFlag(0x83, 1)
+	end
+end
+
 function main()
     if not checkBizHawkVersion() then
         return
@@ -2287,10 +2333,16 @@ function main()
                 getBanjoDeathAnimation(false);
                 receive();
                 killBT();
+                if (skip_tot == "true") then
+					setToTComplete();
+				end
             elseif (frame % 10 == 0)
             then
                 checkPause();
                 checkTotalMenu();
+                if not (flag_init_complete) then
+					initializeFlags();
+				end
             end
         elseif (curstate == STATE_UNINITIALIZED) then
             if  (frame % 60 == 0) then

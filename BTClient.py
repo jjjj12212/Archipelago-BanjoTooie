@@ -191,7 +191,8 @@ def get_slot_payload(ctx: BanjoTooieContext):
     payload = json.dumps({
             "slot_player": ctx.slot_data["player_name"],
             "slot_seed": ctx.slot_data["seed"],
-            "slot_deathlink": ctx.deathlink_enabled
+            "slot_deathlink": ctx.deathlink_enabled,
+            "slot_skip_tot": ctx.slot_data["skip_tot"]
         })
     ctx.sendSlot = False
     return payload

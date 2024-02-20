@@ -100,7 +100,7 @@ class BanjoTooieWorld(World):
         if item.code == 0: #Events
             return False
         
-        if(item.code == 1230514 and self.options.multiworld_dabloons == False) :
+        if(item.code == 1230514 and self.options.multiworld_doubloons == False) :
             return False
         
         if(item.code == 1230513 and self.options.mutliworld_cheato == False) :
@@ -134,6 +134,12 @@ class BanjoTooieWorld(World):
         btoptions["player_name"] = self.multiworld.player_name[self.player]
         btoptions["seed"] = random.randint(12212, 69996)
         btoptions["deathlink"] = "true" if self.options.death_link.value == 1 else "false"
+        if self.options.skip_tower_of_tragedy == 1:
+            btoptions["skip_tot"] = "true"
+        elif self.options.skip_tower_of_tragedy == 2:
+            btoptions["skip_tot"] = "round 3"
+        else:
+            btoptions["skip_tot"] = "false"
         return btoptions
 
 

@@ -295,7 +295,7 @@ def create_regions(self):
     for location in active_locations:
         if((location.find("Jinjo") != -1 and location.find("Jiggy") == -1)  and self.options.multiworld_jinjos == False):
             dellist.append(location)
-        if(location.find("Doubloon") != -1 and self.options.multiworld_dabloons == False):
+        if(location.find("Doubloon") != -1 and self.options.multiworld_doubloons == False):
             dellist.append(location)
         if(location.find("Glowbo") != -1 and self.options.multiworld_glowbos == False):
             dellist.append(location)
