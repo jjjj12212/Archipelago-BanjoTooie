@@ -3,6 +3,8 @@
 - Jiggywiggy Temple Fixes after completing the second puzzle
 - Fixed issue for checking totals in Jiggywiggy Temple
 - Fixed Typo for Mayahem Temple
+- change MasterMap dictionary/map (Development)
+- Fix Typo for Jolly Rogers Lagoon
 
 # v0.2-alpha
 - Implemented Victory Condition
