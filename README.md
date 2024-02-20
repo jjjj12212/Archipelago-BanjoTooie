@@ -1,9 +1,10 @@
-# Archipelago Banjo-Tooie (US-Only) | v0.2-alpha
+# Archipelago Banjo-Tooie (US-Only) | v0.3-alpha
 Banjo Tooie for Archipelago 
 
 # Current implementation
 - Death Link **(Still ongoing progress)**
 - Jiggies are scattered throughout Archipelago games
+- Empty Honeycombs are scattered throughout Archipelago games (YAML Option) 
 - Pause Menu -> Totals acts like a in-game Tracker for check locations
 - Pause Menu will display total items collected in your game + Multi-world
 - Victory condition when you defeat HAG1
@@ -26,7 +27,6 @@ Banjo Tooie for Archipelago
 - Jinjos are scattered throughout Archipelago games 
 - Doubloons are scattered throughout Archipelago games
 - Cheato Pages are scattered throughout Archipelago games
-- Honeycombs are scattered throughout Archipelago games
 - Glowbos are scattered throughout Archipelago games **(if Possible)**
 - Unlockable Banjo Moves are scattered throughout Archipelago games **(if Possible)**
 - Train Station are scattered throughout Archipelago games **(if Possible)**
