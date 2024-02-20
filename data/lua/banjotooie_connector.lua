@@ -1969,7 +1969,7 @@ function locationControl()
             return all_location_checks("BMM");
         end
     else
-        if mapaddr == 335 or mapaddr == 337 -- Wooded Hollow / JiggyTemple
+        if (mapaddr == 335 or mapaddr == 337) and checkTotals == false -- Wooded Hollow / JiggyTemple
         then
             if last_map ~= 335 and last_map ~= 337
             then
