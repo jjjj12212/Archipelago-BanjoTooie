@@ -590,52 +590,52 @@ local MASTER_MAP = {
             ['bit'] = 5,
             ['locationId'] = 1230625
         },
-        ['Jolly Rodgers: Mini-Sub Challenge Jiggy'] = {
+        ['Jolly Rogers: Mini-Sub Challenge Jiggy'] = {
             ['addr'] = 0x48,
             ['bit'] = 6,
             ['locationId'] = 1230626
         },
-        ['Jolly Rodgers: Tiptup Jiggy'] = {
+        ['Jolly Rogers: Tiptup Jiggy'] = {
             ['addr'] = 0x48,
             ['bit'] = 7,
             ['locationId'] = 1230627
         },
-        ['Jolly Rodgers: Chris Bacon Jiggy'] = {
+        ['Jolly Rogers: Chris Bacon Jiggy'] = {
             ['addr'] = 0x49,
             ['bit'] = 0,
             ['locationId'] = 1230628
         },
-        ['Jolly Rodgers: Piglets Pool Jiggy'] = {
+        ['Jolly Rogers: Piglets Pool Jiggy'] = {
             ['addr'] = 0x49,
             ['bit'] = 1,
             ['locationId'] = 1230629
         },
-        ['Jolly Rodgers: Smugglers Cavern Jiggy'] = {
+        ['Jolly Rogers: Smugglers Cavern Jiggy'] = {
             ['addr'] = 0x49,
             ['bit'] = 2,
             ['locationId'] = 1230630
         },
-        ['Jolly Rodgers: Merry Maggie Jiggy'] = {
+        ['Jolly Rogers: Merry Maggie Jiggy'] = {
             ['addr'] = 0x49,
             ['bit'] = 3,
             ['locationId'] = 1230631
         },
-        ['Jolly Rodgers: Woo Fak Fak Jiggy'] = {
+        ['Jolly Rogers: Woo Fak Fak Jiggy'] = {
             ['addr'] = 0x49,
             ['bit'] = 4,
             ['locationId'] = 1230632
         },
-        ['Jolly Rodgers: Seemee Jiggy'] = {
+        ['Jolly Rogers: Seemee Jiggy'] = {
             ['addr'] = 0x49,
             ['bit'] = 5,
             ['locationId'] = 1230633
         },
-        ['Jolly Rodgers: Pawno Jiggy'] = {
+        ['Jolly Rogers: Pawno Jiggy'] = {
             ['addr'] = 0x49,
             ['bit'] = 6,
             ['locationId'] = 1230634
         },
-        ['Jolly Rodgers: UFO Jiggy'] = {
+        ['Jolly Rogers: UFO Jiggy'] = {
             ['addr'] = 0x49,
             ['bit'] = 7,
             ['locationId'] = 1230635
@@ -937,27 +937,27 @@ local MASTER_MAP = {
         --     ['bit'] = 6,
         --     ['locationId'] = 1230593
         -- },
-        -- ['Jolly Rodgers: Lagoon Alcove Jinjo'] = {
+        -- ['Jolly Rogers: Lagoon Alcove Jinjo'] = {
         --     ['addr'] = 0x3B,
         --     ['bit'] = 3,
         --     ['locationId'] = 1230566
         -- },
-        -- ['Jolly Rodgers: Blubber Jinjo'] = {
+        -- ['Jolly Rogers: Blubber Jinjo'] = {
         --     ['addr'] = 0x3B,
         --     ['bit'] = 4,
         --     ['locationId'] = 1230567
         -- },
-        -- ['Jolly Rodgers: Big Fish Jinjo'] = {
+        -- ['Jolly Rogers: Big Fish Jinjo'] = {
         --     ['addr'] = 0x3B,
         --     ['bit'] = 5,
         --     ['locationId'] = 1230568
         -- },
-        -- ['Jolly Rodgers: Seaweed Sanctum Jinjo'] = {
+        -- ['Jolly Rogers: Seaweed Sanctum Jinjo'] = {
         --     ['addr'] = 0x3B,
         --     ['bit'] = 6,
         --     ['locationId'] = 1230569
         -- },
-        -- ['Jolly Rodgers: Sunken Ship Jinjo'] = {
+        -- ['Jolly Rogers: Sunken Ship Jinjo'] = {
         --     ['addr'] = 0x3B,
         --     ['bit'] = 7,
         --     ['locationId'] = 1230570
@@ -1119,17 +1119,17 @@ local MASTER_MAP = {
         --     ['bit'] = 3,
         --     ['locationId'] = 1230736
         -- },
-        -- ['Jolly Rodgers: Pawnos Cheato Page'] = {
+        -- ['Jolly Rogers: Pawnos Cheato Page'] = {
         --     ['addr'] = 0x57,
         --     ['bit'] = 4,
         --     ['locationId'] = 1230737
         -- },
-        -- ['Jolly Rodgers: Seemee Cheato Page'] = {
+        -- ['Jolly Rogers: Seemee Cheato Page'] = {
         --     ['addr'] = 0x57,
         --     ['bit'] = 5,
         --     ['locationId'] = 1230738
         -- },
-        -- ['Jolly Rodgers: Ancient Baths Cheato Page'] = {
+        -- ['Jolly Rogers: Ancient Baths Cheato Page'] = {
         --     ['addr'] = 0x57,
         --     ['bit'] = 6,
         --     ['locationId'] = 1230739
@@ -1246,17 +1246,17 @@ local MASTER_MAP = {
             ['bit'] = 2,
             ['locationId'] = 1230711
         },
-        ['Jolly Rodgers: Seemee Honeycomb'] = {
+        ['Jolly Rogers: Seemee Honeycomb'] = {
             ['addr'] = 0x40,
             ['bit'] = 3,
             ['locationId'] = 1230712
         },
-        ['Jolly Rodgers: Atlantis Honeycomb'] = {
+        ['Jolly Rogers: Atlantis Honeycomb'] = {
             ['addr'] = 0x40,
             ['bit'] = 4,
             ['locationId'] = 1230713
         },
-        ['Jolly Rodgers: Waste Pipe Honeycomb'] = {
+        ['Jolly Rogers: Waste Pipe Honeycomb'] = {
             ['addr'] = 0x40,
             ['bit'] = 5,
             ['locationId'] = 1230714
@@ -1358,12 +1358,12 @@ local MASTER_MAP = {
         --     ['bit'] = 7,
         --     ['locationId'] = 1230702
         -- },
-        -- ['Jolly Rodgers: Pawnos Emporium Glowbo'] = {
+        -- ['Jolly Rogers: Pawnos Emporium Glowbo'] = {
         --     ['addr'] = 0x43,
         --     ['bit'] = 5,
         --     ['locationId'] = 123069
         -- },
-        -- ['Jolly Rodgers: Under Wumba Wigwam Glowbo'] = {
+        -- ['Jolly Rogers: Under Wumba Wigwam Glowbo'] = {
         --     ['addr'] = 0x43,
         --     ['bit'] = 6,
         --     ['locationId'] = 123070
@@ -1410,152 +1410,152 @@ local MASTER_MAP = {
         -- },
     },
     ['DOUBLOON'] = {
-        -- ['Jolly Rodgers: Town Center Pole 1 Doubloon'] = {
+        -- ['Jolly Rogers: Town Center Pole 1 Doubloon'] = {
         --     ['addr'] = 0x22,
         --     ['bit'] = 7,
         --     ['locationId'] = 1230521
         -- },
-        -- ['Jolly Rodgers: Town Center Pole 2 Doubloon'] = {
+        -- ['Jolly Rogers: Town Center Pole 2 Doubloon'] = {
         --     ['addr'] = 0x23,
         --     ['bit'] = 0,
         --     ['locationId'] = 1230522
         -- },
-        -- ['Jolly Rodgers: Town Center Pole 3 Doubloon'] = {
+        -- ['Jolly Rogers: Town Center Pole 3 Doubloon'] = {
         --     ['addr'] = 0x23,
         --     ['bit'] = 1,
         --     ['locationId'] = 1230523
         -- },
-        -- ['Jolly Rodgers: Town Center Pole 4 Doubloon'] = {
+        -- ['Jolly Rogers: Town Center Pole 4 Doubloon'] = {
         --     ['addr'] = 0x23,
         --     ['bit'] = 2,
         --     ['locationId'] = 1230524
         -- },
-        -- ['Jolly Rodgers: Town Center Pole 5 Doubloon'] = {
+        -- ['Jolly Rogers: Town Center Pole 5 Doubloon'] = {
         --     ['addr'] = 0x23,
         --     ['bit'] = 3,
         --     ['locationId'] = 1230525
         -- },
-        -- ['Jolly Rodgers: Town Center Pole 6 Doubloon'] = {
+        -- ['Jolly Rogers: Town Center Pole 6 Doubloon'] = {
         --     ['addr'] = 0x23,
         --     ['bit'] = 4,
         --     ['locationId'] = 1230526
         -- },
-        -- ['Jolly Rodgers: Silo 1 Doubloon'] = {
+        -- ['Jolly Rogers: Silo 1 Doubloon'] = {
         --     ['addr'] = 0x23,
         --     ['bit'] = 5,
         --     ['locationId'] = 1230527
         -- },
-        -- ['Jolly Rodgers: Silo 2 Doubloon'] = {
+        -- ['Jolly Rogers: Silo 2 Doubloon'] = {
         --     ['addr'] = 0x23,
         --     ['bit'] = 6,
         --     ['locationId'] = 1230528
         -- },
-        -- ['Jolly Rodgers: Silo 3 Doubloon'] = {
+        -- ['Jolly Rogers: Silo 3 Doubloon'] = {
         --     ['addr'] = 0x23,
         --     ['bit'] = 7,
         --     ['locationId'] = 1230529
         -- },
-        -- ['Jolly Rodgers: Silo 4 Doubloon'] = {
+        -- ['Jolly Rogers: Silo 4 Doubloon'] = {
         --     ['addr'] = 0x24,
         --     ['bit'] = 0,
         --     ['locationId'] = 1230530
         -- },
-        -- ['Jolly Rodgers: Toxic Pool 1 Doubloon'] = {
+        -- ['Jolly Rogers: Toxic Pool 1 Doubloon'] = {
         --     ['addr'] = 0x24,
         --     ['bit'] = 1,
         --     ['locationId'] = 1230531
         -- },
-        -- ['Jolly Rodgers: Toxic Pool 2 Doubloon'] = {
+        -- ['Jolly Rogers: Toxic Pool 2 Doubloon'] = {
         --     ['addr'] = 0x24,
         --     ['bit'] = 2,
         --     ['locationId'] = 1230532
         -- },
-        -- ['Jolly Rodgers: Toxic Pool 3 Doubloon'] = {
+        -- ['Jolly Rogers: Toxic Pool 3 Doubloon'] = {
         --     ['addr'] = 0x24,
         --     ['bit'] = 3,
         --     ['locationId'] = 1230533
         -- },
-        -- ['Jolly Rodgers: Toxic Pool 4 Doubloon'] = {
+        -- ['Jolly Rogers: Toxic Pool 4 Doubloon'] = {
         --     ['addr'] = 0x24,
         --     ['bit'] = 4,
         --     ['locationId'] = 1230534
         -- },
-        -- ['Jolly Rodgers: Mumbo Skull 1 Doubloon'] = {
+        -- ['Jolly Rogers: Mumbo Skull 1 Doubloon'] = {
         --     ['addr'] = 0x24,
         --     ['bit'] = 5,
         --     ['locationId'] = 1230535
         -- },
-        -- ['Jolly Rodgers: Mumbo Skull 2 Doubloon'] = {
+        -- ['Jolly Rogers: Mumbo Skull 2 Doubloon'] = {
         --     ['addr'] = 0x24,
         --     ['bit'] = 6,
         --     ['locationId'] = 1230536
         -- },
-        -- ['Jolly Rodgers: Mumbo Skull 3 Doubloon'] = {
+        -- ['Jolly Rogers: Mumbo Skull 3 Doubloon'] = {
         --     ['addr'] = 0x24,
         --     ['bit'] = 7,
         --     ['locationId'] = 1230537
         -- },
-        -- ['Jolly Rodgers: Mumbo Skull 4 Doubloon'] = {
+        -- ['Jolly Rogers: Mumbo Skull 4 Doubloon'] = {
         --     ['addr'] = 0x25,
         --     ['bit'] = 0,
         --     ['locationId'] = 1230538
         -- },
-        -- ['Jolly Rodgers: Underground 1 Doubloon'] = {
+        -- ['Jolly Rogers: Underground 1 Doubloon'] = {
         --     ['addr'] = 0x25,
         --     ['bit'] = 1,
         --     ['locationId'] = 1230539
         -- },
-        -- ['Jolly Rodgers: Underground 2 Doubloon'] = {
+        -- ['Jolly Rogers: Underground 2 Doubloon'] = {
         --     ['addr'] = 0x25,
         --     ['bit'] = 2,
         --     ['locationId'] = 1230540
         -- },
-        -- ['Jolly Rodgers: Underground 3 Doubloon'] = {
+        -- ['Jolly Rogers: Underground 3 Doubloon'] = {
         --     ['addr'] = 0x25,
         --     ['bit'] = 3,
         --     ['locationId'] = 1230541
         -- },
-        -- ['Jolly Rodgers: Alcove 1 Doubloon'] = {
+        -- ['Jolly Rogers: Alcove 1 Doubloon'] = {
         --     ['addr'] = 0x25,
         --     ['bit'] = 4,
         --     ['locationId'] = 1230542
         -- },
-        -- ['Jolly Rodgers: Alcove 2 Doubloon'] = {
+        -- ['Jolly Rogers: Alcove 2 Doubloon'] = {
         --     ['addr'] = 0x25,
         --     ['bit'] = 5,
         --     ['locationId'] = 1230543
         -- },
-        -- ['Jolly Rodgers: Alcove 3 Doubloon'] = {
+        -- ['Jolly Rogers: Alcove 3 Doubloon'] = {
         --     ['addr'] = 0x25,
         --     ['bit'] = 6,
         --     ['locationId'] = 1230544
         -- },
-        -- ['Jolly Rodgers: Capt Blackeye 1 Doubloon'] = {
+        -- ['Jolly Rogers: Capt Blackeye 1 Doubloon'] = {
         --     ['addr'] = 0x25,
         --     ['bit'] = 7,
         --     ['locationId'] = 1230545
         -- },
-        -- ['Jolly Rodgers: Capt Blackeye 2 Doubloon'] = {
+        -- ['Jolly Rogers: Capt Blackeye 2 Doubloon'] = {
         --     ['addr'] = 0x26,
         --     ['bit'] = 0,
         --     ['locationId'] = 1230546
         -- },
-        -- ['Jolly Rodgers: Near Jinjo 1 Doubloon'] = {
+        -- ['Jolly Rogers: Near Jinjo 1 Doubloon'] = {
         --     ['addr'] = 0x26,
         --     ['bit'] = 1,
         --     ['locationId'] = 1230547
         -- },
-        -- ['Jolly Rodgers: Near Jinjo 2 Doubloon'] = {
+        -- ['Jolly Rogers: Near Jinjo 2 Doubloon'] = {
         --     ['addr'] = 0x26,
         --     ['bit'] = 2,
         --     ['locationId'] = 1230548
         -- },
-        -- ['Jolly Rodgers: Near Jinjo 3 Doubloon'] = {
+        -- ['Jolly Rogers: Near Jinjo 3 Doubloon'] = {
         --     ['addr'] = 0x26,
         --     ['bit'] = 3,
         --     ['locationId'] = 1230549
         -- },
-        -- ['Jolly Rodgers: Near Jinjo 4 Doubloon'] = {
+        -- ['Jolly Rogers: Near Jinjo 4 Doubloon'] = {
         --     ['addr'] = 0x26,
         --     ['bit'] = 4,
         --     ['locationId'] = 1230550
