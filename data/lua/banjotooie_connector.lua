@@ -160,6 +160,10 @@ end
 
 function checkFlag(byte, _bit)
     local flagBlock = dereferencePointer(flag_block_pointer);
+    if flagBlock == nil
+    then
+        return false
+    end
     local currentValue = mainmemory.readbyte(flagBlock + byte);
     if bit.check(currentValue, _bit) then
         return true;
@@ -1646,7 +1650,7 @@ local read_HONEYCOMB_checks = function(type)
         AMM['HONEYCOMB'] = checks;
     elseif type == "BMM"
     then
-        checks = BMM['MT']
+        checks = BMM['HONEYCOMB']
     elseif type == "AGI" -- should only run for initialization
     then
         for k,v in pairs(MASTER_MAP['HONEYCOMB'])
@@ -1669,7 +1673,7 @@ local read_GLOWBO_checks = function(type)
         AMM['GLOWBO'] = checks;
     elseif type == "BMM"
     then
-        checks = BMM['PL']
+        checks = BMM['GLOWBO']
     elseif type == "AGI" -- should only run for initialization
     then
         for k,v in pairs(MASTER_MAP['GLOWBO'])
@@ -1730,7 +1734,7 @@ end
 function checkHoneycombs(location_checks)
     for location_name, value in pairs(AGI['HONEYCOMB'])
     do
-        if(isBackup == false and (value == false and location_checks['HONEYCOMB'][location_name] == true))
+        if(isBackup == false and (value == false and location_checks[location_name] == true))
         then
             if(DEBUG == true)
             then
@@ -1790,11 +1794,11 @@ function BMMBackup()
     then
         return
     end
-    for zone,location in pairs(MASTER_MAP)
+    for item_group, table in pairs(MASTER_MAP)
     do
-        for loc,v in pairs(location)
+        for location, values in pairs(table)
         do
-            BMM[zone][loc] = checkFlag(v['addr'], v['bit']);
+            BMM[item_group][location] = checkFlag(values['addr'], values['bit']);
         end
     end
     if DEBUG == true
@@ -1836,25 +1840,25 @@ function BMMRestore()
 end
 
 function useAGI()
-    for zone,location in pairs(MASTER_MAP)
+    for item_group, table in pairs(MASTER_MAP)
     do
-        for loc,v in pairs(location)
+        for location,values in pairs(table)
         do
-            if AMM[zone][loc] == false and AGI[zone][loc] == true
+            if AMM[item_group][location] == false and AGI[item_group][location] == true
             then
-                setFlag(v['addr'], v['bit'])
-                AMM[zone][loc] = true
+                setFlag(values['addr'], values['bit'])
+                AMM[item_group][location] = true
                 if DEBUG == true
                 then
-                    print(loc .. " Flag Set");
+                    print(location .. " Flag Set");
                 end
-            elseif AMM[zone][loc] == true and AGI[zone][loc] == false
+            elseif AMM[item_group][location] == true and AGI[item_group][location] == false
             then
-                clearFlag(v['addr'], v['bit']);
-                AMM[zone][loc] = false;
+                clearFlag(values['addr'], values['bit']);
+                AMM[item_group][location] = false;
                 if DEBUG == true
                 then
-                    print(loc .. " Flag Cleared");
+                    print(location .. " Flag Cleared");
                 end
             end
         end
@@ -1871,6 +1875,11 @@ function all_location_checks(type)
         MM['JIGGY'][k] = v;
     end
     for k,v in pairs(read_JINJO_checks(type)) 
+    do
+        location_checks[k] = v;
+        MM['JINJO'][k] = v;
+    end
+    for k,v in pairs(read_CHEATO_checks(type)) 
     do
         location_checks[k] = v;
         MM['CHEATO'][k] = v;
@@ -1904,8 +1913,8 @@ function all_location_checks(type)
     if next(AGI) == nil then --only happens once when you first play
         AGI = location_checks
     end
-    checkHoneycombs(location_checks)
 
+    checkHoneycombs(location_checks)
     return location_checks
 end
 
