@@ -7,6 +7,8 @@ Banjo Tooie:
   multiworld_honeycombs: 'true'
   multiworld_glowbos: 'false'
   jingaling_jiggy: 'true'
+  skip_tower_of_tragedy: 1 #0 = no skip, #1 = skip fully, #2 = 3rd round only 
+
 description: 'Created By jjjj12212'
 game: Banjo Tooie
 name: jjjj12212
