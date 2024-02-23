@@ -7,6 +7,7 @@ Banjo Tooie for Archipelago
 - Empty Honeycombs are scattered throughout Archipelago games (YAML Option) 
 - Pause Menu -> Totals acts like a in-game Tracker for check locations
 - Pause Menu will display total items collected in your game + Multi-world
+- Skippable Tower of Terror
 - Victory condition when you defeat HAG1
 
 # How to install - server side
@@ -23,7 +24,6 @@ Banjo Tooie for Archipelago
 6. Once you are in the game Select screen, apply the banjotooie_connector lua script (drag and drop)
 
 # Future goals for this project
-- Skippable Quiz Show **(if Possible)**
 - Jinjos are scattered throughout Archipelago games 
 - Doubloons are scattered throughout Archipelago games
 - Cheato Pages are scattered throughout Archipelago games

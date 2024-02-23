@@ -5,6 +5,8 @@
 - Fixed Typo for Mayahem Temple
 - change MasterMap dictionary/map (Development)
 - Fix Typo for Jolly Rogers Lagoon
+- Fix Typo for Doubloons (for future implementation)
+- Skip First Jinjo Cutscene
 
 # v0.2-alpha
 - Implemented Victory Condition
