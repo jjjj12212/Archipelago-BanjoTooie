@@ -8,6 +8,7 @@ from .Locations import BanjoTooieLocation, all_location_table
 from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
+from .Names import itemName
 
 
 
@@ -88,8 +89,6 @@ class BanjoTooieWorld(World):
         for item in itempool:
             self.multiworld.itempool.append(item)
 
-    
-
     def item_filter(self, item: Item) -> Item:
         if(item.code == 1230685 and self.kingjingalingjiggy == False and self.options.jingaling_jiggy == True):
             #Below give the king a guarentee Jiggy if option is set
@@ -127,7 +126,13 @@ class BanjoTooieWorld(World):
     def set_rules(self) -> None:
         rules = Rules.BanjoTooieRules(self)
         return rules.set_rules()
-
+    
+    def pre_fill(self) -> None:
+        if self.options.multiworld_honeycombs == False:    
+            for name, id in self.location_name_to_id.items():
+                item = self.create_item(itemName.HONEY)
+                if name.find("Honeycomb") != -1:
+                    self.multiworld.get_location(name, self.player).place_locked_item(item)
 
     def fill_slot_data(self) -> dict[str, any]:
         btoptions = dict[str, any]()
@@ -140,6 +145,7 @@ class BanjoTooieWorld(World):
             btoptions["skip_tot"] = "round 3"
         else:
             btoptions["skip_tot"] = "false"
+        btoptions['honeycomb'] = "true" if self.options.multiworld_honeycombs == 1 else "false"
         return btoptions
 
 

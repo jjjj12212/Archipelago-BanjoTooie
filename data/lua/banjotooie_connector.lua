@@ -70,6 +70,7 @@ local altarClose = false;
 local killBTFlag = false;
 local isBanjoDed = false;
 local isBanjoDedCheck = false;
+local multiHoneycomb = false;
 
 function isPointer(value)
     return type(value) == "number" and value >= RDRAMBase and value < RDRAMBase + RDRAMSize;
@@ -1648,12 +1649,25 @@ local read_HONEYCOMB_checks = function(type)
     then
         for k,v in pairs(MASTER_MAP['HONEYCOMB'])
         do
-            checks[k] = checkFlag(v['addr'], v['bit'])
+            if multiHoneycomb == false
+            then
+                checks[k] = false
+            else
+                checks[k] = checkFlag(v['addr'], v['bit'])
+            end 
         end
         AMM['HONEYCOMB'] = checks;
     elseif type == "BMM"
     then
-        checks = BMM['HONEYCOMB']
+        if multiHoneycomb == false
+        then
+            for k,v in pairs(MASTER_MAP['HONEYCOMB'])
+            do
+                    checks[k] = false
+            end
+        else
+            checks = BMM['HONEYCOMB']
+        end   
     elseif type == "AGI" -- should only run for initialization
     then
         for k,v in pairs(MASTER_MAP['HONEYCOMB'])
@@ -1735,17 +1749,20 @@ local read_H1_checks = function(type)
 end
 
 function checkHoneycombs(location_checks)
-    for location_name, value in pairs(AGI['HONEYCOMB'])
-    do
-        if(isBackup == false and (value == false and location_checks[location_name] == true))
-        then
-            if(DEBUG == true)
+    if multiHoneycomb == true
+    then
+        for location_name, value in pairs(AGI['HONEYCOMB'])
+        do
+            if(isBackup == false and (value == false and location_checks[location_name] == true))
             then
-                print("Obtained local Honeycomb. Remove from Inventory")
+                if(DEBUG == true)
+                then
+                    print("Obtained local Honeycomb. Remove from Inventory")
+                end
+                setHoneycomb(getHoneycomb() - 1)
+                AGI['HONEYCOMB'][location_name] = true
+                savingAGI()
             end
-            setHoneycomb(getHoneycomb() - 1)
-            AGI['HONEYCOMB'][location_name] = true
-            savingAGI()
         end
     end
 end
@@ -1934,17 +1951,21 @@ function archipelago_msg_box(msg)
 end
 
 function processAGIItem(item_list)
-    for ap_id, memlocation in pairs(item_list) -- Items unrelated to AGI_MAP like Consumables
-    do
-        if(memlocation == 1230512)  -- Honeycomb Item
-        then
-            if DEBUG == true
+    if multiHoneycomb == true
+    then
+        for ap_id, memlocation in pairs(item_list) -- Items unrelated to AGI_MAP like Consumables
+        do
+            if(memlocation == 1230512)  -- Honeycomb Item
             then
-                print("HC Obtained")
+                if DEBUG == true
+                then
+                    print("HC Obtained")
+                end
+                setHoneycomb(getHoneycomb() + 1)
             end
-            setHoneycomb(getHoneycomb() + 1)
         end
     end
+    
     for item_type, table in pairs(MASTER_MAP)
     do
         for location, values in pairs(table)
@@ -2251,13 +2272,17 @@ function process_slot(block)
     then
         seed = block['slot_seed']
     end
-    if block['slot_deathlink'] ~= nil and block['slot_deathlink'] ~= false
+    if block['slot_deathlink'] ~= nil and block['slot_deathlink'] ~= "false"
     then
         deathlink = true
     end
     if block['slot_skip_tot'] ~= nil and block['slot_skip_tot'] ~= ""
     then
         skip_tot = block['slot_skip_tot']
+    end
+    if block['slot_honeycomb'] ~= nil and block['slot_honeycomb'] ~= "false"
+    then
+        multiHoneycomb = true
     end
 
     if seed ~= 0

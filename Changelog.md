@@ -7,6 +7,7 @@
 - Fix Typo for Jolly Rogers Lagoon
 - Fix Typo for Doubloons (for future implementation)
 - Skip First Jinjo Cutscene
+- Handle both true and false values for Honeycombs
 
 # v0.2-alpha
 - Implemented Victory Condition
