@@ -8,6 +8,7 @@
 - Fix Typo for Doubloons (for future implementation)
 - Skip First Jinjo Cutscene
 - Handle both true and false values for Honeycombs
+- Tower of Terror is now skippable in YAML options
 
 # v0.2-alpha
 - Implemented Victory Condition
