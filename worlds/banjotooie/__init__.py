@@ -8,6 +8,7 @@ from .Locations import BanjoTooieLocation, all_location_table
 from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
+from .Names import itemName
 
 
 
@@ -50,19 +51,12 @@ class BanjoTooieWorld(World):
             continue
         item_name_to_id[name] = data.btid
 
-
     location_name_to_id = {name: data.btid for name, data in all_location_table.items()}
-    #location_name_to_id = {}
-    # for name, data in all_location_table.items():
-    #     if data.btid == 1230027:  #Skip Victory Location
-    #         continue
-    #     location_name_to_id[name] = data.btid
 
     item_name_groups = {
         "Jiggy": all_group_table["jiggy"],
-        "Jinjo": all_group_table["jinjo"]
+        "Jinjo": all_group_table["jinjo"],
     }
-    # location_name_to_id = {}
     
 
     def create_item(self, itemname: str) -> Item:
@@ -89,14 +83,11 @@ class BanjoTooieWorld(World):
         for name,id in all_item_table.items():
             item = self.create_item(name)
             if self.item_filter(item):
-                itempool += [self.create_item(name)]
+                for i in range(id.qty):
+                    itempool += [self.create_item(name)]
         
         for item in itempool:
-            # if(item.code == 0 or item.code == None):
-            #     continue
             self.multiworld.itempool.append(item)
-
-    
 
     def item_filter(self, item: Item) -> Item:
         if(item.code == 1230685 and self.kingjingalingjiggy == False and self.options.jingaling_jiggy == True):
@@ -108,12 +99,13 @@ class BanjoTooieWorld(World):
         if item.code == 0: #Events
             return False
         
-        if(item.code == 1230514 and self.options.multiworld_dabloons == False) :
+        if(item.code == 1230514 and self.options.multiworld_doubloons == False) :
             return False
         
         if(item.code == 1230513 and self.options.mutliworld_cheato == False) :
             return False
         
+        # if((1230703 <= item.code <= 1230727) and self.options.multiworld_honeycombs == False) :
         if(item.code == 1230512 and self.options.multiworld_honeycombs == False) :
             return False
         
@@ -134,13 +126,26 @@ class BanjoTooieWorld(World):
     def set_rules(self) -> None:
         rules = Rules.BanjoTooieRules(self)
         return rules.set_rules()
-
+    
+    def pre_fill(self) -> None:
+        if self.options.multiworld_honeycombs == False:    
+            for name, id in self.location_name_to_id.items():
+                item = self.create_item(itemName.HONEY)
+                if name.find("Honeycomb") != -1:
+                    self.multiworld.get_location(name, self.player).place_locked_item(item)
 
     def fill_slot_data(self) -> dict[str, any]:
         btoptions = dict[str, any]()
         btoptions["player_name"] = self.multiworld.player_name[self.player]
         btoptions["seed"] = random.randint(12212, 69996)
         btoptions["deathlink"] = "true" if self.options.death_link.value == 1 else "false"
+        if self.options.skip_tower_of_tragedy == 1:
+            btoptions["skip_tot"] = "true"
+        elif self.options.skip_tower_of_tragedy == 2:
+            btoptions["skip_tot"] = "round 3"
+        else:
+            btoptions["skip_tot"] = "false"
+        btoptions['honeycomb'] = "true" if self.options.multiworld_honeycombs == 1 else "false"
         return btoptions
 
 

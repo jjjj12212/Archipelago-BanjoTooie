@@ -1,11 +1,13 @@
-# Archipelago Banjo-Tooie (US-Only) | v0.2-alpha
+# Archipelago Banjo-Tooie (US-Only) | v0.3-alpha
 Banjo Tooie for Archipelago 
 
 # Current implementation
 - Death Link **(Still ongoing progress)**
 - Jiggies are scattered throughout Archipelago games
+- Empty Honeycombs are scattered throughout Archipelago games (YAML Option) 
 - Pause Menu -> Totals acts like a in-game Tracker for check locations
 - Pause Menu will display total items collected in your game + Multi-world
+- Skippable Tower of Terror
 - Victory condition when you defeat HAG1
 
 # How to install - server side
@@ -22,11 +24,9 @@ Banjo Tooie for Archipelago
 6. Once you are in the game Select screen, apply the banjotooie_connector lua script (drag and drop)
 
 # Future goals for this project
-- Skippable Quiz Show **(if Possible)**
 - Jinjos are scattered throughout Archipelago games 
 - Doubloons are scattered throughout Archipelago games
 - Cheato Pages are scattered throughout Archipelago games
-- Honeycombs are scattered throughout Archipelago games
 - Glowbos are scattered throughout Archipelago games **(if Possible)**
 - Unlockable Banjo Moves are scattered throughout Archipelago games **(if Possible)**
 - Train Station are scattered throughout Archipelago games **(if Possible)**

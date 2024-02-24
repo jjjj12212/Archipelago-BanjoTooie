@@ -295,14 +295,14 @@ def create_regions(self):
     for location in active_locations:
         if((location.find("Jinjo") != -1 and location.find("Jiggy") == -1)  and self.options.multiworld_jinjos == False):
             dellist.append(location)
-        if(location.find("Doubloon") != -1 and self.options.multiworld_dabloons == False):
+        if(location.find("Doubloon") != -1 and self.options.multiworld_doubloons == False):
             dellist.append(location)
         if(location.find("Glowbo") != -1 and self.options.multiworld_glowbos == False):
             dellist.append(location)
         if(location.find("Cheato") != -1 and self.options.mutliworld_cheato == False):
             dellist.append(location)
-        if(location.find("Honeycomb") != -1 and self.options.multiworld_honeycombs == False):
-            dellist.append(location)
+        # if(location.find("Honeycomb") != -1 and self.options.multiworld_honeycombs == False):
+        #     dellist.append(location)
 
     for name in dellist:
             if( name in active_locations):
