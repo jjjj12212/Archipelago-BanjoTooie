@@ -1,3 +1,6 @@
+# v0.4-beta
+- Fixed issue when unchecked locations are sent when saving and quiting.
+
 # v0.3-alpha
 - Implemented Empty Honeycombs
 - Jiggywiggy Temple Fixes after completing the second puzzle
