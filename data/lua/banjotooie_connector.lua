@@ -71,6 +71,7 @@ local isBanjoDed = false;
 local isBanjoDedCheck = false;
 local multiHoneycomb = false;
 local BMMLoaded = false;
+local BMMBypass = false;
 
 function isPointer(value)
     return type(value) == "number" and value >= RDRAMBase and value < RDRAMBase + RDRAMSize;
@@ -1785,6 +1786,10 @@ function loadGame(current_map)
 --            os.remove("BT" .. player_name .. "_" .. seed .. ".BMM")
         end
     else
+        if BMMBypass == true
+        then
+            BMMLoaded = true
+        end
         return false
     end
 end
@@ -1811,7 +1816,7 @@ function locationControl()
             return all_location_checks("BMM");
         end
     else
-        if BMMLoaded == false
+        if BMMLoaded == false 
         then
             loadGame(mapaddr)
             local DEMO = { ['DEMO'] = true}
