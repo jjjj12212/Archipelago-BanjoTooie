@@ -56,6 +56,7 @@ class BanjoTooieWorld(World):
     item_name_groups = {
         "Jiggy": all_group_table["jiggy"],
         "Jinjo": all_group_table["jinjo"],
+        "Moves": all_group_table["moves"]
     }
     
 
@@ -105,8 +106,7 @@ class BanjoTooieWorld(World):
         if(item.code == 1230513 and self.options.mutliworld_cheato == False) :
             return False
         
-        # if((1230703 <= item.code <= 1230727) and self.options.multiworld_honeycombs == False) :
-        if(item.code == 1230512 and self.options.multiworld_honeycombs == False) :
+        if(item.code == 1230512 and self.options.multiworld_honeycombs == False) : # Added later in Prefill
             return False
         
         if(item.code == 1230511 and self.options.multiworld_glowbos == False) :
