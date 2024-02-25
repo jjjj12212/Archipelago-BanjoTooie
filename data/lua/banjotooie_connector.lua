@@ -61,7 +61,6 @@ local slot_base = 0x10;
 local slot_size = 0x9C;
 
 -- EO BTRando
-
 local isPaused = false;
 local checkTotals = false;
 local isSaving = false;
@@ -71,6 +70,7 @@ local killBTFlag = false;
 local isBanjoDed = false;
 local isBanjoDedCheck = false;
 local multiHoneycomb = false;
+local BMMLoaded = false;
 
 function isPointer(value)
     return type(value) == "number" and value >= RDRAMBase and value < RDRAMBase + RDRAMSize;
@@ -336,7 +336,7 @@ function getAltar()
         then
             print("Altar Closeby");
         end
-    elseif playerDist >=301 and altarClose == true and isBackup == true
+    elseif playerDist >=301 and altarClose == true
     then
         BMMRestore()
         altarClose = false;
@@ -352,11 +352,8 @@ function nearWHJinjo()
     local object = checkModel("Jinjo");
     if object == false
     then
-        if isBackup == false
-        then
-            BMMBackup()
-            useAGI()
-        end
+        BMMBackup()
+        useAGI()
         return;
     end
 
@@ -373,7 +370,7 @@ function nearWHJinjo()
 	local hDist = math.sqrt(((xPos - pos["Xpos"]) ^ 2) + ((zPos - pos["Zpos"]) ^ 2));
 	local playerDist = math.floor(math.sqrt(((yPos - pos["Ypos"]) ^ 2) + (hDist ^ 2)));
 
-    if playerDist <= 400 and isBackup == true
+    if playerDist <= 400
     then
         if DEBUG == true
         then
@@ -1767,6 +1764,32 @@ function checkHoneycombs(location_checks)
     end
 end
 
+function loadGame(current_map)
+    if(current_map == 0x142 or current_map == 0xAF)
+    then
+        local f = io.open("BT" .. player_name .. "_" .. seed .. ".BMM", "r") -- get #BTplayer_seed.BMM
+        if f==nil then
+           return false
+        else
+            isBackup = true
+            BMM = json.decode(f:read())
+            f:close()
+            all_location_checks("AMM")
+            all_location_checks("BMM")
+            BMMRestore()
+            if DEBUG == true
+            then
+                print("Restoring from Load Game")
+            end
+            BMMLoaded = true
+--            os.remove("BT" .. player_name .. "_" .. seed .. ".BMM")
+        end
+    else
+        return false
+    end
+end
+
+
 function locationControl()
     local mapaddr = getMap()
     if isBackup == true
@@ -1788,30 +1811,37 @@ function locationControl()
             return all_location_checks("BMM");
         end
     else
-        if (mapaddr == 335 or mapaddr == 337) and checkTotals == false -- Wooded Hollow / JiggyTemple
+        if BMMLoaded == false
         then
-            if last_map ~= 335 and last_map ~= 337
-            then
-                BMMBackup();
-                useAGI();
-                last_map = mapaddr
-            end
-            nearWHJinjo()
-            return all_location_checks("BMM");
+            loadGame(mapaddr)
+            local DEMO = { ['DEMO'] = true}
+            return DEMO
         else
-            last_map = mapaddr
-            getAltar()
-            if altarClose == true
+            if (mapaddr == 335 or mapaddr == 337) and checkTotals == false -- Wooded Hollow / JiggyTemple
             then
+                if last_map ~= 335 and last_map ~= 337
+                then
+                    BMMBackup();
+                    useAGI();
+                    last_map = mapaddr
+                end
+                nearWHJinjo()
                 return all_location_checks("BMM");
-            end
-            return all_location_checks("AMM");
-        end 
+            else
+                last_map = mapaddr
+                getAltar()
+                if altarClose == true
+                then
+                    return all_location_checks("BMM");
+                end
+                return all_location_checks("AMM");
+            end 
+        end
     end
 end
 
 function BMMBackup()
-    if isBackup == true
+    if isBackup == true or BMMLoaded == false
     then
         return
     end
@@ -1826,38 +1856,44 @@ function BMMBackup()
     then
         print("Backup complete");
     end
+    savingBMM()
     isBackup = true
 end
 
 function BMMRestore()
- for zone,location in pairs(MASTER_MAP)
- do
-    for loc,v in pairs(location)
+    if isBackup == false
+    then
+        return
+    end
+
+    for zone,location in pairs(MASTER_MAP)
     do
-        if AMM[zone][loc] == false and BMM[zone][loc] == true
-        then
-            setFlag(v['addr'], v['bit'])
-            AMM[zone][loc] = BMM[zone][loc]
-            if DEBUG == true
+        for loc,v in pairs(location)
+        do
+            if AMM[zone][loc] == false and BMM[zone][loc] == true
             then
-                print(loc .. " Flag Set")
-            end
-        elseif AMM[zone][loc] == true and BMM[zone][loc] == false
-        then
-            clearFlag(v['addr'], v['bit'])
-            AMM[zone][loc] = BMM[zone][loc]
-            if DEBUG == true
+                setFlag(v['addr'], v['bit'])
+                AMM[zone][loc] = BMM[zone][loc]
+                if DEBUG == true
+                then
+                    print(loc .. " Flag Set")
+                end
+            elseif AMM[zone][loc] == true and BMM[zone][loc] == false
             then
-                print(loc .. " Flag Cleared")
+                clearFlag(v['addr'], v['bit'])
+                AMM[zone][loc] = BMM[zone][loc]
+                if DEBUG == true
+                then
+                    print(loc .. " Flag Cleared")
+                end
             end
         end
     end
- end
- if DEBUG == true
- then
-     print("BMM Restored")
- end
- isBackup = false;
+    if DEBUG == true
+    then
+        print("BMM Restored")
+    end
+    isBackup = false;
 end
 
 function useAGI()
@@ -2068,17 +2104,14 @@ function receive()
 end
 
 function checkPause()
-    local pause_menu = mainmemory.readbyte(0x07ADF3);
-    if pause_menu == 1 and isPaused == false
+    local pause_menu = mainmemory.readbyte(0x15961A);
+    if pause_menu == 1 and isPaused == false 
     then
         if DEBUG == true
         then
             print("Game Paused");
         end
-        if isBackup == false
-        then
-            BMMBackup();
-        end
+        BMMBackup();
         useAGI();
         isPaused = true;
     elseif pause_menu == 0 and isPaused == true  -- unpaused
@@ -2088,7 +2121,7 @@ function checkPause()
         then
             print("Game Unpaused");
         end
-        if isBackup == true and (last_map ~= 335 and last_map ~= 337)  -- Don't want to restore while in WH zone
+        if last_map ~= 335 and last_map ~= 337  -- Don't want to restore while in WH zone
         then
             BMMRestore()
         end
@@ -2175,29 +2208,30 @@ function savingAGI()
     end
 end
 
+function savingBMM()
+    local f = io.open("BT" .. player_name .. "_" .. seed .. ".BMM", "w") --generate #BTplayer_seed.AGI
+    f:write(json.encode(BMM))
+    f:close()
+    if DEBUG == true
+    then
+        print("BMM Table Saved");
+    end
+end
+
 function gameSaving()
     if isPaused ~= true
     then
         return
     else
-        local saveM1 = mainmemory.read_u32_be(0x12D580);
-        local saveM2 = mainmemory.read_u32_be(0x12D584);
-        local saveM3 = mainmemory.read_u32_be(0x12D588);
-        if saveM1 == 255 and saveM2 == 255 and saveM3 == 255
+        local save_game = mainmemory.read_u8(0x05F450);
+        if save_game == 1
         then
-            local saveC1 = mainmemory.read_u32_be(0x15C4B4);
-            local saveM2 = mainmemory.read_u32_be(0x15C4CC);
-            local saveM3 = mainmemory.read_u32_be(0x163B84);
-            if saveC1 == 0 and saveC2 == 0 and saveC3 == 0
+            isSaving = true
+            if DEBUG == true
             then
-                if isBackup == true and isSaving == false
-                then
-                    BMMRestore()
-                    isSaving = true
-                end
+                print("Game Entering Save State")
             end
         end
-
     end
 end
 
@@ -2312,6 +2346,7 @@ function initializeFlags()
 		setFlag(0x6E, 6)
 		setFlag(0x82, 4)
 		setFlag(0x82, 5)
+        BMMLoaded = true  -- We don't have a real BMM at this point.  
 		if (skip_tot ~= "false") then
 			-- ToT Misc Flags
 			setFlag(0xAB, 2)
@@ -2342,6 +2377,12 @@ function setToTComplete()
 	end
 end
 
+function saveGame()
+    BMMBackup();
+    BMMLoaded = false;
+    isSaving = false;
+end
+
 function main()
     if not checkBizHawkVersion() then
         return
@@ -2361,6 +2402,11 @@ function main()
                 if (skip_tot == "true") then
 					setToTComplete();
 				end
+                if isSaving == true
+                then
+                    saveGame();
+                end
+                gameSaving();
             elseif (frame % 10 == 0)
             then
                 checkPause();
