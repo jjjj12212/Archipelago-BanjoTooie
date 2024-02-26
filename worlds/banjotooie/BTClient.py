@@ -335,14 +335,13 @@ async def n64_sync_task(ctx: BanjoTooieContext):
                 continue
 
 
-if __name__ == '__main__':
-
+def main():
     Utils.init_logging("Banjo Tooie Client")
+    parser = get_base_parser()
+    args = parser.parse_args()
 
-    async def main():
+    async def _main():
         multiprocessing.freeze_support()
-        parser = get_base_parser()
-        args = parser.parse_args()
 
         ctx = BanjoTooieContext(args.connect, args.password)
         ctx.server_task = asyncio.create_task(server_loop(ctx), name="Server Loop")
@@ -362,5 +361,9 @@ if __name__ == '__main__':
 
     colorama.init()
 
-    asyncio.run(main())
+    asyncio.run(_main())
     colorama.deinit()
+
+
+if __name__ == '__main__':
+    main()
