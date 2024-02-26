@@ -109,6 +109,9 @@ class BanjoTooieWorld(World):
         if(item.code == 1230512 and self.options.multiworld_honeycombs == False) : # Added later in Prefill
             return False
         
+        if(item.code in range(1230753, 1230778) and self.options.multiworld_moves == False) : #range you need to add +1 to the end.
+            return False
+        
         if(item.code == 1230511 and self.options.multiworld_glowbos == False) :
             return False
         
@@ -134,6 +137,13 @@ class BanjoTooieWorld(World):
                 if name.find("Honeycomb") != -1:
                     self.multiworld.get_location(name, self.player).place_locked_item(item)
 
+        if self.options.multiworld_moves == False:
+            for group_name, item_info in self.item_name_groups.items():
+                if group_name == "Moves":
+                    for name in item_info:
+                        item = self.create_item(name)
+                        self.multiworld.get_location(name, self.player).place_locked_item(item)
+
     def fill_slot_data(self) -> dict[str, any]:
         btoptions = dict[str, any]()
         btoptions["player_name"] = self.multiworld.player_name[self.player]
@@ -146,6 +156,8 @@ class BanjoTooieWorld(World):
         else:
             btoptions["skip_tot"] = "false"
         btoptions['honeycomb'] = "true" if self.options.multiworld_honeycombs == 1 else "false"
+        btoptions['moves'] = "true" if self.options.multiworld_moves == 1 else "false"
+
         return btoptions
 
 
