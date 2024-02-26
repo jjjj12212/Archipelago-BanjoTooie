@@ -9,7 +9,7 @@ class BanjoTooieLocation(Location):
 class LocationData(typing.NamedTuple):
     #BAD 12C780 pointer (1230720) increment
     #12C770 pointer instead (1230704)
-    btid: int = 0
+    btid: int|None = 0
     # Save + mem addr
     memaddr: int = 0
     # some items have bitmasks. if bitmask>0 bitor to give item else
@@ -321,7 +321,7 @@ IHCTLoc_table = {
 }
 
 boss_table = {
-    locationName.HAG1:      LocationData(1230027, 0x03, 3)
+    locationName.HAG1:      LocationData(None, 0x03, 3)
 }
 
 all_location_table = {

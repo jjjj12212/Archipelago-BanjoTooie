@@ -2,13 +2,17 @@
 -- Created by Mike Jackson (jjjj12212) 
 -- with the help of Rose (Oktorose), the OOT Archipelago team, ScriptHawk BT.lua & kaptainkohl for BTrando.lua 
 
+-- TODO:
+-- Check Model Array for "ALL" Silos on Map and comapre distances for each one
+-- BKM Table Save and Load-able
+
 local socket = require("socket")
 local json = require('json')
 local math = require('math')
 require('common')
 
 local last_modified_date = '2024-02-20' -- Should be the last modified date
-local script_version = 3 -- If I push this does that make it 4? -Unalive
+local script_version = 4
 -- Template Variables
 local player_name = ""
 local seed = 0
@@ -48,18 +52,6 @@ local flag_block_pointer = 0x12C770;
 local map_location = 0x132DC2;
 local last_map = nil;
 
-
--- Relative to Position object
-local x_pos = 0x00;
-local y_pos = x_pos + 4;
-local z_pos = y_pos + 4;
-
-local grounded_pointer_index = 84 * 4;
-local position_pointer_index = 57 * 4;
-
-local slot_base = 0x10;
-local slot_size = 0x9C;
-
 -- EO BTRando
 local isPaused = false;
 local checkTotals = false;
@@ -72,6 +64,11 @@ local isBanjoDedCheck = false;
 local multiHoneycomb = false;
 local BMMLoaded = false;
 local BMMBypass = false;
+local APMovesEnabled = false; -- Enable AP Moves Logics
+local NeedSiloState = false; --  If True, you are Transistioning maps
+local WatchSilo = false; -- Silo found on Map, Need to Monitor Distance
+local AMMMovesCleared = false -- If close to Silo
+
 
 function isPointer(value)
     return type(value) == "number" and value >= RDRAMBase and value < RDRAMBase + RDRAMSize;
@@ -200,7 +197,9 @@ local model_list = {
     ["Ugger"] = 0x671,
     ["Altar"] = 0x977,
     ["Jinjo"] = 0x643,
-    ["Mingy Jongo"] = 0x816
+    ["Silo"] = 0x7D7,
+    ["Mingy Jongo"] = 0x816,
+    ["Player"] = 0xFFFF
 }
 
 local obj_model1_slot_base = 0x10;
@@ -389,6 +388,9 @@ local AMM = {};
 
 -- AGI - Archipelago given items
 local AGI = {};
+
+-- Banjo Tooie Movelist Table
+local BKM = {};
 
 local MASTER_MAP = {
     ['JIGGY'] = {
@@ -1569,7 +1571,134 @@ local MASTER_MAP = {
 			['bit'] = 3,
 			['locationId'] = 1230027
 		},
-	}
+	},
+    ["MOVES"] = {
+        ['Grip Grab'] = {
+            ['addr'] = 0x1B,
+            ['bit'] = 1,
+            ['locationId'] = 1230753
+        },
+        ['Breegull Blaster'] = {
+            ['addr'] = 0x1B,
+            ['bit'] = 2,
+            ['locationId'] = 1230754
+        },
+        ['Egg Aim'] = {
+            ['addr'] = 0x1B,
+            ['bit'] = 3,
+            ['locationId'] = 1230755
+        },
+        ['Fire Eggs'] = {
+            ['addr'] = 0x1E,
+            ['bit'] = 1,
+            ['locationId'] = 1230756
+        },
+        ['Bill Drill'] = {
+            ['addr'] = 0x1B,
+            ['bit'] = 6,
+            ['locationId'] = 1230757
+        },
+        ['Beak Bayonet'] = {
+            ['addr'] = 0x1B,
+            ['bit'] = 7,
+            ['locationId'] = 1230758
+        },
+        ['Grenade Eggs'] = {
+            ['addr'] = 0x1E,
+            ['bit'] = 2,
+            ['locationId'] = 1230759
+        },
+        ['Airborne Egg Aiming'] = {
+            ['addr'] = 0x1C,
+            ['bit'] = 0,
+            ['locationId'] = 1230760
+        },
+        ['Split Up'] = {
+            ['addr'] = 0x1C,
+            ['bit'] = 1,
+            ['locationId'] = 1230761
+        },
+        ['Pack Whack'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 6,
+            ['locationId'] = 1230762
+        },
+        ['Ice Eggs'] = {
+            ['addr'] = 0x1E,
+            ['bit'] = 4,
+            ['locationId'] = 1230763
+        },
+        ['Wing Whack'] = {
+            ['addr'] = 0x1C,
+            ['bit'] = 2,
+            ['locationId'] = 1230764
+        },
+        ['Talon Torpedo'] = {
+            ['addr'] = 0x1C,
+            ['bit'] = 3,
+            ['locationId'] = 1230765
+        },
+        ['Sub-Aqua Egg Aiming'] = {
+            ['addr'] = 0x1C,
+            ['bit'] = 4,
+            ['locationId'] = 1230766
+        },
+        ['Clockwork Kazooie Eggs'] = {
+            ['addr'] = 0x1E,
+            ['bit'] = 3,
+            ['locationId'] = 1230767
+        },
+        ['Springy Step Shoes'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 3,
+            ['locationId'] = 1230768
+        },
+        ['Taxi Pack'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 4,
+            ['locationId'] = 1230769
+        },
+        ['Hatch'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 5,
+            ['locationId'] = 1230770
+        },
+        ['Snooze Pack'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 0,
+            ['locationId'] = 1230771
+        },
+        ['Leg Spring'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 1,
+            ['locationId'] = 1230772
+        },
+        ['Claw Clamber Boots'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 2,
+            ['locationId'] = 1230773
+        },
+        ['Shack Pack'] = {
+            ['addr'] = 0x1C,
+            ['bit'] = 6,
+            ['locationId'] = 1230774
+        },
+        ['Glide'] = {
+            ['addr'] = 0x1C,
+            ['bit'] = 7,
+            ['locationId'] = 1230775
+        },
+        ['Sack Pack'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 7,
+            ['locationId'] = 1230776
+        },
+        ['Fast Swimming'] = {
+            ['addr'] = 0x1E,
+            ['bit'] = 5,
+            ['locationId'] = 1230777
+        },
+    }
 }
 
 local read_JIGGY_checks = function(type)
@@ -1746,6 +1875,43 @@ local read_H1_checks = function(type)
     return checks
 end
 
+local update_BMK_MOVES_checks = function() --Only run when close to Silos
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+        if BKM[k] == false
+        then
+            BKM[k] = checkFlag(v['addr'], v['bit'])
+        end 
+    end
+end
+
+local init_BMK = function() --Only run when close to Silos
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+            BKM[k] = checkFlag(v['addr'], v['bit'])
+    end
+end
+
+local clear_AMM_MOVES_checks = function() --Only run when transitioning Maps until BT/Silo Model is loaded OR Close to Silo
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+        if BKM[k] == false
+        then
+            clearFlag(v['addr'], v['bit'])
+        end
+    end
+end
+
+local set_AGI_MOVES_checks = function() -- SET AGI Moves into RAM AFTER BT/Silo Model is loaded
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+        if AGI["MOVES"][k] == true
+        then
+            setFlag(v['addr'], v['bit']);
+        end
+    end
+end
+
 function checkHoneycombs(location_checks)
     if multiHoneycomb == true
     then
@@ -1794,6 +1960,68 @@ function loadGame(current_map)
     end
 end
 
+function getSiloPlayerModel()
+    local object = checkModel("Silo");
+    if object == false
+    then
+        local player = checkModel("Player");
+        if player == false
+        then
+            return
+        end
+        set_AGI_MOVES_checks() --No Silo on this map
+        NeedSiloState = false
+        WatchSilo = false
+        return
+    end
+    set_AGI_MOVES_checks()
+    NeedSiloState = false
+    WatchSilo = true
+end
+
+function nearSilo()
+    
+    local object = checkModel("Silo");
+    if object == false
+    then
+        return; --Shouldn't hit here at all
+    end
+
+    local pos = getBanjoPos()
+    if pos == false --possible loading screen
+    then
+        return false
+    end
+
+	local xPos = mainmemory.readfloat(object + 0x04, true);
+	local yPos = mainmemory.readfloat(object + 0x08, true);
+	local zPos = mainmemory.readfloat(object + 0x0C, true);
+
+	local hDist = math.sqrt(((xPos - pos["Xpos"]) ^ 2) + ((zPos - pos["Zpos"]) ^ 2));
+	local playerDist = math.floor(math.sqrt(((yPos - pos["Ypos"]) ^ 2) + (hDist ^ 2)));
+
+    if playerDist <= 600
+    then
+        if DEBUG == true
+        then
+            print("Near Silo");
+        end
+        if AMMMovesCleared == false
+        then
+            clear_AMM_MOVES_checks();
+            update_BMK_MOVES_checks();
+            AMMMovesCleared = true
+        else
+            update_BMK_MOVES_checks();
+        end
+    else
+        if AMMMovesCleared == true
+        then
+            set_AGI_MOVES_checks()
+            AMMMovesCleared = false
+        end
+    end
+end
 
 function locationControl()
     local mapaddr = getMap()
@@ -1822,6 +2050,14 @@ function locationControl()
             local DEMO = { ['DEMO'] = true}
             return DEMO
         else
+            if (mapaddr ~= mapaddr) and APMovesEnabled == true
+            then
+                NeedSiloState = true
+            end
+            if WatchSilo == true
+            then
+                nearSilo()
+            end
             if (mapaddr == 335 or mapaddr == 337) and checkTotals == false -- Wooded Hollow / JiggyTemple
             then
                 if last_map ~= 335 and last_map ~= 337
@@ -1975,6 +2211,9 @@ function all_location_checks(type)
     if next(AGI) == nil then --only happens once when you first play
         AGI = location_checks
     end
+    if next(BKM) == nil then --only happens once when you first play
+        init_BMK();
+    end
 
     checkHoneycombs(location_checks)
     return location_checks
@@ -2065,6 +2304,7 @@ function receive()
         retTable["playerName"] = player_name;
         retTable["deathlinkActive"] = deathlink;
         retTable['locations'] = locationControl()
+        retTable['unlocked_moves'] = BKM;
         retTable["isDead"] = isBanjoDed;
 
     
@@ -2323,6 +2563,10 @@ function process_slot(block)
     then
         multiHoneycomb = true
     end
+    if block['slot_moves'] ~= nil and block['slot_moves'] ~= "false"
+    then
+        APMovesEnabled = true
+    end
 
     if seed ~= 0
     then
@@ -2410,6 +2654,11 @@ function main()
                 if isSaving == true
                 then
                     saveGame();
+                end
+                if NeedSiloState == true
+                then
+                    clear_AMM_MOVES_checks()
+                    getSiloPlayerModel()
                 end
                 gameSaving();
             elseif (frame % 10 == 0)

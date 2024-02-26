@@ -47,7 +47,7 @@ class BanjoTooieWorld(World):
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
     item_name_to_id = {}
     for name, data in all_item_table.items():
-        if data.btid == 1230028:  # Skip Victory Item
+        if data.btid is None:  # Skip Victory Item
             continue
         item_name_to_id[name] = data.btid
 

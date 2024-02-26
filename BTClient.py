@@ -51,7 +51,7 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 
 bt_loc_name_to_id = network_data_package["games"]["Banjo Tooie"]["location_name_to_id"]
 
-script_version: int = 3
+script_version: int = 4
 
 def get_item_value(ap_id):
     return ap_id
@@ -86,6 +86,7 @@ class BanjoTooieContext(CommonContext):
         self.n64_status = CONNECTION_INITIAL_STATUS
         self.awaiting_rom = False
         self.location_table = {}
+        self.movelist_table = {}
         self.deathlink_enabled = False
         self.deathlink_pending = False
         self.deathlink_sent_this_death = False
@@ -194,6 +195,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_deathlink": ctx.deathlink_enabled,
             "slot_skip_tot": ctx.slot_data["skip_tot"],
             "slot_honeycomb": ctx.slot_data["honeycomb"],
+            "slot_moves": ctx.slot_data["moves"]
         })
     ctx.sendSlot = False
     return payload
@@ -208,6 +210,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         ctx.deathlink_client_override = False
         ctx.finished_game = False
         ctx.location_table = {}
+        ctx.movelist_table = {}
         ctx.deathlink_pending = False
         ctx.deathlink_sent_this_death = False
         ctx.auth = payload['playerName']
@@ -230,20 +233,37 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         if ctx.location_table != locations:
             ctx.location_table = locations
 
-            locs1 = [bt_loc_name_to_id[loc] for loc, b in ctx.location_table.items() if b]
-
-            await ctx.send_msgs([{
-                "cmd": "LocationChecks",
-                "locations": locs1
-            }])
-
             # Game completion handling
-            if 1230027 in locs1 and not ctx.finished_game:
+            if "Hag 1 Defeated" in locations and not ctx.finished_game:
                 await ctx.send_msgs([{
                     "cmd": "StatusUpdate",
                     "status": 30
                 }])
                 ctx.finished_game = True
+            else:
+                locs1 = [bt_loc_name_to_id[loc] for loc, b in ctx.location_table.items() if b]
+                await ctx.send_msgs([{
+                    "cmd": "LocationChecks",
+                    "locations": locs1
+                }])
+
+    if ctx.slot_data["moves"] == "true":
+            # Locations handling
+        movelist = payload['unlocked_moves']
+
+        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
+        if isinstance(movelist, list):
+            movelist = {}
+
+        if ctx.movelist_table != movelist:
+            ctx.movelist_table = movelist
+
+            mov1 = [bt_loc_name_to_id[loc] for loc, b in ctx.movelist_table.items() if b]
+
+            await ctx.send_msgs([{
+                "cmd": "LocationChecks",
+                "locations": mov1
+            }])
 
     # Deathlink handling
     if ctx.deathlink_enabled:
