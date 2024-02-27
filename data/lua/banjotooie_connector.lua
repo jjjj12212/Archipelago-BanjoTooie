@@ -235,6 +235,10 @@ function getModelOneCount()
     end
     local firstObject = dereferencePointer(objectArray + 0x04);
     local lastObject = dereferencePointer(objectArray + 0x08);
+	if lastObject == nil 
+	then
+		return
+	end
     return math.floor((lastObject - firstObject) / obj_model1_slot_size) + 1;
 end
 
@@ -1569,6 +1573,422 @@ local MASTER_MAP = {
 			['bit'] = 3,
 			['locationId'] = 1230027
 		},
+	},
+	["SKIP"] = {
+		['CUTSCENE'] = {
+			['Klungo Flyover'] = {
+				['addr'] = 0x02,
+				['bit'] = 4
+			},
+			['Jiggywiggy Flyover'] = {
+				['addr'] = 0x67,
+				['bit'] = 7
+			},
+			['Jinjo First Time'] = {
+				['addr'] = 0x6E,
+				['bit'] = 6
+			},
+			['Jinjo Flyover'] = {
+				['addr'] = 0x82,
+				['bit'] = 4
+			},
+			['Jinjo Flyover - Jiggy'] = {
+				['addr'] = 0x82,
+				['bit'] = 5
+			},
+			['Jamjars Flyover'] = {
+				['addr'] = 0x9B,
+				['bit'] = 6
+			},
+			['Jiggywiggy Laser'] = {
+				['addr'] = 0xAC,
+				['bit'] = 2
+			},
+		},
+		['INTRO'] = {
+			['Bovina'] = {
+				['addr'] = 0x04,
+				['bit'] = 5
+			},
+			['Unogopaz'] = {
+				['addr'] = 0x06,
+				['bit'] = 1
+			},
+			['Unogopaz - Stony'] = {
+				['addr'] = 0x06,
+				['bit'] = 1
+			},
+			['Dilberta'] = {
+				['addr'] = 0x06,
+				['bit'] = 3
+			},
+			['Kickball Coach'] = {
+				['addr'] = 0x07,
+				['bit'] = 4
+			},
+			['Cheato'] = {
+				['addr'] = 0x08,
+				['bit'] = 0
+			},
+			['Mumbo'] = {
+				['addr'] = 0x0A,
+				['bit'] = 5
+			},
+			['Bullion Bill'] = {
+				['addr'] = 0x0B,
+				['bit'] = 2
+			},
+			['Mrs. Boggy'] = {
+				['addr'] = 0x0C,
+				['bit'] = 3
+			},
+			['Humba Wumba'] = {
+				['addr'] = 0x0C,
+				['bit'] = 7
+			},
+			['Big Al'] = {
+				['addr'] = 0x0E,
+				['bit'] = 5
+			},
+			['Salty Joe'] = {
+				['addr'] = 0x0E,
+				['bit'] = 6
+			},
+			['Conga'] = {
+				['addr'] = 0x0F,
+				['bit'] = 1
+			},
+			['Moggy'] = {
+				['addr'] = 0x12,
+				['bit'] = 0
+			},
+			['Soggy'] = {
+				['addr'] = 0x12,
+				['bit'] = 1
+			},
+			['Groggy'] = {
+				['addr'] = 0x12,
+				['bit'] = 2
+			},
+			['Tiptup'] = {
+				['addr'] = 0x12,
+				['bit'] = 4
+			},
+			['Jolly'] = {
+				['addr'] = 0x13,
+				['bit'] = 3
+			},
+			['Maggie - After Rescue'] = {
+				['addr'] = 0x13,
+				['bit'] = 4
+			},
+			['Blubber'] = {
+				['addr'] = 0x16,
+				['bit'] = 7
+			},
+			['Scrotty'] = {
+				['addr'] = 0x26,
+				['bit'] = 5
+			},
+			['Floatie Pig'] = {
+				['addr'] = 0x28,
+				['bit'] = 0
+			},
+			['Loggo'] = {
+				['addr'] = 0x28,
+				['bit'] = 1
+			},
+			['Oogle Boogle'] = {
+				['addr'] = 0x28,
+				['bit'] = 7
+			},
+			-- ['King Jingaling'] = {
+			-- 	 ['addr'] = 0x2F,
+			--	 ['bit'] = 5
+			-- },
+			['Mrs. Bottles'] = {
+				['addr'] = 0x2F,
+				['bit'] = 7
+			},
+			['Speccy'] = {
+				['addr'] = 0x30,
+				['bit'] = 0
+			},
+			['Dingpot'] = {
+				['addr'] = 0x30,
+				['bit'] = 4
+			},
+			['Mildred'] = {
+				['addr'] = 0x33,
+				['bit'] = 5
+			},
+			['Biggafoot'] = {
+				['addr'] = 0x33,
+				['bit'] = 7
+			},
+			['George'] = {
+				['addr'] = 0x34,
+				['bit'] = 1
+			},
+			['Three-Armed Pig'] = {
+				['addr'] = 0x34,
+				['bit'] = 5
+			},
+			['Oogle Boogle Guard'] = {
+				['addr'] = 0x5F,
+				['bit'] = 3
+			},
+			['Dippy'] = {
+				['addr'] = 0x60,
+				['bit'] = 0
+			},
+			['Roysten'] = {
+				['addr'] = 0x62,
+				['bit'] = 7
+			},
+			['Jiggywiggy'] = {
+				['addr'] = 0x66,
+				['bit'] = 3
+			},
+			['Colosseum Kickball Coach'] = {
+				['addr'] = 0x68,
+				['bit'] = 6
+			},
+			['Gamette'] = {
+				['addr'] = 0x69,
+				['bit'] = 1
+			},
+			['Superstash'] = {
+				['addr'] = 0x6C,
+				['bit'] = 0
+			},
+			['Mr. Fit'] = {
+				['addr'] = 0x76,
+				['bit'] = 1
+			},
+			['Heggy'] = {
+				['addr'] = 0x78,
+				['bit'] = 0
+			},
+			['Jiggywiggy Disciple'] = {
+				['addr'] = 0x78,
+				['bit'] = 5
+			},
+			['Jamjars'] = {
+				['addr'] = 0x7C,
+				['bit'] = 4
+			},
+			['Canary Mary - GGM'] = {
+				['addr'] = 0x80,
+				['bit'] = 2
+			},
+			['Canary Mary - CCL'] = {
+				['addr'] = 0x80,
+				['bit'] = 3
+			},
+			['Honey B'] = {
+				['addr'] = 0x98,
+				['bit'] = 1
+			},
+		},
+		['TUTORIAL'] = {
+			['Sign'] = {
+				['addr'] = 0x02,
+				['bit'] = 2
+			},
+			['Springy-Step Shoes Not Learned'] = {
+				['addr'] = 0x04,
+				['bit'] = 6
+			},
+			['Claw Clamber Boots Not Learned'] = {
+				['addr'] = 0x04,
+				['bit'] = 7
+			},
+			['Golden Goliath'] = {
+				['addr'] = 0x05,
+				['bit'] = 0
+			},
+			['Golden Goliath - Time Up'] = {
+				['addr'] = 0x05,
+				['bit'] = 1
+			},
+			['Wumba - Pine Grove'] = {
+				['addr'] = 0x05,
+				['bit'] = 5
+			},
+			['Minjo'] = {
+				['addr'] = 0x05,
+				['bit'] = 7
+			},
+			['Cheato Code List'] = {
+				['addr'] = 0x08,
+				['bit'] = 1
+			},
+			['Code Chamber'] = {
+				['addr'] = 0x08,
+				['bit'] = 2
+			},
+			['Code Entry'] = {
+				['addr'] = 0x08,
+				['bit'] = 3
+			},
+			['Mumbo Pad'] = {
+				['addr'] = 0x0E,
+				['bit'] = 2
+			},
+			['Use Mumbo Pad'] = {
+				['addr'] = 0x0E,
+				['bit'] = 3
+			},
+			['Cheat Menu'] = {
+				['addr'] = 0x15,
+				['bit'] = 3
+			},
+			['Detransform'] = {
+				['addr'] = 0x17,
+				['bit'] = 2
+			},
+			['Clockwork Kazooie'] = {
+				['addr'] = 0x18,
+				['bit'] = 0
+			},
+			['Hoop Hurry'] = {
+				['addr'] = 0x30,
+				['bit'] = 5
+			},
+			['Balloon Burst'] = {
+				['addr'] = 0x30,
+				['bit'] = 6
+			},
+			['Twinkly Packing'] = {
+				['addr'] = 0x34,
+				['bit'] = 0
+			},
+			['Glowbo Paid'] = {
+				['addr'] = 0x35,
+				['bit'] = 1
+			},
+			['Chilly Willy - Wrong Egg'] = {
+				['addr'] = 0x35,
+				['bit'] = 7
+			},
+			['Chilli Billi - Wrong Egg'] = {
+				['addr'] = 0x36,
+				['bit'] = 0
+			},
+			['Pot O Gold'] = {
+				['addr'] = 0x37,
+				['bit'] = 2
+			},
+			['Warp Silo'] = {
+				['addr'] = 0x61,
+				['bit'] = 4
+			},
+			['Floatus Floatium'] = {
+				['addr'] = 0x63,
+				['bit'] = 0
+			},
+			['BK Game Pak'] = {
+				['addr'] = 0x63,
+				['bit'] = 2
+			},
+			['GI Battery Door'] = {
+				['addr'] = 0x63,
+				['bit'] = 3
+			},
+			['Broken Jukebox'] = {
+				['addr'] = 0x63,
+				['bit'] = 4
+			},
+			['Daddy T-Rex'] = {
+				['addr'] = 0x63,
+				['bit'] = 6
+			},
+			['Stony'] = {
+				['addr'] = 0x63,
+				['bit'] = 7
+			},
+			['Detonator'] = {
+				['addr'] = 0x64,
+				['bit'] = 0
+			},
+			['Van'] = {
+				['addr'] = 0x64,
+				['bit'] = 1
+			},
+			['Sub'] = {
+				['addr'] = 0x64,
+				['bit'] = 2
+			},
+			['T-Rex'] = {
+				['addr'] = 0x64,
+				['bit'] = 3
+			},
+			['Washing Machine'] = {
+				['addr'] = 0x64,
+				['bit'] = 4
+			},
+			['Snowball'] = {
+				['addr'] = 0x64,
+				['bit'] = 5
+			},
+			['Bee'] = {
+				['addr'] = 0x64,
+				['bit'] = 6
+			},
+			['Dragon Kazooie'] = {
+				['addr'] = 0x64,
+				['bit'] = 7
+			},
+			['Puzzle Complete'] = {
+				['addr'] = 0x78,
+				['bit'] = 1
+			},
+			['Warp Pad'] = {
+				['addr'] = 0x78,
+				['bit'] = 6
+			},
+			['Random Stop Honeycomb'] = {
+				['addr'] = 0x7C,
+				['bit'] = 5
+			},
+			['Skill Stop Honeycomb'] = {
+				['addr'] = 0x7C,
+				['bit'] = 6
+			},
+			['Saucer of Peril Fixed'] = {
+				['addr'] = 0x7D,
+				['bit'] = 4
+			},
+			['Saucer of Peril'] = {
+				['addr'] = 0x7D,
+				['bit'] = 7
+			},
+			['Mumbo'] = {
+				['addr'] = 0x80,
+				['bit'] = 1
+			},
+			['Jiggywiggy Altar'] = {
+				['addr'] = 0x98,
+				['bit'] = 0
+			},
+			['Split Up Not Learned'] = {
+				['addr'] = 0x99,
+				['bit'] = 4
+			},
+			['Split Up'] = {
+				['addr'] = 0x99,
+				['bit'] = 5
+			},
+			['Canary Mary Race'] = {
+				['addr'] = 0x9C,
+				['bit'] = 0
+			},
+			['Puzzle'] = {
+				['addr'] = 0xA1,
+				['bit'] = 3
+			},
+		}
 	}
 }
 
@@ -1852,10 +2272,12 @@ function BMMBackup()
     end
     for item_group, table in pairs(MASTER_MAP)
     do
-        for location, values in pairs(table)
-        do
-            BMM[item_group][location] = checkFlag(values['addr'], values['bit']);
-        end
+		if item_group ~= 'SKIP' then
+			for location, values in pairs(table)
+			do
+				BMM[item_group][location] = checkFlag(values['addr'], values['bit']);
+			end
+		end
     end
     if DEBUG == true
     then
@@ -1873,26 +2295,28 @@ function BMMRestore()
 
     for zone,location in pairs(MASTER_MAP)
     do
-        for loc,v in pairs(location)
-        do
-            if AMM[zone][loc] == false and BMM[zone][loc] == true
-            then
-                setFlag(v['addr'], v['bit'])
-                AMM[zone][loc] = BMM[zone][loc]
-                if DEBUG == true
-                then
-                    print(loc .. " Flag Set")
-                end
-            elseif AMM[zone][loc] == true and BMM[zone][loc] == false
-            then
-                clearFlag(v['addr'], v['bit'])
-                AMM[zone][loc] = BMM[zone][loc]
-                if DEBUG == true
-                then
-                    print(loc .. " Flag Cleared")
-                end
-            end
-        end
+		if zone ~= 'SKIP' then
+			for loc,v in pairs(location)
+			do
+				if AMM[zone][loc] == false and BMM[zone][loc] == true
+				then
+					setFlag(v['addr'], v['bit'])
+					AMM[zone][loc] = BMM[zone][loc]
+					if DEBUG == true
+					then
+						print(loc .. " Flag Set")
+					end
+				elseif AMM[zone][loc] == true and BMM[zone][loc] == false
+				then
+					clearFlag(v['addr'], v['bit'])
+					AMM[zone][loc] = BMM[zone][loc]
+					if DEBUG == true
+					then
+						print(loc .. " Flag Cleared")
+					end
+				end
+			end
+		end
     end
     if DEBUG == true
     then
@@ -1904,26 +2328,28 @@ end
 function useAGI()
     for item_group, table in pairs(MASTER_MAP)
     do
-        for location,values in pairs(table)
-        do
-            if AMM[item_group][location] == false and AGI[item_group][location] == true
-            then
-                setFlag(values['addr'], values['bit'])
-                AMM[item_group][location] = true
-                if DEBUG == true
-                then
-                    print(location .. " Flag Set");
-                end
-            elseif AMM[item_group][location] == true and AGI[item_group][location] == false
-            then
-                clearFlag(values['addr'], values['bit']);
-                AMM[item_group][location] = false;
-                if DEBUG == true
-                then
-                    print(location .. " Flag Cleared");
-                end
-            end
-        end
+		if item_group ~= 'SKIP' then
+			for location,values in pairs(table)
+			do
+				if AMM[item_group][location] == false and AGI[item_group][location] == true
+				then
+					setFlag(values['addr'], values['bit'])
+					AMM[item_group][location] = true
+					if DEBUG == true
+					then
+						print(location .. " Flag Set");
+					end
+				elseif AMM[item_group][location] == true and AGI[item_group][location] == false
+				then
+					clearFlag(values['addr'], values['bit']);
+					AMM[item_group][location] = false;
+					if DEBUG == true
+					then
+						print(location .. " Flag Cleared");
+					end
+				end
+			end
+		end
     end
 end
 
@@ -2346,11 +2772,35 @@ function initializeFlags()
 	-- Use Cutscene: "2 Years Have Passed..." to check for fresh save
 	local current_map = getMap();
 	if (current_map == 0xA1) then
-		-- Jinjo First Time Flags
-		setFlag(0x01, 5)
-		setFlag(0x6E, 6)
-		setFlag(0x82, 4)
-		setFlag(0x82, 5)
+		-- First Time Pickup Text
+		for i = 0, 7 do
+			setFlag(0x00, i) -- Note, Glowbo, Eggs, Feathers, Treble Clef, Honeycomb
+		end	
+		setFlag(0x01, 2) -- Empty Honeycomb
+		setFlag(0x01, 5) -- Jinjo
+		setFlag(0x05, 6) -- Mega Glowbo
+		setFlag(0x07, 7) -- Cheato Page
+		setFlag(0x27, 5) -- Doubloon
+		setFlag(0x2E, 7) -- Ticket
+		-- Character Introduction Text
+		for k,v in pairs(MASTER_MAP['SKIP']['INTRO'])
+        do
+            setFlag(v['addr'], v['bit'])
+        end
+		-- Cutscene Flags
+		for k,v in pairs(MASTER_MAP['SKIP']['CUTSCENE'])
+        do
+            setFlag(v['addr'], v['bit'])
+        end
+		-- Tutorial Dialogues
+		for k,v in pairs(MASTER_MAP['SKIP']['TUTORIAL'])
+        do
+            setFlag(v['addr'], v['bit'])
+        end
+		-- Kickball Stadium Doors
+		setFlag(0xA9, 6) -- MT
+		setFlag(0xA9, 7) -- HFP
+		
         BMMLoaded = true  -- We don't have a real BMM at this point.  
 		if (skip_tot ~= "false") then
 			-- ToT Misc Flags
