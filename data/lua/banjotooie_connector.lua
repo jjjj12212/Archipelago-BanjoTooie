@@ -235,6 +235,10 @@ function getModelOneCount()
     end
     local firstObject = dereferencePointer(objectArray + 0x04);
     local lastObject = dereferencePointer(objectArray + 0x08);
+	if lastObject == nil 
+	then
+		return
+	end
     return math.floor((lastObject - firstObject) / obj_model1_slot_size) + 1;
 end
 
@@ -1593,7 +1597,7 @@ local MASTER_MAP = {
 				['bit'] = 5
 			},
 			['Jamjars Flyover'] = {
-				['addr'] = 0x98,
+				['addr'] = 0x9B,
 				['bit'] = 6
 			},
 			['Jiggywiggy Laser'] = {
@@ -1785,6 +1789,204 @@ local MASTER_MAP = {
 			['Honey B'] = {
 				['addr'] = 0x98,
 				['bit'] = 1
+			},
+		},
+		['TUTORIAL'] = {
+			['Sign'] = {
+				['addr'] = 0x02,
+				['bit'] = 2
+			},
+			['Springy-Step Shoes Not Learned'] = {
+				['addr'] = 0x04,
+				['bit'] = 6
+			},
+			['Claw Clamber Boots Not Learned'] = {
+				['addr'] = 0x04,
+				['bit'] = 7
+			},
+			['Golden Goliath'] = {
+				['addr'] = 0x05,
+				['bit'] = 0
+			},
+			['Golden Goliath - Time Up'] = {
+				['addr'] = 0x05,
+				['bit'] = 1
+			},
+			['Wumba - Pine Grove'] = {
+				['addr'] = 0x05,
+				['bit'] = 5
+			},
+			['Minjo'] = {
+				['addr'] = 0x05,
+				['bit'] = 7
+			},
+			['Cheato Code List'] = {
+				['addr'] = 0x08,
+				['bit'] = 1
+			},
+			['Code Chamber'] = {
+				['addr'] = 0x08,
+				['bit'] = 2
+			},
+			['Code Entry'] = {
+				['addr'] = 0x08,
+				['bit'] = 3
+			},
+			['Mumbo Pad'] = {
+				['addr'] = 0x0E,
+				['bit'] = 2
+			},
+			['Use Mumbo Pad'] = {
+				['addr'] = 0x0E,
+				['bit'] = 3
+			},
+			['Cheat Menu'] = {
+				['addr'] = 0x15,
+				['bit'] = 3
+			},
+			['Detransform'] = {
+				['addr'] = 0x17,
+				['bit'] = 2
+			},
+			['Clockwork Kazooie'] = {
+				['addr'] = 0x18,
+				['bit'] = 0
+			},
+			['Hoop Hurry'] = {
+				['addr'] = 0x30,
+				['bit'] = 5
+			},
+			['Balloon Burst'] = {
+				['addr'] = 0x30,
+				['bit'] = 6
+			},
+			['Twinkly Packing'] = {
+				['addr'] = 0x34,
+				['bit'] = 0
+			},
+			['Glowbo Paid'] = {
+				['addr'] = 0x35,
+				['bit'] = 1
+			},
+			['Chilly Willy - Wrong Egg'] = {
+				['addr'] = 0x35,
+				['bit'] = 7
+			},
+			['Chilli Billi - Wrong Egg'] = {
+				['addr'] = 0x36,
+				['bit'] = 0
+			},
+			['Pot O Gold'] = {
+				['addr'] = 0x37,
+				['bit'] = 2
+			},
+			['Warp Silo'] = {
+				['addr'] = 0x61,
+				['bit'] = 4
+			},
+			['Floatus Floatium'] = {
+				['addr'] = 0x63,
+				['bit'] = 0
+			},
+			['BK Game Pak'] = {
+				['addr'] = 0x63,
+				['bit'] = 2
+			},
+			['GI Battery Door'] = {
+				['addr'] = 0x63,
+				['bit'] = 3
+			},
+			['Broken Jukebox'] = {
+				['addr'] = 0x63,
+				['bit'] = 4
+			},
+			['Daddy T-Rex'] = {
+				['addr'] = 0x63,
+				['bit'] = 6
+			},
+			['Stony'] = {
+				['addr'] = 0x63,
+				['bit'] = 7
+			},
+			['Detonator'] = {
+				['addr'] = 0x64,
+				['bit'] = 0
+			},
+			['Van'] = {
+				['addr'] = 0x64,
+				['bit'] = 1
+			},
+			['Sub'] = {
+				['addr'] = 0x64,
+				['bit'] = 2
+			},
+			['T-Rex'] = {
+				['addr'] = 0x64,
+				['bit'] = 3
+			},
+			['Washing Machine'] = {
+				['addr'] = 0x64,
+				['bit'] = 4
+			},
+			['Snowball'] = {
+				['addr'] = 0x64,
+				['bit'] = 5
+			},
+			['Bee'] = {
+				['addr'] = 0x64,
+				['bit'] = 6
+			},
+			['Dragon Kazooie'] = {
+				['addr'] = 0x64,
+				['bit'] = 7
+			},
+			['Puzzle Complete'] = {
+				['addr'] = 0x78,
+				['bit'] = 1
+			},
+			['Warp Pad'] = {
+				['addr'] = 0x78,
+				['bit'] = 6
+			},
+			['Random Stop Honeycomb'] = {
+				['addr'] = 0x7C,
+				['bit'] = 5
+			},
+			['Skill Stop Honeycomb'] = {
+				['addr'] = 0x7C,
+				['bit'] = 6
+			},
+			['Saucer of Peril Fixed'] = {
+				['addr'] = 0x7D,
+				['bit'] = 4
+			},
+			['Saucer of Peril'] = {
+				['addr'] = 0x7D,
+				['bit'] = 7
+			},
+			['Mumbo'] = {
+				['addr'] = 0x80,
+				['bit'] = 1
+			},
+			['Jiggywiggy Altar'] = {
+				['addr'] = 0x98,
+				['bit'] = 0
+			},
+			['Split Up Not Learned'] = {
+				['addr'] = 0x99,
+				['bit'] = 4
+			},
+			['Split Up'] = {
+				['addr'] = 0x99,
+				['bit'] = 5
+			},
+			['Canary Mary Race'] = {
+				['addr'] = 0x9C,
+				['bit'] = 0
+			},
+			['Puzzle'] = {
+				['addr'] = 0xA1,
+				['bit'] = 3
 			},
 		}
 	}
@@ -2570,11 +2772,6 @@ function initializeFlags()
 	-- Use Cutscene: "2 Years Have Passed..." to check for fresh save
 	local current_map = getMap();
 	if (current_map == 0xA1) then
-		-- Cheato First Time Flags
-		setFlag(0x08, 1) -- Code List Explanation
-		setFlag(0x08, 2) -- Code Chamber Explanation
-		setFlag(0x08, 3) -- Code Entry Explanation
-		setFlag(0x15, 3) -- Cheat Select Explanation
 		-- First Time Pickup Text
 		for i = 0, 7 do
 			setFlag(0x00, i) -- Note, Glowbo, Eggs, Feathers, Treble Clef, Honeycomb
@@ -2595,6 +2792,15 @@ function initializeFlags()
         do
             setFlag(v['addr'], v['bit'])
         end
+		-- Tutorial Dialogues
+		for k,v in pairs(MASTER_MAP['SKIP']['TUTORIAL'])
+        do
+            setFlag(v['addr'], v['bit'])
+        end
+		-- Kickball Stadium Doors
+		setFlag(0xA9, 6) -- MT
+		setFlag(0xA9, 7) -- HFP
+		
         BMMLoaded = true  -- We don't have a real BMM at this point.  
 		if (skip_tot ~= "false") then
 			-- ToT Misc Flags
