@@ -113,7 +113,7 @@ class BanjoTooieWorld(World):
         if(item.code == 1230514 and self.options.multiworld_doubloons == False) :
             return False
         
-        if(item.code == 1230513 and self.options.mutliworld_cheato == False) :
+        if(item.code == 1230513 and self.options.multiworld_cheato == False) :
             return False
         
         # if((1230703 <= item.code <= 1230727) and self.options.multiworld_honeycombs == False) :
@@ -144,6 +144,11 @@ class BanjoTooieWorld(World):
                 item = self.create_item(itemName.HONEY)
                 if name.find("Honeycomb") != -1:
                     self.multiworld.get_location(name, self.player).place_locked_item(item)
+            if self.options.multiworld_cheato == False:
+                for name, id in self.location_name_to_id.items():
+                    item = self.create_item(itemName.PAGES)
+                    if name.find("Page") != -1:
+                        self.multiworld.get_location(name, self.player).place_locked_item(item)
 
     def fill_slot_data(self) -> dict[str, any]:
         btoptions = dict[str, any]()
@@ -157,6 +162,7 @@ class BanjoTooieWorld(World):
         else:
             btoptions["skip_tot"] = "false"
         btoptions['honeycomb'] = "true" if self.options.multiworld_honeycombs == 1 else "false"
+        btoptions['pages'] = "true" if self.options.multiworld_cheato == 1 else "false"
         return btoptions
 
 

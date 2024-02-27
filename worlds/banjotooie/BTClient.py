@@ -194,6 +194,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_deathlink": ctx.deathlink_enabled,
             "slot_skip_tot": ctx.slot_data["skip_tot"],
             "slot_honeycomb": ctx.slot_data["honeycomb"],
+            "slot_pages": ctx.slot_data["pages"]
         })
     ctx.sendSlot = False
     return payload

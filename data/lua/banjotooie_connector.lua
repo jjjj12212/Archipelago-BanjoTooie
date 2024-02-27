@@ -8,7 +8,7 @@ local math = require('math')
 require('common')
 
 local last_modified_date = '2024-02-20' -- Should be the last modified date
-local script_version = 3 -- If I push this does that make it 4? -Unalive
+local script_version = 3
 -- Template Variables
 local player_name = ""
 local seed = 0
@@ -70,6 +70,7 @@ local killBTFlag = false;
 local isBanjoDed = false;
 local isBanjoDedCheck = false;
 local multiHoneycomb = false;
+local multiPages = false;
 local BMMLoaded = false;
 local BMMBypass = false;
 
@@ -87,17 +88,33 @@ function dereferencePointer(address)
 end
 
 local consumeTable = {
-    [9] = {key=0x3C0C, name="Empty Honeycombs"}
+    [9]  = {key=0x3C0C, name="Empty Honeycombs"},
+	[10] = {key=0x0319, name="Cheato Pages"}
 }
 
-function setHoneycomb(value)
+function setConsumable(consumable_type, value)
+	local index;
+	if consumable_type == 'HONEYCOMB'
+	then
+		index = 9
+	elseif consumable_type == 'CHEATO'
+	then
+		index = 10
+	end
     local consumablesBlock = dereferencePointer(0x12B250);
-    mainmemory.write_u16_be(consumablesBlock + 9 * 2, value ~ 0x3C0C);
-    mainmemory.write_u16_be(0x11B080 + 9 * 0x0C, value);
+    mainmemory.write_u16_be(consumablesBlock + index * 2, value ~ consumeTable[index]["key"]);
+    mainmemory.write_u16_be(0x11B080 + index * 0x0C, value);
 end
 
-function getHoneycomb()
-    local normalValue = mainmemory.read_u16_be(0x11B080 + 9 * 0x0C);
+function getConsumable(consumable_type)
+	if consumable_type == 'HONEYCOMB'
+	then
+		index = 9
+	elseif consumable_type == 'CHEATO'
+	then
+		index = 10
+	end
+    local normalValue = mainmemory.read_u16_be(0x11B080 + index * 0x0C);
 	return normalValue;
 end
 
@@ -1075,131 +1092,131 @@ local MASTER_MAP = {
         -- },
     },
     ['CHEATO'] = {
-        -- ['Spiral Mountain: Cheato Page'] = {
-        --     ['addr'] = 0x59,
-        --     ['bit'] = 3,
-        --     ['locationId'] = 1230752
-        -- },
-        -- ['Mayahem Temple: Snake Head Cheato Page'] = {
-        --     ['addr'] = 0x56,
-        --     ['bit'] = 3,
-        --     ['locationId'] = 1230728
-        -- },
-        -- ['Mayahem Temple: Prison Compound Cheato Page'] = {
-        --     ['addr'] = 0x56,
-        --     ['bit'] = 4,
-        --     ['locationId'] = 1230729
-        -- },
-        -- ['Mayahem Temple: Jade Snake Grove Cheato Page'] = {
-        --     ['addr'] = 0x56,
-        --     ['bit'] = 5,
-        --     ['locationId'] = 1230730
-        -- },
-        -- ['Glitter Gultch Mine: Canary Mary Cheato Page'] = {
-        --     ['addr'] = 0x56,
-        --     ['bit'] = 6,
-        --     ['locationId'] = 1230731
-        -- },
-        -- ['Glitter Gultch Mine: Entrance Cheato Page'] = {
-        --     ['addr'] = 0x56,
-        --     ['bit'] = 7,
-        --     ['locationId'] = 1230732
-        -- },
-        -- ['Glitter Gultch Mine: Water Storage Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 0,
-        --     ['locationId'] = 1230733
-        -- },
-        -- ['Witchy World: Haunted Cavern Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 1,
-        --     ['locationId'] = 1230734
-        -- },
-        -- ['Witchy World: The Inferno Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 2,
-        --     ['locationId'] = 1230735
-        -- },
-        -- ['Witchy World: Saucer of Peril Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 3,
-        --     ['locationId'] = 1230736
-        -- },
-        -- ['Jolly Rogers: Pawnos Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 4,
-        --     ['locationId'] = 1230737
-        -- },
-        -- ['Jolly Rogers: Seemee Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 5,
-        --     ['locationId'] = 1230738
-        -- },
-        -- ['Jolly Rogers: Ancient Baths Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 6,
-        --     ['locationId'] = 1230739
-        -- },
-        -- ['Terrydactyland: Dippys Pool Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 7,
-        --     ['locationId'] = 1230740
-        -- },
-        -- ['Terrydactyland: Inside the Mountain Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 0,
-        --     ['locationId'] = 1230741
-        -- },
-        -- ['Terrydactyland: Boulder Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 1,
-        --     ['locationId'] = 1230742
-        -- }
-        -- ['Gruntys Industries: Logo Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 2,
-        --     ['locationId'] = 1230743
-        -- },
-        -- ['Gruntys Industries: Floor 2 Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 3,
-        --     ['locationId'] = 1230744
-        -- },
-        -- ['Gruntys Industries: Repair Depot Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 4,
-        --     ['locationId'] = 1230745
-        -- },
-        -- ['Hailfire Peaks: Lava Side Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 5,
-        --     ['locationId'] = 1230746
-        -- },
-        -- ['Hailfire Peaks: Icicle Grotto Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 6,
-        --     ['locationId'] = 1230747
-        -- },
-        -- ['Hailfire Peaks: Icy Side Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 7,
-        --     ['locationId'] = 1230748
-        -- },
-        -- ['Cloud Cuckcooland: Canary Mary Cheato Page'] = {
-        --     ['addr'] = 0x59,
-        --     ['bit'] = 0,
-        --     ['locationId'] = 1230749
-        -- },
-        -- ['Cloud Cuckcooland: Pot Ol Gold Cheato Page'] = {
-        --     ['addr'] = 0x59,
-        --     ['bit'] = 1,
-        --     ['locationId'] = 1230750
-        -- },
-        -- ['Cloud Cuckcooland: Zubbas Nest Cheato Page'] = {
-        --     ['addr'] = 0x59,
-        --     ['bit'] = 2,
-        --     ['locationId'] = 1230751
-        -- },
+        ['Spiral Mountain: Cheato Page'] = {
+            ['addr'] = 0x59,
+            ['bit'] = 3,
+            ['locationId'] = 1230752
+        },
+        ['Mayahem Temple: Snake Head Cheato Page'] = {
+            ['addr'] = 0x56,
+            ['bit'] = 3,
+            ['locationId'] = 1230728
+        },
+        ['Mayahem Temple: Prison Compound Cheato Page'] = {
+            ['addr'] = 0x56,
+            ['bit'] = 4,
+            ['locationId'] = 1230729
+        },
+        ['Mayahem Temple: Jade Snake Grove Cheato Page'] = {
+            ['addr'] = 0x56,
+            ['bit'] = 5,
+            ['locationId'] = 1230730
+        },
+        ['Glitter Gultch Mine: Canary Mary Cheato Page'] = {
+            ['addr'] = 0x56,
+            ['bit'] = 6,
+            ['locationId'] = 1230731
+        },
+        ['Glitter Gultch Mine: Entrance Cheato Page'] = {
+            ['addr'] = 0x56,
+            ['bit'] = 7,
+            ['locationId'] = 1230732
+        },
+        ['Glitter Gultch Mine: Water Storage Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 0,
+            ['locationId'] = 1230733
+        },
+        ['Witchy World: Haunted Cavern Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 1,
+            ['locationId'] = 1230734
+        },
+        ['Witchy World: The Inferno Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 2,
+            ['locationId'] = 1230735
+        },
+        ['Witchy World: Saucer of Peril Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 3,
+            ['locationId'] = 1230736
+        },
+        ['Jolly Rogers: Pawnos Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 4,
+            ['locationId'] = 1230737
+        },
+        ['Jolly Rogers: Seemee Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 5,
+            ['locationId'] = 1230738
+        },
+        ['Jolly Rogers: Ancient Baths Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 6,
+            ['locationId'] = 1230739
+        },
+        ['Terrydactyland: Dippys Pool Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 7,
+            ['locationId'] = 1230740
+        },
+        ['Terrydactyland: Inside the Mountain Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 0,
+            ['locationId'] = 1230741
+        },
+        ['Terrydactyland: Boulder Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 1,
+            ['locationId'] = 1230742
+        },
+        ['Gruntys Industries: Logo Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 2,
+            ['locationId'] = 1230743
+        },
+        ['Gruntys Industries: Floor 2 Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 3,
+            ['locationId'] = 1230744
+        },
+        ['Gruntys Industries: Repair Depot Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 4,
+            ['locationId'] = 1230745
+        },
+        ['Hailfire Peaks: Lava Side Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 5,
+            ['locationId'] = 1230746
+        },
+        ['Hailfire Peaks: Icicle Grotto Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 6,
+            ['locationId'] = 1230747
+        },
+        ['Hailfire Peaks: Icy Side Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 7,
+            ['locationId'] = 1230748
+        },
+        ['Cloud Cuckcooland: Canary Mary Cheato Page'] = {
+            ['addr'] = 0x59,
+            ['bit'] = 0,
+            ['locationId'] = 1230749
+        },
+        ['Cloud Cuckcooland: Pot Ol Gold Cheato Page'] = {
+            ['addr'] = 0x59,
+            ['bit'] = 1,
+            ['locationId'] = 1230750
+        },
+        ['Cloud Cuckcooland: Zubbas Nest Cheato Page'] = {
+            ['addr'] = 0x59,
+            ['bit'] = 2,
+            ['locationId'] = 1230751
+        },
     },
     ['HONEYCOMB'] = {
         ['Plateau: Honeycomb'] = {
@@ -2044,12 +2061,25 @@ local read_CHEATO_checks = function(type)
     then
         for k,v in pairs(MASTER_MAP['CHEATO'])
         do
-            checks[k] = checkFlag(v['addr'], v['bit'])
+			if multiPages == false
+            then
+                checks[k] = false
+            else
+				checks[k] = checkFlag(v['addr'], v['bit'])
+			end
         end
         AMM['CHEATO'] = checks;
     elseif type == "BMM"
     then
-        checks = BMM['CHEATO']
+		if multiPages == false
+        then
+            for k,v in pairs(MASTER_MAP['CHEATO'])
+            do
+                    checks[k] = false
+            end
+		else
+			checks = BMM['CHEATO']
+		end
     elseif type == "AGI" -- should only run for initialization
     then
         for k,v in pairs(MASTER_MAP['CHEATO'])
@@ -2166,23 +2196,20 @@ local read_H1_checks = function(type)
     return checks
 end
 
-function checkHoneycombs(location_checks)
-    if multiHoneycomb == true
-    then
-        for location_name, value in pairs(AGI['HONEYCOMB'])
-        do
-            if(isBackup == false and (value == false and location_checks[location_name] == true))
-            then
-                if(DEBUG == true)
-                then
-                    print("Obtained local Honeycomb. Remove from Inventory")
-                end
-                setHoneycomb(getHoneycomb() - 1)
-                AGI['HONEYCOMB'][location_name] = true
-                savingAGI()
-            end
-        end
-    end
+function checkConsumables(consumable_type, location_checks)
+	for location_name, value in pairs(AGI[consumable_type])
+	do
+		if(isBackup == false and (value == false and location_checks[location_name] == true))
+		then
+			if(DEBUG == true)
+			then
+				print("Obtained local consumable. Remove from Inventory")
+			end
+			setConsumable(consumable_type, getConsumable(consumable_type) - 1)
+			AGI[consumable_type][location_name] = true
+			savingAGI()
+		end
+	end
 end
 
 function loadGame(current_map)
@@ -2402,7 +2429,12 @@ function all_location_checks(type)
         AGI = location_checks
     end
 
-    checkHoneycombs(location_checks)
+    if multiHoneycomb == true then
+        checkConsumables('HONEYCOMB', location_checks)
+    end
+    if multiPages == true then
+        checkConsumables('CHEATO', location_checks)
+    end
     return location_checks
 end
 
@@ -2418,7 +2450,7 @@ function archipelago_msg_box(msg)
 end
 
 function processAGIItem(item_list)
-    if multiHoneycomb == true
+    if multiHoneycomb == true or multiPages == true
     then
         for ap_id, memlocation in pairs(item_list) -- Items unrelated to AGI_MAP like Consumables
         do
@@ -2428,7 +2460,14 @@ function processAGIItem(item_list)
                 then
                     print("HC Obtained")
                 end
-                setHoneycomb(getHoneycomb() + 1)
+                setConsumable('HONEYCOMB', getConsumable('HONEYCOMB') + 1)
+			elseif(memlocation == 1230513) -- Cheato Item
+			then
+				if DEBUG == true
+				then
+					print("Cheato Page Obtained")
+				end
+				setConsumable('CHEATO', getConsumable('CHEATO') + 1)
             end
         end
     end
@@ -2748,6 +2787,10 @@ function process_slot(block)
     if block['slot_honeycomb'] ~= nil and block['slot_honeycomb'] ~= "false"
     then
         multiHoneycomb = true
+    end
+	if block['slot_pages'] ~= nil and block['slot_pages'] ~= "false"
+    then
+        multiPages = true
     end
 
     if seed ~= 0
