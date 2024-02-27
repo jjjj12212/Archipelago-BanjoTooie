@@ -1,4 +1,5 @@
 import random
+from multiprocessing import Process
 import settings
 import typing
 from jinja2 import Environment, FileSystemLoader
@@ -16,6 +17,16 @@ from .Names import itemName
 from BaseClasses import ItemClassification, Tutorial, Item, Region, MultiWorld
 #from Fill import fill_restrictive
 from ..AutoWorld import World, WebWorld
+from ..LauncherComponents import Component, components, Type
+
+
+def run_client():
+    from worlds.banjotooie.BTClient import main  # lazy import
+    p = Process(target=main)
+    p.start()
+
+
+components.append(Component("Banjo-Tooie Client", func=run_client, component_type=Type.CLIENT))
 
 class BanjoTooieWeb(WebWorld):
     setup = Tutorial("Setup Banjo Tooie",
