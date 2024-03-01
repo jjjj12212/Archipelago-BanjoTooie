@@ -3129,10 +3129,14 @@ function checkPause()
             end
         elseif check_controls ~= nil and check_controls['P1 C Up'] == true
         then
-            print("BKM TABLE:");
-            for move, value in pairs(BKM)
+            print("BKM TABLE + Actual:");
+            for location, values in pairs(MASTER_MAP["MOVES"])
             do
-                print(move .. ":" .. tostring(value))
+                print("AMM:");
+                local res = checkFlag(values['addr'], values['bit']);
+                print(location .. ":" .. tostring(res))
+                print("Checked? : " .. tostring(BKM[location]))
+                print("------------------------");
             end
         end
     end
