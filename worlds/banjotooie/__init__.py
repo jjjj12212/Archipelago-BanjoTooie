@@ -147,11 +147,12 @@ class BanjoTooieWorld(World):
                 item = self.create_item(itemName.HONEY)
                 if name.find("Honeycomb") != -1:
                     self.multiworld.get_location(name, self.player).place_locked_item(item)
-            if self.options.multiworld_cheato == False:
-                for name, id in self.location_name_to_id.items():
-                    item = self.create_item(itemName.PAGES)
-                    if name.find("Page") != -1:
-                        self.multiworld.get_location(name, self.player).place_locked_item(item)
+                    
+        if self.options.multiworld_cheato == False:
+            for name, id in self.location_name_to_id.items():
+                item = self.create_item(itemName.PAGES)
+                if name.find("Page") != -1:
+                    self.multiworld.get_location(name, self.player).place_locked_item(item)
 
         if self.options.multiworld_moves == False:
             for group_name, item_info in self.item_name_groups.items():
