@@ -117,6 +117,46 @@ jiggy_table = {
     itemName.JIGGYCC10: ItemData(1230675, 1, "progress"),
 }
 
+moves_table = {
+    itemName.GGRAB:         ItemData(1230753, 1, "progress"),
+    itemName.BBLASTER:      ItemData(1230754, 1, "progress"),
+    itemName.EGGAIM:        ItemData(1230755, 1, "progress"),
+
+    itemName.FEGGS:         ItemData(1230756, 1, "progress"),
+
+    itemName.BDRILL:        ItemData(1230757, 1, "progress"),
+    itemName.BBAYONET:      ItemData(1230758, 1, "progress"),
+
+    itemName.GEGGS:         ItemData(1230759, 1, "progress"),
+
+    itemName.AIREAIM:       ItemData(1230760, 1, "progress"),
+    itemName.SPLITUP:       ItemData(1230761, 1, "progress"),
+    itemName.PACKWH:        ItemData(1230762, 1, "progress"),
+    
+    itemName.IEGGS:         ItemData(1230763, 1, "progress"),
+
+    itemName.WWHACK:        ItemData(1230764, 1, "progress"),
+    itemName.TTORP:         ItemData(1230765, 1, "progress"),
+    itemName.AUQAIM:        ItemData(1230766, 1, "progress"),
+
+    itemName.CEGGS:         ItemData(1230767, 1, "progress"),
+
+    itemName.SPRINGB:       ItemData(1230768, 1, "progress"),
+    itemName.TAXPACK:       ItemData(1230769, 1, "progress"),
+    itemName.HATCH:         ItemData(1230770, 1, "progress"),
+
+    itemName.SNPACK:        ItemData(1230771, 1, "progress"),
+    itemName.LSPRING:       ItemData(1230772, 1, "progress"),
+    itemName.CLAWBTS:       ItemData(1230773, 1, "progress"),
+
+    itemName.SHPACK:        ItemData(1230774, 1, "progress"),
+    itemName.GLIDE:         ItemData(1230775, 1, "progress"),
+
+    itemName.SAPACK:        ItemData(1230776, 1, "progress"),
+
+ #   itemName.FSWIM:         ItemData(1230777, 1, "progress"),
+}
+
 level_progress_table = {
     itemName.MUMBOMT:        ItemData(1230855, 1, "progress"),
     itemName.MUMBOGM:        ItemData(1230856, 1, "progress"),
@@ -151,13 +191,15 @@ all_item_table = {
     **jinjo_table,
     **level_progress_table,
     **misc_collectable_table,
-    **jiggy_table
+    **jiggy_table,
+    **moves_table
 }
 
 all_group_table = {
     'jiggy' : jiggy_table,
     'jinjo' : jinjo_table,
-    'misc' : misc_collectable_table
+    'misc' : misc_collectable_table,
+    'moves': moves_table
 }
 
 

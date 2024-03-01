@@ -35,6 +35,7 @@ Banjo Tooie for Archipelago
 # Contributors
  - @Unalive (coder)
  - @Beebaleen (Doc Maintainer)
+ - Cyb3RGER (AP Launcher)
 
 # Shoutouts
 Huge thank you for the following individuals / teams. Without them, this project would not have gotten this far:
