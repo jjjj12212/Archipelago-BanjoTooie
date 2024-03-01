@@ -71,6 +71,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JIGGYGM10,
         locationName.GLOWBOGM1,
         locationName.GLOWBOGM2,
+        locationName.GLOWBOMEG,
         locationName.HONEYCGM1,
         locationName.HONEYCGM2,
         locationName.HONEYCGM3,
@@ -297,8 +298,8 @@ def create_regions(self):
             dellist.append(location)
         if(location.find("Doubloon") != -1 and self.options.multiworld_doubloons == False):
             dellist.append(location)
-        if(location.find("Glowbo") != -1 and self.options.multiworld_glowbos == False):
-            dellist.append(location)
+        #if(location.find("Glowbo") != -1 and self.options.multiworld_glowbos == False):
+            #dellist.append(location)
         # if(location.find("Cheato") != -1 and self.options.multiworld_cheato == False):
         #     dellist.append(location)
         # if(location.find("Honeycomb") != -1 and self.options.multiworld_honeycombs == False):

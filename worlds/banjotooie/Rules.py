@@ -16,6 +16,8 @@ class BanjoTooieRules:
     player: int
     world: BanjoTooieWorld
     region_rules= {}
+    can_transform = {}
+    mumbo_magic = {}
 
 
     def __init__(self, world: BanjoTooieWorld) -> None:
@@ -35,6 +37,34 @@ class BanjoTooieRules:
             regionName.CK:      lambda state: self.jiggy_unlock(state, 55),
             regionName.H1:      lambda state: self.jiggy_unlock(state, 70) 
         }
+
+        self.can_transform = {
+            "Stony":           lambda state: state.has(itemName.HUMBAMT, self.player) and
+                                             self.mumbo_magic["Golden Goliath"],
+            "Detonator":       lambda state: state.has(itemName.HUMBAGM, self.player),
+            "Money Van":       lambda state: state.has(itemName.HUMBAWW, self.player),
+            "Sub":             lambda state: state.has(itemName.HUMBAJR, self.player) and
+                                             self.mumbo_magic["Oxygenate"],
+            "T-Rex":           lambda state: state.has(itemName.HUMBATD, self.player),
+            "Washing Machine": lambda state: state.has(itemName.HUMBAGI, self.player),
+            "Snowball":        lambda state: state.has(itemName.HUMBAHP, self.player),
+            "Bee":             lambda state: state.has(itemName.HUMBACC, self.player),
+            "Dragon":          lambda state: state.has(itemName.HUMBAIH, self.player)
+        }
+
+        self.mumbo_magic = {
+            "Golden Goliath": lambda state: state.has(itemName.MUMBOMT, self.player),
+            "Levitate":       lambda state: state.has(itemName.MUMBOGM, self.player),
+            "Power":          lambda state: state.has(itemName.MUMBOWW, self.player) and
+                                            self.can_transform["Money Van"],
+            "Oxygenate":      lambda state: state.has(itemName.MUMBOJR, self.player),
+            "Grow/Shrink":    lambda state: state.has(itemName.MUMBOTD, self.player),
+            "EMP":            lambda state: state.has(itemName.MUMBOGI, self.player),
+            "Revive":         lambda state: state.has(itemName.MUMBOHP, self.player),
+            "Rain Dance":     lambda state: state.has(itemName.MUMBOCC, self.player),
+            "Heal":           lambda state: state.has(itemName.MUMBOIH, self.player)
+        }
+
 
     def jiggy_unlock(self, state: CollectionState, Amount) -> bool:
         return state.has_group("Jiggy", self.player, Amount)

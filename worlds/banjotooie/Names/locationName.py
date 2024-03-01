@@ -1,10 +1,10 @@
-#Dabloons
-JRLDB1  = "Jolly Rogers: Town Center Pole 1 Doubloon'"
-JRLDB2  = "Jolly Rogers: Town Center Pole 2 Doubloon'"
-JRLDB3  = "Jolly Rogers: Town Center Pole 3 Doubloon'"
-JRLDB4  = "Jolly Rogers: Town Center Pole 4 Doubloon'"
-JRLDB5  = "Jolly Rogers: Town Center Pole 5 Doubloon'"
-JRLDB6  = "Jolly Rogers: Town Center Pole 6 Doubloon'"
+#Doubloons
+JRLDB1  = "Jolly Rogers: Town Center Pole 1 Doubloon"
+JRLDB2  = "Jolly Rogers: Town Center Pole 2 Doubloon"
+JRLDB3  = "Jolly Rogers: Town Center Pole 3 Doubloon"
+JRLDB4  = "Jolly Rogers: Town Center Pole 4 Doubloon"
+JRLDB5  = "Jolly Rogers: Town Center Pole 5 Doubloon"
+JRLDB6  = "Jolly Rogers: Town Center Pole 6 Doubloon"
 JRLDB7  = "Jolly Rogers: Silo 1 Doubloon"
 JRLDB8  = "Jolly Rogers: Silo 2 Doubloon"
 JRLDB9  = "Jolly Rogers: Silo 3 Doubloon"
@@ -187,6 +187,7 @@ GLOWBOHP2 = "Hailfire Peaks: Icy Side Glowbo"
 GLOWBOCC1 = "Cloud Cuckcooland: Overworld Glowbo"
 GLOWBOCC2 = "Cloud Cuckcooland: Central Cavern Glowbo"
 GLOWBOIH1 = "Cliff Top: Glowbo"
+GLOWBOMEG = "Mega Glowbo"
 
 #Honeycombs
 HONEYCMT1  = "Mayahem Temple: Entrance Honeycomb"

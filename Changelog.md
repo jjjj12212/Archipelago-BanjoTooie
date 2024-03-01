@@ -1,3 +1,10 @@
+# 0.5-beta
+- Implemented Cheato Pages
+- Implemented Glowbos
+- Skip most cutscenes and one-time dialogues
+- Fixed some typoes
+- Fixed bug where lua script would crash randomly
+
 # v0.4-beta
 - Fixed issue when unchecked locations are sent when saving and quiting.
 

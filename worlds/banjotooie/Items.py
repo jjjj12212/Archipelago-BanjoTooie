@@ -118,7 +118,25 @@ jiggy_table = {
 }
 
 level_progress_table = {
-    itemName.GLOWBO:        ItemData(1230511, 17, "progress"),
+    itemName.MUMBOMT:        ItemData(1230855, 1, "progress"),
+    itemName.MUMBOGM:        ItemData(1230856, 1, "progress"),
+    itemName.MUMBOWW:        ItemData(1230857, 1, "progress"),
+    itemName.MUMBOJR:        ItemData(1230858, 1, "progress"),
+    itemName.MUMBOTD:        ItemData(1230859, 1, "progress"),
+    itemName.MUMBOGI:        ItemData(1230860, 1, "progress"),
+    itemName.MUMBOHP:        ItemData(1230861, 1, "progress"),
+    itemName.MUMBOCC:        ItemData(1230862, 1, "progress"),
+    itemName.MUMBOIH:        ItemData(1230863, 1, "progress"),
+
+    itemName.HUMBAMT:        ItemData(1230174, 1, "progress"),
+    itemName.HUMBAGM:        ItemData(1230175, 1, "progress"),
+    itemName.HUMBAWW:        ItemData(1230176, 1, "progress"),
+    itemName.HUMBAJR:        ItemData(1230177, 1, "progress"),
+    itemName.HUMBATD:        ItemData(1230178, 1, "progress"),
+    itemName.HUMBAGI:        ItemData(1230179, 1, "progress"),
+    itemName.HUMBAHP:        ItemData(1230180, 1, "progress"),
+    itemName.HUMBACC:        ItemData(1230181, 1, "progress"),
+    itemName.HUMBAIH:        ItemData(1230182, 1, "progress"),
 }
 
 misc_collectable_table = {
