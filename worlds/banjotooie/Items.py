@@ -154,7 +154,7 @@ moves_table = {
 
     itemName.SAPACK:        ItemData(1230776, 1, "progress"),
 
-    itemName.FSWIM:         ItemData(1230777, 1, "progress"),
+ #   itemName.FSWIM:         ItemData(1230777, 1, "progress"),
 }
 
 level_progress_table = {

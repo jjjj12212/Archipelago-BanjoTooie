@@ -18,7 +18,7 @@ class LocationData(typing.NamedTuple):
 SMLoc_table = {
     locationName.CHEATOSM1: LocationData(1230752, 0x59, 3),
     # locationName.JINJOIH5: LocationData(1230595, 0x3F, 0)
-    locationName.FSWIM:    LocationData(1230777, 0x1E, 5)
+    # locationName.FSWIM:    LocationData(1230777, 0x1E, 5)
 
 }
 

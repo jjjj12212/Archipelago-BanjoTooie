@@ -8,7 +8,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.SM:       [
         locationName.CHEATOSM1,
         locationName.JINJOIH5,
-        locationName.FSWIM
+    #    locationName.FSWIM
     ],
     regionName.IOHJV:    [
         locationName.JIGGYIH1,

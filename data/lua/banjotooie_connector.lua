@@ -7,7 +7,7 @@ local json = require('json')
 local math = require('math')
 require('common')
 
-local last_modified_date = '2024-02-20' -- Should be the last modified date
+local last_modified_date = '2024-03-01' -- Should be the last modified date
 local script_version = 4
 -- Template Variables
 local player_name = ""
@@ -426,6 +426,38 @@ function nearWHJinjo()
         BMMRestore();
     end
 end
+
+local SILO_MAP_CHECK = {
+    ["IOHCT"]  = 0x155,
+    ["IOHPL"]  = 0x152, 
+    ["IOHGRO"] = 0x154,
+    ["IOHWST"] = 0x15A,
+
+    ["MTMAIN"] = 0xB8, --2
+    ["MTCOVE"] = 0xC4,
+
+    ["GMMAIN"] = 0xC7,
+    ["GMSTOR"] = 0x163,
+    
+    ["WWMAIN"] = 0xD6, --2
+    ["WWCAST"] = 0xE1,
+
+    ["JRMAIN"] = 0x1A7,
+    ["JREELB"] = 0xF6,
+    ["JRJOLL"] = 0xED,
+
+    ["TLMAIN"] = 0x122, --2
+    ["TLRIVE"] = 0x117,
+
+    ["GIMAIN"] = 0x101,
+    ["GIFLO2"] = 0x106,
+    ["GIWAST"] = 0x111,
+
+    ["HFPICE"] = 0x128,
+    ["HPLAVA"] = 0x127,
+
+    ["CCCAVE"] = 0x13A
+}
 
 -- BMM - Backup Memory Map 
 local BMM =  {};
@@ -2427,6 +2459,10 @@ local update_BMK_MOVES_checks = function() --Only run when close to Silos
             res = checkFlag(v['addr'], v['bit'])
             if res == true
             then
+                if DEBUG == true 
+                then
+                    print("Already learnt this Silo. finished")
+                end
                 BKM[k] = res
                 FinishedSilo = true
             end
@@ -2455,6 +2491,9 @@ local clear_AMM_MOVES_checks = function() --Only run when transitioning Maps unt
         if BKM[k] == false
         then
             clearFlag(v['addr'], v['bit'])
+        elseif BKM[k] == true 
+        then
+            setFlag(v['addr'], v['bit'])
         end
     end
 end
@@ -2538,6 +2577,7 @@ function getSiloPlayerModel()
         if DEBUG == true
         then
             print("No silo on Map")
+            print("AP Abilities enabled")
         end
         set_AGI_MOVES_checks() --No Silo on this map
         NeedSiloState = false
@@ -2561,79 +2601,69 @@ function nearSilo()
         return false
     end
 
-    if SiloObj == nil
+    local objects = checkModels("Silo");
+    if objects == false
     then
-        local objects = checkModels("Silo");
-        if objects == false
+        return; --Shouldn't hit here at all
+    end
+
+    for index, silos in pairs(objects) do
+        local xPos = mainmemory.readfloat(silos + 0x04, true);
+        local yPos = mainmemory.readfloat(silos + 0x08, true);
+        local zPos = mainmemory.readfloat(silos + 0x0C, true);
+
+        --Move the Silo in WitchyWorld.
+        if (xPos == 0 and yPos == -163 and zPos == -1257)
+            and last_map == 0xD6
         then
-            return; --Shouldn't hit here at all
+            mainmemory.writefloat(silos + 0x0C, zPos + 100, true);
+            MoveWitchyPads();
         end
-
-        for index, silos in pairs(objects) do
-            local xPos = mainmemory.readfloat(silos + 0x04, true);
-            local yPos = mainmemory.readfloat(silos + 0x08, true);
-            local zPos = mainmemory.readfloat(silos + 0x0C, true);
-
-            --Move the Silo in WitchyWorld.
-            if (xPos == 0 and yPos == -163 and zPos == -1257)
-                and last_map == 0xD6
+    
+        local hDist = math.sqrt(((xPos - pos["Xpos"]) ^ 2) + ((zPos - pos["Zpos"]) ^ 2));
+        playerDist = math.floor(math.sqrt(((yPos - pos["Ypos"]) ^ 2) + (hDist ^ 2)));
+        if playerDist <= 650
+        then
+            if DEBUG == true
             then
-                mainmemory.writefloat(silos + 0x0C, zPos + 100, true);
-                MoveWitchyPads();
-
+                print("Near Silo");
             end
-        
-            local hDist = math.sqrt(((xPos - pos["Xpos"]) ^ 2) + ((zPos - pos["Zpos"]) ^ 2));
-            playerDist = math.floor(math.sqrt(((yPos - pos["Ypos"]) ^ 2) + (hDist ^ 2)));
-            if playerDist <= 650
+            break;
+        end
+    end
+
+    if playerDist <= 650 
+    then
+        if AMMMovesCleared == false
+        then
+            clear_AMM_MOVES_checks();
+            update_BMK_MOVES_checks();
+            AMMMovesCleared = true
+        elseif FinishedSilo == false
+        then
+            if DEBUG == true
             then
-                if DEBUG == true
-                then
-                    print("Near Silo");
-                end
-                SiloObj = silos
+                print("Watching BMK Moves");
+            end
+            update_BMK_MOVES_checks();
+        else
+            if DEBUG == true
+            then
+            print("BMK Move Learnt");
+            print(playerDist)
             end
         end
     else
-        local xPos = mainmemory.readfloat(SiloObj + 0x04, true);
-        local yPos = mainmemory.readfloat(SiloObj + 0x08, true);
-        local zPos = mainmemory.readfloat(SiloObj + 0x0C, true);
-        
-        local hDist = math.sqrt(((xPos - pos["Xpos"]) ^ 2) + ((zPos - pos["Zpos"]) ^ 2));
-        playerDist = math.floor(math.sqrt(((yPos - pos["Ypos"]) ^ 2) + (hDist ^ 2)));
-
-        if playerDist <= 650
+        if AMMMovesCleared == true
         then
-            if AMMMovesCleared == false
+            if DEBUG == true
             then
-                clear_AMM_MOVES_checks();
-                update_BMK_MOVES_checks();
-                AMMMovesCleared = true
-            elseif FinishedSilo == false
-            then
-                if DEBUG == true
-                then
-                    print("Watching BMK Moves");
-                end
-                update_BMK_MOVES_checks();
-            else
-                if DEBUG == true
-                then
-                print("BMK Move Learnt");
-                end
+                print("Reseting Movelist");
             end
-        else
-            if AMMMovesCleared == true
-            then
-                if DEBUG == true
-                then
-                    print("Reseting Movelist");
-                end
-                set_AGI_MOVES_checks()
-                AMMMovesCleared = false
-                FinishedSilo = false;
-                SiloObj = nil;
-            end
+            set_AGI_MOVES_checks()
+            AMMMovesCleared = false
+            FinishedSilo = false;
+            SiloObj = nil;
         end
     end
 end
@@ -2683,11 +2713,18 @@ function locationControl()
         end
         if (last_map ~= mapaddr) and APMovesEnabled == true
         then
-            if DEBUG == true
-            then
-                    print("Checking Silos")
+            for k,maps in pairs(SILO_MAP_CHECK)
+            do
+                if mapaddr == maps
+                then
+                    if DEBUG == true
+                    then
+                         print("Checking Silos")
+                    end
+                    SiloCounter = 0;
+                    NeedSiloState = true
+                end
             end
-            NeedSiloState = true
         end
         if ((last_map == 335 or last_map == 337) and (mapaddr ~= 335 and mapaddr ~= 337)) -- Wooded Hollow
         then
@@ -2709,12 +2746,18 @@ function locationControl()
         else
             if (last_map ~= mapaddr) and APMovesEnabled == true
             then
-                if DEBUG == true
-                then
-                     print("Checking Silos")
+                for k,maps in pairs(SILO_MAP_CHECK) -- avoid detected abilities in Areas you don't have
+                do
+                    if mapaddr == maps
+                    then
+                        if DEBUG == true
+                        then
+                             print("Checking Silos")
+                        end
+                        SiloCounter = 0;
+                        NeedSiloState = true
+                    end
                 end
-                SiloCounter = 0;
-                NeedSiloState = true
             end
             if (mapaddr == 335 or mapaddr == 337) and checkTotals == false -- Wooded Hollow / JiggyTemple
             then
@@ -3367,6 +3410,10 @@ function main()
                 end
                 if NeedSiloState == true
                 then
+                    if DEBUG == true
+                    then
+                        print("clearing all AMM moves")
+                    end
                     clear_AMM_MOVES_checks()
                     getSiloPlayerModel()
                 end
