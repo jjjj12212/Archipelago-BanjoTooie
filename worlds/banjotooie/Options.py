@@ -43,7 +43,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     multiworld_moves: EnableMultiWorldMoveList
     multiworld_jinjos: EnableMultiWorldJinjos
     multiworld_doubloons: EnableMultiWorldDoubloons
-    mutliworld_cheato: EnableMultiWorldCheatoPages
+    multiworld_cheato: EnableMultiWorldCheatoPages
     multiworld_honeycombs: EnableMultiWorldHoneycombs
     multiworld_glowbos: EnableMultiWorldGlowbos
     jingaling_jiggy: KingJingalingHasJiggy

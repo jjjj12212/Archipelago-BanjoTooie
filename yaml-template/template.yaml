@@ -3,7 +3,7 @@ Banjo Tooie:
   multiworld_moves: 'false'
   multiworld_jinjos: 'false'
   multiworld_doubloons: 'false'
-  multiworld_cheato: 'false'
+  multiworld_cheato: 'true'
   multiworld_honeycombs: 'true'
   multiworld_glowbos: 'false'
   jingaling_jiggy: 'true'

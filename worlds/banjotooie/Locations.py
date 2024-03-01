@@ -16,7 +16,7 @@ class LocationData(typing.NamedTuple):
     bitmask: int = 0
 
 SMLoc_table = {
-    # locationName.CHEATOSM1: LocationData(1230752, 0x59, 3),
+    locationName.CHEATOSM1: LocationData(1230752, 0x59, 3),
     # locationName.JINJOIH5: LocationData(1230595, 0x3F, 0)
     locationName.FSWIM:    LocationData(1230777, 0x1E, 5)
 
@@ -56,9 +56,9 @@ MTLoc_Table = {
     locationName.HONEYCMT1: LocationData(1230703, 0x3F, 2),
     locationName.HONEYCMT2: LocationData(1230704, 0x3F, 3),
     locationName.HONEYCMT3: LocationData(1230705, 0x3F, 4),
-    # locationName.CHEATOMT1: LocationData(1230728, 0x56, 3),
-    # locationName.CHEATOMT2: LocationData(1230729, 0x56, 4),
-    # locationName.CHEATOMT3: LocationData(1230730, 0x56, 5),
+    locationName.CHEATOMT1: LocationData(1230728, 0x56, 3),
+    locationName.CHEATOMT2: LocationData(1230729, 0x56, 4),
+    locationName.CHEATOMT3: LocationData(1230730, 0x56, 5),
     locationName.GGRAB:     LocationData(1230753, 0x1B, 1),
     locationName.BBLASTER:  LocationData(1230754, 0x1B, 2),
     locationName.EGGAIM:    LocationData(1230755, 0x1B, 3),
@@ -91,9 +91,9 @@ GMLoc_table = {
     locationName.HONEYCGM1: LocationData(1230706, 0x3F, 5),
     locationName.HONEYCGM2: LocationData(1230707, 0x3F, 6),
     locationName.HONEYCGM3: LocationData(1230708, 0x3F, 7),
-    # locationName.CHEATOGM1: LocationData(1230731, 0x56, 6),
-    # locationName.CHEATOGM2: LocationData(1230732, 0x56, 7),
-    # locationName.CHEATOGM3: LocationData(1230733, 0x57, 0),
+    locationName.CHEATOGM1: LocationData(1230731, 0x56, 6),
+    locationName.CHEATOGM2: LocationData(1230732, 0x56, 7),
+    locationName.CHEATOGM3: LocationData(1230733, 0x57, 0),
     locationName.BDRILL:    LocationData(1230757, 0x1B, 6),
     locationName.BBAYONET:  LocationData(1230758, 0x1B, 7)
 }
@@ -123,9 +123,9 @@ WWLoc_table = {
     locationName.HONEYCWW1: LocationData(1230709, 0x40, 0),
     locationName.HONEYCWW2: LocationData(1230710, 0x40, 1),
     locationName.HONEYCWW3: LocationData(1230711, 0x40, 2),
-    # locationName.CHEATOWW1: LocationData(1230734, 0x57, 1),
-    # locationName.CHEATOWW2: LocationData(1230735, 0x57, 2),
-    # locationName.CHEATOWW3: LocationData(1230736, 0x57, 3),
+    locationName.CHEATOWW1: LocationData(1230734, 0x57, 1),
+    locationName.CHEATOWW2: LocationData(1230735, 0x57, 2),
+    locationName.CHEATOWW3: LocationData(1230736, 0x57, 3),
     locationName.AIREAIM:   LocationData(1230760, 0x1C, 0),
     locationName.SPLITUP:   LocationData(1230761, 0x1C, 1),
     locationName.PACKWH:    LocationData(1230762, 0x1D, 6)
@@ -182,9 +182,9 @@ JRLoc_table = {
     locationName.HONEYCJR1: LocationData(1230712, 0x40, 3),
     locationName.HONEYCJR2: LocationData(1230713, 0x40, 4),
     locationName.HONEYCJR3: LocationData(1230714, 0x40, 5),
-    # locationName.CHEATOJR1: LocationData(1230737, 0x57, 4),
-    # locationName.CHEATOJR2: LocationData(1230738, 0x57, 5),
-    # locationName.CHEATOJR3: LocationData(1230739, 0x57, 6),
+    locationName.CHEATOJR1: LocationData(1230737, 0x57, 4),
+    locationName.CHEATOJR2: LocationData(1230738, 0x57, 5),
+    locationName.CHEATOJR3: LocationData(1230739, 0x57, 6),
     locationName.WWHACK:   LocationData(1230764, 0x1C, 2),
     locationName.TTORP:    LocationData(1230765, 0x1C, 3),
     locationName.AUQAIM:   LocationData(1230766, 0x1C, 4)
@@ -211,9 +211,9 @@ TLLoc_table = {
     locationName.HONEYCTL1: LocationData(1230715, 0x40, 6),
     locationName.HONEYCTL2: LocationData(1230716, 0x40, 7),
     locationName.HONEYCTL3: LocationData(1230717, 0x41, 0),
-    # locationName.CHEATOTL1: LocationData(1230740, 0x57, 7),
-    # locationName.CHEATOTL2: LocationData(1230741, 0x58, 0),
-    # locationName.CHEATOTL3: LocationData(1230742, 0x58, 1),
+    locationName.CHEATOTL1: LocationData(1230740, 0x57, 7),
+    locationName.CHEATOTL2: LocationData(1230741, 0x58, 0),
+    locationName.CHEATOTL3: LocationData(1230742, 0x58, 1),
     locationName.SPRINGB:   LocationData(1230768, 0x1D, 3),
     locationName.TAXPACK:   LocationData(1230769, 0x1D, 4),
     locationName.HATCH:     LocationData(1230770, 0x1D, 5)
@@ -240,9 +240,9 @@ GILoc_table = {
     locationName.HONEYCGI1: LocationData(1230718, 0x41, 1),
     locationName.HONEYCGI2: LocationData(1230719, 0x41, 2),
     locationName.HONEYCGI3: LocationData(1230720, 0x41, 3),
-    # locationName.CHEATOGI1: LocationData(1230743, 0x58, 2),
-    # locationName.CHEATOGI2: LocationData(1230744, 0x58, 3),
-    # locationName.CHEATOGI3: LocationData(1230745, 0x58, 4),
+    locationName.CHEATOGI1: LocationData(1230743, 0x58, 2),
+    locationName.CHEATOGI2: LocationData(1230744, 0x58, 3),
+    locationName.CHEATOGI3: LocationData(1230745, 0x58, 4),
     locationName.SNPACK:    LocationData(1230771, 0x1D, 0),
     locationName.LSPRING:   LocationData(1230772, 0x1D, 1),
     locationName.CLAWBTS:   LocationData(1230773, 0x1D, 2)
@@ -269,9 +269,9 @@ HPLoc_table = {
     locationName.HONEYCHP1: LocationData(1230721, 0x41, 4),
     locationName.HONEYCHP2: LocationData(1230722, 0x41, 5),
     locationName.HONEYCHP3: LocationData(1230723, 0x41, 6),
-    # locationName.CHEATOHP1: LocationData(1230746, 0x58, 5),
-    # locationName.CHEATOHP2: LocationData(1230747, 0x58, 6),
-    # locationName.CHEATOHP3: LocationData(1230748, 0x58, 7),
+    locationName.CHEATOHP1: LocationData(1230746, 0x58, 5),
+    locationName.CHEATOHP2: LocationData(1230747, 0x58, 6),
+    locationName.CHEATOHP3: LocationData(1230748, 0x58, 7),
     locationName.SHPACK:   LocationData(1230774, 0x1C, 6),
     locationName.GLIDE:    LocationData(1230775, 0x1C, 7)
 }
@@ -297,9 +297,9 @@ CCLoc_table = {
     locationName.HONEYCCC1: LocationData(1230724, 0x41, 7),
     locationName.HONEYCCC2: LocationData(1230725, 0x42, 0),
     locationName.HONEYCCC3: LocationData(1230726, 0x42, 1),
-    # locationName.CHEATOCC1: LocationData(1230749, 0x59, 0),
-    # locationName.CHEATOCC2: LocationData(1230750, 0x59, 1),
-    # locationName.CHEATOCC3: LocationData(1230751, 0x59, 2),
+    locationName.CHEATOCC1: LocationData(1230749, 0x59, 0),
+    locationName.CHEATOCC2: LocationData(1230750, 0x59, 1),
+    locationName.CHEATOCC3: LocationData(1230751, 0x59, 2),
     locationName.SAPACK:    LocationData(1230776, 0x1D, 7)
 }
 

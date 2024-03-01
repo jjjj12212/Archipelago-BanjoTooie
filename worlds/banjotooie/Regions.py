@@ -325,8 +325,10 @@ def create_regions(self):
             dellist.append(location)
         if(location.find("Glowbo") != -1 and self.options.multiworld_glowbos == False):
             dellist.append(location)
-        if(location.find("Cheato") != -1 and self.options.mutliworld_cheato == False):
-            dellist.append(location)
+        # if(location.find("Cheato") != -1 and self.options.multiworld_cheato == False):
+        #     dellist.append(location)
+        # if(location.find("Honeycomb") != -1 and self.options.multiworld_honeycombs == False):
+        #     dellist.append(location)
 
     for name in dellist:
             if( name in active_locations):

@@ -195,6 +195,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_deathlink": ctx.deathlink_enabled,
             "slot_skip_tot": ctx.slot_data["skip_tot"],
             "slot_honeycomb": ctx.slot_data["honeycomb"],
+            "slot_pages": ctx.slot_data["pages"],
             "slot_moves": ctx.slot_data["moves"]
         })
     ctx.sendSlot = False
@@ -234,7 +235,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             ctx.location_table = locations
 
             # Game completion handling
-            if "Hag 1 Defeated" in locations and not ctx.finished_game:
+            if (("Hag 1 Defeated" in locations and locations["Hag 1 Defeated"] == True) 
+            and not ctx.finished_game):
                 await ctx.send_msgs([{
                     "cmd": "StatusUpdate",
                     "status": 30

@@ -58,6 +58,7 @@ local killBTFlag = false;
 local isBanjoDed = false;
 local isBanjoDedCheck = false;
 local multiHoneycomb = false;
+local multiPages = false;
 local BMMLoaded = false;
 local BMMBypass = false;
 local APMovesEnabled = false; -- Enable AP Moves Logics
@@ -83,17 +84,33 @@ function dereferencePointer(address)
 end
 
 local consumeTable = {
-    [9] = {key=0x3C0C, name="Empty Honeycombs"}
+    [9]  = {key=0x3C0C, name="Empty Honeycombs"},
+	[10] = {key=0x0319, name="Cheato Pages"}
 }
 
-function setHoneycomb(value)
+function setConsumable(consumable_type, value)
+	local index;
+	if consumable_type == 'HONEYCOMB'
+	then
+		index = 9
+	elseif consumable_type == 'CHEATO'
+	then
+		index = 10
+	end
     local consumablesBlock = dereferencePointer(0x12B250);
-    mainmemory.write_u16_be(consumablesBlock + 9 * 2, value ~ 0x3C0C);
-    mainmemory.write_u16_be(0x11B080 + 9 * 0x0C, value);
+    mainmemory.write_u16_be(consumablesBlock + index * 2, value ~ consumeTable[index]["key"]);
+    mainmemory.write_u16_be(0x11B080 + index * 0x0C, value);
 end
 
-function getHoneycomb()
-    local normalValue = mainmemory.read_u16_be(0x11B080 + 9 * 0x0C);
+function getConsumable(consumable_type)
+	if consumable_type == 'HONEYCOMB'
+	then
+		index = 9
+	elseif consumable_type == 'CHEATO'
+	then
+		index = 10
+	end
+    local normalValue = mainmemory.read_u16_be(0x11B080 + index * 0x0C);
 	return normalValue;
 end
 
@@ -235,6 +252,10 @@ function getModelOneCount()
     end
     local firstObject = dereferencePointer(objectArray + 0x04);
     local lastObject = dereferencePointer(objectArray + 0x08);
+	if lastObject == nil 
+	then
+		return
+	end
     return math.floor((lastObject - firstObject) / obj_model1_slot_size) + 1;
 end
 
@@ -1099,131 +1120,131 @@ local MASTER_MAP = {
         -- },
     },
     ['CHEATO'] = {
-        -- ['Spiral Mountain: Cheato Page'] = {
-        --     ['addr'] = 0x59,
-        --     ['bit'] = 3,
-        --     ['locationId'] = 1230752
-        -- },
-        -- ['Mayahem Temple: Snake Head Cheato Page'] = {
-        --     ['addr'] = 0x56,
-        --     ['bit'] = 3,
-        --     ['locationId'] = 1230728
-        -- },
-        -- ['Mayahem Temple: Prison Compound Cheato Page'] = {
-        --     ['addr'] = 0x56,
-        --     ['bit'] = 4,
-        --     ['locationId'] = 1230729
-        -- },
-        -- ['Mayahem Temple: Jade Snake Grove Cheato Page'] = {
-        --     ['addr'] = 0x56,
-        --     ['bit'] = 5,
-        --     ['locationId'] = 1230730
-        -- },
-        -- ['Glitter Gultch Mine: Canary Mary Cheato Page'] = {
-        --     ['addr'] = 0x56,
-        --     ['bit'] = 6,
-        --     ['locationId'] = 1230731
-        -- },
-        -- ['Glitter Gultch Mine: Entrance Cheato Page'] = {
-        --     ['addr'] = 0x56,
-        --     ['bit'] = 7,
-        --     ['locationId'] = 1230732
-        -- },
-        -- ['Glitter Gultch Mine: Water Storage Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 0,
-        --     ['locationId'] = 1230733
-        -- },
-        -- ['Witchy World: Haunted Cavern Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 1,
-        --     ['locationId'] = 1230734
-        -- },
-        -- ['Witchy World: The Inferno Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 2,
-        --     ['locationId'] = 1230735
-        -- },
-        -- ['Witchy World: Saucer of Peril Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 3,
-        --     ['locationId'] = 1230736
-        -- },
-        -- ['Jolly Rogers: Pawnos Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 4,
-        --     ['locationId'] = 1230737
-        -- },
-        -- ['Jolly Rogers: Seemee Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 5,
-        --     ['locationId'] = 1230738
-        -- },
-        -- ['Jolly Rogers: Ancient Baths Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 6,
-        --     ['locationId'] = 1230739
-        -- },
-        -- ['Terrydactyland: Dippys Pool Cheato Page'] = {
-        --     ['addr'] = 0x57,
-        --     ['bit'] = 7,
-        --     ['locationId'] = 1230740
-        -- },
-        -- ['Terrydactyland: Inside the Mountain Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 0,
-        --     ['locationId'] = 1230741
-        -- },
-        -- ['Terrydactyland: Boulder Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 1,
-        --     ['locationId'] = 1230742
-        -- }
-        -- ['Gruntys Industries: Logo Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 2,
-        --     ['locationId'] = 1230743
-        -- },
-        -- ['Gruntys Industries: Floor 2 Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 3,
-        --     ['locationId'] = 1230744
-        -- },
-        -- ['Gruntys Industries: Repair Depot Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 4,
-        --     ['locationId'] = 1230745
-        -- },
-        -- ['Hailfire Peaks: Lava Side Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 5,
-        --     ['locationId'] = 1230746
-        -- },
-        -- ['Hailfire Peaks: Icicle Grotto Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 6,
-        --     ['locationId'] = 1230747
-        -- },
-        -- ['Hailfire Peaks: Icy Side Cheato Page'] = {
-        --     ['addr'] = 0x58,
-        --     ['bit'] = 7,
-        --     ['locationId'] = 1230748
-        -- },
-        -- ['Cloud Cuckcooland: Canary Mary Cheato Page'] = {
-        --     ['addr'] = 0x59,
-        --     ['bit'] = 0,
-        --     ['locationId'] = 1230749
-        -- },
-        -- ['Cloud Cuckcooland: Pot Ol Gold Cheato Page'] = {
-        --     ['addr'] = 0x59,
-        --     ['bit'] = 1,
-        --     ['locationId'] = 1230750
-        -- },
-        -- ['Cloud Cuckcooland: Zubbas Nest Cheato Page'] = {
-        --     ['addr'] = 0x59,
-        --     ['bit'] = 2,
-        --     ['locationId'] = 1230751
-        -- },
+        ['Spiral Mountain: Cheato Page'] = {
+            ['addr'] = 0x59,
+            ['bit'] = 3,
+            ['locationId'] = 1230752
+        },
+        ['Mayahem Temple: Snake Head Cheato Page'] = {
+            ['addr'] = 0x56,
+            ['bit'] = 3,
+            ['locationId'] = 1230728
+        },
+        ['Mayahem Temple: Prison Compound Cheato Page'] = {
+            ['addr'] = 0x56,
+            ['bit'] = 4,
+            ['locationId'] = 1230729
+        },
+        ['Mayahem Temple: Jade Snake Grove Cheato Page'] = {
+            ['addr'] = 0x56,
+            ['bit'] = 5,
+            ['locationId'] = 1230730
+        },
+        ['Glitter Gultch Mine: Canary Mary Cheato Page'] = {
+            ['addr'] = 0x56,
+            ['bit'] = 6,
+            ['locationId'] = 1230731
+        },
+        ['Glitter Gultch Mine: Entrance Cheato Page'] = {
+            ['addr'] = 0x56,
+            ['bit'] = 7,
+            ['locationId'] = 1230732
+        },
+        ['Glitter Gultch Mine: Water Storage Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 0,
+            ['locationId'] = 1230733
+        },
+        ['Witchy World: Haunted Cavern Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 1,
+            ['locationId'] = 1230734
+        },
+        ['Witchy World: The Inferno Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 2,
+            ['locationId'] = 1230735
+        },
+        ['Witchy World: Saucer of Peril Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 3,
+            ['locationId'] = 1230736
+        },
+        ['Jolly Rogers: Pawnos Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 4,
+            ['locationId'] = 1230737
+        },
+        ['Jolly Rogers: Seemee Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 5,
+            ['locationId'] = 1230738
+        },
+        ['Jolly Rogers: Ancient Baths Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 6,
+            ['locationId'] = 1230739
+        },
+        ['Terrydactyland: Dippys Pool Cheato Page'] = {
+            ['addr'] = 0x57,
+            ['bit'] = 7,
+            ['locationId'] = 1230740
+        },
+        ['Terrydactyland: Inside the Mountain Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 0,
+            ['locationId'] = 1230741
+        },
+        ['Terrydactyland: Boulder Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 1,
+            ['locationId'] = 1230742
+        },
+        ['Gruntys Industries: Logo Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 2,
+            ['locationId'] = 1230743
+        },
+        ['Gruntys Industries: Floor 2 Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 3,
+            ['locationId'] = 1230744
+        },
+        ['Gruntys Industries: Repair Depot Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 4,
+            ['locationId'] = 1230745
+        },
+        ['Hailfire Peaks: Lava Side Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 5,
+            ['locationId'] = 1230746
+        },
+        ['Hailfire Peaks: Icicle Grotto Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 6,
+            ['locationId'] = 1230747
+        },
+        ['Hailfire Peaks: Icy Side Cheato Page'] = {
+            ['addr'] = 0x58,
+            ['bit'] = 7,
+            ['locationId'] = 1230748
+        },
+        ['Cloud Cuckcooland: Canary Mary Cheato Page'] = {
+            ['addr'] = 0x59,
+            ['bit'] = 0,
+            ['locationId'] = 1230749
+        },
+        ['Cloud Cuckcooland: Pot Ol Gold Cheato Page'] = {
+            ['addr'] = 0x59,
+            ['bit'] = 1,
+            ['locationId'] = 1230750
+        },
+        ['Cloud Cuckcooland: Zubbas Nest Cheato Page'] = {
+            ['addr'] = 0x59,
+            ['bit'] = 2,
+            ['locationId'] = 1230751
+        },
     },
     ['HONEYCOMB'] = {
         ['Plateau: Honeycomb'] = {
@@ -1724,6 +1745,422 @@ local MASTER_MAP = {
             ['bit'] = 5,
             ['locationId'] = 1230777
         },
+	},
+	["SKIP"] = {
+		['CUTSCENE'] = {
+			['Klungo Flyover'] = {
+				['addr'] = 0x02,
+				['bit'] = 4
+			},
+			['Jiggywiggy Flyover'] = {
+				['addr'] = 0x67,
+				['bit'] = 7
+			},
+			['Jinjo First Time'] = {
+				['addr'] = 0x6E,
+				['bit'] = 6
+			},
+			['Jinjo Flyover'] = {
+				['addr'] = 0x82,
+				['bit'] = 4
+			},
+			['Jinjo Flyover - Jiggy'] = {
+				['addr'] = 0x82,
+				['bit'] = 5
+			},
+			['Jamjars Flyover'] = {
+				['addr'] = 0x9B,
+				['bit'] = 6
+			},
+			['Jiggywiggy Laser'] = {
+				['addr'] = 0xAC,
+				['bit'] = 2
+			},
+		},
+		['INTRO'] = {
+			['Bovina'] = {
+				['addr'] = 0x04,
+				['bit'] = 5
+			},
+			['Unogopaz'] = {
+				['addr'] = 0x06,
+				['bit'] = 1
+			},
+			['Unogopaz - Stony'] = {
+				['addr'] = 0x06,
+				['bit'] = 1
+			},
+			['Dilberta'] = {
+				['addr'] = 0x06,
+				['bit'] = 3
+			},
+			['Kickball Coach'] = {
+				['addr'] = 0x07,
+				['bit'] = 4
+			},
+			['Cheato'] = {
+				['addr'] = 0x08,
+				['bit'] = 0
+			},
+			['Mumbo'] = {
+				['addr'] = 0x0A,
+				['bit'] = 5
+			},
+			['Bullion Bill'] = {
+				['addr'] = 0x0B,
+				['bit'] = 2
+			},
+			['Mrs. Boggy'] = {
+				['addr'] = 0x0C,
+				['bit'] = 3
+			},
+			['Humba Wumba'] = {
+				['addr'] = 0x0C,
+				['bit'] = 7
+			},
+			['Big Al'] = {
+				['addr'] = 0x0E,
+				['bit'] = 5
+			},
+			['Salty Joe'] = {
+				['addr'] = 0x0E,
+				['bit'] = 6
+			},
+			['Conga'] = {
+				['addr'] = 0x0F,
+				['bit'] = 1
+			},
+			['Moggy'] = {
+				['addr'] = 0x12,
+				['bit'] = 0
+			},
+			['Soggy'] = {
+				['addr'] = 0x12,
+				['bit'] = 1
+			},
+			['Groggy'] = {
+				['addr'] = 0x12,
+				['bit'] = 2
+			},
+			['Tiptup'] = {
+				['addr'] = 0x12,
+				['bit'] = 4
+			},
+			['Jolly'] = {
+				['addr'] = 0x13,
+				['bit'] = 3
+			},
+			['Maggie - After Rescue'] = {
+				['addr'] = 0x13,
+				['bit'] = 4
+			},
+			['Blubber'] = {
+				['addr'] = 0x16,
+				['bit'] = 7
+			},
+			['Scrotty'] = {
+				['addr'] = 0x26,
+				['bit'] = 5
+			},
+			['Floatie Pig'] = {
+				['addr'] = 0x28,
+				['bit'] = 0
+			},
+			['Loggo'] = {
+				['addr'] = 0x28,
+				['bit'] = 1
+			},
+			['Oogle Boogle'] = {
+				['addr'] = 0x28,
+				['bit'] = 7
+			},
+			-- ['King Jingaling'] = {
+			-- 	 ['addr'] = 0x2F,
+			--	 ['bit'] = 5
+			-- },
+			['Mrs. Bottles'] = {
+				['addr'] = 0x2F,
+				['bit'] = 7
+			},
+			['Speccy'] = {
+				['addr'] = 0x30,
+				['bit'] = 0
+			},
+			['Dingpot'] = {
+				['addr'] = 0x30,
+				['bit'] = 4
+			},
+			['Mildred'] = {
+				['addr'] = 0x33,
+				['bit'] = 5
+			},
+			['Biggafoot'] = {
+				['addr'] = 0x33,
+				['bit'] = 7
+			},
+			['George'] = {
+				['addr'] = 0x34,
+				['bit'] = 1
+			},
+			['Three-Armed Pig'] = {
+				['addr'] = 0x34,
+				['bit'] = 5
+			},
+			['Oogle Boogle Guard'] = {
+				['addr'] = 0x5F,
+				['bit'] = 3
+			},
+			['Dippy'] = {
+				['addr'] = 0x60,
+				['bit'] = 0
+			},
+			['Roysten'] = {
+				['addr'] = 0x62,
+				['bit'] = 7
+			},
+			['Jiggywiggy'] = {
+				['addr'] = 0x66,
+				['bit'] = 3
+			},
+			['Colosseum Kickball Coach'] = {
+				['addr'] = 0x68,
+				['bit'] = 6
+			},
+			['Gamette'] = {
+				['addr'] = 0x69,
+				['bit'] = 1
+			},
+			['Superstash'] = {
+				['addr'] = 0x6C,
+				['bit'] = 0
+			},
+			['Mr. Fit'] = {
+				['addr'] = 0x76,
+				['bit'] = 1
+			},
+			['Heggy'] = {
+				['addr'] = 0x78,
+				['bit'] = 0
+			},
+			['Jiggywiggy Disciple'] = {
+				['addr'] = 0x78,
+				['bit'] = 5
+			},
+			['Jamjars'] = {
+				['addr'] = 0x7C,
+				['bit'] = 4
+			},
+			['Canary Mary - GGM'] = {
+				['addr'] = 0x80,
+				['bit'] = 2
+			},
+			['Canary Mary - CCL'] = {
+				['addr'] = 0x80,
+				['bit'] = 3
+			},
+			['Honey B'] = {
+				['addr'] = 0x98,
+				['bit'] = 1
+			},
+		},
+		['TUTORIAL'] = {
+			['Sign'] = {
+				['addr'] = 0x02,
+				['bit'] = 2
+			},
+			['Springy-Step Shoes Not Learned'] = {
+				['addr'] = 0x04,
+				['bit'] = 6
+			},
+			['Claw Clamber Boots Not Learned'] = {
+				['addr'] = 0x04,
+				['bit'] = 7
+			},
+			['Golden Goliath'] = {
+				['addr'] = 0x05,
+				['bit'] = 0
+			},
+			['Golden Goliath - Time Up'] = {
+				['addr'] = 0x05,
+				['bit'] = 1
+			},
+			['Wumba - Pine Grove'] = {
+				['addr'] = 0x05,
+				['bit'] = 5
+			},
+			['Minjo'] = {
+				['addr'] = 0x05,
+				['bit'] = 7
+			},
+			['Cheato Code List'] = {
+				['addr'] = 0x08,
+				['bit'] = 1
+			},
+			['Code Chamber'] = {
+				['addr'] = 0x08,
+				['bit'] = 2
+			},
+			['Code Entry'] = {
+				['addr'] = 0x08,
+				['bit'] = 3
+			},
+			['Mumbo Pad'] = {
+				['addr'] = 0x0E,
+				['bit'] = 2
+			},
+			['Use Mumbo Pad'] = {
+				['addr'] = 0x0E,
+				['bit'] = 3
+			},
+			['Cheat Menu'] = {
+				['addr'] = 0x15,
+				['bit'] = 3
+			},
+			['Detransform'] = {
+				['addr'] = 0x17,
+				['bit'] = 2
+			},
+			['Clockwork Kazooie'] = {
+				['addr'] = 0x18,
+				['bit'] = 0
+			},
+			['Hoop Hurry'] = {
+				['addr'] = 0x30,
+				['bit'] = 5
+			},
+			['Balloon Burst'] = {
+				['addr'] = 0x30,
+				['bit'] = 6
+			},
+			['Twinkly Packing'] = {
+				['addr'] = 0x34,
+				['bit'] = 0
+			},
+			['Glowbo Paid'] = {
+				['addr'] = 0x35,
+				['bit'] = 1
+			},
+			['Chilly Willy - Wrong Egg'] = {
+				['addr'] = 0x35,
+				['bit'] = 7
+			},
+			['Chilli Billi - Wrong Egg'] = {
+				['addr'] = 0x36,
+				['bit'] = 0
+			},
+			['Pot O Gold'] = {
+				['addr'] = 0x37,
+				['bit'] = 2
+			},
+			['Warp Silo'] = {
+				['addr'] = 0x61,
+				['bit'] = 4
+			},
+			['Floatus Floatium'] = {
+				['addr'] = 0x63,
+				['bit'] = 0
+			},
+			['BK Game Pak'] = {
+				['addr'] = 0x63,
+				['bit'] = 2
+			},
+			['GI Battery Door'] = {
+				['addr'] = 0x63,
+				['bit'] = 3
+			},
+			['Broken Jukebox'] = {
+				['addr'] = 0x63,
+				['bit'] = 4
+			},
+			['Daddy T-Rex'] = {
+				['addr'] = 0x63,
+				['bit'] = 6
+			},
+			['Stony'] = {
+				['addr'] = 0x63,
+				['bit'] = 7
+			},
+			['Detonator'] = {
+				['addr'] = 0x64,
+				['bit'] = 0
+			},
+			['Van'] = {
+				['addr'] = 0x64,
+				['bit'] = 1
+			},
+			['Sub'] = {
+				['addr'] = 0x64,
+				['bit'] = 2
+			},
+			['T-Rex'] = {
+				['addr'] = 0x64,
+				['bit'] = 3
+			},
+			['Washing Machine'] = {
+				['addr'] = 0x64,
+				['bit'] = 4
+			},
+			['Snowball'] = {
+				['addr'] = 0x64,
+				['bit'] = 5
+			},
+			['Bee'] = {
+				['addr'] = 0x64,
+				['bit'] = 6
+			},
+			['Dragon Kazooie'] = {
+				['addr'] = 0x64,
+				['bit'] = 7
+			},
+			['Puzzle Complete'] = {
+				['addr'] = 0x78,
+				['bit'] = 1
+			},
+			['Warp Pad'] = {
+				['addr'] = 0x78,
+				['bit'] = 6
+			},
+			['Random Stop Honeycomb'] = {
+				['addr'] = 0x7C,
+				['bit'] = 5
+			},
+			['Skill Stop Honeycomb'] = {
+				['addr'] = 0x7C,
+				['bit'] = 6
+			},
+			['Saucer of Peril Fixed'] = {
+				['addr'] = 0x7D,
+				['bit'] = 4
+			},
+			['Saucer of Peril'] = {
+				['addr'] = 0x7D,
+				['bit'] = 7
+			},
+			['Mumbo'] = {
+				['addr'] = 0x80,
+				['bit'] = 1
+			},
+			['Jiggywiggy Altar'] = {
+				['addr'] = 0x98,
+				['bit'] = 0
+			},
+			['Split Up Not Learned'] = {
+				['addr'] = 0x99,
+				['bit'] = 4
+			},
+			['Split Up'] = {
+				['addr'] = 0x99,
+				['bit'] = 5
+			},
+			['Canary Mary Race'] = {
+				['addr'] = 0x9C,
+				['bit'] = 0
+			},
+			['Puzzle'] = {
+				['addr'] = 0xA1,
+				['bit'] = 3
+			},
+		}
     }
 }
 
@@ -1779,12 +2216,25 @@ local read_CHEATO_checks = function(type)
     then
         for k,v in pairs(MASTER_MAP['CHEATO'])
         do
-            checks[k] = checkFlag(v['addr'], v['bit'])
+			if multiPages == false
+            then
+                checks[k] = false
+            else
+				checks[k] = checkFlag(v['addr'], v['bit'])
+			end
         end
         AMM['CHEATO'] = checks;
     elseif type == "BMM"
     then
-        checks = BMM['CHEATO']
+		if multiPages == false
+        then
+            for k,v in pairs(MASTER_MAP['CHEATO'])
+            do
+                    checks[k] = false
+            end
+		else
+			checks = BMM['CHEATO']
+		end
     elseif type == "AGI" -- should only run for initialization
     then
         for k,v in pairs(MASTER_MAP['CHEATO'])
@@ -1953,23 +2403,88 @@ local set_AGI_MOVES_checks = function() -- SET AGI Moves into RAM AFTER BT/Silo 
     end
 end
 
-function checkHoneycombs(location_checks)
-    if multiHoneycomb == true
-    then
-        for location_name, value in pairs(AGI['HONEYCOMB'])
-        do
-            if(isBackup == false and (value == false and location_checks[location_name] == true))
+function checkConsumables(consumable_type, location_checks)
+	for location_name, value in pairs(AGI[consumable_type])
+	do
+		if(isBackup == false and (value == false and location_checks[location_name] == true))
+		then
+			if(DEBUG == true)
+			then
+				print("Obtained local consumable. Remove from Inventory")
+			end
+			setConsumable(consumable_type, getConsumable(consumable_type) - 1)
+			AGI[consumable_type][location_name] = true
+			savingAGI()
+		end
+	end
+end
+
+local update_BMK_MOVES_checks = function() --Only run when close to Silos
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+        if BKM[k] == false
+        then
+            res = checkFlag(v['addr'], v['bit'])
+            if res == true
             then
-                if(DEBUG == true)
-                then
-                    print("Obtained local Honeycomb. Remove from Inventory")
-                end
-                setHoneycomb(getHoneycomb() - 1)
-                AGI['HONEYCOMB'][location_name] = true
-                savingAGI()
+                BKM[k] = res
+                FinishedSilo = true
             end
+        end 
+    end
+end
+
+local init_BMK = function(type) --Only run when close to Silos
+    local checks = {}
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+        if type == "BKM"
+        then
+            BKM[k] = checkFlag(v['addr'], v['bit'])
+        elseif type == "AGI"
+        then
+            checks[k] = checkFlag(v['addr'], v['bit'])
         end
     end
+    return checks
+end
+
+local clear_AMM_MOVES_checks = function() --Only run when transitioning Maps until BT/Silo Model is loaded OR Close to Silo
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+        if BKM[k] == false
+        then
+            clearFlag(v['addr'], v['bit'])
+        end
+    end
+end
+
+local set_AGI_MOVES_checks = function() -- SET AGI Moves into RAM AFTER BT/Silo Model is loaded
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+        if AGI["MOVES"][k] == true
+        then
+            setFlag(v['addr'], v['bit']);
+        else
+            clearFlag(v['addr'], v['bit']);
+        end
+    end
+end
+
+function checkConsumables(consumable_type, location_checks)
+	for location_name, value in pairs(AGI[consumable_type])
+	do
+		if(isBackup == false and (value == false and location_checks[location_name] == true))
+		then
+			if(DEBUG == true)
+			then
+				print("Obtained local consumable. Remove from Inventory")
+			end
+			setConsumable(consumable_type, getConsumable(consumable_type) - 1)
+			AGI[consumable_type][location_name] = true
+			savingAGI()
+		end
+	end
 end
 
 function loadGame(current_map)
@@ -2231,13 +2746,12 @@ function BMMBackup()
     end
     for item_group, table in pairs(MASTER_MAP)
     do
-        if item_group ~= "MOVES"
-        then
-            for location, values in pairs(table)
-            do
-                BMM[item_group][location] = checkFlag(values['addr'], values['bit']);
-            end
-        end
+		if item_group ~= 'SKIP' and item_group ~= 'MOVES' then
+			for location, values in pairs(table)
+			do
+				BMM[item_group][location] = checkFlag(values['addr'], values['bit']);
+			end
+		end
     end
     if DEBUG == true
     then
@@ -2255,7 +2769,7 @@ function BMMRestore()
 
     for item_group , location in pairs(MASTER_MAP)
     do
-        if item_group ~= "MOVES"
+        if item_group ~= "MOVES" and item_group ~= "SKIP"
         then
             for loc,v in pairs(location)
             do
@@ -2289,29 +2803,28 @@ end
 function useAGI()
     for item_group, table in pairs(MASTER_MAP)
     do
-        if item_group ~= "MOVES"
-        then
-            for location,values in pairs(table)
-            do
-                if AMM[item_group][location] == false and AGI[item_group][location] == true
-                then
-                    setFlag(values['addr'], values['bit'])
-                    AMM[item_group][location] = true
-                    if DEBUG == true
-                    then
-                        print(location .. " Flag Set");
-                    end
-                elseif AMM[item_group][location] == true and AGI[item_group][location] == false
-                then
-                    clearFlag(values['addr'], values['bit']);
-                    AMM[item_group][location] = false;
-                    if DEBUG == true
-                    then
-                        print(location .. " Flag Cleared");
-                    end
-                end
-            end
-        end
+		if item_group ~= 'SKIP' and item_group ~= 'MOVES' then
+			for location,values in pairs(table)
+			do
+				if AMM[item_group][location] == false and AGI[item_group][location] == true
+				then
+					setFlag(values['addr'], values['bit'])
+					AMM[item_group][location] = true
+					if DEBUG == true
+					then
+						print(location .. " Flag Set");
+					end
+				elseif AMM[item_group][location] == true and AGI[item_group][location] == false
+				then
+					clearFlag(values['addr'], values['bit']);
+					AMM[item_group][location] = false;
+					if DEBUG == true
+					then
+						print(location .. " Flag Cleared");
+					end
+				end
+			end
+		end
     end
 end
 
@@ -2361,7 +2874,13 @@ function all_location_checks(type)
         BMM = MM;
     end
 
-    checkHoneycombs(location_checks)
+    if multiHoneycomb == true then
+        checkConsumables('HONEYCOMB', location_checks)
+    end
+
+    if multiPages == true then
+        checkConsumables('CHEATO', location_checks)
+    end
     return location_checks
 end
 
@@ -2377,7 +2896,7 @@ function archipelago_msg_box(msg)
 end
 
 function processAGIItem(item_list)
-    if multiHoneycomb == true
+    if multiHoneycomb == true or multiPages == true
     then
         for ap_id, memlocation in pairs(item_list) -- Items unrelated to AGI_MAP like Consumables
         do
@@ -2387,7 +2906,14 @@ function processAGIItem(item_list)
                 then
                     print("HC Obtained")
                 end
-                setHoneycomb(getHoneycomb() + 1)
+                setConsumable('HONEYCOMB', getConsumable('HONEYCOMB') + 1)
+			elseif(memlocation == 1230513) -- Cheato Item
+			then
+				if DEBUG == true
+				then
+					print("Cheato Page Obtained")
+				end
+				setConsumable('CHEATO', getConsumable('CHEATO') + 1)
             end
         end
     end
@@ -2717,6 +3243,10 @@ function process_slot(block)
     then
         multiHoneycomb = true
     end
+	if block['slot_pages'] ~= nil and block['slot_pages'] ~= "false"
+    then
+        multiPages = true
+    end
     if block['slot_moves'] ~= nil and block['slot_moves'] ~= "false"
     then
         APMovesEnabled = true
@@ -2745,11 +3275,35 @@ function initializeFlags()
 	-- Use Cutscene: "2 Years Have Passed..." to check for fresh save
 	local current_map = getMap();
 	if (current_map == 0xA1) then
-		-- Jinjo First Time Flags
-		setFlag(0x01, 5)
-		setFlag(0x6E, 6)
-		setFlag(0x82, 4)
-		setFlag(0x82, 5)
+		-- First Time Pickup Text
+		for i = 0, 7 do
+			setFlag(0x00, i) -- Note, Glowbo, Eggs, Feathers, Treble Clef, Honeycomb
+		end	
+		setFlag(0x01, 2) -- Empty Honeycomb
+		setFlag(0x01, 5) -- Jinjo
+		setFlag(0x05, 6) -- Mega Glowbo
+		setFlag(0x07, 7) -- Cheato Page
+		setFlag(0x27, 5) -- Doubloon
+		setFlag(0x2E, 7) -- Ticket
+		-- Character Introduction Text
+		for k,v in pairs(MASTER_MAP['SKIP']['INTRO'])
+        do
+            setFlag(v['addr'], v['bit'])
+        end
+		-- Cutscene Flags
+		for k,v in pairs(MASTER_MAP['SKIP']['CUTSCENE'])
+        do
+            setFlag(v['addr'], v['bit'])
+        end
+		-- Tutorial Dialogues
+		for k,v in pairs(MASTER_MAP['SKIP']['TUTORIAL'])
+        do
+            setFlag(v['addr'], v['bit'])
+        end
+		-- Kickball Stadium Doors
+		setFlag(0xA9, 6) -- MT
+		setFlag(0xA9, 7) -- HFP
+		
         BMMLoaded = true  -- We don't have a real BMM at this point.  
         init_BMK("BKM")
 		if (skip_tot ~= "false") then
