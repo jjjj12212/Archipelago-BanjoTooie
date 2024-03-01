@@ -7,7 +7,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     "Menu":              [],
     regionName.SM:       [
         locationName.CHEATOSM1,
-        locationName.JINJOIH5
+        locationName.JINJOIH5,
+    #    locationName.FSWIM
     ],
     regionName.IOHJV:    [
         locationName.JIGGYIH1,
@@ -48,10 +49,14 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOMT1,
         locationName.CHEATOMT2,
         locationName.CHEATOMT3,
+        locationName.GGRAB,
+        locationName.BBLASTER,
+        locationName.EGGAIM
     ],
     regionName.IOHPL:    [
         locationName.JINJOIH4,
-        locationName.HONEYCIH1
+        locationName.HONEYCIH1,
+        locationName.FEGGS
     ],
     regionName.GM:       [
         locationName.JINJOGM1,
@@ -76,12 +81,17 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.HONEYCGM3,
         locationName.CHEATOGM1,
         locationName.CHEATOGM2,
-        locationName.CHEATOGM3
+        locationName.CHEATOGM3,
+        locationName.BDRILL,
+        locationName.BBAYONET
     ],
-    regionName.IOHPG:   [],
+    regionName.IOHPG:   [
+        locationName.GEGGS
+    ],
     regionName.IOHCT:   [
         locationName.JINJOIH3,
-        locationName.GLOWBOIH1
+        locationName.GLOWBOIH1,
+        locationName.IEGGS
     ],
     regionName.WW:      [
         locationName.JINJOWW1,
@@ -106,7 +116,10 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.HONEYCWW3,
         locationName.CHEATOWW1,
         locationName.CHEATOWW2,
-        locationName.CHEATOWW3
+        locationName.CHEATOWW3,
+        locationName.AIREAIM,
+        locationName.SPLITUP,
+        locationName.PACKWH
     ],
     regionName.JR:      [
         locationName.JRLDB1,
@@ -161,10 +174,14 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.HONEYCJR3,
         locationName.CHEATOJR1,
         locationName.CHEATOJR2,
-        locationName.CHEATOJR3
+        locationName.CHEATOJR3,
+        locationName.WWHACK,
+        locationName.TTORP,
+        locationName.AUQAIM
     ],
     regionName.IOHWL:   [
-         locationName.JINJOIH2
+         locationName.JINJOIH2,
+         locationName.CEGGS
     ],
     regionName.TL:      [
         locationName.JINJOTL1,
@@ -189,7 +206,10 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.HONEYCTL3,
         locationName.CHEATOTL1,
         locationName.CHEATOTL2,
-        locationName.CHEATOTL3
+        locationName.CHEATOTL3,
+        locationName.SPRINGB,
+        locationName.TAXPACK,
+        locationName.HATCH
     ],
     regionName.IOHQM:   [],
     regionName.GI:      [
@@ -215,7 +235,10 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.HONEYCGI3,
         locationName.CHEATOGI1,
         locationName.CHEATOGI2,
-        locationName.CHEATOGI3
+        locationName.CHEATOGI3,
+        locationName.SNPACK,
+        locationName.LSPRING,
+        locationName.CLAWBTS
     ],
     regionName.HP:      [
         locationName.JINJOHP1,
@@ -240,7 +263,9 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.HONEYCHP3,
         locationName.CHEATOHP1,
         locationName.CHEATOHP2,
-        locationName.CHEATOHP3
+        locationName.CHEATOHP3,
+        locationName.SHPACK,
+        locationName.GLIDE
     ],
     regionName.CC:      [
         locationName.JINJOCC1,
@@ -265,7 +290,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.HONEYCCC3,
         locationName.CHEATOCC1,
         locationName.CHEATOCC2,
-        locationName.CHEATOCC3
+        locationName.CHEATOCC3,
+        locationName.SAPACK
     ],
     regionName.CK: [],
     regionName.H1: [
@@ -309,7 +335,7 @@ def create_regions(self):
                 del active_locations[name]
     multiworld.regions += [create_region(multiworld, player, active_locations, region, locations) for region, locations in
                            BANJOTOOIEREGIONS.items()]
-
+    
     multiworld.get_location(locationName.HAG1, player).place_locked_item(
         multiworld.worlds[player].create_event_item(itemName.VICTORY))
 
@@ -318,11 +344,14 @@ def create_region(multiworld, player: int, active_locations, name: str, location
     ret = Region(name, player, multiworld)
     if locations:
         loc_to_id = {loc: active_locations.get(loc, 0) for loc in locations if active_locations.get(loc, None)}
-        ret.add_locations(loc_to_id, BanjoTooieLocation)
+        if locationName.HAG1 in locations:
+            ret.add_locations({locationName.HAG1: None})
+        else:
+            ret.add_locations(loc_to_id, BanjoTooieLocation)
         # loc_to_event = {loc: active_locations.get(loc, None) for loc in locations if
         #                 not active_locations.get(loc, None)}
         # ret.add_locations(loc_to_event, BanjoTooieLocation)
-        ret.add_locations({locationName.HAG1: None})
+        # ret.add_locations({locationName.HAG1: None})
     return ret
 
 def connect_regions(self):

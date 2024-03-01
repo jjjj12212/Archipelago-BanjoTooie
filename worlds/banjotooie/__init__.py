@@ -58,7 +58,7 @@ class BanjoTooieWorld(World):
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
     item_name_to_id = {}
     for name, data in all_item_table.items():
-        if data.btid == 1230028:  # Skip Victory Item
+        if data.btid is None:  # Skip Victory Item
             continue
         item_name_to_id[name] = data.btid
 
@@ -67,6 +67,7 @@ class BanjoTooieWorld(World):
     item_name_groups = {
         "Jiggy": all_group_table["jiggy"],
         "Jinjo": all_group_table["jinjo"],
+        "Moves": all_group_table["moves"]
     }
     
 
@@ -113,11 +114,13 @@ class BanjoTooieWorld(World):
         if(item.code == 1230514 and self.options.multiworld_doubloons == False) :
             return False
         
-        if(item.code == 1230513 and self.options.multiworld_cheato == False) :
+        if(item.code == 1230513 and self.options.multiworld_cheato == False) : # Added later in Prefill
             return False
         
-        # if((1230703 <= item.code <= 1230727) and self.options.multiworld_honeycombs == False) :
-        if(item.code == 1230512 and self.options.multiworld_honeycombs == False) :
+        if(item.code == 1230512 and self.options.multiworld_honeycombs == False) : # Added later in Prefill
+            return False
+        
+        if(item.code in range(1230753, 1230778) and self.options.multiworld_moves == False) : #range you need to add +1 to the end. 
             return False
         
         if(item.code == 1230511 and self.options.multiworld_glowbos == False) :
@@ -144,10 +147,18 @@ class BanjoTooieWorld(World):
                 item = self.create_item(itemName.HONEY)
                 if name.find("Honeycomb") != -1:
                     self.multiworld.get_location(name, self.player).place_locked_item(item)
-            if self.options.multiworld_cheato == False:
-                for name, id in self.location_name_to_id.items():
-                    item = self.create_item(itemName.PAGES)
-                    if name.find("Page") != -1:
+                    
+        if self.options.multiworld_cheato == False:
+            for name, id in self.location_name_to_id.items():
+                item = self.create_item(itemName.PAGES)
+                if name.find("Page") != -1:
+                    self.multiworld.get_location(name, self.player).place_locked_item(item)
+
+        if self.options.multiworld_moves == False:
+            for group_name, item_info in self.item_name_groups.items():
+                if group_name == "Moves":
+                    for name in item_info:
+                        item = self.create_item(name)
                         self.multiworld.get_location(name, self.player).place_locked_item(item)
 
     def fill_slot_data(self) -> dict[str, any]:
@@ -163,6 +174,8 @@ class BanjoTooieWorld(World):
             btoptions["skip_tot"] = "false"
         btoptions['honeycomb'] = "true" if self.options.multiworld_honeycombs == 1 else "false"
         btoptions['pages'] = "true" if self.options.multiworld_cheato == 1 else "false"
+        btoptions['moves'] = "true" if self.options.multiworld_moves == 1 else "false"
+
         return btoptions
 
 

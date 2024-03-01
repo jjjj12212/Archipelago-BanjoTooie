@@ -7,8 +7,8 @@ local json = require('json')
 local math = require('math')
 require('common')
 
-local last_modified_date = '2024-02-20' -- Should be the last modified date
-local script_version = 3
+local last_modified_date = '2024-03-01' -- Should be the last modified date
+local script_version = 4
 -- Template Variables
 local player_name = ""
 local seed = 0
@@ -48,18 +48,6 @@ local flag_block_pointer = 0x12C770;
 local map_location = 0x132DC2;
 local last_map = nil;
 
-
--- Relative to Position object
-local x_pos = 0x00;
-local y_pos = x_pos + 4;
-local z_pos = y_pos + 4;
-
-local grounded_pointer_index = 84 * 4;
-local position_pointer_index = 57 * 4;
-
-local slot_base = 0x10;
-local slot_size = 0x9C;
-
 -- EO BTRando
 local isPaused = false;
 local checkTotals = false;
@@ -73,6 +61,14 @@ local multiHoneycomb = false;
 local multiPages = false;
 local BMMLoaded = false;
 local BMMBypass = false;
+local APMovesEnabled = false; -- Enable AP Moves Logics
+local NeedSiloState = false; --  If True, you are Transistioning maps
+local WatchSilo = false; -- Silo found on Map, Need to Monitor Distance
+local AMMMovesCleared = false -- If close to Silo
+local FinishedSilo = false -- Handles if learned a move at Silo
+local SiloCounter = 0 -- waits until Silos are loaded if any
+local SiloObj = nil -- Stored object of closest silo
+
 
 function isPointer(value)
     return type(value) == "number" and value >= RDRAMBase and value < RDRAMBase + RDRAMSize;
@@ -217,7 +213,11 @@ local model_list = {
     ["Ugger"] = 0x671,
     ["Altar"] = 0x977,
     ["Jinjo"] = 0x643,
-    ["Mingy Jongo"] = 0x816
+    ["Silo"] = 0x7D7,
+    ["Mingy Jongo"] = 0x816,
+    ["Player"] = 0xFFFF,
+    ["Kazooie Split Pad"] = 0x7E1,
+    ["Banjo Split Pad"] = 0x7E2,
 }
 
 local obj_model1_slot_base = 0x10;
@@ -324,6 +324,31 @@ function checkModel(type)
     return false;
 end
 
+function checkModels(type) -- returns list
+    local pointer_list = getObjectModel1Pointers()
+    if pointer_list == nil
+    then
+        return false
+    end
+
+    local i = 0
+    local object_list = {}
+    for k, objptr in pairs(pointer_list)
+    do
+        local currentObjectName = getAnimationType(objptr); -- Required for special data
+        if currentObjectName == nil and i == 0
+        then
+            return false
+        end
+        i = i + 1
+        if currentObjectName == model_list[type]
+        then
+           object_list[i] = objptr;
+        end
+    end
+    return object_list;
+end
+
 
 function getAltar()
     if last_map == 335 or last_map == 337 -- No need to modify RAM when already in WH
@@ -402,6 +427,38 @@ function nearWHJinjo()
     end
 end
 
+local SILO_MAP_CHECK = {
+    ["IOHCT"]  = 0x155,
+    ["IOHPL"]  = 0x152, 
+    ["IOHGRO"] = 0x154,
+    ["IOHWST"] = 0x15A,
+
+    ["MTMAIN"] = 0xB8, --2
+    ["MTCOVE"] = 0xC4,
+
+    ["GMMAIN"] = 0xC7,
+    ["GMSTOR"] = 0x163,
+    
+    ["WWMAIN"] = 0xD6, --2
+    ["WWCAST"] = 0xE1,
+
+    ["JRMAIN"] = 0x1A7,
+    ["JREELB"] = 0xF6,
+    ["JRJOLL"] = 0xED,
+
+    ["TLMAIN"] = 0x122, --2
+    ["TLRIVE"] = 0x117,
+
+    ["GIMAIN"] = 0x101,
+    ["GIFLO2"] = 0x106,
+    ["GIWAST"] = 0x111,
+
+    ["HFPICE"] = 0x128,
+    ["HPLAVA"] = 0x127,
+
+    ["CCCAVE"] = 0x13A
+}
+
 -- BMM - Backup Memory Map 
 local BMM =  {};
 
@@ -410,6 +467,9 @@ local AMM = {};
 
 -- AGI - Archipelago given items
 local AGI = {};
+
+-- Banjo Tooie Movelist Table
+local BKM = {};
 
 local MASTER_MAP = {
     ['JIGGY'] = {
@@ -1591,6 +1651,133 @@ local MASTER_MAP = {
 			['locationId'] = 1230027
 		},
 	},
+    ["MOVES"] = {
+        ['Grip Grab'] = {
+            ['addr'] = 0x1B,
+            ['bit'] = 1,
+            ['locationId'] = 1230753
+        },
+        ['Breegull Blaster'] = {
+            ['addr'] = 0x1B,
+            ['bit'] = 2,
+            ['locationId'] = 1230754
+        },
+        ['Egg Aim'] = {
+            ['addr'] = 0x1B,
+            ['bit'] = 3,
+            ['locationId'] = 1230755
+        },
+        ['Fire Eggs'] = {
+            ['addr'] = 0x1E,
+            ['bit'] = 1,
+            ['locationId'] = 1230756
+        },
+        ['Bill Drill'] = {
+            ['addr'] = 0x1B,
+            ['bit'] = 6,
+            ['locationId'] = 1230757
+        },
+        ['Beak Bayonet'] = {
+            ['addr'] = 0x1B,
+            ['bit'] = 7,
+            ['locationId'] = 1230758
+        },
+        ['Grenade Eggs'] = {
+            ['addr'] = 0x1E,
+            ['bit'] = 2,
+            ['locationId'] = 1230759
+        },
+        ['Airborne Egg Aiming'] = {
+            ['addr'] = 0x1C,
+            ['bit'] = 0,
+            ['locationId'] = 1230760
+        },
+        ['Split Up'] = {
+            ['addr'] = 0x1C,
+            ['bit'] = 1,
+            ['locationId'] = 1230761
+        },
+        ['Pack Whack'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 6,
+            ['locationId'] = 1230762
+        },
+        ['Ice Eggs'] = {
+            ['addr'] = 0x1E,
+            ['bit'] = 4,
+            ['locationId'] = 1230763
+        },
+        ['Wing Whack'] = {
+            ['addr'] = 0x1C,
+            ['bit'] = 2,
+            ['locationId'] = 1230764
+        },
+        ['Talon Torpedo'] = {
+            ['addr'] = 0x1C,
+            ['bit'] = 3,
+            ['locationId'] = 1230765
+        },
+        ['Sub-Aqua Egg Aiming'] = {
+            ['addr'] = 0x1C,
+            ['bit'] = 4,
+            ['locationId'] = 1230766
+        },
+        ['Clockwork Kazooie Eggs'] = {
+            ['addr'] = 0x1E,
+            ['bit'] = 3,
+            ['locationId'] = 1230767
+        },
+        ['Springy Step Shoes'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 3,
+            ['locationId'] = 1230768
+        },
+        ['Taxi Pack'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 4,
+            ['locationId'] = 1230769
+        },
+        ['Hatch'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 5,
+            ['locationId'] = 1230770
+        },
+        ['Snooze Pack'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 0,
+            ['locationId'] = 1230771
+        },
+        ['Leg Spring'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 1,
+            ['locationId'] = 1230772
+        },
+        ['Claw Clamber Boots'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 2,
+            ['locationId'] = 1230773
+        },
+        ['Shack Pack'] = {
+            ['addr'] = 0x1C,
+            ['bit'] = 6,
+            ['locationId'] = 1230774
+        },
+        ['Glide'] = {
+            ['addr'] = 0x1C,
+            ['bit'] = 7,
+            ['locationId'] = 1230775
+        },
+        ['Sack Pack'] = {
+            ['addr'] = 0x1D,
+            ['bit'] = 7,
+            ['locationId'] = 1230776
+        },
+        ['Fast Swimming'] = {
+            ['addr'] = 0x1E,
+            ['bit'] = 5,
+            ['locationId'] = 1230777
+        },
+	},
 	["SKIP"] = {
 		['CUTSCENE'] = {
 			['Klungo Flyover'] = {
@@ -2006,7 +2193,7 @@ local MASTER_MAP = {
 				['bit'] = 3
 			},
 		}
-	}
+    }
 }
 
 local read_JIGGY_checks = function(type)
@@ -2196,6 +2383,133 @@ local read_H1_checks = function(type)
     return checks
 end
 
+local update_BMK_MOVES_checks = function() --Only run when close to Silos
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+        if BKM[k] == false
+        then
+            res = checkFlag(v['addr'], v['bit'])
+            if res == true
+            then
+                BKM[k] = res
+                FinishedSilo = true
+            end
+        end 
+    end
+end
+
+local init_BMK = function(type) --Only run when close to Silos
+    local checks = {}
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+        if type == "BKM"
+        then
+            BKM[k] = checkFlag(v['addr'], v['bit'])
+        elseif type == "AGI"
+        then
+            checks[k] = checkFlag(v['addr'], v['bit'])
+        end
+    end
+    return checks
+end
+
+local clear_AMM_MOVES_checks = function() --Only run when transitioning Maps until BT/Silo Model is loaded OR Close to Silo
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+        if BKM[k] == false
+        then
+            clearFlag(v['addr'], v['bit'])
+        end
+    end
+end
+
+local set_AGI_MOVES_checks = function() -- SET AGI Moves into RAM AFTER BT/Silo Model is loaded
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+        if AGI["MOVES"][k] == true
+        then
+            setFlag(v['addr'], v['bit']);
+        else
+            clearFlag(v['addr'], v['bit']);
+        end
+    end
+end
+
+function checkConsumables(consumable_type, location_checks)
+	for location_name, value in pairs(AGI[consumable_type])
+	do
+		if(isBackup == false and (value == false and location_checks[location_name] == true))
+		then
+			if(DEBUG == true)
+			then
+				print("Obtained local consumable. Remove from Inventory")
+			end
+			setConsumable(consumable_type, getConsumable(consumable_type) - 1)
+			AGI[consumable_type][location_name] = true
+			savingAGI()
+		end
+	end
+end
+
+local update_BMK_MOVES_checks = function() --Only run when close to Silos
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+        if BKM[k] == false
+        then
+            res = checkFlag(v['addr'], v['bit'])
+            if res == true
+            then
+                if DEBUG == true 
+                then
+                    print("Already learnt this Silo. finished")
+                end
+                BKM[k] = res
+                FinishedSilo = true
+            end
+        end 
+    end
+end
+
+local init_BMK = function(type) --Only run when close to Silos
+    local checks = {}
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+        if type == "BKM"
+        then
+            BKM[k] = checkFlag(v['addr'], v['bit'])
+        elseif type == "AGI"
+        then
+            checks[k] = checkFlag(v['addr'], v['bit'])
+        end
+    end
+    return checks
+end
+
+local clear_AMM_MOVES_checks = function() --Only run when transitioning Maps until BT/Silo Model is loaded OR Close to Silo
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+        if BKM[k] == false
+        then
+            clearFlag(v['addr'], v['bit'])
+        elseif BKM[k] == true 
+        then
+            setFlag(v['addr'], v['bit'])
+        end
+    end
+end
+
+local set_AGI_MOVES_checks = function() -- SET AGI Moves into RAM AFTER BT/Silo Model is loaded
+    for k,v in pairs(MASTER_MAP['MOVES'])
+    do
+        if AGI["MOVES"][k] == true
+        then
+            setFlag(v['addr'], v['bit']);
+        else
+            clearFlag(v['addr'], v['bit']);
+        end
+    end
+end
+
 function checkConsumables(consumable_type, location_checks)
 	for location_name, value in pairs(AGI[consumable_type])
 	do
@@ -2220,7 +2534,8 @@ function loadGame(current_map)
            return false
         else
             isBackup = true
-            BMM = json.decode(f:read())
+            BMM = json.decode(f:read("l"));
+            BKM = json.decode(f:read("l"));
             f:close()
             all_location_checks("AMM")
             all_location_checks("BMM")
@@ -2241,6 +2556,151 @@ function loadGame(current_map)
     end
 end
 
+function getSiloPlayerModel()
+    if SiloCounter <= 2
+    then
+        if DEBUG == true
+        then
+            print("Watching Silo")
+        end
+        SiloCounter = SiloCounter + 1
+        return
+    end
+    local object = checkModel("Silo");
+    if object == false
+    then
+        local player = checkModel("Player");
+        if player == false
+        then
+            return
+        end
+        if DEBUG == true
+        then
+            print("No silo on Map")
+            print("AP Abilities enabled")
+        end
+        set_AGI_MOVES_checks() --No Silo on this map
+        NeedSiloState = false
+        WatchSilo = false
+        SiloCounter = 0
+        return
+    end
+    if DEBUG == true
+    then
+        print("Silo Found")
+    end
+    set_AGI_MOVES_checks()
+    NeedSiloState = false
+    WatchSilo = true
+end
+
+function nearSilo()
+    local pos = getBanjoPos()
+    if pos == false --possible loading screen
+    then
+        return false
+    end
+
+    local objects = checkModels("Silo");
+    if objects == false
+    then
+        return; --Shouldn't hit here at all
+    end
+
+    for index, silos in pairs(objects) do
+        local xPos = mainmemory.readfloat(silos + 0x04, true);
+        local yPos = mainmemory.readfloat(silos + 0x08, true);
+        local zPos = mainmemory.readfloat(silos + 0x0C, true);
+
+        --Move the Silo in WitchyWorld.
+        if (xPos == 0 and yPos == -163 and zPos == -1257)
+            and last_map == 0xD6
+        then
+            mainmemory.writefloat(silos + 0x0C, zPos + 100, true);
+            MoveWitchyPads();
+        end
+    
+        local hDist = math.sqrt(((xPos - pos["Xpos"]) ^ 2) + ((zPos - pos["Zpos"]) ^ 2));
+        playerDist = math.floor(math.sqrt(((yPos - pos["Ypos"]) ^ 2) + (hDist ^ 2)));
+        if playerDist <= 650
+        then
+            if DEBUG == true
+            then
+                print("Near Silo");
+            end
+            break;
+        end
+    end
+
+    if playerDist <= 650 
+    then
+        if AMMMovesCleared == false
+        then
+            clear_AMM_MOVES_checks();
+            update_BMK_MOVES_checks();
+            AMMMovesCleared = true
+        elseif FinishedSilo == false
+        then
+            if DEBUG == true
+            then
+                print("Watching BMK Moves");
+            end
+            update_BMK_MOVES_checks();
+        else
+            if DEBUG == true
+            then
+            print("BMK Move Learnt");
+            print(playerDist)
+            end
+        end
+    else
+        if AMMMovesCleared == true
+        then
+            if DEBUG == true
+            then
+                print("Reseting Movelist");
+            end
+            set_AGI_MOVES_checks()
+            AMMMovesCleared = false
+            FinishedSilo = false;
+            SiloObj = nil;
+        end
+    end
+end
+
+function MoveWitchyPads()
+
+    local objects = checkModels("Kazooie Split Pad");
+    for index, pad in pairs(objects) do
+        local xPos = mainmemory.readfloat(pad + 0x04, true);
+        local yPos = mainmemory.readfloat(pad + 0x08, true);
+        local zPos = mainmemory.readfloat(pad + 0x0C, true);
+
+        --Move the Pads in WitchyWorld.
+        if (xPos == -125 and yPos == -163 and zPos == -1580)
+            and last_map == 0xD6
+        then
+            mainmemory.writefloat(pad + 0x0C, zPos - 600, true);
+            mainmemory.writefloat(pad + 0x08, yPos - 50, true);
+            break
+        end
+    end
+
+    local objects = checkModels("Banjo Split Pad");
+    for index, pad in pairs(objects) do
+        local xPos = mainmemory.readfloat(pad + 0x04, true);
+        local yPos = mainmemory.readfloat(pad + 0x08, true);
+        local zPos = mainmemory.readfloat(pad + 0x0C, true);
+
+        if (xPos == 125 and zPos == -1580)
+            and last_map == 0xD6
+        then
+            mainmemory.writefloat(pad + 0x0C, zPos - 600, true);
+            mainmemory.writefloat(pad + 0x08, yPos - 50, true);
+            break
+        end
+    end
+end
 
 function locationControl()
     local mapaddr = getMap()
@@ -2250,6 +2710,21 @@ function locationControl()
         then
             local DEMO = { ['DEMO'] = true}
             return DEMO
+        end
+        if (last_map ~= mapaddr) and APMovesEnabled == true
+        then
+            for k,maps in pairs(SILO_MAP_CHECK)
+            do
+                if mapaddr == maps
+                then
+                    if DEBUG == true
+                    then
+                         print("Checking Silos")
+                    end
+                    SiloCounter = 0;
+                    NeedSiloState = true
+                end
+            end
         end
         if ((last_map == 335 or last_map == 337) and (mapaddr ~= 335 and mapaddr ~= 337)) -- Wooded Hollow
         then
@@ -2269,6 +2744,21 @@ function locationControl()
             local DEMO = { ['DEMO'] = true}
             return DEMO
         else
+            if (last_map ~= mapaddr) and APMovesEnabled == true
+            then
+                for k,maps in pairs(SILO_MAP_CHECK) -- avoid detected abilities in Areas you don't have
+                do
+                    if mapaddr == maps
+                    then
+                        if DEBUG == true
+                        then
+                             print("Checking Silos")
+                        end
+                        SiloCounter = 0;
+                        NeedSiloState = true
+                    end
+                end
+            end
             if (mapaddr == 335 or mapaddr == 337) and checkTotals == false -- Wooded Hollow / JiggyTemple
             then
                 if last_map ~= 335 and last_map ~= 337
@@ -2299,7 +2789,7 @@ function BMMBackup()
     end
     for item_group, table in pairs(MASTER_MAP)
     do
-		if item_group ~= 'SKIP' then
+		if item_group ~= 'SKIP' and item_group ~= 'MOVES' then
 			for location, values in pairs(table)
 			do
 				BMM[item_group][location] = checkFlag(values['addr'], values['bit']);
@@ -2320,30 +2810,31 @@ function BMMRestore()
         return
     end
 
-    for zone,location in pairs(MASTER_MAP)
+    for item_group , location in pairs(MASTER_MAP)
     do
-		if zone ~= 'SKIP' then
-			for loc,v in pairs(location)
-			do
-				if AMM[zone][loc] == false and BMM[zone][loc] == true
-				then
-					setFlag(v['addr'], v['bit'])
-					AMM[zone][loc] = BMM[zone][loc]
-					if DEBUG == true
-					then
-						print(loc .. " Flag Set")
-					end
-				elseif AMM[zone][loc] == true and BMM[zone][loc] == false
-				then
-					clearFlag(v['addr'], v['bit'])
-					AMM[zone][loc] = BMM[zone][loc]
-					if DEBUG == true
-					then
-						print(loc .. " Flag Cleared")
-					end
-				end
-			end
-		end
+        if item_group ~= "MOVES" and item_group ~= "SKIP"
+        then
+            for loc,v in pairs(location)
+            do
+                if AMM[item_group][loc] == false and BMM[item_group][loc] == true
+                then
+                    setFlag(v['addr'], v['bit'])
+                    AMM[item_group][loc] = BMM[item_group][loc]
+                    if DEBUG == true
+                    then
+                        print(loc .. " Flag Set")
+                    end
+                elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
+                then
+                    clearFlag(v['addr'], v['bit'])
+                    AMM[item_group][loc] = BMM[item_group][loc]
+                    if DEBUG == true
+                    then
+                        print(loc .. " Flag Cleared")
+                    end
+                end
+            end
+        end
     end
     if DEBUG == true
     then
@@ -2355,7 +2846,7 @@ end
 function useAGI()
     for item_group, table in pairs(MASTER_MAP)
     do
-		if item_group ~= 'SKIP' then
+		if item_group ~= 'SKIP' and item_group ~= 'MOVES' then
 			for location,values in pairs(table)
 			do
 				if AMM[item_group][location] == false and AGI[item_group][location] == true
@@ -2425,13 +2916,11 @@ function all_location_checks(type)
     if next(BMM) == nil then
         BMM = MM;
     end
-    if next(AGI) == nil then --only happens once when you first play
-        AGI = location_checks
-    end
 
     if multiHoneycomb == true then
         checkConsumables('HONEYCOMB', location_checks)
     end
+
     if multiPages == true then
         checkConsumables('CHEATO', location_checks)
     end
@@ -2530,6 +3019,7 @@ function receive()
         retTable["playerName"] = player_name;
         retTable["deathlinkActive"] = deathlink;
         retTable['locations'] = locationControl()
+        retTable['unlocked_moves'] = BKM;
         retTable["isDead"] = isBanjoDed;
 
     
@@ -2637,6 +3127,17 @@ function checkPause()
                     end
                 end
             end
+        elseif check_controls ~= nil and check_controls['P1 C Up'] == true
+        then
+            print("BKM TABLE + Actual:");
+            for location, values in pairs(MASTER_MAP["MOVES"])
+            do
+                print("AMM:");
+                local res = checkFlag(values['addr'], values['bit']);
+                print(location .. ":" .. tostring(res))
+                print("Checked? : " .. tostring(BKM[location]))
+                print("------------------------");
+            end
         end
     end
 end
@@ -2680,7 +3181,8 @@ end
 
 function savingBMM()
     local f = io.open("BT" .. player_name .. "_" .. seed .. ".BMM", "w") --generate #BTplayer_seed.AGI
-    f:write(json.encode(BMM))
+    f:write(json.encode(BMM) .. "\n");
+    f:write(json.encode(BKM));
     f:close()
     if DEBUG == true
     then
@@ -2792,12 +3294,17 @@ function process_slot(block)
     then
         multiPages = true
     end
+    if block['slot_moves'] ~= nil and block['slot_moves'] ~= "false"
+    then
+        APMovesEnabled = true
+    end
 
     if seed ~= 0
     then
         local f = io.open("BT" .. player_name .. "_" .. seed .. ".AGI", "r") --generate #BTplayer_seed.AGI
         if f==nil then
             all_location_checks("AGI")
+            AGI["MOVES"] = init_BMK("AGI");
             f = io.open("BT" .. player_name .. "_" .. seed .. ".AGI", "w")
             f:write(json.encode(AGI))
             f:close()
@@ -2845,6 +3352,7 @@ function initializeFlags()
 		setFlag(0xA9, 7) -- HFP
 		
         BMMLoaded = true  -- We don't have a real BMM at this point.  
+        init_BMK("BKM")
 		if (skip_tot ~= "false") then
 			-- ToT Misc Flags
 			setFlag(0xAB, 2)
@@ -2904,6 +3412,15 @@ function main()
                 then
                     saveGame();
                 end
+                if NeedSiloState == true
+                then
+                    if DEBUG == true
+                    then
+                        print("clearing all AMM moves")
+                    end
+                    clear_AMM_MOVES_checks()
+                    getSiloPlayerModel()
+                end
                 gameSaving();
             elseif (frame % 10 == 0)
             then
@@ -2912,6 +3429,10 @@ function main()
                 if not (flag_init_complete) then
 					initializeFlags();
 				end
+                if WatchSilo == true
+                then
+                    nearSilo()
+                end
             end
         elseif (curstate == STATE_UNINITIALIZED) then
             if  (frame % 60 == 0) then
