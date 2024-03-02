@@ -5,7 +5,7 @@ import typing
 from jinja2 import Environment, FileSystemLoader
 # from .Game import game_name, filler_item_name
 from .Items import BanjoTooieItem, all_item_table, all_group_table
-from .Locations import BanjoTooieLocation, all_location_table
+from .Locations import BanjoTooieLocation, all_location_table, group_location_table
 from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
@@ -67,7 +67,12 @@ class BanjoTooieWorld(World):
     item_name_groups = {
         "Jiggy": all_group_table["jiggy"],
         "Jinjo": all_group_table["jinjo"],
-        "Moves": all_group_table["moves"]
+        "Moves": all_group_table["moves"],
+        "Magic": all_group_table["magic"]
+    }
+
+    location_name_groups = {
+        "Glowbos": group_location_table["glowbos"]
     }
     
 
@@ -123,9 +128,12 @@ class BanjoTooieWorld(World):
         if(item.code in range(1230753, 1230778) and self.options.multiworld_moves == False) : #range you need to add +1 to the end. 
             return False
         
-        if(item.code == 1230511 and self.options.multiworld_glowbos == False) :
+        if(item.code in range(1230174, 1230183) and self.options.multiworld_glowbos == False) : #range you need to add +1 to the end.
             return False
         
+        if(item.code in range(1230855, 1230864) and self.options.multiworld_glowbos == False) : #range you need to add +1 to the end.
+            return False
+
         if((item.code == 1230501 or item.code == 1230502 or item.code == 1230503 or item.code == 1230504 or
             item.code == 1230505 or item.code == 1230506 or item.code == 1230507 or item.code == 1230508 or
             item.code == 1230509 ) and self.options.multiworld_jinjos == False) :
@@ -160,6 +168,18 @@ class BanjoTooieWorld(World):
                     for name in item_info:
                         item = self.create_item(name)
                         self.multiworld.get_location(name, self.player).place_locked_item(item)
+
+        if self.options.multiworld_glowbos == False:
+            location_list = list(self.location_name_groups["Glowbos"])
+            for group_name, item_info in self.item_name_groups.items():
+                if group_name == "Magic":
+                    for name in item_info:
+                        item = self.create_item(name)
+                        copy_location = list(location_list)
+                        for v in copy_location:
+                            self.multiworld.get_location(v, self.player).place_locked_item(item)
+                            location_list.remove(v)
+                            break
 
     def fill_slot_data(self) -> dict[str, any]:
         btoptions = dict[str, any]()
