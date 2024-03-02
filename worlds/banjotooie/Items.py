@@ -199,7 +199,8 @@ all_group_table = {
     'jiggy' : jiggy_table,
     'jinjo' : jinjo_table,
     'misc' : misc_collectable_table,
-    'moves': moves_table
+    'moves': moves_table,
+    "magic": level_progress_table
 }
 
 
