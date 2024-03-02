@@ -20,7 +20,7 @@ local STATE_OK = "Ok"
 local STATE_TENTATIVELY_CONNECTED = "Tentatively Connected"
 local STATE_INITIAL_CONNECTION_MADE = "Initial Connection Made"
 local STATE_UNINITIALIZED = "Uninitialized"
-local DEBUG = false
+local DEBUG = true
 local DEBUGLVL2 = false
 
 local prevstate = ""
@@ -2663,6 +2663,22 @@ function checkConsumables(consumable_type, location_checks)
 	end
 end
 
+function checkConsumables(consumable_type, location_checks)
+	for location_name, value in pairs(AGI[consumable_type])
+	do
+		if(isBackup == false and (value == false and location_checks[location_name] == true))
+		then
+			if(DEBUG == true)
+			then
+				print("Obtained local consumable. Remove from Inventory")
+			end
+			setConsumable(consumable_type, getConsumable(consumable_type) - 1)
+			AGI[consumable_type][location_name] = true
+			savingAGI()
+		end
+	end
+end
+
 function loadGame(current_map)
     if(current_map == 0x142 or current_map == 0xAF)
     then
@@ -2949,7 +2965,7 @@ function BMMRestore()
 
     for item_group , location in pairs(MASTER_MAP)
     do
-        if item_group ~= "MOVES" and item_group ~= "SKIP" and item_group ~= "MAGIC"
+        if item_group ~= "MOVES" and item_group ~= "SKIP" and item_group ~= 'MAGIC'
         then
             for loc,v in pairs(location)
             do
@@ -2983,7 +2999,8 @@ end
 function useAGI()
     for item_group, table in pairs(MASTER_MAP)
     do
-		if item_group ~= 'SKIP' and item_group ~= 'MOVES' then
+		if item_group ~= 'SKIP' and item_group ~= 'MOVES' and item_group ~= 'MAGIC' then
+            print(item_group)
 			for location,values in pairs(table)
 			do
 				if AMM[item_group][location] == false and AGI[item_group][location] == true
@@ -3083,43 +3100,58 @@ function archipelago_msg_box(msg)
     end
 end
 
-function processAGIItem(item_list)
-    if multiHoneycomb == true or multiPages == true
-    then
-        for ap_id, memlocation in pairs(item_list) -- Items unrelated to AGI_MAP like Consumables
-        do
-            if(memlocation == 1230512)  -- Honeycomb Item
-            then
-                if DEBUG == true
-                then
-                    print("HC Obtained")
-                end
-                setConsumable('HONEYCOMB', getConsumable('HONEYCOMB') + 1)
-            elseif(memlocation == 1230513) -- Cheato Item
-            then
-                if DEBUG == true
-                then
-                    print("Cheato Page Obtained")
-                end
-                setConsumable('CHEATO', getConsumable('CHEATO') + 1)
-            end
+function processMagicItem(loc_ID)
+    for location, table in pairs(MASTER_MAP['MAGIC'])
+    do
+        if table['locationId'] == loc_ID
+        then
+            setFlag(table['addr'], table['bit'])
         end
     end
+
+end
+
+function processAGIItem(item_list)
+    for ap_id, memlocation in pairs(item_list) -- Items unrelated to AGI_MAP like Consumables
+    do
+        if(memlocation == 1230512 and multiHoneycomb == true)  -- Honeycomb Item
+        then
+            if DEBUG == true
+            then
+                print("HC Obtained")
+            end
+            setConsumable('HONEYCOMB', getConsumable('HONEYCOMB') + 1)
+        elseif(memlocation == 1230513 and multiPages == true) -- Cheato Item
+        then
+            if DEBUG == true
+            then
+                print("Cheato Page Obtained")
+            end
+            setConsumable('CHEATO', getConsumable('CHEATO') + 1)
+        elseif(1230855 <= memlocation <= 1230863 or 1230174 <= memlocation <= 1230182)
+        then
+            processMagicItem(memlocation)
+        end
+    end
+
     
     for item_type, table in pairs(MASTER_MAP)
     do
-        for location, values in pairs(table)
-        do
-            for ap_id, memlocation in pairs(item_list)
-            do    
-                if values['locationId'] == memlocation
-                then
-                    if DEBUG == true
+        if item_type ~= 'MAGIC'
+        then
+            for location, values in pairs(table)
+            do
+                for ap_id, memlocation in pairs(item_list)
+                do
+                    if values['locationId'] == memlocation
                     then
-                        print("ITEM FOUND FROM AP:" .. location);
+                        if DEBUG == true
+                        then
+                            print("ITEM FOUND FROM AP:" .. location);
+                        end
+                        AGI[item_type][location] = true;
+                        savingAGI();
                     end
-                    AGI[item_type][location] = true;
-                    savingAGI();
                 end
             end
         end
@@ -3473,7 +3505,6 @@ function initializeFlags()
 		end	
 		setFlag(0x01, 2) -- Empty Honeycomb
 		setFlag(0x01, 5) -- Jinjo
-		-- setFlag(0x05, 6) -- Mega Glowbo
 		setFlag(0x07, 7) -- Cheato Page
 		setFlag(0x27, 5) -- Doubloon
 		setFlag(0x2E, 7) -- Ticket
@@ -3513,6 +3544,9 @@ function initializeFlags()
 				setFlag(0x83, 3)
 			end
 		end
+        all_location_checks("AMM")
+        BMMBackup()
+        BMMRestore()
 		flag_init_complete = true
 	-- Otherwise, the flags were already set, so just stop checking
 	elseif (current_map == 0xAF or current_map == 0x142) then
