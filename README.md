@@ -9,16 +9,19 @@ Banjo Tooie for Archipelago
 - Pause Menu will display total items collected in your game + Multi-world
 - Skippable Tower of Terror
 - Victory condition when you defeat HAG1
+- Cheato Pages are scattered throughout Archipelago games
+- Glowbos are scattered throughout Archipelago games and activates magic automatically
+- Banjo Advanced Jamjar Moves are scattered throughout Archipelago games
+- Auto skip certian dialogs and cutscenes
+
 
 # How to install - server side
-1. Copy worlds/banjotooie into the worlds folder in your existing Archipelago Source
-2. Copy BTClient.py into the top level folder in your existing Archipelago Source. 
-4. Copy the yaml-template/template.yaml into the Players folder and modify as you see fit
-5. Generate
+1. Copy banjotooie.apworld into your existing Archipelago\lib\worlds
+2. Copy data\lua\banjotooie_connector.lua into Archipelago-Install-Folder\data\lua\
 
 # How to install - client side
 1. Copy data/lua/banjotooie_connector.lua into data/lua in your existing Archipelago
-3. Copy BTClient.py into the top level folder in your existing Archipelago Source and run it.
+3. run Launcher.exe and select Banjo-Tooie Client.
 4. Connect the Archipelago Client with the server.
 5. Open Bizhawk (2.9.1 tested) and open your Banjo-Tooie (US) game.
 6. Once you are in the game Select screen, apply the banjotooie_connector lua script (drag and drop)
@@ -26,9 +29,6 @@ Banjo Tooie for Archipelago
 # Future goals for this project
 - Jinjos are scattered throughout Archipelago games 
 - Doubloons are scattered throughout Archipelago games
-- Cheato Pages are scattered throughout Archipelago games
-- Glowbos are scattered throughout Archipelago games **(if Possible)**
-- Unlockable Banjo Moves are scattered throughout Archipelago games **(if Possible)**
 - Train Station are scattered throughout Archipelago games **(if Possible)**
 - Musical Notes/Treble Clef are scattered throughout Archipelago games **(if Possible / requires feedback if its a good option)**
 

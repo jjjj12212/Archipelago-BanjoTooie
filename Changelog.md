@@ -2,8 +2,9 @@
 - Implemented Cheato Pages
 - Implemented Glowbos
 - Skip most cutscenes and one-time dialogues
-- Fixed some typoes
+- Fixed some typos
 - Fixed bug where lua script would crash randomly
+- Implemented Banjo Advanced Jamjar Moves
 
 # v0.4-beta
 - Fixed issue when unchecked locations are sent when saving and quiting.
