@@ -5,7 +5,7 @@ import typing
 from jinja2 import Environment, FileSystemLoader
 # from .Game import game_name, filler_item_name
 from .Items import BanjoTooieItem, all_item_table, all_group_table
-from .Locations import BanjoTooieLocation, all_location_table, group_location_table
+from .Locations import BanjoTooieLocation, all_location_table
 from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
@@ -69,10 +69,6 @@ class BanjoTooieWorld(World):
         "Jinjo": all_group_table["jinjo"],
         "Moves": all_group_table["moves"],
         "Magic": all_group_table["magic"]
-    }
-
-    location_name_groups = {
-        "Glowbos": group_location_table["glowbos"]
     }
     
 
@@ -170,16 +166,13 @@ class BanjoTooieWorld(World):
                         self.multiworld.get_location(name, self.player).place_locked_item(item)
 
         if self.options.multiworld_glowbos == False:
-            location_list = list(self.location_name_groups["Glowbos"])
             for group_name, item_info in self.item_name_groups.items():
                 if group_name == "Magic":
                     for name in item_info:
                         item = self.create_item(name)
-                        copy_location = list(location_list)
-                        for v in copy_location:
-                            self.multiworld.get_location(v, self.player).place_locked_item(item)
-                            location_list.remove(v)
-                            break
+                        banjoItem = all_item_table.get(name)
+                        self.multiworld.get_location(banjoItem.defualt_location, self.player).place_locked_item(item)
+
 
     def fill_slot_data(self) -> dict[str, any]:
         btoptions = dict[str, any]()

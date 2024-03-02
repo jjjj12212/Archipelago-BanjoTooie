@@ -325,28 +325,6 @@ boss_table = {
     locationName.HAG1:      LocationData(None, 0x03, 3)
 }
 
-glowbo_table = {
-    locationName.GLOWBOMT1: LocationData(1230686, 0x42, 7),
-    locationName.GLOWBOMT2: LocationData(1230687, 0x43, 0),
-    locationName.GLOWBOGM1: LocationData(1230688, 0x43, 1),
-    locationName.GLOWBOGM2: LocationData(1230689, 0x43, 2),
-    locationName.GLOWBOWW1: LocationData(1230690, 0x43, 3),
-    locationName.GLOWBOWW2: LocationData(1230691, 0x43, 4),
-    locationName.GLOWBOJR1: LocationData(1230692, 0x43, 5),
-    locationName.GLOWBOJR2: LocationData(1230693, 0x43, 6),
-    locationName.GLOWBOTL1: LocationData(1230694, 0x43, 7),
-    locationName.GLOWBOTL2: LocationData(1230695, 0x44, 0),
-    locationName.GLOWBOGI1: LocationData(1230696, 0x44, 1),
-    locationName.GLOWBOGI2: LocationData(1230697, 0x44, 2),
-    locationName.GLOWBOHP1: LocationData(1230698, 0x44, 3),
-    locationName.GLOWBOHP2: LocationData(1230699, 0x44, 4),
-    locationName.GLOWBOCC1: LocationData(1230700, 0x44, 5),
-    locationName.GLOWBOCC2: LocationData(1230701, 0x44, 6),
-    locationName.GLOWBOIH1: LocationData(1230702, 0x44, 7),
-    locationName.GLOWBOMEG: LocationData(1230046, 0x05, 6),
-
-}
-
 all_location_table = {
     **SMLoc_table,
     **JVLoc_table,
@@ -364,10 +342,6 @@ all_location_table = {
     **HPLoc_table,
     **CCLoc_table,
     **boss_table
-}
-
-group_location_table = {
-    "glowbos" : glowbo_table
 }
 
 
