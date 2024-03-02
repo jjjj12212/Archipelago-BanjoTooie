@@ -84,8 +84,10 @@ function dereferencePointer(address)
 end
 
 local consumeTable = {
+    [8]  = {key=0x0003, name="Glowbos"},
     [9]  = {key=0x3C0C, name="Empty Honeycombs"},
-	[10] = {key=0x0319, name="Cheato Pages"}
+	[10] = {key=0x0319, name="Cheato Pages"},
+    [20] = {key=0x1461, name="Mega Glowbo"}
 }
 
 function setConsumable(consumable_type, value)
@@ -96,6 +98,12 @@ function setConsumable(consumable_type, value)
 	elseif consumable_type == 'CHEATO'
 	then
 		index = 10
+    elseif consumable_type == 'GLOWBO'
+    then
+        index = 8
+    elseif consumable_type == 'MEGA GLOWBO'
+    then
+        index = 20
 	end
     local consumablesBlock = dereferencePointer(0x12B250);
     mainmemory.write_u16_be(consumablesBlock + index * 2, value ~ consumeTable[index]["key"]);
@@ -109,6 +117,12 @@ function getConsumable(consumable_type)
 	elseif consumable_type == 'CHEATO'
 	then
 		index = 10
+    elseif consumable_type == 'GLOWBO'
+    then
+        index = 8
+    elseif consumable_type == 'MEGA GLOWBO'
+    then
+        index = 20
 	end
     local normalValue = mainmemory.read_u16_be(0x11B080 + index * 0x0C);
 	return normalValue;
@@ -1406,91 +1420,99 @@ local MASTER_MAP = {
         },
     },
     ['GLOWBO'] = {
-        -- ['Mayahem Temple: Mumbo Skull Glowbo'] = {
-        --     ['addr'] = 0x42,
-        --     ['bit'] = 7,
-        --     ['locationId'] = 1230686
-        -- },
-        -- ['Mayahem Temple: Behind Wumba Wigwam Glowbo'] = {
-        --     ['addr'] = 0x43,
-        --     ['bit'] = 0,
-        --     ['locationId'] = 1230687
-        -- },
-        -- ['Glitter Gultch Mine: Near Entrance Glowbo'] = {
-        --     ['addr'] = 0x43,
-        --     ['bit'] = 1,
-        --     ['locationId'] = 1230688
-        -- },
-        -- ['Glitter Gultch Mine: Mine Entrance Glowbo'] = {
-        --     ['addr'] = 0x43,
-        --     ['bit'] = 2,
-        --     ['locationId'] = 1230689
-        -- },
-        -- ['Witchy World: The Inferno Glowbo'] = {
-        --     ['addr'] = 0x43,
-        --     ['bit'] = 3,
-        --     ['locationId'] = 1230690
-        -- },
-        -- ['Witchy World: Inside Wumba Wigwam Glowbo'] = {
-        --     ['addr'] = 0x43,
-        --     ['bit'] = 4,
-        --     ['locationId'] = 1230691
-        -- },
-        -- ['Cliff Top: Glowbo'] = {
-        --     ['addr'] = 0x44,
-        --     ['bit'] = 7,
-        --     ['locationId'] = 1230702
-        -- },
-        -- ['Jolly Rogers: Pawnos Emporium Glowbo'] = {
-        --     ['addr'] = 0x43,
-        --     ['bit'] = 5,
-        --     ['locationId'] = 123069
-        -- },
-        -- ['Jolly Rogers: Under Wumba Wigwam Glowbo'] = {
-        --     ['addr'] = 0x43,
-        --     ['bit'] = 6,
-        --     ['locationId'] = 123070
-        -- },
-        -- ['Terrydactyland: Unga Bunga Cave Entrance Glowbo'] = {
-        --     ['addr'] = 0x43,
-        --     ['bit'] = 7,
-        --     ['locationId'] = 1230694
-        -- },
-        -- ['Terrydactyland: Behind Mumbo Skull Glowbo'] = {
-        --     ['addr'] = 0x44,
-        --     ['bit'] = 0,
-        --     ['locationId'] = 1230695
-        -- },
-        -- ['Gruntys Industries: Floor 2 Glowbo'] = {
-        --     ['addr'] = 0x44,
-        --     ['bit'] = 1,
-        --     ['locationId'] = 1230696
-        -- },
-        -- ['Gruntys Industries: Floor 3 Glowbo'] = {
-        --     ['addr'] = 0x44,
-        --     ['bit'] = 2,
-        --     ['locationId'] = 1230697
-        -- },
-        -- ['Hailfire Peaks: Lava Side Glowbo'] = {
-        --     ['addr'] = 0x44,
-        --     ['bit'] = 3,
-        --     ['locationId'] = 1230698
-        -- },
-        -- ['Hailfire Peaks: Icy Side Glowbo'] = {
-        --     ['addr'] = 0x44,
-        --     ['bit'] = 4,
-        --     ['locationId'] = 1230699
-        -- },
-        -- ['Cloud Cuckcooland: Overworld Glowbo'] = {
-        --     ['addr'] = 0x44,
-        --     ['bit'] = 5,
-        --     ['locationId'] = 1230700
-        -- },
-        -- ['Cloud Cuckcooland: Central Cavern Glowbo'] = {
-        --     ['addr'] = 0x44,
-        --     ['bit'] = 6,
-        --     ['locationId'] = 1230701
-        -- },
+         ['Mayahem Temple: Mumbo Skull Glowbo'] = {
+             ['addr'] = 0x42,
+             ['bit'] = 7,
+             ['locationId'] = 1230686
+         },
+         ['Mayahem Temple: Behind Wumba Wigwam Glowbo'] = {
+             ['addr'] = 0x43,
+             ['bit'] = 0,
+             ['locationId'] = 1230687
+         },
+         ['Glitter Gultch Mine: Near Entrance Glowbo'] = {
+             ['addr'] = 0x43,
+             ['bit'] = 1,
+             ['locationId'] = 1230688
+         },
+         ['Glitter Gultch Mine: Mine Entrance Glowbo'] = {
+             ['addr'] = 0x43,
+             ['bit'] = 2,
+             ['locationId'] = 1230689
+         },
+         ['Witchy World: The Inferno Glowbo'] = {
+             ['addr'] = 0x43,
+             ['bit'] = 3,
+             ['locationId'] = 1230690
+         },
+         ['Witchy World: Inside Wumba Wigwam Glowbo'] = {
+             ['addr'] = 0x43,
+             ['bit'] = 4,
+             ['locationId'] = 1230691
+         },
+         ['Cliff Top: Glowbo'] = {
+             ['addr'] = 0x44,
+             ['bit'] = 7,
+             ['locationId'] = 1230702
+         },
+         ['Jolly Rogers: Pawnos Emporium Glowbo'] = {
+             ['addr'] = 0x43,
+             ['bit'] = 5,
+             ['locationId'] = 123069
+         },
+         ['Jolly Rogers: Under Wumba Wigwam Glowbo'] = {
+             ['addr'] = 0x43,
+             ['bit'] = 6,
+             ['locationId'] = 123070
+         },
+         ['Terrydactyland: Unga Bunga Cave Entrance Glowbo'] = {
+             ['addr'] = 0x43,
+             ['bit'] = 7,
+             ['locationId'] = 1230694
+         },
+         ['Terrydactyland: Behind Mumbo Skull Glowbo'] = {
+             ['addr'] = 0x44,
+             ['bit'] = 0,
+             ['locationId'] = 1230695
+         },
+         ['Gruntys Industries: Floor 2 Glowbo'] = {
+             ['addr'] = 0x44,
+             ['bit'] = 1,
+             ['locationId'] = 1230696
+         },
+         ['Gruntys Industries: Floor 3 Glowbo'] = {
+             ['addr'] = 0x44,
+             ['bit'] = 2,
+             ['locationId'] = 1230697
+         },
+         ['Hailfire Peaks: Lava Side Glowbo'] = {
+             ['addr'] = 0x44,
+             ['bit'] = 3,
+             ['locationId'] = 1230698
+         },
+         ['Hailfire Peaks: Icy Side Glowbo'] = {
+             ['addr'] = 0x44,
+             ['bit'] = 4,
+             ['locationId'] = 1230699
+         },
+         ['Cloud Cuckcooland: Overworld Glowbo'] = {
+             ['addr'] = 0x44,
+             ['bit'] = 5,
+             ['locationId'] = 1230700
+         },
+         ['Cloud Cuckcooland: Central Cavern Glowbo'] = {
+             ['addr'] = 0x44,
+             ['bit'] = 6,
+             ['locationId'] = 1230701
+         },
+    },
+    ['MEGA GLOWBO'] = {
+        ['Mega Glowbo'] = {
+            ['addr'] = 0x05,
+            ['bit'] = 6,
+            ['locationId'] = 1230046
+        }
+
     },
     ['DOUBLOON'] = {
         -- ['Jolly Rogers: Town Center Pole 1 Doubloon'] = {
@@ -1778,6 +1800,98 @@ local MASTER_MAP = {
             ['locationId'] = 1230777
         },
 	},
+    ["MAGIC"] = {
+        ['Mumbo: Golden Goliath'] = {
+          ['addr'] = 0x6A,
+          ['bit'] = 7,
+          ['locationId'] = 1230855
+        },
+        ['Mumbo: Levitate'] = {
+          ['addr'] = 0x6B,
+          ['bit'] = 0,
+          ['locationId'] = 1230856
+        },
+        ['Mumbo: Power'] = {
+          ['addr'] = 0x6B,
+          ['bit'] = 1,
+          ['locationId'] = 1230857
+        },
+        ['Mumbo: Oxygenate'] = {
+          ['addr'] = 0x6B,
+          ['bit'] = 2,
+          ['locationId'] = 1230858
+        },
+        ['Mumbo: Grow/Shrink'] = {
+          ['addr'] = 0x6B,
+          ['bit'] = 3,
+          ['locationId'] = 1230859
+        },
+        ['Mumbo: EMP'] = {
+          ['addr'] = 0x6B,
+          ['bit'] = 7,
+          ['locationId'] = 1230860
+        },
+        ['Mumbo: Revive'] = {
+          ['addr'] = 0x6B,
+          ['bit'] = 4,
+          ['locationId'] = 1230861
+        },
+        ['Mumbo: Rain Dance'] = {
+          ['addr'] = 0x6B,
+          ['bit'] = 5,
+          ['locationId'] = 1230862
+        },
+        ['Mumbo: Heal'] = {
+          ['addr'] = 0x6B,
+          ['bit'] = 6,
+          ['locationId'] = 1230863
+        },
+        ['Humba: Stony'] = {
+          ['addr'] = 0x15,
+          ['bit'] = 6,
+          ['locationId'] = 1230174
+        },
+        ['Humba: Detonator'] = {
+          ['addr'] = 0x15,
+          ['bit'] = 7,
+          ['locationId'] = 1230175
+        },
+        ['Humba: Money Van'] = {
+          ['addr'] = 0x16,
+          ['bit'] = 0,
+          ['locationId'] = 1230176
+        },
+        ['Humba: Sub'] = {
+          ['addr'] = 0x16,
+          ['bit'] = 1,
+          ['locationId'] = 1230177
+        },
+        ['Humba: T-Rex'] = {
+          ['addr'] = 0x16,
+          ['bit'] = 2,
+          ['locationId'] = 1230178
+        },
+        ['Humba: Washing Machine'] = {
+          ['addr'] = 0x16,
+          ['bit'] = 3,
+          ['locationId'] = 1230179
+        },
+        ['Humba: Snowball'] = {
+          ['addr'] = 0x16,
+          ['bit'] = 4,
+          ['locationId'] = 1230180
+        },
+        ['Humba: Bee'] = {
+          ['addr'] = 0x16,
+          ['bit'] = 5,
+          ['locationId'] = 1230181
+        },
+        ['Humba: Dragon'] = {
+          ['addr'] = 0x16,
+          ['bit'] = 6,
+          ['locationId'] = 1230182
+        },
+    },
 	["SKIP"] = {
 		['CUTSCENE'] = {
 			['Klungo Flyover'] = {
@@ -2337,6 +2451,29 @@ local read_GLOWBO_checks = function(type)
     return checks
 end
 
+local read_MEGA_GLOWBO_checks = function(type)
+    local checks = {}
+    if type == "AMM"
+    then
+        for k,v in pairs(MASTER_MAP['MEGA GLOWBO'])
+        do
+            checks[k] = checkFlag(v['addr'], v['bit'])
+        end
+        AMM['MEGA GLOWBO'] = checks;
+    elseif type == "BMM"
+    then
+        checks = BMM['MEGA GLOWBO']
+    elseif type == "AGI" -- should only run for initialization
+    then
+        for k,v in pairs(MASTER_MAP['MEGA GLOWBO'])
+        do
+            checks[k] = false
+        end
+        AGI['MEGA GLOWBO'] = checks;
+    end
+    return checks
+end
+
 local read_DOUBLOON_checks = function(type)
     local checks = {}
     if type == "AMM"
@@ -2873,7 +3010,7 @@ end
 
 function all_location_checks(type)
     local location_checks = {}
-    local MM = { ['JIGGY']  = {}, ['JINJO'] = {}, ['CHEATO'] = {}, ['HONEYCOMB'] = {}, ['GLOWBO'] = {}, ['DOUBLOON'] = {}, ['H1'] = {}
+    local MM = { ['JIGGY']  = {}, ['JINJO'] = {}, ['CHEATO'] = {}, ['HONEYCOMB'] = {}, ['GLOWBO'] = {}, ['MEGA GLOWBO'] = {}, ['DOUBLOON'] = {}, ['H1'] = {}
     };
     for k,v in pairs(read_JIGGY_checks(type))
     do 
@@ -2924,6 +3061,9 @@ function all_location_checks(type)
     if multiPages == true then
         checkConsumables('CHEATO', location_checks)
     end
+    checkConsumables('GLOWBO', location_checks)
+    checkConsumables('MEGA GLOWBO', location_checks)
+
     return location_checks
 end
 
@@ -2950,13 +3090,13 @@ function processAGIItem(item_list)
                     print("HC Obtained")
                 end
                 setConsumable('HONEYCOMB', getConsumable('HONEYCOMB') + 1)
-			elseif(memlocation == 1230513) -- Cheato Item
-			then
-				if DEBUG == true
-				then
-					print("Cheato Page Obtained")
-				end
-				setConsumable('CHEATO', getConsumable('CHEATO') + 1)
+            elseif(memlocation == 1230513) -- Cheato Item
+            then
+                if DEBUG == true
+                then
+                    print("Cheato Page Obtained")
+                end
+                setConsumable('CHEATO', getConsumable('CHEATO') + 1)
             end
         end
     end
@@ -3328,7 +3468,7 @@ function initializeFlags()
 		end	
 		setFlag(0x01, 2) -- Empty Honeycomb
 		setFlag(0x01, 5) -- Jinjo
-		setFlag(0x05, 6) -- Mega Glowbo
+		-- setFlag(0x05, 6) -- Mega Glowbo
 		setFlag(0x07, 7) -- Cheato Page
 		setFlag(0x27, 5) -- Doubloon
 		setFlag(0x2E, 7) -- Ticket
