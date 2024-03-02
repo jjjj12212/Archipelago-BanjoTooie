@@ -20,7 +20,7 @@ local STATE_OK = "Ok"
 local STATE_TENTATIVELY_CONNECTED = "Tentatively Connected"
 local STATE_INITIAL_CONNECTION_MADE = "Initial Connection Made"
 local STATE_UNINITIALIZED = "Uninitialized"
-local DEBUG = true
+local DEBUG = false
 local DEBUGLVL2 = false
 
 local prevstate = ""
@@ -3000,7 +3000,6 @@ function useAGI()
     for item_group, table in pairs(MASTER_MAP)
     do
 		if item_group ~= 'SKIP' and item_group ~= 'MOVES' and item_group ~= 'MAGIC' then
-            print(item_group)
 			for location,values in pairs(table)
 			do
 				if AMM[item_group][location] == false and AGI[item_group][location] == true
@@ -3112,6 +3111,7 @@ function processMagicItem(loc_ID)
 end
 
 function processAGIItem(item_list)
+    print(item_list)
     for ap_id, memlocation in pairs(item_list) -- Items unrelated to AGI_MAP like Consumables
     do
         if(memlocation == 1230512 and multiHoneycomb == true)  -- Honeycomb Item
@@ -3128,7 +3128,7 @@ function processAGIItem(item_list)
                 print("Cheato Page Obtained")
             end
             setConsumable('CHEATO', getConsumable('CHEATO') + 1)
-        elseif(1230855 <= memlocation <= 1230863 or 1230174 <= memlocation <= 1230182)
+        elseif((1230855 <= memlocation and memlocation <= 1230863) or (1230174 <= memlocation and memlocation <= 1230182))
         then
             processMagicItem(memlocation)
         end
