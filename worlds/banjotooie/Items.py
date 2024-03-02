@@ -25,15 +25,15 @@ jinjo_table = {
 }
 
 jiggy_table = {
-    itemName.JIGGYIH1:  ItemData(1230676, 1, "progress"),
-    itemName.JIGGYIH2:  ItemData(1230677, 1, "progress"),
-    itemName.JIGGYIH3:  ItemData(1230678, 1, "progress"),
-    itemName.JIGGYIH4:  ItemData(1230679, 1, "progress"),
-    itemName.JIGGYIH5:  ItemData(1230680, 1, "progress"),
-    itemName.JIGGYIH6:  ItemData(1230681, 1, "progress"),
-    itemName.JIGGYIH7:  ItemData(1230682, 1, "progress"),
-    itemName.JIGGYIH8:  ItemData(1230683, 1, "progress"),
-    itemName.JIGGYIH9:  ItemData(1230684, 1, "progress"),
+    itemName.JIGGYIH1:  ItemData(1230676, 1, "useful"),
+    itemName.JIGGYIH2:  ItemData(1230677, 1, "useful"),
+    itemName.JIGGYIH3:  ItemData(1230678, 1, "useful"),
+    itemName.JIGGYIH4:  ItemData(1230679, 1, "useful"),
+    itemName.JIGGYIH5:  ItemData(1230680, 1, "useful"),
+    itemName.JIGGYIH6:  ItemData(1230681, 1, "useful"),
+    itemName.JIGGYIH7:  ItemData(1230682, 1, "useful"),
+    itemName.JIGGYIH8:  ItemData(1230683, 1, "useful"),
+    itemName.JIGGYIH9:  ItemData(1230684, 1, "useful"),
     itemName.JIGGYIH10: ItemData(1230685, 1, "progress"),
     itemName.JIGGYMT1:  ItemData(1230596, 1, "progress"),
     itemName.JIGGYMT2:  ItemData(1230597, 1, "progress"),
@@ -199,8 +199,7 @@ all_group_table = {
     'jiggy' : jiggy_table,
     'jinjo' : jinjo_table,
     'misc' : misc_collectable_table,
-    'moves': moves_table,
-    'magic': level_progress_table
+    'moves': moves_table
 }
 
 

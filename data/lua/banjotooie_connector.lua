@@ -3037,6 +3037,11 @@ function all_location_checks(type)
         location_checks[k] = v;
         MM['GLOWBO'][k] = v;
     end
+    for k,v in pairs(read_MEGA_GLOWBO_checks(type))
+    do
+        location_checks[k] = v;
+        MM['MEGA GLOWBO'][k] = v;
+    end
     for k,v in pairs(read_DOUBLOON_checks(type)) 
     do
         location_checks[k] = v;
