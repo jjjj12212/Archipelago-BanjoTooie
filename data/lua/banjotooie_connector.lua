@@ -2926,7 +2926,7 @@ function BMMBackup()
     end
     for item_group, table in pairs(MASTER_MAP)
     do
-		if item_group ~= 'SKIP' and item_group ~= 'MOVES' then
+		if item_group ~= 'SKIP' and item_group ~= 'MOVES' and item_group ~= 'MAGIC' then
 			for location, values in pairs(table)
 			do
 				BMM[item_group][location] = checkFlag(values['addr'], values['bit']);
@@ -2949,7 +2949,7 @@ function BMMRestore()
 
     for item_group , location in pairs(MASTER_MAP)
     do
-        if item_group ~= "MOVES" and item_group ~= "SKIP"
+        if item_group ~= "MOVES" and item_group ~= "SKIP" and item_group ~= "MAGIC"
         then
             for loc,v in pairs(location)
             do
