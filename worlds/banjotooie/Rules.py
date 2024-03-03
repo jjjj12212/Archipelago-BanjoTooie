@@ -16,8 +16,9 @@ class BanjoTooieRules:
     player: int
     world: BanjoTooieWorld
     region_rules = {}
-    can_transform = {}
-    mumbo_magic = {}
+    #can_transform = {}
+    mumbo_magic = []
+    humba_magic = []
     banjo_moves = {}
     kazooie_moves = {}
     jiggy_rules = {}
@@ -28,34 +29,57 @@ class BanjoTooieRules:
         self.player = world.player
         self.world = world
 
-        self.can_transform = {
-            "Stony":           lambda state: state.has(itemName.HUMBAMT, self.player) and
-                                             self.mumbo_magic["Golden Goliath"],
-            "Detonator":       lambda state: state.has(itemName.HUMBAGM, self.player),
-            "Money Van":       lambda state: state.has(itemName.HUMBAWW, self.player),
-            "Sub":             lambda state: state.has(itemName.HUMBAJR, self.player) and
-                                             self.can_reach_atlantis(state),
-            "T-Rex":           lambda state: state.has(itemName.HUMBATD, self.player),
-            "Washing Machine": lambda state: state.has(itemName.HUMBAGI, self.player) and
-                                             self.can_reach_GI_2F(state),
-            "Snowball":        lambda state: state.has(itemName.HUMBAHP, self.player),
-            "Bee":             lambda state: state.has(itemName.HUMBACC, self.player),
-            "Dragon":          lambda state: state.has(itemName.HUMBAIH, self.player)
-        }
+        self.mumbo_magic = [
+            itemName.MUMBOMT,
+            itemName.MUMBOGM,
+            itemName.MUMBOWW,
+            itemName.MUMBOIH,
+            itemName.MUMBOJR,
+            itemName.MUMBOTD,
+            itemName.MUMBOGI,
+            itemName.MUMBOHP,
+            itemName.MUMBOCC
+        ]
 
-        self.mumbo_magic = {
-            "Golden Goliath": lambda state: self.check_magic(state, itemName.MUMBOMT),
-            "Levitate":       lambda state: self.check_magic(state, itemName.MUMBOGM),
-            "Power":          lambda state: self.check_magic(state, itemName.MUMBOWW) and
-                                            self.can_transform["Money Van"],
-            "Oxygenate":      lambda state: self.check_magic(state, itemName.MUMBOJR),
-            "Grow/Shrink":    lambda state: self.check_magic(state, itemName.MUMBOTD),
-            "EMP":            lambda state: self.check_magic(state, itemName.MUMBOGI) and
-                                            self.can_reach_GI_2F(state),
-            "Revive":         lambda state: self.check_magic(state, itemName.MUMBOHP),
-            "Rain Dance":     lambda state: self.check_magic(state, itemName.MUMBOCC),
-            "Heal":           lambda state: self.check_magic(state, itemName.MUMBOIH)
-        }
+        self.humba_magic = [
+            itemName.HUMBAMT,
+            itemName.HUMBAGM,
+            itemName.HUMBAWW,
+            itemName.HUMBAIH,
+            itemName.HUMBAJR,
+            itemName.HUMBATD,
+            itemName.HUMBAGI,
+            itemName.HUMBAHP,
+            itemName.HUMBACC
+        ]
+
+        # self.can_transform = {
+        #     "Stony":           lambda state: state.has(itemName.HUMBAMT, self.player) and
+        #                                      self.golden_goliath(state, itemName.MUMBOMT),
+        #     "Detonator":       lambda state: state.has(itemName.HUMBAGM, self.player),
+        #     "Money Van":       lambda state: state.has(itemName.HUMBAWW, self.player),
+        #     "Sub":             lambda state: state.has(itemName.HUMBAJR, self.player) and
+        #                                      self.can_reach_atlantis(state),
+        #     "T-Rex":           lambda state: state.has(itemName.HUMBATD, self.player),
+        #     "Washing Machine": lambda state: state.has(itemName.HUMBAGI, self.player) and
+        #                                      self.can_reach_GI_2F(state),
+        #     "Snowball":        lambda state: state.has(itemName.HUMBAHP, self.player),
+        #     "Bee":             lambda state: state.has(itemName.HUMBACC, self.player),
+        #     "Dragon":          lambda state: state.has(itemName.HUMBAIH, self.player)
+        # }
+
+        # self.mumbo_magic = {
+        #     "Levitate":       lambda state: self.check_magic(state, itemName.MUMBOGM),
+        #     "Power":          lambda state: self.check_magic(state, itemName.MUMBOWW) and
+        #                                     self.can_transform["Money Van"],
+        #     "Oxygenate":      lambda state: self.check_magic(state, itemName.MUMBOJR),
+        #     "Grow/Shrink":    lambda state: self.check_magic(state, itemName.MUMBOTD),
+        #     "EMP":            lambda state: self.check_magic(state, itemName.MUMBOGI) and
+        #                                     self.can_reach_GI_2F(state),
+        #     "Revive":         lambda state: self.check_magic(state, itemName.MUMBOHP),
+        #     "Rain Dance":     lambda state: self.check_magic(state, itemName.MUMBOCC),
+        #     "Heal":           lambda state: self.check_magic(state, itemName.MUMBOIH)
+        # }
 
         self.banjo_moves = {
             "Pack Whack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.PACKWH, self.player),
@@ -99,56 +123,61 @@ class BanjoTooieRules:
             #Mayahem Temple Jiggies
             locationName.JIGGYMT1: lambda state: state.has(itemName.BBLASTER, self.player),
             locationName.JIGGYMT2: lambda state: state.has(itemName.BBLASTER, self.player),
-            locationName.JIGGYMT3: self.can_transform["Stony"],
+            locationName.JIGGYMT3: lambda state: self.check_humba_magic(state, itemName.HUMBAMT) and
+                                                 self.check_mumbo_magic(state, itemName.MUMBOMT),
             locationName.JIGGYMT4: lambda state: state.has(itemName.EGGAIM, self.player) or
                                                  self.MT_flight_pad(state),
             locationName.JIGGYMT5: lambda state: state.has(itemName.EGGAIM,  self.player) and
                                                  state.has(itemName.GGRAB, self.player) or
                                                  self.MT_flight_pad(state),
-            locationName.JIGGYMT6: self.mumbo_magic["Golden Goliath"],
+            #locationName.JIGGYMT6: self.mumbo_magic["Golden Goliath"],
+            locationName.JIGGYMT6: lambda state: self.check_mumbo_magic(state, itemName.MUMBOMT),
             locationName.JIGGYMT7: lambda state: state.has(itemName.GGRAB, self.player) and
                                                  self.prison_compound_open(state),
             locationName.JIGGYMT8: lambda state: state.has(itemName.BDRILL, self.player) and
                                                  self.prison_compound_open(state),
             locationName.JIGGYMT10: lambda state: state.has(itemName.GGRAB, self.player) and
-                                                 self.mumbo_magic["Golden Goliath"],
+                                                 self.check_mumbo_magic(state, itemName.MUMBOMT),
             #Glitter Gulch Mine Jiggies
-            locationName.JIGGYGM1: self.mumbo_magic["Levitate"],
+            locationName.JIGGYGM1: lambda state: self.check_mumbo_magic(state, itemName.MUMBOGM),
             locationName.JIGGYGM2: lambda state: self.canary_mary_free(state),
             locationName.JIGGYGM5: lambda state: state.has(itemName.BBLASTER, self.player) and
                                                  state.has(itemName.BBAYONET, self.player) and
                                                  self.GM_boulders(state),
             locationName.JIGGYGM6: lambda state: self.dilberta_free(state),
-            locationName.JIGGYGM7: self.mumbo_magic["Levitate"],
+            locationName.JIGGYGM7: lambda state: self.check_mumbo_magic(state, itemName.MUMBOGM),
             locationName.JIGGYGM8: lambda state: state.has(itemName.SPRINGB, self.player) or
                                                  state.has(itemName.CEGGS, self.player),
             locationName.JIGGYGM9: lambda state: self.GM_boulders(state),
 
             #Witchyworld Jiggies
             locationName.JIGGYWW1: lambda state: state.has(itemName.SPLITUP, self.player),
-            locationName.JIGGYWW2: self.can_transform["Money Van"] and self.mumbo_magic["Power"],
+            locationName.JIGGYWW2: lambda state: self.check_humba_magic(state, itemName.HUMBAWW) and
+                                                 self.check_mumbo_magic(state, itemName.MUMBOWW),
             locationName.JIGGYWW3: lambda state: state.has(itemName.AIREAIM, self.player) and
                                                  self.can_kill_fruity(state),
-            locationName.JIGGYWW4: lambda state: self.can_transform["Detonator"] and
-                                                 self.mumbo_magic["Power"] and
+            locationName.JIGGYWW4: lambda state: self.check_humba_magic(state, itemName.HUMBAGM) and
+                                                 self.check_mumbo_magic(state, itemName.MUMBOWW) and
                                                  self.saucer_door_open(state),
             locationName.JIGGYWW5: lambda state: state.has(itemName.SPLITUP, self.player) and
                                                  state.has(itemName.AIREAIM, self.player),
-            locationName.JIGGYWW7: self.can_transform["Money Van"] and
-                                   self.mumbo_magic["Power"] and
-                                   self.banjo_moves["Taxi Pack"],
-            locationName.JIGGYWW8: self.mumbo_magic["Power"],
-            locationName.JIGGYWW9: self.can_transform["Money Van"],
+            locationName.JIGGYWW7: lambda state: self.check_humba_magic(state, itemName.HUMBAWW) and
+                                                 self.check_mumbo_magic(state, itemName.MUMBOWW) and
+                                                 self.banjo_moves["Taxi Pack"],
+            locationName.JIGGYWW8: lambda state: self.check_mumbo_magic(state, itemName.MUMBOWW) and
+                                                 self.check_humba_magic(state, itemName.HUMBAWW),
+            locationName.JIGGYWW9: lambda state: self.check_humba_magic(state, itemName.HUMBAWW),
             locationName.JIGGYWW10: lambda state: state.has(itemName.BDRILL, self.player) and
                                                   state.has(itemName.GEGGS, self.player),
 
             #Jolly Joger's Lagoon Jiggies
-            locationName.JIGGYJR1: self.can_transform["Sub"],
+            locationName.JIGGYJR1: lambda state: self.check_humba_magic(state, itemName.HUMBAJR) and
+                                                 self.can_reach_atlantis(state),
             locationName.JIGGYJR2: lambda state: self.kazooie_moves["Hatch"] and
                                                   state.has(itemName.GEGGS, self.player),
             locationName.JIGGYJR3: lambda state: self.can_reach_atlantis(state) and
                                                  (state.has(itemName.AUQAIM, self.player) or
-                                                  self.can_transform["Sub"]),
+                                                  self.check_humba_magic(state, itemName.HUMBAJR)),
             locationName.JIGGYJR4: lambda state: (state.has(itemName.GEGGS, self.player) or
                                                   state.has(itemName.BDRILL, self.player)) and
                                                  self.region_rules[regionName.CC] and
@@ -161,7 +190,8 @@ class BanjoTooieRules:
             locationName.JIGGYJR7: lambda state: (state.has(itemName.AUQAIM, self.player) and
                                                  state.has(itemName.GEGGS, self.player) and
                                                  self.can_reach_atlantis(state)) or
-                                                 self.can_transform["Sub"],
+                                                 (self.check_humba_magic(state, itemName.HUMBAJR) and
+                                                  self.can_reach_atlantis(state)),
             locationName.JIGGYJR8: lambda state: state.has(itemName.TTORP, self.player) and
                                                  self.can_reach_atlantis(state),
             locationName.JIGGYJR9: lambda state: state.has(itemName.GEGGS, self.player) or
@@ -179,38 +209,40 @@ class BanjoTooieRules:
             locationName.JIGGYTD3: lambda state: state.has(itemName.GEGGS, self.player) and
                                                  state.has(itemName.EGGAIM, self.player) and
                                                  state.has(itemName.GGRAB, self.player) and
-                                                 self.can_beat_king_coal() and
+                                                 self.can_beat_king_coal(state) and
                                                  self.banjo_moves["Taxi Pack"] and
-                                                 self.mumbo_magic["Heal"] and
+                                                 self.check_mumbo_magic(state, itemName.MUMBOIH) and
                                                  state.has(itemName.BDRILL, self.player) and
-                                                 self.mumbo_magic["Grow/Shrink"],
+                                                 self.check_mumbo_magic(state, itemName.MUMBOTD),
             locationName.JIGGYTD4: lambda state: self.can_beat_terry(state),
-            locationName.JIGGYTD5: lambda state: self.oogle_boogles_open() and
+            locationName.JIGGYTD5: lambda state: self.oogle_boogles_open(state) and
                                                  self.has_fire(state) and
                                                  self.smuggle_food(state),
             locationName.JIGGYTD6: lambda state: state.has(itemName.BBLASTER, self.player),
             locationName.JIGGYTD7: lambda state: self.can_beat_terry(state) and
                                                  self.kazooie_moves["Hatch"] and
                                                  self.banjo_moves["Taxi Pack"] and
-                                                 self.oogle_boogles_open(),
+                                                 self.oogle_boogles_open(state),
             locationName.JIGGYTD9: lambda state: state.has(itemName.EGGAIM, self.player) and
                                                  state.has(itemName.CEGGS, self.player),
-            locationName.JIGGYTD10: self.can_transform["T-Rex"],
+            locationName.JIGGYTD10: lambda state: self.check_humba_magic(state, itemName.HUMBATD),
 
             #Grunty Industries Jiggies
             locationName.JIGGYGI1: lambda state: self.can_beat_weldar(state) and self.banjo_moves["Shack Pack"],
             locationName.JIGGYGI2: lambda state: self.can_beat_weldar(state),
-            locationName.JIGGYGI3: lambda state: self.mumbo_magic["EMP"] and
+            locationName.JIGGYGI3: lambda state: self.check_mumbo_magic(state, itemName.MUMBOGI) and
                                                  state.has(itemName.CLAWBTS, self.player) and
                                                  state.has(itemName.BBLASTER, self.player),
-            locationName.JIGGYGI4: lambda state: self.can_transform["Washing Machine"] and
+            locationName.JIGGYGI4: lambda state: self.check_humba_magic(state, itemName.HUMBAGI) and
+                                                 self.can_reach_GI_2F(state) and
                                                  state.has(itemName.BDRILL, self.player),
             locationName.JIGGYGI5: lambda state: self.can_reach_GI_2F(state),
-            locationName.JIGGYGI6: lambda state: self.mumbo_magic["EMP"] and
+            locationName.JIGGYGI6: lambda state: self.check_mumbo_magic(state, itemName.MUMBOGI) and
+                                                 self.can_reach_GI_2F(state) and
                                                  state.has(itemName.GEGGS, self.player) and
                                                  state.has(itemName.EGGAIM, self.player) and
                                                  self.can_use_battery() and
-                                                 (self.can_transform["Washing Machine"] or
+                                                 (self.check_humba_magic(state, itemName.HUMBAGI) or
                                                   self.kazooie_moves["Leg Spring"]),
             locationName.JIGGYGI7: lambda state: self.can_reach_GI_2F(state),
             locationName.JIGGYGI8: lambda state: self.enter_GI(state) and
@@ -224,20 +256,21 @@ class BanjoTooieRules:
             locationName.JIGGYHP1: lambda state: state.has(itemName.FEGGS, self.player) and
                                                  state.has(itemName.IEGGS, self.player) and
                                                  state.has(itemName.CLAWBTS, self.player),
-            locationName.JIGGYHP3: lambda state: self.mumbo_magic["Revive"] and
+            locationName.JIGGYHP3: lambda state: self.check_mumbo_magic(state, itemName.MUMBOHP) and
                                                  self.has_fire(state) and
                                                  self.banjo_moves["Taxi Pack"],
             locationName.JIGGYHP4: self.banjo_moves["Shack Pack"],
-            locationName.JIGGYHP5: lambda state: self.can_beat_king_coal() and
+            locationName.JIGGYHP5: lambda state: self.can_beat_king_coal(state) and
                                                  state.has(itemName.EGGAIM, self.player) and
                                                  state.has(itemName.GEGGS, self.player),
-            locationName.JIGGYHP6: self.can_transform["Snowball"] and
+            locationName.JIGGYHP6: lambda state: self.check_humba_magic(state, itemName.HUMBAHP) and
                                    self.banjo_moves["Shack Pack"],
             locationName.JIGGYHP7: self.banjo_moves["Snooze Pack"],
-            locationName.JIGGYHP8: lambda state: self.can_transform["Stony"] and
+            locationName.JIGGYHP8: lambda state: self.check_humba_magic(state, itemName.HUMBAMT) and
+                                                 self.check_mumbo_magic(state, itemName.MUMBOMT) and
                                                  state.has(itemName.GEGGS, self.player),
             locationName.JIGGYHP9: lambda state: self.jiggy_rules[locationName.JIGGYJR10] and
-                                                 self.mumbo_magic["Revive"] and
+                                                 self.check_mumbo_magic(state, itemName.MUMBOHP) and
                                                  state.has(itemName.BDRILL, self.player) and
                                                  self.kazooie_moves["Hatch"],
             locationName.JIGGYHP10: lambda state: state.has(itemName.SPLITUP, self.player) and
@@ -253,10 +286,10 @@ class BanjoTooieRules:
             locationName.JIGGYCC3: lambda state: state.has(itemName.FEGGS, self.player) and
                                                  state.has(itemName.GEGGS, self.player) and
                                                  state.has(itemName.IEGGS, self.player) and
-                                                 self.mumbo_magic["Rain Dance"],
+                                                 self.check_mumbo_magic(state, itemName.MUMBOCC),
             locationName.JIGGYCC4: lambda state: self.canary_mary_free(state),
-            locationName.JIGGYCC5: self.can_transform["Bee"],
-            locationName.JIGGYCC6: self.can_transform["Bee"],
+            locationName.JIGGYCC5: lambda state: self.check_humba_magic(state, itemName.HUMBACC),
+            locationName.JIGGYCC6: lambda state: self.check_humba_magic(state, itemName.HUMBACC),
             locationName.JIGGYCC7: lambda state: self.banjo_moves["Sack Pack"] and
                                                  self.grow_beanstalk(state) and
                                                  self.can_use_floatus(),
@@ -276,68 +309,74 @@ class BanjoTooieRules:
             locationName.JIGGYIH9: self.region_rules[regionName.CC],
         }
 
-
     def jiggy_unlock(self, state: CollectionState, Amount) -> bool:
         return state.has_group("Jiggy", self.player, Amount)
 
-    def check_magic(self, state: CollectionState, name) -> bool:
-        return state.has(name, self.player)
+    def check_mumbo_magic(self, state: CollectionState, name) -> bool:
+        for item_name in self.mumbo_magic:
+            if name == item_name:
+                return state.has(name, self.player)
+    
+    def check_humba_magic(self, state: CollectionState, name) -> bool:
+        for item_name in self.humba_magic:
+            if name == item_name:
+                return state.has(name, self.player)
+    
 
     def has_fire(self, state: CollectionState) -> bool:
-        return state.has(itemName.FEGGS, self.player) or self.can_transform["Dragon"]
+        return state.has(itemName.FEGGS, self.player) or self.check_humba_magic(state, itemName.HUMBAIH)
 
     def long_swim(self, state: CollectionState) -> bool:
-        return state.has(itemName.BDRILL, self.player) or self.mumbo_magic["Oxygenate"]
+        return state.has(itemName.BDRILL, self.player) or self.check_mumbo_magic(state, itemName.MUMBOJR)
 
     def can_reach_atlantis(self, state: CollectionState) -> bool:
         return state.has(itemName.IEGGS, self.player) and self.long_swim(state) and state.has(itemName.AUQAIM, self.player)
 
     def MT_flight_pad(self, state: CollectionState) -> bool:
-        return state.has(itemName.BDRILL, self.player) or self.mumbo_magic["Golden Goliath"]
+        return state.has(itemName.BDRILL, self.player) or self.check_mumbo_magic(state, itemName.MUMBOMT)
 
     def prison_compound_open(self, state: CollectionState) -> bool:
         return state.has(itemName.GEGGS, self.player) or \
                state.has(itemName.CEGGS, self.player) or \
-               self.mumbo_magic["Golden Goliath"]
+               self.check_mumbo_magic(state, itemName.MUMBOMT)
 
     def dilberta_free(self, state: CollectionState) -> bool:
-        return self.prison_compound_open and \
-               self.can_transform["Stony"] and \
+        return self.prison_compound_open(state) and \
+               self.check_humba_magic(state, itemName.HUMBAMT) and \
+               self.check_mumbo_magic(state, itemName.MUMBOMT) and \
                state.has(itemName.BDRILL, self.player)
 
     def GM_boulders(self, state: CollectionState) -> bool:
-        return state.has(itemName.BDRILL, self.player) or self.can_transform["Detonator"]
+        return state.has(itemName.BDRILL, self.player) or self.check_humba_magic(state, itemName.HUMBAGM)
 
     def canary_mary_free(self, state: CollectionState) -> bool:
-        return self.can_transform["Detonator"] or state.has(itemName.CEGGS, self.player)
+        return self.check_humba_magic(state, itemName.HUMBAGM) or state.has(itemName.CEGGS, self.player)
 
-    def can_beat_king_coal(self) -> bool:
-        return self.mumbo_magic["Levitate"]
+    def can_beat_king_coal(self, state) -> bool:
+        return self.check_mumbo_magic(state, itemName.MUMBOGM)
 
     def can_kill_fruity(self, state: CollectionState) -> bool:
         return state.has(itemName.GEGGS, self.player) or \
                state.has(itemName.CEGGS, self.player) or \
-               self.can_transform["Money Van"]
+               self.check_humba_magic(state, itemName.HUMBAWW)
 
     def saucer_door_open(self, state: CollectionState) -> bool:
-        return state.has(itemName.GGRAB, self.player) or \
-               (state.has(itemName.EGGAIM, self.player) and
-                (state.has(itemName.GEGGS, self.player) or
-                 state.has(itemName.CEGGS, self.player)))
+        return (state.has(itemName.GGRAB, self.player) or (state.has(itemName.EGGAIM, self.player))) \
+               and (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player))
 
     def can_beat_terry(self, state: CollectionState) -> bool:
         return state.has(itemName.EGGAIM, self.player) and state.has(itemName.SPRINGB, self.player)
 
     def smuggle_food(self, state: CollectionState) -> bool:
-        return (self.can_beat_king_coal() and
+        return (self.can_beat_king_coal(state) and
                 state.has(itemName.GGRAB, self.player)) or \
                 state.has(itemName.CLAWBTS, self.player)
 
-    def oogle_boogles_open(self) -> bool:
-        return self.can_transform["T-Rex"] and self.mumbo_magic["Grow/Shrink"]
+    def oogle_boogles_open(self, state) -> bool:
+        return self.check_humba_magic(state, itemName.HUMBATD) and self.check_mumbo_magic(state, itemName.MUMBOTD)
 
     def enter_GI(self, state: CollectionState) -> bool:
-        return self.can_beat_king_coal() or state.has(itemName.CLAWBTS, self.player)
+        return self.can_beat_king_coal(state) or state.has(itemName.CLAWBTS, self.player)
 
     def GI_front_door(self, state: CollectionState) -> bool:
         return self.enter_GI(state) and state.has(itemName.SPLITUP, self.player)
@@ -353,8 +392,9 @@ class BanjoTooieRules:
     def can_beat_weldar(self, state: CollectionState) -> bool:
         return self.enter_GI(state) and \
                self.can_use_battery() and \
-               self.mumbo_magic["EMP"] and \
-               self.can_transform["Washing Machine"] and \
+               self.check_mumbo_magic(state, itemName.MUMBOGI) and \
+               self.can_reach_GI_2F(state) and \
+               self.check_humba_magic(state, itemName.HUMBAGI) and \
                (state.has(itemName.FEGGS, self.player) or
                 state.has(itemName.GEGGS, self.player) or
                 state.has(itemName.CEGGS, self.player))
@@ -366,7 +406,7 @@ class BanjoTooieRules:
         return self.banjo_moves["Taxi Pack"] and self.kazooie_moves["Hatch"]
 
     def grow_beanstalk(self, state: CollectionState) -> bool:
-        return state.has(itemName.BDRILL, self.player) and self.mumbo_magic["Rain Dance"]
+        return state.has(itemName.BDRILL, self.player) and self.check_mumbo_magic(state, itemName.MUMBOCC)
 
     def set_rules(self) -> None:
         for region_name, rules in self.region_rules.items():
@@ -376,6 +416,5 @@ class BanjoTooieRules:
         for location, rules in self.jiggy_rules.items():
             jiggy = self.world.multiworld.get_location(location, self.player)
             set_rule(jiggy, rules)
-
 
         self.world.multiworld.completion_condition[self.player] = lambda state: state.has("Kick Around", self.player)
