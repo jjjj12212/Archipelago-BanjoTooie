@@ -159,12 +159,12 @@ class BanjoTooieRules:
                                                  self.GM_boulders(state),
             locationName.JIGGYGM6: lambda state: self.dilberta_free(state),
             locationName.JIGGYGM7: lambda state: self.check_mumbo_magic(state, itemName.MUMBOGM),
-            locationName.JIGGYGM8: lambda state: state.has(itemName.SPRINGB, self.player) or
-                                                 state.has(itemName.CEGGS, self.player),
+            locationName.JIGGYGM8: lambda state: state.has(itemName.SPRINGB, self.player),
             locationName.JIGGYGM9: lambda state: self.GM_boulders(state),
 
             #Witchyworld Jiggies
-            locationName.JIGGYWW1: lambda state: state.has(itemName.SPLITUP, self.player),
+            locationName.JIGGYWW1: lambda state: state.has(itemName.SPLITUP, self.player) and 
+                                                 state.has(itemName.GEGGS, self.player),
             locationName.JIGGYWW2: lambda state: self.check_humba_magic(state, itemName.HUMBAWW) and
                                                  self.check_mumbo_magic(state, itemName.MUMBOWW),
             locationName.JIGGYWW3: lambda state: state.has(itemName.AIREAIM, self.player) and
@@ -208,7 +208,7 @@ class BanjoTooieRules:
             locationName.JIGGYJR8: lambda state: state.has(itemName.TTORP, self.player) and
                                                  self.can_reach_atlantis(state),
             locationName.JIGGYJR9: lambda state: state.has(itemName.GEGGS, self.player) or
-                                                 state.has(itemName.BDRILL, self.player),
+                                                 state.has(itemName.SPLITUP, self.player),
             locationName.JIGGYJR10: lambda state: state.has(itemName.EGGAIM, self.player) and
                                                   state.has(itemName.IEGGS, self.player) and
                                                   state.has(itemName.TTORP, self.player),
@@ -305,7 +305,8 @@ class BanjoTooieRules:
             locationName.JIGGYCC6: lambda state: self.check_humba_magic(state, itemName.HUMBACC),
             locationName.JIGGYCC7: lambda state: self.check_solo_moves(state, itemName.SAPACK) and
                                                  self.grow_beanstalk(state) and
-                                                 self.can_use_floatus(state),
+                                                 self.can_use_floatus(state) and
+                                                 self.check_solo_moves(state, itemName.SHPACK),
             locationName.JIGGYCC8: lambda state: self.check_solo_moves(state, itemName.WWHACK),
             locationName.JIGGYCC9: lambda state: state.has(itemName.CEGGS, self.player),
             locationName.JIGGYCC10: lambda state: self.check_solo_moves(state, itemName.SHPACK),
@@ -320,6 +321,115 @@ class BanjoTooieRules:
             locationName.JIGGYIH7: self.region_rules[regionName.CC],
             locationName.JIGGYIH8: self.region_rules[regionName.CC],
             locationName.JIGGYIH9: self.region_rules[regionName.CC],
+        }
+        self.cheato_rules = {
+            locationName.CHEATOMT1: lambda state: self.MT_flight_pad(state) or (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GGRAB, self.player)),
+            locationName.CHEATOMT2: lambda state: self.prison_compound_open(state) and state.has(itemName.GGRAB, self.player),
+            locationName.CHEATOMT3: lambda state: self.check_mumbo_magic(state, itemName.MUMBOMT) and state.has(itemName.GGRAB, self.player),
+
+            locationName.CHEATOGM1: lambda state: self.canary_mary_free(state),
+            locationName.CHEATOGM3: lambda state: state.has(itemName.GGRAB, self.player),
+
+            locationName.CHEATOWW1: lambda state: state.has(itemName.GGRAB, self.player) or 
+                                                  (self.check_solo_moves(state, itemName.LSPRING) and 
+                                                  (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE))),
+            locationName.CHEATOWW2: lambda state: self.check_humba_magic(state, itemName.HUMBAWW),
+            locationName.CHEATOWW3: lambda state: self.check_humba_magic(state, itemName.HUMBAGM) and
+                                                  self.check_mumbo_magic(state, itemName.MUMBOWW) and
+                                                  self.saucer_door_open(state),
+                                            
+            locationName.CHEATOJR1: lambda state: state.has(itemName.GEGGS, self.player) or
+                                                  state.has(itemName.SPLITUP, self.player),
+            locationName.CHEATOJR2: lambda state: self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player),
+
+            locationName.CHEATOJR3: lambda state: self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player) and
+                                                  (self.check_solo_moves(state, itemName.GLIDE) or self.check_solo_moves(state, itemName.LSPRING) or
+                                                  (self.check_solo_moves(state, itemName.PACKWH) and state.has(itemName.GGRAB, self.player))),
+
+            locationName.CHEATOTL1: lambda state: self.jiggy_unlock(state, 45),
+            locationName.CHEATOTL2: lambda state: self.check_humba_magic(state, itemName.HUMBATD),
+            locationName.CHEATOTL3: lambda state: state.has(itemName.BDRILL, self.player) and 
+                                                  (state.has(itemName.GGRAB, self.player) or self.can_beat_terry(state)),
+
+            locationName.CHEATOGI1: lambda state: state.has(itemName.BDRILL, self.player) and state.has(itemName.GEGGS, self.player) and
+                                                  self.enter_GI(state),
+            locationName.CHEATOGI2: lambda state: self.can_reach_GI_2F(state),
+            locationName.CHEATOGI3: lambda state: self.can_beat_weldar(state),
+
+            locationName.CHEATOHP1: lambda state: state.has(itemName.CLAWBTS, self.player) and state.has(itemName.GEGGS, self.player),
+            locationName.CHEATOHP2: lambda state: state.has(itemName.CEGGS, self.player) or self.check_solo_moves(state, itemName.SHPACK),
+            locationName.CHEATOHP3: lambda state: state.has(itemName.SPLITUP, self.player),
+
+            locationName.CHEATOCC1: lambda state: self.canary_mary_free(state),
+            locationName.CHEATOCC2: lambda state: state.has(itemName.FEGGS, self.player) and
+                                                  state.has(itemName.GEGGS, self.player) and
+                                                  state.has(itemName.IEGGS, self.player) and
+                                                  self.check_mumbo_magic(state, itemName.MUMBOCC),
+            locationName.CHEATOCC3: lambda state: self.check_humba_magic(state, itemName.HUMBACC)
+        }
+        self.honey_rules = {
+            locationName.HONEYCMT1: lambda state: self.check_humba_magic(state, itemName.HUMBAMT) and
+                                                  self.check_mumbo_magic(state, itemName.MUMBOMT),
+            locationName.HONEYCMT2: lambda state: self.MT_flight_pad(state) or state.has(itemName.GGRAB, self.player),
+            locationName.HONEYCMT3: lambda state: self.MT_flight_pad(state) or state.has(itemName.EGGAIM, self.player),
+
+            locationName.HONEYCGM1: lambda state: self.GM_boulders(state),
+            locationName.HONEYCGM2: lambda state: self.GM_boulders(state),
+
+            locationName.HONEYCWW1: lambda state: state.has(itemName.GGRAB, self.player),
+            locationName.HONEYCWW2: lambda state: self.check_humba_magic(state, itemName.HUMBAWW),
+            locationName.HONEYCWW3: lambda state: state.has(itemName.GEGGS, self.player),
+
+            locationName.HONEYCJR1: lambda state: self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player),
+            locationName.HONEYCJR2: lambda state: self.can_reach_atlantis(state),
+            locationName.HONEYCJR3: lambda state: (state.has(itemName.GEGGS, self.player) or state.has(itemName.BDRILL, self.player)) and
+                                                  state.has(itemName.GGRAB, self.player),
+                                                
+            locationName.HONEYCTL2: lambda state: state.has(itemName.BDRILL, self.player) and state.has(itemName.SPLITUP, self.player),
+
+            locationName.HONEYCGI1: lambda state: self.can_reach_GI_2F(state) and state.has(itemName.GGRAB, self.player),
+            locationName.HONEYCGI2: lambda state: self.enter_GI(state) and (state.has(itemName.GGRAB, self.player) or state.has(itemName.SPLITUP, self.player)),
+            locationName.HONEYCGI3: lambda state: self.can_reach_GI_2F(state),
+
+            locationName.HONEYCHP1: lambda state: (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or
+                                                  state.has(itemName.SPLITUP, self.player),
+            locationName.HONEYCHP2: lambda state: state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING) or
+                                                  self.check_solo_moves(state, itemName.GLIDE),
+            locationName.HONEYCHP3: lambda state: state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.GLIDE) or
+                                                  (self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.WWHACK)),
+
+            locationName.HONEYCCC1: lambda state: state.has(itemName.BDRILL, self.player)
+
+        }
+        self.glowbo_rules = {
+            locationName.GLOWBOMT2: lambda state: self.check_mumbo_magic(state, itemName.MUMBOMT),
+            locationName.GLOWBOWW1: lambda state: self.check_humba_magic(state, itemName.HUMBAWW),
+            locationName.GLOWBOJR2: lambda state: self.can_reach_atlantis(state),
+            locationName.GLOWBOGI1: lambda state: self.can_reach_GI_2F(state),
+            locationName.GLOWBOGI2: lambda state: self.can_reach_GI_2F(state),
+            locationName.GLOWBOMEG: lambda state: state.has(itemName.GGRAB, self.player) and state.has(itemName.TTORP, self.player)
+
+        }
+        self.silo_rules = {
+            locationName.GGRAB: lambda state: self.check_mumbo_magic(state, itemName.MUMBOMT),
+            locationName.BBAYONET: lambda state: self.GM_boulders(state),
+            locationName.PACKWH: lambda state: state.has(itemName.SPLITUP, self.player),
+            locationName.AUQAIM: lambda state: state.has(itemName.GEGGS, self.player) or state.has(itemName.BDRILL, self.player),
+            locationName.TTORP: lambda state:  self.can_reach_atlantis(state) and state.has(itemName.GGRAB, self.player),
+            locationName.WWHACK: lambda state: state.has(itemName.GEGGS, self.player) and state.has(itemName.SPLITUP, self.player),
+            locationName.TAXPACK: lambda state: state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GGRAB, self.player)) or
+                                                self.check_solo_moves(state, itemName.PACKWH),
+            locationName.HATCH: lambda state:   state.has(itemName.SPLITUP, self.player),
+            locationName.SNPACK: lambda state:  self.can_use_battery(state),
+            locationName.LSPRING: lambda state: self.can_reach_GI_2F(state) and ((state.has(itemName.SPLITUP, self.player) 
+                                                and state.has(itemName.CLAWBTS, self.player)) or
+                                                self.check_solo_moves(state, itemName.WWHACK) or 
+                                                self.check_solo_moves(state, itemName.LSPRING) or
+                                                self.check_solo_moves(state, itemName.GLIDE)),
+            locationName.CLAWBTS: lambda state: self.enter_GI(state),
+            locationName.SHPACK: lambda state: state.has(itemName.SPLITUP, self.player),
+            locationName.GLIDE: lambda state: state.has(itemName.SPLITUP, self.player),
+            locationName.SAPACK: lambda state: self.check_solo_moves(state, itemName.SHPACK)
         }
 
     def jiggy_unlock(self, state: CollectionState, Amount) -> bool:
@@ -433,5 +543,21 @@ class BanjoTooieRules:
         for location, rules in self.jiggy_rules.items():
             jiggy = self.world.multiworld.get_location(location, self.player)
             set_rule(jiggy, rules)
+
+        for location, rules in self.honey_rules.items():
+            honeycomb = self.world.multiworld.get_location(location, self.player)
+            set_rule(honeycomb, rules)
+
+        for location, rules in self.cheato_rules.items():
+            cheato = self.world.multiworld.get_location(location, self.player)
+            set_rule(cheato, rules)
+        
+        for location, rules in self.glowbo_rules.items():
+            glowbo = self.world.multiworld.get_location(location, self.player)
+            set_rule(glowbo, rules)
+
+        for location, rules in self.silo_rules.items():
+            silo = self.world.multiworld.get_location(location, self.player)
+            set_rule(silo, rules)
 
         self.world.multiworld.completion_condition[self.player] = lambda state: state.has("Kick Around", self.player)
