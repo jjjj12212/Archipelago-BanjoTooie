@@ -5,6 +5,7 @@
 - Fixed some typos
 - Fixed bug where lua script would crash randomly
 - Implemented Banjo Advanced Jamjar Moves
+- Implemented detailed logics for Archipelago randomization
 
 # v0.4-beta
 - Fixed issue when unchecked locations are sent when saving and quiting.
