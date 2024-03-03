@@ -17,10 +17,10 @@ Banjo Tooie for Archipelago
 
 # How to install - server side
 1. Copy banjotooie.apworld into your existing Archipelago\lib\worlds
-2. Copy data\lua\banjotooie_connector.lua into Archipelago-Install-Folder\data\lua\
+2. Copy banjotooie_connector.lua into Archipelago\data\lua
 
 # How to install - client side
-1. Copy data/lua/banjotooie_connector.lua into data/lua in your existing Archipelago
+1. Copy banjotooie_connector.lua into Archipelago/data/lua
 3. run Launcher.exe and select Banjo-Tooie Client.
 4. Connect the Archipelago Client with the server.
 5. Open Bizhawk (2.9.1 tested) and open your Banjo-Tooie (US) game.
@@ -33,13 +33,13 @@ Banjo Tooie for Archipelago
 - Musical Notes/Treble Clef are scattered throughout Archipelago games **(if Possible / requires feedback if its a good option)**
 
 # Contributors
- - @Unalive (coder)
- - @Beebaleen (Doc Maintainer)
- - Cyb3RGER (AP Launcher)
+ - @oohnahleevay Unalive (coder)
+ - Beebaleen (Doc Maintainer)
+ - @Cyb3RGER (AP Launcher)
 
 # Shoutouts
 Huge thank you for the following individuals / teams. Without them, this project would not have gotten this far:
- - @OktoRose
+ -  OktoRose
  - <a href='https://github.com/Isotarge/ScriptHawk'>ScriptHawk</a>
  - <a href="https://github.com/kaptainkohl/BTRandoLUA">Kaptainkohl - Banjo Tooie Randomizer</a>
  - @Icebound777
