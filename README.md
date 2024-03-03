@@ -20,7 +20,7 @@ Banjo Tooie for Archipelago
 2. Copy banjotooie_connector.lua into Archipelago\data\lua
 
 # How to install - client side
-1. Copy banjotooie_connector.lua into Archipelago/data/lua
+1. Copy banjotooie_connector.lua into Archipelago\data\lua
 3. run Launcher.exe and select Banjo-Tooie Client.
 4. Connect the Archipelago Client with the server.
 5. Open Bizhawk (2.9.1 tested) and open your Banjo-Tooie (US) game.
