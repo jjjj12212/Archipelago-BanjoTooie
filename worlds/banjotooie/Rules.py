@@ -19,8 +19,9 @@ class BanjoTooieRules:
     #can_transform = {}
     mumbo_magic = []
     humba_magic = []
-    banjo_moves = {}
-    kazooie_moves = {}
+    solo_moves = []
+    # banjo_moves = []
+    # kazooie_moves = []
     jiggy_rules = {}
 
 
@@ -53,6 +54,18 @@ class BanjoTooieRules:
             itemName.HUMBACC
         ]
 
+        self.solo_moves = [
+            itemName.PACKWH,
+            itemName.TAXPACK,
+            itemName.SNPACK,
+            itemName.SHPACK,
+            itemName.SAPACK,
+            itemName.WWHACK,
+            itemName.HATCH,
+            itemName.LSPRING,
+            itemName.GLIDE
+        ]
+
         # self.can_transform = {
         #     "Stony":           lambda state: state.has(itemName.HUMBAMT, self.player) and
         #                                      self.golden_goliath(state, itemName.MUMBOMT),
@@ -81,19 +94,19 @@ class BanjoTooieRules:
         #     "Heal":           lambda state: self.check_magic(state, itemName.MUMBOIH)
         # }
 
-        self.banjo_moves = {
-            "Pack Whack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.PACKWH, self.player),
-            "Taxi Pack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.TAXPACK, self.player),
-            "Snooze Pack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.SNPACK, self.player),
-            "Shack Pack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.SHPACK, self.player),
-            "Sack Pack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.SAPACK, self.player),
-        }
-        self.kazooie_moves = {
-            "Wing Whack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.WWHACK, self.player),
-            "Hatch": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.HATCH, self.player),
-            "Leg Spring": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.LSPRING, self.player),
-            "Glide": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.GLIDE, self.player),
-        }
+        # self.banjo_moves = {
+        #     "Pack Whack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.PACKWH, self.player),
+        #     "Taxi Pack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.TAXPACK, self.player),
+        #     "Snooze Pack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.SNPACK, self.player),
+        #     "Shack Pack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.SHPACK, self.player),
+        #     "Sack Pack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.SAPACK, self.player),
+        # }
+        # self.kazooie_moves = {
+        #     "Wing Whack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.WWHACK, self.player),
+        #     "Hatch": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.HATCH, self.player),
+        #     "Leg Spring": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.LSPRING, self.player),
+        #     "Glide": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.GLIDE, self.player),
+        # }
 
         self.region_rules = {
             regionName.IOHWH: lambda state: self.jiggy_unlock(state, 1),
@@ -114,8 +127,8 @@ class BanjoTooieRules:
             regionName.CC: lambda state: self.jiggy_unlock(state, 45),
             regionName.CK: lambda state: self.jiggy_unlock(state, 55) and state.has(itemName.CLAWBTS, self.player),
             regionName.H1: lambda state: self.jiggy_unlock(state, 70) and
-                                         (self.banjo_moves["Pack Whack"] or self.banjo_moves["Sack Pack"]) and
-                                         (self.kazooie_moves["Wing Whack"] or self.kazooie_moves["Glide"]) and
+                                         (self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK)) and
+                                         (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)) and
                                          state.has(itemName.BBLASTER, self.player) and
                                          state.has(itemName.CEGGS, self.player)
         }
@@ -163,7 +176,7 @@ class BanjoTooieRules:
                                                  state.has(itemName.AIREAIM, self.player),
             locationName.JIGGYWW7: lambda state: self.check_humba_magic(state, itemName.HUMBAWW) and
                                                  self.check_mumbo_magic(state, itemName.MUMBOWW) and
-                                                 self.banjo_moves["Taxi Pack"],
+                                                 self.check_solo_moves(state, itemName.TAXPACK),
             locationName.JIGGYWW8: lambda state: self.check_mumbo_magic(state, itemName.MUMBOWW) and
                                                  self.check_humba_magic(state, itemName.HUMBAWW),
             locationName.JIGGYWW9: lambda state: self.check_humba_magic(state, itemName.HUMBAWW),
@@ -173,7 +186,7 @@ class BanjoTooieRules:
             #Jolly Joger's Lagoon Jiggies
             locationName.JIGGYJR1: lambda state: self.check_humba_magic(state, itemName.HUMBAJR) and
                                                  self.can_reach_atlantis(state),
-            locationName.JIGGYJR2: lambda state: self.kazooie_moves["Hatch"] and
+            locationName.JIGGYJR2: lambda state: self.check_solo_moves(state, itemName.HATCH) and
                                                   state.has(itemName.GEGGS, self.player),
             locationName.JIGGYJR3: lambda state: self.can_reach_atlantis(state) and
                                                  (state.has(itemName.AUQAIM, self.player) or
@@ -182,8 +195,8 @@ class BanjoTooieRules:
                                                   state.has(itemName.BDRILL, self.player)) and
                                                  self.region_rules[regionName.CC] and
                                                  state.has(itemName.SPLITUP, self.player),
-            locationName.JIGGYJR5: self.kazooie_moves["Wing Whack"] or
-                                   self.kazooie_moves["Glide"],
+            locationName.JIGGYJR5: lambda state: self.check_solo_moves(state, itemName.WWHACK) or
+                                                 self.check_solo_moves(state, itemName.GLIDE),
             locationName.JIGGYJR6: lambda state: state.has(itemName.AUQAIM, self.player) and
                                                  state.has(itemName.GEGGS, self.player) and
                                                  self.can_reach_atlantis(state),
@@ -210,7 +223,7 @@ class BanjoTooieRules:
                                                  state.has(itemName.EGGAIM, self.player) and
                                                  state.has(itemName.GGRAB, self.player) and
                                                  self.can_beat_king_coal(state) and
-                                                 self.banjo_moves["Taxi Pack"] and
+                                                 self.check_solo_moves(state, itemName.TAXPACK) and
                                                  self.check_mumbo_magic(state, itemName.MUMBOIH) and
                                                  state.has(itemName.BDRILL, self.player) and
                                                  self.check_mumbo_magic(state, itemName.MUMBOTD),
@@ -220,15 +233,15 @@ class BanjoTooieRules:
                                                  self.smuggle_food(state),
             locationName.JIGGYTD6: lambda state: state.has(itemName.BBLASTER, self.player),
             locationName.JIGGYTD7: lambda state: self.can_beat_terry(state) and
-                                                 self.kazooie_moves["Hatch"] and
-                                                 self.banjo_moves["Taxi Pack"] and
+                                                 self.check_solo_moves(state, itemName.HATCH) and
+                                                 self.check_solo_moves(state, itemName.TAXPACK) and
                                                  self.oogle_boogles_open(state),
             locationName.JIGGYTD9: lambda state: state.has(itemName.EGGAIM, self.player) and
                                                  state.has(itemName.CEGGS, self.player),
             locationName.JIGGYTD10: lambda state: self.check_humba_magic(state, itemName.HUMBATD),
 
             #Grunty Industries Jiggies
-            locationName.JIGGYGI1: lambda state: self.can_beat_weldar(state) and self.banjo_moves["Shack Pack"],
+            locationName.JIGGYGI1: lambda state: self.can_beat_weldar(state) and self.check_solo_moves(state, itemName.SHPACK),
             locationName.JIGGYGI2: lambda state: self.can_beat_weldar(state),
             locationName.JIGGYGI3: lambda state: self.check_mumbo_magic(state, itemName.MUMBOGI) and
                                                  state.has(itemName.CLAWBTS, self.player) and
@@ -241,15 +254,15 @@ class BanjoTooieRules:
                                                  self.can_reach_GI_2F(state) and
                                                  state.has(itemName.GEGGS, self.player) and
                                                  state.has(itemName.EGGAIM, self.player) and
-                                                 self.can_use_battery() and
+                                                 self.can_use_battery(state) and
                                                  (self.check_humba_magic(state, itemName.HUMBAGI) or
-                                                  self.kazooie_moves["Leg Spring"]),
+                                                  self.check_solo_moves(state, itemName.LSPRING)),
             locationName.JIGGYGI7: lambda state: self.can_reach_GI_2F(state),
             locationName.JIGGYGI8: lambda state: self.enter_GI(state) and
-                                                 self.banjo_moves["Snooze Pack"],
+                                                 self.check_solo_moves(state, itemName.SNPACK),
             locationName.JIGGYGI9: lambda state: self.can_reach_GI_2F(state) and
-                                                 self.can_use_battery(),
-            locationName.JIGGYGI10: lambda state: self.can_use_battery() and
+                                                 self.can_use_battery(state),
+            locationName.JIGGYGI10: lambda state: self.can_use_battery(state) and
                                                   self.GI_front_door(state),
 
             #Hailfire Peaks Jiggies
@@ -258,21 +271,21 @@ class BanjoTooieRules:
                                                  state.has(itemName.CLAWBTS, self.player),
             locationName.JIGGYHP3: lambda state: self.check_mumbo_magic(state, itemName.MUMBOHP) and
                                                  self.has_fire(state) and
-                                                 self.banjo_moves["Taxi Pack"],
-            locationName.JIGGYHP4: self.banjo_moves["Shack Pack"],
+                                                 self.check_solo_moves(state, itemName.TAXPACK),
+            locationName.JIGGYHP4: lambda state: self.check_solo_moves(state, itemName.SHPACK),
             locationName.JIGGYHP5: lambda state: self.can_beat_king_coal(state) and
                                                  state.has(itemName.EGGAIM, self.player) and
                                                  state.has(itemName.GEGGS, self.player),
             locationName.JIGGYHP6: lambda state: self.check_humba_magic(state, itemName.HUMBAHP) and
-                                   self.banjo_moves["Shack Pack"],
-            locationName.JIGGYHP7: self.banjo_moves["Snooze Pack"],
+                                                 self.check_solo_moves(state, itemName.SHPACK),
+            locationName.JIGGYHP7: lambda state: self.check_solo_moves(state, itemName.SNPACK),
             locationName.JIGGYHP8: lambda state: self.check_humba_magic(state, itemName.HUMBAMT) and
                                                  self.check_mumbo_magic(state, itemName.MUMBOMT) and
                                                  state.has(itemName.GEGGS, self.player),
             locationName.JIGGYHP9: lambda state: self.jiggy_rules[locationName.JIGGYJR10] and
                                                  self.check_mumbo_magic(state, itemName.MUMBOHP) and
                                                  state.has(itemName.BDRILL, self.player) and
-                                                 self.kazooie_moves["Hatch"],
+                                                 self.check_solo_moves(state, itemName.HATCH),
             locationName.JIGGYHP10: lambda state: state.has(itemName.SPLITUP, self.player) and
                                                   state.has(itemName.CLAWBTS, self.player) and
                                                   state.has(itemName.GGRAB, self.player),
@@ -280,9 +293,9 @@ class BanjoTooieRules:
             #Cloud Cuckooland Jiggies
             locationName.JIGGYCC2: lambda state: state.has(itemName.BDRILL, self.player) and
                                                  state.has(itemName.SPRINGB, self.player) and
-                                                 self.banjo_moves["Sack Pack"] and
+                                                 self.check_solo_moves(state, itemName.SAPACK) and
                                                  self.grow_beanstalk(state) and
-                                                 self.can_use_floatus(),
+                                                 self.can_use_floatus(state),
             locationName.JIGGYCC3: lambda state: state.has(itemName.FEGGS, self.player) and
                                                  state.has(itemName.GEGGS, self.player) and
                                                  state.has(itemName.IEGGS, self.player) and
@@ -290,12 +303,12 @@ class BanjoTooieRules:
             locationName.JIGGYCC4: lambda state: self.canary_mary_free(state),
             locationName.JIGGYCC5: lambda state: self.check_humba_magic(state, itemName.HUMBACC),
             locationName.JIGGYCC6: lambda state: self.check_humba_magic(state, itemName.HUMBACC),
-            locationName.JIGGYCC7: lambda state: self.banjo_moves["Sack Pack"] and
+            locationName.JIGGYCC7: lambda state: self.check_solo_moves(state, itemName.SAPACK) and
                                                  self.grow_beanstalk(state) and
-                                                 self.can_use_floatus(),
-            locationName.JIGGYCC8: self.kazooie_moves["Wing Whack"],
+                                                 self.can_use_floatus(state),
+            locationName.JIGGYCC8: lambda state: self.check_solo_moves(state, itemName.WWHACK),
             locationName.JIGGYCC9: lambda state: state.has(itemName.CEGGS, self.player),
-            locationName.JIGGYCC10: self.banjo_moves["Shack Pack"],
+            locationName.JIGGYCC10: lambda state: self.check_solo_moves(state, itemName.SHPACK),
 
             #Jinjo Family Jiggies
             locationName.JIGGYIH1: self.region_rules[regionName.HP],
@@ -321,8 +334,12 @@ class BanjoTooieRules:
         for item_name in self.humba_magic:
             if name == item_name:
                 return state.has(name, self.player)
+            
+    def check_solo_moves(self, state: CollectionState, name) -> bool:
+        for item_name in self.solo_moves:
+            if name == item_name:
+                return state.has(name, self.player) and state.has(itemName.SPLITUP, self.player)
     
-
     def has_fire(self, state: CollectionState) -> bool:
         return state.has(itemName.FEGGS, self.player) or self.check_humba_magic(state, itemName.HUMBAIH)
 
@@ -384,14 +401,14 @@ class BanjoTooieRules:
     def can_reach_GI_2F(self, state: CollectionState) -> bool:
         return state.has(itemName.CLAWBTS, self.player) or \
                (self.GI_front_door(state) and
-                self.kazooie_moves["Leg Spring"] and
-                self.kazooie_moves["Glide"] and
-                (self.kazooie_moves["Wing Whack"] or
+                self.check_solo_moves(state, itemName.LSPRING) and
+                self.check_solo_moves(state, itemName.GLIDE) and
+                (self.check_solo_moves(state, itemName.WWHACK) or
                 state.has(itemName.EGGAIM, self.player)))
 
     def can_beat_weldar(self, state: CollectionState) -> bool:
         return self.enter_GI(state) and \
-               self.can_use_battery() and \
+               self.can_use_battery(state) and \
                self.check_mumbo_magic(state, itemName.MUMBOGI) and \
                self.can_reach_GI_2F(state) and \
                self.check_humba_magic(state, itemName.HUMBAGI) and \
@@ -399,11 +416,11 @@ class BanjoTooieRules:
                 state.has(itemName.GEGGS, self.player) or
                 state.has(itemName.CEGGS, self.player))
 
-    def can_use_battery(self) -> bool:
-        return self.banjo_moves["Pack Whack"] and self.banjo_moves["Taxi Pack"]
+    def can_use_battery(self, state) -> bool:
+        return self.check_solo_moves(state, itemName.PACKWH) and self.check_solo_moves(state, itemName.TAXPACK)
 
-    def can_use_floatus(self) -> bool:
-        return self.banjo_moves["Taxi Pack"] and self.kazooie_moves["Hatch"]
+    def can_use_floatus(self, state) -> bool:
+        return self.check_solo_moves(state, itemName.TAXPACK) and self.check_solo_moves(state, itemName.HATCH)
 
     def grow_beanstalk(self, state: CollectionState) -> bool:
         return state.has(itemName.BDRILL, self.player) and self.check_mumbo_magic(state, itemName.MUMBOCC)
