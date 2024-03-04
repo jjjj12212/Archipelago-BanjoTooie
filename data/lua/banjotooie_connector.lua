@@ -537,402 +537,402 @@ local MASTER_MAP = {
             ['bit'] = 1,
             ['locationId'] = 1230685
         },
-        ['Mayahem Temple: Targitzan Jiggy'] = {
+        ['MT: Targitzan Jiggy'] = {
             ['addr'] = 0x45,
             ['bit'] = 0,
             ['locationId'] = 1230596
         },
-        ['Mayahem Temple: Targitzan S. Sacred Chamber Jiggy'] = {
+        ['MT: Slightly Sacred Chamber Jiggy'] = {
             ['addr'] = 0x45,
             ['bit'] = 1,
             ['locationId'] = 1230597
         },
-        ['Mayahem Temple: Kickball Jiggy'] = {
+        ['MT: Kickball Jiggy'] = {
             ['addr'] = 0x45,
             ['bit'] = 2,
             ['locationId'] = 1230598
         },
-        ['Mayahem Temple: Bovina Jiggy'] = {
+        ['MT: Bovina Jiggy'] = {
             ['addr'] = 0x45,
             ['bit'] = 3,
             ['locationId'] = 1230599
         },
-        ['Mayahem Temple: Treasure Chamber Jiggy'] = {
+        ['MT: Treasure Chamber Jiggy'] = {
             ['addr'] = 0x45,
             ['bit'] = 4,
             ['locationId'] = 1230600
         },
-        ['Mayahem Temple: Golden Goliath Jiggy'] = {
+        ['MT: Golden Goliath Jiggy'] = {
             ['addr'] = 0x45,
             ['bit'] = 5,
             ['locationId'] = 1230601
         },
-        ['Mayahem Temple: Prison Compound Quicksand Jiggy'] = {
+        ['MT: Prison Compound Quicksand Jiggy'] = {
             ['addr'] = 0x45,
             ['bit'] = 6,
             ['locationId'] = 1230602
         },
-        ['Mayahem Temple: Pillars Jiggy'] = {
+        ['MT: Pillars Jiggy'] = {
             ['addr'] = 0x45,
             ['bit'] = 7,
             ['locationId'] = 1230603
         },
-        ['Mayahem Temple: Top of Temple Jiggy'] = {
+        ['MT: Top of Temple Jiggy'] = {
             ['addr'] = 0x46,
             ['bit'] = 0,
             ['locationId'] = 1230604
         },
-        ['Mayahem Temple: Ssslumber Jiggy'] = {
+        ['MT: Ssslumber Jiggy'] = {
             ['addr'] = 0x46,
             ['bit'] = 1,
             ['locationId'] = 1230605
         },
-        ['Glitter Gultch Mine: King Coal Jiggy'] = {
+        ['GGM: Old King Coal Jiggy'] = {
             ['addr'] = 0x46,
             ['bit'] = 2,
             ['locationId'] = 1230606
         },
-        ['Glitter Gultch Mine: Canary Mary Jiggy'] = {
+        ['GGM: Canary Mary Jiggy'] = {
             ['addr'] = 0x46,
             ['bit'] = 3,
             ['locationId'] = 1230607
         },
-        ['Glitter Gultch Mine: Generator Cavern Jiggy'] = {
+        ['GGM: Generator Cavern Jiggy'] = {
             ['addr'] = 0x46,
             ['bit'] = 4,
             ['locationId'] = 1230608
         },
-        ['Glitter Gultch Mine: Waterfall Cavern Jiggy'] = {
+        ['GGM: Waterfall Cavern Jiggy'] = {
             ['addr'] = 0x46,
             ['bit'] = 5,
             ['locationId'] = 1230609
         },
-        ['Glitter Gultch Mine: Ordnance Storage Jiggy'] = {
+        ['GGM: Ordinance Storage Jiggy'] = {
             ['addr'] = 0x46,
             ['bit'] = 6,
             ['locationId'] = 1230610
         },
-        ['Glitter Gultch Mine: Dilberta Jiggy'] = {
+        ['GGM: Dilberta Jiggy'] = {
             ['addr'] = 0x46,
             ['bit'] = 7,
             ['locationId'] = 1230611
         },
-        ['Glitter Gultch Mine: Crushing Shed Jiggy'] = {
+        ['GGM: Crushing Shed Jiggy'] = {
             ['addr'] = 0x47,
             ['bit'] = 0,
             ['locationId'] = 1230612
         },
-        ['Glitter Gultch Mine: Waterfall Jiggy'] = {
+        ['GGM: Waterfall Jiggy'] = {
             ['addr'] = 0x47,
             ['bit'] = 1,
             ['locationId'] = 1230613
         },
-        ['Glitter Gultch Mine: Power Hut Basement Jiggy'] = {
+        ['GGM: Power Hut Basement Jiggy'] = {
             ['addr'] = 0x47,
             ['bit'] = 2,
             ['locationId'] = 1230614
         },
-        ['Glitter Gultch Mine: Flooded Caves Jiggy'] = {
+        ['GGM: Flooded Caves Jiggy'] = {
             ['addr'] = 0x47,
             ['bit'] = 3,
             ['locationId'] = 1230615
         },
-        ['Witchy World: Hoop Hurry Jiggy'] = {
+        ['WW: Hoop Hurry Jiggy'] = {
             ['addr'] = 0x47,
             ['bit'] = 4,
             ['locationId'] = 1230616
         },
-        ['Witchy World: Dodgem Jiggy'] = {
+        ['WW: Dodgems Jiggy'] = {
             ['addr'] = 0x47,
             ['bit'] = 5,
             ['locationId'] = 1230617
         },
-        ['Witchy World: Mr Patches Jiggy'] = {
+        ['WW: Mr. Patch Jiggy'] = {
             ['addr'] = 0x47,
             ['bit'] = 6,
             ['locationId'] = 1230618
         },
-        ['Witchy World: Saucer of Peril Jiggy'] = {
+        ['WW: Saucer of Peril Jiggy'] = {
             ['addr'] = 0x47,
             ['bit'] = 7,
             ['locationId'] = 1230619
         },
-        ['Witchy World: Ballon Burst Jiggy'] = {
+        ['WW: Balloon Burst Jiggy'] = {
             ['addr'] = 0x48,
             ['bit'] = 0,
             ['locationId'] = 1230620
         },
-        ['Witchy World: Dive of Death Jiggy'] = {
+        ['WW: Dive of Death Jiggy'] = {
             ['addr'] = 0x48,
             ['bit'] = 1,
             ['locationId'] = 1230621
         },
-        ['Witchy World: Mrs Boggy Jiggy'] = {
+        ['WW: Mrs. Boggy Jiggy'] = {
             ['addr'] = 0x48,
             ['bit'] = 2,
             ['locationId'] = 1230622
         },
-        ['Witchy World: Star Spinner Jiggy'] = {
+        ['WW: Star Spinner Jiggy'] = {
             ['addr'] = 0x48,
             ['bit'] = 3,
             ['locationId'] = 1230623
         },
-        ['Witchy World: The Inferno Jiggy'] = {
+        ['WW: The Inferno Jiggy'] = {
             ['addr'] = 0x48,
             ['bit'] = 4,
             ['locationId'] = 1230624
         },
-        ['Witchy World: Cactus of Strength Jiggy'] = {
+        ['WW: Cactus of Strength Jiggy'] = {
             ['addr'] = 0x48,
             ['bit'] = 5,
             ['locationId'] = 1230625
         },
-        ['Jolly Rogers: Mini-Sub Challenge Jiggy'] = {
+        ['JRL: Mini-Sub Challenge Jiggy'] = {
             ['addr'] = 0x48,
             ['bit'] = 6,
             ['locationId'] = 1230626
         },
-        ['Jolly Rogers: Tiptup Jiggy'] = {
+        ['JRL: Tiptup Jiggy'] = {
             ['addr'] = 0x48,
             ['bit'] = 7,
             ['locationId'] = 1230627
         },
-        ['Jolly Rogers: Chris Bacon Jiggy'] = {
+        ['JRL: Chris P. Bacon Jiggy'] = {
             ['addr'] = 0x49,
             ['bit'] = 0,
             ['locationId'] = 1230628
         },
-        ['Jolly Rogers: Piglets Pool Jiggy'] = {
+        ['JRL: Pig Pool Jiggy'] = {
             ['addr'] = 0x49,
             ['bit'] = 1,
             ['locationId'] = 1230629
         },
-        ['Jolly Rogers: Smugglers Cavern Jiggy'] = {
+        ["JRL: Smuggler's Cavern Jiggy"] = {
             ['addr'] = 0x49,
             ['bit'] = 2,
             ['locationId'] = 1230630
         },
-        ['Jolly Rogers: Merry Maggie Jiggy'] = {
+        ['JRL: Merry Maggie Jiggy'] = {
             ['addr'] = 0x49,
             ['bit'] = 3,
             ['locationId'] = 1230631
         },
-        ['Jolly Rogers: Woo Fak Fak Jiggy'] = {
+        ['JRL: Woo Fak Fak Jiggy'] = {
             ['addr'] = 0x49,
             ['bit'] = 4,
             ['locationId'] = 1230632
         },
-        ['Jolly Rogers: Seemee Jiggy'] = {
+        ['JRL: Seemee Jiggy'] = {
             ['addr'] = 0x49,
             ['bit'] = 5,
             ['locationId'] = 1230633
         },
-        ['Jolly Rogers: Pawno Jiggy'] = {
+        ['JRL: Pawno Jiggy'] = {
             ['addr'] = 0x49,
             ['bit'] = 6,
             ['locationId'] = 1230634
         },
-        ['Jolly Rogers: UFO Jiggy'] = {
+        ['JRL: UFO Jiggy'] = {
             ['addr'] = 0x49,
             ['bit'] = 7,
             ['locationId'] = 1230635
         },
-        ['Terrydactyland: Under Terrys Nest Jiggy'] = {
+        ["TDL: Under Terry's Nest Jiggy"] = {
             ['addr'] = 0x4A,
             ['bit'] = 0,
             ['locationId'] = 1230636
         },
-        ['Terrydactyland: Dippy Jiggy'] = {
+        ['TDL: Dippy Jiggy'] = {
             ['addr'] = 0x4A,
             ['bit'] = 1,
             ['locationId'] = 1230637
         },
-        ['Terrydactyland: Scrotty Jiggy'] = {
+        ['TDL: Scrotty Jiggy'] = {
             ['addr'] = 0x4A,
             ['bit'] = 2,
             ['locationId'] = 1230638
         },
-        ['Terrydactyland: Terrys Jiggy'] = {
+        ['TDL: Terry Jiggy'] = {
             ['addr'] = 0x4A,
             ['bit'] = 3,
             ['locationId'] = 1230639
         },
-        ['Terrydactyland: Oogle Boogle Tribe Jiggy'] = {
+        ['TDL: Oogle Boogle Tribe Jiggy'] = {
             ['addr'] = 0x4A,
             ['bit'] = 4,
             ['locationId'] = 1230640
         },
-        ['Terrydactyland: Chompas Belly Jiggy'] = {
+        ['TDL: Chompas Belly Jiggy'] = {
             ['addr'] = 0x4A,
             ['bit'] = 5,
             ['locationId'] = 1230641
         },
-        ['Terrydactyland: Terrys Hatched Jiggy'] = {
+        ["TDL: Terry's Kids Jiggy"] = {
             ['addr'] = 0x4A,
             ['bit'] = 6,
             ['locationId'] = 1230642
         },
-        ['Terrydactyland: Stomping Plains Jiggy'] = {
+        ['TDL: Stomping Plains Jiggy'] = {
             ['addr'] = 0x4A,
             ['bit'] = 7,
             ['locationId'] = 1230643
         },
-        ['Terrydactyland: Rocknut Tribe Jiggy'] = {
+        ['TDL: Rocknut Tribe Jiggy'] = {
             ['addr'] = 0x4B,
             ['bit'] = 0,
             ['locationId'] = 1230644
         },
-        ['Terrydactyland: Code of the Dinosaurs Jiggy'] = {
+        ['TDL: Code of the Dinosaurs Jiggy'] = {
             ['addr'] = 0x4B,
             ['bit'] = 1,
             ['locationId'] = 1230645
         },
-        ['Gruntys Industries: Waste Disposal Jiggy'] = {
+        ['GI: Toxic Waste Jiggy'] = {
             ['addr'] = 0x4B,
             ['bit'] = 2,
             ['locationId'] = 1230646
         },
-        ['Gruntys Industries: Weldar Jiggy'] = {
+        ['GI: Weldar Jiggy'] = {
             ['addr'] = 0x4B,
             ['bit'] = 3,
             ['locationId'] = 1230647
         },
-        ['Gruntys Industries: Clinkers Cavern Jiggy'] = {
+        ["GI: Clinker's Cavern Jiggy"] = {
             ['addr'] = 0x4B,
             ['bit'] = 4,
             ['locationId'] = 1230648
         },
-        ['Gruntys Industries: Laundry Jiggy'] = {
+        ['GI: Skivvies Jiggy'] = {
             ['addr'] = 0x4B,
             ['bit'] = 5,
             ['locationId'] = 1230649
         },
-        ['Gruntys Industries: Floor 5 Jiggy'] = {
+        ['GI: Floor 5 Jiggy'] = {
             ['addr'] = 0x4B,
             ['bit'] = 6,
             ['locationId'] = 1230650
         },
-        ['Gruntys Industries: Quality Control Jiggy'] = {
+        ['GI: Quality Control Jiggy'] = {
             ['addr'] = 0x4B,
             ['bit'] = 7,
             ['locationId'] = 1230651
         },
-        ['Gruntys Industries: Floor 1 Guarded Jiggy'] = {
+        ['GI: Floor 1 Guarded Jiggy'] = {
             ['addr'] = 0x4C,
             ['bit'] = 0,
             ['locationId'] = 1230652
         },
-        ['Gruntys Industries: Trash Compactor Jiggy'] = {
+        ['GI: Trash Compactor Jiggy'] = {
             ['addr'] = 0x4C,
             ['bit'] = 1,
             ['locationId'] = 1230653
         },
-        ['Gruntys Industries: Packing Room Jiggy'] = {
+        ['GI: Twinkly Packing Jiggy'] = {
             ['addr'] = 0x4C,
             ['bit'] = 2,
             ['locationId'] = 1230654
         },
-        ['Gruntys Industries: Waste Disposal Box Jiggy'] = {
+        ['GI: Toxic Waste Box Jiggy'] = {
             ['addr'] = 0x4C,
             ['bit'] = 3,
             ['locationId'] = 1230655
         },
-        ['Hailfire Peaks: Dragon Brothers Jiggy'] = {
+        ['HFP: Dragon Brothers Jiggy'] = {
             ['addr'] = 0x4C,
             ['bit'] = 4,
             ['locationId'] = 1230656
         },
-        ['Hailfire Peaks: Inside the Volcano Jiggy'] = {
+        ['HFP: Inside the Volcano Jiggy'] = {
             ['addr'] = 0x4C,
             ['bit'] = 5,
             ['locationId'] = 1230657
         },
-        ['Hailfire Peaks: Sabreman Jiggy'] = {
+        ['HFP: Sabreman Jiggy'] = {
             ['addr'] = 0x4C,
             ['bit'] = 6,
             ['locationId'] = 1230658
         },
-        ['Hailfire Peaks: Boggy Jiggy'] = {
+        ['HFP: Boggy Jiggy'] = {
             ['addr'] = 0x4C,
             ['bit'] = 7,
             ['locationId'] = 1230659
         },
-        ['Hailfire Peaks: Icy Side Station Jiggy'] = {
+        ['HFP: Icy Side Station Jiggy'] = {
             ['addr'] = 0x4D,
             ['bit'] = 0,
             ['locationId'] = 1230660
         },
-        ['Hailfire Peaks: Oil Drill Jiggy'] = {
+        ['HFP: Oil Drill Jiggy'] = {
             ['addr'] = 0x4D,
             ['bit'] = 1,
             ['locationId'] = 1230661
         },
-        ['Hailfire Peaks: Stomping Plains C. Jiggy'] = {
+        ['HFP: Stomping Plains Jiggy'] = {
             ['addr'] = 0x4D,
             ['bit'] = 2,
             ['locationId'] = 1230662
         },
-        ['Hailfire Peaks: Kickball Jiggy'] = {
+        ['HFP: Kickball Jiggy'] = {
             ['addr'] = 0x4D,
             ['bit'] = 3,
             ['locationId'] = 1230663
         },
-        ['Hailfire Peaks: Aliens Jiggy'] = {
+        ['HFP: Aliens Jiggy'] = {
             ['addr'] = 0x4D,
             ['bit'] = 4,
             ['locationId'] = 1230664
         },
-        ['Hailfire Peaks: Lava Waterfall Jiggy'] = {
+        ['HFP: Lava Waterfall Jiggy'] = {
             ['addr'] = 0x4D,
             ['bit'] = 5,
             ['locationId'] = 1230665
         },
-        ['Cloud Cuckcooland: Mingy Jongo Jiggy'] = {
+        ['CCL: Mingy Jongo Jiggy'] = {
             ['addr'] = 0x4D,
             ['bit'] = 6,
             ['locationId'] = 1230666
         },
-        ['Cloud Cuckcooland: Mr Fit Jiggy'] = {
+        ['CCL: Mr Fit Jiggy'] = {
             ['addr'] = 0x4D,
             ['bit'] = 7,
             ['locationId'] = 1230667
         },
-        ['Cloud Cuckcooland: Pot Ol Gold Jiggy'] = {
+        ["CCL: Pot O' Gold Jiggy"] = {
             ['addr'] = 0x4E,
             ['bit'] = 0,
             ['locationId'] = 1230668
         },
-        ['Cloud Cuckcooland: Canary Mary Jiggy'] = {
+        ['CCL: Canary Mary Jiggy'] = {
             ['addr'] = 0x4E,
             ['bit'] = 1,
             ['locationId'] = 1230669
         },
-        ['Cloud Cuckcooland: Zubbas Nest Jiggy'] = {
+        ['CCL: Zubbas Jiggy'] = {
             ['addr'] = 0x4E,
             ['bit'] = 2,
             ['locationId'] = 1230670
         },
-        ['Cloud Cuckcooland: Jiggium Plant Jiggy'] = {
+        ['CCL: Jiggium Plant Jiggy'] = {
             ['addr'] = 0x4E,
             ['bit'] = 3,
             ['locationId'] = 1230671
         },
-        ['Cloud Cuckcooland: Cheese Wedge Jiggy'] = {
+        ['CCL: Cheese Wedge Jiggy'] = {
             ['addr'] = 0x4E,
             ['bit'] = 4,
             ['locationId'] = 1230672
         },
-        ['Cloud Cuckcooland: Trash Can Jiggy'] = {
+        ['CCL: Trash Can Jiggy'] = {
             ['addr'] = 0x4E,
             ['bit'] = 5,
             ['locationId'] = 1230673
         },
-        ['Cloud Cuckcooland: Superstash Jiggy'] = {
+        ['CCL: Superstash Jiggy'] = {
             ['addr'] = 0x4E,
             ['bit'] = 6,
             ['locationId'] = 1230674
         },
-        ['Cloud Cuckcooland: Jelly Castle Jiggy'] = {
+        ['CCL: Jelly Castle Jiggy'] = {
             ['addr'] = 0x4E,
             ['bit'] = 7,
             ['locationId'] = 1230675
@@ -1171,122 +1171,122 @@ local MASTER_MAP = {
             ['bit'] = 3,
             ['locationId'] = 1230752
         },
-        ['Mayahem Temple: Snake Head Cheato Page'] = {
+        ['MT: Snake Head Cheato Page'] = {
             ['addr'] = 0x56,
             ['bit'] = 3,
             ['locationId'] = 1230728
         },
-        ['Mayahem Temple: Prison Compound Cheato Page'] = {
+        ['MT: Prison Compound Cheato Page'] = {
             ['addr'] = 0x56,
             ['bit'] = 4,
             ['locationId'] = 1230729
         },
-        ['Mayahem Temple: Jade Snake Grove Cheato Page'] = {
+        ['MT: Jade Snake Grove Cheato Page'] = {
             ['addr'] = 0x56,
             ['bit'] = 5,
             ['locationId'] = 1230730
         },
-        ['Glitter Gultch Mine: Canary Mary Cheato Page'] = {
+        ['GGM: Canary Mary Cheato Page'] = {
             ['addr'] = 0x56,
             ['bit'] = 6,
             ['locationId'] = 1230731
         },
-        ['Glitter Gultch Mine: Entrance Cheato Page'] = {
+        ['GGM: Entrance Cheato Page'] = {
             ['addr'] = 0x56,
             ['bit'] = 7,
             ['locationId'] = 1230732
         },
-        ['Glitter Gultch Mine: Water Storage Cheato Page'] = {
+        ['GGM: Water Storage Cheato Page'] = {
             ['addr'] = 0x57,
             ['bit'] = 0,
             ['locationId'] = 1230733
         },
-        ['Witchy World: Haunted Cavern Cheato Page'] = {
+        ['WW: Haunted Cavern Cheato Page'] = {
             ['addr'] = 0x57,
             ['bit'] = 1,
             ['locationId'] = 1230734
         },
-        ['Witchy World: The Inferno Cheato Page'] = {
+        ['WW: The Inferno Cheato Page'] = {
             ['addr'] = 0x57,
             ['bit'] = 2,
             ['locationId'] = 1230735
         },
-        ['Witchy World: Saucer of Peril Cheato Page'] = {
+        ['WW: Saucer of Peril Cheato Page'] = {
             ['addr'] = 0x57,
             ['bit'] = 3,
             ['locationId'] = 1230736
         },
-        ['Jolly Rogers: Pawnos Cheato Page'] = {
+        ["JRL: Pawno's Cheato Page"] = {
             ['addr'] = 0x57,
             ['bit'] = 4,
             ['locationId'] = 1230737
         },
-        ['Jolly Rogers: Seemee Cheato Page'] = {
+        ['JRL: Seemee Cheato Page'] = {
             ['addr'] = 0x57,
             ['bit'] = 5,
             ['locationId'] = 1230738
         },
-        ['Jolly Rogers: Ancient Baths Cheato Page'] = {
+        ['JRL: Ancient Baths Cheato Page'] = {
             ['addr'] = 0x57,
             ['bit'] = 6,
             ['locationId'] = 1230739
         },
-        ['Terrydactyland: Dippys Pool Cheato Page'] = {
+        ["TDL: Dippy's Pool Cheato Page"] = {
             ['addr'] = 0x57,
             ['bit'] = 7,
             ['locationId'] = 1230740
         },
-        ['Terrydactyland: Inside the Mountain Cheato Page'] = {
+        ['TDL: Inside the Mountain Cheato Page'] = {
             ['addr'] = 0x58,
             ['bit'] = 0,
             ['locationId'] = 1230741
         },
-        ['Terrydactyland: Boulder Cheato Page'] = {
+        ['TDL: Boulder Cheato Page'] = {
             ['addr'] = 0x58,
             ['bit'] = 1,
             ['locationId'] = 1230742
         },
-        ['Gruntys Industries: Logo Cheato Page'] = {
+        ['GI: Loggo Cheato Page'] = {
             ['addr'] = 0x58,
             ['bit'] = 2,
             ['locationId'] = 1230743
         },
-        ['Gruntys Industries: Floor 2 Cheato Page'] = {
+        ['GI: Floor 2 Cheato Page'] = {
             ['addr'] = 0x58,
             ['bit'] = 3,
             ['locationId'] = 1230744
         },
-        ['Gruntys Industries: Repair Depot Cheato Page'] = {
+        ['GI: Repair Depot Cheato Page'] = {
             ['addr'] = 0x58,
             ['bit'] = 4,
             ['locationId'] = 1230745
         },
-        ['Hailfire Peaks: Lava Side Cheato Page'] = {
+        ['HFP: Lava Side Cheato Page'] = {
             ['addr'] = 0x58,
             ['bit'] = 5,
             ['locationId'] = 1230746
         },
-        ['Hailfire Peaks: Icicle Grotto Cheato Page'] = {
+        ['HFP: Icicle Grotto Cheato Page'] = {
             ['addr'] = 0x58,
             ['bit'] = 6,
             ['locationId'] = 1230747
         },
-        ['Hailfire Peaks: Icy Side Cheato Page'] = {
+        ['HFP: Icy Side Cheato Page'] = {
             ['addr'] = 0x58,
             ['bit'] = 7,
             ['locationId'] = 1230748
         },
-        ['Cloud Cuckcooland: Canary Mary Cheato Page'] = {
+        ['CCL: Canary Mary Cheato Page'] = {
             ['addr'] = 0x59,
             ['bit'] = 0,
             ['locationId'] = 1230749
         },
-        ['Cloud Cuckcooland: Pot Ol Gold Cheato Page'] = {
+        ["CCL: Pot O' Gold Cheato Page"] = {
             ['addr'] = 0x59,
             ['bit'] = 1,
             ['locationId'] = 1230750
         },
-        ['Cloud Cuckcooland: Zubbas Nest Cheato Page'] = {
+        ['CCL: Zubbas Cheato Page'] = {
             ['addr'] = 0x59,
             ['bit'] = 2,
             ['locationId'] = 1230751
@@ -1298,154 +1298,154 @@ local MASTER_MAP = {
             ['bit'] = 2,
             ['locationId'] = 1230727
         },
-        ['Mayahem Temple: Entrance Honeycomb'] = {
+        ['MT: Entrance Honeycomb'] = {
             ['addr'] = 0x3F,
             ['bit'] = 2,
             ['locationId'] = 1230703
         },
-        ['Mayahem Temple: Bovina Honeycomb'] = {
+        ['MT: Bovina Honeycomb'] = {
             ['addr'] = 0x3F,
             ['bit'] = 3,
             ['locationId'] = 1230704
         },
-        ['Mayahem Temple: Treasure Chamber Honeycomb'] = {
+        ['MT: Treasure Chamber Honeycomb'] = {
             ['addr'] = 0x3F,
             ['bit'] = 4,
             ['locationId'] = 1230705
         },
-        ['Glitter Gultch Mine: Toxic Gas Cave Honeycomb'] = {
+        ['GGM: Toxic Gas Cave Honeycomb'] = {
             ['addr'] = 0x3F,
             ['bit'] = 5,
             ['locationId'] = 1230706
         },
-        ['Glitter Gultch Mine: Boulder Honeycomb'] = {
+        ['GGM: Boulder Honeycomb'] = {
             ['addr'] = 0x3F,
             ['bit'] = 6,
             ['locationId'] = 1230707
         },
-        ['Glitter Gultch Mine: Train Station Honeycomb'] = {
+        ['GGM: Train Station Honeycomb'] = {
             ['addr'] = 0x3F,
             ['bit'] = 7,
             ['locationId'] = 1230708
         },
-        ['Witchy World: Space Zone Honeycomb'] = {
+        ['WW: Space Zone Honeycomb'] = {
             ['addr'] = 0x40,
             ['bit'] = 0,
             ['locationId'] = 1230709
         },
-        ['Witchy World: Mumbo Skull Honeycomb'] = {
+        ['WW: Mumbo Skull Honeycomb'] = {
             ['addr'] = 0x40,
             ['bit'] = 1,
             ['locationId'] = 1230710
         },
-        ['Witchy World: Crazy Castle Honeycomb'] = {
+        ['WW: Crazy Castle Honeycomb'] = {
             ['addr'] = 0x40,
             ['bit'] = 2,
             ['locationId'] = 1230711
         },
-        ['Jolly Rogers: Seemee Honeycomb'] = {
+        ['JRL: Seemee Honeycomb'] = {
             ['addr'] = 0x40,
             ['bit'] = 3,
             ['locationId'] = 1230712
         },
-        ['Jolly Rogers: Atlantis Honeycomb'] = {
+        ['JRL: Atlantis Honeycomb'] = {
             ['addr'] = 0x40,
             ['bit'] = 4,
             ['locationId'] = 1230713
         },
-        ['Jolly Rogers: Waste Pipe Honeycomb'] = {
+        ['JRL: Waste Pipe Honeycomb'] = {
             ['addr'] = 0x40,
             ['bit'] = 5,
             ['locationId'] = 1230714
         },
-        ['Terrydactyland: Central Area Honeycomb'] = {
+        ['TDL: Lakeside Honeycomb'] = {
             ['addr'] = 0x40,
             ['bit'] = 6,
             ['locationId'] = 1230715
         },
-        ['Terrydactyland: S. Family Cave Honeycomb'] = {
+        ['TDL: Styracosaurus Cave Honeycomb'] = {
             ['addr'] = 0x40,
             ['bit'] = 7,
             ['locationId'] = 1230716
         },
-        ['Terrydactyland: River Passage Honeycomb'] = {
+        ['TDL: River Passage Honeycomb'] = {
             ['addr'] = 0x41,
             ['bit'] = 0,
             ['locationId'] = 1230717
         },
-        ['Gruntys Industries: Floor 3 Honeycomb'] = {
+        ['GI: Floor 3 Honeycomb'] = {
             ['addr'] = 0x41,
             ['bit'] = 1,
             ['locationId'] = 1230718
         },
-        ['Gruntys Industries: Train Station Honeycomb'] = {
+        ['GI: Train Station Honeycomb'] = {
             ['addr'] = 0x41,
             ['bit'] = 2,
             ['locationId'] = 1230719
         },
-        ['Gruntys Industries: Chimney Honeycomb'] = {
+        ['GI: Chimney Honeycomb'] = {
             ['addr'] = 0x41,
             ['bit'] = 3,
             ['locationId'] = 1230720
         },
-        ['Hailfire Peaks: Inside the Volcano Honeycomb'] = {
+        ['HFP: Inside the Volcano Honeycomb'] = {
             ['addr'] = 0x41,
             ['bit'] = 4,
             ['locationId'] = 1230721
         },
-        ['Hailfire Peaks: Train Station Honeycomb'] = {
+        ['HFP: Train Station Honeycomb'] = {
             ['addr'] = 0x41,
             ['bit'] = 5,
             ['locationId'] = 1230722
         },
-        ['Hailfire Peaks: Lava Side Honeycomb'] = {
+        ['HFP: Lava Side Honeycomb'] = {
             ['addr'] = 0x41,
             ['bit'] = 6,
             ['locationId'] = 1230723
         },
-        ['Cloud Cuckcooland: Underground Honeycomb'] = {
+        ['CCL: Dirt Patch Honeycomb'] = {
             ['addr'] = 0x41,
             ['bit'] = 7,
             ['locationId'] = 1230724
         },
-        ['Cloud Cuckcooland: Trash Can Honeycomb'] = {
+        ['CCL: Trash Can Honeycomb'] = {
             ['addr'] = 0x42,
             ['bit'] = 0,
             ['locationId'] = 1230725
         },
-        ['Cloud Cuckcooland: Pot Ol Gold Honeycomb'] = {
+        ['CCL: Pot Ol Gold Honeycomb'] = {
             ['addr'] = 0x42,
             ['bit'] = 1,
             ['locationId'] = 1230726
         },
     },
     ['GLOWBO'] = {
-         ['Mayahem Temple: Mumbo Skull Glowbo'] = {
+         ["MT: Mumbo's Glowbo"] = {
              ['addr'] = 0x42,
              ['bit'] = 7,
              ['locationId'] = 1230686
          },
-         ['Mayahem Temple: Behind Wumba Wigwam Glowbo'] = {
+         ['MT: Jade Snake Grove Glowbo'] = {
              ['addr'] = 0x43,
              ['bit'] = 0,
              ['locationId'] = 1230687
          },
-         ['Glitter Gultch Mine: Near Entrance Glowbo'] = {
+         ['GGM: Near Entrance Glowbo'] = {
              ['addr'] = 0x43,
              ['bit'] = 1,
              ['locationId'] = 1230688
          },
-         ['Glitter Gultch Mine: Mine Entrance Glowbo'] = {
+         ['GGM: Mine Entrance 2 Glowbo'] = {
              ['addr'] = 0x43,
              ['bit'] = 2,
              ['locationId'] = 1230689
          },
-         ['Witchy World: The Inferno Glowbo'] = {
+         ['WW: The Inferno Glowbo'] = {
              ['addr'] = 0x43,
              ['bit'] = 3,
              ['locationId'] = 1230690
          },
-         ['Witchy World: Inside Wumba Wigwam Glowbo'] = {
+         ["WW: Wumba's Glowbo"] = {
              ['addr'] = 0x43,
              ['bit'] = 4,
              ['locationId'] = 1230691
@@ -1455,52 +1455,52 @@ local MASTER_MAP = {
              ['bit'] = 7,
              ['locationId'] = 1230702
          },
-         ['Jolly Rogers: Pawnos Emporium Glowbo'] = {
+         ["JRL: Pawno's Emporium Glowbo"] = {
              ['addr'] = 0x43,
              ['bit'] = 5,
              ['locationId'] = 123069
          },
-         ['Jolly Rogers: Under Wumba Wigwam Glowbo'] = {
+         ["JRL: Under Wumba's Wigwam Glowbo"] = {
              ['addr'] = 0x43,
              ['bit'] = 6,
              ['locationId'] = 123070
          },
-         ['Terrydactyland: Unga Bunga Cave Entrance Glowbo'] = {
+         ['TDL: Unga Bunga Cave Entrance Glowbo'] = {
              ['addr'] = 0x43,
              ['bit'] = 7,
              ['locationId'] = 1230694
          },
-         ['Terrydactyland: Behind Mumbo Skull Glowbo'] = {
+         ["TDL: Behind Mumbo's Skull Glowbo"] = {
              ['addr'] = 0x44,
              ['bit'] = 0,
              ['locationId'] = 1230695
          },
-         ['Gruntys Industries: Floor 2 Glowbo'] = {
+         ['GI: Floor 2 Glowbo'] = {
              ['addr'] = 0x44,
              ['bit'] = 1,
              ['locationId'] = 1230696
          },
-         ['Gruntys Industries: Floor 3 Glowbo'] = {
+         ['GI: Floor 3 Glowbo'] = {
              ['addr'] = 0x44,
              ['bit'] = 2,
              ['locationId'] = 1230697
          },
-         ['Hailfire Peaks: Lava Side Glowbo'] = {
+         ['HFP: Lava Side Glowbo'] = {
              ['addr'] = 0x44,
              ['bit'] = 3,
              ['locationId'] = 1230698
          },
-         ['Hailfire Peaks: Icy Side Glowbo'] = {
+         ['HFP: Icy Side Glowbo'] = {
              ['addr'] = 0x44,
              ['bit'] = 4,
              ['locationId'] = 1230699
          },
-         ['Cloud Cuckcooland: Overworld Glowbo'] = {
+         ['CCL: Overworld Glowbo'] = {
              ['addr'] = 0x44,
              ['bit'] = 5,
              ['locationId'] = 1230700
          },
-         ['Cloud Cuckcooland: Central Cavern Glowbo'] = {
+         ['CCL: Central Cavern Glowbo'] = {
              ['addr'] = 0x44,
              ['bit'] = 6,
              ['locationId'] = 1230701

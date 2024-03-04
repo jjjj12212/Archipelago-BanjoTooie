@@ -195,6 +195,7 @@ class BanjoTooieRules:
                                                  (state.has(itemName.AUQAIM, self.player) or
                                                   self.check_humba_magic(state, itemName.HUMBAJR)),
             locationName.JIGGYJR4: lambda state: (state.has(itemName.GEGGS, self.player) or
+                                                  state.has(itemName.CEGGS, self.player) or
                                                   state.has(itemName.BDRILL, self.player)) and
                                                  self.jiggy_unlock(state, 45) and
                                                  state.has(itemName.SPLITUP, self.player) and
@@ -243,6 +244,8 @@ class BanjoTooieRules:
                                                  self.check_solo_moves(state, itemName.HATCH) and
                                                  self.check_solo_moves(state, itemName.TAXPACK) and
                                                  self.oogle_boogles_open(state),
+            locationName.JIGGYTD8: lambda state: state.has(itemName.IEGGS, self.player) and
+                                                 state.has(itemName.SPRINGB, self.player),
             locationName.JIGGYTD9: lambda state: state.has(itemName.EGGAIM, self.player) and
                                                  state.has(itemName.CEGGS, self.player),
             locationName.JIGGYTD10: lambda state: self.check_humba_magic(state, itemName.HUMBATD),
@@ -282,11 +285,13 @@ class BanjoTooieRules:
             locationName.JIGGYHP4: lambda state: self.check_solo_moves(state, itemName.SHPACK),
             locationName.JIGGYHP5: lambda state: self.can_beat_king_coal(state) and
                                                  state.has(itemName.EGGAIM, self.player) and
-                                                 state.has(itemName.GEGGS, self.player),
+                                                 state.has(itemName.GEGGS, self.player) and
+                                                 self.check_humba_magic(state, itemName.HUMBAHP),
             locationName.JIGGYHP6: lambda state: self.check_humba_magic(state, itemName.HUMBAHP) and
                                                  self.check_solo_moves(state, itemName.SHPACK),
             locationName.JIGGYHP7: lambda state: self.check_solo_moves(state, itemName.SNPACK) and
-                                                 state.has(itemName.IEGGS, self.player),
+                                                 state.has(itemName.IEGGS, self.player) and
+                                                 state.has(itemName.SPRINGB, self.player),
             locationName.JIGGYHP8: lambda state: self.check_humba_magic(state, itemName.HUMBAMT) and
                                                  self.check_mumbo_magic(state, itemName.MUMBOMT) and
                                                  (state.has(itemName.GEGGS, self.player) or
