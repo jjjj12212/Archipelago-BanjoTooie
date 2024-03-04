@@ -162,7 +162,7 @@ class BanjoTooieRules:
             locationName.JIGGYGM8: lambda state: state.has(itemName.SPRINGB, self.player),
             locationName.JIGGYGM9: lambda state: self.GM_boulders(state) and
                                                  (state.has(itemName.SPLITUP, self.player) or
-                                                  state.has(itemName.FEGGS, self.player)),
+                                                  self.has_fire(state)),
 
             #Witchyworld Jiggies
             locationName.JIGGYWW1: lambda state: state.has(itemName.SPLITUP, self.player) and 
