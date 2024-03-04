@@ -14,4 +14,6 @@
 
 # Not yet fixed
 - Jinjo Families: Jinjo patterns make checking ability requirements impossible in current implementation. Will be fixed in the future.
-
+- Saving Roysten only gives bubbles, not fast swim
+- You can use moves that weren't sent to you by standing on a silo or in a loading zone. This can break logic in some places.
+-  
