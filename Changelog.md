@@ -1,3 +1,6 @@
+# 0.6-beta
+- Locatioin name corrections
+
 # 0.5.1-beta
 - Fixed logic errors:
   - Pig Pool now requires access to HFP and CCL
