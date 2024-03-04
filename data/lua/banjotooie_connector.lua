@@ -1794,11 +1794,11 @@ local MASTER_MAP = {
             ['bit'] = 7,
             ['locationId'] = 1230776
         },
-        ['Fast Swimming'] = {
-            ['addr'] = 0x1E,
-            ['bit'] = 5,
-            ['locationId'] = 1230777
-        },
+        --['Fast Swimming'] = {
+        --    ['addr'] = 0x1E,
+        --    ['bit'] = 5,
+        --    ['locationId'] = 1230777
+        --},
 	},
     ["MAGIC"] = {
         ['Mumbo: Golden Goliath'] = {
