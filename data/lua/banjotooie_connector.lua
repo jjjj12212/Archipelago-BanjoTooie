@@ -3151,6 +3151,10 @@ function processAGIItem(item_list)
                         end
                         AGI[item_type][location] = true;
                         savingAGI();
+                        if(1230753 <= memlocation and memlocation <= 1230777)
+                        then
+                            set_AGI_MOVES_checks()
+                        end
                     end
                 end
             end
