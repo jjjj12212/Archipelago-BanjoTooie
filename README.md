@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | v0.5-beta
+# Archipelago Banjo-Tooie (US-Only) | v0.5.1-beta
 Banjo Tooie for Archipelago 
 
 # Current implementation
@@ -43,5 +43,6 @@ Huge thank you for the following individuals / teams. Without them, this project
  - <a href='https://github.com/Isotarge/ScriptHawk'>ScriptHawk</a>
  - <a href="https://github.com/kaptainkohl/BTRandoLUA">Kaptainkohl - Banjo Tooie Randomizer</a>
  - @Icebound777
+ - g0goTBC - help with logic fixes
  - **Of course, the people who brought Banjo Kazooie in our lives**
     - Rareware
