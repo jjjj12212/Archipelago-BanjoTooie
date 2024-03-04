@@ -441,36 +441,351 @@ function nearWHJinjo()
     end
 end
 
+-- Moves that needs to be checked Per Map. some silos NEEDS other moves as well to get to.
+-- local SILO_MAP_CHECK = {
+--     [0x155] = { -- Cliff Top
+--         ["Ice Eggs"] = {
+--             ["addr"] = 0x1E,
+--             ["bit"] = 4
+--         },
+--         ["Exceptions"] = {
+
+--         }
+--     },
+--     [0x152] = { -- Platau
+--         ["Fire Eggs"] = {
+--             ["addr"] = 0x1E,
+--             ["bit"] = 1
+--         },
+--         ["Exceptions"] = {
+--             "EGG AIM"
+--         }
+--     },
+--     [0x154] = { -- Pine Grove
+--         ["Gernade Eggs"] = {
+--             ["addr"] = 0x1E,
+--             ["bit"] = 2
+--         },
+--         ["Exceptions"] = {
+            
+--         }
+--     },
+--     [0x15A] = { -- Wasteland
+--         ["Clockwork Kazooie Eggs"] = {
+--             ["addr"] = 0x1E,
+--             ["bit"] = 3
+--         },
+--         ["Exceptions"] = {
+            
+--         }
+--     },
+--     [0xB8] = { -- MT Main
+--         ["Breegull Blaster"] = {
+--             ["addr"] = 0x1B,
+--             ["bit"] = 2
+--         },
+--         ["Egg Aim"] = {
+--             ["addr"] = 0x1B,
+--             ["bit"] = 3
+--         },
+--         ["Exceptions"] = {
+            
+--         }
+--     },
+--     [0xC4] = { -- MT Grove
+--         ["Grip Grab"] = {
+--             ["addr"] = 0x1B,
+--             ["bit"] = 1
+--         },
+--         ["Exceptions"] = {
+            
+--         }
+--     },
+--     [0xC7] = { -- GM Main
+--         ["Bill Drill"] = {
+--             ["addr"] = 0x1B,
+--             ["bit"] = 6
+--         },
+--         ["Exceptions"] = {
+            
+--         }
+--     },
+--     [0x163] = { -- GM Storage
+--         ["Beak Bayonet"] = {
+--             ["addr"] = 0x1B,
+--             ["bit"] = 7
+--         },
+--         ["Exceptions"] = {
+            
+--         }
+--     },
+--     [0xD6] = { -- WW Main
+--         ["Split Up"] = {
+--             ["addr"] = 0x1C,
+--             ["bit"] = 1
+--         },
+--         ["Airborne Egg Aiming"] = {
+--             ["addr"] = 0x1C,
+--             ["bit"] = 0
+--         },
+--         ["Exceptions"] = {
+            
+--         }
+--     },
+--     [0xE1] = { -- WW Castle
+--         ["Pack Whack"] = {
+--             ["addr"] = 0x1D,
+--             ["bit"] = 6
+--         },
+--         ["Exceptions"] = {
+            
+--         }
+--     },
+--     [0x1A7] = { -- JRL Main
+--         ["Wing Whack"] = {
+--             ["addr"] = 0x1C,
+--             ["bit"] = 2
+--         },
+--         ["Exceptions"] = {
+            
+--         }
+--     },
+--     [0xF6] = { -- JRL Eel Lair
+--         ["Talon Torpedo"] = {
+--             ["addr"] = 0x1C,
+--             ["bit"] = 3
+--         },
+--         ["Exceptions"] = {
+            
+--         }
+--     },
+--     [0xED] = { -- JRL Jolly
+--         ["Sub-Aqua Egg Aiming"] = {
+--             ["addr"] = 0x1C,
+--             ["bit"] = 4
+--         },
+--         ["Exceptions"] = {
+            
+--         }
+--     },
+--     [0x122] = { --TDL Main
+--         ["Springy Step Shoes"] = {
+--             ["addr"] = 0x1D,
+--             ["bit"] = 3
+--         },
+--         ["Exceptions"] = {
+            
+--         }
+--     },
+--     [0x119] = { -- Unga Bunga Cave
+--         ["Hatch"] = {
+--             ["addr"] = 0x1D,
+--             ["bit"] = 5
+--         },
+--         ["Exceptions"] = {
+  
+--         }
+--     },
+--     [0x117] = { -- TDL River
+--         ["Taxi Pack"] = {
+--             ["addr"] = 0x1D,
+--             ["bit"] = 4
+--         },
+--         ["Exceptions"] = {
+  
+--         }
+--     },
+--     [0x101] = { -- GI Floor 1
+--         ["Claw Clamber Boots"] = {
+--             ["addr"] = 0x1D,
+--             ["bit"] = 2
+--         },
+--         ["Exceptions"] = {
+  
+--         }
+--     },
+--     [0x106] = { -- Floor 2
+--         ["Leg Spring"] = {
+--             ["addr"] = 0x1D,
+--             ["bit"] = 1
+--         },
+--         ["Exceptions"] = {
+  
+--         }
+--     },
+--     [0x111] = { -- GI Waste Disposal
+--         ["Snooze Pack"] = {
+--             ["addr"] = 0x1D,
+--             ["bit"] = 0
+--         },
+--         ["Exceptions"] = {
+  
+--         }
+--     },
+--     [0x127] = { -- HFP Fire
+--         ["Shack Pack"] = {
+--             ["addr"] = 0x1C,
+--             ["bit"] = 6
+--         },
+--         ["Exceptions"] = {
+  
+--         }
+--     },
+--     [0x128] = { -- HFP Ice
+--         ["Glide"] = {
+--             ["addr"] = 0x1C,
+--             ["bit"] = 7
+--         },
+--         ["Exceptions"] = {
+  
+--         }
+--     },
+--     [0x13A] = { -- CC Cave
+--         ["Sack Pack"] = {
+--             ["addr"] = 0x1D,
+--             ["bit"] = 7
+--         },
+--         ["Exceptions"] = {
+  
+--         }
+--     }
+-- }
+
 local SILO_MAP_CHECK = {
-    ["IOHCT"]  = 0x155,
-    ["IOHPL"]  = 0x152, 
-    ["IOHGRO"] = 0x154,
-    ["IOHWST"] = 0x15A,
+    [0x155] = { -- Cliff Top
+        "Ice Eggs",
+        ["Exceptions"] = {
 
-    ["MTMAIN"] = 0xB8, --2
-    ["MTCOVE"] = 0xC4,
-
-    ["GMMAIN"] = 0xC7,
-    ["GMSTOR"] = 0x163,
-    
-    ["WWMAIN"] = 0xD6, --2
-    ["WWCAST"] = 0xE1,
-
-    ["JRMAIN"] = 0x1A7,
-    ["JREELB"] = 0xF6,
-    ["JRJOLL"] = 0xED,
-
-    ["TLMAIN"] = 0x122, --2
-    ["TLRIVE"] = 0x117,
-
-    ["GIMAIN"] = 0x101,
-    ["GIFLO2"] = 0x106,
-    ["GIWAST"] = 0x111,
-
-    ["HFPICE"] = 0x128,
-    ["HPLAVA"] = 0x127,
-
-    ["CCCAVE"] = 0x13A
+        }
+    },
+    [0x152] = { -- Platau
+        "Fire Eggs",
+        ["Exceptions"] = {
+            "EGG AIM"
+        }
+    },
+    [0x154] = { -- Pine Grove
+        "Gernade Eggs",
+        ["Exceptions"] = {
+            
+        }
+    },
+    [0x15A] = { -- Wasteland
+        "Clockwork Kazooie Eggs",
+        ["Exceptions"] = {
+            
+        }
+    },
+    [0xB8] = { -- MT Main
+        "Breegull Blaster",
+        "Egg Aim",
+        ["Exceptions"] = {
+            
+        }
+    },
+    [0xC4] = { -- MT Grove
+        "Grip Grab",
+        ["Exceptions"] = {
+            
+        }
+    },
+    [0xC7] = { -- GM Main
+        "Bill Drill",
+        ["Exceptions"] = {
+            
+        }
+    },
+    [0x163] = { -- GM Storage
+        "Beak Bayonet",
+        ["Exceptions"] = {
+            
+        }
+    },
+    [0xD6] = { -- WW Main
+        "Split Up",
+        "Airborne Egg Aiming",
+        ["Exceptions"] = {
+            
+        }
+    },
+    [0xE1] = { -- WW Castle
+        "Pack Whack",
+        ["Exceptions"] = {
+            
+        }
+    },
+    [0x1A7] = { -- JRL Main
+        "Wing Whack",
+        ["Exceptions"] = {
+            
+        }
+    },
+    [0xF6] = { -- JRL Eel Lair
+        "Talon Torpedo",
+        ["Exceptions"] = {
+            
+        }
+    },
+    [0xED] = { -- JRL Jolly
+        "Sub-Aqua Egg Aiming",
+        ["Exceptions"] = {
+            
+        }
+    },
+    [0x122] = { --TDL Main
+        "Springy Step Shoes",
+        ["Exceptions"] = {
+            
+        }
+    },
+    [0x119] = { -- Unga Bunga Cave
+        "Hatch",
+        ["Exceptions"] = {
+  
+        }
+    },
+    [0x117] = { -- TDL River
+        "Taxi Pack",
+        ["Exceptions"] = {
+  
+        }
+    },
+    [0x101] = { -- GI Floor 1
+        "Claw Clamber Boots",
+        ["Exceptions"] = {
+  
+        }
+    },
+    [0x106] = { -- Floor 2
+        "Leg Spring",
+        ["Exceptions"] = {
+  
+        }
+    },
+    [0x111] = { -- GI Waste Disposal
+        "Snooze Pack",
+        ["Exceptions"] = {
+  
+        }
+    },
+    [0x127] = { -- HFP Fire
+        "Shack Pack",
+        ["Exceptions"] = {
+  
+        }
+    },
+    [0x128] = { -- HFP Ice
+        "Glide",
+        ["Exceptions"] = {
+  
+        }
+    },
+    [0x13A] = { -- CC Cave
+        "Sack Pack",
+        ["Exceptions"] = {
+  
+        }
+    }
 }
 
 -- BMM - Backup Memory Map 
@@ -2589,21 +2904,25 @@ function checkConsumables(consumable_type, location_checks)
 end
 
 local update_BMK_MOVES_checks = function() --Only run when close to Silos
-    for k,v in pairs(MASTER_MAP['MOVES'])
+    for keys, moves in pairs(SILO_MAP_CHECK[last_map])
     do
-        if BKM[k] == false
+        if keys ~= "Exceptions"
         then
-            res = checkFlag(v['addr'], v['bit'])
-            if res == true
+            local get_addr = MASTER_MAP['MOVES'][moves]
+            if BKM[moves] == false
             then
-                if DEBUG == true 
+                local res = checkFlag(get_addr['addr'], get_addr['bit'])
+                if res == true
                 then
-                    print("Already learnt this Silo. finished")
+                    if DEBUG == true 
+                    then
+                        print("Already learnt this Silo. finished")
+                    end
+                    BKM[moves] = res
+                    FinishedSilo = true
                 end
-                BKM[k] = res
-                FinishedSilo = true
             end
-        end 
+        end
     end
 end
 
@@ -2623,14 +2942,25 @@ local init_BMK = function(type) --Only run when close to Silos
 end
 
 local clear_AMM_MOVES_checks = function() --Only run when transitioning Maps until BT/Silo Model is loaded OR Close to Silo
-    for k,v in pairs(MASTER_MAP['MOVES'])
+    --Only clear the moves that we need to clear 
+    for keys, move in pairs(SILO_MAP_CHECK[last_map])
     do
-        if BKM[k] == false
+        if keys ~= "Exceptions"
         then
-            clearFlag(v['addr'], v['bit'])
-        elseif BKM[k] == true 
-        then
-            setFlag(v['addr'], v['bit'])
+            local addr_info = MASTER_MAP["MOVES"][move]
+            if BKM[move] == false
+            then
+                clearFlag(addr_info['addr'], addr_info['bit']);
+            elseif BKM[move] == true
+            then
+                setFlag(addr_info['addr'], addr_info['bit'])
+            end
+        else
+            for key, disable_move in pairs(SILO_MAP_CHECK[last_map][move]) --Exception list, always disable
+            do
+                local addr_info = MASTER_MAP["MOVES"][disable_move]
+                clearFlag(addr_info['addr'], addr_info['bit']);
+            end
         end
     end
 end
@@ -2897,9 +3227,9 @@ function locationControl()
         end
         if (last_map ~= mapaddr) and APMovesEnabled == true
         then
-            for k,maps in pairs(SILO_MAP_CHECK)
+            for map,moves in pairs(SILO_MAP_CHECK)
             do
-                if mapaddr == maps
+                if mapaddr == map
                 then
                     if DEBUG == true
                     then
