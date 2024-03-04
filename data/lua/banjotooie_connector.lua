@@ -3581,7 +3581,7 @@ function main()
         end
         if (curstate == STATE_OK) or (curstate == STATE_INITIAL_CONNECTION_MADE) or (curstate == STATE_TENTATIVELY_CONNECTED) then
             if (frame % 60 == 0) then
-                getBanjoDeathAnimation(false);
+                --getBanjoDeathAnimation(false);
                 receive();
                 killBT();
                 if (skip_tot == "true") then
