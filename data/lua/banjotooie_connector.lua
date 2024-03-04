@@ -2956,7 +2956,7 @@ local clear_AMM_MOVES_checks = function() --Only run when transitioning Maps unt
                 setFlag(addr_info['addr'], addr_info['bit'])
             end
         else
-            for key, disable_move in pairs(SILO_MAP_CHECK[last_map][move]) --Exception list, always disable
+            for key, disable_move in pairs(SILO_MAP_CHECK[last_map][keys]) --Exception list, always disable
             do
                 local addr_info = MASTER_MAP["MOVES"][disable_move]
                 clearFlag(addr_info['addr'], addr_info['bit']);
