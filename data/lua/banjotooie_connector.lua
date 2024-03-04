@@ -787,7 +787,7 @@ local MASTER_MAP = {
             ['bit'] = 1,
             ['locationId'] = 1230645
         },
-        ['GI: Toxic Waste Jiggy'] = {
+        ['GI: Underwater Waste Disposal Plant Jiggy'] = {
             ['addr'] = 0x4B,
             ['bit'] = 2,
             ['locationId'] = 1230646
@@ -832,7 +832,7 @@ local MASTER_MAP = {
             ['bit'] = 2,
             ['locationId'] = 1230654
         },
-        ['GI: Toxic Waste Box Jiggy'] = {
+        ['GI: Waste Disposal Plant Box Jiggy'] = {
             ['addr'] = 0x4C,
             ['bit'] = 3,
             ['locationId'] = 1230655
@@ -1004,27 +1004,27 @@ local MASTER_MAP = {
         --     ['bit'] = 5,
         --     ['locationId'] = 1230560
         -- },
-        -- ['Witchy World: Big Top Jinjo'] = {
+        -- ['Witchyworld: Big Top Jinjo'] = {
         --     ['addr'] = 0x3A,
         --     ['bit'] = 6,
         --     ['locationId'] = 1230561
         -- },
-        -- ['Witchy World: Cave of Horrors Jinjo'] = {
+        -- ['Witchyworld: Cave of Horrors Jinjo'] = {
         --     ['addr'] = 0x3A,
         --     ['bit'] = 7,
         --     ['locationId'] = 1230562
         -- },
-        -- ['Witchy World: Van Door Jinjo'] = {
+        -- ['Witchyworld: Van Door Jinjo'] = {
         --     ['addr'] = 0x3B,
         --     ['bit'] = 0,
         --     ['locationId'] = 1230563
         -- },
-        -- ['Witchy World: Dodgem Dome Jinjo'] = {
+        -- ['Witchyworld: Dodgem Dome Jinjo'] = {
         --     ['addr'] = 0x3B,
         --     ['bit'] = 1,
         --     ['locationId'] = 1230564
         -- },
-        -- ['Witchy World: Cactus of Strength Jinjo'] = {
+        -- ['Witchyworld: Cactus of Strength Jinjo'] = {
         --     ['addr'] = 0x3B,
         --     ['bit'] = 2,
         --     ['locationId'] = 1230565
@@ -1099,7 +1099,7 @@ local MASTER_MAP = {
         --     ['bit'] = 6,
         --     ['locationId'] = 1230577
         -- },
-        -- ['Gruntys Industries: Toxic Waste Jinjo'] = {
+        -- ['Gruntys Industries: Waste Disposal Plant Jinjo'] = {
         --     ['addr'] = 0x3C,
         --     ['bit'] = 7,
         --     ['locationId'] = 1230578
@@ -1201,7 +1201,7 @@ local MASTER_MAP = {
             ['bit'] = 0,
             ['locationId'] = 1230733
         },
-        ['WW: Haunted Cavern Cheato Page'] = {
+        ['WW: The Haunted Cavern Cheato Page'] = {
             ['addr'] = 0x57,
             ['bit'] = 1,
             ['locationId'] = 1230734
@@ -1413,7 +1413,7 @@ local MASTER_MAP = {
             ['bit'] = 0,
             ['locationId'] = 1230725
         },
-        ['CCL: Pot Ol Gold Honeycomb'] = {
+        ["CCL: Pot O' Gold Honeycomb"] = {
             ['addr'] = 0x42,
             ['bit'] = 1,
             ['locationId'] = 1230726
@@ -1495,7 +1495,7 @@ local MASTER_MAP = {
              ['bit'] = 4,
              ['locationId'] = 1230699
          },
-         ['CCL: Overworld Glowbo'] = {
+         ['CCL: Green Pool Glowbo'] = {
              ['addr'] = 0x44,
              ['bit'] = 5,
              ['locationId'] = 1230700
@@ -2765,7 +2765,7 @@ function nearSilo()
         local yPos = mainmemory.readfloat(silos + 0x08, true);
         local zPos = mainmemory.readfloat(silos + 0x0C, true);
 
-        --Move the Silo in WitchyWorld.
+        --Move the Silo in Witchyworld.
         if (xPos == 0 and yPos == -163 and zPos == -1257)
             and last_map == 0xD6
         then

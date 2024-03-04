@@ -34,7 +34,7 @@ MTTT = "Mayahem Temple - Targitzan's Temple"
 MTJSG = "Mayahem Temple - Jade Snake Grove"
 
 GM = "Glitter Gultch Mine"
-WW = "Witchy's World"
+WW = "Witchyworld"
 JR = "Jolly Roger's Lagoon"
 TL = "Terrydactyland"
 GI = "Grunty's Industries"
