@@ -67,8 +67,8 @@ local WatchSilo = false; -- Silo found on Map, Need to Monitor Distance
 local AMMMovesCleared = false -- If close to Silo
 local FinishedSilo = false -- Handles if learned a move at Silo
 local SiloCounter = 0 -- waits until Silos are loaded if any
-local SiloObj = nil -- Stored object of closest silo
 
+local BathPads = false
 
 function isPointer(value)
     return type(value) == "number" and value >= RDRAMBase and value < RDRAMBase + RDRAMSize;
@@ -2816,7 +2816,6 @@ function nearSilo()
             set_AGI_MOVES_checks()
             AMMMovesCleared = false
             FinishedSilo = false;
-            SiloObj = nil;
         end
     end
 end
@@ -2855,6 +2854,36 @@ function MoveWitchyPads()
             break
         end
     end
+end
+
+function MoveBathPads()
+    local kpad = checkModel("Kazooie Split Pad");
+    local bpad = checkModel("Banjo Split Pad");
+    if kpad == nil or bpad == nil
+    then
+        return
+    end
+    local kxPos = mainmemory.readfloat(kpad + 0x04, true);
+    local kyPos = mainmemory.readfloat(kpad + 0x08, true);
+    local kzPos = mainmemory.readfloat(kpad + 0x0C, true);
+    local kzRot = mainmemory.readfloat(kpad + 0x4C, true);
+    local kyRot = mainmemory.readfloat(kpad + 0x48, true);
+
+    local bxPos = mainmemory.readfloat(bpad + 0x04, true);
+    local byPos = mainmemory.readfloat(bpad + 0x08, true);
+    local bzPos = mainmemory.readfloat(bpad + 0x0C, true);
+    local bzRot = mainmemory.readfloat(bpad + 0x4C, true);
+    local byRot = mainmemory.readfloat(bpad + 0x48, true);
+
+    mainmemory.writefloat(kpad + 0x4C, 0, true);
+    mainmemory.writefloat(kpad + 0x0C, kzPos + 450, true);
+    mainmemory.writefloat(kpad + 0x08, byPos - 75, true);
+
+    mainmemory.writefloat(bpad + 0x4C, 0, true);
+    mainmemory.writefloat(bpad + 0x0C, bzPos + 450, true);
+    mainmemory.writefloat(bpad + 0x08, byPos - 75, true);
+
+    BathPads = true
 end
 
 function locationControl()
@@ -2913,6 +2942,10 @@ function locationControl()
                         NeedSiloState = true
                     end
                 end
+            end
+            if last_map == 0xF4 and BathPads == false
+            then
+                MoveBathPads()
             end
             if (mapaddr == 335 or mapaddr == 337) and checkTotals == false -- Wooded Hollow / JiggyTemple
             then
