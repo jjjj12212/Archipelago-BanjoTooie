@@ -2,7 +2,7 @@
 Banjo Tooie for Archipelago 
 
 # Current implementation
-- Death Link **(Still ongoing progress)**
+- Death Link **(Still ongoing progress)** **(Disabled for the time being)**
 - Jiggies are scattered throughout Archipelago games
 - Empty Honeycombs are scattered throughout Archipelago games (YAML Option) 
 - Pause Menu -> Totals acts like a in-game Tracker for check locations
