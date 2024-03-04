@@ -891,5 +891,13 @@ class BanjoTooieRules:
 
         for item in self.jinjo_forbid:
             forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
+            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)
+            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH3, self.player), item, self.player)
+            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH4, self.player), item, self.player)
+            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH5, self.player), item, self.player)
+            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH6, self.player), item, self.player)
+            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH7, self.player), item, self.player)
+            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH8, self.player), item, self.player)
+            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
 
         self.world.multiworld.completion_condition[self.player] = lambda state: state.has("Kick Around", self.player)
