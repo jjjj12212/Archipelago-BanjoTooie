@@ -168,7 +168,8 @@ class BanjoTooieRules:
             locationName.JIGGYMT3: lambda state: self.check_humba_magic(state, itemName.HUMBAMT) and
                                                  self.check_mumbo_magic(state, itemName.MUMBOMT),
             locationName.JIGGYMT4: lambda state: state.has(itemName.EGGAIM, self.player) or
-                                                 self.MT_flight_pad(state),
+                                                 (self.MT_flight_pad(state) and 
+                                                  state.has(itemName.AIREAIM, self.player)),
             locationName.JIGGYMT5: lambda state: state.has(itemName.EGGAIM,  self.player) and
                                                  state.has(itemName.GGRAB, self.player) or
                                                  self.MT_flight_pad(state),
