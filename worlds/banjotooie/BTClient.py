@@ -149,8 +149,9 @@ class BanjoTooieContext(CommonContext):
             item = args["item"]
             # found in this world
             if self.slot_concerns_self(args["receiving"]):
-                relevant = True      
-                getitem = True
+                relevant = True 
+                if args.get("type", None) != "Hint":    
+                    getitem = True
             # goes in this world
             elif self.slot_concerns_self(item.player):
                 relevant = True
