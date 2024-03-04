@@ -1,8 +1,8 @@
-# Archipelago Banjo-Tooie (US-Only) | v0.5-beta
+# Archipelago Banjo-Tooie (US-Only) | v0.5.1-beta
 Banjo Tooie for Archipelago 
 
 # Current implementation
-- Death Link **(Still ongoing progress)**
+- Death Link **(Still ongoing progress)** **(Disabled for the time being)**
 - Jiggies are scattered throughout Archipelago games
 - Empty Honeycombs are scattered throughout Archipelago games (YAML Option) 
 - Pause Menu -> Totals acts like a in-game Tracker for check locations
@@ -43,5 +43,6 @@ Huge thank you for the following individuals / teams. Without them, this project
  - <a href='https://github.com/Isotarge/ScriptHawk'>ScriptHawk</a>
  - <a href="https://github.com/kaptainkohl/BTRandoLUA">Kaptainkohl - Banjo Tooie Randomizer</a>
  - @Icebound777
+ - g0goTBC - help with logic fixes
  - **Of course, the people who brought Banjo Kazooie in our lives**
     - Rareware

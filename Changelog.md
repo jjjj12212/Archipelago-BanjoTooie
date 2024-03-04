@@ -1,3 +1,20 @@
+# 0.5.1-beta
+- Fixed logic errors:
+  - Pig Pool now requires access to HFP and CCL
+  - JRL Doubloons hard require Split Up
+  - Power Hut Basement now requires Split Up or Fire (Fire Eggs, Dragon Kazooie)
+  - Note requirements for silos
+  - Weldar now requires Bill Drill and Grenade Eggs
+  - Stomping Plains: Both Jiggies added to TDL region, require Ice Eggs/Springy Step Boots
+  - More places where explosives are needed allow Clockwork Eggs
+  - Snowball is now needed to press Ice Train Station switch
+  - Hailfire Peaks Kickball Stadium walls can be broken with Mumbo's wand
+  - Smuggler's Cavern now requires explosives
+  - Forbid items on Jinjo Families that are required to collect Jinjos
+- Fast swimming is now fixed
+- Received moves are now usable when obtained
+- Updated item and location names to make reading spoiler logs easier
+
 # 0.5-beta
 - Implemented Cheato Pages
 - Implemented Glowbos

@@ -78,6 +78,8 @@ class BanjoTooieWorld(World):
             item_classification = ItemClassification.progression
         if banjoItem.type == 'useful':
             item_classification = ItemClassification.useful
+        if banjoItem.type == 'filler':
+            item_classification = ItemClassification.filler
 
         if banjoItem.type == "victory":
             victory_item = BanjoTooieItem("Kick Around", ItemClassification.filler, None, self.player)
