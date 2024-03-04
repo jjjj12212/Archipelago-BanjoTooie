@@ -3111,7 +3111,6 @@ function processMagicItem(loc_ID)
 end
 
 function processAGIItem(item_list)
-    print(item_list)
     for ap_id, memlocation in pairs(item_list) -- Items unrelated to AGI_MAP like Consumables
     do
         if(memlocation == 1230512 and multiHoneycomb == true)  -- Honeycomb Item

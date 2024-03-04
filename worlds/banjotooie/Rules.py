@@ -20,6 +20,7 @@ class BanjoTooieRules:
     mumbo_magic = []
     humba_magic = []
     solo_moves = []
+    jinjo_forbid = []
     # banjo_moves = []
     # kazooie_moves = []
     jiggy_rules = {}
@@ -64,6 +65,34 @@ class BanjoTooieRules:
             itemName.HATCH,
             itemName.LSPRING,
             itemName.GLIDE
+        ]
+
+        self.jinjo_forbid = [
+            itemName.MUMBOMT,
+            itemName.BDRILL,
+            itemName.GGRAB,
+            itemName.BBLASTER,
+            itemName.FEGGS,
+            itemName.TTORP,
+            itemName.IEGGS,
+            itemName.AUQAIM,
+            itemName.HUMBAGM,
+            itemName.EGGAIM,
+            itemName.GEGGS,
+            itemName.HUMBAWW,
+            itemName.CEGGS,
+            itemName.MUMBOTD,
+            itemName.HUMBATD,
+            itemName.SPLITUP,
+            itemName.HUMBAGI,
+            itemName.AIREAIM,
+            itemName.HUMBAHP,
+            itemName.SHPACK,
+            itemName.SPRINGB,
+            itemName.CLAWBTS,
+            itemName.GLIDE,
+            itemName.LSPRING,
+            itemName.MUMBOGM
         ]
 
         # self.can_transform = {
@@ -859,5 +888,8 @@ class BanjoTooieRules:
         for location, rules in self.silo_rules.items():
             silo = self.world.multiworld.get_location(location, self.player)
             set_rule(silo, rules)
+
+        for item in self.jinjo_forbid:
+            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
 
         self.world.multiworld.completion_condition[self.player] = lambda state: state.has("Kick Around", self.player)
