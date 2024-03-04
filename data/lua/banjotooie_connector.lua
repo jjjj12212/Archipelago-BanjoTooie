@@ -2833,8 +2833,9 @@ function MoveWitchyPads()
         if (xPos == -125 and yPos == -163 and zPos == -1580)
             and last_map == 0xD6
         then
-            mainmemory.writefloat(pad + 0x0C, zPos - 600, true);
-            mainmemory.writefloat(pad + 0x08, yPos - 50, true);
+            mainmemory.writefloat(pad + 0x0C, zPos - 300, true);
+--          mainmemory.writefloat(pad + 0x08, yPos - 10, true);
+            mainmemory.writefloat(pad + 0x04, xPos + 850, true);
             break
         end
     end
@@ -2848,8 +2849,9 @@ function MoveWitchyPads()
         if (xPos == 125 and zPos == -1580)
             and last_map == 0xD6
         then
-            mainmemory.writefloat(pad + 0x0C, zPos - 600, true);
-            mainmemory.writefloat(pad + 0x08, yPos - 50, true);
+            mainmemory.writefloat(pad + 0x0C, zPos - 300, true);
+--            mainmemory.writefloat(pad + 0x08, yPos - 10, true);
+            mainmemory.writefloat(pad + 0x04, xPos + 850, true);
             break
         end
     end
