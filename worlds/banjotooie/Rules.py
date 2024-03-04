@@ -255,8 +255,7 @@ class BanjoTooieRules:
             locationName.JIGGYTD1: lambda state: (state.has(itemName.GEGGS, self.player) or
                                                   state.has(itemName.BDRILL, self.player)) and
                                                  self.can_beat_terry(state),
-            locationName.JIGGYTD2: lambda state: self.region_rules[regionName.CC] and
-                                                 state.has(itemName.TTORP, self.player),
+            locationName.JIGGYTD2: lambda state: state.has(itemName.TTORP, self.player),
             locationName.JIGGYTD3: lambda state: state.has(itemName.GEGGS, self.player) and
                                                  state.has(itemName.EGGAIM, self.player) and
                                                  state.has(itemName.GGRAB, self.player) and
@@ -268,7 +267,9 @@ class BanjoTooieRules:
             locationName.JIGGYTD4: lambda state: self.can_beat_terry(state),
             locationName.JIGGYTD5: lambda state: self.oogle_boogles_open(state) and
                                                  self.has_fire(state) and
-                                                 self.smuggle_food(state),
+                                                 self.smuggle_food(state) and
+                                                 state.has(itemName.BDRILL, self.player) and
+                                                 state.has(itemName.GGRAB, self.player),
             locationName.JIGGYTD6: lambda state: state.has(itemName.BBLASTER, self.player),
             locationName.JIGGYTD7: lambda state: self.can_beat_terry(state) and
                                                  self.check_solo_moves(state, itemName.HATCH) and
@@ -747,9 +748,9 @@ class BanjoTooieRules:
         count:int = 0
         if self.jiggy_unlock(state, 1):
             count += 100
-            if state.has(itemName.GGRAB, self.player):
+            if state.has(itemName.GGRAB, self.player) or self.dilberta_free(state):
                 count += 40
-                if self.jiggy_unlock(state, 4):
+                if self.jiggy_unlock(state, 4) or self.dilberta_free(state):
                     count += 100
                 if state.has(itemName.FEGGS, self.player):
                     count += 20

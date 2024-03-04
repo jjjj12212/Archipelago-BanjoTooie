@@ -1,5 +1,10 @@
 # 0.6-beta
-- Locatioin name corrections
+- Location name corrections
+- More Logic Fixes:
+  - Bovina's Jiggy now requires Airborne Egg Aiming
+  - Dippy's Pool is now in the CCL region
+  - Note Logic now correctly expects either method of reaching Plateau
+  - Oogle Boogle Jiggy now requires Bill Drill and Grip Grab
 
 # 0.5.1-beta
 - Fixed logic errors:
