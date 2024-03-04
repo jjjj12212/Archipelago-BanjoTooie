@@ -3260,13 +3260,13 @@ function locationControl()
         else
             if (last_map ~= mapaddr) and APMovesEnabled == true
             then
-                for k,maps in pairs(SILO_MAP_CHECK) -- avoid detected abilities in Areas you don't have
+                for map,moves in pairs(SILO_MAP_CHECK)
                 do
-                    if mapaddr == maps
+                    if mapaddr == map
                     then
                         if DEBUG == true
                         then
-                             print("Checking Silos")
+                            print("Checking Silos")
                         end
                         SiloCounter = 0;
                         NeedSiloState = true
