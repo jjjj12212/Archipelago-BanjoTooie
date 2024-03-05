@@ -65,7 +65,7 @@ class BanjoTooieWorld(World):
     location_name_to_id = {name: data.btid for name, data in all_location_table.items()}
 
     item_name_groups = {
-        "Jiggy": all_group_table["jiggy"],
+        # "Jiggy": all_group_table["jiggy"],
         "Jinjo": all_group_table["jinjo"],
         "Moves": all_group_table["moves"],
         "Magic": all_group_table["magic"]

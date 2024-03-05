@@ -441,7 +441,9 @@ function nearWHJinjo()
     end
 end
 
-local receive_map = {} -- [ap_id] = item_id
+local receive_map = { -- [ap_id] = item_id
+    [0] = 0
+} 
 
 -- Moves that needs to be checked Per Map. some silos NEEDS other moves as well to get to.
 local SILO_MAP_CHECK = {
@@ -3347,7 +3349,7 @@ function processMagicItem(loc_ID)
         if table['locationId'] == loc_ID
         then
             setFlag(table['addr'], table['bit'])
-            archipelago_msg_box("Received" .. location);
+            archipelago_msg_box("Received " .. location);
         end
     end
 
@@ -3649,7 +3651,8 @@ function gameSaving()
         return
     else
         local save_game = mainmemory.read_u8(0x05F450);
-        if save_game == 1
+        local save_game2 = mainmemory.read_u8(0x044A81);
+        if save_game == 1 or save_game2 == 1
         then
             isSaving = true
             if DEBUG == true
