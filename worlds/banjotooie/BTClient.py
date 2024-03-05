@@ -137,9 +137,9 @@ class BanjoTooieContext(CommonContext):
             msg = args['text']
             if ': !' not in msg:
                 self._set_message(msg, SYSTEM_MESSAGE_ID)
-        # elif cmd == "ReceivedItems":
-        #         for item in args["items"]:
-        #             self.items_received.append(item)
+        elif cmd == "ReceivedItems":
+                for item in args["items"]:
+                    self.items_received.append(item)
 
     def on_print_json(self, args: dict):
         if self.ui:
@@ -166,8 +166,8 @@ class BanjoTooieContext(CommonContext):
                 item = args["item"]
                 if getitem:
                     self.items_received.append(item)
-                msg = self.raw_text_parser(copy.deepcopy(args["data"]))
-                self._set_message(msg, item.item)
+                # msg = self.raw_text_parser(copy.deepcopy(args["data"]))
+                # self._set_message(msg, item.item)
 
 
 def get_payload(ctx: BanjoTooieContext):

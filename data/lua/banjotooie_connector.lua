@@ -441,216 +441,9 @@ function nearWHJinjo()
     end
 end
 
+local receive_map = {} -- [ap_id] = item_id
+
 -- Moves that needs to be checked Per Map. some silos NEEDS other moves as well to get to.
--- local SILO_MAP_CHECK = {
---     [0x155] = { -- Cliff Top
---         ["Ice Eggs"] = {
---             ["addr"] = 0x1E,
---             ["bit"] = 4
---         },
---         ["Exceptions"] = {
-
---         }
---     },
---     [0x152] = { -- Platau
---         ["Fire Eggs"] = {
---             ["addr"] = 0x1E,
---             ["bit"] = 1
---         },
---         ["Exceptions"] = {
---             "EGG AIM"
---         }
---     },
---     [0x154] = { -- Pine Grove
---         ["Gernade Eggs"] = {
---             ["addr"] = 0x1E,
---             ["bit"] = 2
---         },
---         ["Exceptions"] = {
-            
---         }
---     },
---     [0x15A] = { -- Wasteland
---         ["Clockwork Kazooie Eggs"] = {
---             ["addr"] = 0x1E,
---             ["bit"] = 3
---         },
---         ["Exceptions"] = {
-            
---         }
---     },
---     [0xB8] = { -- MT Main
---         ["Breegull Blaster"] = {
---             ["addr"] = 0x1B,
---             ["bit"] = 2
---         },
---         ["Egg Aim"] = {
---             ["addr"] = 0x1B,
---             ["bit"] = 3
---         },
---         ["Exceptions"] = {
-            
---         }
---     },
---     [0xC4] = { -- MT Grove
---         ["Grip Grab"] = {
---             ["addr"] = 0x1B,
---             ["bit"] = 1
---         },
---         ["Exceptions"] = {
-            
---         }
---     },
---     [0xC7] = { -- GM Main
---         ["Bill Drill"] = {
---             ["addr"] = 0x1B,
---             ["bit"] = 6
---         },
---         ["Exceptions"] = {
-            
---         }
---     },
---     [0x163] = { -- GM Storage
---         ["Beak Bayonet"] = {
---             ["addr"] = 0x1B,
---             ["bit"] = 7
---         },
---         ["Exceptions"] = {
-            
---         }
---     },
---     [0xD6] = { -- WW Main
---         ["Split Up"] = {
---             ["addr"] = 0x1C,
---             ["bit"] = 1
---         },
---         ["Airborne Egg Aiming"] = {
---             ["addr"] = 0x1C,
---             ["bit"] = 0
---         },
---         ["Exceptions"] = {
-            
---         }
---     },
---     [0xE1] = { -- WW Castle
---         ["Pack Whack"] = {
---             ["addr"] = 0x1D,
---             ["bit"] = 6
---         },
---         ["Exceptions"] = {
-            
---         }
---     },
---     [0x1A7] = { -- JRL Main
---         ["Wing Whack"] = {
---             ["addr"] = 0x1C,
---             ["bit"] = 2
---         },
---         ["Exceptions"] = {
-            
---         }
---     },
---     [0xF6] = { -- JRL Eel Lair
---         ["Talon Torpedo"] = {
---             ["addr"] = 0x1C,
---             ["bit"] = 3
---         },
---         ["Exceptions"] = {
-            
---         }
---     },
---     [0xED] = { -- JRL Jolly
---         ["Sub-Aqua Egg Aiming"] = {
---             ["addr"] = 0x1C,
---             ["bit"] = 4
---         },
---         ["Exceptions"] = {
-            
---         }
---     },
---     [0x122] = { --TDL Main
---         ["Springy Step Shoes"] = {
---             ["addr"] = 0x1D,
---             ["bit"] = 3
---         },
---         ["Exceptions"] = {
-            
---         }
---     },
---     [0x119] = { -- Unga Bunga Cave
---         ["Hatch"] = {
---             ["addr"] = 0x1D,
---             ["bit"] = 5
---         },
---         ["Exceptions"] = {
-  
---         }
---     },
---     [0x117] = { -- TDL River
---         ["Taxi Pack"] = {
---             ["addr"] = 0x1D,
---             ["bit"] = 4
---         },
---         ["Exceptions"] = {
-  
---         }
---     },
---     [0x101] = { -- GI Floor 1
---         ["Claw Clamber Boots"] = {
---             ["addr"] = 0x1D,
---             ["bit"] = 2
---         },
---         ["Exceptions"] = {
-  
---         }
---     },
---     [0x106] = { -- Floor 2
---         ["Leg Spring"] = {
---             ["addr"] = 0x1D,
---             ["bit"] = 1
---         },
---         ["Exceptions"] = {
-  
---         }
---     },
---     [0x111] = { -- GI Waste Disposal
---         ["Snooze Pack"] = {
---             ["addr"] = 0x1D,
---             ["bit"] = 0
---         },
---         ["Exceptions"] = {
-  
---         }
---     },
---     [0x127] = { -- HFP Fire
---         ["Shack Pack"] = {
---             ["addr"] = 0x1C,
---             ["bit"] = 6
---         },
---         ["Exceptions"] = {
-  
---         }
---     },
---     [0x128] = { -- HFP Ice
---         ["Glide"] = {
---             ["addr"] = 0x1C,
---             ["bit"] = 7
---         },
---         ["Exceptions"] = {
-  
---         }
---     },
---     [0x13A] = { -- CC Cave
---         ["Sack Pack"] = {
---             ["addr"] = 0x1D,
---             ["bit"] = 7
---         },
---         ["Exceptions"] = {
-  
---         }
---     }
--- }
-
 local SILO_MAP_CHECK = {
     [0x155] = { -- Cliff Top
         "Ice Eggs",
@@ -2965,18 +2758,6 @@ local clear_AMM_MOVES_checks = function() --Only run when transitioning Maps unt
     end
 end
 
-local set_AGI_MOVES_checks = function() -- SET AGI Moves into RAM AFTER BT/Silo Model is loaded
-    for k,v in pairs(MASTER_MAP['MOVES'])
-    do
-        if AGI["MOVES"][k] == true
-        then
-            setFlag(v['addr'], v['bit']);
-        else
-            clearFlag(v['addr'], v['bit']);
-        end
-    end
-end
-
 function checkConsumables(consumable_type, location_checks)
 	for location_name, value in pairs(AGI[consumable_type])
 	do
@@ -3055,12 +2836,16 @@ local clear_AMM_MOVES_checks = function() --Only run when transitioning Maps unt
     end
 end
 
-local set_AGI_MOVES_checks = function() -- SET AGI Moves into RAM AFTER BT/Silo Model is loaded
+local set_AGI_MOVES_checks = function(msg) -- SET AGI Moves into RAM AFTER BT/Silo Model is loaded
     for k,v in pairs(MASTER_MAP['MOVES'])
     do
         if AGI["MOVES"][k] == true
         then
             setFlag(v['addr'], v['bit']);
+            if msg == true
+            then
+                archipelago_msg_box("Received " .. k);
+            end
         else
             clearFlag(v['addr'], v['bit']);
         end
@@ -3152,7 +2937,7 @@ function getSiloPlayerModel()
             print("No silo on Map")
             print("AP Abilities enabled")
         end
-        set_AGI_MOVES_checks() --No Silo on this map
+        set_AGI_MOVES_checks(false) --No Silo on this map
         NeedSiloState = false
         WatchSilo = false
         SiloCounter = 0
@@ -3162,7 +2947,7 @@ function getSiloPlayerModel()
     then
         print("Silo Found")
     end
-    set_AGI_MOVES_checks()
+    set_AGI_MOVES_checks(false)
     NeedSiloState = false
     WatchSilo = true
 end
@@ -3233,7 +3018,7 @@ function nearSilo()
             then
                 print("Reseting Movelist");
             end
-            set_AGI_MOVES_checks()
+            set_AGI_MOVES_checks(false)
             AMMMovesCleared = false
             FinishedSilo = false;
         end
@@ -3548,10 +3333,12 @@ function archipelago_msg_box(msg)
     while i<100 do
         bgcolor = "#FC6600"
         brcolor = "#000000"
-        gui.text(400, 700, msg, bgcolor)
+
+        gui.drawText(400, 1500, msg, bgcolor, bgcolor, 58)
         emu.frameadvance()
         i = i + 1
     end
+    gui.clearGraphics()
 end
 
 function processMagicItem(loc_ID)
@@ -3560,6 +3347,7 @@ function processMagicItem(loc_ID)
         if table['locationId'] == loc_ID
         then
             setFlag(table['addr'], table['bit'])
+            archipelago_msg_box("Received" .. location);
         end
     end
 
@@ -3568,42 +3356,46 @@ end
 function processAGIItem(item_list)
     for ap_id, memlocation in pairs(item_list) -- Items unrelated to AGI_MAP like Consumables
     do
-        if(memlocation == 1230512 and multiHoneycomb == true)  -- Honeycomb Item
+        if receive_map[ap_id] == nil
         then
-            if DEBUG == true
+            if(memlocation == 1230512 and multiHoneycomb == true)  -- Honeycomb Item
             then
-                print("HC Obtained")
-            end
-            setConsumable('HONEYCOMB', getConsumable('HONEYCOMB') + 1)
-        elseif(memlocation == 1230513 and multiPages == true) -- Cheato Item
-        then
-            if DEBUG == true
-            then
-                print("Cheato Page Obtained")
-            end
-            setConsumable('CHEATO', getConsumable('CHEATO') + 1)
-        elseif(memlocation == 1230515)
-        then
-            if DEBUG == true
-            then
-                print("Jiggy Obtained")
-            end
-            for location, values in pairs(MASTER_MAP["JIGGY"])
-            do
-                if AGI['JIGGY'][location] == false
+                if DEBUG == true
                 then
-                    AGI['JIGGY'][location] = true
-                    savingAGI();
-                    break
+                    print("HC Obtained")
                 end
+                setConsumable('HONEYCOMB', getConsumable('HONEYCOMB') + 1)
+                archipelago_msg_box("Received Honeycomb");
+            elseif(memlocation == 1230513 and multiPages == true) -- Cheato Item
+            then
+                if DEBUG == true
+                then
+                    print("Cheato Page Obtained")
+                end
+                setConsumable('CHEATO', getConsumable('CHEATO') + 1)
+                archipelago_msg_box("Received Cheato Page");
+            elseif(memlocation == 1230515)
+            then
+                if DEBUG == true
+                then
+                    print("Jiggy Obtained")
+                end
+                for location, values in pairs(MASTER_MAP["JIGGY"])
+                do
+                    if AGI['JIGGY'][location] == false
+                    then
+                        AGI['JIGGY'][location] = true
+                        archipelago_msg_box("Received Jiggy");
+                        break
+                    end
+                end
+            elseif((1230855 <= memlocation and memlocation <= 1230863) or (1230174 <= memlocation and memlocation <= 1230182))
+            then
+                processMagicItem(memlocation)
             end
-        elseif((1230855 <= memlocation and memlocation <= 1230863) or (1230174 <= memlocation and memlocation <= 1230182))
-        then
-            processMagicItem(memlocation)
         end
     end
 
-    
     for item_type, table in pairs(MASTER_MAP)
     do
         if item_type ~= 'MAGIC'
@@ -3612,23 +3404,27 @@ function processAGIItem(item_list)
             do
                 for ap_id, memlocation in pairs(item_list)
                 do
-                    if values['locationId'] == memlocation
+                    if receive_map[ap_id] == nil
                     then
-                        if DEBUG == true
+                        if values['locationId'] == memlocation
                         then
-                            print("ITEM FOUND FROM AP:" .. location);
-                        end
-                        AGI[item_type][location] = true;
-                        savingAGI();
-                        if(1230753 <= memlocation and memlocation <= 1230777)
-                        then
-                            set_AGI_MOVES_checks()
+                            if DEBUG == true
+                            then
+                                print("ITEM FOUND FROM AP:" .. location);
+                            end
+                            AGI[item_type][location] = true;
+                            if(1230753 <= memlocation and memlocation <= 1230777)
+                            then
+                                set_AGI_MOVES_checks(true)
+                            end
                         end
                     end
                 end
             end
         end
     end
+    receive_map = item_list
+    savingAGI();
 end
 
 function process_block(block)
@@ -3827,7 +3623,8 @@ end
 
 function savingAGI()
     local f = io.open("BT" .. player_name .. "_" .. seed .. ".AGI", "w") --generate #BTplayer_seed.AGI
-    f:write(json.encode(AGI))
+    f:write(json.encode(AGI) .. "\n");
+    f:write(json.encode(receive_map))
     f:close()
     if DEBUG == true
     then
@@ -3965,7 +3762,8 @@ function process_slot(block)
             f:write(json.encode(AGI))
             f:close()
         else
-            AGI = json.decode(f:read())
+            AGI = json.decode(f:read("l"))
+            receive_map = json.decode(f:read("l"))
             f:close()
         end
     else
