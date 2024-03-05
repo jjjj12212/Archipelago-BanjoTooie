@@ -200,7 +200,8 @@ class BanjoTooieRules:
             locationName.JIGGYWW2: lambda state: self.check_humba_magic(state, itemName.HUMBAWW) and
                                                  self.check_mumbo_magic(state, itemName.MUMBOWW),
             locationName.JIGGYWW3: lambda state: state.has(itemName.AIREAIM, self.player) and
-                                                 self.can_kill_fruity(state),
+                                                 state.has(itemName.EGGAIM, self.player) and
+                                                 state.has(itemName.GEGGS, self.player),
             locationName.JIGGYWW4: lambda state: self.check_humba_magic(state, itemName.HUMBAGM) and
                                                  self.check_mumbo_magic(state, itemName.MUMBOWW) and
                                                  self.saucer_door_open(state),
@@ -239,7 +240,8 @@ class BanjoTooieRules:
                                                  self.can_reach_atlantis(state),
             locationName.JIGGYJR7: lambda state: (state.has(itemName.AUQAIM, self.player) and
                                                  state.has(itemName.GEGGS, self.player) and
-                                                 self.can_reach_atlantis(state)) or
+                                                 self.can_reach_atlantis(state) and
+                                                 self.check_mumbo_magic(state, itemName.MUMBOJR)) or
                                                  (self.check_humba_magic(state, itemName.HUMBAJR) and
                                                   self.can_reach_atlantis(state)),
             locationName.JIGGYJR8: lambda state: state.has(itemName.TTORP, self.player) and
@@ -257,7 +259,6 @@ class BanjoTooieRules:
                                                  self.can_beat_terry(state),
             locationName.JIGGYTD2: lambda state: state.has(itemName.TTORP, self.player),
             locationName.JIGGYTD3: lambda state: state.has(itemName.GEGGS, self.player) and
-                                                 state.has(itemName.EGGAIM, self.player) and
                                                  state.has(itemName.GGRAB, self.player) and
                                                  self.can_beat_king_coal(state) and
                                                  self.check_solo_moves(state, itemName.TAXPACK) and
@@ -315,7 +316,6 @@ class BanjoTooieRules:
                                                  self.check_solo_moves(state, itemName.TAXPACK),
             locationName.JIGGYHP4: lambda state: self.check_solo_moves(state, itemName.SHPACK),
             locationName.JIGGYHP5: lambda state: self.can_beat_king_coal(state) and
-                                                 state.has(itemName.EGGAIM, self.player) and
                                                  state.has(itemName.GEGGS, self.player) and
                                                  self.check_humba_magic(state, itemName.HUMBAHP),
             locationName.JIGGYHP6: lambda state: self.check_humba_magic(state, itemName.HUMBAHP) and
@@ -694,7 +694,7 @@ class BanjoTooieRules:
             locationName.SPLITUP: lambda state: self.has_enough_notes(state, 160),
             locationName.PACKWH: lambda state: state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 120),
 
-            locationName.AUQAIM: lambda state: state.has(itemName.GEGGS, self.player) or state.has(itemName.BDRILL, self.player) and
+            locationName.AUQAIM: lambda state: state.has(itemName.GEGGS, self.player) and
                                                self.has_enough_notes(state, 275),
             locationName.TTORP: lambda state:  self.can_reach_atlantis(state) and state.has(itemName.GGRAB, self.player) and
                                                self.has_enough_notes(state, 290),
@@ -814,6 +814,7 @@ class BanjoTooieRules:
     def can_beat_king_coal(self, state) -> bool:
         return self.check_mumbo_magic(state, itemName.MUMBOGM)
 
+    #deprecated but might be useful for ticket randomization
     def can_kill_fruity(self, state: CollectionState) -> bool:
         return state.has(itemName.GEGGS, self.player) or \
                state.has(itemName.CEGGS, self.player) or \

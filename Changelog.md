@@ -5,6 +5,10 @@
   - Dippy's Pool is now in the CCL region
   - Note Logic now correctly expects either method of reaching Plateau
   - Oogle Boogle Jiggy now requires Bill Drill and Grip Grab
+  - Lord Woo Fak Fak now expects Mumbo if fighting him without Sub
+  - Removed Egg Aim from requirements for Cave of Horrors
+  - Added Egg Aim and Grenade Eggs to requirements for Mr. Patch
+  - 
 
 # 0.5.1-beta
 - Fixed logic errors:
