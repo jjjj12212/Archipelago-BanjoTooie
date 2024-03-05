@@ -10,6 +10,8 @@
   - Added Egg Aim and Grenade Eggs to requirements for Mr. Patch
   - Witchyworld Train Station now allows Leg Spring
   - Grunty Industries 3rd Floor Honeycomb now allows Solo Kazooie
+  - Split Up is now required for The Inferno Jiggy
+- Implemented generic Jiggy item
 
 # 0.5.1-beta
 - Fixed logic errors:

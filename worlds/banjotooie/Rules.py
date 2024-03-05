@@ -212,7 +212,8 @@ class BanjoTooieRules:
                                                  self.check_solo_moves(state, itemName.TAXPACK),
             locationName.JIGGYWW8: lambda state: self.check_mumbo_magic(state, itemName.MUMBOWW) and
                                                  self.check_humba_magic(state, itemName.HUMBAWW),
-            locationName.JIGGYWW9: lambda state: self.check_humba_magic(state, itemName.HUMBAWW),
+            locationName.JIGGYWW9: lambda state: self.check_humba_magic(state, itemName.HUMBAWW) and
+                                                 state.has(itemName.SPLITUP, self.player),
             locationName.JIGGYWW10: lambda state: state.has(itemName.BDRILL, self.player) and
                                                   state.has(itemName.GEGGS, self.player),
 
