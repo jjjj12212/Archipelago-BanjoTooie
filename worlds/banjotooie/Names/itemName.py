@@ -11,6 +11,7 @@ PJINJO = "Purple Jinjo"
 BKJINJO = "Black Jinjo"
 DOUBLOON = "Doubloon"
 GLOWBO = "Glowbo"
+JIGGY = "Jiggy"
 
 #Jiggies
 JIGGYMT1  = "Jiggy 1"

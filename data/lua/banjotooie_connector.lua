@@ -64,9 +64,9 @@ local BMMBypass = false;
 local APMovesEnabled = false; -- Enable AP Moves Logics
 local NeedSiloState = false; --  If True, you are Transistioning maps
 local WatchSilo = false; -- Silo found on Map, Need to Monitor Distance
-local AMMMovesCleared = false -- If close to Silo
-local FinishedSilo = false -- Handles if learned a move at Silo
-local SiloCounter = 0 -- waits until Silos are loaded if any
+local AMMMovesCleared = false; -- If close to Silo
+local FinishedSilo = false; -- Handles if learned a move at Silo
+local SiloCounter = 0; -- waits until Silos are loaded if any
 
 local BathPads = false
 
@@ -661,7 +661,7 @@ local SILO_MAP_CHECK = {
     [0x152] = { -- Platau
         "Fire Eggs",
         ["Exceptions"] = {
-            "EGG AIM"
+            "Egg Aim"
         }
     },
     [0x154] = { -- Pine Grove
@@ -803,451 +803,541 @@ local BKM = {};
 local MASTER_MAP = {
     ['JIGGY'] = {
         ['Jinjo Village: White Jinjo Family Jiggy'] = {
+            ['index'] = 1,
             ['addr'] = 0x4F,
             ['bit'] = 0,
             ['locationId'] = 1230676
         },
         ['Jinjo Village: Orange Jinjo Family Jiggy'] = {
+            ['index'] = 2,
             ['addr'] = 0x4F,
             ['bit'] = 1,
             ['locationId'] = 1230677
         },
         ['Jinjo Village: Yellow Jinjo Family Jiggy'] = {
+            ['index'] = 3,
             ['addr'] = 0x4F,
             ['bit'] = 2,
             ['locationId'] = 1230678
         },
         ['Jinjo Village: Brown Jinjo Family Jiggy'] = {
+            ['index'] = 4,
             ['addr'] = 0x4F,
             ['bit'] = 3,
             ['locationId'] = 1230679
         },
         ['Jinjo Village: Green Jinjo Family Jiggy'] = {
+            ['index'] = 5,
             ['addr'] = 0x4F,
             ['bit'] = 4,
             ['locationId'] = 1230680
         },
         ['Jinjo Village: Red Jinjo Family Jiggy'] = {
+            ['index'] = 6,
             ['addr'] = 0x4F,
             ['bit'] = 5,
             ['locationId'] = 1230681
         },
         ['Jinjo Village: Blue Jinjo Family Jiggy'] = {
+            ['index'] = 7,
             ['addr'] = 0x4F,
             ['bit'] = 6,
             ['locationId'] = 1230682
         },
         ['Jinjo Village: Purple Jinjo Family Jiggy'] = {
+            ['index'] = 8,
             ['addr'] = 0x4F,
             ['bit'] = 7,
             ['locationId'] = 1230683
         },
         ['Jinjo Village: Black Jinjo Family Jiggy'] = {
+            ['index'] = 9,
             ['addr'] = 0x50,
             ['bit'] = 0,
             ['locationId'] = 1230684
         },
         ['Jinjo Village: King Jingaling Jiggy'] = {
+            ['index'] = 10,
             ['addr'] = 0x50,
             ['bit'] = 1,
             ['locationId'] = 1230685
         },
         ['MT: Targitzan Jiggy'] = {
+            ['index'] = 11,
             ['addr'] = 0x45,
             ['bit'] = 0,
             ['locationId'] = 1230596
         },
         ['MT: Slightly Sacred Chamber Jiggy'] = {
+            ['index'] = 12,
             ['addr'] = 0x45,
             ['bit'] = 1,
             ['locationId'] = 1230597
         },
         ['MT: Kickball Jiggy'] = {
+            ['index'] = 13,
             ['addr'] = 0x45,
             ['bit'] = 2,
             ['locationId'] = 1230598
         },
         ['MT: Bovina Jiggy'] = {
+            ['index'] = 14,
             ['addr'] = 0x45,
             ['bit'] = 3,
             ['locationId'] = 1230599
         },
         ['MT: Treasure Chamber Jiggy'] = {
+            ['index'] = 15,
             ['addr'] = 0x45,
             ['bit'] = 4,
             ['locationId'] = 1230600
         },
         ['MT: Golden Goliath Jiggy'] = {
+            ['index'] = 16,
             ['addr'] = 0x45,
             ['bit'] = 5,
             ['locationId'] = 1230601
         },
         ['MT: Prison Compound Quicksand Jiggy'] = {
+            ['index'] = 17,
             ['addr'] = 0x45,
             ['bit'] = 6,
             ['locationId'] = 1230602
         },
         ['MT: Pillars Jiggy'] = {
+            ['index'] = 18,
             ['addr'] = 0x45,
             ['bit'] = 7,
             ['locationId'] = 1230603
         },
         ['MT: Top of Temple Jiggy'] = {
+            ['index'] = 19,
             ['addr'] = 0x46,
             ['bit'] = 0,
             ['locationId'] = 1230604
         },
         ['MT: Ssslumber Jiggy'] = {
+            ['index'] = 20,
             ['addr'] = 0x46,
             ['bit'] = 1,
             ['locationId'] = 1230605
         },
         ['GGM: Old King Coal Jiggy'] = {
+            ['index'] = 21,
             ['addr'] = 0x46,
             ['bit'] = 2,
             ['locationId'] = 1230606
         },
         ['GGM: Canary Mary Jiggy'] = {
+            ['index'] = 22,
             ['addr'] = 0x46,
             ['bit'] = 3,
             ['locationId'] = 1230607
         },
         ['GGM: Generator Cavern Jiggy'] = {
+            ['index'] = 23,
             ['addr'] = 0x46,
             ['bit'] = 4,
             ['locationId'] = 1230608
         },
         ['GGM: Waterfall Cavern Jiggy'] = {
+            ['index'] = 24,
             ['addr'] = 0x46,
             ['bit'] = 5,
             ['locationId'] = 1230609
         },
         ['GGM: Ordinance Storage Jiggy'] = {
+            ['index'] = 25,
             ['addr'] = 0x46,
             ['bit'] = 6,
             ['locationId'] = 1230610
         },
         ['GGM: Dilberta Jiggy'] = {
+            ['index'] = 26,
             ['addr'] = 0x46,
             ['bit'] = 7,
             ['locationId'] = 1230611
         },
         ['GGM: Crushing Shed Jiggy'] = {
+            ['index'] = 27,
             ['addr'] = 0x47,
             ['bit'] = 0,
             ['locationId'] = 1230612
         },
         ['GGM: Waterfall Jiggy'] = {
+            ['index'] = 28,
             ['addr'] = 0x47,
             ['bit'] = 1,
             ['locationId'] = 1230613
         },
         ['GGM: Power Hut Basement Jiggy'] = {
+            ['index'] = 29,
             ['addr'] = 0x47,
             ['bit'] = 2,
             ['locationId'] = 1230614
         },
         ['GGM: Flooded Caves Jiggy'] = {
+            ['index'] = 30,
             ['addr'] = 0x47,
             ['bit'] = 3,
             ['locationId'] = 1230615
         },
         ['WW: Hoop Hurry Jiggy'] = {
+            ['index'] = 31,
             ['addr'] = 0x47,
             ['bit'] = 4,
             ['locationId'] = 1230616
         },
         ['WW: Dodgems Jiggy'] = {
+            ['index'] = 32,
             ['addr'] = 0x47,
             ['bit'] = 5,
             ['locationId'] = 1230617
         },
         ['WW: Mr. Patch Jiggy'] = {
+            ['index'] = 33,
             ['addr'] = 0x47,
             ['bit'] = 6,
             ['locationId'] = 1230618
         },
         ['WW: Saucer of Peril Jiggy'] = {
+            ['index'] = 34,
             ['addr'] = 0x47,
             ['bit'] = 7,
             ['locationId'] = 1230619
         },
         ['WW: Balloon Burst Jiggy'] = {
+            ['index'] = 35,
             ['addr'] = 0x48,
             ['bit'] = 0,
             ['locationId'] = 1230620
         },
         ['WW: Dive of Death Jiggy'] = {
+            ['index'] = 36,
             ['addr'] = 0x48,
             ['bit'] = 1,
             ['locationId'] = 1230621
         },
         ['WW: Mrs. Boggy Jiggy'] = {
+            ['index'] = 37,
             ['addr'] = 0x48,
             ['bit'] = 2,
             ['locationId'] = 1230622
         },
         ['WW: Star Spinner Jiggy'] = {
+            ['index'] = 38,
             ['addr'] = 0x48,
             ['bit'] = 3,
             ['locationId'] = 1230623
         },
         ['WW: The Inferno Jiggy'] = {
+            ['index'] = 39,
             ['addr'] = 0x48,
             ['bit'] = 4,
             ['locationId'] = 1230624
         },
         ['WW: Cactus of Strength Jiggy'] = {
+            ['index'] = 40,
             ['addr'] = 0x48,
             ['bit'] = 5,
             ['locationId'] = 1230625
         },
         ['JRL: Mini-Sub Challenge Jiggy'] = {
+            ['index'] = 41,
             ['addr'] = 0x48,
             ['bit'] = 6,
             ['locationId'] = 1230626
         },
         ['JRL: Tiptup Jiggy'] = {
+            ['index'] = 42,
             ['addr'] = 0x48,
             ['bit'] = 7,
             ['locationId'] = 1230627
         },
         ['JRL: Chris P. Bacon Jiggy'] = {
+            ['index'] = 43,
             ['addr'] = 0x49,
             ['bit'] = 0,
             ['locationId'] = 1230628
         },
         ['JRL: Pig Pool Jiggy'] = {
+            ['index'] = 44,
             ['addr'] = 0x49,
             ['bit'] = 1,
             ['locationId'] = 1230629
         },
         ["JRL: Smuggler's Cavern Jiggy"] = {
+            ['index'] = 45,
             ['addr'] = 0x49,
             ['bit'] = 2,
             ['locationId'] = 1230630
         },
         ['JRL: Merry Maggie Jiggy'] = {
+            ['index'] = 46,
             ['addr'] = 0x49,
             ['bit'] = 3,
             ['locationId'] = 1230631
         },
         ['JRL: Woo Fak Fak Jiggy'] = {
+            ['index'] = 47,
             ['addr'] = 0x49,
             ['bit'] = 4,
             ['locationId'] = 1230632
         },
         ['JRL: Seemee Jiggy'] = {
+            ['index'] = 48,
             ['addr'] = 0x49,
             ['bit'] = 5,
             ['locationId'] = 1230633
         },
         ['JRL: Pawno Jiggy'] = {
+            ['index'] = 49,
             ['addr'] = 0x49,
             ['bit'] = 6,
             ['locationId'] = 1230634
         },
         ['JRL: UFO Jiggy'] = {
+            ['index'] = 50,
             ['addr'] = 0x49,
             ['bit'] = 7,
             ['locationId'] = 1230635
         },
         ["TDL: Under Terry's Nest Jiggy"] = {
+            ['index'] = 51,
             ['addr'] = 0x4A,
             ['bit'] = 0,
             ['locationId'] = 1230636
         },
         ['TDL: Dippy Jiggy'] = {
+            ['index'] = 52,
             ['addr'] = 0x4A,
             ['bit'] = 1,
             ['locationId'] = 1230637
         },
         ['TDL: Scrotty Jiggy'] = {
+            ['index'] = 53,
             ['addr'] = 0x4A,
             ['bit'] = 2,
             ['locationId'] = 1230638
         },
         ['TDL: Terry Jiggy'] = {
+            ['index'] = 54,
             ['addr'] = 0x4A,
             ['bit'] = 3,
             ['locationId'] = 1230639
         },
         ['TDL: Oogle Boogle Tribe Jiggy'] = {
+            ['index'] = 55,
             ['addr'] = 0x4A,
             ['bit'] = 4,
             ['locationId'] = 1230640
         },
         ['TDL: Chompas Belly Jiggy'] = {
+            ['index'] = 56,
             ['addr'] = 0x4A,
             ['bit'] = 5,
             ['locationId'] = 1230641
         },
         ["TDL: Terry's Kids Jiggy"] = {
+            ['index'] = 57,
             ['addr'] = 0x4A,
             ['bit'] = 6,
             ['locationId'] = 1230642
         },
         ['TDL: Stomping Plains Jiggy'] = {
+            ['index'] = 58,
             ['addr'] = 0x4A,
             ['bit'] = 7,
             ['locationId'] = 1230643
         },
         ['TDL: Rocknut Tribe Jiggy'] = {
+            ['index'] = 59,
             ['addr'] = 0x4B,
             ['bit'] = 0,
             ['locationId'] = 1230644
         },
         ['TDL: Code of the Dinosaurs Jiggy'] = {
+            ['index'] = 60,
             ['addr'] = 0x4B,
             ['bit'] = 1,
             ['locationId'] = 1230645
         },
         ['GI: Underwater Waste Disposal Plant Jiggy'] = {
+            ['index'] = 61,
             ['addr'] = 0x4B,
             ['bit'] = 2,
             ['locationId'] = 1230646
         },
         ['GI: Weldar Jiggy'] = {
+            ['index'] = 62,
             ['addr'] = 0x4B,
             ['bit'] = 3,
             ['locationId'] = 1230647
         },
         ["GI: Clinker's Cavern Jiggy"] = {
+            ['index'] = 63,
             ['addr'] = 0x4B,
             ['bit'] = 4,
             ['locationId'] = 1230648
         },
         ['GI: Skivvies Jiggy'] = {
+            ['index'] = 64,
             ['addr'] = 0x4B,
             ['bit'] = 5,
             ['locationId'] = 1230649
         },
         ['GI: Floor 5 Jiggy'] = {
+            ['index'] = 65,
             ['addr'] = 0x4B,
             ['bit'] = 6,
             ['locationId'] = 1230650
         },
         ['GI: Quality Control Jiggy'] = {
+            ['index'] = 66,
             ['addr'] = 0x4B,
             ['bit'] = 7,
             ['locationId'] = 1230651
         },
         ['GI: Floor 1 Guarded Jiggy'] = {
+            ['index'] = 67,
             ['addr'] = 0x4C,
             ['bit'] = 0,
             ['locationId'] = 1230652
         },
         ['GI: Trash Compactor Jiggy'] = {
+            ['index'] = 68,
             ['addr'] = 0x4C,
             ['bit'] = 1,
             ['locationId'] = 1230653
         },
         ['GI: Twinkly Packing Jiggy'] = {
+            ['index'] = 69,
             ['addr'] = 0x4C,
             ['bit'] = 2,
             ['locationId'] = 1230654
         },
         ['GI: Waste Disposal Plant Box Jiggy'] = {
+            ['index'] = 70,
             ['addr'] = 0x4C,
             ['bit'] = 3,
             ['locationId'] = 1230655
         },
         ['HFP: Dragon Brothers Jiggy'] = {
+            ['index'] = 71,
             ['addr'] = 0x4C,
             ['bit'] = 4,
             ['locationId'] = 1230656
         },
         ['HFP: Inside the Volcano Jiggy'] = {
+            ['index'] = 72,
             ['addr'] = 0x4C,
             ['bit'] = 5,
             ['locationId'] = 1230657
         },
         ['HFP: Sabreman Jiggy'] = {
+            ['index'] = 73,
             ['addr'] = 0x4C,
             ['bit'] = 6,
             ['locationId'] = 1230658
         },
         ['HFP: Boggy Jiggy'] = {
+            ['index'] = 74,
             ['addr'] = 0x4C,
             ['bit'] = 7,
             ['locationId'] = 1230659
         },
         ['HFP: Icy Side Station Jiggy'] = {
+            ['index'] = 75,
             ['addr'] = 0x4D,
             ['bit'] = 0,
             ['locationId'] = 1230660
         },
         ['HFP: Oil Drill Jiggy'] = {
+            ['index'] = 76,
             ['addr'] = 0x4D,
             ['bit'] = 1,
             ['locationId'] = 1230661
         },
         ['HFP: Stomping Plains Jiggy'] = {
+            ['index'] = 77,
             ['addr'] = 0x4D,
             ['bit'] = 2,
             ['locationId'] = 1230662
         },
         ['HFP: Kickball Jiggy'] = {
+            ['index'] = 78,
             ['addr'] = 0x4D,
             ['bit'] = 3,
             ['locationId'] = 1230663
         },
         ['HFP: Aliens Jiggy'] = {
+            ['index'] = 79,
             ['addr'] = 0x4D,
             ['bit'] = 4,
             ['locationId'] = 1230664
         },
         ['HFP: Lava Waterfall Jiggy'] = {
+            ['index'] = 80,
             ['addr'] = 0x4D,
             ['bit'] = 5,
             ['locationId'] = 1230665
         },
         ['CCL: Mingy Jongo Jiggy'] = {
+            ['index'] = 81,
             ['addr'] = 0x4D,
             ['bit'] = 6,
             ['locationId'] = 1230666
         },
         ['CCL: Mr Fit Jiggy'] = {
+            ['index'] = 82,
             ['addr'] = 0x4D,
             ['bit'] = 7,
             ['locationId'] = 1230667
         },
         ["CCL: Pot O' Gold Jiggy"] = {
+            ['index'] = 83,
             ['addr'] = 0x4E,
             ['bit'] = 0,
             ['locationId'] = 1230668
         },
         ['CCL: Canary Mary Jiggy'] = {
+            ['index'] = 84,
             ['addr'] = 0x4E,
             ['bit'] = 1,
             ['locationId'] = 1230669
         },
         ['CCL: Zubbas Jiggy'] = {
+            ['index'] = 85,
             ['addr'] = 0x4E,
             ['bit'] = 2,
             ['locationId'] = 1230670
         },
         ['CCL: Jiggium Plant Jiggy'] = {
+            ['index'] = 86,
             ['addr'] = 0x4E,
             ['bit'] = 3,
             ['locationId'] = 1230671
         },
         ['CCL: Cheese Wedge Jiggy'] = {
+            ['index'] = 87,
             ['addr'] = 0x4E,
             ['bit'] = 4,
             ['locationId'] = 1230672
         },
         ['CCL: Trash Can Jiggy'] = {
+            ['index'] = 88,
             ['addr'] = 0x4E,
             ['bit'] = 5,
             ['locationId'] = 1230673
         },
         ['CCL: Superstash Jiggy'] = {
+            ['index'] = 89,
             ['addr'] = 0x4E,
             ['bit'] = 6,
             ['locationId'] = 1230674
         },
         ['CCL: Jelly Castle Jiggy'] = {
+            ['index'] = 90,
             ['addr'] = 0x4E,
             ['bit'] = 7,
             ['locationId'] = 1230675
@@ -3492,6 +3582,21 @@ function processAGIItem(item_list)
                 print("Cheato Page Obtained")
             end
             setConsumable('CHEATO', getConsumable('CHEATO') + 1)
+        elseif(memlocation == 1230515)
+        then
+            if DEBUG == true
+            then
+                print("Jiggy Obtained")
+            end
+            for location, values in pairs(MASTER_MAP["JIGGY"])
+            do
+                if AGI['JIGGY'][location] == false
+                then
+                    AGI['JIGGY'][location] = true
+                    savingAGI();
+                    break
+                end
+            end
         elseif((1230855 <= memlocation and memlocation <= 1230863) or (1230174 <= memlocation and memlocation <= 1230182))
         then
             processMagicItem(memlocation)
