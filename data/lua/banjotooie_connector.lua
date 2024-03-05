@@ -62,7 +62,7 @@ local LOAD_BMK_MOVES = false; -- If close to Silo
 local SILOS_LOADED = false; -- Handles if learned a move at Silo
 local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
 
-local BathPads = false
+local BATH_PADS_QOL = false
 
 function isPointer(value)
     return type(value) == "number" and value >= RDRAMBase and value < RDRAMBase + RDRAMSize;
@@ -3045,7 +3045,7 @@ function MoveBathPads()
     mainmemory.writefloat(bpad + 0x0C, bzPos + 450, true);
     mainmemory.writefloat(bpad + 0x08, byPos - 75, true);
 
-    BathPads = true
+    BATH_PADS_QOL = true
 end
 
 function locationControl()
@@ -3105,9 +3105,12 @@ function locationControl()
                     end
                 end
             end
-            if CURRENT_MAP == 0xF4 and BathPads == false
+            if CURRENT_MAP == 0xF4 and BATH_PADS_QOL == false
             then
                 MoveBathPads()
+            elseif  CURRENT_MAP ~= 0xF4 and BATH_PADS_QOL == true
+            then
+                BATH_PADS_QOL = false
             end
             if (mapaddr == 335 or mapaddr == 337) and TOTALS_MENU == false -- Wooded Hollow / JiggyTemple
             then
