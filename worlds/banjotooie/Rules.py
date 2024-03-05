@@ -138,24 +138,24 @@ class BanjoTooieRules:
         # }
 
         self.region_rules = {
-            regionName.IOHWH: lambda state: self.jiggy_unlock(state, 1),
-            regionName.MT: lambda state: self.jiggy_unlock(state, 1),
+            regionName.IOHWH: lambda state: state.has(itemName.JIGGY, self.player, 1),
+            regionName.MT: lambda state: state.has(itemName.JIGGY, self.player, 1),
             regionName.IOHPL: lambda state: state.has(itemName.GGRAB, self.player) or
                                             self.dilberta_free(state),
-            regionName.GM: lambda state: self.jiggy_unlock(state, 4) or
+            regionName.GM: lambda state: state.has(itemName.JIGGY, self.player, 4) or
                                          self.dilberta_free(state),
             regionName.IOHPG: lambda state: state.has(itemName.FEGGS, self.player),
-            regionName.WW: lambda state: self.jiggy_unlock(state, 8),
+            regionName.WW: lambda state: state.has(itemName.JIGGY, self.player, 8),
             regionName.IOHCT: lambda state: state.has(itemName.SPLITUP, self.player),
-            regionName.JR: lambda state: self.jiggy_unlock(state, 14),
+            regionName.JR: lambda state: state.has(itemName.JIGGY, self.player, 14),
             regionName.IOHWL: lambda state: state.has(itemName.TTORP, self.player),
-            regionName.TL: lambda state: self.jiggy_unlock(state, 20),
+            regionName.TL: lambda state: state.has(itemName.JIGGY, self.player, 20),
             regionName.IOHQM: lambda state: state.has(itemName.SPRINGB, self.player),
-            regionName.GI: lambda state: self.jiggy_unlock(state, 28),
-            regionName.HP: lambda state: self.jiggy_unlock(state, 36),
-            regionName.CC: lambda state: self.jiggy_unlock(state, 45),
-            regionName.CK: lambda state: self.jiggy_unlock(state, 55) and state.has(itemName.CLAWBTS, self.player),
-            regionName.H1: lambda state: self.jiggy_unlock(state, 70) and
+            regionName.GI: lambda state: state.has(itemName.JIGGY, self.player, 28),
+            regionName.HP: lambda state: state.has(itemName.JIGGY, self.player, 36),
+            regionName.CC: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            regionName.CK: lambda state: state.has(itemName.JIGGY, self.player, 55) and state.has(itemName.CLAWBTS, self.player),
+            regionName.H1: lambda state: state.has(itemName.JIGGY, self.player, 70) and
                                          (self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK)) and
                                          (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)) and
                                          state.has(itemName.BBLASTER, self.player) and
@@ -229,7 +229,7 @@ class BanjoTooieRules:
             locationName.JIGGYJR4: lambda state: (state.has(itemName.GEGGS, self.player) or
                                                   state.has(itemName.CEGGS, self.player) or
                                                   state.has(itemName.BDRILL, self.player)) and
-                                                 self.jiggy_unlock(state, 45) and
+                                                 state.has(itemName.JIGGY, self.player, 45) and
                                                  state.has(itemName.SPLITUP, self.player) and
                                                  state.has(itemName.FEGGS, self.player) and
                                                  state.has(itemName.TTORP, self.player),
@@ -357,15 +357,15 @@ class BanjoTooieRules:
             locationName.JIGGYCC10: lambda state: self.check_solo_moves(state, itemName.SHPACK),
 
             #Jinjo Family Jiggies
-            locationName.JIGGYIH1: lambda state: self.jiggy_unlock(state, 36),
-            locationName.JIGGYIH2: lambda state: self.jiggy_unlock(state, 36),
-            locationName.JIGGYIH3: lambda state: self.jiggy_unlock(state, 45),
-            locationName.JIGGYIH4: lambda state: self.jiggy_unlock(state, 45),
-            locationName.JIGGYIH5: lambda state: self.jiggy_unlock(state, 45),
-            locationName.JIGGYIH6: lambda state: self.jiggy_unlock(state, 45),
-            locationName.JIGGYIH7: lambda state: self.jiggy_unlock(state, 45),
-            locationName.JIGGYIH8: lambda state: self.jiggy_unlock(state, 45),
-            locationName.JIGGYIH9: lambda state: self.jiggy_unlock(state, 45),
+            locationName.JIGGYIH1: lambda state: state.has(itemName.JIGGY, self.player, 36),
+            locationName.JIGGYIH2: lambda state: state.has(itemName.JIGGY, self.player, 36),
+            locationName.JIGGYIH3: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            locationName.JIGGYIH4: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            locationName.JIGGYIH5: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            locationName.JIGGYIH6: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            locationName.JIGGYIH7: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            locationName.JIGGYIH8: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            locationName.JIGGYIH9: lambda state: state.has(itemName.JIGGY, self.player, 45),
 
             # locationName.JIGGYIH1: lambda state: self.jiggy_unlock(state, 36) and
             #                                      self.check_mumbo_magic(state, itemName.MUMBOMT) and
@@ -617,7 +617,7 @@ class BanjoTooieRules:
                                                   (self.check_solo_moves(state, itemName.GLIDE) or self.check_solo_moves(state, itemName.LSPRING) or
                                                   (self.check_solo_moves(state, itemName.PACKWH) and state.has(itemName.GGRAB, self.player))),
 
-            locationName.CHEATOTL1: lambda state: self.jiggy_unlock(state, 45),
+            locationName.CHEATOTL1: lambda state: state.has(itemName.JIGGY, self.player, 45),
             locationName.CHEATOTL2: lambda state: self.check_humba_magic(state, itemName.HUMBATD),
             locationName.CHEATOTL3: lambda state: state.has(itemName.BDRILL, self.player) and 
                                                   (state.has(itemName.GGRAB, self.player) or self.can_beat_terry(state)),
@@ -727,8 +727,8 @@ class BanjoTooieRules:
             locationName.CEGGS: lambda state: self.has_enough_notes(state, 315),
         }
 
-    def jiggy_unlock(self, state: CollectionState, Amount) -> bool:
-        return state.has("Jiggy", self.player, Amount)
+    # def jiggy_unlock(self, state: CollectionState, Amount) -> bool:
+    #     return state.has_group("Jiggy", self.player, Amount)
 
     def check_mumbo_magic(self, state: CollectionState, name) -> bool:
         for item_name in self.mumbo_magic:
@@ -747,35 +747,35 @@ class BanjoTooieRules:
 
     def has_enough_notes(self, state: CollectionState, Amount) -> bool:
         count:int = 0
-        if self.jiggy_unlock(state, 1):
+        if state.has(itemName.JIGGY, self.player, 1):
             count += 100
             if state.has(itemName.GGRAB, self.player) or self.dilberta_free(state):
                 count += 40
-                if self.jiggy_unlock(state, 4) or self.dilberta_free(state):
+                if state.has(itemName.JIGGY, self.player, 4) or self.dilberta_free(state):
                     count += 100
                 if state.has(itemName.FEGGS, self.player):
                     count += 20
-                    if self.jiggy_unlock(state, 8):
+                    if state.has(itemName.JIGGY, self.player, 8):
                         count += 100
                     if state.has(itemName.TTORP, self.player):
                         count += 20
-                        if self.jiggy_unlock(state, 20):
+                        if state.has(itemName.JIGGY, self.player, 20):
                             count += 80
                             if state.has(itemName.BDRILL, self.player):
                                 count += 20
-                        if self.jiggy_unlock(state, 45):
+                        if state.has(itemName.JIGGY, self.player, 45):
                             count += 100
-                        if state.has(itemName.SPRINGB, self.player) and self.jiggy_unlock(state, 28) and self.enter_GI(state):
+                        if state.has(itemName.SPRINGB, self.player) and state.has(itemName.JIGGY, self.player, 28) and self.enter_GI(state):
                             count += 25
                             if self.can_reach_GI_2F(state):
                                 count += 75
                 if state.has(itemName.SPLITUP, self.player):
                     count += 20
-                if self.jiggy_unlock(state, 14):
+                if state.has(itemName.JIGGY, self.player, 14):
                     count += 60
                     if self.can_reach_atlantis(state):
                         count += 40
-                if self.jiggy_unlock(state, 36):
+                if state.has(itemName.JIGGY, self.player, 36):
                     count += 80
                     if (self.check_solo_moves(state, itemName.GLIDE) or self.check_solo_moves(state, itemName.WWHACK) or
                             (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GEGGS, self.player))):
