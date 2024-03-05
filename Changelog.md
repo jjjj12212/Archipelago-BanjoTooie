@@ -8,7 +8,8 @@
   - Lord Woo Fak Fak now expects Mumbo if fighting him without Sub
   - Removed Egg Aim from requirements for Cave of Horrors
   - Added Egg Aim and Grenade Eggs to requirements for Mr. Patch
-  - 
+  - Witchyworld Train Station now allows Leg Spring
+  - Grunty Industries 3rd Floor Honeycomb now allows Solo Kazooie
 
 # 0.5.1-beta
 - Fixed logic errors:

@@ -259,8 +259,7 @@ class BanjoTooieRules:
                                                  self.can_beat_terry(state),
             locationName.JIGGYTD2: lambda state: state.has(itemName.TTORP, self.player),
             locationName.JIGGYTD3: lambda state: state.has(itemName.GEGGS, self.player) and
-                                                 state.has(itemName.GGRAB, self.player) and
-                                                 self.can_beat_king_coal(state) and
+                                                 self.WW_train_station(state) and
                                                  self.check_solo_moves(state, itemName.TAXPACK) and
                                                  self.check_mumbo_magic(state, itemName.MUMBOIH) and
                                                  state.has(itemName.BDRILL, self.player) and
@@ -609,7 +608,7 @@ class BanjoTooieRules:
                                                   self.check_mumbo_magic(state, itemName.MUMBOWW) and
                                                   self.saucer_door_open(state),
                                             
-            locationName.CHEATOJR1: lambda state: state.has(itemName.GEGGS, self.player) or
+            locationName.CHEATOJR1: lambda state: state.has(itemName.GEGGS, self.player) and
                                                   state.has(itemName.SPLITUP, self.player),
             locationName.CHEATOJR2: lambda state: self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player),
 
@@ -659,7 +658,8 @@ class BanjoTooieRules:
                                                 
             locationName.HONEYCTL2: lambda state: state.has(itemName.BDRILL, self.player) and state.has(itemName.SPLITUP, self.player),
 
-            locationName.HONEYCGI1: lambda state: self.can_reach_GI_2F(state) and state.has(itemName.GGRAB, self.player),
+            locationName.HONEYCGI1: lambda state: self.can_reach_GI_2F(state) and
+                                                  (state.has(itemName.GGRAB, self.player) or state.has(itemName.SPLITUP, self.player)),
             locationName.HONEYCGI2: lambda state: self.enter_GI(state) and (state.has(itemName.GGRAB, self.player) or state.has(itemName.SPLITUP, self.player)),
             locationName.HONEYCGI3: lambda state: self.can_reach_GI_2F(state),
 
@@ -814,6 +814,10 @@ class BanjoTooieRules:
     def can_beat_king_coal(self, state) -> bool:
         return self.check_mumbo_magic(state, itemName.MUMBOGM)
 
+    def WW_train_station(self, state) -> bool:
+        return self.can_beat_king_coal(state) and \
+            (state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING))
+
     #deprecated but might be useful for ticket randomization
     def can_kill_fruity(self, state: CollectionState) -> bool:
         return state.has(itemName.GEGGS, self.player) or \
@@ -828,8 +832,7 @@ class BanjoTooieRules:
         return state.has(itemName.EGGAIM, self.player) and state.has(itemName.SPRINGB, self.player)
 
     def smuggle_food(self, state: CollectionState) -> bool:
-        return (self.can_beat_king_coal(state) and
-                state.has(itemName.GGRAB, self.player)) or \
+        return self.WW_train_station(state) or \
                 state.has(itemName.CLAWBTS, self.player)
 
     def oogle_boogles_open(self, state) -> bool:
