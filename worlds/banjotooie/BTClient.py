@@ -50,6 +50,7 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 """
 
 bt_loc_name_to_id = network_data_package["games"]["Banjo Tooie"]["location_name_to_id"]
+bt_itm_name_to_id = network_data_package["games"]["Banjo Tooie"]["item_name_to_id"]
 
 script_version: int = 4
 
@@ -96,6 +97,7 @@ class BanjoTooieContext(CommonContext):
         self.slot_data = {}
         self.sendSlot = False
         self.sync_ready = False
+        self.startup = False
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -138,10 +140,24 @@ class BanjoTooieContext(CommonContext):
             if ': !' not in msg:
                 self._set_message(msg, SYSTEM_MESSAGE_ID)
         elif cmd == "ReceivedItems":
+            if self.startup == False:
                 for item in args["items"]:
-                    self.items_received.append(item)
+                    player = ""
+                    item_name = ""
+                    for (i, name) in self.player_names.items():
+                        if i == item.player:
+                            player = name
+                            break
+                    for (name, i) in bt_itm_name_to_id.items():
+                        if item.item == i:
+                            item_name = name
+                            break                    
+                    logger.info(player + " sent " + item_name)
+                logger.info("The above items will be sent when Banjo Tooie is loaded.")
+                self.startup = True
 
     def on_print_json(self, args: dict):
+        self.startup = True
         if self.ui:
             self.ui.print_json(copy.deepcopy(args["data"]))
         else:

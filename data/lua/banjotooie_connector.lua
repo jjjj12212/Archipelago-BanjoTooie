@@ -2846,7 +2846,7 @@ local set_AGI_MOVES_checks = function(msg) -- SET AGI Moves into RAM AFTER BT/Si
             setFlag(v['addr'], v['bit']);
             if msg == true
             then
-                archipelago_msg_box("Received " .. k);
+ --               archipelago_msg_box("Received " .. k);
             end
         else
             clearFlag(v['addr'], v['bit']);
@@ -3349,7 +3349,7 @@ function processMagicItem(loc_ID)
         if table['locationId'] == loc_ID
         then
             setFlag(table['addr'], table['bit'])
-            archipelago_msg_box("Received " .. location);
+--            archipelago_msg_box("Received " .. location);
         end
     end
 
@@ -3367,7 +3367,7 @@ function processAGIItem(item_list)
                     print("HC Obtained")
                 end
                 setConsumable('HONEYCOMB', getConsumable('HONEYCOMB') + 1)
-                archipelago_msg_box("Received Honeycomb");
+ --               archipelago_msg_box("Received Honeycomb");
             elseif(memlocation == 1230513 and multiPages == true) -- Cheato Item
             then
                 if DEBUG == true
@@ -3375,7 +3375,7 @@ function processAGIItem(item_list)
                     print("Cheato Page Obtained")
                 end
                 setConsumable('CHEATO', getConsumable('CHEATO') + 1)
-                archipelago_msg_box("Received Cheato Page");
+ --               archipelago_msg_box("Received Cheato Page");
             elseif(memlocation == 1230515)
             then
                 if DEBUG == true
@@ -3387,7 +3387,7 @@ function processAGIItem(item_list)
                     if AGI['JIGGY'][location] == false
                     then
                         AGI['JIGGY'][location] = true
-                        archipelago_msg_box("Received Jiggy");
+ --                       archipelago_msg_box("Received Jiggy");
                         break
                     end
                 end
@@ -3444,7 +3444,7 @@ function process_block(block)
     end
     if block['messages'] ~= nil and block['messages'] ~= "" 
     then
-        archipelago_msg_box(block['messages']);
+ --       archipelago_msg_box(block['messages']);
     end
     if block['triggerDeath'] == true
     then
