@@ -1,72 +1,66 @@
 -- Banjo Tooie Connector Lua
 -- Created by Mike Jackson (jjjj12212) 
 -- with the help of Rose (Oktorose), the OOT Archipelago team, ScriptHawk BT.lua & kaptainkohl for BTrando.lua 
+-- modifications with Unalive
+
+-- local RDRAMBase = 0x80000000;
+-- local RDRAMSize = 0x800000;
+-- local character_state = 0x136F63;
+-- local camera_pointer_pointer = 0x127728;
+-- local global_flag_pointer = 0x12C780;
 
 local socket = require("socket")
 local json = require('json')
 local math = require('math')
 require('common')
 
-local last_modified_date = '2024-03-01' -- Should be the last modified date
-local script_version = 4
--- Template Variables
-local player_name = ""
-local seed = 0
-local deathlink = false
+local SCRIPT_VERSION = 4
+local PLAYER = ""
+local SEED = 0
+local DEATH_LINK = false
 
-local btSocket = nil
+local BT_SOCK = nil
 
 local STATE_OK = "Ok"
 local STATE_TENTATIVELY_CONNECTED = "Tentatively Connected"
 local STATE_INITIAL_CONNECTION_MADE = "Initial Connection Made"
 local STATE_UNINITIALIZED = "Uninitialized"
+local PREV_STATE = ""
+local CUR_STATE =  STATE_UNINITIALIZED
+local FRAME = 0
+
 local DEBUG = false
 local DEBUGLVL2 = false
+local BYPASS_GAME_LOAD = false;
 
-local prevstate = ""
-local curstate =  STATE_UNINITIALIZED
-local frame = 0
+local OBJ_ARR_PTR = 0x136EE0;
+local POS_PTR = 0xE4
+local ANIMATION_PTR = 0x1A0;
+local PLAYER_PTR = 0x135490;
+local PLAYER_PTR_IDX = 0x1354DF;
+local FLG_BLK_PTR = 0x12C770;
+local MAP_ADDR = 0x132DC2;
 
-local skip_tot = ""
-local flag_init_complete = false
-
---From BTRando.lua
-local RDRAMBase = 0x80000000;
-local RDRAMSize = 0x800000;
-local RAMBase = RDRAMBase;
-local RAMSize = RDRAMSize;
-
-local object_array_pointer = 0x136EE0;
-local position_pointer = 0xE4
-local animation_pointer = 0x1A0;
-local player_pointer = 0x135490;
-local player_pointer_index = 0x1354DF;
-local character_state = 0x136F63;
-local camera_pointer_pointer = 0x127728;
-local global_flag_pointer = 0x12C780;
-local flag_block_pointer = 0x12C770;
-local map_location = 0x132DC2;
-local last_map = nil;
-
--- EO BTRando
-local isPaused = false;
-local checkTotals = false;
-local isSaving = false;
-local isBackup = false;
-local altarClose = false;
-local killBTFlag = false;
-local isBanjoDed = false;
-local isBanjoDedCheck = false;
-local multiHoneycomb = false;
-local multiPages = false;
-local BMMLoaded = false;
-local BMMBypass = false;
-local APMovesEnabled = false; -- Enable AP Moves Logics
-local NeedSiloState = false; --  If True, you are Transistioning maps
-local WatchSilo = false; -- Silo found on Map, Need to Monitor Distance
-local AMMMovesCleared = false; -- If close to Silo
-local FinishedSilo = false; -- Handles if learned a move at Silo
-local SiloCounter = 0; -- waits until Silos are loaded if any
+local CURRENT_MAP = nil;
+local SKIP_TOT = ""
+local INIT_COMPLETE = false
+local PAUSED = false;
+local TOTALS_MENU = false;
+local SAVE_GAME = false;
+local USE_BMM_TBL = false;
+local CLOSE_TO_ALTAR = false;
+local KILL_BANJO = false;
+local DETECT_DEATH = false;
+local CHECK_DEATH = false;
+local ENABLE_AP_HONEYCOMB = false;
+local ENABLE_AP_PAGES = false;
+local ENABLE_AP_MOVES = false; -- Enable AP Moves Logics
+local GAME_LOADED = false;
+local CHECK_FOR_SILO = false; --  If True, you are Transistioning maps
+local WATCH_LOADED_SILOS = false; -- Silo found on Map, Need to Monitor Distance
+local LOAD_BMK_MOVES = false; -- If close to Silo
+local SILOS_LOADED = false; -- Handles if learned a move at Silo
+local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
 
 local BathPads = false
 
@@ -129,8 +123,8 @@ function getConsumable(consumable_type)
 end
 
 function banjoPTR()
-    local playerPointerIndex = mainmemory.readbyte(player_pointer_index);
-	local banjo = dereferencePointer(player_pointer + 4 * playerPointerIndex);
+    local playerPointerIndex = mainmemory.readbyte(PLAYER_PTR_IDX);
+	local banjo = dereferencePointer(PLAYER_PTR + 4 * playerPointerIndex);
     return banjo;
 end
 
@@ -140,7 +134,7 @@ function getBanjoPos()
     then
         return false;
     end
-    local plptr = dereferencePointer(banjo + position_pointer);
+    local plptr = dereferencePointer(banjo + POS_PTR);
     if plptr == nil
     then
         return false;
@@ -159,7 +153,7 @@ function getBanjoDeathAnimation(check)
         return false;
     end
 
-    local ptr = dereferencePointer(banjo + animation_pointer);
+    local ptr = dereferencePointer(banjo + ANIMATION_PTR);
     local animation = mainmemory.read_u16_be(ptr + 0x34);
 
     if check == true
@@ -167,18 +161,18 @@ function getBanjoDeathAnimation(check)
         return animation
     end
 
-    if animation == 216 and isBanjoDedCheck == false
+    if animation == 216 and CHECK_DEATH == false
     then
-        isBanjoDed = true;
-        isBanjoDedCheck = true;
-        killBTFlag = false;
+        DETECT_DEATH = true;
+        CHECK_DEATH = true;
+        KILL_BANJO = false;
         if DEBUG == true
         then
             print("Banjo is Dead");
         end
-    elseif isBanjoDedCheck == true and animation ~= 216
+    elseif CHECK_DEATH == true and animation ~= 216
     then
-        isBanjoDedCheck = false;
+        CHECK_DEATH = false;
         if DEBUG == true
         then
             print("Deathlink Reset");
@@ -187,11 +181,11 @@ function getBanjoDeathAnimation(check)
 end
 
 function getMap()
-    return mainmemory.read_u16_be(map_location);
+    return mainmemory.read_u16_be(MAP_ADDR);
 end
 
 function checkFlag(byte, _bit)
-    local flagBlock = dereferencePointer(flag_block_pointer);
+    local flagBlock = dereferencePointer(FLG_BLK_PTR);
     if flagBlock == nil
     then
         return false
@@ -206,7 +200,7 @@ end
 
 function clearFlag(byte, _bit)
 	if type(byte) == "number" and type(_bit) == "number" and _bit >= 0 and _bit < 8 then
-		local flags = dereferencePointer(flag_block_pointer);
+		local flags = dereferencePointer(FLG_BLK_PTR);
         local currentValue = mainmemory.readbyte(flags + byte);
         mainmemory.writebyte(flags + byte, bit.clear(currentValue, _bit));
 	end
@@ -214,7 +208,7 @@ end
 
 function setFlag(byte, _bit)
 	if type(byte) == "number" and type(_bit) == "number" and _bit >= 0 and _bit < 8 then
-		local flags = dereferencePointer(flag_block_pointer);
+		local flags = dereferencePointer(FLG_BLK_PTR);
         local currentValue = mainmemory.readbyte(flags + byte);
         mainmemory.writebyte(flags + byte, bit.set(currentValue, _bit));
 	end
@@ -239,7 +233,7 @@ local obj_model1_slot_size = 0x9C;
 
 function getObjectModel1Pointers()
 	object_pointers = {};
-	local objectArray = dereferencePointer(object_array_pointer);
+	local objectArray = dereferencePointer(OBJ_ARR_PTR);
 	local num_slots = getModelOneCount();
     if num_slots == nil
     then
@@ -259,7 +253,7 @@ function getObjectModel1Pointers()
 end
 
 function getModelOneCount()
-	local objectArray = dereferencePointer(object_array_pointer);
+	local objectArray = dereferencePointer(OBJ_ARR_PTR);
     if objectArray == nil
     then
         return
@@ -365,7 +359,7 @@ end
 
 
 function getAltar()
-    if last_map == 335 or last_map == 337 -- No need to modify RAM when already in WH
+    if CURRENT_MAP == 335 or CURRENT_MAP == 337 -- No need to modify RAM when already in WH
     then
         return
     end
@@ -388,19 +382,19 @@ function getAltar()
 	local hDist = math.sqrt(((xPos - pos["Xpos"]) ^ 2) + ((zPos - pos["Zpos"]) ^ 2));
 	local playerDist = math.floor(math.sqrt(((yPos - pos["Ypos"]) ^ 2) + (hDist ^ 2)));
 
-    if playerDist <= 300 and (altarClose == false or isBackup == false)
+    if playerDist <= 300 and (CLOSE_TO_ALTAR == false or USE_BMM_TBL == false)
     then
-        altarClose = true;
+        CLOSE_TO_ALTAR = true;
         BMMBackup();
         useAGI();
         if DEBUG == true
         then
             print("Altar Closeby");
         end
-    elseif playerDist >=301 and altarClose == true
+    elseif playerDist >=301 and CLOSE_TO_ALTAR == true
     then
         BMMRestore()
-        altarClose = false;
+        CLOSE_TO_ALTAR = false;
         if DEBUG == true
         then
             print("Altar Away");
@@ -2562,7 +2556,7 @@ local read_CHEATO_checks = function(type)
     then
         for k,v in pairs(MASTER_MAP['CHEATO'])
         do
-			if multiPages == false
+			if ENABLE_AP_PAGES == false
             then
                 checks[k] = false
             else
@@ -2572,7 +2566,7 @@ local read_CHEATO_checks = function(type)
         AMM['CHEATO'] = checks;
     elseif type == "BMM"
     then
-		if multiPages == false
+		if ENABLE_AP_PAGES == false
         then
             for k,v in pairs(MASTER_MAP['CHEATO'])
             do
@@ -2598,7 +2592,7 @@ local read_HONEYCOMB_checks = function(type)
     then
         for k,v in pairs(MASTER_MAP['HONEYCOMB'])
         do
-            if multiHoneycomb == false
+            if ENABLE_AP_HONEYCOMB == false
             then
                 checks[k] = false
             else
@@ -2608,7 +2602,7 @@ local read_HONEYCOMB_checks = function(type)
         AMM['HONEYCOMB'] = checks;
     elseif type == "BMM"
     then
-        if multiHoneycomb == false
+        if ENABLE_AP_HONEYCOMB == false
         then
             for k,v in pairs(MASTER_MAP['HONEYCOMB'])
             do
@@ -2720,50 +2714,11 @@ local read_H1_checks = function(type)
     return checks
 end
 
-local update_BMK_MOVES_checks = function() --Only run when close to Silos
-    for k,v in pairs(MASTER_MAP['MOVES'])
-    do
-        if BKM[k] == false
-        then
-            res = checkFlag(v['addr'], v['bit'])
-            if res == true
-            then
-                BKM[k] = res
-                FinishedSilo = true
-            end
-        end 
-    end
-end
-
-local init_BMK = function(type) --Only run when close to Silos
-    local checks = {}
-    for k,v in pairs(MASTER_MAP['MOVES'])
-    do
-        if type == "BKM"
-        then
-            BKM[k] = checkFlag(v['addr'], v['bit'])
-        elseif type == "AGI"
-        then
-            checks[k] = checkFlag(v['addr'], v['bit'])
-        end
-    end
-    return checks
-end
-
-local clear_AMM_MOVES_checks = function() --Only run when transitioning Maps until BT/Silo Model is loaded OR Close to Silo
-    for k,v in pairs(MASTER_MAP['MOVES'])
-    do
-        if BKM[k] == false
-        then
-            clearFlag(v['addr'], v['bit'])
-        end
-    end
-end
 
 function checkConsumables(consumable_type, location_checks)
 	for location_name, value in pairs(AGI[consumable_type])
 	do
-		if(isBackup == false and (value == false and location_checks[location_name] == true))
+		if(USE_BMM_TBL == false and (value == false and location_checks[location_name] == true))
 		then
 			if(DEBUG == true)
 			then
@@ -2777,7 +2732,7 @@ function checkConsumables(consumable_type, location_checks)
 end
 
 local update_BMK_MOVES_checks = function() --Only run when close to Silos
-    for keys, moves in pairs(SILO_MAP_CHECK[last_map])
+    for keys, moves in pairs(SILO_MAP_CHECK[CURRENT_MAP])
     do
         if keys ~= "Exceptions"
         then
@@ -2792,7 +2747,7 @@ local update_BMK_MOVES_checks = function() --Only run when close to Silos
                         print("Already learnt this Silo. finished")
                     end
                     BKM[moves] = res
-                    FinishedSilo = true
+                    SILOS_LOADED = true
                 end
             end
         end
@@ -2816,7 +2771,7 @@ end
 
 local clear_AMM_MOVES_checks = function() --Only run when transitioning Maps until BT/Silo Model is loaded OR Close to Silo
     --Only clear the moves that we need to clear 
-    for keys, move in pairs(SILO_MAP_CHECK[last_map])
+    for keys, move in pairs(SILO_MAP_CHECK[CURRENT_MAP])
     do
         if keys ~= "Exceptions"
         then
@@ -2829,7 +2784,7 @@ local clear_AMM_MOVES_checks = function() --Only run when transitioning Maps unt
                 setFlag(addr_info['addr'], addr_info['bit'])
             end
         else
-            for key, disable_move in pairs(SILO_MAP_CHECK[last_map][keys]) --Exception list, always disable
+            for key, disable_move in pairs(SILO_MAP_CHECK[CURRENT_MAP][keys]) --Exception list, always disable
             do
                 local addr_info = MASTER_MAP["MOVES"][disable_move]
                 clearFlag(addr_info['addr'], addr_info['bit']);
@@ -2857,7 +2812,7 @@ end
 function checkConsumables(consumable_type, location_checks)
 	for location_name, value in pairs(AGI[consumable_type])
 	do
-		if(isBackup == false and (value == false and location_checks[location_name] == true))
+		if(USE_BMM_TBL == false and (value == false and location_checks[location_name] == true))
 		then
 			if(DEBUG == true)
 			then
@@ -2873,7 +2828,7 @@ end
 function checkConsumables(consumable_type, location_checks)
 	for location_name, value in pairs(AGI[consumable_type])
 	do
-		if(isBackup == false and (value == false and location_checks[location_name] == true))
+		if(USE_BMM_TBL == false and (value == false and location_checks[location_name] == true))
 		then
 			if(DEBUG == true)
 			then
@@ -2889,11 +2844,11 @@ end
 function loadGame(current_map)
     if(current_map == 0x142 or current_map == 0xAF)
     then
-        local f = io.open("BT" .. player_name .. "_" .. seed .. ".BMM", "r") -- get #BTplayer_seed.BMM
+        local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".BMM", "r") -- get #BTplayer_seed.BMM
         if f==nil then
            return false
         else
-            isBackup = true
+            USE_BMM_TBL = true
             BMM = json.decode(f:read("l"));
             BKM = json.decode(f:read("l"));
             f:close()
@@ -2904,26 +2859,26 @@ function loadGame(current_map)
             then
                 print("Restoring from Load Game")
             end
-            BMMLoaded = true
---            os.remove("BT" .. player_name .. "_" .. seed .. ".BMM")
+            GAME_LOADED = true
+--            os.remove("BT" .. PLAYER .. "_" .. SEED .. ".BMM")
         end
     else
-        if BMMBypass == true
+        if BYPASS_GAME_LOAD == true
         then
-            BMMLoaded = true
+            GAME_LOADED = true
         end
         return false
     end
 end
 
 function getSiloPlayerModel()
-    if SiloCounter <= 2
+    if SILOS_WAIT_TIMER <= 2
     then
         if DEBUG == true
         then
             print("Watching Silo")
         end
-        SiloCounter = SiloCounter + 1
+        SILOS_WAIT_TIMER = SILOS_WAIT_TIMER + 1
         return
     end
     local object = checkModel("Silo");
@@ -2940,9 +2895,9 @@ function getSiloPlayerModel()
             print("AP Abilities enabled")
         end
         set_AGI_MOVES_checks(false) --No Silo on this map
-        NeedSiloState = false
-        WatchSilo = false
-        SiloCounter = 0
+        CHECK_FOR_SILO = false
+        WATCH_LOADED_SILOS = false
+        SILOS_WAIT_TIMER = 0
         return
     end
     if DEBUG == true
@@ -2950,8 +2905,8 @@ function getSiloPlayerModel()
         print("Silo Found")
     end
     set_AGI_MOVES_checks(false)
-    NeedSiloState = false
-    WatchSilo = true
+    CHECK_FOR_SILO = false
+    WATCH_LOADED_SILOS = true
 end
 
 function nearSilo()
@@ -2974,7 +2929,7 @@ function nearSilo()
 
         --Move the Silo in Witchyworld.
         if (xPos == 0 and yPos == -163 and zPos == -1257)
-            and last_map == 0xD6
+            and CURRENT_MAP == 0xD6
         then
             mainmemory.writefloat(silos + 0x0C, zPos + 100, true);
             MoveWitchyPads();
@@ -2994,12 +2949,12 @@ function nearSilo()
 
     if playerDist <= 650 
     then
-        if AMMMovesCleared == false
+        if LOAD_BMK_MOVES == false
         then
             clear_AMM_MOVES_checks();
             update_BMK_MOVES_checks();
-            AMMMovesCleared = true
-        elseif FinishedSilo == false
+            LOAD_BMK_MOVES = true
+        elseif SILOS_LOADED == false
         then
             if DEBUG == true
             then
@@ -3014,15 +2969,15 @@ function nearSilo()
             end
         end
     else
-        if AMMMovesCleared == true
+        if LOAD_BMK_MOVES == true
         then
             if DEBUG == true
             then
                 print("Reseting Movelist");
             end
             set_AGI_MOVES_checks(false)
-            AMMMovesCleared = false
-            FinishedSilo = false;
+            LOAD_BMK_MOVES = false
+            SILOS_LOADED = false;
         end
     end
 end
@@ -3037,7 +2992,7 @@ function MoveWitchyPads()
 
         --Move the Pads in WitchyWorld.
         if (xPos == -125 and yPos == -163 and zPos == -1580)
-            and last_map == 0xD6
+            and CURRENT_MAP == 0xD6
         then
             mainmemory.writefloat(pad + 0x0C, zPos - 300, true);
 --          mainmemory.writefloat(pad + 0x08, yPos - 10, true);
@@ -3053,7 +3008,7 @@ function MoveWitchyPads()
         local zPos = mainmemory.readfloat(pad + 0x0C, true);
 
         if (xPos == 125 and zPos == -1580)
-            and last_map == 0xD6
+            and CURRENT_MAP == 0xD6
         then
             mainmemory.writefloat(pad + 0x0C, zPos - 300, true);
 --            mainmemory.writefloat(pad + 0x08, yPos - 10, true);
@@ -3095,14 +3050,14 @@ end
 
 function locationControl()
     local mapaddr = getMap()
-    if isBackup == true
+    if USE_BMM_TBL == true
     then
         if checkFlag(0x1F, 0)== true -- DEMO FILE
         then
             local DEMO = { ['DEMO'] = true}
             return DEMO
         end
-        if (last_map ~= mapaddr) and APMovesEnabled == true
+        if (CURRENT_MAP ~= mapaddr) and ENABLE_AP_MOVES == true
         then
             for map,moves in pairs(SILO_MAP_CHECK)
             do
@@ -3112,30 +3067,30 @@ function locationControl()
                     then
                          print("Checking Silos")
                     end
-                    SiloCounter = 0;
-                    NeedSiloState = true
+                    SILOS_WAIT_TIMER = 0;
+                    CHECK_FOR_SILO = true
                 end
             end
         end
-        if ((last_map == 335 or last_map == 337) and (mapaddr ~= 335 and mapaddr ~= 337)) -- Wooded Hollow
+        if ((CURRENT_MAP == 335 or CURRENT_MAP == 337) and (mapaddr ~= 335 and mapaddr ~= 337)) -- Wooded Hollow
         then
             BMMRestore()
-            last_map = mapaddr
+            CURRENT_MAP = mapaddr
             return all_location_checks("AMM")
         else
             getAltar()
             nearWHJinjo()
-            last_map = mapaddr
+            CURRENT_MAP = mapaddr
             return all_location_checks("BMM");
         end
     else
-        if BMMLoaded == false 
+        if GAME_LOADED == false 
         then
             loadGame(mapaddr)
             local DEMO = { ['DEMO'] = true}
             return DEMO
         else
-            if (last_map ~= mapaddr) and APMovesEnabled == true
+            if (CURRENT_MAP ~= mapaddr) and ENABLE_AP_MOVES == true
             then
                 for map,moves in pairs(SILO_MAP_CHECK)
                 do
@@ -3145,29 +3100,29 @@ function locationControl()
                         then
                             print("Checking Silos")
                         end
-                        SiloCounter = 0;
-                        NeedSiloState = true
+                        SILOS_WAIT_TIMER = 0;
+                        CHECK_FOR_SILO = true
                     end
                 end
             end
-            if last_map == 0xF4 and BathPads == false
+            if CURRENT_MAP == 0xF4 and BathPads == false
             then
                 MoveBathPads()
             end
-            if (mapaddr == 335 or mapaddr == 337) and checkTotals == false -- Wooded Hollow / JiggyTemple
+            if (mapaddr == 335 or mapaddr == 337) and TOTALS_MENU == false -- Wooded Hollow / JiggyTemple
             then
-                if last_map ~= 335 and last_map ~= 337
+                if CURRENT_MAP ~= 335 and CURRENT_MAP ~= 337
                 then
                     BMMBackup();
                     useAGI();
-                    last_map = mapaddr
+                    CURRENT_MAP = mapaddr
                 end
                 nearWHJinjo()
                 return all_location_checks("BMM");
             else
-                last_map = mapaddr
+                CURRENT_MAP = mapaddr
                 getAltar()
-                if altarClose == true
+                if CLOSE_TO_ALTAR == true
                 then
                     return all_location_checks("BMM");
                 end
@@ -3178,7 +3133,7 @@ function locationControl()
 end
 
 function BMMBackup()
-    if isBackup == true or BMMLoaded == false
+    if USE_BMM_TBL == true or GAME_LOADED == false
     then
         return
     end
@@ -3196,11 +3151,11 @@ function BMMBackup()
         print("Backup complete");
     end
     savingBMM()
-    isBackup = true
+    USE_BMM_TBL = true
 end
 
 function BMMRestore()
-    if isBackup == false
+    if USE_BMM_TBL == false
     then
         return
     end
@@ -3235,7 +3190,7 @@ function BMMRestore()
     then
         print("BMM Restored")
     end
-    isBackup = false;
+    USE_BMM_TBL = false;
 end
 
 function useAGI()
@@ -3317,11 +3272,11 @@ function all_location_checks(type)
         BMM = MM;
     end
 
-    if multiHoneycomb == true then
+    if ENABLE_AP_HONEYCOMB == true then
         checkConsumables('HONEYCOMB', location_checks)
     end
 
-    if multiPages == true then
+    if ENABLE_AP_PAGES == true then
         checkConsumables('CHEATO', location_checks)
     end
     checkConsumables('GLOWBO', location_checks)
@@ -3360,7 +3315,7 @@ function processAGIItem(item_list)
     do
         if receive_map[ap_id] == nil
         then
-            if(memlocation == 1230512 and multiHoneycomb == true)  -- Honeycomb Item
+            if(memlocation == 1230512 and ENABLE_AP_HONEYCOMB == true)  -- Honeycomb Item
             then
                 if DEBUG == true
                 then
@@ -3368,7 +3323,7 @@ function processAGIItem(item_list)
                 end
                 setConsumable('HONEYCOMB', getConsumable('HONEYCOMB') + 1)
  --               archipelago_msg_box("Received Honeycomb");
-            elseif(memlocation == 1230513 and multiPages == true) -- Cheato Item
+            elseif(memlocation == 1230513 and ENABLE_AP_PAGES == true) -- Cheato Item
             then
                 if DEBUG == true
                 then
@@ -3448,7 +3403,7 @@ function process_block(block)
     end
     if block['triggerDeath'] == true
     then
-        killBTFlag = true;
+        KILL_BANJO = true;
     end
 
     if DEBUGLVL2 == true then
@@ -3457,19 +3412,19 @@ function process_block(block)
 end
 
 function receive()
-    if player_name == "" and seed == 0
+    if PLAYER == "" and SEED == 0
     then
         getSlotData()
     else
         -- Send the message
         local retTable = {}
-        retTable["scriptVersion"] = script_version;
-        retTable["playerName"] = player_name;
-        retTable["deathlinkActive"] = deathlink;
+        retTable["scriptVersion"] = SCRIPT_VERSION;
+        retTable["playerName"] = PLAYER;
+        retTable["deathlinkActive"] = DEATH_LINK;
         retTable['locations'] = locationControl()
         retTable['unlocked_moves'] = BKM;
-        retTable["isDead"] = isBanjoDed;
-        if BMMLoaded == false
+        retTable["isDead"] = DETECT_DEATH;
+        if GAME_LOADED == false
         then
             retTable["sync_ready"] = "false"
         else
@@ -3478,25 +3433,25 @@ function receive()
 
     
         msg = json.encode(retTable).."\n"
-        local ret, error = btSocket:send(msg)
+        local ret, error = BT_SOCK:send(msg)
         if ret == nil then
             print(error)
-        elseif curstate == STATE_INITIAL_CONNECTION_MADE then
-            curstate = STATE_TENTATIVELY_CONNECTED
-        elseif curstate == STATE_TENTATIVELY_CONNECTED then
+        elseif CUR_STATE == STATE_INITIAL_CONNECTION_MADE then
+            CUR_STATE = STATE_TENTATIVELY_CONNECTED
+        elseif CUR_STATE == STATE_TENTATIVELY_CONNECTED then
             archipelago_msg_box("Connected to the Banjo Tooie Client!");
             print("Connected!")
-            curstate = STATE_OK
+            CUR_STATE = STATE_OK
         end
 
-        l, e = btSocket:receive()
+        l, e = BT_SOCK:receive()
         -- Handle incoming message
         if e == 'closed' then
-            if curstate == STATE_OK then
+            if CUR_STATE == STATE_OK then
                 archipelago_msg_box("Connection closed")
                 print("Connection closed")
             end
-            curstate = STATE_UNINITIALIZED
+            CUR_STATE = STATE_UNINITIALIZED
             return
         elseif e == 'timeout' then
             archipelago_msg_box("timeout")
@@ -3504,22 +3459,22 @@ function receive()
             return
         elseif e ~= nil then
             print(e)
-            curstate = STATE_UNINITIALIZED
+            CUR_STATE = STATE_UNINITIALIZED
             return
         end
         process_block(json.decode(l))
 
 
-        if isBanjoDed == true
+        if DETECT_DEATH == true
         then
-            isBanjoDed = false;
+            DETECT_DEATH = false;
         end
     end
 end
 
 function checkPause()
     local pause_menu = mainmemory.readbyte(0x15961A);
-    if pause_menu == 1 and isPaused == false 
+    if pause_menu == 1 and PAUSED == false 
     then
         if DEBUG == true
         then
@@ -3527,19 +3482,19 @@ function checkPause()
         end
         BMMBackup();
         useAGI();
-        isPaused = true;
-    elseif pause_menu == 0 and isPaused == true  -- unpaused
+        PAUSED = true;
+    elseif pause_menu == 0 and PAUSED == true  -- unpaused
     then
-        isPaused = false
+        PAUSED = false
         if DEBUG == true
         then
             print("Game Unpaused");
         end
-        if last_map ~= 335 and last_map ~= 337  -- Don't want to restore while in WH zone
+        if CURRENT_MAP ~= 335 and CURRENT_MAP ~= 337  -- Don't want to restore while in WH zone
         then
             BMMRestore()
         end
-    elseif isPaused == true and DEBUG == true
+    elseif PAUSED == true and DEBUG == true
     then
         local check_controls = joypad.get()
         if check_controls ~= nil and check_controls['P1 Z'] == true
@@ -3597,26 +3552,26 @@ function checkPause()
 end
 
 function checkTotalMenu()
-    if isPaused == false
+    if PAUSED == false
     then
         return
     else
         local total = mainmemory.readbyte(0x123C48);
-        if checkTotals == false and total == 1
+        if TOTALS_MENU == false and total == 1
         then
             if DEBUG == true
             then
                 print("Checking Game Totals");
             end
-            checkTotals = true;
+            TOTALS_MENU = true;
             BMMRestore();
-        elseif checkTotals == true and total ~= 1
+        elseif TOTALS_MENU == true and total ~= 1
         then
             if DEBUG == true
             then
                 print("no longer checking Game Totals");
             end
-            checkTotals = false;
+            TOTALS_MENU = false;
             BMMBackup();
             useAGI();
         end
@@ -3624,7 +3579,7 @@ function checkTotalMenu()
 end
 
 function savingAGI()
-    local f = io.open("BT" .. player_name .. "_" .. seed .. ".AGI", "w") --generate #BTplayer_seed.AGI
+    local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "w") --generate #BTplayer_seed.AGI
     f:write(json.encode(AGI) .. "\n");
     f:write(json.encode(receive_map))
     f:close()
@@ -3635,7 +3590,7 @@ function savingAGI()
 end
 
 function savingBMM()
-    local f = io.open("BT" .. player_name .. "_" .. seed .. ".BMM", "w") --generate #BTplayer_seed.AGI
+    local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".BMM", "w") --generate #BTplayer_seed.AGI
     f:write(json.encode(BMM) .. "\n");
     f:write(json.encode(BKM));
     f:close()
@@ -3646,7 +3601,7 @@ function savingBMM()
 end
 
 function gameSaving()
-    if isPaused ~= true
+    if PAUSED ~= true
     then
         return
     else
@@ -3654,7 +3609,7 @@ function gameSaving()
         local save_game2 = mainmemory.read_u8(0x044A81);
         if save_game == 1 or save_game2 == 1
         then
-            isSaving = true
+            SAVE_GAME = true
             if DEBUG == true
             then
                 print("Game Entering Save State")
@@ -3680,13 +3635,13 @@ function moveEnemytoBK()
     mainmemory.writefloat(enemy + 0x08, pos["Ypos"], true);
     mainmemory.writefloat(enemy + 0x0C, pos["Zpos"], true);
 
-    killBTFlag = false --TODO - TEST
+    KILL_BANJO = false --TODO - TEST
     -- print("Object Distance:")
     -- print(playerDist)
 end
 
 function killBT()
-    if killBTFlag == true then
+    if KILL_BANJO == true then
         setCurrentHealth(0)
         moveEnemytoBK()
     end
@@ -3697,16 +3652,16 @@ function getSlotData()
     retTable["getSlot"] = true;
  
     msg = json.encode(retTable).."\n"
-    local ret, error = btSocket:send(msg)
+    local ret, error = BT_SOCK:send(msg)
 
-    l, e = btSocket:receive()
+    l, e = BT_SOCK:receive()
     -- Handle incoming message
     if e == 'closed' then
-        if curstate == STATE_OK then
+        if CUR_STATE == STATE_OK then
             archipelago_msg_box("Connection closed")
             print("Connection closed")
         end
-        curstate = STATE_UNINITIALIZED
+        CUR_STATE = STATE_UNINITIALIZED
         return
     elseif e == 'timeout' then
         archipelago_msg_box("timeout")
@@ -3714,7 +3669,7 @@ function getSlotData()
         return
     elseif e ~= nil then
         print(e)
-        curstate = STATE_UNINITIALIZED
+        CUR_STATE = STATE_UNINITIALIZED
         return
     end
     process_slot(json.decode(l))
@@ -3728,40 +3683,40 @@ function process_slot(block)
 
     if block['slot_player'] ~= nil and block['slot_player'] ~= ""
     then
-        player_name = block['slot_player']
+        PLAYER = block['slot_player']
     end
     if block['slot_seed'] ~= nil and block['slot_seed'] ~= ""
     then
-        seed = block['slot_seed']
+        SEED = block['slot_seed']
     end
     if block['slot_deathlink'] ~= nil and block['slot_deathlink'] ~= "false"
     then
-        deathlink = true
+        DEATH_LINK = true
     end
     if block['slot_skip_tot'] ~= nil and block['slot_skip_tot'] ~= ""
     then
-        skip_tot = block['slot_skip_tot']
+        SKIP_TOT = block['slot_skip_tot']
     end
     if block['slot_honeycomb'] ~= nil and block['slot_honeycomb'] ~= "false"
     then
-        multiHoneycomb = true
+        ENABLE_AP_HONEYCOMB = true
     end
 	if block['slot_pages'] ~= nil and block['slot_pages'] ~= "false"
     then
-        multiPages = true
+        ENABLE_AP_PAGES = true
     end
     if block['slot_moves'] ~= nil and block['slot_moves'] ~= "false"
     then
-        APMovesEnabled = true
+        ENABLE_AP_MOVES = true
     end
 
-    if seed ~= 0
+    if SEED ~= 0
     then
-        local f = io.open("BT" .. player_name .. "_" .. seed .. ".AGI", "r") --generate #BTplayer_seed.AGI
+        local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "r") --generate #BTplayer_seed.AGI
         if f==nil then
             all_location_checks("AGI")
             AGI["MOVES"] = init_BMK("AGI");
-            f = io.open("BT" .. player_name .. "_" .. seed .. ".AGI", "w")
+            f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "w")
             f:write(json.encode(AGI))
             f:close()
         else
@@ -3807,15 +3762,15 @@ function initializeFlags()
 		setFlag(0xA9, 6) -- MT
 		setFlag(0xA9, 7) -- HFP
 		
-        BMMLoaded = true  -- We don't have a real BMM at this point.  
+        GAME_LOADED = true  -- We don't have a real BMM at this point.  
         init_BMK("BKM")
-		if (skip_tot ~= "false") then
+		if (SKIP_TOT ~= "false") then
 			-- ToT Misc Flags
 			setFlag(0xAB, 2)
 			setFlag(0xAB, 3)
 			setFlag(0xAB, 4)
 			setFlag(0xAB, 5)
-			if (skip_tot == "true") then
+			if (SKIP_TOT == "true") then
 			-- ToT Complete Flags
 				setFlag(0x83, 0)
 				setFlag(0x83, 4)
@@ -3827,10 +3782,10 @@ function initializeFlags()
         all_location_checks("AMM")
         BMMBackup()
         BMMRestore()
-		flag_init_complete = true
+		INIT_COMPLETE = true
 	-- Otherwise, the flags were already set, so just stop checking
 	elseif (current_map == 0xAF or current_map == 0x142) then
-		flag_init_complete = true
+		INIT_COMPLETE = true
 	end
 end
 
@@ -3844,8 +3799,8 @@ end
 
 function saveGame()
     BMMBackup();
-    BMMLoaded = false;
-    isSaving = false;
+    GAME_LOADED = false;
+    SAVE_GAME = false;
 end
 
 function main()
@@ -3855,23 +3810,23 @@ function main()
     server, error = socket.bind('localhost', 21221)
 
     while true do
-        frame = frame + 1
-        if not (curstate == prevstate) then
-            prevstate = curstate
+        FRAME = FRAME + 1
+        if not (CUR_STATE == PREV_STATE) then
+            PREV_STATE = CUR_STATE
         end
-        if (curstate == STATE_OK) or (curstate == STATE_INITIAL_CONNECTION_MADE) or (curstate == STATE_TENTATIVELY_CONNECTED) then
-            if (frame % 60 == 0) then
+        if (CUR_STATE == STATE_OK) or (CUR_STATE == STATE_INITIAL_CONNECTION_MADE) or (CUR_STATE == STATE_TENTATIVELY_CONNECTED) then
+            if (FRAME % 60 == 0) then
                 --getBanjoDeathAnimation(false);
                 receive();
                 killBT();
-                if (skip_tot == "true") then
+                if (SKIP_TOT == "true") then
 					setToTComplete();
 				end
-                if isSaving == true
+                if SAVE_GAME == true
                 then
                     saveGame();
                 end
-                if NeedSiloState == true
+                if CHECK_FOR_SILO == true
                 then
                     if DEBUG == true
                     then
@@ -3881,27 +3836,27 @@ function main()
                     getSiloPlayerModel()
                 end
                 gameSaving();
-            elseif (frame % 10 == 0)
+            elseif (FRAME % 10 == 0)
             then
                 checkPause();
                 checkTotalMenu();
-                if not (flag_init_complete) then
+                if not (INIT_COMPLETE) then
 					initializeFlags();
 				end
-                if WatchSilo == true
+                if WATCH_LOADED_SILOS == true
                 then
                     nearSilo()
                 end
             end
-        elseif (curstate == STATE_UNINITIALIZED) then
-            if  (frame % 60 == 0) then
+        elseif (CUR_STATE == STATE_UNINITIALIZED) then
+            if  (FRAME % 60 == 0) then
                 server:settimeout(2)
                 local client, timeout = server:accept()
                 if timeout == nil then
                     print('Initial Connection Made')
-                    curstate = STATE_INITIAL_CONNECTION_MADE
-                    btSocket = client
-                    btSocket:settimeout(0)
+                    CUR_STATE = STATE_INITIAL_CONNECTION_MADE
+                    BT_SOCK = client
+                    BT_SOCK:settimeout(0)
                 else
                     archipelago_msg_box('Connection failed, ensure Banjo Tooie Client is running, connected and rerun banjotooie_connector.lua')
                     print('Connection failed, ensure Banjo Tooie Client is running, connected and rerun banjotooie_connector.lua')
