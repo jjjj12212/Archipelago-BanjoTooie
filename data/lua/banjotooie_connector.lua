@@ -3671,6 +3671,12 @@ function receive()
         retTable['locations'] = locationControl()
         retTable['unlocked_moves'] = BKM;
         retTable["isDead"] = isBanjoDed;
+        if BMMLoaded == false
+        then
+            retTable["sync_ready"] = "false"
+        else
+            retTable["sync_ready"] = "true"
+        end
 
     
         msg = json.encode(retTable).."\n"

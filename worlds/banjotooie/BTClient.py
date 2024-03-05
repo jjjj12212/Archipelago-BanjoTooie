@@ -95,6 +95,7 @@ class BanjoTooieContext(CommonContext):
         self.messages = ""
         self.slot_data = {}
         self.sendSlot = False
+        self.sync_ready = False
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -136,6 +137,9 @@ class BanjoTooieContext(CommonContext):
             msg = args['text']
             if ': !' not in msg:
                 self._set_message(msg, SYSTEM_MESSAGE_ID)
+        # elif cmd == "ReceivedItems":
+        #         for item in args["items"]:
+        #             self.items_received.append(item)
 
     def on_print_json(self, args: dict):
         if self.ui:
@@ -173,18 +177,26 @@ def get_payload(ctx: BanjoTooieContext):
     else:
         trigger_death = False
 
-    if(len(ctx.items_received) > 0):
+    if(len(ctx.items_received) > 0) and ctx.sync_ready == True:
         print("Recieving Item")
 
-    payload = json.dumps({
-            "items": [get_item_value(item.item) for item in ctx.items_received],
-            "playerNames": [name for (i, name) in ctx.player_names.items() if i != 0],
-            "triggerDeath": trigger_death,
-            "messages": ctx.messages,
-        })
+    if ctx.sync_ready == True:
+        payload = json.dumps({
+                "items": [get_item_value(item.item) for item in ctx.items_received],
+                "playerNames": [name for (i, name) in ctx.player_names.items() if i != 0],
+                "triggerDeath": trigger_death,
+                "messages": ctx.messages,
+            })
+    else:
+        payload = json.dumps({
+                "items": [],
+                "playerNames": [name for (i, name) in ctx.player_names.items() if i != 0],
+                "triggerDeath": trigger_death,
+                "messages": ctx.messages,
+            })
     if len(ctx.messages) > 0:
         ctx.messages = ""
-    if len(ctx.items_received) > 0:
+    if len(ctx.items_received) > 0 and ctx.sync_ready == True:
         ctx.items_received = []
 
     return payload
@@ -231,7 +243,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     if isinstance(locations, list):
         locations = {}
 
-    if "DEMO" not in locations:
+    if "DEMO" not in locations and ctx.sync_ready == True:
         if ctx.location_table != locations:
             ctx.location_table = locations
 
@@ -250,7 +262,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                     "locations": locs1
                 }])
 
-    if ctx.slot_data["moves"] == "true":
+    if ctx.slot_data["moves"] == "true" and ctx.sync_ready == True:
             # Locations handling
         movelist = payload['unlocked_moves']
 
@@ -268,6 +280,10 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "locations": mov1
             }])
 
+    #Send Aync Data.
+    if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:
+        ctx.sync_ready = True
+        
     # Deathlink handling
     if ctx.deathlink_enabled:
         if payload['isDead']: #Banjo died
