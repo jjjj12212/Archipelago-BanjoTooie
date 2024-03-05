@@ -11,7 +11,12 @@
   - Witchyworld Train Station now allows Leg Spring
   - Grunty Industries 3rd Floor Honeycomb now allows Solo Kazooie
   - Split Up is now required for The Inferno Jiggy
+  - Money Van is now required for Saucer of Peril to access Mumbo's Skull
 - Implemented generic Jiggy item
+- Bugfixes:
+  - Async items are now received properly
+  - Hints no longer send checks
+  - Saving and Quitting while touching a jiggy no longer sends false checks
 
 # 0.5.1-beta
 - Fixed logic errors:

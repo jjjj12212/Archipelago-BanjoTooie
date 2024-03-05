@@ -105,7 +105,7 @@ class BanjoTooieWorld(World):
             self.multiworld.itempool.append(item)
 
     def item_filter(self, item: Item) -> Item:
-        if(item.code == 1230685 and self.kingjingalingjiggy == False and self.options.jingaling_jiggy == True):
+        if(item.code == 1230515 and self.kingjingalingjiggy == False and self.options.jingaling_jiggy == True):
             #Below give the king a guarentee Jiggy if option is set
             self.multiworld.get_location(self.location_id_to_name[1230685], self.player).place_locked_item(item)
             self.kingjingalingjiggy = True
