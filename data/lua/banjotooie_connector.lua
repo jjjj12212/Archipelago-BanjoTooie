@@ -40,6 +40,8 @@ local PLAYER_PTR = 0x135490;
 local PLAYER_PTR_IDX = 0x1354DF;
 local FLG_BLK_PTR = 0x12C770;
 local MAP_ADDR = 0x132DC2;
+local CONSUME_PTR = 0x12B250;
+local CONSUME_IDX = 0x11B080;
 
 local CURRENT_MAP = nil;
 local SKIP_TOT = ""
@@ -64,252 +66,259 @@ local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
 
 local BATH_PADS_QOL = false
 
-function isPointer(value)
-    return type(value) == "number" and value >= RDRAMBase and value < RDRAMBase + RDRAMSize;
+-- Class that requires RAM reading and writing
+BTRAM = {
+    addressSpace = 0;
+    RDRAMBase = 0x80000000;
+    obj_model1_slot_base = 0x10;
+    obj_model1_slot_size = 0x9C;
+    consumeTable = {
+        [8]  = {key=0x0003, name="Glowbos"},
+        [9]  = {key=0x3C0C, name="Empty Honeycombs"},
+        [10] = {key=0x0319, name="Cheato Pages"},
+        [20] = {key=0x1461, name="Mega Glowbo"}
+    };
+    consumeIndex = 0;
+    pos = { 
+        ["Xpos"] = 0, 
+        ["Ypos"] = 0, 
+        ["Zpos"] = 0
+    };
+    map = 0;
+    flag_value = false;
+    model_list = {
+        ["Altar"] = 0x977,
+        ["Jinjo"] = 0x643,
+        ["Silo"] = 0x7D7,
+        ["Player"] = 0xFFFF,
+        ["Kazooie Split Pad"] = 0x7E1,
+        ["Banjo Split Pad"] = 0x7E2,
+    };
+    model_enemy_list = {
+        ["Ugger"] = 0x671,
+        ["Mingy Jongo"] = 0x816,
+    };
+    singleModelIndex = 0;
+} 
+
+function BTRAM:init()
+   local self = setmetatable({}, BTRAM)
+   return self
 end
 
-function dereferencePointer(address)
-    if type(address) == "number" and address >= 0 and address < (RDRAMSize - 4) then
-        address = mainmemory.read_u32_be(address);
-        if isPointer(address) then
-            return address - RDRAMBase;
-        end
-    end
+function BTRAM:dereferencePointer(address)
+    self.addressSpace = mainmemory.read_u32_be(address);
+    return self.addressSpace - self.RDRAMBase;
 end
 
-local consumeTable = {
-    [8]  = {key=0x0003, name="Glowbos"},
-    [9]  = {key=0x3C0C, name="Empty Honeycombs"},
-	[10] = {key=0x0319, name="Cheato Pages"},
-    [20] = {key=0x1461, name="Mega Glowbo"}
-}
-
-function setConsumable(consumable_type, value)
-	local index;
+function BTRAM:setConsumable(consumable_type, value)
 	if consumable_type == 'HONEYCOMB'
 	then
-		index = 9
+		self.consumeIndex = 9
 	elseif consumable_type == 'CHEATO'
 	then
-		index = 10
+		self.consumeIndex = 10
     elseif consumable_type == 'GLOWBO'
     then
-        index = 8
+        self.consumeIndex = 8
     elseif consumable_type == 'MEGA GLOWBO'
     then
-        index = 20
+        self.consumeIndex = 20
 	end
-    local consumablesBlock = dereferencePointer(0x12B250);
-    mainmemory.write_u16_be(consumablesBlock + index * 2, value ~ consumeTable[index]["key"]);
-    mainmemory.write_u16_be(0x11B080 + index * 0x0C, value);
+    self.addressSpace = self:dereferencePointer(CONSUME_PTR);
+    mainmemory.write_u16_be(self.addressSpace + self.consumeIndex * 2, value ~ self.consumeTable[self.consumeIndex]["key"]);
+    mainmemory.write_u16_be(CONSUME_IDX + self.consumeIndex * 0x0C, value);
 end
 
-function getConsumable(consumable_type)
+function BTRAM:getConsumable(consumable_type)
 	if consumable_type == 'HONEYCOMB'
 	then
-		index = 9
+		self.consumeIndex = 9
 	elseif consumable_type == 'CHEATO'
 	then
-		index = 10
+		self.consumeIndex = 10
     elseif consumable_type == 'GLOWBO'
     then
-        index = 8
+        self.consumeIndex = 8
     elseif consumable_type == 'MEGA GLOWBO'
     then
-        index = 20
+        self.consumeIndex = 20
 	end
-    local normalValue = mainmemory.read_u16_be(0x11B080 + index * 0x0C);
-	return normalValue;
+    self.addressSpace = mainmemory.read_u16_be(CONSUME_IDX + self.consumeIndex * 0x0C);
+	return self.addressSpace;
 end
 
-function banjoPTR()
+function BTRAM:banjoPTR()
     local playerPointerIndex = mainmemory.readbyte(PLAYER_PTR_IDX);
-	local banjo = dereferencePointer(PLAYER_PTR + 4 * playerPointerIndex);
-    return banjo;
+	self.addressSpace = self.dereferencePointer(PLAYER_PTR + 4 * playerPointerIndex);
+    return self.addressSpace;
 end
 
-function getBanjoPos()
-    local banjo = banjoPTR()
+function BTRAM:getBanjoPos()
+    local banjo = self.banjoPTR()
     if banjo == nil
     then
         return false;
     end
-    local plptr = dereferencePointer(banjo + POS_PTR);
+    local plptr = self.dereferencePointer(banjo + POS_PTR);
     if plptr == nil
     then
         return false;
     end
-    local pos = { ["Xpos"] = 0, ["Ypos"] = 0, ["Zpos"] = 0};
-    pos["Xpos"] = mainmemory.readfloat(plptr + 0x0, true);
-    pos["Ypos"] = mainmemory.readfloat(plptr + 0x4, true);
-    pos["Zpos"] = mainmemory.readfloat(plptr + 0x8, true);
-    return pos;
+    
+    self.pos["Xpos"] = mainmemory.readfloat(plptr + 0x0, true);
+    self.pos["Ypos"] = mainmemory.readfloat(plptr + 0x4, true);
+    self.pos["Zpos"] = mainmemory.readfloat(plptr + 0x8, true);
+    return self.pos;
 end
 
-function getBanjoDeathAnimation(check)
-    local banjo = banjoPTR()
-    if banjo == nil
-    then
-        return false;
-    end
+-- function getBanjoDeathAnimation(check)
+--     local banjo = banjoPTR()
+--     if banjo == nil
+--     then
+--         return false;
+--     end
 
-    local ptr = dereferencePointer(banjo + ANIMATION_PTR);
-    local animation = mainmemory.read_u16_be(ptr + 0x34);
+--     local ptr = dereferencePointer(banjo + ANIMATION_PTR);
+--     local animation = mainmemory.read_u16_be(ptr + 0x34);
 
-    if check == true
-    then
-        return animation
-    end
+--     if check == true
+--     then
+--         return animation
+--     end
 
-    if animation == 216 and CHECK_DEATH == false
-    then
-        DETECT_DEATH = true;
-        CHECK_DEATH = true;
-        KILL_BANJO = false;
-        if DEBUG == true
-        then
-            print("Banjo is Dead");
-        end
-    elseif CHECK_DEATH == true and animation ~= 216
-    then
-        CHECK_DEATH = false;
-        if DEBUG == true
-        then
-            print("Deathlink Reset");
-        end
-    end
+--     if animation == 216 and CHECK_DEATH == false
+--     then
+--         DETECT_DEATH = true;
+--         CHECK_DEATH = true;
+--         KILL_BANJO = false;
+--         if DEBUG == true
+--         then
+--             print("Banjo is Dead");
+--         end
+--     elseif CHECK_DEATH == true and animation ~= 216
+--     then
+--         CHECK_DEATH = false;
+--         if DEBUG == true
+--         then
+--             print("Deathlink Reset");
+--         end
+--     end
+-- end
+
+function BTRAM:getMap()
+    self.map = mainmemory.read_u16_be(MAP_ADDR);
+    return self.map;
 end
 
-function getMap()
-    return mainmemory.read_u16_be(MAP_ADDR);
-end
-
-function checkFlag(byte, _bit)
-    local flagBlock = dereferencePointer(FLG_BLK_PTR);
-    if flagBlock == nil
+function BTRAM:checkFlag(byte, _bit)
+    self.dereferencePointer(FLG_BLK_PTR);
+    if self.addressSpace == nil
     then
         return false
     end
-    local currentValue = mainmemory.readbyte(flagBlock + byte);
+    local currentValue = mainmemory.readbyte(self.addressSpace + byte);
     if bit.check(currentValue, _bit) then
+        self.flag_value = true
         return true;
     else
+        self.flag_value = false
         return false;
     end
 end
 
-function clearFlag(byte, _bit)
+function BTRAM:clearFlag(byte, _bit)
 	if type(byte) == "number" and type(_bit) == "number" and _bit >= 0 and _bit < 8 then
-		local flags = dereferencePointer(FLG_BLK_PTR);
+		local flags = self.dereferencePointer(FLG_BLK_PTR);
         local currentValue = mainmemory.readbyte(flags + byte);
         mainmemory.writebyte(flags + byte, bit.clear(currentValue, _bit));
 	end
 end
 
-function setFlag(byte, _bit)
+function BTRAM:setFlag(byte, _bit)
 	if type(byte) == "number" and type(_bit) == "number" and _bit >= 0 and _bit < 8 then
-		local flags = dereferencePointer(FLG_BLK_PTR);
-        local currentValue = mainmemory.readbyte(flags + byte);
-        mainmemory.writebyte(flags + byte, bit.set(currentValue, _bit));
+		self.dereferencePointer(FLG_BLK_PTR);
+        local currentValue = mainmemory.readbyte(self.addressSpace + byte);
+        mainmemory.writebyte(self.addressSpace + byte, bit.set(currentValue, _bit));
 	end
 end
 
+function BTRAM:getModelOneSlotBase(index)
+	return self.obj_model1_slot_base + index * self.obj_model1_slot_size;
+end
 
---- Model Detection and logic
-
-local model_list = {
-    ["Ugger"] = 0x671,
-    ["Altar"] = 0x977,
-    ["Jinjo"] = 0x643,
-    ["Silo"] = 0x7D7,
-    ["Mingy Jongo"] = 0x816,
-    ["Player"] = 0xFFFF,
-    ["Kazooie Split Pad"] = 0x7E1,
-    ["Banjo Split Pad"] = 0x7E2,
-}
-
-local obj_model1_slot_base = 0x10;
-local obj_model1_slot_size = 0x9C;
-
-function getObjectModel1Pointers()
-	object_pointers = {};
-	local objectArray = dereferencePointer(OBJ_ARR_PTR);
-	local num_slots = getModelOneCount();
+function BTRAM:getObjectModel1Pointers()
+    local object_pointers = {};
+	local objectArray = self.dereferencePointer(OBJ_ARR_PTR);
+	local num_slots = self.getModelOneCount();
     if num_slots == nil
     then
         return nil
     end
-    for i = 0, num_slots - 1 do
-        if object_model1_filter == nil then
-            table.insert(object_pointers, objectArray + getModelOneSlotBase(i));
-        else
-            local model1Base = objectArray + getModelOneSlotBase(i);
-            if string.contains(getAnimationType(model1Base), object_model1_filter) then
-                table.insert(object_pointers, model1Base);
-            end
-        end
+    for i = 0, num_slots - 1
+    do
+        table.insert(object_pointers, objectArray + self.getModelOneSlotBase(i));
 	end
 	return object_pointers;
 end
 
-function getModelOneCount()
-	local objectArray = dereferencePointer(OBJ_ARR_PTR);
-    if objectArray == nil
+function BTRAM:getModelOneCount()
+	local objects = self.dereferencePointer(OBJ_ARR_PTR);
+    if objects == nil
     then
         return
     end
-    local firstObject = dereferencePointer(objectArray + 0x04);
-    local lastObject = dereferencePointer(objectArray + 0x08);
+    local firstObject = self.dereferencePointer(objects + 0x04);
+    local lastObject = self.dereferencePointer(objects + 0x08);
 	if lastObject == nil 
 	then
 		return
 	end
-    return math.floor((lastObject - firstObject) / obj_model1_slot_size) + 1;
+    return math.floor((lastObject - firstObject) / self.obj_model1_slot_size) + 1;
 end
 
 
-function getModelOneSlotBase(index)
-	return obj_model1_slot_base + index * obj_model1_slot_size;
-end
-
-function getAnimationType(model1Base)
-	local objectIDPointer = dereferencePointer(model1Base + 0x0);
+function BTRAM:getAnimationType(model1Base)
+	local objectIDPointer = self.dereferencePointer(model1Base + 0x0);
     if objectIDPointer == nil
     then
         return nil
     end
-    local modelIndex = mainmemory.read_u16_be(objectIDPointer + 0x14);
-    return modelIndex;
+    self.singleModelIndex = mainmemory.read_u16_be(objectIDPointer + 0x14);
+    return self.singleModelIndex;
 end
 
 ------------- End of Model Logics -----------
 
-function setCurrentHealth(value)
-	local currentTransformation = mainmemory.readbyte(0x11B065);
-	if type(0x11B644) == 'number' then
-		value = value or 0;
-		value = math.max(0x00, value);
-		value = math.min(0xFF, value);
-		return mainmemory.write_u8(0x11B644, value);
-	end
-end
+-- function setCurrentHealth(value)
+-- 	local currentTransformation = mainmemory.readbyte(0x11B065);
+-- 	if type(0x11B644) == 'number' then
+-- 		value = value or 0;
+-- 		value = math.max(0x00, value);
+-- 		value = math.min(0xFF, value);
+-- 		return mainmemory.write_u8(0x11B644, value);
+-- 	end
+-- end
 
-function checkModel(type)
-    local pointer_list = getObjectModel1Pointers()
+function BTRAM:checkModel(type)
+    local enemy = {};
+    local pointer_list = self.getObjectModel1Pointers()
     if pointer_list == nil
     then
         return false
     end
 
-    local enemy = {};
     if type == "enemy"
     then
-        table.insert(enemy, model_list["Ugger"]);
+        for monster, value in pairs(self.model_enemy_list)
+        do
+            table.insert(enemy, value);
+        end
     end
 
     for k, objptr in pairs(pointer_list)
     do
-        local currentObjectName = getAnimationType(objptr); -- Required for special data
+        local currentObjectName = self.getAnimationType(objptr); -- Required for special data
         if currentObjectName == nil 
         then
             return false
@@ -324,7 +333,7 @@ function checkModel(type)
                     return objptr;
                 end
             end
-        elseif currentObjectName == model_list[type]
+        elseif currentObjectName == self.model_list[type]
         then
             return objptr;
         end
@@ -3643,12 +3652,12 @@ function moveEnemytoBK()
     -- print(playerDist)
 end
 
-function killBT()
-    if KILL_BANJO == true then
-        setCurrentHealth(0)
-        moveEnemytoBK()
-    end
-end
+-- function killBT()
+--     if KILL_BANJO == true then
+--         setCurrentHealth(0)
+--         moveEnemytoBK()
+--     end
+-- end
 
 function getSlotData()
     local retTable = {}
