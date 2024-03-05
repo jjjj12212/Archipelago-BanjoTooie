@@ -204,6 +204,7 @@ class BanjoTooieRules:
                                                  state.has(itemName.GEGGS, self.player),
             locationName.JIGGYWW4: lambda state: self.check_humba_magic(state, itemName.HUMBAGM) and
                                                  self.check_mumbo_magic(state, itemName.MUMBOWW) and
+                                                 self.check_mumbo_magic(state, itemName.HUMBAWW) and
                                                  self.saucer_door_open(state),
             locationName.JIGGYWW5: lambda state: state.has(itemName.SPLITUP, self.player) and
                                                  state.has(itemName.AIREAIM, self.player),
