@@ -728,7 +728,7 @@ class BanjoTooieRules:
         }
 
     def jiggy_unlock(self, state: CollectionState, Amount) -> bool:
-        return state.has_group("Jiggy", self.player, Amount)
+        return state.has("Jiggy", self.player, Amount)
 
     def check_mumbo_magic(self, state: CollectionState, name) -> bool:
         for item_name in self.mumbo_magic:
