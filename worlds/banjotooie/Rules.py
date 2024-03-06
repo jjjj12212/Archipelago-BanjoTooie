@@ -157,7 +157,7 @@ class BanjoTooieRules:
             regionName.CK: lambda state: state.has(itemName.JIGGY, self.player, 55) and state.has(itemName.CLAWBTS, self.player),
             regionName.H1: lambda state: state.has(itemName.JIGGY, self.player, 70) and
                                          (self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK)) and
-                                         (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)) and
+                                         #(self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)) and
                                          state.has(itemName.BBLASTER, self.player) and
                                          state.has(itemName.CEGGS, self.player)
         }
@@ -251,8 +251,7 @@ class BanjoTooieRules:
             locationName.JIGGYJR9: lambda state: (state.has(itemName.GEGGS, self.player) or
                                                   state.has(itemName.CEGGS, self.player)) and
                                                  state.has(itemName.SPLITUP, self.player),
-            locationName.JIGGYJR10: lambda state: state.has(itemName.EGGAIM, self.player) and
-                                                  state.has(itemName.IEGGS, self.player) and
+            locationName.JIGGYJR10: lambda state: state.has(itemName.IEGGS, self.player) and
                                                   state.has(itemName.TTORP, self.player),
 
             #Terrydactyland Jiggies
@@ -616,9 +615,11 @@ class BanjoTooieRules:
 
             locationName.CHEATOJR3: lambda state: self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player) and
                                                   (self.check_solo_moves(state, itemName.GLIDE) or self.check_solo_moves(state, itemName.LSPRING) or
+                                                   self.check_solo_moves(state, itemName.WWHACK) or
                                                   (self.check_solo_moves(state, itemName.PACKWH) and state.has(itemName.GGRAB, self.player))),
 
-            locationName.CHEATOTL1: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            locationName.CHEATOTL1: lambda state: state.has(itemName.JIGGY, self.player, 45) and state.has(itemName.SPRINGB, self.player) and
+                                                  state.has(itemName.TTORP, self.player),
             locationName.CHEATOTL2: lambda state: self.check_humba_magic(state, itemName.HUMBATD),
             locationName.CHEATOTL3: lambda state: state.has(itemName.BDRILL, self.player) and 
                                                   (state.has(itemName.GGRAB, self.player) or self.can_beat_terry(state)),
@@ -750,8 +751,10 @@ class BanjoTooieRules:
         count:int = 0
         if state.has(itemName.JIGGY, self.player, 1):
             count += 100
+            if state.has(itemName.GGRAB, self.player):
+                count += 30
             if state.has(itemName.GGRAB, self.player) or self.dilberta_free(state):
-                count += 40
+                count += 10
                 if state.has(itemName.JIGGY, self.player, 4) or self.dilberta_free(state):
                     count += 100
                 if state.has(itemName.FEGGS, self.player):
