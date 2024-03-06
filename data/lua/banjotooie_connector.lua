@@ -33,15 +33,12 @@ local DEBUG = false
 local DEBUGLVL2 = false
 local BYPASS_GAME_LOAD = false;
 
-local OBJ_ARR_PTR = 0x136EE0;
 local POS_PTR = 0xE4
 local ANIMATION_PTR = 0x1A0;
 local PLAYER_PTR = 0x135490;
 local PLAYER_PTR_IDX = 0x1354DF;
 local FLG_BLK_PTR = 0x12C770;
 local MAP_ADDR = 0x132DC2;
-local CONSUME_PTR = 0x12B250;
-local CONSUME_IDX = 0x11B080;
 
 local CURRENT_MAP = nil;
 local SKIP_TOT = ""
@@ -66,19 +63,87 @@ local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
 
 local BATH_PADS_QOL = false
 
+local receive_map = { -- [ap_id] = item_id; --  Required for Async Items
+    [0] = 0
+}
+
+-- Consumable Class
+BTConsumable = {
+    CONSUME_PTR = 0x12B250;
+    CONSUME_IDX = 0x11B080;
+    consumeTable = {
+        [0]  = {key=0x27BD, name="Blue Eggs"},
+        [1]  = {key=0x0C03, name="Fire Eggs"},
+        [2]  = {key=0x0002, name="Ice Eggs"},
+        [3]  = {key=0x01EE, name="Grenade Eggs"},
+        [4]  = {key=0x2401, name="CWK Eggs"},
+        [5]  = {key=0x15E0, name="Proximity Eggs"},
+        [6]  = {key=0x1000, name="Red Feathers"},
+        [7]  = {key=0x3C18, name="Gold Feathers"},
+        [8]  = {key=0x0003, name="GLOWBO"},
+        [9]  = {key=0x3C0C, name="HONEYCOMB"},
+        [10] = {key=0x0319, name="CHEATO"},
+        [11] = {key=0x858C, name="Burgers"},
+        [12] = {key=0x03E0, name="Fries"},
+        [13] = {key=0x27BD, name="Tickets"},
+        [14] = {key=0x0C03, name="Doubloons"},
+        [15] = {key=0x3C05, name="Gold Idols"},
+        [16] = {key=0x0002, name="Beans"}, -- CCL
+        [17] = {key=0x85E3, name="Fish"}, -- HFP
+        [18] = {key=0x0040, name="Eggs"}, -- Stop'n'Swop
+        [19] = {key=0x8FBF, name="Ice Keys"}, -- Stop'n'Swop
+        [20] = {key=0x1461, name="MEGA GLOWBO"}
+    };
+    consumeIndex = nil;
+    consumeKey = nil;
+    consumeName = nil;
+}
+
+function BTConsumable:new(itemName)
+    local self = setmetatable({}, BTConsumable)
+    self.__index = self
+    for index, table in pairs(self.consumeTable)
+    do
+        if itemName == table["name"]
+        then
+            self.consumeIndex = index
+            self.consumeKey = table["key"]
+            self.consumeName = itemName
+        end
+    end
+    if self.consumeIndex == nil
+    then
+        print("Could not find Consumeable name" + itemName)
+        print("Please Correct and restart the Banjo Tooie Connector")
+        return nil;
+    end
+   return self
+end
+
+function BTConsumable:setConsumable(BTRAM, value)
+    local addr = BTRAM:dereferencePointer(self.CONSUME_PTR);
+    mainmemory.write_u16_be(addr + self.consumeIndex * 2, value ~ self.consumeKey);
+    mainmemory.write_u16_be(self.CONSUME_IDX + self.consumeIndex * 0x0C, value);
+    if DEBUG == true
+    then
+        print(self.consumeName + "Has been modified")
+    end
+end
+
+function BTConsumable:getConsumable()
+    local amount = mainmemory.read_u16_be(self.CONSUME_IDX + self.consumeIndex * 0x0C);
+	return amount;
+end
+-- EO Consumable Class
+
 -- Class that requires RAM reading and writing
 BTRAM = {
     addressSpace = 0;
     RDRAMBase = 0x80000000;
     obj_model1_slot_base = 0x10;
     obj_model1_slot_size = 0x9C;
-    consumeTable = {
-        [8]  = {key=0x0003, name="Glowbos"},
-        [9]  = {key=0x3C0C, name="Empty Honeycombs"},
-        [10] = {key=0x0319, name="Cheato Pages"},
-        [20] = {key=0x1461, name="Mega Glowbo"}
-    };
-    consumeIndex = 0;
+
+    
     pos = { 
         ["Xpos"] = 0, 
         ["Ypos"] = 0, 
@@ -101,8 +166,11 @@ BTRAM = {
     singleModelIndex = 0;
 } 
 
-function BTRAM:init()
-   local self = setmetatable({}, BTRAM)
+
+function BTRAM:new(t)
+    t = t or {}
+    local self = setmetatable(t, BTRAM)
+    self.__index = self
    return self
 end
 
@@ -111,42 +179,7 @@ function BTRAM:dereferencePointer(address)
     return self.addressSpace - self.RDRAMBase;
 end
 
-function BTRAM:setConsumable(consumable_type, value)
-	if consumable_type == 'HONEYCOMB'
-	then
-		self.consumeIndex = 9
-	elseif consumable_type == 'CHEATO'
-	then
-		self.consumeIndex = 10
-    elseif consumable_type == 'GLOWBO'
-    then
-        self.consumeIndex = 8
-    elseif consumable_type == 'MEGA GLOWBO'
-    then
-        self.consumeIndex = 20
-	end
-    self.addressSpace = self:dereferencePointer(CONSUME_PTR);
-    mainmemory.write_u16_be(self.addressSpace + self.consumeIndex * 2, value ~ self.consumeTable[self.consumeIndex]["key"]);
-    mainmemory.write_u16_be(CONSUME_IDX + self.consumeIndex * 0x0C, value);
-end
 
-function BTRAM:getConsumable(consumable_type)
-	if consumable_type == 'HONEYCOMB'
-	then
-		self.consumeIndex = 9
-	elseif consumable_type == 'CHEATO'
-	then
-		self.consumeIndex = 10
-    elseif consumable_type == 'GLOWBO'
-    then
-        self.consumeIndex = 8
-    elseif consumable_type == 'MEGA GLOWBO'
-    then
-        self.consumeIndex = 20
-	end
-    self.addressSpace = mainmemory.read_u16_be(CONSUME_IDX + self.consumeIndex * 0x0C);
-	return self.addressSpace;
-end
 
 function BTRAM:banjoPTR()
     local playerPointerIndex = mainmemory.readbyte(PLAYER_PTR_IDX);
@@ -155,12 +188,12 @@ function BTRAM:banjoPTR()
 end
 
 function BTRAM:getBanjoPos()
-    local banjo = self.banjoPTR()
+    local banjo = self:banjoPTR()
     if banjo == nil
     then
         return false;
     end
-    local plptr = self.dereferencePointer(banjo + POS_PTR);
+    local plptr = self:dereferencePointer(banjo + POS_PTR);
     if plptr == nil
     then
         return false;
@@ -212,7 +245,7 @@ function BTRAM:getMap()
 end
 
 function BTRAM:checkFlag(byte, _bit)
-    self.dereferencePointer(FLG_BLK_PTR);
+    self:dereferencePointer(FLG_BLK_PTR);
     if self.addressSpace == nil
     then
         return false
@@ -229,7 +262,7 @@ end
 
 function BTRAM:clearFlag(byte, _bit)
 	if type(byte) == "number" and type(_bit) == "number" and _bit >= 0 and _bit < 8 then
-		local flags = self.dereferencePointer(FLG_BLK_PTR);
+		local flags = self:dereferencePointer(FLG_BLK_PTR);
         local currentValue = mainmemory.readbyte(flags + byte);
         mainmemory.writebyte(flags + byte, bit.clear(currentValue, _bit));
 	end
@@ -237,55 +270,182 @@ end
 
 function BTRAM:setFlag(byte, _bit)
 	if type(byte) == "number" and type(_bit) == "number" and _bit >= 0 and _bit < 8 then
-		self.dereferencePointer(FLG_BLK_PTR);
+		self:dereferencePointer(FLG_BLK_PTR);
         local currentValue = mainmemory.readbyte(self.addressSpace + byte);
         mainmemory.writebyte(self.addressSpace + byte, bit.set(currentValue, _bit));
 	end
 end
 
-function BTRAM:getModelOneSlotBase(index)
+BTModel = {
+    OBJ_ARR_PTR = 0x136EE0;
+    model_name = nil;
+    enemy = false;
+    obj_model1_slot_base = 0x10;
+    obj_model1_slot_size = 0x9C;
+    pos = { 
+        ["Xpos"] = 0, 
+        ["Ypos"] = 0, 
+        ["Zpos"] = 0
+    };
+    model_list = {
+        ["Altar"] = 0x977,
+        ["Jinjo"] = 0x643,
+        ["Silo"] = 0x7D7,
+        ["Player"] = 0xFFFF,
+        ["Kazooie Split Pad"] = 0x7E1,
+        ["Banjo Split Pad"] = 0x7E2,
+    };
+    model_enemy_list = {
+        ["Ugger"] = 0x671,
+        ["Mingy Jongo"] = 0x816,
+    };
+    singleModelPointer = nil;
+    modelObjectList = {};
+    modelTable = {};
+} 
+
+function BTModel:new(modelName, isEnemy)
+    local self = setmetatable({}, BTModel)
+    self.model_name = modelName
+    self.enemy = isEnemy
+    self.__index = self
+   return self
+end
+
+function BTModel:getModelSlotBase(index)
 	return self.obj_model1_slot_base + index * self.obj_model1_slot_size;
 end
 
-function BTRAM:getObjectModel1Pointers()
-    local object_pointers = {};
-	local objectArray = self.dereferencePointer(OBJ_ARR_PTR);
-	local num_slots = self.getModelOneCount();
-    if num_slots == nil
-    then
-        return nil
-    end
-    for i = 0, num_slots - 1
-    do
-        table.insert(object_pointers, objectArray + self.getModelOneSlotBase(i));
-	end
-	return object_pointers;
-end
-
-function BTRAM:getModelOneCount()
-	local objects = self.dereferencePointer(OBJ_ARR_PTR);
+function BTModel:getModelCount(BTRAM)
+	local objects = BTRAM:dereferencePointer(self.OBJ_ARR_PTR);
     if objects == nil
     then
         return
     end
-    local firstObject = self.dereferencePointer(objects + 0x04);
-    local lastObject = self.dereferencePointer(objects + 0x08);
-	if lastObject == nil 
+    local firstObject = BTRAM:dereferencePointer(objects + 0x04);
+    local lastObject = BTRAM:dereferencePointer(objects + 0x08);
+	if lastObject == nil
 	then
 		return
 	end
     return math.floor((lastObject - firstObject) / self.obj_model1_slot_size) + 1;
 end
 
+function BTModel:getModelPointers(BTRAM)
+	local objectArray = BTRAM:dereferencePointer(self.OBJ_ARR_PTR);
+	local num_slots = self:getModelCount();
+    if num_slots == nil
+    then
+        return nil
+    end
+    for i = 0, num_slots - 1
+    do
+        table.insert(self.modelTable, objectArray + self:getModelSlotBase(i));
+	end
+end
 
-function BTRAM:getAnimationType(model1Base)
-	local objectIDPointer = self.dereferencePointer(model1Base + 0x0);
+function BTModel:getAnimationType(BTRAM, modelPtr)
+	local objectIDPointer = BTRAM:dereferencePointer(modelPtr + 0x0);
     if objectIDPointer == nil
     then
         return nil
     end
     self.singleModelIndex = mainmemory.read_u16_be(objectIDPointer + 0x14);
     return self.singleModelIndex;
+end
+
+function BTModel:checkModel(BTRAM)
+    local pointer_list = self:getModelPointers(BTRAM)
+    if pointer_list == nil
+    then
+        return false
+    end
+
+    for k, modelptr in pairs(pointer_list)
+    do
+        local ObjectAddr = self:getAnimationType(BTRAM, modelptr); -- Required for special data
+        if ObjectAddr == nil
+        then
+            return false
+        end
+
+        if self.enemy == true
+        then
+            for k, enemyval in pairs(self.model_enemy_list)
+            do
+                if ObjectAddr == enemyval
+                then
+                    self.singleModelPointer = modelptr;
+                    return true;
+                end
+            end
+        elseif ObjectAddr == self.model_list[self.model_name]
+        then
+            self.singleModelPointer = modelptr;
+            return true;
+        end
+    end
+    return false;
+end
+
+function BTModel:getModels(BTRAM) -- returns list
+    local pointer_list = self:getModelPointers(BTRAM)
+    if pointer_list == nil
+    then
+        return false
+    end
+    local i = 0
+    for k, objptr in pairs(pointer_list)
+    do
+        local currentObjectName = self:getAnimationType(BTRAM, objptr); -- Required for special data
+        if currentObjectName == nil and i == 0
+        then
+            return false
+        end
+        i = i + 1
+        if currentObjectName == self.model_list[self.model_name]
+        then
+           self.modelObjectList[i] = objptr;
+        end
+    end
+    return self.modelObjectList;
+end
+
+function BTModel:changeName(modelName)
+    self.model_name = modelName
+end
+
+function BTModel:getSingleModelCoords(BTRAM)
+    local POS = { 
+        ["Xpos"] = 0, 
+        ["Ypos"] = 0, 
+        ["Zpos"] = 0
+    };
+    local result = self:checkModel(BTRAM);
+    if result == false
+    then
+        return false
+    end
+    POS["Xpos"] = mainmemory.readfloat(self.singleModelPointer + 0x04, true);
+	POS["Ypos"] = mainmemory.readfloat(self.singleModelPointer + 0x08, true);
+	POS["Zpos"] = mainmemory.readfloat(self.singleModelPointer + 0x0C, true);
+    return POS;
+end
+
+function BTModel:getSingleModelDistance(BTRAM)
+    local banjoPOS = BTRAM:getBanjoPos();
+    if banjoPOS == false
+    then
+        return false;
+    end
+    local objPOS = self:getSingleModelCoords(BTRAM);
+    if objPOS == false
+    then
+        return false
+    end
+    local hDist = math.sqrt(((objPOS["Xpos"] - banjoPOS["Xpos"]) ^ 2) + ((objPOS["Zpos"] - banjoPOS["Zpos"]) ^ 2));
+	local playerDist = math.floor(math.sqrt(((objPOS["Ypos"] - banjoPOS["Ypos"]) ^ 2) + (hDist ^ 2)));
+    return playerDist
 end
 
 ------------- End of Model Logics -----------
@@ -300,96 +460,19 @@ end
 -- 	end
 -- end
 
-function BTRAM:checkModel(type)
-    local enemy = {};
-    local pointer_list = self.getObjectModel1Pointers()
-    if pointer_list == nil
-    then
-        return false
-    end
-
-    if type == "enemy"
-    then
-        for monster, value in pairs(self.model_enemy_list)
-        do
-            table.insert(enemy, value);
-        end
-    end
-
-    for k, objptr in pairs(pointer_list)
-    do
-        local currentObjectName = self.getAnimationType(objptr); -- Required for special data
-        if currentObjectName == nil 
-        then
-            return false
-        end
-
-        if type == "enemy"
-        then
-            for k, enemyval in pairs(enemy)
-            do
-                if currentObjectName == enemyval
-                then
-                    return objptr;
-                end
-            end
-        elseif currentObjectName == self.model_list[type]
-        then
-            return objptr;
-        end
-    end
-    return false;
-end
-
-function checkModels(type) -- returns list
-    local pointer_list = getObjectModel1Pointers()
-    if pointer_list == nil
-    then
-        return false
-    end
-
-    local i = 0
-    local object_list = {}
-    for k, objptr in pairs(pointer_list)
-    do
-        local currentObjectName = getAnimationType(objptr); -- Required for special data
-        if currentObjectName == nil and i == 0
-        then
-            return false
-        end
-        i = i + 1
-        if currentObjectName == model_list[type]
-        then
-           object_list[i] = objptr;
-        end
-    end
-    return object_list;
-end
 
 
-function getAltar()
+function getAltar(BTRAM, BTModel)
     if CURRENT_MAP == 335 or CURRENT_MAP == 337 -- No need to modify RAM when already in WH
     then
         return
     end
-    local object = checkModel("Altar");
-    if object == false
+    BTModel.changeName("Altar");
+    local PlayerDist = BTModel.getSingleModelDistance(BTRAM)
+    if PlayerDist == false
     then
-        return;
+        return
     end
-
-    local pos = getBanjoPos()
-    if pos == false --possible loading screen
-    then
-        return false
-    end
-
-	local xPos = mainmemory.readfloat(object + 0x04, true);
-	local yPos = mainmemory.readfloat(object + 0x08, true);
-	local zPos = mainmemory.readfloat(object + 0x0C, true);
-
-	local hDist = math.sqrt(((xPos - pos["Xpos"]) ^ 2) + ((zPos - pos["Zpos"]) ^ 2));
-	local playerDist = math.floor(math.sqrt(((yPos - pos["Ypos"]) ^ 2) + (hDist ^ 2)));
 
     if playerDist <= 300 and (CLOSE_TO_ALTAR == false or USE_BMM_TBL == false)
     then
@@ -411,28 +494,15 @@ function getAltar()
     end
 end
 
-function nearWHJinjo()
-    
-    local object = checkModel("Jinjo");
-    if object == false
+function nearWHJinjo(BTRAM, BTModel)
+    BTModel.changeName("Jinjo");
+    local PlayerDist = BTModel.getSingleModelDistance(BTRAM)
+    if PlayerDist == false
     then
         BMMBackup()
         useAGI()
         return;
     end
-
-    local pos = getBanjoPos()
-    if pos == false --possible loading screen
-    then
-        return false
-    end
-
-	local xPos = mainmemory.readfloat(object + 0x04, true);
-	local yPos = mainmemory.readfloat(object + 0x08, true);
-	local zPos = mainmemory.readfloat(object + 0x0C, true);
-
-	local hDist = math.sqrt(((xPos - pos["Xpos"]) ^ 2) + ((zPos - pos["Zpos"]) ^ 2));
-	local playerDist = math.floor(math.sqrt(((yPos - pos["Ypos"]) ^ 2) + (hDist ^ 2)));
 
     if playerDist <= 400
     then
@@ -444,9 +514,7 @@ function nearWHJinjo()
     end
 end
 
-local receive_map = { -- [ap_id] = item_id
-    [0] = 0
-} 
+
 
 -- Moves that needs to be checked Per Map. some silos NEEDS other moves as well to get to.
 local SILO_MAP_CHECK = {
@@ -2723,23 +2791,6 @@ local read_H1_checks = function(type)
     return checks
 end
 
-
-function checkConsumables(consumable_type, location_checks)
-	for location_name, value in pairs(AGI[consumable_type])
-	do
-		if(USE_BMM_TBL == false and (value == false and location_checks[location_name] == true))
-		then
-			if(DEBUG == true)
-			then
-				print("Obtained local consumable. Remove from Inventory")
-			end
-			setConsumable(consumable_type, getConsumable(consumable_type) - 1)
-			AGI[consumable_type][location_name] = true
-			savingAGI()
-		end
-	end
-end
-
 local update_BMK_MOVES_checks = function() --Only run when close to Silos
     for keys, moves in pairs(SILO_MAP_CHECK[CURRENT_MAP])
     do
@@ -2834,22 +2885,6 @@ function checkConsumables(consumable_type, location_checks)
 	end
 end
 
-function checkConsumables(consumable_type, location_checks)
-	for location_name, value in pairs(AGI[consumable_type])
-	do
-		if(USE_BMM_TBL == false and (value == false and location_checks[location_name] == true))
-		then
-			if(DEBUG == true)
-			then
-				print("Obtained local consumable. Remove from Inventory")
-			end
-			setConsumable(consumable_type, getConsumable(consumable_type) - 1)
-			AGI[consumable_type][location_name] = true
-			savingAGI()
-		end
-	end
-end
-
 function loadGame(current_map)
     if(current_map == 0x142 or current_map == 0xAF)
     then
@@ -2880,7 +2915,7 @@ function loadGame(current_map)
     end
 end
 
-function getSiloPlayerModel()
+function getSiloPlayerModel(BTRAM, BTModel)
     if SILOS_WAIT_TIMER <= 2
     then
         if DEBUG == true
@@ -2890,10 +2925,12 @@ function getSiloPlayerModel()
         SILOS_WAIT_TIMER = SILOS_WAIT_TIMER + 1
         return
     end
-    local object = checkModel("Silo");
+    BTModel.changeName("Silo")
+    local object = BTModel.checkModel(BTRAM);
     if object == false
     then
-        local player = checkModel("Player");
+        BTModel.changeName("Player")
+        local player = BTModel.checkModel(BTRAM);
         if player == false
         then
             return
