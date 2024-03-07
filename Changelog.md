@@ -1,7 +1,7 @@
 # 0.6-beta
 - Location name corrections
 - More Logic Fixes:
-  - Bovina's Jiggy now requires Airborne Egg Aiming
+  - Bovina's Jiggy now requires Airborne Egg Aiming with flight
   - Dippy's Pool is now in the CCL region
   - Note Logic now correctly expects either method of reaching Plateau
   - Oogle Boogle Jiggy now requires Bill Drill and Grip Grab
@@ -12,11 +12,17 @@
   - Grunty Industries 3rd Floor Honeycomb now allows Solo Kazooie
   - Split Up is now required for The Inferno Jiggy
   - Money Van is now required for Saucer of Peril to access Mumbo's Skull
+  - Kazooie no longer needs anything to cross Cauldron Keep's moat
+  - Dippy's Pool Cheato Page now requires Springy-Step Shoes
+  - Ancient Swimming Baths Cheato Page now allows Wing Whack
+  - Added more clockwork logic
+  - Fixed a lot of misc. WW, JRL, and HFP logic
 - Implemented generic Jiggy item
 - Bugfixes:
   - Async items are now received properly
   - Hints no longer send checks
   - Saving and Quitting while touching a jiggy no longer sends false checks
+- QOL: Split Up Pads in Ancient Baths moved to better location
 
 # 0.5.1-beta
 - Fixed logic errors:
