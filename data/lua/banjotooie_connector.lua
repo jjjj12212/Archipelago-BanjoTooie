@@ -415,38 +415,89 @@ function BTModel:changeName(modelName)
     self.model_name = modelName
 end
 
-function BTModel:getSingleModelCoords(BTRAM)
+function BTModel:getSingleModelCoords(BTRAM, modelObjPtr)
     local POS = { 
         ["Xpos"] = 0, 
         ["Ypos"] = 0, 
-        ["Zpos"] = 0
+        ["Zpos"] = 0,
+        ["hDist"] = 0;
+        ["Distance"] = 9999;
     };
-    local result = self:checkModel(BTRAM);
-    if result == false
-    then
-        return false
-    end
-    POS["Xpos"] = mainmemory.readfloat(self.singleModelPointer + 0x04, true);
-	POS["Ypos"] = mainmemory.readfloat(self.singleModelPointer + 0x08, true);
-	POS["Zpos"] = mainmemory.readfloat(self.singleModelPointer + 0x0C, true);
-    return POS;
-end
 
-function BTModel:getSingleModelDistance(BTRAM)
     local banjoPOS = BTRAM:getBanjoPos();
     if banjoPOS == false
     then
         return false;
     end
-    local objPOS = self:getSingleModelCoords(BTRAM);
-    if objPOS == false
+
+    if modelObjPtr == nil
     then
-        return false
+        local result = self:checkModel(BTRAM);
+        if result == false
+        then
+            return false
+        end
+        POS["Xpos"] = mainmemory.readfloat(self.singleModelPointer + 0x04, true);
+        POS["Ypos"] = mainmemory.readfloat(self.singleModelPointer + 0x08, true);
+        POS["Zpos"] = mainmemory.readfloat(self.singleModelPointer + 0x0C, true);
+        POS["Hdist"] = math.sqrt(((POS["Xpos"] - banjoPOS["Xpos"]) ^ 2) + ((POS["Zpos"] - banjoPOS["Zpos"]) ^ 2));
+        POS["Distance"] = math.floor(math.sqrt(((POS["Ypos"] - banjoPOS["Ypos"]) ^ 2) + (POS["Hdist"] ^ 2)));
+    else
+        POS["Xpos"] = mainmemory.readfloat(modelObjPtr + 0x04, true);
+        POS["Ypos"] = mainmemory.readfloat(modelObjPtr + 0x08, true);
+        POS["Zpos"] = mainmemory.readfloat(modelObjPtr + 0x0C, true);
+        POS["hDist"] = math.sqrt(((POS["Xpos"] - banjoPOS["Xpos"]) ^ 2) + ((POS["Zpos"] - banjoPOS["Zpos"]) ^ 2));
+        POS["Distance"] = math.floor(math.sqrt(((POS["Ypos"] - banjoPOS["Ypos"]) ^ 2) + (POS["Hdist"] ^ 2)));
     end
-    local hDist = math.sqrt(((objPOS["Xpos"] - banjoPOS["Xpos"]) ^ 2) + ((objPOS["Zpos"] - banjoPOS["Zpos"]) ^ 2));
-	local playerDist = math.floor(math.sqrt(((objPOS["Ypos"] - banjoPOS["Ypos"]) ^ 2) + (hDist ^ 2)));
-    return playerDist
+    return POS;
 end
+
+function BTModel:getClosestModelDistance(BTRAM)
+    self:getModels(BTRAM);
+    local closest = 999999;
+    for index, modelObjPtr in pairs(self.modelObjectList)
+    do
+        local checkdistance = self:getSingleModelCoords(BTRAM, modelObjPtr)
+        if checkdistance ~= false and checkdistance["distance"] < closest
+        then
+            closest = checkdistance["distance"]
+        end
+    end
+    return closest
+end
+
+function BTModel:getMultipleModelCoords(BTRAM)
+    local modelPOS_table = {}
+    self:getModels(BTRAM);
+    local i = 0;
+    for index, modelObjPtr in pairs(self.modelObjectList)
+    do
+        local objPOS = self:getSingleModelCoords(BTRAM, modelObjPtr);
+        modelPOS_table[modelObjPtr] = objPOS
+        i = i + 1
+    end
+    return modelPOS_table
+end
+
+function BTModel:moveModelObject(modelObjPtr, Xnew, Ynew, Znew)
+    if modelObjPtr == nil
+    then
+        modelObjPtr = self.singleModelPointer;
+    end
+    if Xnew ~= nil
+    then
+        mainmemory.writefloat(modelObjPtr + 0x0C, Xnew, true);
+    end
+    if Ynew ~= nil
+    then
+        mainmemory.writefloat(modelObjPtr + 0x08, Ynew, true);
+    end
+    if Znew ~= nil
+    then
+        mainmemory.writefloat(modelObjPtr + 0x0C, Znew, true);
+    end
+end
+
 
 ------------- End of Model Logics -----------
 
@@ -2955,35 +3006,22 @@ function getSiloPlayerModel(BTRAM, BTModel)
     WATCH_LOADED_SILOS = true
 end
 
-function nearSilo()
-    local pos = getBanjoPos()
-    if pos == false --possible loading screen
-    then
-        return false
-    end
+function nearSilo(BTRAM, BTModel)
+    BTModel.changeName("Silo");
+    local modelPOS = BTModel.getMultipleModelCoords(BTRAM)
 
-    local objects = checkModels("Silo");
-    if objects == false
-    then
-        return; --Shouldn't hit here at all
-    end
-
-    for index, silos in pairs(objects) do
-        local xPos = mainmemory.readfloat(silos + 0x04, true);
-        local yPos = mainmemory.readfloat(silos + 0x08, true);
-        local zPos = mainmemory.readfloat(silos + 0x0C, true);
+    for modelObjPtr, POS in pairs(modelPOS) do
+        
 
         --Move the Silo in Witchyworld.
-        if (xPos == 0 and yPos == -163 and zPos == -1257)
+        if POS["Xpos"] == 0 and POS["Ypos"] == -163 and POS["Zpos"] == -1257
             and CURRENT_MAP == 0xD6
         then
-            mainmemory.writefloat(silos + 0x0C, zPos + 100, true);
-            MoveWitchyPads();
+            mainmemory.writefloat(modelObjPtr + 0x0C, POS["Zpos"] + 100, true);
+            MoveWitchyPads(BTRAM, BTModel);
         end
     
-        local hDist = math.sqrt(((xPos - pos["Xpos"]) ^ 2) + ((zPos - pos["Zpos"]) ^ 2));
-        playerDist = math.floor(math.sqrt(((yPos - pos["Ypos"]) ^ 2) + (hDist ^ 2)));
-        if playerDist <= 650
+        if POS["Distance"] <= 650
         then
             if DEBUG == true
             then
@@ -2993,7 +3031,7 @@ function nearSilo()
         end
     end
 
-    if playerDist <= 650 
+    if POS["Distance"] <= 650 
     then
         if LOAD_BMK_MOVES == false
         then
@@ -3011,7 +3049,7 @@ function nearSilo()
             if DEBUG == true
             then
             print("BMK Move Learnt");
-            print(playerDist)
+            print(POS["Distance"])
             end
         end
     else
@@ -3028,69 +3066,38 @@ function nearSilo()
     end
 end
 
-function MoveWitchyPads()
+function MoveWitchyPads(BTRAM, BTModel)
+    BTModel.changeName("Kazooie Split Pad")
+    local modelPOS = BTModel.getMultipleModelCoords(BTRAM)
+    for modelObjPtr, POS in pairs(modelPOS) do
 
-    local objects = checkModels("Kazooie Split Pad");
-    for index, pad in pairs(objects) do
-        local xPos = mainmemory.readfloat(pad + 0x04, true);
-        local yPos = mainmemory.readfloat(pad + 0x08, true);
-        local zPos = mainmemory.readfloat(pad + 0x0C, true);
-
-        --Move the Pads in WitchyWorld.
-        if (xPos == -125 and yPos == -163 and zPos == -1580)
+        if (POS["Xpos"] == -125 and POS["Ypos"] == -163 and POS["Zpos"] == -1580)
             and CURRENT_MAP == 0xD6
         then
-            mainmemory.writefloat(pad + 0x0C, zPos - 300, true);
---          mainmemory.writefloat(pad + 0x08, yPos - 10, true);
-            mainmemory.writefloat(pad + 0x04, xPos + 850, true);
+            BTModel:moveModelObject(modelObjPtr, POS["Xpos"] + 850, nil, POS["Zpos"] - 300)
             break
         end
     end
-
-    local objects = checkModels("Banjo Split Pad");
-    for index, pad in pairs(objects) do
-        local xPos = mainmemory.readfloat(pad + 0x04, true);
-        local yPos = mainmemory.readfloat(pad + 0x08, true);
-        local zPos = mainmemory.readfloat(pad + 0x0C, true);
-
-        if (xPos == 125 and zPos == -1580)
+    BTModel.changeName("Banjo Split Pad")
+    local modelPOS = BTModel.getMultipleModelCoords(BTRAM)
+    for modelObjPtr, POS in pairs(modelPOS) do
+        if (POS["Xpos"] == 125 and POS["Zpos"] == -1580)
             and CURRENT_MAP == 0xD6
         then
-            mainmemory.writefloat(pad + 0x0C, zPos - 300, true);
---            mainmemory.writefloat(pad + 0x08, yPos - 10, true);
-            mainmemory.writefloat(pad + 0x04, xPos + 850, true);
+            BTModel:moveModelObject(modelObjPtr, POS["Xpos"] + 850, nil, POS["Zpos"] - 300)
             break
         end
     end
 end
 
-function MoveBathPads()
-    local kpad = checkModel("Kazooie Split Pad");
-    local bpad = checkModel("Banjo Split Pad");
-    if kpad == nil or bpad == nil
-    then
-        return
-    end
-    local kxPos = mainmemory.readfloat(kpad + 0x04, true);
-    local kyPos = mainmemory.readfloat(kpad + 0x08, true);
-    local kzPos = mainmemory.readfloat(kpad + 0x0C, true);
-    local kzRot = mainmemory.readfloat(kpad + 0x4C, true);
-    local kyRot = mainmemory.readfloat(kpad + 0x48, true);
+function MoveBathPads(BTRAM, BTModel)
+    BTModel.changeName("Kazooie Split Pad")
+    POS = BTModel.getSingleModelCoords(BTRAM, nil)
+    BTModel.moveModelObject(nil, 0, POS["Ypos"] + 450, POS["Zpos"] - 75);
 
-    local bxPos = mainmemory.readfloat(bpad + 0x04, true);
-    local byPos = mainmemory.readfloat(bpad + 0x08, true);
-    local bzPos = mainmemory.readfloat(bpad + 0x0C, true);
-    local bzRot = mainmemory.readfloat(bpad + 0x4C, true);
-    local byRot = mainmemory.readfloat(bpad + 0x48, true);
-
-    mainmemory.writefloat(kpad + 0x4C, 0, true);
-    mainmemory.writefloat(kpad + 0x0C, kzPos + 450, true);
-    mainmemory.writefloat(kpad + 0x08, byPos - 75, true);
-
-    mainmemory.writefloat(bpad + 0x4C, 0, true);
-    mainmemory.writefloat(bpad + 0x0C, bzPos + 450, true);
-    mainmemory.writefloat(bpad + 0x08, byPos - 75, true);
-
+    BTModel.changeName("Banjo Split Pad")
+    POS = BTModel.getSingleModelCoords(BTRAM, nil)
+    BTModel.moveModelObject(nil, 0, POS["Ypos"] + 450, POS["Zpos"] - 75);
     BATH_PADS_QOL = true
 end
 
@@ -3153,7 +3160,7 @@ function locationControl()
             end
             if CURRENT_MAP == 0xF4 and BATH_PADS_QOL == false
             then
-                MoveBathPads()
+                MoveBathPads(BTRAM, BTModel)
             elseif  CURRENT_MAP ~= 0xF4 and BATH_PADS_QOL == true
             then
                 BATH_PADS_QOL = false
