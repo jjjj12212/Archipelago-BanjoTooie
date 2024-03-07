@@ -14,8 +14,9 @@
   - Money Van is now required for Saucer of Peril to access Mumbo's Skull
   - Kazooie no longer needs anything to cross Cauldron Keep's moat
   - Dippy's Pool Cheato Page now requires Springy-Step Shoes
-  - UFO Jiggy no longer requires Egg Aim
   - Ancient Swimming Baths Cheato Page now allows Wing Whack
+  - Added more clockwork logic
+  - Fixed a lot of misc. WW, JRL, and HFP logic
 - Implemented generic Jiggy item
 - Bugfixes:
   - Async items are now received properly
