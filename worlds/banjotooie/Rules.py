@@ -205,7 +205,7 @@ class BanjoTooieRules:
                                                  state.has(itemName.GEGGS, self.player),
             locationName.JIGGYWW4: lambda state: self.check_humba_magic(state, itemName.HUMBAGM) and
                                                  self.check_mumbo_magic(state, itemName.MUMBOWW) and
-                                                 self.check_mumbo_magic(state, itemName.HUMBAWW) and
+                                                 self.check_humba_magic(state, itemName.HUMBAWW) and
                                                  self.saucer_door_open(state),
             locationName.JIGGYWW5: lambda state: state.has(itemName.SPLITUP, self.player) and
                                                  state.has(itemName.AIREAIM, self.player) and
@@ -841,7 +841,8 @@ class BanjoTooieRules:
                self.check_humba_magic(state, itemName.HUMBAWW)
 
     def saucer_door_open(self, state: CollectionState) -> bool:
-        return (state.has(itemName.GGRAB, self.player) or state.has(itemName.EGGAIM, self.player)) \
+        return (state.has(itemName.GGRAB, self.player) or state.has(itemName.EGGAIM, self.player) or
+                (self.check_solo_moves(state, itemName.GLIDE) and self.check_solo_moves(state, itemName.LSPRING))) \
                and (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player))
 
     def can_beat_terry(self, state: CollectionState) -> bool:

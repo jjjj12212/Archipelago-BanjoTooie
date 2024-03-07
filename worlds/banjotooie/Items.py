@@ -191,11 +191,12 @@ misc_collectable_table = {
 
 
 all_item_table = {
+    **moves_table,
     **jinjo_table,
     **level_progress_table,
     **misc_collectable_table,
     **jiggy_table,
-    **moves_table
+
 }
 
 all_group_table = {
