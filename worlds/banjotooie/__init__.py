@@ -105,8 +105,12 @@ class BanjoTooieWorld(World):
         for name,id in all_item_table.items():
             item = self.create_item(name)
             if self.item_filter(item):
-                for i in range(id.qty):
-                    itempool += [self.create_item(name)]
+                if item.code == 1230515 and self.kingjingalingjiggy == True:
+                    for i in range(id.qty - 1): #note the -1 in the count here. King Took one already.
+                        itempool += [self.create_item(name)]
+                else:
+                    for i in range(id.qty):
+                        itempool += [self.create_item(name)]
         
         for item in itempool:
             self.multiworld.itempool.append(item)
@@ -116,7 +120,7 @@ class BanjoTooieWorld(World):
             #Below give the king a guarentee Jiggy if option is set
             self.multiworld.get_location(self.location_id_to_name[1230685], self.player).place_locked_item(item)
             self.kingjingalingjiggy = True
-            return False #doesn't need to be in the Pool.
+            return True #doesn't need to be in the Pool.
         
         if item.code == 0: #Events
             return False
