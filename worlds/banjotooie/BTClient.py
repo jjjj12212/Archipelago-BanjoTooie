@@ -263,20 +263,24 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         if ctx.location_table != locations:
             ctx.location_table = locations
 
-            # Game completion handling
-            if (("Hag 1 Defeated" in locations and locations["Hag 1 Defeated"] == True) 
-            and not ctx.finished_game):
-                await ctx.send_msgs([{
-                    "cmd": "StatusUpdate",
-                    "status": 30
-                }])
-                ctx.finished_game = True
-            else:
-                locs1 = [bt_loc_name_to_id[loc] for loc, b in ctx.location_table.items() if b]
-                await ctx.send_msgs([{
-                    "cmd": "LocationChecks",
-                    "locations": locs1
-                }])
+            for item_group, BTlocation_table in locations.items():
+
+                    # Game completion handling
+                    if ((1230027 in BTlocation_table and BTlocation_table[1230027] == True) 
+                    and not ctx.finished_game):
+                        await ctx.send_msgs([{
+                            "cmd": "StatusUpdate",
+                            "status": 30
+                        }])
+                        ctx.finished_game = True
+
+                    else:
+                        locs1 = [locationId for locationId, b in BTlocation_table.items() if b]
+
+            await ctx.send_msgs([{
+                "cmd": "LocationChecks",
+                "locations": locs1
+            }])
 
     if ctx.slot_data["moves"] == "true" and ctx.sync_ready == True:
             # Locations handling
@@ -289,7 +293,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         if ctx.movelist_table != movelist:
             ctx.movelist_table = movelist
 
-            mov1 = [bt_loc_name_to_id[loc] for loc, b in ctx.movelist_table.items() if b]
+            mov1 = [loc for loc, b in ctx.movelist_table.items() if b]
 
             await ctx.send_msgs([{
                 "cmd": "LocationChecks",

@@ -55,6 +55,7 @@ local WATCH_LOADED_SILOS = false; -- Silo found on Map, Need to Monitor Distance
 local LOAD_BMK_MOVES = false; -- If close to Silo
 local SILOS_LOADED = false; -- Handles if learned a move at Silo
 local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
+local TOT_SET_COMPLETE = false;
 
 local BATH_PADS_QOL = false
 
@@ -512,135 +513,135 @@ end
 -- Moves that needs to be checked Per Map. some silos NEEDS other moves as well to get to.
 local SILO_MAP_CHECK = {
     [0x155] = { -- Cliff Top
-        "Ice Eggs",
+        1230763,
         ["Exceptions"] = {
 
         }
     },
     [0x152] = { -- Platau
-        "Fire Eggs",
+        1230756,
         ["Exceptions"] = {
-            "Egg Aim"
+            1230755
         }
     },
     [0x154] = { -- Pine Grove
-        "Gernade Eggs",
+        1230759,
         ["Exceptions"] = {
             
         }
     },
     [0x15A] = { -- Wasteland
-        "Clockwork Kazooie Eggs",
+        1230767,
         ["Exceptions"] = {
             
         }
     },
     [0xB8] = { -- MT Main
-        "Breegull Blaster",
-        "Egg Aim",
+        1230754,
+        1230755,
         ["Exceptions"] = {
             
         }
     },
     [0xC4] = { -- MT Grove
-        "Grip Grab",
+        1230753,
         ["Exceptions"] = {
             
         }
     },
     [0xC7] = { -- GM Main
-        "Bill Drill",
+        1230757,
         ["Exceptions"] = {
             
         }
     },
     [0x163] = { -- GM Storage
-        "Beak Bayonet",
+        1230758,
         ["Exceptions"] = {
             
         }
     },
     [0xD6] = { -- WW Main
-        "Split Up",
-        "Airborne Egg Aiming",
+        1230761,
+        1230760,
         ["Exceptions"] = {
             
         }
     },
     [0xE1] = { -- WW Castle
-        "Pack Whack",
+        1230762,
         ["Exceptions"] = {
             
         }
     },
     [0x1A7] = { -- JRL Main
-        "Wing Whack",
+        1230764,
         ["Exceptions"] = {
             
         }
     },
     [0xF6] = { -- JRL Eel Lair
-        "Talon Torpedo",
+        1230765,
         ["Exceptions"] = {
             
         }
     },
     [0xED] = { -- JRL Jolly
-        "Sub-Aqua Egg Aiming",
+        1230766,
         ["Exceptions"] = {
             
         }
     },
     [0x122] = { --TDL Main
-        "Springy Step Shoes",
+        1230768,
         ["Exceptions"] = {
             
         }
     },
     [0x119] = { -- Unga Bunga Cave
-        "Hatch",
+        1230770,
         ["Exceptions"] = {
   
         }
     },
     [0x117] = { -- TDL River
-        "Taxi Pack",
+        1230769,
         ["Exceptions"] = {
   
         }
     },
     [0x101] = { -- GI Floor 1
-        "Claw Clamber Boots",
+        1230773,
         ["Exceptions"] = {
   
         }
     },
     [0x106] = { -- Floor 2
-        "Leg Spring",
+        1230772,
         ["Exceptions"] = {
   
         }
     },
     [0x111] = { -- GI Waste Disposal
-        "Snooze Pack",
+        1230771,
         ["Exceptions"] = {
   
         }
     },
     [0x127] = { -- HFP Fire
-        "Shack Pack",
+        1230774,
         ["Exceptions"] = {
   
         }
     },
     [0x128] = { -- HFP Ice
-        "Glide",
+        1230775,
         ["Exceptions"] = {
   
         }
     },
     [0x13A] = { -- CC Cave
-        "Sack Pack",
+        1230776,
         ["Exceptions"] = {
   
         }
@@ -663,545 +664,455 @@ local BKM = {};
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
     ['JIGGY'] = {
-        ['Jinjo Village: White Jinjo Family Jiggy'] = {
-            ['index'] = 1,
+        [1230676] = {
             ['addr'] = 0x4F,
             ['bit'] = 0,
-            ['locationId'] = 1230676
+            ['name'] = 'JV: White Jinjo Family Jiggy'
         },
-        ['Jinjo Village: Orange Jinjo Family Jiggy'] = {
-            ['index'] = 2,
+        [1230677] = {
             ['addr'] = 0x4F,
             ['bit'] = 1,
-            ['locationId'] = 1230677
+            ['name'] = 'Jinjo Village: Orange Jinjo Family Jiggy'
         },
-        ['Jinjo Village: Yellow Jinjo Family Jiggy'] = {
-            ['index'] = 3,
+        [1230678] = {
             ['addr'] = 0x4F,
             ['bit'] = 2,
-            ['locationId'] = 1230678
+            ['name'] = 'JV: Yellow Jinjo Family Jiggy'
         },
-        ['Jinjo Village: Brown Jinjo Family Jiggy'] = {
-            ['index'] = 4,
+        [1230679] = {
             ['addr'] = 0x4F,
             ['bit'] = 3,
-            ['locationId'] = 1230679
+            ['name'] = 'JV: Brown Jinjo Family Jiggy'
+
         },
-        ['Jinjo Village: Green Jinjo Family Jiggy'] = {
-            ['index'] = 5,
+        [1230680] = {
             ['addr'] = 0x4F,
             ['bit'] = 4,
-            ['locationId'] = 1230680
+            ['name'] = 'JV: Green Jinjo Family Jiggy'
         },
-        ['Jinjo Village: Red Jinjo Family Jiggy'] = {
-            ['index'] = 6,
+        [1230681] = {
             ['addr'] = 0x4F,
             ['bit'] = 5,
-            ['locationId'] = 1230681
+            ['name'] = 'JV: Red Jinjo Family Jiggy'
         },
-        ['Jinjo Village: Blue Jinjo Family Jiggy'] = {
-            ['index'] = 7,
+        [1230682] = {
             ['addr'] = 0x4F,
             ['bit'] = 6,
-            ['locationId'] = 1230682
+            ['name'] = 'JV: Blue Jinjo Family Jiggy'
         },
-        ['Jinjo Village: Purple Jinjo Family Jiggy'] = {
-            ['index'] = 8,
+        [1230683] = {
             ['addr'] = 0x4F,
             ['bit'] = 7,
-            ['locationId'] = 1230683
+            ['name'] = 'JV: Purple Jinjo Family Jiggy'
         },
-        ['Jinjo Village: Black Jinjo Family Jiggy'] = {
-            ['index'] = 9,
+        [1230684] = {
             ['addr'] = 0x50,
             ['bit'] = 0,
-            ['locationId'] = 1230684
+            ['name'] = 'JV: Black Jinjo Family Jiggy'
         },
-        ['Jinjo Village: King Jingaling Jiggy'] = {
-            ['index'] = 10,
+        [1230685] = {
             ['addr'] = 0x50,
             ['bit'] = 1,
-            ['locationId'] = 1230685
+            ['name'] = 'JV: King Jingaling Jiggy'
         },
-        ['MT: Targitzan Jiggy'] = {
-            ['index'] = 11,
+        [1230596] = {
             ['addr'] = 0x45,
             ['bit'] = 0,
-            ['locationId'] = 1230596
+            ['name'] = 'MT: Targitzan Jiggy'
         },
-        ['MT: Slightly Sacred Chamber Jiggy'] = {
-            ['index'] = 12,
+        [1230597] = {
             ['addr'] = 0x45,
             ['bit'] = 1,
-            ['locationId'] = 1230597
+            ['name'] = 'MT: Slightly Sacred Chamber Jiggy'
         },
-        ['MT: Kickball Jiggy'] = {
-            ['index'] = 13,
+        [1230598] = {
             ['addr'] = 0x45,
             ['bit'] = 2,
-            ['locationId'] = 1230598
+            ['name'] = 'MT: Kickball Jiggy'
         },
-        ['MT: Bovina Jiggy'] = {
-            ['index'] = 14,
+        [1230599] = {
             ['addr'] = 0x45,
             ['bit'] = 3,
-            ['locationId'] = 1230599
+            ['name'] = 'MT: Bovina Jiggy'
         },
-        ['MT: Treasure Chamber Jiggy'] = {
-            ['index'] = 15,
+        [1230600] = {
             ['addr'] = 0x45,
             ['bit'] = 4,
-            ['locationId'] = 1230600
+            ['name'] = 'MT: Treasure Chamber Jiggy'
         },
-        ['MT: Golden Goliath Jiggy'] = {
-            ['index'] = 16,
+        [1230601] = {
             ['addr'] = 0x45,
             ['bit'] = 5,
-            ['locationId'] = 1230601
+            ['name'] = 'MT: Golden Goliath Jiggy'
         },
-        ['MT: Prison Compound Quicksand Jiggy'] = {
-            ['index'] = 17,
+        [1230602] = {
             ['addr'] = 0x45,
             ['bit'] = 6,
-            ['locationId'] = 1230602
+            ['name'] = 'MT: Prison Compound Quicksand Jiggy'
         },
-        ['MT: Pillars Jiggy'] = {
-            ['index'] = 18,
+        [1230603] = {
             ['addr'] = 0x45,
             ['bit'] = 7,
-            ['locationId'] = 1230603
+            ['name'] = 'MT: Pillars Jiggy'
         },
-        ['MT: Top of Temple Jiggy'] = {
-            ['index'] = 19,
+        [1230604] = {
             ['addr'] = 0x46,
             ['bit'] = 0,
-            ['locationId'] = 1230604
+            ['name'] = 'MT: Top of Temple Jiggy'
         },
-        ['MT: Ssslumber Jiggy'] = {
-            ['index'] = 20,
+        [1230605] = {
             ['addr'] = 0x46,
             ['bit'] = 1,
-            ['locationId'] = 1230605
+            ['name'] = 'MT: Ssslumber Jiggy'
         },
-        ['GGM: Old King Coal Jiggy'] = {
-            ['index'] = 21,
+        [1230606] = {
             ['addr'] = 0x46,
             ['bit'] = 2,
-            ['locationId'] = 1230606
+            ['name'] = 'GGM: Old King Coal Jiggy'
         },
-        ['GGM: Canary Mary Jiggy'] = {
-            ['index'] = 22,
+        [1230607] = {
             ['addr'] = 0x46,
             ['bit'] = 3,
-            ['locationId'] = 1230607
+            ['name'] = 'GGM: Canary Mary Jiggy'
         },
-        ['GGM: Generator Cavern Jiggy'] = {
-            ['index'] = 23,
+        [1230608] = {
             ['addr'] = 0x46,
             ['bit'] = 4,
-            ['locationId'] = 1230608
+            ['name'] = 'GGM: Generator Cavern Jiggy'
         },
-        ['GGM: Waterfall Cavern Jiggy'] = {
-            ['index'] = 24,
+        [1230609] = {
             ['addr'] = 0x46,
             ['bit'] = 5,
-            ['locationId'] = 1230609
+            ['name'] = 'GGM: Waterfall Cavern Jiggy'
         },
-        ['GGM: Ordinance Storage Jiggy'] = {
-            ['index'] = 25,
+        [1230610] = {
             ['addr'] = 0x46,
             ['bit'] = 6,
-            ['locationId'] = 1230610
+            ['name'] = 'GGM: Ordinance Storage Jiggy'
         },
-        ['GGM: Dilberta Jiggy'] = {
-            ['index'] = 26,
+        [1230611] = {
             ['addr'] = 0x46,
             ['bit'] = 7,
-            ['locationId'] = 1230611
+            ['name'] = 'GGM: Dilberta Jiggy'
         },
-        ['GGM: Crushing Shed Jiggy'] = {
-            ['index'] = 27,
+        [1230612] = {
             ['addr'] = 0x47,
             ['bit'] = 0,
-            ['locationId'] = 1230612
+            ['name'] = 'GGM: Crushing Shed Jiggy'
         },
-        ['GGM: Waterfall Jiggy'] = {
-            ['index'] = 28,
+        [1230613] = {
             ['addr'] = 0x47,
             ['bit'] = 1,
-            ['locationId'] = 1230613
+            ['name'] = 'GGM: Waterfall Jiggy'
         },
-        ['GGM: Power Hut Basement Jiggy'] = {
-            ['index'] = 29,
+        [1230614] = {
             ['addr'] = 0x47,
             ['bit'] = 2,
-            ['locationId'] = 1230614
+            ['name'] = 'GGM: Power Hut Basement Jiggy'
         },
-        ['GGM: Flooded Caves Jiggy'] = {
-            ['index'] = 30,
+        [1230615] = {
             ['addr'] = 0x47,
             ['bit'] = 3,
-            ['locationId'] = 1230615
+            ['name'] = 'GGM: Flooded Caves Jiggy'
         },
-        ['WW: Hoop Hurry Jiggy'] = {
-            ['index'] = 31,
+        [1230616] = {
             ['addr'] = 0x47,
             ['bit'] = 4,
-            ['locationId'] = 1230616
+            ['name'] = 'WW: Hoop Hurry Jiggy'
         },
-        ['WW: Dodgems Jiggy'] = {
-            ['index'] = 32,
+        [1230617] = {
             ['addr'] = 0x47,
             ['bit'] = 5,
-            ['locationId'] = 1230617
+            ['name'] = 'WW: Dodgems Jiggy'
         },
-        ['WW: Mr. Patch Jiggy'] = {
-            ['index'] = 33,
+        [1230618] = {
             ['addr'] = 0x47,
             ['bit'] = 6,
-            ['locationId'] = 1230618
+            ['name'] = 'WW: Mr. Patch Jiggy'
         },
-        ['WW: Saucer of Peril Jiggy'] = {
-            ['index'] = 34,
+        [1230619] = {
             ['addr'] = 0x47,
             ['bit'] = 7,
-            ['locationId'] = 1230619
+            ['name'] = 'WW: Saucer of Peril Jiggy'
         },
-        ['WW: Balloon Burst Jiggy'] = {
-            ['index'] = 35,
+        [1230620] = {
             ['addr'] = 0x48,
             ['bit'] = 0,
-            ['locationId'] = 1230620
+            ['name'] = 'WW: Balloon Burst Jiggy'
         },
-        ['WW: Dive of Death Jiggy'] = {
-            ['index'] = 36,
+        [1230621] = {
             ['addr'] = 0x48,
             ['bit'] = 1,
-            ['locationId'] = 1230621
+            ['name'] = 'WW: Dive of Death Jiggy'
         },
-        ['WW: Mrs. Boggy Jiggy'] = {
-            ['index'] = 37,
+        [1230622] = {
             ['addr'] = 0x48,
             ['bit'] = 2,
-            ['locationId'] = 1230622
+            ['name'] = 'WW: Mrs. Boggy Jiggy'
         },
-        ['WW: Star Spinner Jiggy'] = {
-            ['index'] = 38,
+        [1230623] = {
             ['addr'] = 0x48,
             ['bit'] = 3,
-            ['locationId'] = 1230623
+            ['name'] = 'WW: Star Spinner Jiggy'
         },
-        ['WW: The Inferno Jiggy'] = {
-            ['index'] = 39,
+        [1230624] = {
             ['addr'] = 0x48,
             ['bit'] = 4,
-            ['locationId'] = 1230624
+            ['name'] = 'WW: The Inferno Jiggy'
         },
-        ['WW: Cactus of Strength Jiggy'] = {
-            ['index'] = 40,
+        [1230625] = {
             ['addr'] = 0x48,
             ['bit'] = 5,
-            ['locationId'] = 1230625
+            ['name'] = 'WW: Cactus of Strength Jiggy'
         },
-        ['JRL: Mini-Sub Challenge Jiggy'] = {
-            ['index'] = 41,
+        [1230626] = {
             ['addr'] = 0x48,
             ['bit'] = 6,
-            ['locationId'] = 1230626
+            ['name'] = 'JRL: Mini-Sub Challenge Jiggy'
         },
-        ['JRL: Tiptup Jiggy'] = {
-            ['index'] = 42,
+        [1230627] = {
             ['addr'] = 0x48,
             ['bit'] = 7,
-            ['locationId'] = 1230627
+            ['name'] = 'JRL: Tiptup Jiggy'
         },
-        ['JRL: Chris P. Bacon Jiggy'] = {
-            ['index'] = 43,
+        [1230628] = {
             ['addr'] = 0x49,
             ['bit'] = 0,
-            ['locationId'] = 1230628
+            ['name'] = 'JRL: Chris P. Bacon Jiggy'
         },
-        ['JRL: Pig Pool Jiggy'] = {
-            ['index'] = 44,
+        [1230629] = {
             ['addr'] = 0x49,
             ['bit'] = 1,
-            ['locationId'] = 1230629
+            ['name'] = 'JRL: Pig Pool Jiggy'
         },
-        ["JRL: Smuggler's Cavern Jiggy"] = {
-            ['index'] = 45,
+        [1230630] = {
             ['addr'] = 0x49,
             ['bit'] = 2,
-            ['locationId'] = 1230630
+            ['name'] = "JRL: Smuggler's Cavern Jiggy"
         },
-        ['JRL: Merry Maggie Jiggy'] = {
-            ['index'] = 46,
+        [1230631] = {
             ['addr'] = 0x49,
             ['bit'] = 3,
-            ['locationId'] = 1230631
+            ['name'] = 'JRL: Merry Maggie Jiggy'
         },
-        ['JRL: Woo Fak Fak Jiggy'] = {
-            ['index'] = 47,
+        [1230632] = {
             ['addr'] = 0x49,
             ['bit'] = 4,
-            ['locationId'] = 1230632
+            ['name'] = 'JRL: Woo Fak Fak Jiggy'
         },
-        ['JRL: Seemee Jiggy'] = {
-            ['index'] = 48,
+        [1230633] = {
             ['addr'] = 0x49,
             ['bit'] = 5,
-            ['locationId'] = 1230633
+            ['name'] = 'JRL: Seemee Jiggy'
         },
-        ['JRL: Pawno Jiggy'] = {
-            ['index'] = 49,
+        [1230634] = {
             ['addr'] = 0x49,
             ['bit'] = 6,
-            ['locationId'] = 1230634
+            ['name'] = 'JRL: Pawno Jiggy'
         },
-        ['JRL: UFO Jiggy'] = {
-            ['index'] = 50,
+        [1230635] = {
             ['addr'] = 0x49,
             ['bit'] = 7,
-            ['locationId'] = 1230635
+            ['name'] = 'JRL: UFO Jiggy'
         },
-        ["TDL: Under Terry's Nest Jiggy"] = {
-            ['index'] = 51,
+        [1230636] = {
             ['addr'] = 0x4A,
             ['bit'] = 0,
-            ['locationId'] = 1230636
+            ['name'] = "TDL: Under Terry's Nest Jiggy"
         },
-        ['TDL: Dippy Jiggy'] = {
-            ['index'] = 52,
+        [1230637] = {
             ['addr'] = 0x4A,
             ['bit'] = 1,
-            ['locationId'] = 1230637
+            ['name'] = 'TDL: Dippy Jiggy'
         },
-        ['TDL: Scrotty Jiggy'] = {
-            ['index'] = 53,
+        [1230638] = {
             ['addr'] = 0x4A,
             ['bit'] = 2,
-            ['locationId'] = 1230638
+            ['name'] = 'TDL: Scrotty Jiggy'
         },
-        ['TDL: Terry Jiggy'] = {
-            ['index'] = 54,
+        [1230639] = {
             ['addr'] = 0x4A,
             ['bit'] = 3,
-            ['locationId'] = 1230639
+            ['name'] = 'TDL: Terry Jiggy'
         },
-        ['TDL: Oogle Boogle Tribe Jiggy'] = {
-            ['index'] = 55,
+        [1230640] = {
             ['addr'] = 0x4A,
             ['bit'] = 4,
-            ['locationId'] = 1230640
+            ['name'] = 'TDL: Oogle Boogle Tribe Jiggy'
         },
-        ['TDL: Chompas Belly Jiggy'] = {
-            ['index'] = 56,
+        [1230641] = {
             ['addr'] = 0x4A,
             ['bit'] = 5,
-            ['locationId'] = 1230641
+            ['name'] = 'TDL: Chompas Belly Jiggy'
         },
-        ["TDL: Terry's Kids Jiggy"] = {
-            ['index'] = 57,
+        [1230642] = {
             ['addr'] = 0x4A,
             ['bit'] = 6,
-            ['locationId'] = 1230642
+            ['name'] = "TDL: Terry's Kids Jiggy"
         },
-        ['TDL: Stomping Plains Jiggy'] = {
-            ['index'] = 58,
+        [1230643] = {
             ['addr'] = 0x4A,
             ['bit'] = 7,
-            ['locationId'] = 1230643
+            ['name'] = 'TDL: Stomping Plains Jiggy'
         },
-        ['TDL: Rocknut Tribe Jiggy'] = {
-            ['index'] = 59,
+        [1230644] = {
             ['addr'] = 0x4B,
             ['bit'] = 0,
-            ['locationId'] = 1230644
+            ['name'] = 'TDL: Rocknut Tribe Jiggy'
         },
-        ['TDL: Code of the Dinosaurs Jiggy'] = {
-            ['index'] = 60,
+        [1230645] = {
             ['addr'] = 0x4B,
             ['bit'] = 1,
-            ['locationId'] = 1230645
+            ['name'] = 'TDL: Code of the Dinosaurs Jiggy'
         },
-        ['GI: Underwater Waste Disposal Plant Jiggy'] = {
-            ['index'] = 61,
+        [1230646] = {
             ['addr'] = 0x4B,
             ['bit'] = 2,
-            ['locationId'] = 1230646
+            ['name'] = 'GI: Underwater Waste Disposal Plant Jiggy'
         },
-        ['GI: Weldar Jiggy'] = {
-            ['index'] = 62,
+        [1230647] = {
             ['addr'] = 0x4B,
             ['bit'] = 3,
-            ['locationId'] = 1230647
+            ['name'] = 'GI: Weldar Jiggy'
         },
-        ["GI: Clinker's Cavern Jiggy"] = {
-            ['index'] = 63,
+        [1230648] = {
             ['addr'] = 0x4B,
             ['bit'] = 4,
-            ['locationId'] = 1230648
+            ['name'] = "GI: Clinker's Cavern Jiggy"
         },
-        ['GI: Skivvies Jiggy'] = {
-            ['index'] = 64,
+        [1230649] = {
             ['addr'] = 0x4B,
             ['bit'] = 5,
-            ['locationId'] = 1230649
+            ['name'] = 'GI: Skivvies Jiggy'
         },
-        ['GI: Floor 5 Jiggy'] = {
-            ['index'] = 65,
+        [1230650] = {
             ['addr'] = 0x4B,
             ['bit'] = 6,
-            ['locationId'] = 1230650
+            ['name'] = 'GI: Floor 5 Jiggy'
         },
-        ['GI: Quality Control Jiggy'] = {
-            ['index'] = 66,
+        [1230651] = {
             ['addr'] = 0x4B,
             ['bit'] = 7,
-            ['locationId'] = 1230651
+            ['name'] = 'GI: Quality Control Jiggy'
         },
-        ['GI: Floor 1 Guarded Jiggy'] = {
-            ['index'] = 67,
+        [1230652] = {
             ['addr'] = 0x4C,
             ['bit'] = 0,
-            ['locationId'] = 1230652
+            ['name'] = 'GI: Floor 1 Guarded Jiggy'
         },
-        ['GI: Trash Compactor Jiggy'] = {
-            ['index'] = 68,
+        [1230653] = {
             ['addr'] = 0x4C,
             ['bit'] = 1,
-            ['locationId'] = 1230653
+            ['name'] = 'GI: Trash Compactor Jiggy'
         },
-        ['GI: Twinkly Packing Jiggy'] = {
-            ['index'] = 69,
+        [1230654] = {
             ['addr'] = 0x4C,
             ['bit'] = 2,
-            ['locationId'] = 1230654
+            ['name'] = 'GI: Twinkly Packing Jiggy'
         },
-        ['GI: Waste Disposal Plant Box Jiggy'] = {
-            ['index'] = 70,
+        [1230655] = {
             ['addr'] = 0x4C,
             ['bit'] = 3,
-            ['locationId'] = 1230655
+            ['name'] = 'GI: Waste Disposal Plant Box Jiggy'
         },
-        ['HFP: Dragon Brothers Jiggy'] = {
-            ['index'] = 71,
+        [1230656] = {
             ['addr'] = 0x4C,
             ['bit'] = 4,
-            ['locationId'] = 1230656
+            ['name'] = 'HFP: Dragon Brothers Jiggy'
         },
-        ['HFP: Inside the Volcano Jiggy'] = {
-            ['index'] = 72,
+        [1230657] = {
             ['addr'] = 0x4C,
             ['bit'] = 5,
-            ['locationId'] = 1230657
+            ['name'] = 'HFP: Inside the Volcano Jiggy'
         },
-        ['HFP: Sabreman Jiggy'] = {
-            ['index'] = 73,
+        [1230658] = {
             ['addr'] = 0x4C,
             ['bit'] = 6,
-            ['locationId'] = 1230658
+            ['name'] = 'HFP: Sabreman Jiggy'
         },
-        ['HFP: Boggy Jiggy'] = {
-            ['index'] = 74,
+        [1230659] = {
             ['addr'] = 0x4C,
             ['bit'] = 7,
-            ['locationId'] = 1230659
+            ['name'] = 'HFP: Boggy Jiggy'
         },
-        ['HFP: Icy Side Station Jiggy'] = {
-            ['index'] = 75,
+        [1230660] = {
             ['addr'] = 0x4D,
             ['bit'] = 0,
-            ['locationId'] = 1230660
+            ['name'] = 'HFP: Icy Side Station Jiggy'
         },
-        ['HFP: Oil Drill Jiggy'] = {
-            ['index'] = 76,
+        [1230661] = {
             ['addr'] = 0x4D,
             ['bit'] = 1,
-            ['locationId'] = 1230661
+            ['name'] = 'HFP: Oil Drill Jiggy'
         },
-        ['HFP: Stomping Plains Jiggy'] = {
-            ['index'] = 77,
+        [1230662] = {
             ['addr'] = 0x4D,
             ['bit'] = 2,
-            ['locationId'] = 1230662
+            ['name'] = 'HFP: Stomping Plains Jiggy'
         },
-        ['HFP: Kickball Jiggy'] = {
-            ['index'] = 78,
+        [1230663] = {
             ['addr'] = 0x4D,
             ['bit'] = 3,
-            ['locationId'] = 1230663
+            ['name'] = 'HFP: Kickball Jiggy'
         },
-        ['HFP: Aliens Jiggy'] = {
-            ['index'] = 79,
+        [1230664] = {
             ['addr'] = 0x4D,
             ['bit'] = 4,
-            ['locationId'] = 1230664
+            ['name'] = 'HFP: Aliens Jiggy'
         },
-        ['HFP: Lava Waterfall Jiggy'] = {
-            ['index'] = 80,
+        [1230665] = {
             ['addr'] = 0x4D,
             ['bit'] = 5,
-            ['locationId'] = 1230665
+            ['name'] = 'HFP: Lava Waterfall Jiggy'
         },
-        ['CCL: Mingy Jongo Jiggy'] = {
-            ['index'] = 81,
-            ['addr'] = 0x4D,
+        [1230666] = {
             ['bit'] = 6,
-            ['locationId'] = 1230666
+            ['name'] = 'CCL: Mingy Jongo Jiggy'
         },
-        ['CCL: Mr Fit Jiggy'] = {
-            ['index'] = 82,
+        [1230667] = {
             ['addr'] = 0x4D,
             ['bit'] = 7,
-            ['locationId'] = 1230667
+            ['name'] = 'CCL: Mr Fit Jiggy'
         },
-        ["CCL: Pot O' Gold Jiggy"] = {
-            ['index'] = 83,
+        [1230668] = {
             ['addr'] = 0x4E,
             ['bit'] = 0,
-            ['locationId'] = 1230668
+            ['name'] = "CCL: Pot O' Gold Jiggy"
         },
-        ['CCL: Canary Mary Jiggy'] = {
-            ['index'] = 84,
+        [1230669] = {
             ['addr'] = 0x4E,
             ['bit'] = 1,
-            ['locationId'] = 1230669
+            ['name'] = 'CCL: Canary Mary Jiggy'
         },
-        ['CCL: Zubbas Jiggy'] = {
-            ['index'] = 85,
+        [1230670] = {
             ['addr'] = 0x4E,
             ['bit'] = 2,
-            ['locationId'] = 1230670
+            ['name'] = 'CCL: Zubbas Jiggy'
         },
-        ['CCL: Jiggium Plant Jiggy'] = {
-            ['index'] = 86,
+        [1230671] = {
             ['addr'] = 0x4E,
             ['bit'] = 3,
-            ['locationId'] = 1230671
+            ['name'] = 'CCL: Jiggium Plant Jiggy'
         },
-        ['CCL: Cheese Wedge Jiggy'] = {
-            ['index'] = 87,
+        [1230672] = {
             ['addr'] = 0x4E,
             ['bit'] = 4,
-            ['locationId'] = 1230672
+            ['name'] = 'CCL: Cheese Wedge Jiggy'
         },
-        ['CCL: Trash Can Jiggy'] = {
-            ['index'] = 88,
+        [1230673] = {
             ['addr'] = 0x4E,
             ['bit'] = 5,
-            ['locationId'] = 1230673
+            ['name'] = 'CCL: Trash Can Jiggy'
         },
-        ['CCL: Superstash Jiggy'] = {
-            ['index'] = 89,
+        [1230674] = {
             ['addr'] = 0x4E,
             ['bit'] = 6,
-            ['locationId'] = 1230674
+            ['name'] = 'CCL: Superstash Jiggy'
         },
-        ['CCL: Jelly Castle Jiggy'] = {
-            ['index'] = 90,
+        [1230675] = {
             ['addr'] = 0x4E,
             ['bit'] = 7,
-            ['locationId'] = 1230675
+            ['name'] = 'CCL: Jelly Castle Jiggy'
         },
     },
     ['JINJO'] = {
@@ -1432,351 +1343,367 @@ local AGI_MASTER_MAP = {
         -- },
     },
     ['CHEATO'] = {
-        ['Spiral Mountain: Cheato Page'] = {
+        [1230752] = {
             ['addr'] = 0x59,
             ['bit'] = 3,
-            ['locationId'] = 1230752
+            ['name'] = 'Spiral Mountain: Cheato Page'
         },
-        ['MT: Snake Head Cheato Page'] = {
+        [1230728] = {
             ['addr'] = 0x56,
             ['bit'] = 3,
-            ['locationId'] = 1230728
+            ['name'] = 'MT: Snake Head Cheato Page'
         },
-        ['MT: Prison Compound Cheato Page'] = {
+        [1230729] = {
             ['addr'] = 0x56,
             ['bit'] = 4,
-            ['locationId'] = 1230729
+            ['name'] = 'MT: Prison Compound Cheato Page'
         },
-        ['MT: Jade Snake Grove Cheato Page'] = {
+        [1230730] = {
             ['addr'] = 0x56,
             ['bit'] = 5,
-            ['locationId'] = 1230730
+            ['name'] = 'MT: Jade Snake Grove Cheato Page'
         },
-        ['GGM: Canary Mary Cheato Page'] = {
+        [1230731] = {
             ['addr'] = 0x56,
             ['bit'] = 6,
-            ['locationId'] = 1230731
+            ['name'] = 'GGM: Canary Mary Cheato Page'
         },
-        ['GGM: Entrance Cheato Page'] = {
+        [1230732] = {
             ['addr'] = 0x56,
             ['bit'] = 7,
-            ['locationId'] = 1230732
+            ['name'] = 'GGM: Entrance Cheato Page'
         },
-        ['GGM: Water Storage Cheato Page'] = {
+        [1230733] = {
             ['addr'] = 0x57,
             ['bit'] = 0,
-            ['locationId'] = 1230733
+            ['name'] = 'GGM: Water Storage Cheato Page'
         },
-        ['WW: The Haunted Cavern Cheato Page'] = {
+        [1230734] = {
             ['addr'] = 0x57,
             ['bit'] = 1,
-            ['locationId'] = 1230734
+            ['name'] = 'WW: The Haunted Cavern Cheato Page'
         },
-        ['WW: The Inferno Cheato Page'] = {
+        [1230735] = {
             ['addr'] = 0x57,
             ['bit'] = 2,
-            ['locationId'] = 1230735
+            ['name'] = 'WW: The Inferno Cheato Page'
         },
-        ['WW: Saucer of Peril Cheato Page'] = {
+        [1230736] = {
             ['addr'] = 0x57,
             ['bit'] = 3,
-            ['locationId'] = 1230736
+            ['name'] = 'WW: Saucer of Peril Cheato Page'
         },
-        ["JRL: Pawno's Cheato Page"] = {
+        [1230737] = {
             ['addr'] = 0x57,
             ['bit'] = 4,
-            ['locationId'] = 1230737
+            ['name'] = "JRL: Pawno's Cheato Page"
         },
-        ['JRL: Seemee Cheato Page'] = {
+        [1230738] = {
             ['addr'] = 0x57,
             ['bit'] = 5,
-            ['locationId'] = 1230738
+            ['name'] = 'JRL: Seemee Cheato Page'
         },
-        ['JRL: Ancient Baths Cheato Page'] = {
+        [1230739] = {
             ['addr'] = 0x57,
             ['bit'] = 6,
-            ['locationId'] = 1230739
+            ['name'] = 'JRL: Ancient Baths Cheato Page'
         },
-        ["TDL: Dippy's Pool Cheato Page"] = {
+        [1230740] = {
             ['addr'] = 0x57,
             ['bit'] = 7,
-            ['locationId'] = 1230740
+            ['name'] = "TDL: Dippy's Pool Cheato Page"
         },
-        ['TDL: Inside the Mountain Cheato Page'] = {
+        [1230741] = {
             ['addr'] = 0x58,
             ['bit'] = 0,
-            ['locationId'] = 1230741
+            ['name'] = 'TDL: Inside the Mountain Cheato Page'
         },
-        ['TDL: Boulder Cheato Page'] = {
+        [1230742] = {
             ['addr'] = 0x58,
             ['bit'] = 1,
-            ['locationId'] = 1230742
+            ['name'] = 'TDL: Boulder Cheato Page'
         },
-        ['GI: Loggo Cheato Page'] = {
+        [1230743] = {
             ['addr'] = 0x58,
             ['bit'] = 2,
-            ['locationId'] = 1230743
+            ['name'] = 'GI: Loggo Cheato Page'
         },
-        ['GI: Floor 2 Cheato Page'] = {
+        [1230744] = {
             ['addr'] = 0x58,
             ['bit'] = 3,
-            ['locationId'] = 1230744
+            ['name'] = 'GI: Floor 2 Cheato Page'
         },
-        ['GI: Repair Depot Cheato Page'] = {
+        [1230745] = {
             ['addr'] = 0x58,
             ['bit'] = 4,
-            ['locationId'] = 1230745
+            ['name'] = 'GI: Repair Depot Cheato Page'
         },
-        ['HFP: Lava Side Cheato Page'] = {
+        [1230746] = {
             ['addr'] = 0x58,
             ['bit'] = 5,
-            ['locationId'] = 1230746
+            ['name'] = 'HFP: Lava Side Cheato Page'
         },
-        ['HFP: Icicle Grotto Cheato Page'] = {
+        [1230747] = {
             ['addr'] = 0x58,
             ['bit'] = 6,
-            ['locationId'] = 1230747
+            ['name'] = 'HFP: Icicle Grotto Cheato Page'
         },
-        ['HFP: Icy Side Cheato Page'] = {
+        [1230748] = {
             ['addr'] = 0x58,
             ['bit'] = 7,
-            ['locationId'] = 1230748
+            ['name'] = 'HFP: Icy Side Cheato Page'
         },
-        ['CCL: Canary Mary Cheato Page'] = {
+        [1230749] = {
             ['addr'] = 0x59,
             ['bit'] = 0,
-            ['locationId'] = 1230749
+            ['name'] = 'CCL: Canary Mary Cheato Page'
         },
-        ["CCL: Pot O' Gold Cheato Page"] = {
+        [1230750] = {
             ['addr'] = 0x59,
             ['bit'] = 1,
-            ['locationId'] = 1230750
+            ['name'] = "CCL: Pot O' Gold Cheato Page"
         },
-        ['CCL: Zubbas Cheato Page'] = {
+        [1230751] = {
             ['addr'] = 0x59,
             ['bit'] = 2,
-            ['locationId'] = 1230751
+            ['name'] = 'CCL: Zubbas Cheato Page'
         },
     },
     ['HONEYCOMB'] = {
-        ['Plateau: Honeycomb'] = {
+        [1230727] = {
             ['addr'] = 0x42,
             ['bit'] = 2,
-            ['locationId'] = 1230727
+            ['name'] = 'Plateau: Honeycomb'
         },
-        ['MT: Entrance Honeycomb'] = {
+        [1230703] = {
             ['addr'] = 0x3F,
             ['bit'] = 2,
-            ['locationId'] = 1230703
+            ['name'] = 'MT: Entrance Honeycomb'
         },
-        ['MT: Bovina Honeycomb'] = {
+        [1230704] = {
             ['addr'] = 0x3F,
             ['bit'] = 3,
-            ['locationId'] = 1230704
+            ['name'] = 'MT: Bovina Honeycomb'
         },
-        ['MT: Treasure Chamber Honeycomb'] = {
+        [1230705] = {
             ['addr'] = 0x3F,
             ['bit'] = 4,
-            ['locationId'] = 1230705
+            ['name'] = 'MT: Treasure Chamber Honeycomb'
         },
-        ['GGM: Toxic Gas Cave Honeycomb'] = {
+        [1230706] = {
             ['addr'] = 0x3F,
             ['bit'] = 5,
-            ['locationId'] = 1230706
+            ['name'] = 'GGM: Toxic Gas Cave Honeycomb'
         },
-        ['GGM: Boulder Honeycomb'] = {
+        [1230707] = {
             ['addr'] = 0x3F,
             ['bit'] = 6,
-            ['locationId'] = 1230707
+            ['name'] = 'GGM: Boulder Honeycomb'
         },
-        ['GGM: Train Station Honeycomb'] = {
+        [1230708] = {
             ['addr'] = 0x3F,
             ['bit'] = 7,
-            ['locationId'] = 1230708
+            ['name'] = 'GGM: Train Station Honeycomb'
         },
-        ['WW: Space Zone Honeycomb'] = {
+        [1230709] = {
             ['addr'] = 0x40,
             ['bit'] = 0,
-            ['locationId'] = 1230709
+            ['name'] = 'WW: Space Zone Honeycomb'
         },
-        ['WW: Mumbo Skull Honeycomb'] = {
+        [1230710] = {
             ['addr'] = 0x40,
             ['bit'] = 1,
-            ['locationId'] = 1230710
+            ['name'] = 'WW: Mumbo Skull Honeycomb'
         },
-        ['WW: Crazy Castle Honeycomb'] = {
+        [1230711] = {
             ['addr'] = 0x40,
             ['bit'] = 2,
-            ['locationId'] = 1230711
+            ['name'] = 'WW: Crazy Castle Honeycomb'
         },
-        ['JRL: Seemee Honeycomb'] = {
+        [1230712] = {
             ['addr'] = 0x40,
             ['bit'] = 3,
-            ['locationId'] = 1230712
+            ['name'] = 'JRL: Seemee Honeycomb'
         },
-        ['JRL: Atlantis Honeycomb'] = {
+        [1230713] = {
             ['addr'] = 0x40,
             ['bit'] = 4,
-            ['locationId'] = 1230713
+            ['name'] = 'JRL: Atlantis Honeycomb'
         },
-        ['JRL: Waste Pipe Honeycomb'] = {
+        [1230714] = {
             ['addr'] = 0x40,
             ['bit'] = 5,
-            ['locationId'] = 1230714
+            ['name'] = 'JRL: Waste Pipe Honeycomb'
         },
-        ['TDL: Lakeside Honeycomb'] = {
+        [1230715] = {
             ['addr'] = 0x40,
             ['bit'] = 6,
-            ['locationId'] = 1230715
+            ['name'] = 'TDL: Lakeside Honeycomb'
         },
-        ['TDL: Styracosaurus Cave Honeycomb'] = {
+        [1230716] = {
             ['addr'] = 0x40,
             ['bit'] = 7,
-            ['locationId'] = 1230716
+            ['name'] = 'TDL: Styracosaurus Cave Honeycomb'
         },
-        ['TDL: River Passage Honeycomb'] = {
+        [1230717] = {
             ['addr'] = 0x41,
             ['bit'] = 0,
-            ['locationId'] = 1230717
+            ['name'] = 'TDL: River Passage Honeycomb'
         },
-        ['GI: Floor 3 Honeycomb'] = {
+        [1230718] = {
             ['addr'] = 0x41,
             ['bit'] = 1,
-            ['locationId'] = 1230718
+            ['name'] = 'GI: Floor 3 Honeycomb'
         },
-        ['GI: Train Station Honeycomb'] = {
+        [1230719] = {
             ['addr'] = 0x41,
             ['bit'] = 2,
-            ['locationId'] = 1230719
+            ['name'] = 'GI: Train Station Honeycomb'
         },
-        ['GI: Chimney Honeycomb'] = {
+        [1230720] = {
             ['addr'] = 0x41,
             ['bit'] = 3,
-            ['locationId'] = 1230720
+            ['name'] = 'GI: Chimney Honeycomb'
         },
-        ['HFP: Inside the Volcano Honeycomb'] = {
+        [1230721] = {
             ['addr'] = 0x41,
             ['bit'] = 4,
-            ['locationId'] = 1230721
+            ['name'] = 'HFP: Inside the Volcano Honeycomb'
         },
-        ['HFP: Train Station Honeycomb'] = {
+        [1230722] = {
             ['addr'] = 0x41,
             ['bit'] = 5,
-            ['locationId'] = 1230722
+            ['name'] = 'HFP: Train Station Honeycomb'
         },
-        ['HFP: Lava Side Honeycomb'] = {
+        [1230723] = {
             ['addr'] = 0x41,
             ['bit'] = 6,
-            ['locationId'] = 1230723
+            ['name'] = 'HFP: Lava Side Honeycomb'
         },
-        ['CCL: Dirt Patch Honeycomb'] = {
+        [1230724] = {
             ['addr'] = 0x41,
             ['bit'] = 7,
-            ['locationId'] = 1230724
+            ['name'] = 'CCL: Dirt Patch Honeycomb'
         },
-        ['CCL: Trash Can Honeycomb'] = {
+        [1230725] = {
             ['addr'] = 0x42,
             ['bit'] = 0,
-            ['locationId'] = 1230725
+            ['name'] = 'CCL: Trash Can Honeycomb'
         },
-        ["CCL: Pot O' Gold Honeycomb"] = {
+        [1230726] = {
             ['addr'] = 0x42,
             ['bit'] = 1,
-            ['locationId'] = 1230726
+            ['name'] = "CCL: Pot O' Gold Honeycomb"
         },
     },
     ['GLOWBO'] = {
-         ["MT: Mumbo's Glowbo"] = {
+         [1230686] = {
              ['addr'] = 0x42,
              ['bit'] = 7,
-             ['locationId'] = 1230686
+             ['name'] = "MT: Mumbo's Glowbo"
          },
-         ['MT: Jade Snake Grove Glowbo'] = {
+         [1230687] = {
              ['addr'] = 0x43,
              ['bit'] = 0,
-             ['locationId'] = 1230687
+             ['name'] = 'MT: Jade Snake Grove Glowbo'
+
          },
-         ['GGM: Near Entrance Glowbo'] = {
+         [1230688] = {
              ['addr'] = 0x43,
              ['bit'] = 1,
-             ['locationId'] = 1230688
+             ['name'] = 'GGM: Near Entrance Glowbo'
+
          },
-         ['GGM: Mine Entrance 2 Glowbo'] = {
+         [1230689] = {
              ['addr'] = 0x43,
              ['bit'] = 2,
-             ['locationId'] = 1230689
+             ['name'] = 'GGM: Mine Entrance 2 Glowbo'
+
          },
-         ['WW: The Inferno Glowbo'] = {
+         [1230690] = {
              ['addr'] = 0x43,
              ['bit'] = 3,
-             ['locationId'] = 1230690
+             ['name'] = 'WW: The Inferno Glowbo'
+
          },
-         ["WW: Wumba's Glowbo"] = {
+         [1230691] = {
              ['addr'] = 0x43,
              ['bit'] = 4,
-             ['locationId'] = 1230691
+             ['name'] = "WW: Wumba's Glowbo"
+
          },
-         ['Cliff Top: Glowbo'] = {
+         [1230702] = {
              ['addr'] = 0x44,
              ['bit'] = 7,
-             ['locationId'] = 1230702
+             ['name'] = 'Cliff Top: Glowbo'
+
          },
-         ["JRL: Pawno's Emporium Glowbo"] = {
+         [123069] = {
              ['addr'] = 0x43,
              ['bit'] = 5,
-             ['locationId'] = 123069
+             ['name'] = "JRL: Pawno's Emporium Glowbo"
+
          },
-         ["JRL: Under Wumba's Wigwam Glowbo"] = {
+         [123070] = {
              ['addr'] = 0x43,
              ['bit'] = 6,
-             ['locationId'] = 123070
+             ['name'] = "JRL: Under Wumba's Wigwam Glowbo"
+
          },
-         ['TDL: Unga Bunga Cave Entrance Glowbo'] = {
+         [1230694] = {
              ['addr'] = 0x43,
              ['bit'] = 7,
-             ['locationId'] = 1230694
+             ['name'] = 'TDL: Unga Bunga Cave Entrance Glowbo'
+
          },
-         ["TDL: Behind Mumbo's Skull Glowbo"] = {
+         [1230695] = {
              ['addr'] = 0x44,
              ['bit'] = 0,
-             ['locationId'] = 1230695
+             ['name'] = "TDL: Behind Mumbo's Skull Glowbo"
+
          },
-         ['GI: Floor 2 Glowbo'] = {
+         [1230696] = {
              ['addr'] = 0x44,
              ['bit'] = 1,
-             ['locationId'] = 1230696
+             ['name'] = 'GI: Floor 2 Glowbo'
+
          },
-         ['GI: Floor 3 Glowbo'] = {
+         [1230697] = {
              ['addr'] = 0x44,
              ['bit'] = 2,
-             ['locationId'] = 1230697
+             ['name'] = 'GI: Floor 3 Glowbo'
+
          },
-         ['HFP: Lava Side Glowbo'] = {
+         [1230698] = {
              ['addr'] = 0x44,
              ['bit'] = 3,
-             ['locationId'] = 1230698
+             ['name'] = 'HFP: Lava Side Glowbo'
+
          },
-         ['HFP: Icy Side Glowbo'] = {
+         [1230699] = {
              ['addr'] = 0x44,
              ['bit'] = 4,
-             ['locationId'] = 1230699
+             ['name'] = 'HFP: Icy Side Glowbo'
+
          },
-         ['CCL: Green Pool Glowbo'] = {
+         [1230700] = {
              ['addr'] = 0x44,
              ['bit'] = 5,
-             ['locationId'] = 1230700
+             ['name'] = 'CCL: Green Pool Glowbo'
+
          },
-         ['CCL: Central Cavern Glowbo'] = {
+         [1230701] = {
              ['addr'] = 0x44,
              ['bit'] = 6,
-             ['locationId'] = 1230701
+             ['name'] = 'CCL: Central Cavern Glowbo'
+
          },
     },
     ['MEGA GLOWBO'] = {
-        ['Mega Glowbo'] = {
+        [1230046] = {
             ['addr'] = 0x05,
             ['bit'] = 6,
-            ['locationId'] = 1230046
+            ['name'] = 'Mega Glowbo'
         }
 
     },
@@ -1933,10 +1860,10 @@ local AGI_MASTER_MAP = {
         -- }
     },
 	["H1"] = {
-	 	['Hag 1 Defeated'] = {
+	 	[1230027] = {
 			['addr'] = 0x03,
 			['bit'] = 3,
-			['locationId'] = 1230027
+            ['name'] = "Hag 1 Defeated"
 		},
 	},
 }
@@ -1944,125 +1871,125 @@ local AGI_MASTER_MAP = {
 -- Flags not required to send back to BTClient
 local NON_AGI_MAP = {
     ["MOVES"] = {
-        ['Grip Grab'] = {
+        [1230753] = {
             ['addr'] = 0x1B,
             ['bit'] = 1,
-            ['locationId'] = 1230753
+            ['name'] = 'Grip Grab'
         },
-        ['Breegull Blaster'] = {
+        [1230754] = {
             ['addr'] = 0x1B,
             ['bit'] = 2,
-            ['locationId'] = 1230754
+            ['name'] = 'Breegull Blaster'
         },
-        ['Egg Aim'] = {
+        [1230755] = {
             ['addr'] = 0x1B,
             ['bit'] = 3,
-            ['locationId'] = 1230755
+            ['name'] = 'Egg Aim'
         },
-        ['Fire Eggs'] = {
+        [1230756] = {
             ['addr'] = 0x1E,
             ['bit'] = 1,
-            ['locationId'] = 1230756
+            ['name'] = 'Fire Eggs'
         },
-        ['Bill Drill'] = {
+        [1230757] = {
             ['addr'] = 0x1B,
             ['bit'] = 6,
-            ['locationId'] = 1230757
+            ['name'] = 'Bill Drill'
         },
-        ['Beak Bayonet'] = {
+        [1230758] = {
             ['addr'] = 0x1B,
             ['bit'] = 7,
-            ['locationId'] = 1230758
+            ['name'] = 'Beak Bayonet'
         },
-        ['Grenade Eggs'] = {
+        [1230759] = {
             ['addr'] = 0x1E,
             ['bit'] = 2,
-            ['locationId'] = 1230759
+            ['name'] = 'Grenade Eggs'
         },
-        ['Airborne Egg Aiming'] = {
+        [1230760] = {
             ['addr'] = 0x1C,
             ['bit'] = 0,
-            ['locationId'] = 1230760
+            ['name'] = 'Airborne Egg Aiming'
         },
-        ['Split Up'] = {
+        [1230761] = {
             ['addr'] = 0x1C,
             ['bit'] = 1,
-            ['locationId'] = 1230761
+            ['name'] = 'Split Up'
         },
-        ['Pack Whack'] = {
+        [1230762] = {
             ['addr'] = 0x1D,
             ['bit'] = 6,
-            ['locationId'] = 1230762
+            ['name'] = 'Pack Whack'
         },
-        ['Ice Eggs'] = {
+        [1230763] = {
             ['addr'] = 0x1E,
             ['bit'] = 4,
-            ['locationId'] = 1230763
+            ['name'] = 'Ice Eggs'
         },
-        ['Wing Whack'] = {
+        [1230764] = {
             ['addr'] = 0x1C,
             ['bit'] = 2,
-            ['locationId'] = 1230764
+            ['name'] = 'Wing Whack'
         },
-        ['Talon Torpedo'] = {
+        [1230765] = {
             ['addr'] = 0x1C,
             ['bit'] = 3,
-            ['locationId'] = 1230765
+            ['name'] = 'Talon Torpedo'
         },
-        ['Sub-Aqua Egg Aiming'] = {
+        [1230766] = {
             ['addr'] = 0x1C,
             ['bit'] = 4,
-            ['locationId'] = 1230766
+            ['name'] = 'Sub-Aqua Egg Aiming'
         },
-        ['Clockwork Kazooie Eggs'] = {
+        [1230767] = {
             ['addr'] = 0x1E,
             ['bit'] = 3,
-            ['locationId'] = 1230767
+            ['name'] = 'Clockwork Kazooie Eggs'
         },
-        ['Springy Step Shoes'] = {
+        [1230768] = {
             ['addr'] = 0x1D,
             ['bit'] = 3,
-            ['locationId'] = 1230768
+            ['name'] = 'Springy Step Shoes'
         },
-        ['Taxi Pack'] = {
+        [1230769] = {
             ['addr'] = 0x1D,
             ['bit'] = 4,
-            ['locationId'] = 1230769
+            ['name'] = 'Taxi Pack'
         },
-        ['Hatch'] = {
+        [1230770] = {
             ['addr'] = 0x1D,
             ['bit'] = 5,
-            ['locationId'] = 1230770
+            ['name'] = 'Hatch'
         },
-        ['Snooze Pack'] = {
+        [1230771] = {
             ['addr'] = 0x1D,
             ['bit'] = 0,
-            ['locationId'] = 1230771
+            ['name'] = 'Snooze Pack'
         },
-        ['Leg Spring'] = {
+        [1230772] = {
             ['addr'] = 0x1D,
             ['bit'] = 1,
-            ['locationId'] = 1230772
+            ['name'] = 'Leg Spring'
         },
-        ['Claw Clamber Boots'] = {
+        [1230773] = {
             ['addr'] = 0x1D,
             ['bit'] = 2,
-            ['locationId'] = 1230773
+            ['name'] = 'Claw Clamber Boots'
         },
-        ['Shack Pack'] = {
+        [1230774] = {
             ['addr'] = 0x1C,
             ['bit'] = 6,
-            ['locationId'] = 1230774
+            ['name'] = 'Shack Pack'
         },
-        ['Glide'] = {
+        [1230775] = {
             ['addr'] = 0x1C,
             ['bit'] = 7,
-            ['locationId'] = 1230775
+            ['name'] = 'Glide'
         },
-        ['Sack Pack'] = {
+        [1230776] = {
             ['addr'] = 0x1D,
             ['bit'] = 7,
-            ['locationId'] = 1230776
+            ['name'] = 'Sack Pack'
         },
         --['Fast Swimming'] = {
         --    ['addr'] = 0x1E,
@@ -2071,95 +1998,95 @@ local NON_AGI_MAP = {
         --},
 	},
     ["MAGIC"] = {
-        ['Mumbo: Golden Goliath'] = {
+        [1230855] = {
           ['addr'] = 0x6A,
           ['bit'] = 7,
-          ['locationId'] = 1230855
+          ['name'] = 'Mumbo: Golden Goliath'
         },
-        ['Mumbo: Levitate'] = {
+        [1230856] = {
           ['addr'] = 0x6B,
           ['bit'] = 0,
-          ['locationId'] = 1230856
+          ['name'] = 'Mumbo: Levitate'
         },
-        ['Mumbo: Power'] = {
+        [1230857] = {
           ['addr'] = 0x6B,
           ['bit'] = 1,
-          ['locationId'] = 1230857
+          ['name'] = 'Mumbo: Power'
         },
-        ['Mumbo: Oxygenate'] = {
+        [1230858] = {
           ['addr'] = 0x6B,
           ['bit'] = 2,
-          ['locationId'] = 1230858
+          ['name'] = 'Mumbo: Oxygenate'
         },
-        ['Mumbo: Grow/Shrink'] = {
+        [1230859] = {
           ['addr'] = 0x6B,
           ['bit'] = 3,
-          ['locationId'] = 1230859
+          ['name'] = 'Mumbo: Grow/Shrink'
         },
-        ['Mumbo: EMP'] = {
+        [1230860] = {
           ['addr'] = 0x6B,
           ['bit'] = 7,
-          ['locationId'] = 1230860
+          ['name'] = 'Mumbo: EMP'
         },
-        ['Mumbo: Revive'] = {
+        [1230861] = {
           ['addr'] = 0x6B,
           ['bit'] = 4,
-          ['locationId'] = 1230861
+          ['name'] = 'Mumbo: Revive'
         },
-        ['Mumbo: Rain Dance'] = {
+        [1230862] = {
           ['addr'] = 0x6B,
           ['bit'] = 5,
-          ['locationId'] = 1230862
+          ['name'] = 'Mumbo: Rain Dance'
         },
-        ['Mumbo: Heal'] = {
+        [1230863] = {
           ['addr'] = 0x6B,
           ['bit'] = 6,
-          ['locationId'] = 1230863
+          ['name'] = 'Mumbo: Heal'
         },
-        ['Humba: Stony'] = {
+        [1230174] = {
           ['addr'] = 0x15,
           ['bit'] = 6,
-          ['locationId'] = 1230174
+          ['name'] = 'Humba: Stony'
         },
-        ['Humba: Detonator'] = {
+        [1230175] = {
           ['addr'] = 0x15,
           ['bit'] = 7,
-          ['locationId'] = 1230175
+          ['name'] = 'Humba: Detonator'
         },
-        ['Humba: Money Van'] = {
+        [1230176] = {
           ['addr'] = 0x16,
           ['bit'] = 0,
-          ['locationId'] = 1230176
+          ['name'] = 'Humba: Money Van'
         },
-        ['Humba: Sub'] = {
+        [1230177] = {
           ['addr'] = 0x16,
           ['bit'] = 1,
-          ['locationId'] = 1230177
+          ['name'] = 'Humba: Sub'
         },
-        ['Humba: T-Rex'] = {
+        [1230178] = {
           ['addr'] = 0x16,
           ['bit'] = 2,
-          ['locationId'] = 1230178
+          ['name'] = 'Humba: T-Rex'
         },
-        ['Humba: Washing Machine'] = {
+        [1230179] = {
           ['addr'] = 0x16,
           ['bit'] = 3,
-          ['locationId'] = 1230179
+          ['name'] = 'Humba: Washing Machine'
         },
-        ['Humba: Snowball'] = {
+        [1230180] = {
           ['addr'] = 0x16,
           ['bit'] = 4,
-          ['locationId'] = 1230180
+          ['name'] = 'Humba: Snowball'
         },
-        ['Humba: Bee'] = {
+        [1230181] = {
           ['addr'] = 0x16,
           ['bit'] = 5,
-          ['locationId'] = 1230181
+          ['name'] = 'Humba: Bee'
         },
-        ['Humba: Dragon'] = {
+        [1230182] = {
           ['addr'] = 0x16,
           ['bit'] = 6,
-          ['locationId'] = 1230182
+          ['name'] = 'Humba: Dragon'
         },
     },
 	["SKIP"] = {
@@ -2586,9 +2513,9 @@ function readAPLocationChecks(type)
     then
         for check_type, location in pairs(AGI_MASTER_MAP)
         do
-            for loc, table in pairs(location)
+            for locId, table in pairs(location)
             do
-                checks[loc] = BTRAMOBJ.checkFlag(table["addr"], table["bit"])
+                checks[check_type][locId] = BTRAMOBJ.checkFlag(table["addr"], table["bit"])
             end
         end
         return checks;
@@ -2598,12 +2525,12 @@ function readAPLocationChecks(type)
 end
 
 function update_BMK_MOVES_checks() --Only run when close to Silos
-    for keys, moves in pairs(SILO_MAP_CHECK[CURRENT_MAP])
+    for keys, moveId in pairs(SILO_MAP_CHECK[CURRENT_MAP])
     do
         if keys ~= "Exceptions"
         then
-            local get_addr = NON_AGI_MAP['MOVES'][moves]
-            if BKM[moves] == false
+            local get_addr = NON_AGI_MAP['MOVES'][moveId]
+            if BKM[moveId] == false
             then
                 local res = BTRAMOBJ.checkFlag(get_addr['addr'], get_addr['bit'])
                 if res == true
@@ -2612,7 +2539,7 @@ function update_BMK_MOVES_checks() --Only run when close to Silos
                     then
                         print("Already learnt this Silo. finished")
                     end
-                    BKM[moves] = res
+                    BKM[moveId] = res
                     SILOS_LOADED = true
                 end
             end
@@ -2637,15 +2564,15 @@ end
 
 function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Silo Model is loaded OR Close to Silo
     --Only clear the moves that we need to clear 
-    for keys, move in pairs(SILO_MAP_CHECK[CURRENT_MAP])
+    for keys, moveId in pairs(SILO_MAP_CHECK[CURRENT_MAP])
     do
         if keys ~= "Exceptions"
         then
-            local addr_info = NON_AGI_MAP["MOVES"][move]
-            if BKM[move] == false
+            local addr_info = NON_AGI_MAP["MOVES"][moveId]
+            if BKM[moveId] == false
             then
                 BTRAMOBJ.clearFlag(addr_info['addr'], addr_info['bit']);
-            elseif BKM[move] == true
+            elseif BKM[moveId] == true
             then
                 BTRAMOBJ.setFlag(addr_info['addr'], addr_info['bit'])
             end
@@ -2660,13 +2587,13 @@ function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Si
 end
 
 function set_AGI_MOVES_checks() -- SET AGI Moves into RAM AFTER BT/Silo Model is loaded
-    for k,v in pairs(NON_AGI_MAP['MOVES'])
+    for moveId, table in pairs(NON_AGI_MAP['MOVES'])
     do
-        if AGI_MOVES[k] == true
+        if AGI_MOVES[moveId] == true
         then
-            BTRAMOBJ.setFlag(v['addr'], v['bit']);
+            BTRAMOBJ.setFlag(table['addr'], table['bit']);
         else
-            BTRAMOBJ.clearFlag(v['addr'], v['bit']);
+            BTRAMOBJ.clearFlag(table['addr'], table['bit']);
         end
     end
 end
@@ -2742,7 +2669,7 @@ function getSiloPlayerModel(BTModel)
             print("No silo on Map")
             print("AP Abilities enabled")
         end
-        set_AGI_MOVES_checks(false) --No Silo on this map
+        set_AGI_MOVES_checks() --No Silo on this map
         CHECK_FOR_SILO = false
         WATCH_LOADED_SILOS = false
         SILOS_WAIT_TIMER = 0
@@ -2752,7 +2679,7 @@ function getSiloPlayerModel(BTModel)
     then
         print("Silo Found")
     end
-    set_AGI_MOVES_checks(false)
+    set_AGI_MOVES_checks()
     CHECK_FOR_SILO = false
     WATCH_LOADED_SILOS = true
 end
@@ -2767,7 +2694,7 @@ function nearSilo(BTModel)
             and CURRENT_MAP == 0xD6
         then
             mainmemory.writefloat(modelObjPtr + 0x0C, POS["Zpos"] + 100, true);
-            MoveWitchyPads(BTModel);
+            MoveWitchyPads();
         end
 
         if POS["Distance"] <= 650
@@ -2808,16 +2735,16 @@ function nearSilo(BTModel)
             then
                 print("Reseting Movelist");
             end
-            set_AGI_MOVES_checks(false)
+            set_AGI_MOVES_checks()
             LOAD_BMK_MOVES = false
             SILOS_LOADED = false;
         end
     end
 end
 
-function MoveWitchyPads(BTModel)
-    BTModel.changeName("Kazooie Split Pad", false)
-    local modelPOS = BTModel.getMultipleModelCoords()
+function MoveWitchyPads()
+    BTMODELOBJ.changeName("Kazooie Split Pad", false)
+    local modelPOS = BTMODELOBJ.getMultipleModelCoords()
     for modelObjPtr, POS in pairs(modelPOS) do
 
         if (POS["Xpos"] == -125 and POS["Ypos"] == -163 and POS["Zpos"] == -1580)
@@ -2827,34 +2754,34 @@ function MoveWitchyPads(BTModel)
             break
         end
     end
-    BTModel.changeName("Banjo Split Pad", false)
-    local modelPOS = BTModel.getMultipleModelCoords()
+    BTMODELOBJ.changeName("Banjo Split Pad", false)
+    local modelPOS = BTMODELOBJ.getMultipleModelCoords()
     for modelObjPtr, POS in pairs(modelPOS) do
         if (POS["Xpos"] == 125 and POS["Zpos"] == -1580)
             and CURRENT_MAP == 0xD6
         then
-            BTModel:moveModelObject(modelObjPtr, POS["Xpos"] + 850, nil, POS["Zpos"] - 300)
+            BTMODELOBJ.moveModelObject(modelObjPtr, POS["Xpos"] + 850, nil, POS["Zpos"] - 300)
             break
         end
     end
 end
 
-function MoveBathPads(BTModel)
-    BTModel.changeName("Kazooie Split Pad", false)
-    POS = BTModel.getSingleModelCoords(nil)
-    BTModel.moveModelObject(nil, 0, POS["Ypos"] + 450, POS["Zpos"] - 75);
+function MoveBathPads()
+    BTMODELOBJ.changeName("Kazooie Split Pad", false)
+    POS = BTMODELOBJ.getSingleModelCoords(nil)
+    BTMODELOBJ.moveModelObject(nil, 0, POS["Ypos"] + 450, POS["Zpos"] - 75);
 
-    BTModel.changeName("Banjo Split Pad", false)
-    POS = BTModel.getSingleModelCoords(nil)
-    BTModel.moveModelObject(nil, 0, POS["Ypos"] + 450, POS["Zpos"] - 75);
+    BTMODELOBJ.changeName("Banjo Split Pad", false)
+    POS = BTMODELOBJ.getSingleModelCoords(nil)
+    BTMODELOBJ.moveModelObject(nil, 0, POS["Ypos"] + 450, POS["Zpos"] - 75);
     BATH_PADS_QOL = true
 end
 
-function locationControl(BTRAM, BTModel)
+function locationControl()
     local mapaddr = getMap()
     if USE_BMM_TBL == true
     then
-        if BTRAM:checkFlag(0x1F, 0)== true -- DEMO FILE
+        if BTRAMOBJ.checkFlag(0x1F, 0)== true -- DEMO FILE
         then
             local DEMO = { ['DEMO'] = true}
             return DEMO
@@ -2880,8 +2807,8 @@ function locationControl(BTRAM, BTModel)
             CURRENT_MAP = mapaddr
             return all_location_checks("AMM")
         else
-            getAltar(BTModel)
-            nearWHJinjo(BTModel)
+            getAltar()
+            nearWHJinjo()
             CURRENT_MAP = mapaddr
             return all_location_checks("BMM");
         end
@@ -2909,7 +2836,7 @@ function locationControl(BTRAM, BTModel)
             end
             if CURRENT_MAP == 0xF4 and BATH_PADS_QOL == false
             then
-                MoveBathPads(BTModel)
+                MoveBathPads()
             elseif  CURRENT_MAP ~= 0xF4 and BATH_PADS_QOL == true
             then
                 BATH_PADS_QOL = false
@@ -2922,11 +2849,11 @@ function locationControl(BTRAM, BTModel)
                     useAGI();
                     CURRENT_MAP = mapaddr
                 end
-                nearWHJinjo(BTModel)
+                nearWHJinjo()
                 return all_location_checks("BMM");
             else
                 CURRENT_MAP = mapaddr
-                getAltar(BTModel)
+                getAltar()
                 if CLOSE_TO_ALTAR == true
                 then
                     return all_location_checks("BMM");
@@ -3052,7 +2979,7 @@ end
 function processMagicItem(loc_ID)
     for location, table in pairs(NON_AGI_MAP['MAGIC'])
     do
-        if table['locationId'] == loc_ID
+        if table[location] == loc_ID
         then
             BTRAMOBJ.setFlag(table['addr'], table['bit'])
 --            archipelago_msg_box("Received " .. location);
@@ -3135,17 +3062,45 @@ function process_block(block)
     then
         processAGIItem(block['items'])
     end
-    if block['messages'] ~= nil and block['messages'] ~= "" 
-    then
- --       archipelago_msg_box(block['messages']);
-    end
-    if block['triggerDeath'] == true
-    then
-        KILL_BANJO = true;
-    end
+--     if block['messages'] ~= nil and block['messages'] ~= "" 
+--     then
+--  --       archipelago_msg_box(block['messages']);
+--     end
+--     if block['triggerDeath'] == true
+--     then
+--         KILL_BANJO = true;
+--     end
 
     if DEBUGLVL2 == true then
         print(block)
+    end
+end
+
+function SendToBTClient()
+    local retTable = {}
+    retTable["scriptVersion"] = SCRIPT_VERSION;
+    retTable["playerName"] = PLAYER;
+    retTable["deathlinkActive"] = DEATH_LINK;
+    retTable['locations'] = locationControl()
+    retTable['unlocked_moves'] = BKM;
+    retTable["isDead"] = DETECT_DEATH;
+    if GAME_LOADED == false
+    then
+        retTable["sync_ready"] = "false"
+    else
+        retTable["sync_ready"] = "true"
+    end
+
+    local msg = json.encode(retTable).."\n"
+    local ret, error = BT_SOCK:send(msg)
+    if ret == nil then
+        print(error)
+    elseif CUR_STATE == STATE_INITIAL_CONNECTION_MADE then
+        CUR_STATE = STATE_TENTATIVELY_CONNECTED
+    elseif CUR_STATE == STATE_TENTATIVELY_CONNECTED then
+        archipelago_msg_box("Connected to the Banjo Tooie Client!");
+        print("Connected!")
+        CUR_STATE = STATE_OK
     end
 end
 
@@ -3155,32 +3110,7 @@ function receive()
         getSlotData()
     else
         -- Send the message
-        local retTable = {}
-        retTable["scriptVersion"] = SCRIPT_VERSION;
-        retTable["playerName"] = PLAYER;
-        retTable["deathlinkActive"] = DEATH_LINK;
-        retTable['locations'] = locationControl()
-        retTable['unlocked_moves'] = BKM;
-        retTable["isDead"] = DETECT_DEATH;
-        if GAME_LOADED == false
-        then
-            retTable["sync_ready"] = "false"
-        else
-            retTable["sync_ready"] = "true"
-        end
-
-    
-        msg = json.encode(retTable).."\n"
-        local ret, error = BT_SOCK:send(msg)
-        if ret == nil then
-            print(error)
-        elseif CUR_STATE == STATE_INITIAL_CONNECTION_MADE then
-            CUR_STATE = STATE_TENTATIVELY_CONNECTED
-        elseif CUR_STATE == STATE_TENTATIVELY_CONNECTED then
-            archipelago_msg_box("Connected to the Banjo Tooie Client!");
-            print("Connected!")
-            CUR_STATE = STATE_OK
-        end
+        SendToBTClient()
 
         l, e = BT_SOCK:receive()
         -- Handle incoming message
@@ -3202,17 +3132,16 @@ function receive()
         end
         process_block(json.decode(l))
 
-
-        if DETECT_DEATH == true
-        then
-            DETECT_DEATH = false;
-        end
+        -- if DETECT_DEATH == true
+        -- then
+        --     DETECT_DEATH = false;
+        -- end
     end
 end
 
 function checkPause()
     local pause_menu = mainmemory.readbyte(0x15961A);
-    if pause_menu == 1 and PAUSED == false 
+    if pause_menu == 1 and PAUSED == false
     then
         if DEBUG == true
         then
@@ -3240,11 +3169,11 @@ function checkPause()
             print("AGI TABLE:");
             for item_group, table in pairs(AGI)
             do
-                for location, value in pairs(table)
+                for locationId, value in pairs(table)
                 do
                     if(value == true)
                     then
-                        print(location .. ":" .. tostring(value))
+                        print(AGI_MASTER_MAP[item_group][locationId]['name'] .. ":" .. tostring(value))
                     end
                 end
             end
@@ -3253,11 +3182,11 @@ function checkPause()
             print("BMM TABLE:");
             for item_group, table in pairs(BMM)
             do
-                for location, value in pairs(table)
+                for locationId, value in pairs(table)
                 do
                     if(value == true)
                     then
-                        print(location .. ":" .. tostring(value))
+                        print(AGI_MASTER_MAP[item_group][locationId]['name'] .. ":" .. tostring(value))
                     end
                 end
             end
@@ -3266,23 +3195,24 @@ function checkPause()
             print("AMM TABLE:");
             for item_group, table in pairs(AMM)
             do
-                for location, value in pairs(table)
+                for locationId, value in pairs(table)
                 do
                     if(value == true)
                     then
-                        print(location .. ":" .. tostring(value))
+                        print(AGI_MASTER_MAP[item_group][locationId]['name'] .. ":" .. tostring(value))
                     end
                 end
             end
         elseif check_controls ~= nil and check_controls['P1 C Up'] == true
         then
             print("BKM TABLE + Actual:");
-            for location, values in pairs(MASTER_MAP["MOVES"])
+            for locationId, values in pairs(NON_AGI_MAP["MOVES"])
             do
                 print("AMM:");
-                local res = checkFlag(values['addr'], values['bit']);
-                print(location .. ":" .. tostring(res))
-                print("Checked? : " .. tostring(BKM[location]))
+                local res = BTRAMOBJ.checkFlag(values['addr'], values['bit']);
+                print(NON_AGI_MAP["MOVES"][locationId]['name'] .. ":" .. tostring(res))
+                print("Checked? : " .. tostring(BKM[locationId]))
+                print("AGI? : " .. tostring(AGI_MOVES[locationId]))
                 print("------------------------");
             end
         end
@@ -3374,33 +3304,11 @@ function gameSaving()
     end
 end
 
-function moveEnemytoBK()
-    local enemy = checkModel("enemy");
-    if enemy == false
-    then
-        return
-    end
-
-    pos = getBanjoPos();
-    if pos == false
-    then
-        return
-    end
-
-	mainmemory.writefloat(enemy + 0x04, pos["Xpos"], true);
-    mainmemory.writefloat(enemy + 0x08, pos["Ypos"], true);
-    mainmemory.writefloat(enemy + 0x0C, pos["Zpos"], true);
-
-    KILL_BANJO = false --TODO - TEST
-    -- print("Object Distance:")
-    -- print(playerDist)
-end
-
 function getSlotData()
     local retTable = {}
     retTable["getSlot"] = true;
  
-    msg = json.encode(retTable).."\n"
+    local msg = json.encode(retTable).."\n"
     local ret, error = BT_SOCK:send(msg)
 
     l, e = BT_SOCK:receive()
@@ -3524,14 +3432,17 @@ function initializeFlags()
 	-- Otherwise, the flags were already set, so just stop checking
 	elseif (current_map == 0xAF or current_map == 0x142) then
 		INIT_COMPLETE = true
+    elseif current_map == 0x158 and INIT_COMPLETE == true
+    then
+        INIT_COMPLETE = false
 	end
 end
 
 function setToTComplete()
 	-- this fixes a bug that messes up game progression
-	current_map = BTRAMOBJ.getMap();
-	if (current_map == 0x15E and BTRAMOBJ.checkFlag(0x83, 1) == false) then -- CK Klungo Boss Room
-		BTRAMOBJ.setFlag(0x83, 1)
+	if BTRAMOBJ.checkFlag(0x83, 1) == false and TOT_SET_COMPLETE == false then -- CK Klungo Boss Room
+		BTRAMOBJ.setFlag(0x83, 1);
+        TOT_SET_COMPLETE = true;
 	end
 end
 
@@ -3557,7 +3468,7 @@ function main()
         if (CUR_STATE == STATE_OK) or (CUR_STATE == STATE_INITIAL_CONNECTION_MADE) or (CUR_STATE == STATE_TENTATIVELY_CONNECTED) then
             if (FRAME % 60 == 0) then
                 receive();
-                if (SKIP_TOT == "true") then
+                if SKIP_TOT == "true" and CURRENT_MAP == 0x15E then
 					setToTComplete();
 				end
                 if SAVE_GAME == true
@@ -3661,4 +3572,26 @@ main()
 --         setCurrentHealth(0)
 --         moveEnemytoBK()
 --     end
+-- end
+
+-- function moveEnemytoBK()
+--     local enemy = checkModel("enemy");
+--     if enemy == false
+--     then
+--         return
+--     end
+
+--     pos = getBanjoPos();
+--     if pos == false
+--     then
+--         return
+--     end
+
+-- 	mainmemory.writefloat(enemy + 0x04, pos["Xpos"], true);
+--     mainmemory.writefloat(enemy + 0x08, pos["Ypos"], true);
+--     mainmemory.writefloat(enemy + 0x0C, pos["Zpos"], true);
+
+--     KILL_BANJO = false --TODO - TEST
+--     -- print("Object Distance:")
+--     -- print(playerDist)
 -- end
