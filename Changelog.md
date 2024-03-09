@@ -17,12 +17,17 @@
   - Ancient Swimming Baths Cheato Page now allows Wing Whack
   - Added more clockwork logic
   - Fixed a lot of misc. WW, JRL, and HFP logic
+  - Stealing food with Chuffy no longer in logic
+  - More locations in GGM/WW now allow for solo Kazooie
 - Implemented generic Jiggy item
 - Bugfixes:
   - Async items are now received properly
   - Hints no longer send checks
   - Saving and Quitting while touching a jiggy no longer sends false checks
 - QOL: Split Up Pads in Ancient Baths moved to better location
+- Jinjo Jiggies have been removed temporarily for causing logic issues that were difficult to solve.
+  - Jinjo Families will now give a guaranteed local Jiggy, but are not considered for logic
+
 
 # 0.5.1-beta
 - Fixed logic errors:

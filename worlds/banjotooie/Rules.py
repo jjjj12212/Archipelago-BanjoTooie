@@ -189,7 +189,8 @@ class BanjoTooieRules:
                                                  self.GM_boulders(state),
             locationName.JIGGYGM6: lambda state: self.dilberta_free(state),
             locationName.JIGGYGM7: lambda state: self.check_mumbo_magic(state, itemName.MUMBOGM),
-            locationName.JIGGYGM8: lambda state: state.has(itemName.SPRINGB, self.player),
+            locationName.JIGGYGM8: lambda state: state.has(itemName.SPRINGB, self.player) or
+                                                 (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)),
             locationName.JIGGYGM9: lambda state: self.GM_boulders(state) and
                                                  (state.has(itemName.SPLITUP, self.player) or
                                                   self.has_fire(state)),
@@ -293,7 +294,7 @@ class BanjoTooieRules:
             locationName.JIGGYGI5: lambda state: self.can_reach_GI_2F(state),
             locationName.JIGGYGI6: lambda state: self.check_mumbo_magic(state, itemName.MUMBOGI) and
                                                  self.can_reach_GI_2F(state) and
-                                                 state.has(itemName.GEGGS, self.player) and
+                                                 (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) and
                                                  state.has(itemName.EGGAIM, self.player) and
                                                  self.can_use_battery(state) and
                                                  (self.check_humba_magic(state, itemName.HUMBAGI) or
@@ -857,8 +858,7 @@ class BanjoTooieRules:
         return state.has(itemName.EGGAIM, self.player) and state.has(itemName.SPRINGB, self.player)
 
     def smuggle_food(self, state: CollectionState) -> bool:
-        return self.WW_train_station(state) or \
-                state.has(itemName.CLAWBTS, self.player)
+        return state.has(itemName.CLAWBTS, self.player)
 
     def oogle_boogles_open(self, state) -> bool:
         return self.check_humba_magic(state, itemName.HUMBATD) and self.check_mumbo_magic(state, itemName.MUMBOTD)
