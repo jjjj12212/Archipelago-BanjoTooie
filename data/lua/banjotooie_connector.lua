@@ -110,7 +110,7 @@ function BTConsumable:setConsumable(value)
     mainmemory.write_u16_be(self.CONSUME_IDX + self.consumeIndex * 0x0C, value);
     if DEBUG == true
     then
-        print(self.consumeName + " has been modified")
+        print(self.consumeName .. " has been modified")
     end
 end
 
@@ -2659,7 +2659,7 @@ function checkConsumables(consumable_type, location_checks)
     BTCONSUMEOBJ:changeConsumable(consumable_type)
 	for location_name, value in pairs(AGI[consumable_type])
 	do
-		if(USE_BMM_TBL == false and (value == false and location_checks[location_name] == true))
+		if(USE_BMM_TBL == false and (value == false and location_checks[consumable_type][location_name] == true))
 		then
 			if(DEBUG == true)
 			then
@@ -2749,7 +2749,7 @@ end
 function nearSilo()
     BTMODELOBJ:changeName("Silo", false);
     local modelPOS = BTMODELOBJ:getMultipleModelCoords()
-    local siloPOS = nil;
+    local siloPOS = { ["Distance"] = 9999};
     for modelObjPtr, POS in pairs(modelPOS) do
         siloPOS = POS
         --Move the Silo in Witchyworld.
@@ -2769,7 +2769,7 @@ function nearSilo()
             break;
         end
     end
-
+    
     if siloPOS["Distance"] <= 650 
     then
         if LOAD_BMK_MOVES == false
@@ -2851,6 +2851,7 @@ function locationControl()
         end
         if (CURRENT_MAP ~= mapaddr) and ENABLE_AP_MOVES == true
         then
+            WATCH_LOADED_SILOS = false
             for map,moves in pairs(SILO_MAP_CHECK)
             do
                 if mapaddr == map
@@ -2884,6 +2885,7 @@ function locationControl()
         else
             if (CURRENT_MAP ~= mapaddr) and ENABLE_AP_MOVES == true
             then
+                WATCH_LOADED_SILOS = false
                 for map,moves in pairs(SILO_MAP_CHECK)
                 do
                     if mapaddr == map
