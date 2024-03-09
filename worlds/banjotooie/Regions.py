@@ -11,15 +11,15 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     #    locationName.FSWIM
     ],
     regionName.IOHJV:    [
-        locationName.JIGGYIH1,
-        locationName.JIGGYIH2,
-        locationName.JIGGYIH3,
-        locationName.JIGGYIH4,
-        locationName.JIGGYIH5,
-        locationName.JIGGYIH6,
-        locationName.JIGGYIH7,
-        locationName.JIGGYIH8,
-        locationName.JIGGYIH9,
+        # locationName.JIGGYIH1,
+        # locationName.JIGGYIH2,
+        # locationName.JIGGYIH3,
+        # locationName.JIGGYIH4,
+        # locationName.JIGGYIH5,
+        # locationName.JIGGYIH6,
+        # locationName.JIGGYIH7,
+        # locationName.JIGGYIH8,
+        # locationName.JIGGYIH9,
         locationName.JIGGYIH10
     ],
     regionName.IOHWH:    [

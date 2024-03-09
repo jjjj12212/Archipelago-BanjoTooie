@@ -117,7 +117,7 @@ jiggy_table = {
     # itemName.JIGGYCC8:  ItemData(1230673, 1, "progress", None),
     # itemName.JIGGYCC9:  ItemData(1230674, 1, "progress", None),
     # itemName.JIGGYCC10: ItemData(1230675, 1, "progress", None),
-    itemName.JIGGY:         ItemData(1230515, 90, "progress", None),
+    itemName.JIGGY:         ItemData(1230515, 81, "progress", None),
 }
 
 moves_table = {

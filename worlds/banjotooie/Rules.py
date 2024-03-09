@@ -361,15 +361,15 @@ class BanjoTooieRules:
             locationName.JIGGYCC10: lambda state: self.check_solo_moves(state, itemName.SHPACK),
 
             #Jinjo Family Jiggies
-            locationName.JIGGYIH1: lambda state: state.has(itemName.JIGGY, self.player, 36),
-            locationName.JIGGYIH2: lambda state: state.has(itemName.JIGGY, self.player, 36),
-            locationName.JIGGYIH3: lambda state: state.has(itemName.JIGGY, self.player, 45),
-            locationName.JIGGYIH4: lambda state: state.has(itemName.JIGGY, self.player, 45),
-            locationName.JIGGYIH5: lambda state: state.has(itemName.JIGGY, self.player, 45),
-            locationName.JIGGYIH6: lambda state: state.has(itemName.JIGGY, self.player, 45),
-            locationName.JIGGYIH7: lambda state: state.has(itemName.JIGGY, self.player, 45),
-            locationName.JIGGYIH8: lambda state: state.has(itemName.JIGGY, self.player, 45),
-            locationName.JIGGYIH9: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            #locationName.JIGGYIH1: lambda state: state.has(itemName.JIGGY, self.player, 36),
+            #locationName.JIGGYIH2: lambda state: state.has(itemName.JIGGY, self.player, 36),
+            #locationName.JIGGYIH3: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            #locationName.JIGGYIH4: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            #locationName.JIGGYIH5: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            #locationName.JIGGYIH6: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            #locationName.JIGGYIH7: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            #locationName.JIGGYIH8: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            #locationName.JIGGYIH9: lambda state: state.has(itemName.JIGGY, self.player, 45),
 
             # locationName.JIGGYIH1: lambda state: self.jiggy_unlock(state, 36) and
             #                                      self.check_mumbo_magic(state, itemName.MUMBOMT) and
@@ -632,7 +632,7 @@ class BanjoTooieRules:
             locationName.CHEATOTL3: lambda state: state.has(itemName.BDRILL, self.player) and 
                                                   (state.has(itemName.GGRAB, self.player) or self.can_beat_terry(state)),
 
-            locationName.CHEATOGI1: lambda state: state.has(itemName.BDRILL, self.player) and state.has(itemName.GEGGS, self.player) and
+            locationName.CHEATOGI1: lambda state: state.has(itemName.GEGGS, self.player) and
                                                   self.enter_GI(state),
             locationName.CHEATOGI2: lambda state: self.can_reach_GI_2F(state),
             locationName.CHEATOGI3: lambda state: self.can_beat_weldar(state),
@@ -926,15 +926,15 @@ class BanjoTooieRules:
             silo = self.world.multiworld.get_location(location, self.player)
             set_rule(silo, rules)
 
-        for item in self.jinjo_forbid:
-            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
-            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)
-            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH3, self.player), item, self.player)
-            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH4, self.player), item, self.player)
-            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH5, self.player), item, self.player)
-            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH6, self.player), item, self.player)
-            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH7, self.player), item, self.player)
-            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH8, self.player), item, self.player)
-            forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
+        # for item in self.jinjo_forbid:
+        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
+        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)
+        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH3, self.player), item, self.player)
+        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH4, self.player), item, self.player)
+        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH5, self.player), item, self.player)
+        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH6, self.player), item, self.player)
+        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH7, self.player), item, self.player)
+        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH8, self.player), item, self.player)
+        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
 
         self.world.multiworld.completion_condition[self.player] = lambda state: state.has("Kick Around", self.player)
