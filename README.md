@@ -30,7 +30,7 @@ Banjo Tooie for Archipelago
 - Jinjos are scattered throughout Archipelago games 
 - Doubloons are scattered throughout Archipelago games
 - Train Station are scattered throughout Archipelago games **(if Possible)**
-- Musical Notes/Treble Clef are scattered throughout Archipelago games **(if Possible / requires feedback if its a good option)**
+- Treble Clef are scattered throughout Archipelago games **(if Possible)**
 
 # Contributors
  - @oohnahleevay Unalive (coder)

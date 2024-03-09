@@ -24,10 +24,15 @@
   - Async items are now received properly
   - Hints no longer send checks
   - Saving and Quitting while touching a jiggy no longer sends false checks
-- QOL: Split Up Pads in Ancient Baths moved to better location
+  - Witchyworld Pads no longer floating
+- QOL: 
+  - Split Up Pads in Ancient Baths moved to better location
+  - Jamjar Silo proximity only allow learnable moves for the silos in the map
+
 - Jinjo Jiggies have been removed temporarily for causing logic issues that were difficult to solve.
   - Jinjo Families will now give a guaranteed local Jiggy, but are not considered for logic
 
+- Major overhaul on the lua client.
 
 # 0.5.1-beta
 - Fixed logic errors:
