@@ -262,8 +262,10 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     if "DEMO" not in locations and ctx.sync_ready == True:
         if ctx.location_table != locations:
             ctx.location_table = locations
-
+            locs1 = []
             for item_group, BTlocation_table in locations.items():
+                    if len(BTlocation_table) == 0:
+                        continue
 
                     # Game completion handling
                     if ((1230027 in BTlocation_table and BTlocation_table[1230027] == True) 
@@ -275,16 +277,19 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                         ctx.finished_game = True
 
                     else:
-                        locs1 = [locationId for locationId, b in BTlocation_table.items() if b]
-
-            await ctx.send_msgs([{
-                "cmd": "LocationChecks",
-                "locations": locs1
-            }])
+                        for locationId, value in BTlocation_table.items():
+                            if value == True:
+                                locs1.append(int(locationId))
+            if len(locs1) > 0:
+                await ctx.send_msgs([{
+                    "cmd": "LocationChecks",
+                    "locations": locs1
+                }])
 
     if ctx.slot_data["moves"] == "true" and ctx.sync_ready == True:
             # Locations handling
         movelist = payload['unlocked_moves']
+        mov1 = []
 
         # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
         if isinstance(movelist, list):
@@ -293,8 +298,11 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         if ctx.movelist_table != movelist:
             ctx.movelist_table = movelist
 
-            mov1 = [loc for loc, b in ctx.movelist_table.items() if b]
+            for locationId, value in movelist.items():
+                if value == True:
+                    mov1.append(int(locationId))
 
+            # mov1 = [loc for loc, b in ctx.movelist_table.items() if b]
             await ctx.send_msgs([{
                 "cmd": "LocationChecks",
                 "locations": mov1

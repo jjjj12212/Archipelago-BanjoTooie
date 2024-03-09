@@ -29,8 +29,10 @@ local PREV_STATE = ""
 local CUR_STATE =  STATE_UNINITIALIZED
 local FRAME = 0
 
-local DEBUG = true
+local DEBUG = false
 local DEBUGLVL2 = false
+local DEBUGLVL3 = false
+
 local BYPASS_GAME_LOAD = false;
 
 local BTMODELOBJ = nil;
@@ -60,7 +62,7 @@ local TOT_SET_COMPLETE = false;
 local BATH_PADS_QOL = false
 
 local receive_map = { -- [ap_id] = item_id; --  Required for Async Items
-    ["0"] = 0
+    ["NA"] = "NA"
 }
 
 -- Consumable Class
@@ -168,7 +170,7 @@ function BTRAM:dereferencePointer(addr)
         if BTRAM:isPointer(address) then
             return address - self.RDRAMBase;
         else
-            if DEBUG == true
+            if DEBUGLVL3 == true
             then
                 print("Failed to Defref:")
                 print(address)
@@ -176,7 +178,7 @@ function BTRAM:dereferencePointer(addr)
             return nil;
         end
     else
-        if DEBUG == true
+        if DEBUGLVL3 == true
         then
             print("Number too big or not number:")
             print(tostring(addr))
@@ -565,135 +567,135 @@ end
 -- Moves that needs to be checked Per Map. some silos NEEDS other moves as well to get to.
 local SILO_MAP_CHECK = {
     [0x155] = { -- Cliff Top
-        1230763,
+        "1230763",
         ["Exceptions"] = {
 
         }
     },
     [0x152] = { -- Platau
-        1230756,
+        "1230756",
         ["Exceptions"] = {
-            1230755
+            "1230755"
         }
     },
     [0x154] = { -- Pine Grove
-        1230759,
+        "1230759",
         ["Exceptions"] = {
             
         }
     },
     [0x15A] = { -- Wasteland
-        1230767,
+        "1230767",
         ["Exceptions"] = {
             
         }
     },
     [0xB8] = { -- MT Main
-        1230754,
-        1230755,
+        "1230754",
+        "1230755",
         ["Exceptions"] = {
             
         }
     },
     [0xC4] = { -- MT Grove
-        1230753,
+        "1230753",
         ["Exceptions"] = {
             
         }
     },
     [0xC7] = { -- GM Main
-        1230757,
+        "1230757",
         ["Exceptions"] = {
             
         }
     },
     [0x163] = { -- GM Storage
-        1230758,
+        "1230758",
         ["Exceptions"] = {
             
         }
     },
     [0xD6] = { -- WW Main
-        1230761,
-        1230760,
+        "1230761",
+        "1230760",
         ["Exceptions"] = {
             
         }
     },
     [0xE1] = { -- WW Castle
-        1230762,
+        "1230762",
         ["Exceptions"] = {
             
         }
     },
     [0x1A7] = { -- JRL Main
-        1230764,
+        "1230764",
         ["Exceptions"] = {
             
         }
     },
     [0xF6] = { -- JRL Eel Lair
-        1230765,
+        "1230765",
         ["Exceptions"] = {
             
         }
     },
     [0xED] = { -- JRL Jolly
-        1230766,
+        "1230766",
         ["Exceptions"] = {
             
         }
     },
     [0x122] = { --TDL Main
-        1230768,
+        "1230768",
         ["Exceptions"] = {
             
         }
     },
     [0x119] = { -- Unga Bunga Cave
-        1230770,
+        "1230770",
         ["Exceptions"] = {
   
         }
     },
     [0x117] = { -- TDL River
-        1230769,
+        "1230769",
         ["Exceptions"] = {
   
         }
     },
     [0x101] = { -- GI Floor 1
-        1230773,
+        "1230773",
         ["Exceptions"] = {
   
         }
     },
     [0x106] = { -- Floor 2
-        1230772,
+        "1230772",
         ["Exceptions"] = {
   
         }
     },
     [0x111] = { -- GI Waste Disposal
-        1230771,
+        "1230771",
         ["Exceptions"] = {
   
         }
     },
     [0x127] = { -- HFP Fire
-        1230774,
+        "1230774",
         ["Exceptions"] = {
   
         }
     },
     [0x128] = { -- HFP Ice
-        1230775,
+        "1230775",
         ["Exceptions"] = {
   
         }
     },
     [0x13A] = { -- CC Cave
-        1230776,
+        "1230776",
         ["Exceptions"] = {
   
         }
@@ -716,52 +718,52 @@ local BKM = {};
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
     ['JIGGY'] = {
-        ["1230676"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 0,
-            ['name'] = 'JV: White Jinjo Family Jiggy'
-        },
-        ["1230677"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 1,
-            ['name'] = 'Jinjo Village: Orange Jinjo Family Jiggy'
-        },
-        ["1230678"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 2,
-            ['name'] = 'JV: Yellow Jinjo Family Jiggy'
-        },
-        ["1230679"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 3,
-            ['name'] = 'JV: Brown Jinjo Family Jiggy'
+        -- ["1230676"] = {
+        --     ['addr'] = 0x4F,
+        --     ['bit'] = 0,
+        --     ['name'] = 'JV: White Jinjo Family Jiggy'
+        -- },
+        -- ["1230677"] = {
+        --     ['addr'] = 0x4F,
+        --     ['bit'] = 1,
+        --     ['name'] = 'Jinjo Village: Orange Jinjo Family Jiggy'
+        -- },
+        -- ["1230678"] = {
+        --     ['addr'] = 0x4F,
+        --     ['bit'] = 2,
+        --     ['name'] = 'JV: Yellow Jinjo Family Jiggy'
+        -- },
+        -- ["1230679"] = {
+        --     ['addr'] = 0x4F,
+        --     ['bit'] = 3,
+        --     ['name'] = 'JV: Brown Jinjo Family Jiggy'
 
-        },
-        ["1230680"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 4,
-            ['name'] = 'JV: Green Jinjo Family Jiggy'
-        },
-        ["1230681"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 5,
-            ['name'] = 'JV: Red Jinjo Family Jiggy'
-        },
-        ["1230682"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 6,
-            ['name'] = 'JV: Blue Jinjo Family Jiggy'
-        },
-        ["1230683"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 7,
-            ['name'] = 'JV: Purple Jinjo Family Jiggy'
-        },
-        ["1230684"] = {
-            ['addr'] = 0x50,
-            ['bit'] = 0,
-            ['name'] = 'JV: Black Jinjo Family Jiggy'
-        },
+        -- },
+        -- ["1230680"] = {
+        --     ['addr'] = 0x4F,
+        --     ['bit'] = 4,
+        --     ['name'] = 'JV: Green Jinjo Family Jiggy'
+        -- },
+        -- ["1230681"] = {
+        --     ['addr'] = 0x4F,
+        --     ['bit'] = 5,
+        --     ['name'] = 'JV: Red Jinjo Family Jiggy'
+        -- },
+        -- ["1230682"] = {
+        --     ['addr'] = 0x4F,
+        --     ['bit'] = 6,
+        --     ['name'] = 'JV: Blue Jinjo Family Jiggy'
+        -- },
+        -- ["1230683"] = {
+        --     ['addr'] = 0x4F,
+        --     ['bit'] = 7,
+        --     ['name'] = 'JV: Purple Jinjo Family Jiggy'
+        -- },
+        -- ["1230684"] = {
+        --     ['addr'] = 0x50,
+        --     ['bit'] = 0,
+        --     ['name'] = 'JV: Black Jinjo Family Jiggy'
+        -- },
         ["1230685"] = {
             ['addr'] = 0x50,
             ['bit'] = 1,
@@ -2717,7 +2719,6 @@ function getSiloPlayerModel()
     end
     BTMODELOBJ:changeName("Silo", false)
     local object = BTMODELOBJ:checkModel();
-    print(object)
     if object == false
     then
         BTMODELOBJ:changeName("Player", false)
@@ -2751,25 +2752,28 @@ function nearSilo()
     local modelPOS = BTMODELOBJ:getMultipleModelCoords()
     local siloPOS = { ["Distance"] = 9999};
     for modelObjPtr, POS in pairs(modelPOS) do
-        siloPOS = POS
-        --Move the Silo in Witchyworld.
-        if POS["Xpos"] == 0 and POS["Ypos"] == -163 and POS["Zpos"] == -1257
-            and CURRENT_MAP == 0xD6
+        if POS ~= false
         then
-            mainmemory.writefloat(modelObjPtr + 0x0C, POS["Zpos"] + 100, true);
-            MoveWitchyPads();
-        end
-
-        if POS["Distance"] <= 650
-        then
-            if DEBUG == true
+            siloPOS = POS
+            --Move the Silo in Witchyworld.
+            if POS["Xpos"] == 0 and POS["Ypos"] == -163 and POS["Zpos"] == -1257
+                and CURRENT_MAP == 0xD6
             then
-                print("Near Silo");
+                mainmemory.writefloat(modelObjPtr + 0x0C, POS["Zpos"] + 100, true);
+                MoveWitchyPads();
             end
-            break;
+
+            if POS["Distance"] <= 650
+            then
+                if DEBUG == true and LOAD_BMK_MOVES == false
+                then
+                    print("Near Silo");
+                end
+                break;
+            end
         end
     end
-    
+   
     if siloPOS["Distance"] <= 650 
     then
         if LOAD_BMK_MOVES == false
@@ -2779,17 +2783,16 @@ function nearSilo()
             LOAD_BMK_MOVES = true
         elseif SILOS_LOADED == false
         then
-            if DEBUG == true
-            then
-                print("Watching BMK Moves");
-            end
+            -- if DEBUG == true
+            -- then
+            --     print("Watching BKM Moves");
+            -- end
             update_BMK_MOVES_checks();
         else
-            if DEBUG == true
-            then
-            print("BMK Move Learnt");
-            print(POS["Distance"])
-            end
+            -- if DEBUG == true
+            -- then
+            -- print("BKM Move Learnt");
+            -- end
         end
     else
         if LOAD_BMK_MOVES == true
@@ -3075,7 +3078,7 @@ end
 function processMagicItem(loc_ID)
     for location, table in pairs(NON_AGI_MAP['MAGIC'])
     do
-        if table[location] == loc_ID
+        if location == tostring(loc_ID)
         then
             BTRAMOBJ:setFlag(table['addr'], table['bit'])
 --            archipelago_msg_box("Received " .. location);
@@ -3132,16 +3135,16 @@ function processAGIItem(item_list)
                 end
                 for location, values in pairs(NON_AGI_MAP["MOVES"])
                 do
-                    if AGI_MOVES[location] == false
+                    if AGI_MOVES[location] == false and location == tostring(memlocation)
                     then
                         AGI_MOVES[location] = true
-                        break
+                        set_AGI_MOVES_checks()
                     end
                 end
             end
+            receive_map[tostring(ap_id)] = tostring(memlocation)
         end
     end
-    receive_map = item_list
     savingAGI();
 end
 
@@ -3167,7 +3170,7 @@ function process_block(block)
 --         KILL_BANJO = true;
 --     end
 
-    if DEBUGLVL2 == true then
+    if DEBUGLVL3 == true then
         print(block)
     end
 end
@@ -3186,7 +3189,7 @@ function SendToBTClient()
     else
         retTable["sync_ready"] = "true"
     end
-    if DEBUGLVL2 == true
+    if DEBUGLVL3 == true
     then
         print("Send Data")
     end
@@ -3229,12 +3232,12 @@ function receive()
             CUR_STATE = STATE_UNINITIALIZED
             return
         end
-        if DEBUGLVL2 == true
+        if DEBUGLVL3 == true
         then
             print("Processing Block");
         end
         process_block(json.decode(l))
-        if DEBUGLVL2 == true
+        if DEBUGLVL3 == true
         then
             print("Finish");
         end
@@ -3314,8 +3317,7 @@ function checkPause()
         then
             print("BKM TABLE + Actual:");
             for locationId, values in pairs(NON_AGI_MAP["MOVES"])
-            do
-                print("AMM:");
+            do             
                 local res = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "PAUSE MOVE DEBUG");
                 print(NON_AGI_MAP["MOVES"][locationId]['name'] .. ":" .. tostring(res))
                 print("Checked? : " .. tostring(BKM[locationId]))
@@ -3363,7 +3365,15 @@ function savingAGI()
         print(receive_map)
     end
     f:write(json.encode(AGI) .. "\n");
+    if DEBUGLVL2 == true
+    then
+        print("Writing AGI MOVES from Saving");
+    end
     f:write(json.encode(AGI_MOVES) .. "\n");
+    if DEBUGLVL2 == true
+    then
+        print("Writing Received_Map");
+    end
     f:write(json.encode(receive_map))
     f:close()
     if DEBUG == true
@@ -3469,7 +3479,7 @@ end
 
 function process_slot(block)
     
-    if DEBUGLVL2 == true then
+    if DEBUGLVL3 == true then
         print(block)
     end
 
