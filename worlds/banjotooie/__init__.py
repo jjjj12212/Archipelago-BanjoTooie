@@ -78,7 +78,7 @@ class BanjoTooieWorld(World):
         if banjoItem.type == 'progress':
             if banjoItem.btid == 1230515:
                 if self.jiggy_counter <= 70:
-                    item_classification = ItemClassification.progression_skip_balancing
+                    item_classification = ItemClassification.progression
                 else:
                     item_classification = ItemClassification.useful
                 self.jiggy_counter += 1

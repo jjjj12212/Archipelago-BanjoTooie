@@ -71,11 +71,11 @@ BTConsumable = {
     CONSUME_PTR = 0x12B250;
     CONSUME_IDX = 0x11B080;
     consumeTable = {
-        [0]  = {key=0x27BD, name="Blue Eggs"},
-        [1]  = {key=0x0C03, name="Fire Eggs"},
-        [2]  = {key=0x0002, name="Ice Eggs"},
-        [3]  = {key=0x01EE, name="Grenade Eggs"},
-        [4]  = {key=0x2401, name="CWK Eggs"},
+        [0]  = {key=0x27BD, name="BLUE EGGS"},
+        [1]  = {key=0x0C03, name="FIRE EGGS"},
+        [2]  = {key=0x0002, name="ICE EGGS"},
+        [3]  = {key=0x01EE, name="GRENADE EGGS"},
+        [4]  = {key=0x2401, name="CWK EGGS"},
         [5]  = {key=0x15E0, name="Proximity Eggs"},
         [6]  = {key=0x1000, name="Red Feathers"},
         [7]  = {key=0x3C18, name="Gold Feathers"},
@@ -1693,13 +1693,13 @@ local AGI_MASTER_MAP = {
              ['name'] = 'Cliff Top: Glowbo'
 
          },
-         ["123069"] = {
+         ["1230692"] = {
              ['addr'] = 0x43,
              ['bit'] = 5,
              ['name'] = "JRL: Pawno's Emporium Glowbo"
 
          },
-         ["123070"] = {
+         ["1230693"] = {
              ['addr'] = 0x43,
              ['bit'] = 6,
              ['name'] = "JRL: Under Wumba's Wigwam Glowbo"
@@ -2622,7 +2622,7 @@ function init_BMK(type) -- Initialize BMK
 end
 
 function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Silo Model is loaded OR Close to Silo
-    --Only clear the moves that we need to clear 
+    --Only clear the moves that we need to clear
     for keys, moveId in pairs(SILO_MAP_CHECK[CURRENT_MAP])
     do
         if keys ~= "Exceptions"
@@ -3138,6 +3138,23 @@ function processAGIItem(item_list)
                     if AGI_MOVES[location] == false and location == tostring(memlocation)
                     then
                         AGI_MOVES[location] = true
+                        if AGI_MOVES[location]['name'] == ('Fire Eggs')
+                        then
+                            BTCONSUMEOBJ.changeConsumable("FIRE EGGS")
+                            BTCONSUMEOBJ.setConsumable(50)
+                        elseif AGI_MOVES[location]['name'] == ('Grenade Eggs')
+                        then
+							BTCONSUMEOBJ.changeConsumable("GRENADE EGGS")
+							BTCONSUMEOBJ.setConsumable(25)
+                        elseif AGI_MOVES[location]['name'] == ('Ice Eggs')
+                        then
+							BTCONSUMEOBJ.changeConsumable("ICE EGGS")
+							BTCONSUMEOBJ.setConsumable(50)
+                        elseif AGI_MOVES[location]['name'] == ('Clockwork Kazooie Eggs')
+                        then
+							BTCONSUMEOBJ.changeConsumable("CWK EGGS")
+							BTCONSUMEOBJ.setConsumable(10)
+                        end
                         set_AGI_MOVES_checks()
                     end
                 end
@@ -3636,7 +3653,7 @@ function main()
             then
                 checkPause();
                 checkTotalMenu();
-                if not (INIT_COMPLETE) then
+                if not (INIT_COMPLETE) or CURRENT_MAP == 0x158 then
 					initializeFlags();
 				end
                 if WATCH_LOADED_SILOS == true

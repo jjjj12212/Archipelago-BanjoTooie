@@ -291,7 +291,7 @@ class BanjoTooieRules:
             locationName.JIGGYGI4: lambda state: self.check_humba_magic(state, itemName.HUMBAGI) and
                                                  self.can_reach_GI_2F(state) and
                                                  state.has(itemName.BDRILL, self.player),
-            locationName.JIGGYGI5: lambda state: self.can_reach_GI_2F(state),
+            locationName.JIGGYGI5: lambda state: self.can_reach_GI_2F(state) and state.has(itemName.SPLITUP, self.player),
             locationName.JIGGYGI6: lambda state: self.check_mumbo_magic(state, itemName.MUMBOGI) and
                                                  self.can_reach_GI_2F(state) and
                                                  (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) and
