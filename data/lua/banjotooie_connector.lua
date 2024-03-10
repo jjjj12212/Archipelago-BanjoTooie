@@ -3090,7 +3090,7 @@ end
 function processAGIItem(item_list)
     for ap_id, memlocation in pairs(item_list) -- Items unrelated to AGI_MAP like Consumables
     do
-        if receive_map[ap_id] == nil
+        if receive_map[tostring(ap_id)] == nil
         then
             if(memlocation == 1230512 and ENABLE_AP_HONEYCOMB == true)  -- Honeycomb Item
             then
