@@ -178,8 +178,10 @@ class BanjoTooieContext(CommonContext):
         #         relevant = False
         #     if relevant:
         #         item = args["item"]
-        #         msg = self.raw_text_parser(copy.deepcopy(args["data"]))
-        #         self._set_message(msg, item.item)
+        #         if getitem:
+        #             self.items_received.append(item)
+                # msg = self.raw_text_parser(copy.deepcopy(args["data"]))
+                # self._set_message(msg, item.item)
 
 
 def get_payload(ctx: BanjoTooieContext):
@@ -209,6 +211,9 @@ def get_payload(ctx: BanjoTooieContext):
             })
     if len(ctx.messages) > 0:
         ctx.messages = ""
+
+    if len(ctx.items_received) > 0 and ctx.sync_ready == True:
+        ctx.items_received = []
 
     return payload
 
@@ -305,8 +310,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
 
     #Send Aync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:
-        ctx.items_handling = 0b101
-        await ctx.send_connect()
+        # ctx.items_handling = 0b101
+        # await ctx.send_connect()
         ctx.sync_ready = True
         
     # Deathlink handling
