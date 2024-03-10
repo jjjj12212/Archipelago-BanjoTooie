@@ -36,7 +36,10 @@ MTJSG = "Mayahem Temple - Jade Snake Grove"
 GM = "Glitter Gultch Mine"
 WW = "Witchyworld"
 JR = "Jolly Roger's Lagoon"
+
 TL = "Terrydactyland"
+TL_HATCH = "Terrydactyland - Hatch Cave"
+
 GI = "Grunty's Industries"
 HP = "Hailfire Peaks"
 CC = "Cloud Cuckooland"
