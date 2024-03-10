@@ -25,9 +25,11 @@
   - Hints no longer send checks
   - Saving and Quitting while touching a jiggy no longer sends false checks
   - Witchyworld Pads no longer floating
+  - sending items don't duplicate
 - QOL: 
   - Split Up Pads in Ancient Baths moved to better location
-  - Jamjar Silo proximity only allow learnable moves for the silos in the map
+  - Jamjar Silo proximity only allow learnable moves for the silos on the same map
+  - Receiving Eggs from Archipelago fills your eggs
 
 - Jinjo Jiggies have been removed temporarily for causing logic issues that were difficult to solve.
   - Jinjo Families will now give a guaranteed local Jiggy, but are not considered for logic
