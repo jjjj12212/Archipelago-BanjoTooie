@@ -482,7 +482,7 @@ function BTModel:moveModelObject(modelObjPtr, Xnew, Ynew, Znew)
     end
     if Xnew ~= nil
     then
-        mainmemory.writefloat(modelObjPtr + 0x0C, Xnew, true);
+        mainmemory.writefloat(modelObjPtr + 0x04, Xnew, true);
     end
     if Ynew ~= nil
     then
@@ -491,6 +491,21 @@ function BTModel:moveModelObject(modelObjPtr, Xnew, Ynew, Znew)
     if Znew ~= nil
     then
         mainmemory.writefloat(modelObjPtr + 0x0C, Znew, true);
+    end
+end
+
+function BTModel:changeRotation(modelObjPtr, Yrot, Zrot)
+    if modelObjPtr == nil
+    then
+        modelObjPtr = self.singleModelPointer;
+    end
+    if Yrot ~= nil
+    then
+        mainmemory.writefloat(modelObjPtr + 0x48, Yrot, true);
+    end
+    if Zrot ~= nil
+    then
+        mainmemory.writefloat(modelObjPtr + 0x4C, Zrot, true);
     end
 end
 
@@ -2835,11 +2850,13 @@ end
 function MoveBathPads()
     BTMODELOBJ:changeName("Kazooie Split Pad", false)
     POS = BTMODELOBJ:getSingleModelCoords(nil)
-    BTMODELOBJ:moveModelObject(nil, 0, POS["Ypos"] + 450, POS["Zpos"] - 75);
+    BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450 );
+    BTMODELOBJ:changeRotation(nil, nil, 0);
 
     BTMODELOBJ:changeName("Banjo Split Pad", false)
     POS = BTMODELOBJ:getSingleModelCoords(nil)
-    BTMODELOBJ:moveModelObject(nil, 0, POS["Ypos"] + 450, POS["Zpos"] - 75);
+    BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450);
+    BTMODELOBJ:changeRotation(nil, nil, 0)
     BATH_PADS_QOL = true
 end
 
