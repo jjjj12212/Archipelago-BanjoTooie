@@ -268,7 +268,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                         continue
 
                     # Game completion handling
-                    if ((1230027 in BTlocation_table and BTlocation_table[1230027] == True) 
+                    if (("1230027" in BTlocation_table and BTlocation_table["1230027"] == True) 
                     and not ctx.finished_game):
                         await ctx.send_msgs([{
                             "cmd": "StatusUpdate",
