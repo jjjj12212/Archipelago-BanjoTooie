@@ -309,7 +309,7 @@ function BTModel:getModelCount()
     end
     local firstObject = self.banjoRAM:dereferencePointer(objects + 0x04);
     local lastObject = self.banjoRAM:dereferencePointer(objects + 0x08);
-	if lastObject == nil
+	if lastObject == nil or firstObject == nil
 	then
 		return
 	end
@@ -2887,7 +2887,7 @@ function locationControl()
                 then
                     if DEBUG == true
                     then
-                         print("Checking Silos")
+                        print("Checking Silos")
                     end
                     SILOS_WAIT_TIMER = 0;
                     CHECK_FOR_SILO = true
@@ -3170,16 +3170,16 @@ function processAGIItem(item_list)
                             BTCONSUMEOBJ:setConsumable(50)
                         elseif NON_AGI_MAP["MOVES"][location]['name'] == ('Grenade Eggs')
                         then
-							BTCONSUMEOBJ:changeConsumable("GRENADE EGGS")
-							BTCONSUMEOBJ:setConsumable(25)
+                            BTCONSUMEOBJ:changeConsumable("GRENADE EGGS")
+                            BTCONSUMEOBJ:setConsumable(25)
                         elseif NON_AGI_MAP["MOVES"][location]['name'] == ('Ice Eggs')
                         then
-							BTCONSUMEOBJ:changeConsumable("ICE EGGS")
-							BTCONSUMEOBJ:setConsumable(50)
+                            BTCONSUMEOBJ:changeConsumable("ICE EGGS")
+                            BTCONSUMEOBJ:setConsumable(50)
                         elseif NON_AGI_MAP["MOVES"][location]['name'] == ('Clockwork Kazooie Eggs')
                         then
-							BTCONSUMEOBJ:changeConsumable("CWK EGGS")
-							BTCONSUMEOBJ:setConsumable(10)
+                            BTCONSUMEOBJ:changeConsumable("CWK EGGS")
+                            BTCONSUMEOBJ:setConsumable(10)
                         end
                         set_AGI_MOVES_checks()
                     end
