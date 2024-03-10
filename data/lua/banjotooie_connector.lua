@@ -3463,9 +3463,9 @@ function gameSaving()
     then
         return
     else
-        local save_game = mainmemory.read_u8(0x05F450);
+        -- local save_game = mainmemory.read_u8(0x05F450);
         local save_game2 = mainmemory.read_u8(0x044A81);
-        if save_game == 1 or save_game2 == 1
+        if save_game2 == 1
         then
             SAVE_GAME = true
             if DEBUG == true
