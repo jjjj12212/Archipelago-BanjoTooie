@@ -77,7 +77,7 @@ class BanjoTooieCommandProcessor(ClientCommandProcessor):
 
 class BanjoTooieContext(CommonContext):
     command_processor = BanjoTooieCommandProcessor
-    items_handling = 0b001 #full
+    items_handling = 0b111 #full
 
     def __init__(self, server_address, password):
         super().__init__(server_address, password)
@@ -106,7 +106,6 @@ class BanjoTooieContext(CommonContext):
             await self.get_username()
             await self.send_connect()
             self.awaiting_rom = True
-            # logger.info('Awaiting connection to EmuHawk to get player information')
             return
         return
 
@@ -162,27 +161,25 @@ class BanjoTooieContext(CommonContext):
         else:
             text = self.jsontotextparser(copy.deepcopy(args["data"]))
             logger.info(text)
-        relevant = args.get("type", None) in {"Hint", "ItemSend"}
-        if relevant:
-            getitem = False
-            item = args["item"]
-            # found in this world
-            if self.slot_concerns_self(args["receiving"]):
-                relevant = True 
-                if args.get("type", None) != "Hint":    
-                    getitem = True
-            # goes in this world
-            elif self.slot_concerns_self(item.player):
-                relevant = True
-            # not related
-            else:
-                relevant = False
-            if relevant:
-                item = args["item"]
-                if getitem:
-                    self.items_received.append(item)
-                # msg = self.raw_text_parser(copy.deepcopy(args["data"]))
-                # self._set_message(msg, item.item)
+        # relevant = args.get("type", None) in {"Hint", "ItemSend"}
+        # if relevant:
+        #     getitem = False
+        #     item = args["item"]
+        #     # found in this world
+        #     if self.slot_concerns_self(args["receiving"]):
+        #         relevant = True 
+        #         if args.get("type", None) != "Hint":    
+        #             getitem = True
+        #     # goes in this world
+        #     elif self.slot_concerns_self(item.player):
+        #         relevant = True
+        #     # not related
+        #     else:
+        #         relevant = False
+        #     if relevant:
+        #         item = args["item"]
+        #         msg = self.raw_text_parser(copy.deepcopy(args["data"]))
+        #         self._set_message(msg, item.item)
 
 
 def get_payload(ctx: BanjoTooieContext):
