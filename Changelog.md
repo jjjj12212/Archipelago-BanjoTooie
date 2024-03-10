@@ -1,3 +1,7 @@
+# 0.6.1-beta
+- Implement Starting Inventory
+- Hotfix for receiving items
+
 # 0.6-beta
 - Location name corrections
 - More Logic Fixes:
