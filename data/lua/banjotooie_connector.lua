@@ -661,7 +661,7 @@ local SILO_MAP_CHECK = {
             
         }
     },
-    [0x122] = { --TDL Main
+    [0x112] = { --TDL Main
         "1230768",
         ["Exceptions"] = {
             
@@ -3155,19 +3155,19 @@ function processAGIItem(item_list)
                     if AGI_MOVES[location] == false and location == tostring(memlocation)
                     then
                         AGI_MOVES[location] = true
-                        if AGI_MOVES[location]['name'] == ('Fire Eggs')
+                        if NON_AGI_MAP["MOVES"][location]['name'] == ('Fire Eggs')
                         then
                             BTCONSUMEOBJ.changeConsumable("FIRE EGGS")
                             BTCONSUMEOBJ.setConsumable(50)
-                        elseif AGI_MOVES[location]['name'] == ('Grenade Eggs')
+                        elseif NON_AGI_MAP["MOVES"][location]['name'] == ('Grenade Eggs')
                         then
 							BTCONSUMEOBJ.changeConsumable("GRENADE EGGS")
 							BTCONSUMEOBJ.setConsumable(25)
-                        elseif AGI_MOVES[location]['name'] == ('Ice Eggs')
+                        elseif NON_AGI_MAP["MOVES"][location]['name'] == ('Ice Eggs')
                         then
 							BTCONSUMEOBJ.changeConsumable("ICE EGGS")
 							BTCONSUMEOBJ.setConsumable(50)
-                        elseif AGI_MOVES[location]['name'] == ('Clockwork Kazooie Eggs')
+                        elseif NON_AGI_MAP["MOVES"][location]['name'] == ('Clockwork Kazooie Eggs')
                         then
 							BTCONSUMEOBJ.changeConsumable("CWK EGGS")
 							BTCONSUMEOBJ.setConsumable(10)
