@@ -177,7 +177,8 @@ class BanjoTooieWorld(World):
                 if group_name == "Moves":
                     for name in item_info:
                         item = self.create_item(name)
-                        self.multiworld.get_location(name, self.player).place_locked_item(item)
+                        banjoItem = all_item_table.get(name)
+                        self.multiworld.get_location(banjoItem.defualt_location, self.player).place_locked_item(item)
 
         if self.options.multiworld_glowbos == False:
             for group_name, item_info in self.item_name_groups.items():
