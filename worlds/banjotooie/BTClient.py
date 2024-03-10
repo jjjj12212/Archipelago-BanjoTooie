@@ -77,7 +77,7 @@ class BanjoTooieCommandProcessor(ClientCommandProcessor):
 
 class BanjoTooieContext(CommonContext):
     command_processor = BanjoTooieCommandProcessor
-    items_handling = 0b001 #full
+    items_handling = 0b111 #full
 
     def __init__(self, server_address, password):
         super().__init__(server_address, password)
@@ -106,7 +106,6 @@ class BanjoTooieContext(CommonContext):
             await self.get_username()
             await self.send_connect()
             self.awaiting_rom = True
-            # logger.info('Awaiting connection to EmuHawk to get player information')
             return
         return
 
@@ -157,31 +156,30 @@ class BanjoTooieContext(CommonContext):
                 self.startup = True
 
     def on_print_json(self, args: dict):
-        self.startup = True
         if self.ui:
             self.ui.print_json(copy.deepcopy(args["data"]))
         else:
             text = self.jsontotextparser(copy.deepcopy(args["data"]))
             logger.info(text)
-        relevant = args.get("type", None) in {"Hint", "ItemSend"}
-        if relevant:
-            getitem = False
-            item = args["item"]
-            # found in this world
-            if self.slot_concerns_self(args["receiving"]):
-                relevant = True 
-                if args.get("type", None) != "Hint":    
-                    getitem = True
-            # goes in this world
-            elif self.slot_concerns_self(item.player):
-                relevant = True
-            # not related
-            else:
-                relevant = False
-            if relevant:
-                item = args["item"]
-                if getitem:
-                    self.items_received.append(item)
+        # relevant = args.get("type", None) in {"Hint", "ItemSend"}
+        # if relevant:
+        #     getitem = False
+        #     item = args["item"]
+        #     # found in this world
+        #     if self.slot_concerns_self(args["receiving"]):
+        #         relevant = True 
+        #         if args.get("type", None) != "Hint":    
+        #             getitem = True
+        #     # goes in this world
+        #     elif self.slot_concerns_self(item.player):
+        #         relevant = True
+        #     # not related
+        #     else:
+        #         relevant = False
+        #     if relevant:
+        #         item = args["item"]
+        #         if getitem:
+        #             self.items_received.append(item)
                 # msg = self.raw_text_parser(copy.deepcopy(args["data"]))
                 # self._set_message(msg, item.item)
 
@@ -197,6 +195,7 @@ def get_payload(ctx: BanjoTooieContext):
         print("Recieving Item")
 
     if ctx.sync_ready == True:
+        ctx.startup = True
         payload = json.dumps({
                 "items": [get_item_value(item.item) for item in ctx.items_received],
                 "playerNames": [name for (i, name) in ctx.player_names.items() if i != 0],
@@ -212,6 +211,7 @@ def get_payload(ctx: BanjoTooieContext):
             })
     if len(ctx.messages) > 0:
         ctx.messages = ""
+
     if len(ctx.items_received) > 0 and ctx.sync_ready == True:
         ctx.items_received = []
 
@@ -310,6 +310,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
 
     #Send Aync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:
+        # ctx.items_handling = 0b101
+        # await ctx.send_connect()
         ctx.sync_ready = True
         
     # Deathlink handling
