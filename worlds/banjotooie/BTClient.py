@@ -157,7 +157,6 @@ class BanjoTooieContext(CommonContext):
                 self.startup = True
 
     def on_print_json(self, args: dict):
-        self.startup = True
         if self.ui:
             self.ui.print_json(copy.deepcopy(args["data"]))
         else:
@@ -197,6 +196,7 @@ def get_payload(ctx: BanjoTooieContext):
         print("Recieving Item")
 
     if ctx.sync_ready == True:
+        ctx.startup = True
         payload = json.dumps({
                 "items": [get_item_value(item.item) for item in ctx.items_received],
                 "playerNames": [name for (i, name) in ctx.player_names.items() if i != 0],
@@ -310,6 +310,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
 
     #Send Aync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:
+        ctx.items_handling = 0b101
+        await ctx.send_connect()
         ctx.sync_ready = True
         
     # Deathlink handling
