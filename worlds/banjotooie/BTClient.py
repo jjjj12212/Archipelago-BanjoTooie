@@ -209,8 +209,6 @@ def get_payload(ctx: BanjoTooieContext):
             })
     if len(ctx.messages) > 0:
         ctx.messages = ""
-    if len(ctx.items_received) > 0 and ctx.sync_ready == True:
-        ctx.items_received = []
 
     return payload
 
