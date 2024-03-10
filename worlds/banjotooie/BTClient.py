@@ -50,6 +50,7 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 """
 
 bt_loc_name_to_id = network_data_package["games"]["Banjo Tooie"]["location_name_to_id"]
+bt_itm_name_to_id = network_data_package["games"]["Banjo Tooie"]["item_name_to_id"]
 
 script_version: int = 4
 
@@ -95,6 +96,8 @@ class BanjoTooieContext(CommonContext):
         self.messages = ""
         self.slot_data = {}
         self.sendSlot = False
+        self.sync_ready = False
+        self.startup = False
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -136,8 +139,25 @@ class BanjoTooieContext(CommonContext):
             msg = args['text']
             if ': !' not in msg:
                 self._set_message(msg, SYSTEM_MESSAGE_ID)
+        elif cmd == "ReceivedItems":
+            if self.startup == False:
+                for item in args["items"]:
+                    player = ""
+                    item_name = ""
+                    for (i, name) in self.player_names.items():
+                        if i == item.player:
+                            player = name
+                            break
+                    for (name, i) in bt_itm_name_to_id.items():
+                        if item.item == i:
+                            item_name = name
+                            break                    
+                    logger.info(player + " sent " + item_name)
+                logger.info("The above items will be sent when Banjo Tooie is loaded.")
+                self.startup = True
 
     def on_print_json(self, args: dict):
+        self.startup = True
         if self.ui:
             self.ui.print_json(copy.deepcopy(args["data"]))
         else:
@@ -149,8 +169,9 @@ class BanjoTooieContext(CommonContext):
             item = args["item"]
             # found in this world
             if self.slot_concerns_self(args["receiving"]):
-                relevant = True      
-                getitem = True
+                relevant = True 
+                if args.get("type", None) != "Hint":    
+                    getitem = True
             # goes in this world
             elif self.slot_concerns_self(item.player):
                 relevant = True
@@ -161,8 +182,8 @@ class BanjoTooieContext(CommonContext):
                 item = args["item"]
                 if getitem:
                     self.items_received.append(item)
-                msg = self.raw_text_parser(copy.deepcopy(args["data"]))
-                self._set_message(msg, item.item)
+                # msg = self.raw_text_parser(copy.deepcopy(args["data"]))
+                # self._set_message(msg, item.item)
 
 
 def get_payload(ctx: BanjoTooieContext):
@@ -172,18 +193,26 @@ def get_payload(ctx: BanjoTooieContext):
     else:
         trigger_death = False
 
-    if(len(ctx.items_received) > 0):
+    if(len(ctx.items_received) > 0) and ctx.sync_ready == True:
         print("Recieving Item")
 
-    payload = json.dumps({
-            "items": [get_item_value(item.item) for item in ctx.items_received],
-            "playerNames": [name for (i, name) in ctx.player_names.items() if i != 0],
-            "triggerDeath": trigger_death,
-            "messages": ctx.messages,
-        })
+    if ctx.sync_ready == True:
+        payload = json.dumps({
+                "items": [get_item_value(item.item) for item in ctx.items_received],
+                "playerNames": [name for (i, name) in ctx.player_names.items() if i != 0],
+                "triggerDeath": trigger_death,
+                "messages": ctx.messages,
+            })
+    else:
+        payload = json.dumps({
+                "items": [],
+                "playerNames": [name for (i, name) in ctx.player_names.items() if i != 0],
+                "triggerDeath": trigger_death,
+                "messages": ctx.messages,
+            })
     if len(ctx.messages) > 0:
         ctx.messages = ""
-    if len(ctx.items_received) > 0:
+    if len(ctx.items_received) > 0 and ctx.sync_ready == True:
         ctx.items_received = []
 
     return payload
@@ -230,28 +259,37 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     if isinstance(locations, list):
         locations = {}
 
-    if "DEMO" not in locations:
+    if "DEMO" not in locations and ctx.sync_ready == True:
         if ctx.location_table != locations:
             ctx.location_table = locations
+            locs1 = []
+            for item_group, BTlocation_table in locations.items():
+                    if len(BTlocation_table) == 0:
+                        continue
 
-            # Game completion handling
-            if (("Hag 1 Defeated" in locations and locations["Hag 1 Defeated"] == True) 
-            and not ctx.finished_game):
-                await ctx.send_msgs([{
-                    "cmd": "StatusUpdate",
-                    "status": 30
-                }])
-                ctx.finished_game = True
-            else:
-                locs1 = [bt_loc_name_to_id[loc] for loc, b in ctx.location_table.items() if b]
+                    # Game completion handling
+                    if (("1230027" in BTlocation_table and BTlocation_table["1230027"] == True) 
+                    and not ctx.finished_game):
+                        await ctx.send_msgs([{
+                            "cmd": "StatusUpdate",
+                            "status": 30
+                        }])
+                        ctx.finished_game = True
+
+                    else:
+                        for locationId, value in BTlocation_table.items():
+                            if value == True:
+                                locs1.append(int(locationId))
+            if len(locs1) > 0:
                 await ctx.send_msgs([{
                     "cmd": "LocationChecks",
                     "locations": locs1
                 }])
 
-    if ctx.slot_data["moves"] == "true":
+    if ctx.slot_data["moves"] == "true" and ctx.sync_ready == True:
             # Locations handling
         movelist = payload['unlocked_moves']
+        mov1 = []
 
         # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
         if isinstance(movelist, list):
@@ -260,13 +298,20 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         if ctx.movelist_table != movelist:
             ctx.movelist_table = movelist
 
-            mov1 = [bt_loc_name_to_id[loc] for loc, b in ctx.movelist_table.items() if b]
+            for locationId, value in movelist.items():
+                if value == True:
+                    mov1.append(int(locationId))
 
+            # mov1 = [loc for loc, b in ctx.movelist_table.items() if b]
             await ctx.send_msgs([{
                 "cmd": "LocationChecks",
                 "locations": mov1
             }])
 
+    #Send Aync Data.
+    if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:
+        ctx.sync_ready = True
+        
     # Deathlink handling
     if ctx.deathlink_enabled:
         if payload['isDead']: #Banjo died

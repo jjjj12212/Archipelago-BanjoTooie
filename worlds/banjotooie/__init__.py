@@ -53,6 +53,7 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
     topology_preset = True
     kingjingalingjiggy = False
+    jiggy_counter: int = 0
     slot_data = []
 
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
@@ -65,7 +66,7 @@ class BanjoTooieWorld(World):
     location_name_to_id = {name: data.btid for name, data in all_location_table.items()}
 
     item_name_groups = {
-        "Jiggy": all_group_table["jiggy"],
+        # "Jiggy": all_group_table["jiggy"],
         "Jinjo": all_group_table["jinjo"],
         "Moves": all_group_table["moves"],
         "Magic": all_group_table["magic"]
@@ -75,7 +76,14 @@ class BanjoTooieWorld(World):
     def create_item(self, itemname: str) -> Item:
         banjoItem = all_item_table.get(itemname)
         if banjoItem.type == 'progress':
-            item_classification = ItemClassification.progression
+            if banjoItem.btid == 1230515:
+                if self.jiggy_counter <= 70:
+                    item_classification = ItemClassification.progression
+                else:
+                    item_classification = ItemClassification.useful
+                self.jiggy_counter += 1
+            else:
+                item_classification = ItemClassification.progression
         if banjoItem.type == 'useful':
             item_classification = ItemClassification.useful
         if banjoItem.type == 'filler':
@@ -98,18 +106,22 @@ class BanjoTooieWorld(World):
         for name,id in all_item_table.items():
             item = self.create_item(name)
             if self.item_filter(item):
-                for i in range(id.qty):
-                    itempool += [self.create_item(name)]
+                if item.code == 1230515 and self.kingjingalingjiggy == True:
+                    for i in range(id.qty - 1): #note the -1 in the count here. King Took one already.
+                        itempool += [self.create_item(name)]
+                else:
+                    for i in range(id.qty):
+                        itempool += [self.create_item(name)]
         
         for item in itempool:
             self.multiworld.itempool.append(item)
 
     def item_filter(self, item: Item) -> Item:
-        if(item.code == 1230685 and self.kingjingalingjiggy == False and self.options.jingaling_jiggy == True):
+        if(item.code == 1230515 and self.kingjingalingjiggy == False and self.options.jingaling_jiggy == True):
             #Below give the king a guarentee Jiggy if option is set
             self.multiworld.get_location(self.location_id_to_name[1230685], self.player).place_locked_item(item)
             self.kingjingalingjiggy = True
-            return False #doesn't need to be in the Pool.
+            return True #doesn't need to be in the Pool.
         
         if item.code == 0: #Events
             return False
@@ -165,7 +177,8 @@ class BanjoTooieWorld(World):
                 if group_name == "Moves":
                     for name in item_info:
                         item = self.create_item(name)
-                        self.multiworld.get_location(name, self.player).place_locked_item(item)
+                        banjoItem = all_item_table.get(name)
+                        self.multiworld.get_location(banjoItem.defualt_location, self.player).place_locked_item(item)
 
         if self.options.multiworld_glowbos == False:
             for group_name, item_info in self.item_name_groups.items():

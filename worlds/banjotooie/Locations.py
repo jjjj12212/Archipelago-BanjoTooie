@@ -23,15 +23,15 @@ SMLoc_table = {
 }
 
 JVLoc_table = {
-    locationName.JIGGYIH1:  LocationData(1230676, 0x4F, 0),
-    locationName.JIGGYIH2:  LocationData(1230677, 0x4F, 1),
-    locationName.JIGGYIH3:  LocationData(1230678, 0x4F, 2),
-    locationName.JIGGYIH4:  LocationData(1230679, 0x4F, 3),
-    locationName.JIGGYIH5:  LocationData(1230680, 0x4F, 4),
-    locationName.JIGGYIH6:  LocationData(1230681, 0x4F, 5),
-    locationName.JIGGYIH7:  LocationData(1230682, 0x4F, 6),
-    locationName.JIGGYIH8:  LocationData(1230683, 0x4F, 7),
-    locationName.JIGGYIH9:  LocationData(1230684, 0x50, 0),
+    #locationName.JIGGYIH1:  LocationData(1230676, 0x4F, 0),
+    #locationName.JIGGYIH2:  LocationData(1230677, 0x4F, 1),
+    #locationName.JIGGYIH3:  LocationData(1230678, 0x4F, 2),
+    #locationName.JIGGYIH4:  LocationData(1230679, 0x4F, 3),
+    #locationName.JIGGYIH5:  LocationData(1230680, 0x4F, 4),
+    #locationName.JIGGYIH6:  LocationData(1230681, 0x4F, 5),
+    #locationName.JIGGYIH7:  LocationData(1230682, 0x4F, 6),
+    #locationName.JIGGYIH8:  LocationData(1230683, 0x4F, 7),
+    #locationName.JIGGYIH9:  LocationData(1230684, 0x50, 0),
     locationName.JIGGYIH10: LocationData(1230685, 0x50, 1)
 }
 

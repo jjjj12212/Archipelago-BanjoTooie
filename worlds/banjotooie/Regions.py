@@ -11,15 +11,15 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     #    locationName.FSWIM
     ],
     regionName.IOHJV:    [
-        locationName.JIGGYIH1,
-        locationName.JIGGYIH2,
-        locationName.JIGGYIH3,
-        locationName.JIGGYIH4,
-        locationName.JIGGYIH5,
-        locationName.JIGGYIH6,
-        locationName.JIGGYIH7,
-        locationName.JIGGYIH8,
-        locationName.JIGGYIH9,
+        # locationName.JIGGYIH1,
+        # locationName.JIGGYIH2,
+        # locationName.JIGGYIH3,
+        # locationName.JIGGYIH4,
+        # locationName.JIGGYIH5,
+        # locationName.JIGGYIH6,
+        # locationName.JIGGYIH7,
+        # locationName.JIGGYIH8,
+        # locationName.JIGGYIH9,
         locationName.JIGGYIH10
     ],
     regionName.IOHWH:    [
@@ -51,7 +51,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOMT3,
         locationName.GGRAB,
         locationName.BBLASTER,
-        locationName.EGGAIM
+        locationName.EGGAIM,
     ],
     regionName.IOHPL:    [
         locationName.JINJOIH4,
@@ -191,7 +191,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JINJOTL4,
         locationName.JINJOTL5,
         locationName.JIGGYTD1,
-        locationName.JIGGYTD2,
+        #locationName.JIGGYTD2,
         locationName.JIGGYTD3,
         locationName.JIGGYTD4,
         locationName.JIGGYTD5,
@@ -211,7 +211,9 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOTL3,
         locationName.SPRINGB,
         locationName.TAXPACK,
-        locationName.HATCH
+    ],
+    regionName.TL_HATCH: [
+        locationName.HATCH,
     ],
     regionName.IOHQM:   [],
     regionName.GI:      [
@@ -285,6 +287,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JIGGYCC8,
         locationName.JIGGYCC9,
         locationName.JIGGYCC10,
+        locationName.JIGGYTD2,
         locationName.GLOWBOCC1,
         locationName.GLOWBOCC2,
         locationName.HONEYCCC1,
@@ -306,10 +309,12 @@ BANJOTOOIECONNECTIONS: typing.Dict[str, typing.Set[str]] = {
         regionName.SM:                 {regionName.IOHJV},
         regionName.IOHJV:              {regionName.IOHWH},
         regionName.IOHWH:              {regionName.MT, regionName.IOHPL},
+        regionName.MT:                 {regionName.TL_HATCH},
         regionName.IOHPL:              {regionName.GM, regionName.IOHCT, regionName.IOHPG},
         regionName.IOHCT:              {regionName.JR, regionName.HP},
         regionName.IOHPG:              {regionName.WW, regionName.IOHWL},
         regionName.IOHWL:              {regionName.TL, regionName.CC, regionName.IOHQM},
+        regionName.TL:                 {regionName.TL_HATCH},
         regionName.IOHQM:              {regionName.GI, regionName.CK},
         regionName.CK:                 {regionName.H1}
     }
@@ -362,5 +367,15 @@ def connect_regions(self):
 
     for source, target in BANJOTOOIECONNECTIONS.items():
         source_region = multiworld.get_region(source, player)
+        if regionName.TL_HATCH in target:
+            continue
         source_region.add_exits(target)
+
+    region_MT = multiworld.get_region(regionName.MT, player)
+    region_MT.add_exits({regionName.TL_HATCH,},
+                        {regionName.TL_HATCH: lambda state: (state.has(itemName.GGRAB, player) and state.has(itemName.EGGAIM, player)) or
+                                                            (state.has(itemName.MUMBOMT, player) or state.has(itemName.BDRILL, player))})
+    region_TL = multiworld.get_region(regionName.TL, player)
+    region_TL.add_exits({regionName.TL_HATCH,})
+
 
