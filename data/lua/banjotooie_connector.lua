@@ -2638,6 +2638,14 @@ end
 
 function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Silo Model is loaded OR Close to Silo
     --Only clear the moves that we need to clear
+    if SILO_MAP_CHECK[CURRENT_MAP] == nil --Happens when exiting map too quickly when entering a new map
+    then
+        if DEBUG == true 
+        then
+            print("Canceling Clearing of AMM Moves")
+        end
+        return false
+    end
     for keys, moveId in pairs(SILO_MAP_CHECK[CURRENT_MAP])
     do
         if keys ~= "Exceptions"
@@ -2658,6 +2666,7 @@ function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Si
             end
         end
     end
+    return true
 end
 
 function set_AGI_MOVES_checks() -- SET AGI Moves into RAM AFTER BT/Silo Model is loaded
@@ -3157,20 +3166,20 @@ function processAGIItem(item_list)
                         AGI_MOVES[location] = true
                         if NON_AGI_MAP["MOVES"][location]['name'] == ('Fire Eggs')
                         then
-                            BTCONSUMEOBJ.changeConsumable("FIRE EGGS")
-                            BTCONSUMEOBJ.setConsumable(50)
+                            BTCONSUMEOBJ:changeConsumable("FIRE EGGS")
+                            BTCONSUMEOBJ:setConsumable(50)
                         elseif NON_AGI_MAP["MOVES"][location]['name'] == ('Grenade Eggs')
                         then
-							BTCONSUMEOBJ.changeConsumable("GRENADE EGGS")
-							BTCONSUMEOBJ.setConsumable(25)
+							BTCONSUMEOBJ:changeConsumable("GRENADE EGGS")
+							BTCONSUMEOBJ:setConsumable(25)
                         elseif NON_AGI_MAP["MOVES"][location]['name'] == ('Ice Eggs')
                         then
-							BTCONSUMEOBJ.changeConsumable("ICE EGGS")
-							BTCONSUMEOBJ.setConsumable(50)
+							BTCONSUMEOBJ:changeConsumable("ICE EGGS")
+							BTCONSUMEOBJ:setConsumable(50)
                         elseif NON_AGI_MAP["MOVES"][location]['name'] == ('Clockwork Kazooie Eggs')
                         then
-							BTCONSUMEOBJ.changeConsumable("CWK EGGS")
-							BTCONSUMEOBJ.setConsumable(10)
+							BTCONSUMEOBJ:changeConsumable("CWK EGGS")
+							BTCONSUMEOBJ:setConsumable(10)
                         end
                         set_AGI_MOVES_checks()
                     end
@@ -3662,8 +3671,14 @@ function main()
                     then
                         print("clearing all AMM moves")
                     end
-                    clear_AMM_MOVES_checks()
-                    getSiloPlayerModel()
+                    local res = clear_AMM_MOVES_checks()
+                    if res == true
+                    then
+                        getSiloPlayerModel()
+                    else
+                        CHECK_FOR_SILO = false
+                        set_AGI_MOVES_checks()
+                    end
                 end
                 gameSaving();
             elseif (FRAME % 10 == 0)
