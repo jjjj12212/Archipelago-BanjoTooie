@@ -16,7 +16,7 @@ Banjo Tooie for Archipelago
 
 
 # How to install - server side
-### Note: If you had the previous version of Banjo-Tooie installed, Please remove the banjotooie.apworld
+### Note: If you had the previous version of Banjo-Tooie installed, Please remove the banjotooie.apworld and the "banjotooie" Folder
 ### Note: If you had the previous version of Banjo-Tooie Player YAML installed, Please update game name to have "Banjo-Tooie" 
 1. Copy banjotooie.apworld into your existing Archipelago\lib\worlds
 2. Copy banjotooie_connector.lua into Archipelago\data\lua

@@ -223,7 +223,8 @@ class BanjoTooieRules:
                                                  self.check_solo_moves(state, itemName.TAXPACK) and
                                                  self.check_mumbo_magic(state, itemName.MUMBOIH) and
                                                  state.has(itemName.BDRILL, self.player) and
-                                                 self.check_mumbo_magic(state, itemName.MUMBOTD),
+                                                 self.check_mumbo_magic(state, itemName.MUMBOTD)
+                                                 and state.has(itemName.GGRAB, self.player),
             locationName.JIGGYTD4: lambda state: self.can_beat_terry(state),
             locationName.JIGGYTD5: lambda state: self.oogle_boogles_open(state) and
                                                  self.has_fire(state) and
