@@ -173,7 +173,6 @@ class BanjoTooieRules:
             locationName.JIGGYMT5: lambda state: state.has(itemName.EGGAIM,  self.player) and
                                                  state.has(itemName.GGRAB, self.player) or
                                                  self.MT_flight_pad(state),
-            #locationName.JIGGYMT6: self.mumbo_magic["Golden Goliath"],
             locationName.JIGGYMT6: lambda state: self.check_mumbo_magic(state, itemName.MUMBOMT),
             locationName.JIGGYMT7: lambda state: state.has(itemName.GGRAB, self.player) and
                                                  self.prison_compound_open(state),
@@ -184,6 +183,7 @@ class BanjoTooieRules:
             #Glitter Gulch Mine Jiggies
             locationName.JIGGYGM1: lambda state: self.check_mumbo_magic(state, itemName.MUMBOGM),
             locationName.JIGGYGM2: lambda state: self.canary_mary_free(state),
+            locationName.JIGGYGM3: lambda state: self.has_fire(state),
             locationName.JIGGYGM5: lambda state: state.has(itemName.BBLASTER, self.player) and
                                                  state.has(itemName.BBAYONET, self.player) and
                                                  self.GM_boulders(state),
