@@ -1,3 +1,8 @@
+# 0.7-beta
+- Project name change to now be "Banjo-Tooie"
+- world folder changed to banjo_tooie
+- yaml change to "Banjo-Tooie"
+
 # 0.6.2-beta
 - Hotfix for lua client crashing
 - Update logic for Generator Cavern
