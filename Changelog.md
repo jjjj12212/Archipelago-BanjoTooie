@@ -2,6 +2,7 @@
 - Project name change to now be "Banjo-Tooie"
 - world folder changed to banjo_tooie
 - yaml change to "Banjo-Tooie"
+- lua client name change
 
 # 0.6.2-beta
 - Hotfix for lua client crashing
