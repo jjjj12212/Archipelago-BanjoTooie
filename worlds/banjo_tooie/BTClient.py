@@ -132,7 +132,7 @@ class BanjoTooieContext(CommonContext):
         if cmd == 'Connected':
             self.slot_data = args.get('slot_data', None)
             self.deathlink_enabled = self.slot_data["deathlink"]
-            logger.info("Please open Banjo-Tooie and load banjoTooie_connector.lua")
+            logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
         elif cmd == 'Print':
             msg = args['text']
@@ -225,7 +225,8 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_skip_tot": ctx.slot_data["skip_tot"],
             "slot_honeycomb": ctx.slot_data["honeycomb"],
             "slot_pages": ctx.slot_data["pages"],
-            "slot_moves": ctx.slot_data["moves"]
+            "slot_moves": ctx.slot_data["moves"],
+            "slot_doubloon": ctx.slot_data["doubloons"]
         })
     ctx.sendSlot = False
     return payload

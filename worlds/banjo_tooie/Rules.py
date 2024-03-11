@@ -95,47 +95,6 @@ class BanjoTooieRules:
             itemName.MUMBOGM
         ]
 
-        # self.can_transform = {
-        #     "Stony":           lambda state: state.has(itemName.HUMBAMT, self.player) and
-        #                                      self.golden_goliath(state, itemName.MUMBOMT),
-        #     "Detonator":       lambda state: state.has(itemName.HUMBAGM, self.player),
-        #     "Money Van":       lambda state: state.has(itemName.HUMBAWW, self.player),
-        #     "Sub":             lambda state: state.has(itemName.HUMBAJR, self.player) and
-        #                                      self.can_reach_atlantis(state),
-        #     "T-Rex":           lambda state: state.has(itemName.HUMBATD, self.player),
-        #     "Washing Machine": lambda state: state.has(itemName.HUMBAGI, self.player) and
-        #                                      self.can_reach_GI_2F(state),
-        #     "Snowball":        lambda state: state.has(itemName.HUMBAHP, self.player),
-        #     "Bee":             lambda state: state.has(itemName.HUMBACC, self.player),
-        #     "Dragon":          lambda state: state.has(itemName.HUMBAIH, self.player)
-        # }
-
-        # self.mumbo_magic = {
-        #     "Levitate":       lambda state: self.check_magic(state, itemName.MUMBOGM),
-        #     "Power":          lambda state: self.check_magic(state, itemName.MUMBOWW) and
-        #                                     self.can_transform["Money Van"],
-        #     "Oxygenate":      lambda state: self.check_magic(state, itemName.MUMBOJR),
-        #     "Grow/Shrink":    lambda state: self.check_magic(state, itemName.MUMBOTD),
-        #     "EMP":            lambda state: self.check_magic(state, itemName.MUMBOGI) and
-        #                                     self.can_reach_GI_2F(state),
-        #     "Revive":         lambda state: self.check_magic(state, itemName.MUMBOHP),
-        #     "Rain Dance":     lambda state: self.check_magic(state, itemName.MUMBOCC),
-        #     "Heal":           lambda state: self.check_magic(state, itemName.MUMBOIH)
-        # }
-
-        # self.banjo_moves = {
-        #     "Pack Whack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.PACKWH, self.player),
-        #     "Taxi Pack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.TAXPACK, self.player),
-        #     "Snooze Pack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.SNPACK, self.player),
-        #     "Shack Pack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.SHPACK, self.player),
-        #     "Sack Pack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.SAPACK, self.player),
-        # }
-        # self.kazooie_moves = {
-        #     "Wing Whack": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.WWHACK, self.player),
-        #     "Hatch": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.HATCH, self.player),
-        #     "Leg Spring": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.LSPRING, self.player),
-        #     "Glide": lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.GLIDE, self.player),
-        # }
 
         self.region_rules = {
             regionName.IOHWH: lambda state: state.has(itemName.JIGGY, self.player, 1),
@@ -615,9 +574,7 @@ class BanjoTooieRules:
                                                   self.check_humba_magic(state, itemName.HUMBAWW) and
                                                   self.saucer_door_open(state),
                                             
-            locationName.CHEATOJR1: lambda state: state.has(itemName.GEGGS, self.player)or
-                                                  state.has(itemName.CEGGS, self.player) and
-                                                  state.has(itemName.SPLITUP, self.player),
+            locationName.CHEATOJR1: lambda state: self.has_enough_doubloons(state, 28),
             locationName.CHEATOJR2: lambda state: (self.long_swim(state) or
                                                    state.has(itemName.GEGGS, self.player) or
                                                    state.has(itemName.CEGGS, self.player)) and
@@ -668,8 +625,11 @@ class BanjoTooieRules:
 
             locationName.HONEYCJR1: lambda state: self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player),
             locationName.HONEYCJR2: lambda state: self.can_reach_atlantis(state),
-            locationName.HONEYCJR3: lambda state: (state.has(itemName.GEGGS, self.player) or state.has(itemName.BDRILL, self.player)) and
-                                                  state.has(itemName.GGRAB, self.player),
+            locationName.HONEYCJR3: lambda state: (state.has(itemName.GEGGS, self.player) or state.has(itemName.BDRILL, self.player) or
+                                                    state.has(itemName.CEGGS, self.player)) and
+                                                   (state.has(itemName.GGRAB, self.player) or 
+                                                    (state.has(itemName.SPLITUP, self.player) and self.check_solo_moves(state, itemName.LSPRING) and
+                                                     (self.check_solo_moves(state, itemName.GLIDE) or self.check_solo_moves(state, itemName.WWHACK)))),
                                                 
             locationName.HONEYCTL2: lambda state: state.has(itemName.BDRILL, self.player) and state.has(itemName.SPLITUP, self.player),
 
@@ -697,6 +657,23 @@ class BanjoTooieRules:
             locationName.GLOWBOMEG: lambda state: state.has(itemName.GGRAB, self.player) and state.has(itemName.TTORP, self.player)
 
         }
+        self.doubloon_rules = {
+            #Alcove
+            locationName.JRLDB22:   lambda state: state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GEGGS, self.player) or
+                                                  state.has(itemName.CEGGS, self.player)),
+            locationName.JRLDB23:   lambda state: state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GEGGS, self.player) or
+                                                  state.has(itemName.CEGGS, self.player)),
+            locationName.JRLDB24:   lambda state: state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GEGGS, self.player) or
+                                                  state.has(itemName.CEGGS, self.player)),
+            #Underground
+            locationName.JRLDB19:   lambda state: state.has(itemName.BDRILL, self.player) or state.has(itemName.GEGGS, self.player) or
+                                                  state.has(itemName.CEGGS, self.player),
+            locationName.JRLDB20:   lambda state: state.has(itemName.BDRILL, self.player) or state.has(itemName.GEGGS, self.player) or
+                                                  state.has(itemName.CEGGS, self.player),
+            locationName.JRLDB21:   lambda state: state.has(itemName.BDRILL, self.player) or state.has(itemName.GEGGS, self.player) or
+                                                  state.has(itemName.CEGGS, self.player),
+        }
+
         self.silo_rules = {
             locationName.EGGAIM: lambda state: self.has_enough_notes(state, 25),
             locationName.BBLASTER: lambda state: self.has_enough_notes(state, 30),
@@ -709,7 +686,7 @@ class BanjoTooieRules:
             locationName.SPLITUP: lambda state: self.has_enough_notes(state, 160),
             locationName.PACKWH: lambda state: state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 120),
 
-            locationName.AUQAIM: lambda state: state.has(itemName.GEGGS, self.player) and
+            locationName.AUQAIM: lambda state: (state.has(itemName.GEGGS, self.player) or self.has_enough_doubloons(state, 28)) and
                                                self.has_enough_notes(state, 275),
             locationName.TTORP: lambda state:  self.can_reach_atlantis(state) and state.has(itemName.GGRAB, self.player) and
                                                self.has_enough_notes(state, 290),
@@ -805,6 +782,10 @@ class BanjoTooieRules:
                 if state.has(itemName.EGGAIM, self.player) and state.has(itemName.GEGGS, self.player): # Icicle Grotto
                             count += 20
         return count >= Amount
+
+    def has_enough_doubloons(self, state:CollectionState, Amount) -> bool:
+        return  state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) and \
+                state.has(itemName.SPLITUP, self.player) and state.has(itemName.DOUBLOON, self.player, Amount)
 
     def has_fire(self, state: CollectionState) -> bool:
         return state.has(itemName.FEGGS, self.player) or self.check_humba_magic(state, itemName.HUMBAIH)
@@ -926,6 +907,10 @@ class BanjoTooieRules:
         for location, rules in self.silo_rules.items():
             silo = self.world.multiworld.get_location(location, self.player)
             set_rule(silo, rules)
+
+        for location, rules in self.doubloon_rules.items():
+            doubloon = self.world.multiworld.get_location(location, self.player)
+            set_rule(doubloon, rules)
 
         # for item in self.jinjo_forbid:
         #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
