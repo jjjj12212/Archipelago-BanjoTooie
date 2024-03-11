@@ -1,3 +1,8 @@
+# 0.6.2-beta
+- Hotfix for lua client crashing
+- Update logic for Generator Cavern
+- Update YAML Template
+
 # 0.6.1-beta
 - Implement Starting Inventory
 - Hotfix for receiving items
