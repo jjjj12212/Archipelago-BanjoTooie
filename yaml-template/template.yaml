@@ -2,7 +2,7 @@ Banjo-Tooie:
   death_link: 'false'
   multiworld_moves: 'true'
   multiworld_jinjos: 'false'
-  multiworld_doubloons: 'false'
+  multiworld_doubloons: 'true'
   multiworld_cheato: 'true'
   multiworld_honeycombs: 'true'
   multiworld_glowbos: 'true'
