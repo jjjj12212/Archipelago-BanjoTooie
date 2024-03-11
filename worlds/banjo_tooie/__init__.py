@@ -18,7 +18,7 @@ from ..LauncherComponents import Component, components, Type
 
 
 def run_client():
-    from worlds.banjotooie.BTClient import main  # lazy import
+    from worlds.banjo_tooie.BTClient import main  # lazy import
     p = Process(target=main)
     p.start()
 
