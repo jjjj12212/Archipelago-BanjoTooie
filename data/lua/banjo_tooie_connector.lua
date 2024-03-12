@@ -59,6 +59,7 @@ local LOAD_BMK_MOVES = false; -- If close to Silo
 local SILOS_LOADED = false; -- Handles if learned a move at Silo
 local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
 local TOT_SET_COMPLETE = false;
+local DOUBLOON_SILO_MOVE = false; -- Move Doubloons away from Silo in JRL
 
 local BATH_PADS_QOL = false
 
@@ -278,6 +279,7 @@ BTModel = {
         ["Player"] = 0xFFFF,
         ["Kazooie Split Pad"] = 0x7E1,
         ["Banjo Split Pad"] = 0x7E2,
+        ["Doubloon"] = 0x7C0
     };
     model_enemy_list = {
         ["Ugger"] = 0x671,
@@ -2792,7 +2794,14 @@ function nearSilo()
                 MoveWitchyPads();
             end
 
-            if POS["Distance"] <= 650
+            if POS["Distance"] <= 650 and CURRENT_MAP ~= 0x1A7
+            then
+                if DEBUG == true and LOAD_BMK_MOVES == false
+                then
+                    print("Near Silo");
+                end
+                break;
+            elseif POS["Distance"] <= 300 and CURRENT_MAP == 0x1A7
             then
                 if DEBUG == true and LOAD_BMK_MOVES == false
                 then
@@ -2803,7 +2812,7 @@ function nearSilo()
         end
     end
    
-    if siloPOS["Distance"] <= 650 
+    if siloPOS["Distance"] <= 650 and CURRENT_MAP ~= 0x1A7
     then
         if LOAD_BMK_MOVES == false
         then
@@ -2822,6 +2831,17 @@ function nearSilo()
             -- then
             -- print("BKM Move Learnt");
             -- end
+        end
+    elseif siloPOS["Distance"] <= 300 and CURRENT_MAP == 0x1A7  -- Doubloon issue 
+    then
+        if LOAD_BMK_MOVES == false
+        then
+            clear_AMM_MOVES_checks();
+            update_BMK_MOVES_checks();
+            LOAD_BMK_MOVES = true
+        elseif SILOS_LOADED == false
+        then
+            update_BMK_MOVES_checks();
         end
     else
         if LOAD_BMK_MOVES == true
@@ -2866,6 +2886,37 @@ function MoveWitchyPads()
             BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] + 850, nil, POS["Zpos"] - 300)
             break
         end
+    end
+end
+
+function MoveDoubloon()
+    BTMODELOBJ:changeName("Doubloon", false)
+    local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+    if modelPOS == false
+    then
+        return;
+    end
+    for modelObjPtr, POS in pairs(modelPOS) do
+        if POS ~= false
+        then
+            if (POS["Xpos"] == -3226 and POS["Zpos"] == -4673) -- bottom right
+            then
+                BTMODELOBJ:moveModelObject(modelObjPtr, nil, nil, POS["Zpos"] + 65);
+            end
+            if (POS["Xpos"] == -3526 and POS["Zpos"] == -4972) --bottom left
+            then
+                BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 65);
+            end
+            if (POS["Xpos"] == -3226 and POS["Zpos"] == -5273) -- top left
+            then
+                BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 50);
+            end
+            if (POS["Xpos"] == -2926 and POS["Zpos"] == -4972) -- top right
+            then
+                BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] + 25, nil, POS["Zpos"] + 65);
+            end
+        end
+        DOUBLOON_SILO_MOVE = true;
     end
 end
 
@@ -2956,6 +3007,13 @@ function locationControl()
             elseif  CURRENT_MAP ~= 0xF4 and BATH_PADS_QOL == true
             then
                 BATH_PADS_QOL = false
+            end
+            if CURRENT_MAP == 0x1A7 and DOUBLOON_SILO_MOVE == false
+            then
+                MoveDoubloon()
+            elseif DOUBLOON_SILO_MOVE == true and  CURRENT_MAP ~= 0x1A7 
+            then
+                DOUBLOON_SILO_MOVE = false
             end
             if (mapaddr == 335 or mapaddr == 337) and TOTALS_MENU == false -- Wooded Hollow / JiggyTemple
             then
