@@ -470,6 +470,10 @@ function BTModel:getMultipleModelCoords()
     for index, modelObjPtr in pairs(self.modelObjectList)
     do
         local objPOS = BTModel:getSingleModelCoords(modelObjPtr);
+        if objPOS == false
+        then
+            return false
+        end
         modelPOS_table[modelObjPtr] = objPOS
         i = i + 1
     end
@@ -2836,6 +2840,10 @@ end
 function MoveWitchyPads()
     BTMODELOBJ:changeName("Kazooie Split Pad", false)
     local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+    if modelPOS == false
+    then
+        return;
+    end
     for modelObjPtr, POS in pairs(modelPOS) do
 
         if (POS["Xpos"] == -125 and POS["Ypos"] == -163 and POS["Zpos"] == -1580)
@@ -2847,6 +2855,10 @@ function MoveWitchyPads()
     end
     BTMODELOBJ:changeName("Banjo Split Pad", false)
     local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+    if modelPOS == false
+    then
+        return;
+    end
     for modelObjPtr, POS in pairs(modelPOS) do
         if (POS["Xpos"] == 125 and POS["Zpos"] == -1580)
             and CURRENT_MAP == 0xD6
@@ -2860,11 +2872,20 @@ end
 function MoveBathPads()
     BTMODELOBJ:changeName("Kazooie Split Pad", false)
     POS = BTMODELOBJ:getSingleModelCoords(nil)
+    if POS == false
+    then
+        return
+    end
+
     BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450 );
     BTMODELOBJ:changeRotation(nil, nil, 0);
 
     BTMODELOBJ:changeName("Banjo Split Pad", false)
     POS = BTMODELOBJ:getSingleModelCoords(nil)
+    if POS == false
+    then
+        return
+    end
     BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450);
     BTMODELOBJ:changeRotation(nil, nil, 0)
     BATH_PADS_QOL = true
@@ -3441,7 +3462,9 @@ function loadAGI()
     local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "r") --generate #BTplayer_seed.AGI
     if f==nil then
         AGI = all_location_checks("AGI");
-        AGI_MOVES = init_BMK("AGI");
+        if next(AGI_MOVES) == nil then
+            AGI_MOVES = init_BMK("AGI");
+        end
         f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "w");
         if DEBUGLVL2 == true
         then
@@ -3614,6 +3637,7 @@ function initializeFlags()
 		
         GAME_LOADED = true  -- We don't have a real BMM at this point.  
         init_BMK("BKM")
+        AGI_MOVES = init_BMK("AGI");
 		if (SKIP_TOT ~= "false") then
 			-- ToT Misc Flags
 			BTRAMOBJ:setFlag(0xAB, 2)
