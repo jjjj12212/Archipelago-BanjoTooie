@@ -768,20 +768,26 @@ class BanjoTooieRules:
                             count += 10
                     if state.has(itemName.SPRINGB, self.player) and state.has(itemName.JIGGY, self.player, 28) and self.enter_GI(state): # GI 1F
                         count += 25
-                        if self.can_reach_GI_2F(state): # Rest of GI
-                            count += 75
+                        if self.can_use_battery(state):  # Waste Disposal
+                            count += 10
+                        if self.can_reach_GI_2F(state) or self.check_solo_moves(state, itemName.PACKWH) or \
+                                self.check_solo_moves(state, itemName.LSPRING) or state.has(
+                            itemName.GGRAB):  # 1F Window Notes
+                            count += 10
+                        if self.can_reach_GI_2F(state):  # Rest of GI
+                            count += 55
             if state.has(itemName.SPLITUP, self.player): # Cliff Top
                 count += 20
-            if state.has(itemName.JIGGY, self.player, 14): # JRL Town Center
-                count += 60
-                if state.has(itemName.AUQAIM, self.player) or state.has(itemName.TTORP, self.player): # Squid Notes
-                    count += 10
-                if self.can_reach_atlantis(state): # Deep JRL
-                    count += 30
-            if state.has(itemName.JIGGY, self.player, 36): # HFP Access
-                count += 80
-                if state.has(itemName.EGGAIM, self.player) and state.has(itemName.GEGGS, self.player): # Icicle Grotto
-                            count += 20
+                if state.has(itemName.JIGGY, self.player, 14): # JRL Town Center
+                    count += 60
+                    if state.has(itemName.AUQAIM, self.player) or state.has(itemName.TTORP, self.player): # Squid Notes
+                        count += 10
+                    if self.can_reach_atlantis(state): # Deep JRL
+                        count += 30
+                if state.has(itemName.JIGGY, self.player, 36): # HFP Access
+                    count += 80
+                    if state.has(itemName.EGGAIM, self.player) and state.has(itemName.GEGGS, self.player): # Icicle Grotto
+                                count += 20
         return count >= Amount
 
     def has_enough_doubloons(self, state:CollectionState, Amount) -> bool:
