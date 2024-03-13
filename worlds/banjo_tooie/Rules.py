@@ -318,7 +318,8 @@ class BanjoTooieRules:
                                                  self.can_use_floatus(state) and
                                                  self.check_solo_moves(state, itemName.SHPACK),
             locationName.JIGGYCC8: lambda state: self.check_solo_moves(state, itemName.WWHACK),
-            locationName.JIGGYCC9: lambda state: state.has(itemName.CEGGS, self.player),
+            locationName.JIGGYCC9: lambda state: state.has(itemName.CEGGS, self.player) and (state.has(itemName.SPLITUP, self.player) or
+                                                  self.has(itemName.GGRAB, self.player) or self.has(itemName.EGGAIM, self.player)),
             locationName.JIGGYCC10: lambda state: self.check_solo_moves(state, itemName.SHPACK),
 
             #Jinjo Family Jiggies
@@ -700,11 +701,7 @@ class BanjoTooieRules:
 
             locationName.SNPACK: lambda state:  self.enter_GI(state) and self.can_use_battery(state) and self.has_enough_notes(state, 525),
             locationName.LSPRING: lambda state: self.can_reach_GI_2F(state) and self.has_enough_notes(state, 545) and
-                                                ((state.has(itemName.SPLITUP, self.player)
-                                                and state.has(itemName.CLAWBTS, self.player)) or
-                                                self.check_solo_moves(state, itemName.WWHACK) or 
-                                                self.check_solo_moves(state, itemName.LSPRING) or
-                                                self.check_solo_moves(state, itemName.GLIDE)),
+                                                state.has(itemName.SPLITUP, self.player),
             locationName.CLAWBTS: lambda state: self.enter_GI(state) and self.has_enough_notes(state, 505),
 
             locationName.SHPACK: lambda state: state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 640),
