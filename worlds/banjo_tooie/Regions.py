@@ -191,7 +191,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JINJOTL4,
         locationName.JINJOTL5,
         locationName.JIGGYTD1,
-        #locationName.JIGGYTD2,
+        #locationName.JIGGYTD2, #In CCL
         locationName.JIGGYTD3,
         locationName.JIGGYTD4,
         locationName.JIGGYTD5,
@@ -256,7 +256,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JIGGYHP4,
         locationName.JIGGYHP5,
         locationName.JIGGYHP6,
-        #locationName.JIGGYHP7,
+        #locationName.JIGGYHP7, # in TDL
         locationName.JIGGYHP8,
         locationName.JIGGYHP9,
         locationName.JIGGYHP10,
@@ -323,23 +323,7 @@ def create_regions(self):
     multiworld = self.multiworld
     player = self.player
     active_locations = self.location_name_to_id
-    dellist = []
 
-    for location in active_locations:
-        if((location.find("Jinjo") != -1 and location.find("Jiggy") == -1)  and self.options.multiworld_jinjos == False):
-            dellist.append(location)
-        if(location.find("Doubloon") != -1 and self.options.multiworld_doubloons == False):
-            dellist.append(location)
-        #if(location.find("Glowbo") != -1 and self.options.multiworld_glowbos == False):
-            #dellist.append(location)
-        # if(location.find("Cheato") != -1 and self.options.multiworld_cheato == False):
-        #     dellist.append(location)
-        # if(location.find("Honeycomb") != -1 and self.options.multiworld_honeycombs == False):
-        #     dellist.append(location)
-
-    for name in dellist:
-            if( name in active_locations):
-                del active_locations[name]
     multiworld.regions += [create_region(multiworld, player, active_locations, region, locations) for region, locations in
                            BANJOTOOIEREGIONS.items()]
     
@@ -355,10 +339,6 @@ def create_region(multiworld, player: int, active_locations, name: str, location
             ret.add_locations({locationName.HAG1: None})
         else:
             ret.add_locations(loc_to_id, BanjoTooieLocation)
-        # loc_to_event = {loc: active_locations.get(loc, None) for loc in locations if
-        #                 not active_locations.get(loc, None)}
-        # ret.add_locations(loc_to_event, BanjoTooieLocation)
-        # ret.add_locations({locationName.HAG1: None})
     return ret
 
 def connect_regions(self):

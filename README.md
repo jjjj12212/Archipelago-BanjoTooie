@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | v0.6.2-beta
+# Archipelago Banjo-Tooie (US-Only) | v0.7-beta
 Banjo Tooie for Archipelago 
 
 # Current implementation
@@ -13,14 +13,18 @@ Banjo Tooie for Archipelago
 - Glowbos are scattered throughout Archipelago games and activates magic automatically
 - Banjo Advanced Jamjar Moves are scattered throughout Archipelago games
 - Auto skip certian dialogs and cutscenes
+- Doubloons are scattered throughout Archipelago games
 
 
 # How to install - server side
+### Note: If you had the previous version of Banjo-Tooie installed, Please remove the banjotooie.apworld and the "banjotooie" Folder
+### Note: If you had the previous version of Banjo-Tooie Player YAML installed, Remove and generate/download a new template  
 1. Copy banjotooie.apworld into your existing Archipelago\lib\worlds
 2. Copy banjotooie_connector.lua into Archipelago\data\lua
 
 # How to install - client side
-1. Copy banjotooie_connector.lua into Archipelago\data\lua
+### Note: If you had the previous version of Banjo-Tooie Lua Connector installed, Please remove banjotooie_connector.lua 
+1. Copy banjo_tooie_connector.lua into Archipelago\data\lua
 3. run Launcher.exe and select Banjo-Tooie Client.
 4. Connect the Archipelago Client with the server.
 5. Open Bizhawk (2.9.1 tested) and open your Banjo-Tooie (US) game.
@@ -28,7 +32,6 @@ Banjo Tooie for Archipelago
 
 # Future goals for this project
 - Jinjos are scattered throughout Archipelago games 
-- Doubloons are scattered throughout Archipelago games
 - Train Station are scattered throughout Archipelago games **(if Possible)**
 - Treble Clef are scattered throughout Archipelago games **(if Possible)**
 

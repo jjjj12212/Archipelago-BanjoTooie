@@ -1,16 +1,17 @@
-Banjo Tooie:
+Banjo-Tooie:
   death_link: 'false'
   multiworld_moves: 'true'
   multiworld_jinjos: 'false'
-  multiworld_doubloons: 'false'
+  multiworld_doubloons: 'true'
   multiworld_cheato: 'true'
   multiworld_honeycombs: 'true'
   multiworld_glowbos: 'true'
   jingaling_jiggy: 'true'
   skip_tower_of_tragedy: 1 #0 = no skip, #1 = skip fully, #2 = 3rd round only 
+  speed_up_minigames: 'false' #skip to round 3 of kickball, dodgems
   start_inventory: { }  # ex: {Grip Grab: 1, Fire Eggs: 1}   # Start with these items.
 
 
 description: 'Created By jjjj12212'
-game: Banjo Tooie
+game: Banjo-Tooie
 name: jjjj12212

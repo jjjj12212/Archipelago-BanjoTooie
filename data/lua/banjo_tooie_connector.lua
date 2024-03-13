@@ -41,6 +41,7 @@ local BTCONSUMEOBJ = nil;
 
 local CURRENT_MAP = nil;
 local SKIP_TOT = ""
+local MINIGAMES = ""
 local INIT_COMPLETE = false
 local PAUSED = false;
 local TOTALS_MENU = false;
@@ -51,6 +52,7 @@ local DETECT_DEATH = false;
 local ENABLE_AP_HONEYCOMB = false;
 local ENABLE_AP_PAGES = false;
 local ENABLE_AP_MOVES = false; -- Enable AP Moves Logics
+local ENABLE_AP_DOUBLOONS = false;
 local GAME_LOADED = false;
 local CHECK_FOR_SILO = false; --  If True, you are Transistioning maps
 local WATCH_LOADED_SILOS = false; -- Silo found on Map, Need to Monitor Distance
@@ -58,6 +60,7 @@ local LOAD_BMK_MOVES = false; -- If close to Silo
 local SILOS_LOADED = false; -- Handles if learned a move at Silo
 local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
 local TOT_SET_COMPLETE = false;
+local DOUBLOON_SILO_MOVE = false; -- Move Doubloons away from Silo in JRL
 
 local BATH_PADS_QOL = false
 
@@ -85,7 +88,7 @@ BTConsumable = {
         [11] = {key=0x858C, name="Burgers"},
         [12] = {key=0x03E0, name="Fries"},
         [13] = {key=0x27BD, name="Tickets"},
-        [14] = {key=0x0C03, name="Doubloons"},
+        [14] = {key=0x0C03, name="DOUBLOON"},
         [15] = {key=0x3C05, name="Gold Idols"},
         [16] = {key=0x0002, name="Beans"}, -- CCL
         [17] = {key=0x85E3, name="Fish"}, -- HFP
@@ -277,6 +280,7 @@ BTModel = {
         ["Player"] = 0xFFFF,
         ["Kazooie Split Pad"] = 0x7E1,
         ["Banjo Split Pad"] = 0x7E2,
+        ["Doubloon"] = 0x7C0
     };
     model_enemy_list = {
         ["Ugger"] = 0x671,
@@ -469,6 +473,10 @@ function BTModel:getMultipleModelCoords()
     for index, modelObjPtr in pairs(self.modelObjectList)
     do
         local objPOS = BTModel:getSingleModelCoords(modelObjPtr);
+        if objPOS == false
+        then
+            return false
+        end
         modelPOS_table[modelObjPtr] = objPOS
         i = i + 1
     end
@@ -1778,156 +1786,156 @@ local AGI_MASTER_MAP = {
 
     },
     ['DOUBLOON'] = {
-        -- ['Jolly Rogers: Town Center Pole 1 Doubloon'] = {
-        --     ['addr'] = 0x22,
-        --     ['bit'] = 7,
-        --     ['locationId'] = 1230521
-        -- },
-        -- ['Jolly Rogers: Town Center Pole 2 Doubloon'] = {
-        --     ['addr'] = 0x23,
-        --     ['bit'] = 0,
-        --     ['locationId'] = 1230522
-        -- },
-        -- ['Jolly Rogers: Town Center Pole 3 Doubloon'] = {
-        --     ['addr'] = 0x23,
-        --     ['bit'] = 1,
-        --     ['locationId'] = 1230523
-        -- },
-        -- ['Jolly Rogers: Town Center Pole 4 Doubloon'] = {
-        --     ['addr'] = 0x23,
-        --     ['bit'] = 2,
-        --     ['locationId'] = 1230524
-        -- },
-        -- ['Jolly Rogers: Town Center Pole 5 Doubloon'] = {
-        --     ['addr'] = 0x23,
-        --     ['bit'] = 3,
-        --     ['locationId'] = 1230525
-        -- },
-        -- ['Jolly Rogers: Town Center Pole 6 Doubloon'] = {
-        --     ['addr'] = 0x23,
-        --     ['bit'] = 4,
-        --     ['locationId'] = 1230526
-        -- },
-        -- ['Jolly Rogers: Silo 1 Doubloon'] = {
-        --     ['addr'] = 0x23,
-        --     ['bit'] = 5,
-        --     ['locationId'] = 1230527
-        -- },
-        -- ['Jolly Rogers: Silo 2 Doubloon'] = {
-        --     ['addr'] = 0x23,
-        --     ['bit'] = 6,
-        --     ['locationId'] = 1230528
-        -- },
-        -- ['Jolly Rogers: Silo 3 Doubloon'] = {
-        --     ['addr'] = 0x23,
-        --     ['bit'] = 7,
-        --     ['locationId'] = 1230529
-        -- },
-        -- ['Jolly Rogers: Silo 4 Doubloon'] = {
-        --     ['addr'] = 0x24,
-        --     ['bit'] = 0,
-        --     ['locationId'] = 1230530
-        -- },
-        -- ['Jolly Rogers: Toxic Pool 1 Doubloon'] = {
-        --     ['addr'] = 0x24,
-        --     ['bit'] = 1,
-        --     ['locationId'] = 1230531
-        -- },
-        -- ['Jolly Rogers: Toxic Pool 2 Doubloon'] = {
-        --     ['addr'] = 0x24,
-        --     ['bit'] = 2,
-        --     ['locationId'] = 1230532
-        -- },
-        -- ['Jolly Rogers: Toxic Pool 3 Doubloon'] = {
-        --     ['addr'] = 0x24,
-        --     ['bit'] = 3,
-        --     ['locationId'] = 1230533
-        -- },
-        -- ['Jolly Rogers: Toxic Pool 4 Doubloon'] = {
-        --     ['addr'] = 0x24,
-        --     ['bit'] = 4,
-        --     ['locationId'] = 1230534
-        -- },
-        -- ['Jolly Rogers: Mumbo Skull 1 Doubloon'] = {
-        --     ['addr'] = 0x24,
-        --     ['bit'] = 5,
-        --     ['locationId'] = 1230535
-        -- },
-        -- ['Jolly Rogers: Mumbo Skull 2 Doubloon'] = {
-        --     ['addr'] = 0x24,
-        --     ['bit'] = 6,
-        --     ['locationId'] = 1230536
-        -- },
-        -- ['Jolly Rogers: Mumbo Skull 3 Doubloon'] = {
-        --     ['addr'] = 0x24,
-        --     ['bit'] = 7,
-        --     ['locationId'] = 1230537
-        -- },
-        -- ['Jolly Rogers: Mumbo Skull 4 Doubloon'] = {
-        --     ['addr'] = 0x25,
-        --     ['bit'] = 0,
-        --     ['locationId'] = 1230538
-        -- },
-        -- ['Jolly Rogers: Underground 1 Doubloon'] = {
-        --     ['addr'] = 0x25,
-        --     ['bit'] = 1,
-        --     ['locationId'] = 1230539
-        -- },
-        -- ['Jolly Rogers: Underground 2 Doubloon'] = {
-        --     ['addr'] = 0x25,
-        --     ['bit'] = 2,
-        --     ['locationId'] = 1230540
-        -- },
-        -- ['Jolly Rogers: Underground 3 Doubloon'] = {
-        --     ['addr'] = 0x25,
-        --     ['bit'] = 3,
-        --     ['locationId'] = 1230541
-        -- },
-        -- ['Jolly Rogers: Alcove 1 Doubloon'] = {
-        --     ['addr'] = 0x25,
-        --     ['bit'] = 4,
-        --     ['locationId'] = 1230542
-        -- },
-        -- ['Jolly Rogers: Alcove 2 Doubloon'] = {
-        --     ['addr'] = 0x25,
-        --     ['bit'] = 5,
-        --     ['locationId'] = 1230543
-        -- },
-        -- ['Jolly Rogers: Alcove 3 Doubloon'] = {
-        --     ['addr'] = 0x25,
-        --     ['bit'] = 6,
-        --     ['locationId'] = 1230544
-        -- },
-        -- ['Jolly Rogers: Capt Blackeye 1 Doubloon'] = {
-        --     ['addr'] = 0x25,
-        --     ['bit'] = 7,
-        --     ['locationId'] = 1230545
-        -- },
-        -- ['Jolly Rogers: Capt Blackeye 2 Doubloon'] = {
-        --     ['addr'] = 0x26,
-        --     ['bit'] = 0,
-        --     ['locationId'] = 1230546
-        -- },
-        -- ['Jolly Rogers: Near Jinjo 1 Doubloon'] = {
-        --     ['addr'] = 0x26,
-        --     ['bit'] = 1,
-        --     ['locationId'] = 1230547
-        -- },
-        -- ['Jolly Rogers: Near Jinjo 2 Doubloon'] = {
-        --     ['addr'] = 0x26,
-        --     ['bit'] = 2,
-        --     ['locationId'] = 1230548
-        -- },
-        -- ['Jolly Rogers: Near Jinjo 3 Doubloon'] = {
-        --     ['addr'] = 0x26,
-        --     ['bit'] = 3,
-        --     ['locationId'] = 1230549
-        -- },
-        -- ['Jolly Rogers: Near Jinjo 4 Doubloon'] = {
-        --     ['addr'] = 0x26,
-        --     ['bit'] = 4,
-        --     ['locationId'] = 1230550
-        -- }
+        ["1230521"] = {
+            ['addr'] = 0x22,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Town Center Pole 1 Doubloon'
+        },
+        ["1230522"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 0,
+            ['name'] = 'JRL: Town Center Pole 2 Doubloon'
+        },
+        ["1230523"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 1,
+            ['name'] = 'JRL: Town Center Pole 3 Doubloon'
+        },
+        ["1230524"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 2,
+            ['name'] = 'JRL: Town Center Pole 4 Doubloon'
+        },
+        ["1230525"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Town Center Pole 5 Doubloon'
+        },
+        ["1230526"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Town Center Pole 6 Doubloon'
+        },
+        ["1230527"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Silo 1 Doubloon'
+        },
+        ["1230528"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Silo 2 Doubloon'
+        },
+        ["1230529"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Silo 3 Doubloon'
+        },
+        ["1230530"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 0,
+            ['name'] = 'JRL: Silo 4 Doubloon'
+        },
+        ["1230531"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 1,
+            ['name'] = 'JRL: Toxic Pool 1 Doubloon'
+        },
+        ["1230532"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 2,
+            ['name'] = 'JRL: Toxic Pool 2 Doubloon'
+        },
+        ["1230533"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Toxic Pool 3 Doubloon'
+        },
+        ["1230534"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Toxic Pool 4 Doubloon'
+        },
+        ["1230535"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Mumbo Skull 1 Doubloon'
+        },
+        ["1230536"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Mumbo Skull 2 Doubloon'
+        },
+        ["1230537"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Mumbo Skull 3 Doubloon'
+        },
+        ["1230538"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 0,
+            ['name'] = 'JRL: Mumbo Skull 4 Doubloon'
+        },
+        ["1230539"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 1,
+            ['name'] = 'JRL: Underground 1 Doubloon'
+        },
+        ["1230540"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 2,
+            ['name'] = 'JRL: Underground 2 Doubloon'
+        },
+        ["1230541"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Underground 3 Doubloon'
+        },
+        ["1230542"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Alcove 1 Doubloon'
+        },
+        ["1230543"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Alcove 2 Doubloon'
+        },
+        ["1230544"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Alcove 3 Doubloon'
+        },
+        ["1230545"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Capt Blackeye 1 Doubloon'
+        },
+        ["1230546"] = {
+            ['addr'] = 0x26,
+            ['bit'] = 0,
+            ['name'] = 'JRL: Capt Blackeye 2 Doubloon'
+        },
+        ["1230547"] = {
+            ['addr'] = 0x26,
+            ['bit'] = 1,
+            ['name'] = 'JRL: Near Jinjo 1 Doubloon'
+        },
+        ["1230548"] = {
+            ['addr'] = 0x26,
+            ['bit'] = 2,
+            ['name'] = 'JRL: Near Jinjo 2 Doubloon'
+        },
+        ["1230549"] = {
+            ['addr'] = 0x26,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Near Jinjo 3 Doubloon'
+        },
+        ["1230550"] = {
+            ['addr'] = 0x26,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Near Jinjo 4 Doubloon'
+        }
     },
 	["H1"] = {
 	 	["1230027"] = {
@@ -2172,6 +2180,42 @@ local NON_AGI_MAP = {
 			['Jinjo First Time'] = {
 				['addr'] = 0x6E,
 				['bit'] = 6
+			},
+            ['Dodgems 1v1 Flyover'] = {
+				['addr'] = 0x7E,
+				['bit'] = 1
+			},
+            ['Dodgems 2v1 Flyover'] = {
+				['addr'] = 0x7E,
+				['bit'] = 2
+			},
+            ['Dodgems 3v1 Flyover'] = {
+				['addr'] = 0x7E,
+				['bit'] = 3
+			},
+            ['MT Kickball Quarterfinal Flyover'] = {
+				['addr'] = 0x7E,
+				['bit'] = 4
+			},
+            ['MT Kickball Semifinal Flyover'] = {
+				['addr'] = 0x7E,
+				['bit'] = 5
+			},
+            ['MT Kickball Final Flyover'] = {
+				['addr'] = 0x7E,
+				['bit'] = 6
+			},
+            ['HFP Kickball Quarterfinal Flyover'] = {
+				['addr'] = 0x7E,
+				['bit'] = 7
+			},
+            ['HFP Kickball Semifinal Flyover'] = {
+				['addr'] = 0x7F,
+				['bit'] = 0
+			},
+            ['HFP Kickball Final Flyover'] = {
+				['addr'] = 0x7F,
+				['bit'] = 1
 			},
 			['Jinjo Flyover'] = {
 				['addr'] = 0x82,
@@ -2774,6 +2818,10 @@ end
 function nearSilo()
     BTMODELOBJ:changeName("Silo", false);
     local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+    if modelPOS == false
+    then
+        return
+    end
     local siloPOS = { ["Distance"] = 9999};
     for modelObjPtr, POS in pairs(modelPOS) do
         if POS ~= false
@@ -2787,7 +2835,14 @@ function nearSilo()
                 MoveWitchyPads();
             end
 
-            if POS["Distance"] <= 650
+            if POS["Distance"] <= 650 and CURRENT_MAP ~= 0x1A7
+            then
+                if DEBUG == true and LOAD_BMK_MOVES == false
+                then
+                    print("Near Silo");
+                end
+                break;
+            elseif POS["Distance"] <= 300 and CURRENT_MAP == 0x1A7
             then
                 if DEBUG == true and LOAD_BMK_MOVES == false
                 then
@@ -2798,7 +2853,7 @@ function nearSilo()
         end
     end
    
-    if siloPOS["Distance"] <= 650 
+    if siloPOS["Distance"] <= 650 and CURRENT_MAP ~= 0x1A7
     then
         if LOAD_BMK_MOVES == false
         then
@@ -2818,6 +2873,17 @@ function nearSilo()
             -- print("BKM Move Learnt");
             -- end
         end
+    elseif siloPOS["Distance"] <= 300 and CURRENT_MAP == 0x1A7  -- Doubloon issue 
+    then
+        if LOAD_BMK_MOVES == false
+        then
+            clear_AMM_MOVES_checks();
+            update_BMK_MOVES_checks();
+            LOAD_BMK_MOVES = true
+        elseif SILOS_LOADED == false
+        then
+            update_BMK_MOVES_checks();
+        end
     else
         if LOAD_BMK_MOVES == true
         then
@@ -2835,6 +2901,10 @@ end
 function MoveWitchyPads()
     BTMODELOBJ:changeName("Kazooie Split Pad", false)
     local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+    if modelPOS == false
+    then
+        return;
+    end
     for modelObjPtr, POS in pairs(modelPOS) do
 
         if (POS["Xpos"] == -125 and POS["Ypos"] == -163 and POS["Zpos"] == -1580)
@@ -2846,6 +2916,10 @@ function MoveWitchyPads()
     end
     BTMODELOBJ:changeName("Banjo Split Pad", false)
     local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+    if modelPOS == false
+    then
+        return;
+    end
     for modelObjPtr, POS in pairs(modelPOS) do
         if (POS["Xpos"] == 125 and POS["Zpos"] == -1580)
             and CURRENT_MAP == 0xD6
@@ -2856,14 +2930,54 @@ function MoveWitchyPads()
     end
 end
 
+function MoveDoubloon()
+    BTMODELOBJ:changeName("Doubloon", false)
+    local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+    if modelPOS == false
+    then
+        return;
+    end
+    for modelObjPtr, POS in pairs(modelPOS) do
+        if POS ~= false
+        then
+            if (POS["Xpos"] == -3226 and POS["Zpos"] == -4673) -- bottom right
+            then
+                BTMODELOBJ:moveModelObject(modelObjPtr, nil, nil, POS["Zpos"] + 65);
+            end
+            if (POS["Xpos"] == -3526 and POS["Zpos"] == -4972) --bottom left
+            then
+                BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 65);
+            end
+            if (POS["Xpos"] == -3226 and POS["Zpos"] == -5273) -- top left
+            then
+                BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 50);
+            end
+            if (POS["Xpos"] == -2926 and POS["Zpos"] == -4972) -- top right
+            then
+                BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] + 25, nil, POS["Zpos"] + 65);
+            end
+        end
+        DOUBLOON_SILO_MOVE = true;
+    end
+end
+
 function MoveBathPads()
     BTMODELOBJ:changeName("Kazooie Split Pad", false)
     POS = BTMODELOBJ:getSingleModelCoords(nil)
+    if POS == false
+    then
+        return
+    end
+
     BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450 );
     BTMODELOBJ:changeRotation(nil, nil, 0);
 
     BTMODELOBJ:changeName("Banjo Split Pad", false)
     POS = BTMODELOBJ:getSingleModelCoords(nil)
+    if POS == false
+    then
+        return
+    end
     BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450);
     BTMODELOBJ:changeRotation(nil, nil, 0)
     BATH_PADS_QOL = true
@@ -2934,6 +3048,13 @@ function locationControl()
             elseif  CURRENT_MAP ~= 0xF4 and BATH_PADS_QOL == true
             then
                 BATH_PADS_QOL = false
+            end
+            if CURRENT_MAP == 0x1A7 and DOUBLOON_SILO_MOVE == false
+            then
+                MoveDoubloon()
+            elseif DOUBLOON_SILO_MOVE == true and  CURRENT_MAP ~= 0x1A7 
+            then
+                DOUBLOON_SILO_MOVE = false
             end
             if (mapaddr == 335 or mapaddr == 337) and TOTALS_MENU == false -- Wooded Hollow / JiggyTemple
             then
@@ -3084,6 +3205,9 @@ function all_location_checks(type)
     end
     checkConsumables('GLOWBO', location_checks)
     checkConsumables('MEGA GLOWBO', location_checks)
+    if ENABLE_AP_DOUBLOONS == true then
+        checkConsumables('DOUBLOON', location_checks)
+    end
 
     return location_checks
 end
@@ -3184,6 +3308,14 @@ function processAGIItem(item_list)
                         set_AGI_MOVES_checks()
                     end
                 end
+            elseif(memlocation == 1230514 and ENABLE_AP_DOUBLOONS == true) -- Doubloon Item
+            then
+                if DEBUG == true
+                then
+                    print("Doubloon Obtained")
+                end
+                BTCONSUMEOBJ:changeConsumable("DOUBLOON");
+                BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
         end
@@ -3429,7 +3561,9 @@ function loadAGI()
     local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "r") --generate #BTplayer_seed.AGI
     if f==nil then
         AGI = all_location_checks("AGI");
-        AGI_MOVES = init_BMK("AGI");
+        if next(AGI_MOVES) == nil then
+            AGI_MOVES = init_BMK("AGI");
+        end
         f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "w");
         if DEBUGLVL2 == true
         then
@@ -3554,6 +3688,14 @@ function process_slot(block)
     then
         ENABLE_AP_MOVES = true
     end
+    if block['slot_doubloon'] ~= nil and block['slot_doubloon'] ~= "false"
+    then
+        ENABLE_AP_DOUBLOONS = true
+    end
+    if block['slot_minigames'] ~= nil and block['slot_minigames'] ~= ""
+    then
+        MINIGAMES = block['slot_minigames']
+    end
 
     if SEED ~= 0
     then
@@ -3592,12 +3734,25 @@ function initializeFlags()
         do
             BTRAMOBJ:setFlag(v['addr'], v['bit'])
         end
-		-- Kickball Stadium Doors
-		BTRAMOBJ:setFlag(0xA9, 6) -- MT
-		BTRAMOBJ:setFlag(0xA9, 7) -- HFP
+		-- Minigame Doors
+		BTRAMOBJ:setFlag(0xA9, 6) -- MT Kickball
+		BTRAMOBJ:setFlag(0xA9, 7) -- HFP Kickball
+        if MINIGAMES == "skip"
+        then
+            BTRAMOBJ:setFlag(0x06, 6) -- MT Semifinal
+            BTRAMOBJ:setFlag(0x06, 7) -- MT Final
+            BTRAMOBJ:setFlag(0x68, 0) -- HFP Semifinal
+            BTRAMOBJ:setFlag(0x68, 1) -- HFP Final
+            BTRAMOBJ:setFlag(0x10, 1) -- Dodgems 1v1 Complete
+            BTRAMOBJ:setFlag(0x10, 2) -- Dodgems 2v1 Complete
+            BTRAMOBJ:setFlag(0x10, 3) -- Dodgems 1v1 Door
+            BTRAMOBJ:setFlag(0x10, 4) -- Dodgems 2v1 Door
+            BTRAMOBJ:setFlag(0x10, 5) -- Dodgems 3v1 Door
+        end
 		
         GAME_LOADED = true  -- We don't have a real BMM at this point.  
         init_BMK("BKM")
+        AGI_MOVES = init_BMK("AGI");
 		if (SKIP_TOT ~= "false") then
 			-- ToT Misc Flags
 			BTRAMOBJ:setFlag(0xAB, 2)

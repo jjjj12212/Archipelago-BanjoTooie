@@ -49,8 +49,8 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 
 """
 
-bt_loc_name_to_id = network_data_package["games"]["Banjo Tooie"]["location_name_to_id"]
-bt_itm_name_to_id = network_data_package["games"]["Banjo Tooie"]["item_name_to_id"]
+bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_to_id"]
+bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 
 script_version: int = 4
 
@@ -81,7 +81,7 @@ class BanjoTooieContext(CommonContext):
 
     def __init__(self, server_address, password):
         super().__init__(server_address, password)
-        self.game = 'Banjo Tooie'
+        self.game = 'Banjo-Tooie'
         self.n64_streams: (StreamReader, StreamWriter) = None
         self.n64_sync_task = None
         self.n64_status = CONNECTION_INITIAL_STATUS
@@ -123,7 +123,7 @@ class BanjoTooieContext(CommonContext):
             logging_pairs = [
                 ("Client", "Archipelago")
             ]
-            base_title = "Archipelago Banjo Tooie Client"
+            base_title = "Archipelago Banjo-Tooie Client"
 
         self.ui = BanjoTooieManager(self)
         self.ui_task = asyncio.create_task(self.ui.async_run(), name="UI")
@@ -132,7 +132,7 @@ class BanjoTooieContext(CommonContext):
         if cmd == 'Connected':
             self.slot_data = args.get('slot_data', None)
             self.deathlink_enabled = self.slot_data["deathlink"]
-            logger.info("Please open Banjo Tooie and load banjoTooie_connector.lua")
+            logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
         elif cmd == 'Print':
             msg = args['text']
@@ -152,7 +152,7 @@ class BanjoTooieContext(CommonContext):
                             item_name = name
                             break                    
                     logger.info(player + " sent " + item_name)
-                logger.info("The above items will be sent when Banjo Tooie is loaded.")
+                logger.info("The above items will be sent when Banjo-Tooie is loaded.")
                 self.startup = True
 
     def on_print_json(self, args: dict):
@@ -225,7 +225,9 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_skip_tot": ctx.slot_data["skip_tot"],
             "slot_honeycomb": ctx.slot_data["honeycomb"],
             "slot_pages": ctx.slot_data["pages"],
-            "slot_moves": ctx.slot_data["moves"]
+            "slot_moves": ctx.slot_data["moves"],
+            "slot_doubloon": ctx.slot_data["doubloons"],
+            "slot_minigames": ctx.slot_data["minigames"]
         })
     ctx.sendSlot = False
     return payload
@@ -405,7 +407,7 @@ async def n64_sync_task(ctx: BanjoTooieContext):
 
 
 def main():
-    Utils.init_logging("Banjo Tooie Client")
+    Utils.init_logging("Banjo-Tooie Client")
     parser = get_base_parser()
     args = parser.parse_args()
 

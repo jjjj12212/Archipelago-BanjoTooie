@@ -3,15 +3,12 @@ from multiprocessing import Process
 import settings
 import typing
 from jinja2 import Environment, FileSystemLoader
-# from .Game import game_name, filler_item_name
 from .Items import BanjoTooieItem, all_item_table, all_group_table
 from .Locations import BanjoTooieLocation, all_location_table
 from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
 from .Names import itemName
-
-
 
 #from Utils import get_options
 from BaseClasses import ItemClassification, Tutorial, Item, Region, MultiWorld
@@ -21,15 +18,14 @@ from ..LauncherComponents import Component, components, Type
 
 
 def run_client():
-    from worlds.banjotooie.BTClient import main  # lazy import
+    from worlds.banjo_tooie.BTClient import main  # lazy import
     p = Process(target=main)
     p.start()
-
 
 components.append(Component("Banjo-Tooie Client", func=run_client, component_type=Type.CLIENT))
 
 class BanjoTooieWeb(WebWorld):
-    setup = Tutorial("Setup Banjo Tooie",
+    setup = Tutorial("Setup Banjo-Tooie",
         """Class to build website tutorial pages from a .md file in the world's /docs folder. Order is as follows.
         Name of the tutorial as it will appear on the site. Concise description covering what the guide will entail.
         Language the guide is written in. Name of the file ex 'setup_en.md'. Name of the link on the site; game name is
@@ -47,7 +43,7 @@ class BanjoTooieWorld(World):
     the game features three-dimensional worlds consisting of various platforming challenges and puzzles, with a notable
     increased focus on puzzle-solving over the worlds of Banjo-Kazooie.
     """
-    game: str = "Banjo Tooie"
+    game: str = "Banjo-Tooie"
     web = BanjoTooieWeb()
     options_dataclass =  BanjoTooieOptions
     options: BanjoTooieOptions
@@ -160,33 +156,36 @@ class BanjoTooieWorld(World):
         return rules.set_rules()
     
     def pre_fill(self) -> None:
-        if self.options.multiworld_honeycombs == False:    
-            for name, id in self.location_name_to_id.items():
-                item = self.create_item(itemName.HONEY)
-                if name.find("Honeycomb") != -1:
-                    self.multiworld.get_location(name, self.player).place_locked_item(item)
+        if self.options.multiworld_honeycombs == False:
+            self.banjo_pre_fills(itemName.HONEY, "Honeycomb", False)
                     
         if self.options.multiworld_cheato == False:
-            for name, id in self.location_name_to_id.items():
-                item = self.create_item(itemName.PAGES)
-                if name.find("Page") != -1:
-                    self.multiworld.get_location(name, self.player).place_locked_item(item)
+            self.banjo_pre_fills(itemName.PAGES, "Page", False)
+
+        if self.options.multiworld_doubloons == False:
+            self.banjo_pre_fills(itemName.DOUBLOON, "Doubloon", False)
 
         if self.options.multiworld_moves == False:
-            for group_name, item_info in self.item_name_groups.items():
-                if group_name == "Moves":
-                    for name in item_info:
-                        item = self.create_item(name)
-                        banjoItem = all_item_table.get(name)
-                        self.multiworld.get_location(banjoItem.defualt_location, self.player).place_locked_item(item)
+            self.banjo_pre_fills("Moves", None, True)
 
         if self.options.multiworld_glowbos == False:
+            self.banjo_pre_fills("Magic", None, True)
+
+
+    def banjo_pre_fills(self, itemNameOrGroup: str, locationFindCriteria: str|None, useGroup: bool ) -> None:
+        if useGroup:
             for group_name, item_info in self.item_name_groups.items():
-                if group_name == "Magic":
+                if group_name == itemNameOrGroup:
                     for name in item_info:
                         item = self.create_item(name)
                         banjoItem = all_item_table.get(name)
                         self.multiworld.get_location(banjoItem.defualt_location, self.player).place_locked_item(item)
+        else:
+            for name, id in self.location_name_to_id.items():
+                item = self.create_item(itemNameOrGroup)
+                if name.find(locationFindCriteria) != -1:
+                    self.multiworld.get_location(name, self.player).place_locked_item(item)
+
 
 
     def fill_slot_data(self) -> dict[str, any]:
@@ -203,6 +202,8 @@ class BanjoTooieWorld(World):
         btoptions['honeycomb'] = "true" if self.options.multiworld_honeycombs == 1 else "false"
         btoptions['pages'] = "true" if self.options.multiworld_cheato == 1 else "false"
         btoptions['moves'] = "true" if self.options.multiworld_moves == 1 else "false"
+        btoptions['doubloons'] = "true" if self.options.multiworld_doubloons == 1 else "false"
+        btoptions['minigames'] = 'skip' if self.options.speed_up_minigames == 1 else "full"
 
         return btoptions
 

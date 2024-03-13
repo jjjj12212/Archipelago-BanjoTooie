@@ -1,3 +1,23 @@
+# 0.7-beta
+- Project name change to now be "Banjo-Tooie"
+- world folder changed to banjo_tooie
+- yaml change to "Banjo-Tooie"
+- lua client name change
+- doubloons
+- Move doubloons slightly near JamJar's Silo (JRL)
+  - Jamjar's "influence" has decreased to 300 due to Doubloons. (JRL)
+- JRL Puzzle bugfix
+- Fix bug where all moves are learnt when learning first move.
+- Logic Changes:
+ - doubloon requirement checks require 28 doubloons, gernade or clockwork eggs or Drill Bill 
+ - change Note Logic
+ - change requirements for JRL Pipe Honeycomb
+ - change requirements for HFP lava side Honeycomb
+ - change Superstash requirements
+ - change Leg Spring requirements
+
+
+
 # 0.6.2-beta
 - Hotfix for lua client crashing
 - Update logic for Generator Cavern
