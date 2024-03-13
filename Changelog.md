@@ -10,6 +10,9 @@
 - Fix bug where all moves are learnt when learning first move.
 - Logic Changes:
  - doubloon requirement checks require 28 doubloons, gernade or clockwork eggs or Drill Bill 
+ - change Note Logic
+ - change requirements for JRL Pipe Honeycomb
+ - change requirements for HFP lava side Honeycomb
 
 
 
