@@ -15,6 +15,7 @@
  - change requirements for HFP lava side Honeycomb
  - change Superstash requirements
  - change Leg Spring requirements
+ - Speed up minigames YAML option
 
 
 
