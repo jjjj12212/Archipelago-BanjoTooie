@@ -37,6 +37,10 @@ class SkipToT(Choice):
     option_round_3 = 2
     default = 1
 
+class SpeedUpMinigames(Toggle):
+    """Start 3-round minigames at Round 3"""
+    display_name = "Speed Up Minigames"
+
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
@@ -48,3 +52,4 @@ class BanjoTooieOptions(PerGameCommonOptions):
     multiworld_glowbos: EnableMultiWorldGlowbos
     jingaling_jiggy: KingJingalingHasJiggy
     skip_tower_of_tragedy: SkipToT
+    speed_up_minigames: SpeedUpMinigames

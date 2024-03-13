@@ -203,6 +203,7 @@ class BanjoTooieWorld(World):
         btoptions['pages'] = "true" if self.options.multiworld_cheato == 1 else "false"
         btoptions['moves'] = "true" if self.options.multiworld_moves == 1 else "false"
         btoptions['doubloons'] = "true" if self.options.multiworld_doubloons == 1 else "false"
+        btoptions['minigames'] = 'skip' if self.options.speed_up_minigames == 1 else "full"
 
         return btoptions
 

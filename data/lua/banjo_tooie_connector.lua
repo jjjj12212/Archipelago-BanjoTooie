@@ -41,6 +41,7 @@ local BTCONSUMEOBJ = nil;
 
 local CURRENT_MAP = nil;
 local SKIP_TOT = ""
+local MINIGAMES = ""
 local INIT_COMPLETE = false
 local PAUSED = false;
 local TOTALS_MENU = false;
@@ -2180,6 +2181,42 @@ local NON_AGI_MAP = {
 				['addr'] = 0x6E,
 				['bit'] = 6
 			},
+            ['Dodgems 1v1 Flyover'] = {
+				['addr'] = 0x7E,
+				['bit'] = 1
+			},
+            ['Dodgems 2v1 Flyover'] = {
+				['addr'] = 0x7E,
+				['bit'] = 2
+			},
+            ['Dodgems 3v1 Flyover'] = {
+				['addr'] = 0x7E,
+				['bit'] = 3
+			},
+            ['MT Kickball Quarterfinal Flyover'] = {
+				['addr'] = 0x7E,
+				['bit'] = 4
+			},
+            ['MT Kickball Semifinal Flyover'] = {
+				['addr'] = 0x7E,
+				['bit'] = 5
+			},
+            ['MT Kickball Final Flyover'] = {
+				['addr'] = 0x7E,
+				['bit'] = 6
+			},
+            ['HFP Kickball Quarterfinal Flyover'] = {
+				['addr'] = 0x7E,
+				['bit'] = 7
+			},
+            ['HFP Kickball Semifinal Flyover'] = {
+				['addr'] = 0x7F,
+				['bit'] = 0
+			},
+            ['HFP Kickball Final Flyover'] = {
+				['addr'] = 0x7F,
+				['bit'] = 1
+			},
 			['Jinjo Flyover'] = {
 				['addr'] = 0x82,
 				['bit'] = 4
@@ -2781,6 +2818,10 @@ end
 function nearSilo()
     BTMODELOBJ:changeName("Silo", false);
     local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+    if modelPOS == false
+    then
+        return
+    end
     local siloPOS = { ["Distance"] = 9999};
     for modelObjPtr, POS in pairs(modelPOS) do
         if POS ~= false
@@ -3651,6 +3692,10 @@ function process_slot(block)
     then
         ENABLE_AP_DOUBLOONS = true
     end
+    if block['slot_minigames'] ~= nil and block['slot_minigames'] ~= ""
+    then
+        MINIGAMES = block['slot_minigames']
+    end
 
     if SEED ~= 0
     then
@@ -3689,9 +3734,21 @@ function initializeFlags()
         do
             BTRAMOBJ:setFlag(v['addr'], v['bit'])
         end
-		-- Kickball Stadium Doors
-		BTRAMOBJ:setFlag(0xA9, 6) -- MT
-		BTRAMOBJ:setFlag(0xA9, 7) -- HFP
+		-- Minigame Doors
+		BTRAMOBJ:setFlag(0xA9, 6) -- MT Kickball
+		BTRAMOBJ:setFlag(0xA9, 7) -- HFP Kickball
+        if MINIGAMES == "skip"
+        then
+            BTRAMOBJ:setFlag(0x06, 6) -- MT Semifinal
+            BTRAMOBJ:setFlag(0x06, 7) -- MT Final
+            BTRAMOBJ:setFlag(0x68, 0) -- HFP Semifinal
+            BTRAMOBJ:setFlag(0x68, 1) -- HFP Final
+            BTRAMOBJ:setFlag(0x10, 1) -- Dodgems 1v1 Complete
+            BTRAMOBJ:setFlag(0x10, 2) -- Dodgems 2v1 Complete
+            BTRAMOBJ:setFlag(0x10, 3) -- Dodgems 1v1 Door
+            BTRAMOBJ:setFlag(0x10, 4) -- Dodgems 2v1 Door
+            BTRAMOBJ:setFlag(0x10, 5) -- Dodgems 3v1 Door
+        end
 		
         GAME_LOADED = true  -- We don't have a real BMM at this point.  
         init_BMK("BKM")
