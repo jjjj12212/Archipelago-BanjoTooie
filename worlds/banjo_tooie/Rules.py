@@ -626,9 +626,8 @@ class BanjoTooieRules:
 
             locationName.HONEYCJR1: lambda state: self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player),
             locationName.HONEYCJR2: lambda state: self.can_reach_atlantis(state),
-            locationName.HONEYCJR3: lambda state: (state.has(itemName.GEGGS, self.player) or state.has(itemName.BDRILL, self.player) or
-                                                    state.has(itemName.CEGGS, self.player)) and
-                                                   (state.has(itemName.GGRAB, self.player) or 
+            locationName.HONEYCJR3: lambda state: (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) and
+                                                   ((state.has(itemName.GGRAB, self.player) and state.has(itemName.BDRILL, self.player)) or 
                                                     (state.has(itemName.SPLITUP, self.player) and self.check_solo_moves(state, itemName.LSPRING) and
                                                      (self.check_solo_moves(state, itemName.GLIDE) or self.check_solo_moves(state, itemName.WWHACK)))),
                                                 
@@ -639,8 +638,8 @@ class BanjoTooieRules:
             locationName.HONEYCGI2: lambda state: self.enter_GI(state) and (state.has(itemName.GGRAB, self.player) or state.has(itemName.SPLITUP, self.player)),
             locationName.HONEYCGI3: lambda state: self.can_reach_GI_2F(state),
 
-            locationName.HONEYCHP1: lambda state: (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or
-                                                  state.has(itemName.SPLITUP, self.player),
+            # locationName.HONEYCHP1: lambda state: (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or
+            #                                       state.has(itemName.SPLITUP, self.player),
             locationName.HONEYCHP2: lambda state: state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING) or
                                                   self.check_solo_moves(state, itemName.GLIDE),
             locationName.HONEYCHP3: lambda state: state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.GLIDE) or
@@ -691,7 +690,7 @@ class BanjoTooieRules:
                                                self.has_enough_notes(state, 275),
             locationName.TTORP: lambda state:  self.can_reach_atlantis(state) and state.has(itemName.GGRAB, self.player) and
                                                self.has_enough_notes(state, 290),
-            locationName.WWHACK: lambda state: state.has(itemName.GEGGS, self.player) and state.has(itemName.SPLITUP, self.player) and
+            locationName.WWHACK: lambda state: (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) and state.has(itemName.SPLITUP, self.player) and
                                                self.has_enough_notes(state, 265),
 
             locationName.SPRINGB: lambda state: self.has_enough_notes(state, 390),
