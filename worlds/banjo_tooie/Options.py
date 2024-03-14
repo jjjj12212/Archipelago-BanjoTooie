@@ -41,6 +41,10 @@ class SpeedUpMinigames(Toggle):
     """Start 3-round minigames at Round 3"""
     display_name = "Speed Up Minigames"
 
+class EnableMultiWorldTrebleClefs(Toggle):
+    """Treble Clefs are scattered across the MultiWorld."""
+    display_name = "MultiWorld Treble Clefs"
+
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
@@ -53,3 +57,4 @@ class BanjoTooieOptions(PerGameCommonOptions):
     jingaling_jiggy: KingJingalingHasJiggy
     skip_tower_of_tragedy: SkipToT
     speed_up_minigames: SpeedUpMinigames
+    multiworld_treble: EnableMultiWorldTrebleClefs

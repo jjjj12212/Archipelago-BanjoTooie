@@ -20,7 +20,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         # locationName.JIGGYIH7,
         # locationName.JIGGYIH8,
         # locationName.JIGGYIH9,
-        locationName.JIGGYIH10
+        locationName.JIGGYIH10,
+        locationName.TREBLEJV
     ],
     regionName.IOHWH:    [
         locationName.JINJOIH1
@@ -52,6 +53,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GGRAB,
         locationName.BBLASTER,
         locationName.EGGAIM,
+        locationName.TREBLEMT
     ],
     regionName.IOHPL:    [
         locationName.JINJOIH4,
@@ -84,7 +86,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOGM2,
         locationName.CHEATOGM3,
         locationName.BDRILL,
-        locationName.BBAYONET
+        locationName.BBAYONET,
+        locationName.TREBLEGM
     ],
     regionName.IOHPG:   [
         locationName.GEGGS
@@ -120,7 +123,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOWW3,
         locationName.AIREAIM,
         locationName.SPLITUP,
-        locationName.PACKWH
+        locationName.PACKWH,
+        locationName.TREBLEWW
     ],
     regionName.JR:      [
         locationName.JRLDB1,
@@ -178,7 +182,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOJR3,
         locationName.WWHACK,
         locationName.TTORP,
-        locationName.AUQAIM
+        locationName.AUQAIM,
+        locationName.TREBLEJR
     ],
     regionName.IOHWL:   [
          locationName.JINJOIH2,
@@ -211,6 +216,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOTL3,
         locationName.SPRINGB,
         locationName.TAXPACK,
+        locationName.TREBLETL
     ],
     regionName.TL_HATCH: [
         locationName.HATCH,
@@ -242,7 +248,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOGI3,
         locationName.SNPACK,
         locationName.LSPRING,
-        locationName.CLAWBTS
+        locationName.CLAWBTS,
+        locationName.TREBLEGI
     ],
     regionName.HP:      [
         locationName.JINJOHP1,
@@ -269,7 +276,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOHP2,
         locationName.CHEATOHP3,
         locationName.SHPACK,
-        locationName.GLIDE
+        locationName.GLIDE,
+        locationName.TREBLEHP
     ],
     regionName.CC:      [
         locationName.JINJOCC1,
@@ -296,7 +304,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOCC1,
         locationName.CHEATOCC2,
         locationName.CHEATOCC3,
-        locationName.SAPACK
+        locationName.SAPACK,
+        locationName.TREBLECC
     ],
     regionName.CK: [],
     regionName.H1: [

@@ -216,6 +216,16 @@ HONEYCCC2  = "CCL: Trash Can Honeycomb"
 HONEYCCC3  = "CCL: Pot O' Gold Honeycomb"
 HONEYCIH1  = "IoH: Plateau Honeycomb"
 
+TREBLEJV   = "JV: Treble Clef"
+TREBLEMT   = "MT: Treble Clef"
+TREBLEGM   = "GM: Treble Clef"
+TREBLEWW   = "WW: Treble Clef"
+TREBLEJR   = "JRL: Treble Clef"
+TREBLETL   = "TDL: Treble Clef"
+TREBLEGI   = "GI: Treble Clef"
+TREBLEHP   = "HFP: Treble Clef"
+TREBLECC   = "CCL: Treble Clef"
+
 #Cheato Pages
 CHEATOMT1 = "MT: Snake Head Cheato Page"
 CHEATOMT2 = "MT: Prison Compound Cheato Page"

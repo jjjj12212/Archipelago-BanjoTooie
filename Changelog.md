@@ -1,3 +1,7 @@
+# 0.8-beta
+- Treble Clefs are added
+- Rule Fixes
+
 # 0.7-beta
 - Project name change to now be "Banjo-Tooie"
 - world folder changed to banjo_tooie

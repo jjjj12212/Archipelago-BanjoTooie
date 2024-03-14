@@ -674,6 +674,19 @@ class BanjoTooieRules:
             locationName.JRLDB21:   lambda state: state.has(itemName.BDRILL, self.player) or state.has(itemName.GEGGS, self.player) or
                                                   state.has(itemName.CEGGS, self.player),
         }
+        self.treble_clef_rules = {
+            locationName.TREBLEJV:  lambda state: state.has(itemName.GGRAB, self.player),
+            locationName.TREBLEWW:  lambda state: self.check_humba_magic(state, itemName.HUMBAWW),
+            locationName.TREBLEJR:  lambda state: (self.check_humba_magic(state, itemName.HUMBAJR) and self.can_reach_atlantis(state)) or
+                                                  ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) and
+                                                   state.has(itemName.AUQAIM, self.player)),
+            locationName.TREBLETL:  lambda state: state.has(itemName.BDRILL, self.player) and (self.can_beat_terry(state) or state.has(itemName.GGRAB, self.player)),
+            locationName.TREBLEGI:  lambda state: self.can_reach_GI_2F(state),
+            locationName.TREBLEHP:  lambda state: (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) or 
+                                                    (self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.WWHACK) and
+                                                     self.check_solo_moves(state, itemName.GLIDE)),
+            
+        }
 
         self.silo_rules = {
             locationName.EGGAIM: lambda state: self.has_enough_notes(state, 25),

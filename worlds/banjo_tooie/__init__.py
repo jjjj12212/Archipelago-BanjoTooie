@@ -50,6 +50,7 @@ class BanjoTooieWorld(World):
     topology_preset = True
     kingjingalingjiggy = False
     jiggy_counter: int = 0
+    doubloon_counter: int = 0
     slot_data = []
 
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
@@ -78,6 +79,12 @@ class BanjoTooieWorld(World):
                 else:
                     item_classification = ItemClassification.useful
                 self.jiggy_counter += 1
+            elif banjoItem.btid == 1230514:
+                if self.doubloon_counter <= 27:
+                    item_classification = ItemClassification.progression
+                else:
+                    item_classification = ItemClassification.useful
+                self.doubloon_counter += 1
             else:
                 item_classification = ItemClassification.progression
         if banjoItem.type == 'useful':
@@ -144,6 +151,9 @@ class BanjoTooieWorld(World):
             item.code == 1230505 or item.code == 1230506 or item.code == 1230507 or item.code == 1230508 or
             item.code == 1230509 ) and self.options.multiworld_jinjos == False) :
             return False
+        
+        if(item.code == 1230778 and self.options.multiworld_treble == False):
+            return False
 
         return True
 
@@ -170,6 +180,9 @@ class BanjoTooieWorld(World):
 
         if self.options.multiworld_glowbos == False:
             self.banjo_pre_fills("Magic", None, True)
+
+        if self.options.multiworld_treble == False:
+            self.banjo_pre_fills(itemName.TREBLE, "Treble Clef", False)
 
 
     def banjo_pre_fills(self, itemNameOrGroup: str, locationFindCriteria: str|None, useGroup: bool ) -> None:
@@ -204,6 +217,7 @@ class BanjoTooieWorld(World):
         btoptions['moves'] = "true" if self.options.multiworld_moves == 1 else "false"
         btoptions['doubloons'] = "true" if self.options.multiworld_doubloons == 1 else "false"
         btoptions['minigames'] = 'skip' if self.options.speed_up_minigames == 1 else "full"
+        btoptions['trebleclef'] = "true" if self.options.multiworld_treble == 1 else "false"
 
         return btoptions
 
