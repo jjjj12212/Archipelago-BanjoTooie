@@ -319,7 +319,7 @@ class BanjoTooieRules:
                                                  self.check_solo_moves(state, itemName.SHPACK),
             locationName.JIGGYCC8: lambda state: self.check_solo_moves(state, itemName.WWHACK),
             locationName.JIGGYCC9: lambda state: state.has(itemName.CEGGS, self.player) and (state.has(itemName.SPLITUP, self.player) or
-                                                  self.has(itemName.GGRAB, self.player) or self.has(itemName.EGGAIM, self.player)),
+                                                  state.has(itemName.GGRAB, self.player) or state.has(itemName.EGGAIM, self.player)),
             locationName.JIGGYCC10: lambda state: self.check_solo_moves(state, itemName.SHPACK),
 
             #Jinjo Family Jiggies
@@ -768,7 +768,7 @@ class BanjoTooieRules:
                             count += 10
                         if self.can_reach_GI_2F(state) or self.check_solo_moves(state, itemName.PACKWH) or \
                                 self.check_solo_moves(state, itemName.LSPRING) or state.has(
-                            itemName.GGRAB):  # 1F Window Notes
+                            itemName.GGRAB, self.player):  # 1F Window Notes
                             count += 10
                         if self.can_reach_GI_2F(state):  # Rest of GI
                             count += 55
