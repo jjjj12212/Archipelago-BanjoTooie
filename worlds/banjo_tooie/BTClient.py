@@ -229,7 +229,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_moves": ctx.slot_data["moves"],
             "slot_doubloon": ctx.slot_data["doubloons"],
             "slot_minigames": ctx.slot_data["minigames"],
-            "slot_teble": ctx.slot_data["treble"]
+            "slot_treble": ctx.slot_data["trebleclef"]
         })
     ctx.sendSlot = False
     return payload
@@ -312,7 +312,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "locations": mov1
             }])
 
-    if ctx.slot_data["treble"] == "true" and ctx.sync_ready == True:
+    if ctx.slot_data["trebleclef"] == "true" and ctx.sync_ready == True:
          # Locations handling
         notelist = payload['treble']
         not1 = []

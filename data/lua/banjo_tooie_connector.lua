@@ -524,23 +524,6 @@ function BTModel:changeRotation(modelObjPtr, Yrot, Zrot)
     end
 end
 
-
-function deepcopy(orig)
-    local orig_type = type(orig)
-    local copy
-    if orig_type == 'table' then
-        copy = {}
-        for orig_key, orig_value in next, orig, nil do
-            copy[deepcopy(orig_key)] = deepcopy(orig_value)
-        end
-        setmetatable(copy, deepcopy(getmetatable(orig)))
-    else -- number, string, boolean, etc
-        copy = orig
-    end
-    return copy
-end
-
-
 function getAltar()
     if CURRENT_MAP == 335 or CURRENT_MAP == 337 -- No need to modify RAM when already in WH
     then
@@ -2833,7 +2816,7 @@ function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Si
                 BTRAMOBJ:setFlag(addr_info['addr'], addr_info['bit'])
             end
         else
-            for key, disable_move in pairs(SILO_MAP_CHECK[CURRENT_MAP][keys]) --Exception list, always disable
+            for key, disable_move in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP][keys]) --Exception list, always disable
             do
                 local addr_info = NON_AGI_MAP["MOVES"][disable_move]
                 BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit']);
@@ -3753,7 +3736,7 @@ function savingAGI()
     f:write(json.encode(AGI_MOVES) .. "\n");
     if DEBUGLVL2 == true
     then
-        print("Writing Received_Map");
+        print("Writing Treble");
     end
     f:write(json.encode(AGI_NOTES) .. "\n");
     if DEBUGLVL2 == true
@@ -3774,6 +3757,9 @@ function loadAGI()
         AGI = all_location_checks("AGI");
         if next(AGI_MOVES) == nil then
             AGI_MOVES = init_BMK("AGI");
+        end
+        if next(AGI_NOTES) == nil then
+            AGI_NOTES = init_BKNOTES("AGI");
         end
         f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "w");
         if DEBUGLVL2 == true
@@ -3806,7 +3792,7 @@ function savingBMM()
         print("Saving BMM File");
     end
     f:write(json.encode(BMM) .. "\n");
-    f:write(json.encode(BKM));
+    f:write(json.encode(BKM) .. "\n");
     f:write(json.encode(BKNOTES));
     f:close()
     if DEBUG == true
@@ -3914,7 +3900,6 @@ function process_slot(block)
     then
         ENABLE_AP_TREBLE = true
     end
-
     if SEED ~= 0
     then
         loadAGI()
@@ -3970,7 +3955,7 @@ function initializeFlags()
 		
         GAME_LOADED = true  -- We don't have a real BMM at this point.  
         init_BMK("BKM");
-        init_BKNOTES("BKM_NOTES");
+        init_BKNOTES("BKNOTES");
         AGI_MOVES = init_BMK("AGI");
         AGI_NOTES = init_BKNOTES("AGI");
 		if (SKIP_TOT ~= "false") then
@@ -4094,6 +4079,9 @@ function main()
                             BKNOTES[ASSET_MAP_CHECK["TREBLE"][TREBLE_MAP]] = true;
                             TREBLE_SPOTED = false;
                             WATCH_LOADED_TREBLE = false;
+                        else
+                            TREBLE_SPOTED = false;
+                            TREBLE_MAP = 0x00;
                         end
                     end
                 end
