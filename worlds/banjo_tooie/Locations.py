@@ -33,7 +33,7 @@ JVLoc_table = {
     #locationName.JIGGYIH8:  LocationData(1230683, 0x4F, 7),
     #locationName.JIGGYIH9:  LocationData(1230684, 0x50, 0),
     locationName.JIGGYIH10: LocationData(1230685, 0x50, 1),
-    locationName.TREBLEJV:  LocationData(1230780, 0x97, 7)
+    locationName.TREBLEJV:  LocationData(1230789, 0x97, 7)  #Set last ID for Clef Family. Client Reasons
 }
 
 MTLoc_Table = {

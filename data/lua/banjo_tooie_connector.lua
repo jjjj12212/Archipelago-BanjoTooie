@@ -717,7 +717,6 @@ local ASSET_MAP_CHECK = {
         }
     },
     ["TREBLE"] = {
-        [0x142] = "1230780", -- JV
         [0xB8] = "1230781", -- MT
         [0xCD] = "1230782", -- GGM:Water Storage
         [0xD6] = "1230783", -- WW
@@ -726,6 +725,7 @@ local ASSET_MAP_CHECK = {
         [0x100] = "1230786", -- GI
         [0x132] = "1230787", -- HF:Ice Grotto
         [0x13A] = "1230788", -- CC:Cavern
+        [0x142] = "1230789" -- JV
     }
 }
 
@@ -2626,11 +2626,6 @@ local NON_AGI_MAP = {
 		}
     },
     ["TREBLE"] = {
-        ["1230780"] = {
-            ['addr'] = 0x97,
-            ['bit'] = 7,
-            ['name'] = 'JV: Treble Clef'
-        },
         ["1230781"] = {
             ['addr'] = 0x86,
             ['bit'] = 7,
@@ -2670,6 +2665,11 @@ local NON_AGI_MAP = {
             ['addr'] = 0x95,
             ['bit'] = 6,
             ['name'] = 'CCL: Treble Clef'
+        },
+        ["1230789"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 7,
+            ['name'] = 'JV: Treble Clef'
         },
     }
 }
