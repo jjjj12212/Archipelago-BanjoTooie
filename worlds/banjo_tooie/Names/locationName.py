@@ -170,8 +170,8 @@ JIGGYIH9  = "Jinjo Village: Black Jinjo Family Jiggy"
 JIGGYIH10 = "Jinjo Village: King Jingaling Jiggy"
 
 #Glowbos
-GLOWBOMT1 = "MT: Mumbo's Glowbo"
-GLOWBOMT2 = "MT: Jade Snake Grove Glowbo"
+GLOWBOMT1 = "MT: Jade Snake Grove Glowbo"
+GLOWBOMT2 = "MT: Mumbo's Glowbo"
 GLOWBOGM1 = "GGM: Near Entrance Glowbo"
 GLOWBOGM2 = "GGM: Mine Entrance 2 Glowbo"
 GLOWBOWW1 = "WW: The Inferno Glowbo"
