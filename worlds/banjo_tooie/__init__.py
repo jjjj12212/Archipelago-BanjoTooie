@@ -33,7 +33,9 @@ class BanjoTooieWeb(WebWorld):
         "English",
         "setup_en.md",
         "setup/en",
-        ["Mike J."])
+        ["Beebaleen"])
+    
+    tutorials = [setup]
     
 
 class BanjoTooieWorld(World):
