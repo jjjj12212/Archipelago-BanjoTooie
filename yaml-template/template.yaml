@@ -4,6 +4,7 @@ Banjo-Tooie:
   multiworld_jinjos: 'false'
   multiworld_doubloons: 'true'
   multiworld_cheato: 'true'
+  cheato_as_filler: 'true'
   multiworld_honeycombs: 'true'
   multiworld_glowbos: 'true'
   multiworld_treble: 'true'
