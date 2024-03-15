@@ -746,13 +746,13 @@ class BanjoTooieRules:
     def has_enough_notes(self, state: CollectionState, Amount) -> bool:
         count:int = 0
         if state.has(itemName.JIGGY, self.player, 1): # MT Access
-            count += 100
+            count += 80
         if state.has(itemName.GGRAB, self.player): # JV Treble + Plateau Sign
-            count += 30
+            count += 10
         if state.has(itemName.GGRAB, self.player) or self.dilberta_free(state): # Honey B.
             count += 10
             if state.has(itemName.JIGGY, self.player, 4) or self.dilberta_free(state): # GGM Access
-                count += 100
+                count += 80
             if state.has(itemName.FEGGS, self.player): # Pine Grove Access
                 count += 20
                 if state.has(itemName.JIGGY, self.player, 8): # WW Access
@@ -760,16 +760,12 @@ class BanjoTooieRules:
                     if state.has(itemName.GEGGS, self.player) or state.has(itemName.GEGGS, self.player) or \
                         self.check_solo_moves(state, itemName.GLIDE) or self.check_solo_moves(state, itemName.LSPRING): # Area 51 Fence
                             count += 10
-                    if self.check_humba_magic(state, itemName.HUMBAWW): # Van Door
-                        count += 20
                 if state.has(itemName.TTORP, self.player): # Wasteland Access
                     count += 20
                     if state.has(itemName.JIGGY, self.player, 20): # TDL Access
                         count += 80
-                        if state.has(itemName.BDRILL, self.player) and state.has(itemName.GGRAB, self.player): # Boulder Treble Clef
-                            count += 20
                     if state.has(itemName.JIGGY, self.player, 45): # CCL Access
-                        count += 90
+                        count += 70
                         if state.has(itemName.CEGGS, self.player) or state.has(itemName.SHPACK, self.player): # Sack Pack Notes
                             count += 10
                     if state.has(itemName.SPRINGB, self.player) and state.has(itemName.JIGGY, self.player, 28) and self.enter_GI(state): # GI 1F
@@ -781,7 +777,7 @@ class BanjoTooieRules:
                             itemName.GGRAB, self.player):  # 1F Window Notes
                             count += 10
                         if self.can_reach_GI_2F(state):  # Rest of GI
-                            count += 55
+                            count += 35
             if state.has(itemName.SPLITUP, self.player): # Cliff Top
                 count += 20
                 if state.has(itemName.JIGGY, self.player, 14): # JRL Town Center
@@ -789,11 +785,10 @@ class BanjoTooieRules:
                     if state.has(itemName.AUQAIM, self.player) or state.has(itemName.TTORP, self.player): # Squid Notes
                         count += 10
                     if self.can_reach_atlantis(state): # Deep JRL
-                        count += 30
+                        count += 10
                 if state.has(itemName.JIGGY, self.player, 36): # HFP Access
                     count += 80
-                    if state.has(itemName.EGGAIM, self.player) and state.has(itemName.GEGGS, self.player): # Icicle Grotto
-                                count += 20
+            count += state.count(itemName.TREBLE, self.player) * 20
         return count >= Amount
 
     def has_enough_doubloons(self, state:CollectionState, Amount) -> bool:
@@ -924,6 +919,10 @@ class BanjoTooieRules:
         for location, rules in self.doubloon_rules.items():
             doubloon = self.world.multiworld.get_location(location, self.player)
             set_rule(doubloon, rules)
+
+        for location, rules in self.treble_clef_rules.items():
+            treble = self.world.multiworld.get_location(location, self.player)
+            set_rule(treble, rules)
 
         # for item in self.jinjo_forbid:
         #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
