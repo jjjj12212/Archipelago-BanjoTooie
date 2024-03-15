@@ -12,6 +12,7 @@ BKJINJO = "Black Jinjo"
 DOUBLOON = "Doubloon"
 GLOWBO = "Glowbo"
 JIGGY = "Jiggy"
+TREBLE = "Treble Clef"
 
 GGRAB       = "Grip Grab"
 BBLASTER    = "Breegull Blaster"

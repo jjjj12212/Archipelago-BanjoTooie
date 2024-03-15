@@ -53,6 +53,7 @@ local ENABLE_AP_HONEYCOMB = false;
 local ENABLE_AP_PAGES = false;
 local ENABLE_AP_MOVES = false; -- Enable AP Moves Logics
 local ENABLE_AP_DOUBLOONS = false;
+local ENABLE_AP_TREBLE = false;
 local GAME_LOADED = false;
 local CHECK_FOR_SILO = false; --  If True, you are Transistioning maps
 local WATCH_LOADED_SILOS = false; -- Silo found on Map, Need to Monitor Distance
@@ -61,6 +62,12 @@ local SILOS_LOADED = false; -- Handles if learned a move at Silo
 local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
 local TOT_SET_COMPLETE = false;
 local DOUBLOON_SILO_MOVE = false; -- Move Doubloons away from Silo in JRL
+local CHECK_FOR_TREBLE = false ; -- Treble logic
+local TREBLE_WAIT_TIMER = 0; -- waits until Treble is loaded if any
+local WATCH_LOADED_TREBLE = false; -- if object is loaded or not 
+local TREBLE_SPOTED = false; -- used if Collected Treble
+local TREBLE_MAP = 0x00; -- validate TREBLE_MAP
+local TREBLE_GONE_CHECK = 2;
 
 local BATH_PADS_QOL = false
 
@@ -280,7 +287,8 @@ BTModel = {
         ["Player"] = 0xFFFF,
         ["Kazooie Split Pad"] = 0x7E1,
         ["Banjo Split Pad"] = 0x7E2,
-        ["Doubloon"] = 0x7C0
+        ["Doubloon"] = 0x7C0,
+        ["Treble Clef"] = 0x6ED
     };
     model_enemy_list = {
         ["Ugger"] = 0x671,
@@ -517,23 +525,6 @@ function BTModel:changeRotation(modelObjPtr, Yrot, Zrot)
     end
 end
 
-
-function deepcopy(orig)
-    local orig_type = type(orig)
-    local copy
-    if orig_type == 'table' then
-        copy = {}
-        for orig_key, orig_value in next, orig, nil do
-            copy[deepcopy(orig_key)] = deepcopy(orig_value)
-        end
-        setmetatable(copy, deepcopy(getmetatable(orig)))
-    else -- number, string, boolean, etc
-        copy = orig
-    end
-    return copy
-end
-
-
 function getAltar()
     if CURRENT_MAP == 335 or CURRENT_MAP == 337 -- No need to modify RAM when already in WH
     then
@@ -588,140 +579,153 @@ end
 
 
 -- Moves that needs to be checked Per Map. some silos NEEDS other moves as well to get to.
-local SILO_MAP_CHECK = {
-    [0x155] = { -- Cliff Top
-        "1230763",
-        ["Exceptions"] = {
+local ASSET_MAP_CHECK = {
+    ["SILO"] = {
+        [0x155] = { -- Cliff Top
+            "1230763",
+            ["Exceptions"] = {
 
+            }
+        },
+        [0x152] = { -- Platau
+            "1230756",
+            ["Exceptions"] = {
+                "1230755"
+            }
+        },
+        [0x154] = { -- Pine Grove
+            "1230759",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0x15A] = { -- Wasteland
+            "1230767",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0xB8] = { -- MT Main
+            "1230754",
+            "1230755",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0xC4] = { -- MT Grove
+            "1230753",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0xC7] = { -- GM Main
+            "1230757",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0x163] = { -- GM Storage
+            "1230758",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0xD6] = { -- WW Main
+            "1230761",
+            "1230760",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0xE1] = { -- WW Castle
+            "1230762",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0x1A7] = { -- JRL Main
+            "1230764",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0xF6] = { -- JRL Eel Lair
+            "1230765",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0xED] = { -- JRL Jolly
+            "1230766",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0x112] = { --TDL Main
+            "1230768",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0x119] = { -- Unga Bunga Cave
+            "1230770",
+            ["Exceptions"] = {
+    
+            }
+        },
+        [0x117] = { -- TDL River
+            "1230769",
+            ["Exceptions"] = {
+    
+            }
+        },
+        [0x101] = { -- GI Floor 1
+            "1230773",
+            ["Exceptions"] = {
+    
+            }
+        },
+        [0x106] = { -- Floor 2
+            "1230772",
+            ["Exceptions"] = {
+    
+            }
+        },
+        [0x111] = { -- GI Waste Disposal
+            "1230771",
+            ["Exceptions"] = {
+    
+            }
+        },
+        [0x127] = { -- HFP Fire
+            "1230774",
+            ["Exceptions"] = {
+    
+            }
+        },
+        [0x128] = { -- HFP Ice
+            "1230775",
+            ["Exceptions"] = {
+    
+            }
+        },
+        [0x13A] = { -- CC Cave
+            "1230776",
+            ["Exceptions"] = {
+    
+            }
         }
     },
-    [0x152] = { -- Platau
-        "1230756",
-        ["Exceptions"] = {
-            "1230755"
-        }
-    },
-    [0x154] = { -- Pine Grove
-        "1230759",
-        ["Exceptions"] = {
-            
-        }
-    },
-    [0x15A] = { -- Wasteland
-        "1230767",
-        ["Exceptions"] = {
-            
-        }
-    },
-    [0xB8] = { -- MT Main
-        "1230754",
-        "1230755",
-        ["Exceptions"] = {
-            
-        }
-    },
-    [0xC4] = { -- MT Grove
-        "1230753",
-        ["Exceptions"] = {
-            
-        }
-    },
-    [0xC7] = { -- GM Main
-        "1230757",
-        ["Exceptions"] = {
-            
-        }
-    },
-    [0x163] = { -- GM Storage
-        "1230758",
-        ["Exceptions"] = {
-            
-        }
-    },
-    [0xD6] = { -- WW Main
-        "1230761",
-        "1230760",
-        ["Exceptions"] = {
-            
-        }
-    },
-    [0xE1] = { -- WW Castle
-        "1230762",
-        ["Exceptions"] = {
-            
-        }
-    },
-    [0x1A7] = { -- JRL Main
-        "1230764",
-        ["Exceptions"] = {
-            
-        }
-    },
-    [0xF6] = { -- JRL Eel Lair
-        "1230765",
-        ["Exceptions"] = {
-            
-        }
-    },
-    [0xED] = { -- JRL Jolly
-        "1230766",
-        ["Exceptions"] = {
-            
-        }
-    },
-    [0x112] = { --TDL Main
-        "1230768",
-        ["Exceptions"] = {
-            
-        }
-    },
-    [0x119] = { -- Unga Bunga Cave
-        "1230770",
-        ["Exceptions"] = {
-  
-        }
-    },
-    [0x117] = { -- TDL River
-        "1230769",
-        ["Exceptions"] = {
-  
-        }
-    },
-    [0x101] = { -- GI Floor 1
-        "1230773",
-        ["Exceptions"] = {
-  
-        }
-    },
-    [0x106] = { -- Floor 2
-        "1230772",
-        ["Exceptions"] = {
-  
-        }
-    },
-    [0x111] = { -- GI Waste Disposal
-        "1230771",
-        ["Exceptions"] = {
-  
-        }
-    },
-    [0x127] = { -- HFP Fire
-        "1230774",
-        ["Exceptions"] = {
-  
-        }
-    },
-    [0x128] = { -- HFP Ice
-        "1230775",
-        ["Exceptions"] = {
-  
-        }
-    },
-    [0x13A] = { -- CC Cave
-        "1230776",
-        ["Exceptions"] = {
-  
-        }
+    ["TREBLE"] = {
+        [0x142] = "1230780", -- JV
+        [0xB8] = "1230781", -- MT
+        [0xCD] = "1230782", -- GGM:Water Storage
+        [0xD6] = "1230783", -- WW
+        [0x1A8] = "1230784", -- JR:Atlantis
+        [0x112] = "1230785", -- TL
+        [0x100] = "1230786", -- GI
+        [0x132] = "1230787", -- HF:Ice Grotto
+        [0x13A] = "1230788", -- CC:Cavern
     }
 }
 
@@ -734,9 +738,11 @@ local AMM = {};
 -- AGI - Archipelago given items
 local AGI = {};
 local AGI_MOVES = {};
+local AGI_NOTES = {};
 
 -- Banjo Tooie Movelist Table
 local BKM = {};
+local BKNOTES = {}; -- Notes
 
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
@@ -2618,6 +2624,53 @@ local NON_AGI_MAP = {
 				['bit'] = 3
 			},
 		}
+    },
+    ["TREBLE"] = {
+        ["1230780"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 7,
+            ['name'] = 'JV: Treble Clef'
+        },
+        ["1230781"] = {
+            ['addr'] = 0x86,
+            ['bit'] = 7,
+            ['name'] = 'MT: Treble Clef'
+        },
+        ["1230782"] = {
+            ['addr'] = 0x89,
+            ['bit'] = 0,
+            ['name'] = 'GM: Treble Clef'
+        },
+        ["1230783"] = {
+            ['addr'] = 0x8B,
+            ['bit'] = 1,
+            ['name'] = 'WW: Treble Clef'
+        },
+        ["1230784"] = {
+            ['addr'] = 0x8D,
+            ['bit'] = 2,
+            ['name'] = 'JRL: Treble Clef'
+        },
+        ["1230785"] = {
+            ['addr'] = 0x8F,
+            ['bit'] = 3,
+            ['name'] = 'TDL: Treble Clef'
+        },
+        ["1230786"] = {
+            ['addr'] = 0x91,
+            ['bit'] = 4,
+            ['name'] = 'GI: Treble Clef'
+        },
+        ["1230787"] = {
+            ['addr'] = 0x93,
+            ['bit'] = 5,
+            ['name'] = 'HFP: Treble Clef'
+        },
+        ["1230788"] = {
+            ['addr'] = 0x95,
+            ['bit'] = 6,
+            ['name'] = 'CCL: Treble Clef'
+        },
     }
 }
 
@@ -2643,7 +2696,7 @@ function readAPLocationChecks(type)
 end
 
 function update_BMK_MOVES_checks() --Only run when close to Silos
-    for keys, moveId in pairs(SILO_MAP_CHECK[CURRENT_MAP])
+    for keys, moveId in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP])
     do
         if keys ~= "Exceptions"
         then
@@ -2665,6 +2718,52 @@ function update_BMK_MOVES_checks() --Only run when close to Silos
     end
 end
 
+function set_checked_BKNOTES() --Only run transitioning maps
+    if ASSET_MAP_CHECK["TREBLE"][CURRENT_MAP] == nil --Happens when exiting map too quickly when entering a new map
+    then
+        if DEBUG == true 
+        then
+            print("Canceling Clearing of Treble")
+        end
+        return false
+    end
+    local noteId = ASSET_MAP_CHECK["TREBLE"][CURRENT_MAP];
+    local get_addr = NON_AGI_MAP['TREBLE'][noteId];
+    if BKNOTES[noteId] == true
+    then
+        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_CHECK");
+    else
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+    end
+    return true;
+end
+
+function set_AP_BKNOTES() -- Only run after Transistion
+    for noteId, value in pairs(AGI_NOTES)
+    do
+        local get_addr = NON_AGI_MAP['TREBLE'][noteId]
+        if value == true
+        then
+            BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_SET");
+        else
+            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+        end
+    end
+end
+
+function obtained_AP_BKNOTE()
+    for locationId, value in pairs(AGI_NOTES)
+    do
+        if value == false
+        then
+            AGI_NOTES[locationId] = true;
+            local get_addr = NON_AGI_MAP['TREBLE'][tostring(locationId)]
+            BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_OBTAIN");
+            break
+        end
+    end
+end
+
 function init_BMK(type) -- Initialize BMK
     local checks = {}
     for k,v in pairs(NON_AGI_MAP['MOVES'])
@@ -2680,9 +2779,24 @@ function init_BMK(type) -- Initialize BMK
     return checks
 end
 
+function init_BKNOTES(type) -- Initialize BMK
+    local checks = {}
+    for k,v in pairs(NON_AGI_MAP['TREBLE'])
+    do
+        if type == "BKNOTES"
+        then
+            BKNOTES[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
+        elseif type == "AGI"
+        then
+            checks[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK_AGI")
+        end
+    end
+    return checks
+end
+
 function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Silo Model is loaded OR Close to Silo
     --Only clear the moves that we need to clear
-    if SILO_MAP_CHECK[CURRENT_MAP] == nil --Happens when exiting map too quickly when entering a new map
+    if ASSET_MAP_CHECK["SILO"][CURRENT_MAP] == nil --Happens when exiting map too quickly when entering a new map
     then
         if DEBUG == true 
         then
@@ -2690,7 +2804,7 @@ function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Si
         end
         return false
     end
-    for keys, moveId in pairs(SILO_MAP_CHECK[CURRENT_MAP])
+    for keys, moveId in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP])
     do
         if keys ~= "Exceptions"
         then
@@ -2703,7 +2817,7 @@ function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Si
                 BTRAMOBJ:setFlag(addr_info['addr'], addr_info['bit'])
             end
         else
-            for key, disable_move in pairs(SILO_MAP_CHECK[CURRENT_MAP][keys]) --Exception list, always disable
+            for key, disable_move in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP][keys]) --Exception list, always disable
             do
                 local addr_info = NON_AGI_MAP["MOVES"][disable_move]
                 BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit']);
@@ -2756,23 +2870,78 @@ function loadGame(current_map)
             USE_BMM_TBL = true
             BMM = json.decode(f:read("l"));
             BKM = json.decode(f:read("l"));
-            f:close()
-            all_location_checks("AMM")
-            all_location_checks("BMM")
-            BMMRestore()
+            BKNOTES = json.decode(f:read("l"));
+            f:close();
+            all_location_checks("AMM");
+            all_location_checks("BMM");
+            BMMRestore();
             if DEBUG == true
             then
                 print("Restoring from Load Game")
             end
-            GAME_LOADED = true
+            set_AGI_MOVES_checks();
+            GAME_LOADED = true;
         end
     else
         if BYPASS_GAME_LOAD == true
         then
-            GAME_LOADED = true
+            GAME_LOADED = true;
         end
+        return false;
+    end
+end
+
+function getTreblePlayerModel()
+    if TREBLE_WAIT_TIMER <= 3
+    then
+        if DEBUG == true
+        then
+            print("Watching Treble")
+        end
+        TREBLE_WAIT_TIMER = TREBLE_WAIT_TIMER + 1
+        return
+    end
+    BTMODELOBJ:changeName("Treble Clef", false)
+    local object = BTMODELOBJ:checkModel();
+    if object == false
+    then
+        BTMODELOBJ:changeName("Player", false)
+        local player = BTMODELOBJ:checkModel();
+        if player == false
+        then
+            return
+        end
+        if DEBUG == true
+        then
+            print("No Treble on Map")
+            print("AP Trebles enabled")
+        end
+        set_AP_BKNOTES() --No Treble on this map
+        CHECK_FOR_TREBLE = false
+        WATCH_LOADED_TREBLE = false
+        TREBLE_WAIT_TIMER = 0
+        return
+    end
+    if DEBUG == true
+    then
+        print("Treble Found")
+    end
+    set_AP_BKNOTES();
+    CHECK_FOR_TREBLE = false
+    TREBLE_GONE_CHECK = 2
+    WATCH_LOADED_TREBLE = true
+end
+
+function nearTreble()
+    BTMODELOBJ:changeName("Treble Clef", false);
+    local POS = BTMODELOBJ:getSingleModelCoords();
+    if POS == false
+    then
         return false
     end
+    TREBLE_SPOTED = true
+    TREBLE_MAP = CURRENT_MAP
+    return true
 end
 
 function getSiloPlayerModel()
@@ -2985,6 +3154,9 @@ end
 
 function locationControl()
     local mapaddr = BTRAMOBJ:getMap()
+    BTMODELOBJ:changeName("Player", false)
+    local player = BTMODELOBJ:checkModel();
+
     if USE_BMM_TBL == true
     then
         if BTRAMOBJ:checkFlag(0x1F, 0, "LocControl1")== true -- DEMO FILE
@@ -2995,7 +3167,7 @@ function locationControl()
         if (CURRENT_MAP ~= mapaddr) and ENABLE_AP_MOVES == true
         then
             WATCH_LOADED_SILOS = false
-            for map,moves in pairs(SILO_MAP_CHECK)
+            for map,moves in pairs(ASSET_MAP_CHECK["SILO"])
             do
                 if mapaddr == map
                 then
@@ -3007,6 +3179,12 @@ function locationControl()
                     CHECK_FOR_SILO = true
                 end
             end
+        end
+        if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_TREBLE == true
+        then
+            set_checked_BKNOTES();
+            TREBLE_WAIT_TIMER = 0
+            CHECK_FOR_TREBLE = true
         end
         if ((CURRENT_MAP == 335 or CURRENT_MAP == 337) and (mapaddr ~= 335 and mapaddr ~= 337)) -- Wooded Hollow
         then
@@ -3029,7 +3207,7 @@ function locationControl()
             if (CURRENT_MAP ~= mapaddr) and ENABLE_AP_MOVES == true
             then
                 WATCH_LOADED_SILOS = false
-                for map,moves in pairs(SILO_MAP_CHECK)
+                for map,moves in pairs(ASSET_MAP_CHECK["SILO"])
                 do
                     if mapaddr == map
                     then
@@ -3041,6 +3219,12 @@ function locationControl()
                         CHECK_FOR_SILO = true
                     end
                 end
+            end
+            if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_TREBLE == true
+            then
+                set_checked_BKNOTES();
+                TREBLE_WAIT_TIMER = 0
+                CHECK_FOR_TREBLE = true
             end
             if CURRENT_MAP == 0xF4 and BATH_PADS_QOL == false
             then
@@ -3316,6 +3500,9 @@ function processAGIItem(item_list)
                 end
                 BTCONSUMEOBJ:changeConsumable("DOUBLOON");
                 BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
+            elseif(memlocation == 1230778 and ENABLE_AP_TREBLE == true) -- Treble Clef
+            then
+                obtained_AP_BKNOTE();
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
         end
@@ -3357,6 +3544,7 @@ function SendToBTClient()
     retTable["deathlinkActive"] = DEATH_LINK;
     retTable['locations'] = locationControl()
     retTable['unlocked_moves'] = BKM;
+    retTable['treble'] = BKNOTES;
     retTable["isDead"] = DETECT_DEATH;
     if GAME_LOADED == false
     then
@@ -3547,6 +3735,11 @@ function savingAGI()
     f:write(json.encode(AGI_MOVES) .. "\n");
     if DEBUGLVL2 == true
     then
+        print("Writing Treble");
+    end
+    f:write(json.encode(AGI_NOTES) .. "\n");
+    if DEBUGLVL2 == true
+    then
         print("Writing Received_Map");
     end
     f:write(json.encode(receive_map))
@@ -3564,6 +3757,9 @@ function loadAGI()
         if next(AGI_MOVES) == nil then
             AGI_MOVES = init_BMK("AGI");
         end
+        if next(AGI_NOTES) == nil then
+            AGI_NOTES = init_BKNOTES("AGI");
+        end
         f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "w");
         if DEBUGLVL2 == true
         then
@@ -3572,6 +3768,7 @@ function loadAGI()
         end
         f:write(json.encode(AGI).."\n");
         f:write(json.encode(AGI_MOVES).."\n");
+        f:write(json.encode(AGI_NOTES).."\n");
         f:write(json.encode(receive_map));
         f:close();
     else
@@ -3581,6 +3778,7 @@ function loadAGI()
         end
         AGI = json.decode(f:read("l"));
         AGI_MOVES = json.decode(f:read("l"));
+        AGI_NOTES = json.decode(f:read("l"));
         receive_map = json.decode(f:read("l"));
         f:close();
     end
@@ -3593,7 +3791,8 @@ function savingBMM()
         print("Saving BMM File");
     end
     f:write(json.encode(BMM) .. "\n");
-    f:write(json.encode(BKM));
+    f:write(json.encode(BKM) .. "\n");
+    f:write(json.encode(BKNOTES));
     f:close()
     if DEBUG == true
     then
@@ -3696,7 +3895,10 @@ function process_slot(block)
     then
         MINIGAMES = block['slot_minigames']
     end
-
+    if block['slot_treble'] ~= nil and block['slot_treble'] ~= "false"
+    then
+        ENABLE_AP_TREBLE = true
+    end
     if SEED ~= 0
     then
         loadAGI()
@@ -3751,8 +3953,10 @@ function initializeFlags()
         end
 		
         GAME_LOADED = true  -- We don't have a real BMM at this point.  
-        init_BMK("BKM")
+        init_BMK("BKM");
+        init_BKNOTES("BKNOTES");
         AGI_MOVES = init_BMK("AGI");
+        AGI_NOTES = init_BKNOTES("AGI");
 		if (SKIP_TOT ~= "false") then
 			-- ToT Misc Flags
 			BTRAMOBJ:setFlag(0xAB, 2)
@@ -3835,6 +4039,21 @@ function main()
                         set_AGI_MOVES_checks()
                     end
                 end
+                if CHECK_FOR_TREBLE == true
+                then
+                    if DEBUG == true
+                    then
+                        print("clearing all AP Trebles")
+                    end
+                    local res = set_checked_BKNOTES()
+                    if res == true
+                    then
+                        getTreblePlayerModel()
+                    else
+                        CHECK_FOR_TREBLE = false
+                        set_AP_BKNOTES()
+                    end
+                end
                 gameSaving();
             elseif (FRAME % 10 == 0)
             then
@@ -3846,6 +4065,32 @@ function main()
                 if WATCH_LOADED_SILOS == true
                 then
                     nearSilo()
+                end
+                if WATCH_LOADED_TREBLE == true
+                then
+                    res = nearTreble()
+                    if res == false and TREBLE_SPOTED == true and CURRENT_MAP == TREBLE_MAP and TREBLE_GONE_CHECK == 0 --Treble collected
+                    then
+                        BTMODELOBJ:changeName("Player", false)
+                        local player = BTMODELOBJ:checkModel();
+                        if player == true
+                        then
+                            BKNOTES[ASSET_MAP_CHECK["TREBLE"][TREBLE_MAP]] = true;
+                            TREBLE_SPOTED = false;
+                            WATCH_LOADED_TREBLE = false;
+                        else
+                            TREBLE_SPOTED = false;
+                            TREBLE_MAP = 0x00;
+                        end
+                    elseif res == false and TREBLE_SPOTED == true and CURRENT_MAP == TREBLE_MAP and TREBLE_GONE_CHECK > 0
+                    then
+                        TREBLE_GONE_CHECK = TREBLE_GONE_CHECK - 1
+                    elseif res == false and CURRENT_MAP ~= TREBLE_MAP
+                    then
+                        TREBLE_SPOTED = false;
+                        TREBLE_MAP = 0x00;
+                        WATCH_LOADED_TREBLE = false
+                    end
                 end
             end
         elseif (CUR_STATE == STATE_UNINITIALIZED) then

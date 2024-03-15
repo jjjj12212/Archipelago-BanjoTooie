@@ -4,8 +4,10 @@ Banjo-Tooie:
   multiworld_jinjos: 'false'
   multiworld_doubloons: 'true'
   multiworld_cheato: 'true'
+  cheato_as_filler: 'true'
   multiworld_honeycombs: 'true'
   multiworld_glowbos: 'true'
+  multiworld_treble: 'true'
   jingaling_jiggy: 'true'
   skip_tower_of_tragedy: 1 #0 = no skip, #1 = skip fully, #2 = 3rd round only 
   speed_up_minigames: 'false' #skip to round 3 of kickball, dodgems
