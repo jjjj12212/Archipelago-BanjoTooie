@@ -95,7 +95,7 @@ level_progress_table = {
 misc_collectable_table = {
     itemName.HONEY:         ItemData(1230512, 25, "useful", None),
     itemName.PAGES:         ItemData(1230513, 25, "useful", None),
-    itemName.DOUBLOON:      ItemData(1230514, 30, "progress", None),
+    itemName.DOUBLOON:      ItemData(1230514, 30, "useful", None),
     itemName.TREBLE:        ItemData(1230778,  9, "progress", None)
 }
 

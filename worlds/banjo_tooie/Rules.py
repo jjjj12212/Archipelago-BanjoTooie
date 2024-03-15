@@ -97,7 +97,6 @@ class BanjoTooieRules:
 
 
         self.region_rules = {
-            regionName.IOHWH: lambda state: state.has(itemName.JIGGY, self.player, 1),
             regionName.MT: lambda state: state.has(itemName.JIGGY, self.player, 1),
             regionName.IOHPL: lambda state: state.has(itemName.GGRAB, self.player) or
                                             self.dilberta_free(state),
@@ -205,9 +204,7 @@ class BanjoTooieRules:
                                                   self.check_humba_magic(state, itemName.HUMBAJR)),
             locationName.JIGGYJR8: lambda state: state.has(itemName.TTORP, self.player) and
                                                  self.can_reach_atlantis(state),
-            locationName.JIGGYJR9: lambda state: (state.has(itemName.GEGGS, self.player) or
-                                                  state.has(itemName.CEGGS, self.player)) and
-                                                 state.has(itemName.SPLITUP, self.player),
+            locationName.JIGGYJR9: lambda state: state.has(itemName.DOUBLOON, self.player, 23),
             locationName.JIGGYJR10: lambda state: state.has(itemName.EGGAIM, self.player) and
                                                   state.has(itemName.IEGGS, self.player) and
                                                   state.has(itemName.TTORP, self.player),
@@ -576,7 +573,7 @@ class BanjoTooieRules:
                                                   self.check_humba_magic(state, itemName.HUMBAWW) and
                                                   self.saucer_door_open(state),
                                             
-            locationName.CHEATOJR1: lambda state: self.has_enough_doubloons(state, 28),
+            locationName.CHEATOJR1: lambda state: state.has(itemName.DOUBLOON, self.player, 28),
             locationName.CHEATOJR2: lambda state: (self.long_swim(state) or
                                                    state.has(itemName.GEGGS, self.player) or
                                                    state.has(itemName.CEGGS, self.player)) and
@@ -697,7 +694,7 @@ class BanjoTooieRules:
             locationName.SPLITUP: lambda state: self.has_enough_notes(state, 160),
             locationName.PACKWH: lambda state: state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 120),
 
-            locationName.AUQAIM: lambda state: (state.has(itemName.GEGGS, self.player) or self.has_enough_doubloons(state, 28)) and
+            locationName.AUQAIM: lambda state: (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or state.has(itemName.DOUBLOON, self.player, 28)) and
                                                self.has_enough_notes(state, 275),
             locationName.TTORP: lambda state:  self.can_reach_atlantis(state) and state.has(itemName.GGRAB, self.player) and
                                                self.has_enough_notes(state, 290),
@@ -788,12 +785,8 @@ class BanjoTooieRules:
                         count += 10
                 if state.has(itemName.JIGGY, self.player, 36): # HFP Access
                     count += 80
-            count += state.count(itemName.TREBLE, self.player) * 20
+        count += state.count(itemName.TREBLE, self.player) * 20
         return count >= Amount
-
-    def has_enough_doubloons(self, state:CollectionState, Amount) -> bool:
-        return  state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) and \
-                state.has(itemName.SPLITUP, self.player) and state.has(itemName.DOUBLOON, self.player, Amount)
 
     def has_fire(self, state: CollectionState) -> bool:
         return state.has(itemName.FEGGS, self.player) or self.check_humba_magic(state, itemName.HUMBAIH)

@@ -17,6 +17,10 @@ class EnableMultiWorldCheatoPages(Toggle):
     """Cheato pages are scattered across the MultiWorld."""
     display_name = "MultiWorld Cheato Pages"
 
+class SetMultiWorldCheatoPagesFiller(Toggle):
+    """If Cheato pages are scattered, set to Cheato Items as filler."""
+    display_name = "Use Cheato Pages as Filler."
+
 class EnableMultiWorldHoneycombs(Toggle):
     """Honeycombs are scattered across the MultiWorld."""
     display_name = "MultiWorld Honeycombs"
@@ -52,6 +56,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     multiworld_jinjos: EnableMultiWorldJinjos
     multiworld_doubloons: EnableMultiWorldDoubloons
     multiworld_cheato: EnableMultiWorldCheatoPages
+    cheato_as_filler: SetMultiWorldCheatoPagesFiller
     multiworld_honeycombs: EnableMultiWorldHoneycombs
     multiworld_glowbos: EnableMultiWorldGlowbos
     jingaling_jiggy: KingJingalingHasJiggy

@@ -52,6 +52,7 @@ class BanjoTooieWorld(World):
     jiggy_counter: int = 0
     doubloon_counter: int = 0
     slot_data = []
+    use_cheato_filler = False
 
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
     item_name_to_id = {}
@@ -79,16 +80,16 @@ class BanjoTooieWorld(World):
                 else:
                     item_classification = ItemClassification.useful
                 self.jiggy_counter += 1
-            elif banjoItem.btid == 1230514:
-                if self.doubloon_counter <= 27:
-                    item_classification = ItemClassification.progression
-                else:
-                    item_classification = ItemClassification.useful
-                self.doubloon_counter += 1
             else:
                 item_classification = ItemClassification.progression
         if banjoItem.type == 'useful':
-            item_classification = ItemClassification.useful
+            if banjoItem.btid == 1230513 and self.use_cheato_filler == False:
+                item_classification = ItemClassification.useful
+            elif banjoItem.btid == 1230513 and self.use_cheato_filler == True:
+                item_classification = ItemClassification.filler
+            else:
+                item_classification = ItemClassification.useful
+
         if banjoItem.type == 'filler':
             item_classification = ItemClassification.filler
 
@@ -106,6 +107,8 @@ class BanjoTooieWorld(World):
     
     def create_items(self) -> None:
         itempool = []
+        if self.options.cheato_as_filler == True:
+            self.use_cheato_filler = True
         for name,id in all_item_table.items():
             item = self.create_item(name)
             if self.item_filter(item):
