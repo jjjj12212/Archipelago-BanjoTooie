@@ -67,6 +67,7 @@ local TREBLE_WAIT_TIMER = 0; -- waits until Treble is loaded if any
 local WATCH_LOADED_TREBLE = false; -- if object is loaded or not 
 local TREBLE_SPOTED = false; -- used if Collected Treble
 local TREBLE_MAP = 0x00; -- validate TREBLE_MAP
+local TREBLE_GONE_CHECK = 20;
 
 local BATH_PADS_QOL = false
 
@@ -2927,6 +2928,7 @@ function getTreblePlayerModel()
     end
     set_AP_BKNOTES();
     CHECK_FOR_TREBLE = false
+    TREBLE_GONE_CHECK = 20
     WATCH_LOADED_TREBLE = true
 end
 
@@ -4070,7 +4072,7 @@ function main()
                 if WATCH_LOADED_TREBLE == true
                 then
                     res = nearTreble()
-                    if res == false and TREBLE_SPOTED == true and CURRENT_MAP == TREBLE_MAP --Treble collected
+                    if res == false and TREBLE_SPOTED == true and CURRENT_MAP == TREBLE_MAP and TREBLE_GONE_CHECK == 0 --Treble collected
                     then
                         BTMODELOBJ:changeName("Player", false)
                         local player = BTMODELOBJ:checkModel();
@@ -4083,6 +4085,9 @@ function main()
                             TREBLE_SPOTED = false;
                             TREBLE_MAP = 0x00;
                         end
+                    elseif res == false and TREBLE_SPOTED == true and CURRENT_MAP == TREBLE_MAP and TREBLE_GONE_CHECK > 0
+                    then
+                        TREBLE_GONE_CHECK = TREBLE_GONE_CHECK - 1
                     end
                 end
             end
