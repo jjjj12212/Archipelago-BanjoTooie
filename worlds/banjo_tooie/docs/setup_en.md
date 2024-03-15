@@ -36,7 +36,7 @@ It is strongly recommended to associate N64 rom extensions (*.n64, *.z64) to the
 - Open Bizhawk (2.9.1+) and open your Banjo-Tooie (US) game.
 - Once you are in the game select screen, apply the banjo_tooie_connector lua script (drag and drop)
 
-### Connect to the Multiserver
+## Connect to the Multiserver
 
 Once both the client and the emulator have started, you must connect them together. Navigate to your Archipelago install folder, then to  `data/lua`, and drag+drop the  `banjo_tooie_connector`  script onto the main EmuHawk window. (You could instead open the Lua Console manually, click  `Script`  〉  `Open Script`, and navigate to  `banjo_tooie_connector`  with the file picker.)
 

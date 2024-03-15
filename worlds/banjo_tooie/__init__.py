@@ -26,10 +26,7 @@ components.append(Component("Banjo-Tooie Client", func=run_client, component_typ
 
 class BanjoTooieWeb(WebWorld):
     setup = Tutorial("Setup Banjo-Tooie",
-        """Class to build website tutorial pages from a .md file in the world's /docs folder. Order is as follows.
-        Name of the tutorial as it will appear on the site. Concise description covering what the guide will entail.
-        Language the guide is written in. Name of the file ex 'setup_en.md'. Name of the link on the site; game name is
-        filled automatically so 'setup/en' etc. Author or authors.""",
+        """A guide to setting up Archipelago Banjo-Tooie on your computer.""",
         "English",
         "setup_en.md",
         "setup/en",
