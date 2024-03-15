@@ -1,6 +1,10 @@
 # 0.8-beta
 - Treble Clefs are added
 - Rule Fixes
+- Add Archipelago Documents
+- Swap MT Glowbo locations when Glowbos are set to False
+- Cheato Pages are set to Filler via YAML Option (Normal Items in BTClient)
+
 
 # 0.7-beta
 - Project name change to now be "Banjo-Tooie"
