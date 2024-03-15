@@ -67,7 +67,7 @@ local TREBLE_WAIT_TIMER = 0; -- waits until Treble is loaded if any
 local WATCH_LOADED_TREBLE = false; -- if object is loaded or not 
 local TREBLE_SPOTED = false; -- used if Collected Treble
 local TREBLE_MAP = 0x00; -- validate TREBLE_MAP
-local TREBLE_GONE_CHECK = 20;
+local TREBLE_GONE_CHECK = 2;
 
 local BATH_PADS_QOL = false
 
@@ -2928,25 +2928,19 @@ function getTreblePlayerModel()
     end
     set_AP_BKNOTES();
     CHECK_FOR_TREBLE = false
-    TREBLE_GONE_CHECK = 20
+    TREBLE_GONE_CHECK = 2
     WATCH_LOADED_TREBLE = true
 end
 
 function nearTreble()
     BTMODELOBJ:changeName("Treble Clef", false);
-    local POS = BTMODELOBJ:getSingleModelCoords()
+    local POS = BTMODELOBJ:getSingleModelCoords();
     if POS == false
     then
         return false
     end
     TREBLE_SPOTED = true
     TREBLE_MAP = CURRENT_MAP
-    if POS["Distance"] <= 180
-    then
-        BKNOTES[ASSET_MAP_CHECK["TREBLE"][CURRENT_MAP]] = true;
-        TREBLE_SPOTED = false;
-        WATCH_LOADED_TREBLE = false;
-    end
     return true
 end
 
@@ -3160,6 +3154,9 @@ end
 
 function locationControl()
     local mapaddr = BTRAMOBJ:getMap()
+    BTMODELOBJ:changeName("Player", false)
+    local player = BTMODELOBJ:checkModel();
+
     if USE_BMM_TBL == true
     then
         if BTRAMOBJ:checkFlag(0x1F, 0, "LocControl1")== true -- DEMO FILE
@@ -3183,7 +3180,7 @@ function locationControl()
                 end
             end
         end
-        if (CURRENT_MAP ~= mapaddr) and ENABLE_AP_TREBLE == true
+        if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_TREBLE == true
         then
             set_checked_BKNOTES();
             TREBLE_WAIT_TIMER = 0
@@ -3223,7 +3220,7 @@ function locationControl()
                     end
                 end
             end
-            if (CURRENT_MAP ~= mapaddr) and ENABLE_AP_TREBLE == true
+            if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_TREBLE == true
             then
                 set_checked_BKNOTES();
                 TREBLE_WAIT_TIMER = 0
@@ -4088,6 +4085,11 @@ function main()
                     elseif res == false and TREBLE_SPOTED == true and CURRENT_MAP == TREBLE_MAP and TREBLE_GONE_CHECK > 0
                     then
                         TREBLE_GONE_CHECK = TREBLE_GONE_CHECK - 1
+                    elseif res == false and CURRENT_MAP ~= TREBLE_MAP
+                    then
+                        TREBLE_SPOTED = false;
+                        TREBLE_MAP = 0x00;
+                        WATCH_LOADED_TREBLE = false
                     end
                 end
             end
