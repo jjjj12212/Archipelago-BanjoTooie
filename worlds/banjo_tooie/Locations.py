@@ -253,7 +253,7 @@ GILoc_table = {
     locationName.SNPACK:    LocationData(1230771, 0x1D, 0),
     locationName.LSPRING:   LocationData(1230772, 0x1D, 1),
     locationName.CLAWBTS:   LocationData(1230773, 0x1D, 2),
-    locationName.TREBLEGI:  LocationData(1230786, 0x91, 3),
+    locationName.TREBLEGI:  LocationData(1230786, 0x91, 4),
 }
 
 HPLoc_table = {
