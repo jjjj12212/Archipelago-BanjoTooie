@@ -2958,7 +2958,7 @@ function check_open_level()  -- See if entrance conditions for a level have been
             jiggy_count = jiggy_count + 1
         end
     end
-    for location, values in pairs(WORLD_ENTRANCE_TABLE)
+    for location, values in pairs(WORLD_ENTRANCE_MAP)
     do
         if values["opened"] == false
         then
