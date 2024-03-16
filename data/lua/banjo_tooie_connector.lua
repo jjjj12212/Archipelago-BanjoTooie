@@ -269,11 +269,11 @@ function BTRAM:setFlag(byte, _bit)
 	end
 end
 
-function BTRAM:setMultipleFlags(byte, mask)
+function BTRAM:setMultipleFlags(byte, mask, flags)
 	if type(byte) == "number" and type(mask) == "number" and mask >= 0 and mask < 0xFF then
 		local address = self:dereferencePointer(self.flag_block_ptr);
         local currentValue = mainmemory.readbyte(address + byte);
-        mainmemory.writebyte(address + byte, currentValue & mask);
+        mainmemory.writebyte(address + byte, (currentValue & mask) | flags);
 	end
 end
 
@@ -2690,7 +2690,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 1,
         ["addr"] = 0x6D,
         ["bit"] = 2,
-        ["puzzleMask"] = 0x1F,
+        ["puzzleFlags"] = 0x10, -- 0b00010000
         ["opened"] = false,
     },
     ["WORLD 2"] = {
@@ -2698,7 +2698,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 4,
         ["addr"] = 0x6D,
         ["bit"] = 3,
-        ["puzzleMask"] = 0x2F,
+        ["puzzleFlags"] = 0x20, -- 0b00100000
         ["opened"] = false,
     },
     ["WORLD 3"] = {
@@ -2706,7 +2706,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 8,
         ["addr"] = 0x6D,
         ["bit"] = 4,
-        ["puzzleMask"] = 0x3F,
+        ["puzzleFlags"] = 0x30, -- 0b00110000
         ["opened"] = false,
     },
     ["WORLD 4"] = {
@@ -2714,7 +2714,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 14,
         ["addr"] = 0x6D,
         ["bit"] = 5,
-        ["puzzleMask"] = 0x4F,
+        ["puzzleFlags"] = 0x40, -- 0b01000000
         ["opened"] = false,
     },
     ["WORLD 5"] = {
@@ -2722,7 +2722,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 20,
         ["addr"] = 0x6D,
         ["bit"] = 6,
-        ["puzzleMask"] = 0x5F,
+        ["puzzleFlags"] = 0x50, -- 0b01010000
         ["opened"] = false,
     },
     ["WORLD 6"] = {
@@ -2730,7 +2730,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 28,
         ["addr"] = 0x6D,
         ["bit"] = 7,
-        ["puzzleMask"] = 0x6F,
+        ["puzzleFlags"] = 0x60, -- 0b01100000
         ["opened"] = false,
     },
     ["WORLD 7"] = {
@@ -2738,7 +2738,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 36,
         ["addr"] = 0x6E,
         ["bit"] = 0,
-        ["puzzleMask"] = 0x7F,
+        ["puzzleFlags"] = 0x70, -- 0b01110000
         ["opened"] = false,
     },
     ["WORLD 8"] = {
@@ -2746,7 +2746,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 45,
         ["addr"] = 0x6E,
         ["bit"] = 1,
-        ["puzzleMask"] = 0x8F,
+        ["puzzleFlags"] = 0x80, -- 0b10000000
         ["opened"] = false,
     },
     ["WORLD 9"] = {
@@ -2754,7 +2754,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 55,
         ["addr"] = 0x6E,
         ["bit"] = 2,
-        ["puzzleMask"] = 0x9F,
+        ["puzzleFlags"] = 0x90, -- 0b10010000
         ["opened"] = false,
     },
     ["HAG 1"] = {
@@ -2762,7 +2762,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 70,
         ["addr"] = 0x6E,
         ["bit"] = 3,
-        ["puzzleMask"] = 0xAF,
+        ["puzzleFlags"] = 0xA0, -- 0b10100000
         ["opened"] = false,
     },
 }
@@ -2965,7 +2965,7 @@ function check_open_level()  -- See if entrance conditions for a level have been
             if jiggy_count >= values["defaultCost"]
             then
                 BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                BTRAMOBJ:setMultipleFlags(0x66, values["mask"])
+                BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
                 values["opened"] = true
             end
         end
