@@ -4078,6 +4078,7 @@ function main()
                             BKNOTES[ASSET_MAP_CHECK["TREBLE"][TREBLE_MAP]] = true;
                             TREBLE_SPOTED = false;
                             WATCH_LOADED_TREBLE = false;
+                            set_AP_BKNOTES()
                         else
                             TREBLE_SPOTED = false;
                             TREBLE_MAP = 0x00;
