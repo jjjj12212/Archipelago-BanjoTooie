@@ -1,3 +1,6 @@
+# 0.8.2-beta
+- Swapped wrong Glowbos.  
+
 # 0.8-beta
 - Treble Clefs are added
 - Rule Fixes
