@@ -3574,7 +3574,7 @@ function processAGIItem(item_list)
                         break
                     end
                 end
-
+            check_open_level() -- check if the current jiggy count opens a new level
             elseif((1230855 <= memlocation and memlocation <= 1230863) or (1230174 <= memlocation and memlocation <= 1230182))
             then
                 processMagicItem(memlocation)
@@ -4095,6 +4095,7 @@ function initializeFlags()
 		INIT_COMPLETE = true
 	-- Otherwise, the flags were already set, so just stop checking
 	elseif (current_map == 0xAF or current_map == 0x142) then
+        check_open_level() -- sanity check that level open flags are still set
 		INIT_COMPLETE = true
     elseif current_map == 0x158 and INIT_COMPLETE == true
     then
