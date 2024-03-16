@@ -26,14 +26,13 @@ components.append(Component("Banjo-Tooie Client", func=run_client, component_typ
 
 class BanjoTooieWeb(WebWorld):
     setup = Tutorial("Setup Banjo-Tooie",
-        """Class to build website tutorial pages from a .md file in the world's /docs folder. Order is as follows.
-        Name of the tutorial as it will appear on the site. Concise description covering what the guide will entail.
-        Language the guide is written in. Name of the file ex 'setup_en.md'. Name of the link on the site; game name is
-        filled automatically so 'setup/en' etc. Author or authors.""",
+        """A guide to setting up Archipelago Banjo-Tooie on your computer.""",
         "English",
         "setup_en.md",
         "setup/en",
-        ["Mike J."])
+        ["Beebaleen"])
+    
+    tutorials = [setup]
     
 
 class BanjoTooieWorld(World):
@@ -50,7 +49,9 @@ class BanjoTooieWorld(World):
     topology_preset = True
     kingjingalingjiggy = False
     jiggy_counter: int = 0
+    doubloon_counter: int = 0
     slot_data = []
+    use_cheato_filler = False
 
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
     item_name_to_id = {}
@@ -81,7 +82,13 @@ class BanjoTooieWorld(World):
             else:
                 item_classification = ItemClassification.progression
         if banjoItem.type == 'useful':
-            item_classification = ItemClassification.useful
+            if banjoItem.btid == 1230513 and self.use_cheato_filler == False:
+                item_classification = ItemClassification.useful
+            elif banjoItem.btid == 1230513 and self.use_cheato_filler == True:
+                item_classification = ItemClassification.filler
+            else:
+                item_classification = ItemClassification.useful
+
         if banjoItem.type == 'filler':
             item_classification = ItemClassification.filler
 
@@ -99,6 +106,8 @@ class BanjoTooieWorld(World):
     
     def create_items(self) -> None:
         itempool = []
+        if self.options.cheato_as_filler == True:
+            self.use_cheato_filler = True
         for name,id in all_item_table.items():
             item = self.create_item(name)
             if self.item_filter(item):
@@ -144,6 +153,9 @@ class BanjoTooieWorld(World):
             item.code == 1230505 or item.code == 1230506 or item.code == 1230507 or item.code == 1230508 or
             item.code == 1230509 ) and self.options.multiworld_jinjos == False) :
             return False
+        
+        if(item.code == 1230778 and self.options.multiworld_treble == False):
+            return False
 
         return True
 
@@ -170,6 +182,9 @@ class BanjoTooieWorld(World):
 
         if self.options.multiworld_glowbos == False:
             self.banjo_pre_fills("Magic", None, True)
+
+        if self.options.multiworld_treble == False:
+            self.banjo_pre_fills(itemName.TREBLE, "Treble Clef", False)
 
 
     def banjo_pre_fills(self, itemNameOrGroup: str, locationFindCriteria: str|None, useGroup: bool ) -> None:
@@ -204,6 +219,7 @@ class BanjoTooieWorld(World):
         btoptions['moves'] = "true" if self.options.multiworld_moves == 1 else "false"
         btoptions['doubloons'] = "true" if self.options.multiworld_doubloons == 1 else "false"
         btoptions['minigames'] = 'skip' if self.options.speed_up_minigames == 1 else "full"
+        btoptions['trebleclef'] = "true" if self.options.multiworld_treble == 1 else "false"
 
         return btoptions
 

@@ -4,11 +4,13 @@ Banjo-Tooie:
   multiworld_jinjos: 'false'
   multiworld_doubloons: 'true'
   multiworld_cheato: 'true'
+  cheato_as_filler: 'true'
   multiworld_honeycombs: 'true'
   multiworld_glowbos: 'true'
-  jingaling_jiggy: 'true'
+  multiworld_treble: 'true'
+  jingaling_jiggy: 'true'  #True = Always get Jiggy from Jingaling #recommended when playing Multiworld.
   skip_tower_of_tragedy: 1 #0 = no skip, #1 = skip fully, #2 = 3rd round only 
-  speed_up_minigames: 'false' #skip to round 3 of kickball, dodgems
+  speed_up_minigames: 'true' #skip to round 3 of kickball, dodgems
   start_inventory: { }  # ex: {Grip Grab: 1, Fire Eggs: 1}   # Start with these items.
 
 

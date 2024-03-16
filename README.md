@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | v0.7-beta
+# Archipelago Banjo-Tooie (US-Only) | v0.8-beta
 Banjo Tooie for Archipelago 
 
 # Current implementation
@@ -14,17 +14,15 @@ Banjo Tooie for Archipelago
 - Banjo Advanced Jamjar Moves are scattered throughout Archipelago games
 - Auto skip certian dialogs and cutscenes
 - Doubloons are scattered throughout Archipelago games
-
+- Treble Clef are scattered throughout Archipelago games
 
 # How to install - server side
-### Note: If you had the previous version of Banjo-Tooie installed, Please remove the banjotooie.apworld and the "banjotooie" Folder
-### Note: If you had the previous version of Banjo-Tooie Player YAML installed, Remove and generate/download a new template  
 1. Copy banjotooie.apworld into your existing Archipelago\lib\worlds
 2. Copy banjotooie_connector.lua into Archipelago\data\lua
 
 # How to install - client side
-### Note: If you had the previous version of Banjo-Tooie Lua Connector installed, Please remove banjotooie_connector.lua 
 1. Copy banjo_tooie_connector.lua into Archipelago\data\lua
+2. Copy banjotooie.apworld into your existing Archipelago\lib\worlds
 3. run Launcher.exe and select Banjo-Tooie Client.
 4. Connect the Archipelago Client with the server.
 5. Open Bizhawk (2.9.1 tested) and open your Banjo-Tooie (US) game.
@@ -33,12 +31,13 @@ Banjo Tooie for Archipelago
 # Future goals for this project
 - Jinjos are scattered throughout Archipelago games 
 - Train Station are scattered throughout Archipelago games **(if Possible)**
-- Treble Clef are scattered throughout Archipelago games **(if Possible)**
 
 # Contributors
  - @oohnahleevay Unalive (coder)
  - Beebaleen (Doc Maintainer)
  - @Cyb3RGER (AP Launcher)
+ - g0goTBC - help with logic fixes
+ - GDO - Tester
 
 # Shoutouts
 Huge thank you for the following individuals / teams. Without them, this project would not have gotten this far:
@@ -46,6 +45,5 @@ Huge thank you for the following individuals / teams. Without them, this project
  - <a href='https://github.com/Isotarge/ScriptHawk'>ScriptHawk</a>
  - <a href="https://github.com/kaptainkohl/BTRandoLUA">Kaptainkohl - Banjo Tooie Randomizer</a>
  - @Icebound777
- - g0goTBC - help with logic fixes
  - **Of course, the people who brought Banjo Kazooie in our lives**
     - Rareware

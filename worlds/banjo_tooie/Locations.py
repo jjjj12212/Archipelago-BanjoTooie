@@ -32,7 +32,8 @@ JVLoc_table = {
     #locationName.JIGGYIH7:  LocationData(1230682, 0x4F, 6),
     #locationName.JIGGYIH8:  LocationData(1230683, 0x4F, 7),
     #locationName.JIGGYIH9:  LocationData(1230684, 0x50, 0),
-    locationName.JIGGYIH10: LocationData(1230685, 0x50, 1)
+    locationName.JIGGYIH10: LocationData(1230685, 0x50, 1),
+    locationName.TREBLEJV:  LocationData(1230789, 0x97, 7)  #Set last ID for Clef Family. Client Reasons
 }
 
 MTLoc_Table = {
@@ -51,8 +52,8 @@ MTLoc_Table = {
     locationName.JIGGYMT8:  LocationData(1230603, 0x45, 7),
     locationName.JIGGYMT9:  LocationData(1230604, 0x46, 0),
     locationName.JIGGYMT10: LocationData(1230605, 0x46, 1),
-    locationName.GLOWBOMT1: LocationData(1230686, 0x42, 7),
-    locationName.GLOWBOMT2: LocationData(1230687, 0x43, 0),
+    locationName.GLOWBOMT1: LocationData(1230687, 0x43, 0),
+    locationName.GLOWBOMT2: LocationData(1230686, 0x42, 7),
     locationName.HONEYCMT1: LocationData(1230703, 0x3F, 2),
     locationName.HONEYCMT2: LocationData(1230704, 0x3F, 3),
     locationName.HONEYCMT3: LocationData(1230705, 0x3F, 4),
@@ -62,6 +63,7 @@ MTLoc_Table = {
     locationName.GGRAB:     LocationData(1230753, 0x1B, 1),
     locationName.BBLASTER:  LocationData(1230754, 0x1B, 2),
     locationName.EGGAIM:    LocationData(1230755, 0x1B, 3),
+    locationName.TREBLEMT:  LocationData(1230781, 0x86, 7)
 }
 
 IHPLLoc_table = {
@@ -96,7 +98,8 @@ GMLoc_table = {
     locationName.CHEATOGM2: LocationData(1230732, 0x56, 7),
     locationName.CHEATOGM3: LocationData(1230733, 0x57, 0),
     locationName.BDRILL:    LocationData(1230757, 0x1B, 6),
-    locationName.BBAYONET:  LocationData(1230758, 0x1B, 7)
+    locationName.BBAYONET:  LocationData(1230758, 0x1B, 7),
+    locationName.TREBLEGM:  LocationData(1230782, 0x89, 0)
 }
 
 PGLov_table = {
@@ -129,7 +132,8 @@ WWLoc_table = {
     locationName.CHEATOWW3: LocationData(1230736, 0x57, 3),
     locationName.AIREAIM:   LocationData(1230760, 0x1C, 0),
     locationName.SPLITUP:   LocationData(1230761, 0x1C, 1),
-    locationName.PACKWH:    LocationData(1230762, 0x1D, 6)
+    locationName.PACKWH:    LocationData(1230762, 0x1D, 6),
+    locationName.TREBLEWW:  LocationData(1230783, 0x8B, 1)
 }
 
 JRLoc_table = {
@@ -188,7 +192,8 @@ JRLoc_table = {
     locationName.CHEATOJR3: LocationData(1230739, 0x57, 6),
     locationName.WWHACK:   LocationData(1230764, 0x1C, 2),
     locationName.TTORP:    LocationData(1230765, 0x1C, 3),
-    locationName.AUQAIM:   LocationData(1230766, 0x1C, 4)
+    locationName.AUQAIM:   LocationData(1230766, 0x1C, 4),
+    locationName.TREBLEJR: LocationData(1230784, 0x8D, 2)
 }
 
 TLLoc_table = {
@@ -217,7 +222,8 @@ TLLoc_table = {
     locationName.CHEATOTL3: LocationData(1230742, 0x58, 1),
     locationName.SPRINGB:   LocationData(1230768, 0x1D, 3),
     locationName.TAXPACK:   LocationData(1230769, 0x1D, 4),
-    locationName.HATCH:     LocationData(1230770, 0x1D, 5)
+    locationName.HATCH:     LocationData(1230770, 0x1D, 5),
+    locationName.TREBLETL:  LocationData(1230785, 0x8F, 3)
 }
 
 GILoc_table = {
@@ -246,7 +252,8 @@ GILoc_table = {
     locationName.CHEATOGI3: LocationData(1230745, 0x58, 4),
     locationName.SNPACK:    LocationData(1230771, 0x1D, 0),
     locationName.LSPRING:   LocationData(1230772, 0x1D, 1),
-    locationName.CLAWBTS:   LocationData(1230773, 0x1D, 2)
+    locationName.CLAWBTS:   LocationData(1230773, 0x1D, 2),
+    locationName.TREBLEGI:  LocationData(1230786, 0x91, 4),
 }
 
 HPLoc_table = {
@@ -274,7 +281,8 @@ HPLoc_table = {
     locationName.CHEATOHP2: LocationData(1230747, 0x58, 6),
     locationName.CHEATOHP3: LocationData(1230748, 0x58, 7),
     locationName.SHPACK:   LocationData(1230774, 0x1C, 6),
-    locationName.GLIDE:    LocationData(1230775, 0x1C, 7)
+    locationName.GLIDE:    LocationData(1230775, 0x1C, 7),
+    locationName.TREBLEHP: LocationData(1230787, 0x93, 5)
 }
 
 CCLoc_table = {
@@ -301,7 +309,8 @@ CCLoc_table = {
     locationName.CHEATOCC1: LocationData(1230749, 0x59, 0),
     locationName.CHEATOCC2: LocationData(1230750, 0x59, 1),
     locationName.CHEATOCC3: LocationData(1230751, 0x59, 2),
-    locationName.SAPACK:    LocationData(1230776, 0x1D, 7)
+    locationName.SAPACK:    LocationData(1230776, 0x1D, 7),
+    locationName.TREBLECC:  LocationData(1230788, 0x95, 6)
 }
 
 IHWHLoc_table = {

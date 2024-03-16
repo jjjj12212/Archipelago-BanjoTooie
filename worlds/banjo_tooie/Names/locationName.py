@@ -170,8 +170,8 @@ JIGGYIH9  = "Jinjo Village: Black Jinjo Family Jiggy"
 JIGGYIH10 = "Jinjo Village: King Jingaling Jiggy"
 
 #Glowbos
-GLOWBOMT1 = "MT: Mumbo's Glowbo"
-GLOWBOMT2 = "MT: Jade Snake Grove Glowbo"
+GLOWBOMT1 = "MT: Jade Snake Grove Glowbo"
+GLOWBOMT2 = "MT: Mumbo's Glowbo"
 GLOWBOGM1 = "GGM: Near Entrance Glowbo"
 GLOWBOGM2 = "GGM: Mine Entrance 2 Glowbo"
 GLOWBOWW1 = "WW: The Inferno Glowbo"
@@ -215,6 +215,16 @@ HONEYCCC1  = "CCL: Dirt Patch Honeycomb"
 HONEYCCC2  = "CCL: Trash Can Honeycomb"
 HONEYCCC3  = "CCL: Pot O' Gold Honeycomb"
 HONEYCIH1  = "IoH: Plateau Honeycomb"
+
+TREBLEJV   = "JV: Treble Clef"
+TREBLEMT   = "MT: Treble Clef"
+TREBLEGM   = "GGM: Treble Clef"
+TREBLEWW   = "WW: Treble Clef"
+TREBLEJR   = "JRL: Treble Clef"
+TREBLETL   = "TDL: Treble Clef"
+TREBLEGI   = "GI: Treble Clef"
+TREBLEHP   = "HFP: Treble Clef"
+TREBLECC   = "CCL: Treble Clef"
 
 #Cheato Pages
 CHEATOMT1 = "MT: Snake Head Cheato Page"
