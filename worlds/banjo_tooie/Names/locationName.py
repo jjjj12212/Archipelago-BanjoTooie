@@ -218,7 +218,7 @@ HONEYCIH1  = "IoH: Plateau Honeycomb"
 
 TREBLEJV   = "JV: Treble Clef"
 TREBLEMT   = "MT: Treble Clef"
-TREBLEGM   = "GM: Treble Clef"
+TREBLEGM   = "GGM: Treble Clef"
 TREBLEWW   = "WW: Treble Clef"
 TREBLEJR   = "JRL: Treble Clef"
 TREBLETL   = "TDL: Treble Clef"
