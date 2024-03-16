@@ -72,7 +72,7 @@ moves_table = {
 
 level_progress_table = {
     itemName.MUMBOMT:        ItemData(1230855, 1, "progress", locationName.GLOWBOMT1),
-    itemName.MUMBOGM:        ItemData(1230856, 1, "progress", locationName.GLOWBOGM1),
+    itemName.MUMBOGM:        ItemData(1230856, 1, "progress", locationName.GLOWBOGM2),
     itemName.MUMBOWW:        ItemData(1230857, 1, "progress", locationName.GLOWBOWW1),
     itemName.MUMBOJR:        ItemData(1230858, 1, "progress", locationName.GLOWBOJR1),
     itemName.MUMBOTD:        ItemData(1230859, 1, "progress", locationName.GLOWBOTL1),
@@ -82,7 +82,7 @@ level_progress_table = {
     itemName.MUMBOIH:        ItemData(1230863, 1, "progress", locationName.GLOWBOIH1),
 
     itemName.HUMBAMT:        ItemData(1230174, 1, "progress", locationName.GLOWBOMT2),
-    itemName.HUMBAGM:        ItemData(1230175, 1, "progress", locationName.GLOWBOGM2),
+    itemName.HUMBAGM:        ItemData(1230175, 1, "progress", locationName.GLOWBOGM1),
     itemName.HUMBAWW:        ItemData(1230176, 1, "progress", locationName.GLOWBOWW2),
     itemName.HUMBAJR:        ItemData(1230177, 1, "progress", locationName.GLOWBOJR2),
     itemName.HUMBATD:        ItemData(1230178, 1, "progress", locationName.GLOWBOTL2),
