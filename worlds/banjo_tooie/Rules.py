@@ -647,7 +647,7 @@ class BanjoTooieRules:
 
         }
         self.glowbo_rules = {
-            locationName.GLOWBOMT2: lambda state: self.check_mumbo_magic(state, itemName.MUMBOMT),
+            locationName.GLOWBOMT1: lambda state: self.check_mumbo_magic(state, itemName.MUMBOMT),
             locationName.GLOWBOWW1: lambda state: self.check_humba_magic(state, itemName.HUMBAWW),
             locationName.GLOWBOJR2: lambda state: self.can_reach_atlantis(state),
             locationName.GLOWBOGI1: lambda state: self.can_reach_GI_2F(state),
