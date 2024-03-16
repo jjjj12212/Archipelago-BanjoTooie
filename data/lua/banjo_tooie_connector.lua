@@ -71,6 +71,7 @@ local TREBLE_GONE_CHECK = 2;
 
 local BATH_PADS_QOL = false
 
+
 local receive_map = { -- [ap_id] = item_id; --  Required for Async Items
     ["NA"] = "NA"
 }
@@ -265,6 +266,14 @@ function BTRAM:setFlag(byte, _bit)
 		local address = self:dereferencePointer(self.flag_block_ptr);
         local currentValue = mainmemory.readbyte(address + byte);
         mainmemory.writebyte(address + byte, bit.set(currentValue, _bit));
+	end
+end
+
+function BTRAM:setMultipleFlags(byte, mask)
+	if type(byte) == "number" and type(mask) == "number" and mask >= 0 and mask < 0xFF then
+		local address = self:dereferencePointer(self.flag_block_ptr);
+        local currentValue = mainmemory.readbyte(address + byte);
+        mainmemory.writebyte(address + byte, currentValue & mask);
 	end
 end
 
@@ -2674,6 +2683,90 @@ local NON_AGI_MAP = {
     }
 }
 
+-- Properties of world entrances and associated puzzles
+local WORLD_ENTRANCE_MAP = {
+    ["WORLD 1"] = {
+        ["defaultName"] = "Mayahem Temple",
+        ["defaultCost"] = 1,
+        ["addr"] = 0x6D,
+        ["bit"] = 2,
+        ["puzzleMask"] = 0x10,
+        ["opened"] = false,
+    },
+    ["WORLD 2"] = {
+        ["defaultName"] = "Glitter Gulch Mine",
+        ["defaultCost"] = 4,
+        ["addr"] = 0x6D,
+        ["bit"] = 3,
+        ["puzzleMask"] = 0x20,
+        ["opened"] = false,
+    },
+    ["WORLD 3"] = {
+        ["defaultName"] = "Witchyworld",
+        ["defaultCost"] = 8,
+        ["addr"] = 0x6D,
+        ["bit"] = 4,
+        ["puzzleMask"] = 0x30,
+        ["opened"] = false,
+    },
+    ["WORLD 4"] = {
+        ["defaultName"] = "Jolly Roger's Lagoon",
+        ["defaultCost"] = 14,
+        ["addr"] = 0x6D,
+        ["bit"] = 5,
+        ["puzzleMask"] = 0x40,
+        ["opened"] = false,
+    },
+    ["WORLD 5"] = {
+        ["defaultName"] = "Terrydactyland",
+        ["defaultCost"] = 20,
+        ["addr"] = 0x6D,
+        ["bit"] = 6,
+        ["puzzleMask"] = 0x50,
+        ["opened"] = false,
+    },
+    ["WORLD 6"] = {
+        ["defaultName"] = "Grunty Industries",
+        ["defaultCost"] = 28,
+        ["addr"] = 0x6D,
+        ["bit"] = 7,
+        ["puzzleMask"] = 0x60,
+        ["opened"] = false,
+    },
+    ["WORLD 7"] = {
+        ["defaultName"] = "Hailfire Peaks",
+        ["defaultCost"] = 36,
+        ["addr"] = 0x6E,
+        ["bit"] = 0,
+        ["puzzleMask"] = 0x70,
+        ["opened"] = false,
+    },
+    ["WORLD 8"] = {
+        ["defaultName"] = "Cloud Cuckooland",
+        ["defaultCost"] = 45,
+        ["addr"] = 0x6E,
+        ["bit"] = 1,
+        ["puzzleMask"] = 0x80,
+        ["opened"] = false,
+    },
+    ["WORLD 9"] = {
+        ["defaultName"] = "Cauldron Keep",
+        ["defaultCost"] = 55,
+        ["addr"] = 0x6E,
+        ["bit"] = 2,
+        ["puzzleMask"] = 0x90,
+        ["opened"] = false,
+    },
+    ["HAG 1"] = {
+        ["defaultName"] = "HAG 1",
+        ["defaultCost"] = 70,
+        ["addr"] = 0x6E,
+        ["bit"] = 3,
+        ["puzzleMask"] = 0xA0,
+        ["opened"] = false,
+    },
+}
+
 function readAPLocationChecks(type)
     local checks = {}
     if type ~= "BMM"
@@ -2854,6 +2947,29 @@ function checkConsumables(consumable_type, location_checks)
 			savingAGI()
 		end
 	end
+end
+
+function check_open_level()  -- See if entrance conditions for a level have been met
+    local jiggy_count = 0;
+    for location, values in pairs(AGI_MASTER_MAP["JIGGY"])
+    do
+        if AGI['JIGGY'][location] == true
+        then
+            jiggy_count = jiggy_count + 1
+        end
+    end
+    for location, values in pairs(WORLD_ENTRANCE_TABLE)
+    do
+        if values["opened"] == false
+        then
+            if jiggy_count >= values["defaultCost"]
+            then
+                BTRAMOBJ:setFlag(values["addr"], values["bit"])
+                BTRAMOBJ:setMultipleFlags(0x66, values["mask"])
+                values["opened"] = true
+            end
+        end
+    end
 end
 
 function loadGame(current_map)
