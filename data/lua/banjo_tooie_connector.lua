@@ -2690,7 +2690,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 1,
         ["addr"] = 0x6D,
         ["bit"] = 2,
-        ["puzzleMask"] = 0x10,
+        ["puzzleMask"] = 0x1F,
         ["opened"] = false,
     },
     ["WORLD 2"] = {
@@ -2698,7 +2698,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 4,
         ["addr"] = 0x6D,
         ["bit"] = 3,
-        ["puzzleMask"] = 0x20,
+        ["puzzleMask"] = 0x2F,
         ["opened"] = false,
     },
     ["WORLD 3"] = {
@@ -2706,7 +2706,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 8,
         ["addr"] = 0x6D,
         ["bit"] = 4,
-        ["puzzleMask"] = 0x30,
+        ["puzzleMask"] = 0x3F,
         ["opened"] = false,
     },
     ["WORLD 4"] = {
@@ -2714,7 +2714,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 14,
         ["addr"] = 0x6D,
         ["bit"] = 5,
-        ["puzzleMask"] = 0x40,
+        ["puzzleMask"] = 0x4F,
         ["opened"] = false,
     },
     ["WORLD 5"] = {
@@ -2722,7 +2722,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 20,
         ["addr"] = 0x6D,
         ["bit"] = 6,
-        ["puzzleMask"] = 0x50,
+        ["puzzleMask"] = 0x5F,
         ["opened"] = false,
     },
     ["WORLD 6"] = {
@@ -2730,7 +2730,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 28,
         ["addr"] = 0x6D,
         ["bit"] = 7,
-        ["puzzleMask"] = 0x60,
+        ["puzzleMask"] = 0x6F,
         ["opened"] = false,
     },
     ["WORLD 7"] = {
@@ -2738,7 +2738,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 36,
         ["addr"] = 0x6E,
         ["bit"] = 0,
-        ["puzzleMask"] = 0x70,
+        ["puzzleMask"] = 0x7F,
         ["opened"] = false,
     },
     ["WORLD 8"] = {
@@ -2746,7 +2746,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 45,
         ["addr"] = 0x6E,
         ["bit"] = 1,
-        ["puzzleMask"] = 0x80,
+        ["puzzleMask"] = 0x8F,
         ["opened"] = false,
     },
     ["WORLD 9"] = {
@@ -2754,7 +2754,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 55,
         ["addr"] = 0x6E,
         ["bit"] = 2,
-        ["puzzleMask"] = 0x90,
+        ["puzzleMask"] = 0x9F,
         ["opened"] = false,
     },
     ["HAG 1"] = {
@@ -2762,7 +2762,7 @@ local WORLD_ENTRANCE_MAP = {
         ["defaultCost"] = 70,
         ["addr"] = 0x6E,
         ["bit"] = 3,
-        ["puzzleMask"] = 0xA0,
+        ["puzzleMask"] = 0xAF,
         ["opened"] = false,
     },
 }
@@ -3574,6 +3574,7 @@ function processAGIItem(item_list)
                         break
                     end
                 end
+
             elseif((1230855 <= memlocation and memlocation <= 1230863) or (1230174 <= memlocation and memlocation <= 1230182))
             then
                 processMagicItem(memlocation)
