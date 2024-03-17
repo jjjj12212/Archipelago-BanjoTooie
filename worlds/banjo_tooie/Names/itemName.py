@@ -67,6 +67,7 @@ TRAINSWTD  = "TDL: Train Station Opened"
 TRAINSWGI  = "GI: Train Station Opened"
 TRAINSWHP1 = "HFP: Lava Side Train Station Opened"
 TRAINSWHP2 = "HFP: Icy Side Train Station Opened"
+TRAINSWWW  = "WW: Train Station Opened"
 
 CHUFFY = "Chuffy"
 

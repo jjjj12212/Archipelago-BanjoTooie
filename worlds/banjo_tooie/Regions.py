@@ -66,7 +66,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JINJOGM3,
         locationName.JINJOGM4,
         locationName.JINJOGM5,
-        locationName.JIGGYGM1,
         locationName.JIGGYGM2,
         locationName.JIGGYGM3,
         locationName.JIGGYGM4,
@@ -316,6 +315,9 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.HAG1
     ],
     regionName.GMS: [
+    ],
+    regionName.CHUFFY: [
+        locationName.JIGGYGM1,
         locationName.CHUFFY
     ],
     regionName.TLS: [],
@@ -324,7 +326,10 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.HPIS: [
         locationName.JIGGYHP5,
     ],     
-    regionName.IOHCTS: []  
+    regionName.IOHCTS: [],
+    regionName.WWS: [
+        locationName.TRAINSWWW
+    ]
 }
 
 BANJOTOOIECONNECTIONS: typing.Dict[str, typing.Set[str]] = {
@@ -342,11 +347,13 @@ BANJOTOOIECONNECTIONS: typing.Dict[str, typing.Set[str]] = {
         regionName.CK:                 {regionName.H1},
         #Train Station Connections
         regionName.GM:                 {regionName.GMS},
-        regionName.GMS:                {regionName.IOHCTS, regionName.TLS, regionName.GIS, regionName.HPLS},
-        regionName.TLS:                {regionName.IOHCTS, regionName.TL, regionName.GIS, regionName.HPLS},
-        regionName.GIS:                {regionName.IOHCTS, regionName.GI, regionName.HPLS},
-        regionName.HPLS:               {regionName.IOHCTS, regionName.HP, regionName.HPIS},
-        regionName.IOHCTS:             {regionName.IOHCT}
+        regionName.GMS:                {regionName.CHUFFY},
+        regionName.CHUFFY:             {regionName.IOHCTS, regionName.TLS, regionName.GIS, regionName.HPLS, regionName.WWS, regionName.HPIS},
+        regionName.TLS:                {regionName.TL},
+        regionName.GIS:                {regionName.GI},
+        regionName.HPLS:               {regionName.HP},
+        regionName.IOHCTS:             {regionName.IOHCT},
+        regionName.WWS:                {regionName.WW}
     }
     
 def create_regions(self):

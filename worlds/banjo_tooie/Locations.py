@@ -100,7 +100,7 @@ GMLoc_table = {
     locationName.BDRILL:    LocationData(1230757, 0x1B, 6),
     locationName.BBAYONET:  LocationData(1230758, 0x1B, 7),
     locationName.TREBLEGM:  LocationData(1230782, 0x89, 0),
-    locationName.CHUFFY:    LocationData(1230795, 0x0D, 5)
+    locationName.CHUFFY:    LocationData(1230796, 0x0B, 6)
 }
 
 PGLov_table = {
@@ -134,7 +134,8 @@ WWLoc_table = {
     locationName.AIREAIM:   LocationData(1230760, 0x1C, 0),
     locationName.SPLITUP:   LocationData(1230761, 0x1C, 1),
     locationName.PACKWH:    LocationData(1230762, 0x1D, 6),
-    locationName.TREBLEWW:  LocationData(1230783, 0x8B, 1)
+    locationName.TREBLEWW:  LocationData(1230783, 0x8B, 1),
+    locationName.TRAINSWWW: LocationData(1230795, 0x0D, 6)
 }
 
 JRLoc_table = {

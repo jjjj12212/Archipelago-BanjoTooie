@@ -233,8 +233,9 @@ TRAINSWTD  = "TDL: Train Switch"
 TRAINSWGI  = "GI: Train Switch"
 TRAINSWHP1 = "HFP: Lava Side Train Switch"
 TRAINSWHP2 = "HFP: Icy Side Train Switch"
+TRAINSWWW  = "WW: Train Switch"
 
-CHUFFY = "GGM: Chuffy on Tracks"
+CHUFFY = "GGM: Chuffy"
 
 #Cheato Pages
 CHEATOMT1 = "MT: Snake Head Cheato Page"
