@@ -128,7 +128,10 @@ class BanjoTooieRules:
                                               state.has(itemName.TRAINSWHP2, self.player),
         }
         self.train_rules = {
-            locationName.CHUFFY: lambda state: self.can_beat_king_coal(state)
+            locationName.CHUFFY: lambda state: self.can_beat_king_coal(state),
+            locationName.TRAINSWIH: lambda state: state.has(itemName.GGRAB, self.player),
+            locationName.TRAINSWHP1: lambda state: state.has(itemName.GGRAB, self.player),
+            locationName.TRAINSWHP2: lambda state: self.check_humba_magic(state, itemName.HUMBAHP)
         }
 
         self.jiggy_rules = {
