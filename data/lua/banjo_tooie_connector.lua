@@ -2634,7 +2634,7 @@ local NON_AGI_MAP = {
         ["1230782"] = {
             ['addr'] = 0x89,
             ['bit'] = 0,
-            ['name'] = 'GM: Treble Clef'
+            ['name'] = 'GGM: Treble Clef'
         },
         ["1230783"] = {
             ['addr'] = 0x8B,
@@ -2880,6 +2880,17 @@ function loadGame(current_map)
                 print("Restoring from Load Game")
             end
             set_AGI_MOVES_checks();
+            set_AP_BKNOTES();
+            for ap_id, itemId in pairs(receive_map)
+            do
+                if itemId ~= "NA"
+                then
+                    if (1230855 <= tonumber(itemId) and tonumber(itemId) <= 1230863) or (1230174 <= tonumber(itemId) and tonumber(itemId) <= 1230182)
+                    then
+                        processMagicItem(itemId);
+                    end
+                end
+            end
             GAME_LOADED = true;
         end
     else
