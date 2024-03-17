@@ -119,6 +119,18 @@ class BanjoTooieRules:
                                          state.has(itemName.BBLASTER, self.player) and
                                          state.has(itemName.CEGGS, self.player)
         }
+        self.station_rules = {
+            regionName.IOHCTS:  lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWIH, self.player),
+            regionName.TLS:     lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWTD, self.player),
+            regionName.GIS:     lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWGI, self.player),
+            regionName.HPLS:    lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, self.player),
+            regionName.HPLS:    lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, self.player) and
+                                              state.has(itemName.TRAINSWHP2, self.player),
+        }
+        self.train_rules = {
+            locationName.CHUFFY: lambda state: self.can_beat_king_coal(state)
+        }
+
         self.jiggy_rules = {
             #Mayahem Temple Jiggies
             locationName.JIGGYMT1: lambda state: state.has(itemName.BBLASTER, self.player),
@@ -916,6 +928,15 @@ class BanjoTooieRules:
         for location, rules in self.treble_clef_rules.items():
             treble = self.world.multiworld.get_location(location, self.player)
             set_rule(treble, rules)
+
+        for region_name, rules in self.station_rules.items():
+            station = self.world.multiworld.get_region(region_name, self.player)
+            for entrance in station.entrances:
+                entrance.access_rule = rules
+
+        for location, rules in self.train_rules.items():
+            train = self.world.multiworld.get_location(location, self.player)
+            set_rule(train, rules)
 
         # for item in self.jinjo_forbid:
         #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)

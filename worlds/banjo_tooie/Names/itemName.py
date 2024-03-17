@@ -61,4 +61,13 @@ HUMBAHP = "Humba: Snowball"
 HUMBACC = "Humba: Bee"
 HUMBAIH = "Humba: Dragon"
 
+#Train Switches
+TRAINSWIH  = "IoH: Train Station Opened"
+TRAINSWTD  = "TDL: Train Station Opened"
+TRAINSWGI  = "GI: Train Station Opened"
+TRAINSWHP1 = "HFP: Lava Side Train Station Opened"
+TRAINSWHP2 = "HFP: Icy Side Train Station Opened"
+
+CHUFFY = "Chuffy"
+
 VICTORY = "Kick Around"

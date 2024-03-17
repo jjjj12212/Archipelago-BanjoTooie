@@ -95,7 +95,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.IOHCT:   [
         locationName.JINJOIH3,
         locationName.GLOWBOIH1,
-        locationName.IEGGS
+        locationName.IEGGS,
+        locationName.TRAINSWIH
     ],
     regionName.WW:      [
         locationName.JINJOWW1,
@@ -216,7 +217,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOTL3,
         locationName.SPRINGB,
         locationName.TAXPACK,
-        locationName.TREBLETL
+        locationName.TREBLETL,
+        locationName.TRAINSWTD,
     ],
     regionName.TL_HATCH: [
         locationName.HATCH,
@@ -249,7 +251,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.SNPACK,
         locationName.LSPRING,
         locationName.CLAWBTS,
-        locationName.TREBLEGI
+        locationName.TREBLEGI,
+        locationName.TRAINSWGI,
     ],
     regionName.HP:      [
         locationName.JINJOHP1,
@@ -261,7 +264,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JIGGYHP2,
         locationName.JIGGYHP3,
         locationName.JIGGYHP4,
-        locationName.JIGGYHP5,
         locationName.JIGGYHP6,
         #locationName.JIGGYHP7, # in TDL
         locationName.JIGGYHP8,
@@ -277,7 +279,9 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOHP3,
         locationName.SHPACK,
         locationName.GLIDE,
-        locationName.TREBLEHP
+        locationName.TREBLEHP,
+        locationName.TRAINSWHP1,
+        locationName.TRAINSWHP2
     ],
     regionName.CC:      [
         locationName.JINJOCC1,
@@ -310,7 +314,17 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.CK: [],
     regionName.H1: [
         locationName.HAG1
-    ]
+    ],
+    regionName.GMS: [
+        locationName.CHUFFY
+    ],
+    regionName.TLS: [],
+    regionName.GIS: [],     
+    regionName.HPLS: [],      
+    regionName.HPIS: [
+        locationName.JIGGYHP5,
+    ],     
+    regionName.IOHCTS: []  
 }
 
 BANJOTOOIECONNECTIONS: typing.Dict[str, typing.Set[str]] = {
@@ -325,7 +339,14 @@ BANJOTOOIECONNECTIONS: typing.Dict[str, typing.Set[str]] = {
         regionName.IOHWL:              {regionName.TL, regionName.CC, regionName.IOHQM},
         regionName.TL:                 {regionName.TL_HATCH},
         regionName.IOHQM:              {regionName.GI, regionName.CK},
-        regionName.CK:                 {regionName.H1}
+        regionName.CK:                 {regionName.H1},
+        #Train Station Connections
+        regionName.GM:                 {regionName.GMS},
+        regionName.GMS:                {regionName.IOHCTS, regionName.TLS, regionName.GIS, regionName.HPLS},
+        regionName.TLS:                {regionName.IOHCTS, regionName.TL, regionName.GIS, regionName.HPLS},
+        regionName.GIS:                {regionName.IOHCTS, regionName.GI, regionName.HPLS},
+        regionName.HPLS:               {regionName.IOHCTS, regionName.HP, regionName.HPIS},
+        regionName.IOHCTS:             {regionName.IOHCT}
     }
     
 def create_regions(self):
