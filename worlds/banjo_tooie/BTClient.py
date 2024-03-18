@@ -90,6 +90,7 @@ class BanjoTooieContext(CommonContext):
         self.movelist_table = {}
         self.notelist_table = {}
         self.stationlist_table = {}
+        self.chuffy_table = {}
         self.deathlink_enabled = False
         self.deathlink_pending = False
         self.deathlink_sent_this_death = False
@@ -247,6 +248,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         ctx.deathlink_client_override = False
         ctx.finished_game = False
         ctx.location_table = {}
+        ctx.chuffy_table = {}
         ctx.movelist_table = {}
         ctx.deathlink_pending = False
         ctx.deathlink_sent_this_death = False
@@ -261,6 +263,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
 
     # Locations handling
     locations = payload['locations']
+    chuffy = payload['chuffy']
 
     # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
     if isinstance(locations, list):
@@ -292,6 +295,23 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                     "cmd": "LocationChecks",
                     "locations": locs1
                 }])
+
+        if ctx.chuffy_table != chuffy:
+            ctx.chuffy_table = chuffy
+            chuf1 = []
+            for item_group, BTlocation_table in chuffy.items():
+                if len(BTlocation_table) == 0:
+                    continue
+   
+                for locationId, value in BTlocation_table.items():
+                    if value == True:
+                        chuf1.append(int(locationId))
+
+                if len(chuf1) > 0:
+                    await ctx.send_msgs([{
+                        "cmd": "LocationChecks",
+                        "locations": chuf1
+                    }])
 
     if ctx.slot_data["moves"] == "true" and ctx.sync_ready == True:
         # Locations handling
