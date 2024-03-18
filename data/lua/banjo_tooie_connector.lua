@@ -3047,7 +3047,7 @@ function init_CHUFFY(type) -- Initialize BMK
     do
         if type == "BKCHUFFY"
         then
-            BKSTATIONS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
+            BKCHUFFY[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
         elseif type == "AGI"
         then
             checks[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK_AGI")
@@ -3629,10 +3629,10 @@ function BKCheckAssetLogic()
     end
     if CHUFFY_MAP_TRANS == true or CHUFFY_STOP_WATCH == false
     then
-        if set_AP_CHUFFY["1230191"] == false and CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false
+        if AGI_CHUFFY["1230191"] == false and CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false
         then
             moveLevitatePad()
-        elseif  set_AP_CHUFFY["1230191"] == false and CURRENT_MAP ~= 0xD7 and LEVI_PAD_MOVED == true
+        elseif AGI_CHUFFY["1230191"] == false and CURRENT_MAP ~= 0xD7 and LEVI_PAD_MOVED == true
         then
             LEVI_PAD_MOVED = false
         end
@@ -4252,7 +4252,7 @@ function loadAGI()
             AGI_STATIONS = init_BKSTATIONS("AGI");
         end
         if next(AGI_CHUFFY) == nil then
-            AGI_CHUFFY = init_BKSTATIONS("AGI");
+            AGI_CHUFFY = init_CHUFFY("AGI");
         end
         f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "w");
         if DEBUGLVL2 == true
