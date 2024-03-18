@@ -8,6 +8,8 @@ Banjo-Tooie:
   multiworld_honeycombs: 'true'
   multiworld_glowbos: 'true'
   multiworld_treble: 'true'
+  multiworld_stations: 'true' #Randomize Stations
+  multiworld_chuffy: 'true' #Chuffy as a AP Item
   jingaling_jiggy: 'true'  #True = Always get Jiggy from Jingaling #recommended when playing Multiworld.
   skip_tower_of_tragedy: 1 #0 = no skip, #1 = skip fully, #2 = 3rd round only 
   speed_up_minigames: 'true' #skip to round 3 of kickball, dodgems

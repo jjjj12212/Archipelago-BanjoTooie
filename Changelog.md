@@ -1,3 +1,11 @@
+# 0.9-Beta
+- The Big Train Update!
+  - Stations can now be randomized
+  - Chuffy can now be an Item
+    - Once Obtained, you can summon Chuffy, but you still need to beat Old King Coal to travel.
+  - Beating Old King Coal is now an additional check
+- Logic Changes
+
 # 0.8.2-beta
 - Swapped wrong Glowbos.  
 
