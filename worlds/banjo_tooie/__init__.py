@@ -158,7 +158,7 @@ class BanjoTooieWorld(World):
         if(item.code == 1230778 and self.options.multiworld_treble == False):
             return False
         
-        if item.code == 1230191 and self.options.multiworld_chuffy == False:
+        if item.code == 1230796 and self.options.multiworld_chuffy == False:
             return False
         
         if item.code in range(1230790, 1230796) and self.options.multiworld_stations == False:

@@ -3057,8 +3057,8 @@ function init_CHUFFY(type) -- Initialize BMK
 end
 
 function set_checked_BKCHUFFY() --Only when Inside Chuffy
-    local get_addr = NON_AGI_MAP['CHUFFY']["1230191"];
-    if BKCHUFFY["1230191"] == false
+    local get_addr = NON_AGI_MAP['CHUFFY']["1230796"];
+    if BKCHUFFY["1230796"] == false
     then
         BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
     else
@@ -3067,7 +3067,7 @@ function set_checked_BKCHUFFY() --Only when Inside Chuffy
 end
 
 function watchChuffyFlag()
-    local get_addr = NON_AGI_MAP['CHUFFY']["1230191"]
+    local get_addr = NON_AGI_MAP['CHUFFY']["1230796"]
     local CoalmanDed = BTRAMOBJ:checkFlag(get_addr['addr'], get_addr['bit'])
     if CoalmanDed == true
     then
@@ -3076,7 +3076,7 @@ function watchChuffyFlag()
         DEAD_COAL_CHECK = 0
     end
     if DEAD_COAL_CHECK >= 3 then  -- Sanity check incase Pointer is moving
-        BKCHUFFY["1230191"] = true
+        BKCHUFFY["1230796"] = true
         CHUFFY_STOP_WATCH = true
     end
 end
@@ -3094,9 +3094,9 @@ function set_AP_CHUFFY() -- Only run after Transistion
 end
 
 function obtained_AP_CHUFFY()
-    AGI_CHUFFY["1230191"] = true
+    AGI_CHUFFY["1230796"] = true
     BTRAMOBJ:setFlag(0x0D, 5, "Levitate")
-    local get_addr = NON_AGI_MAP['CHUFFY']["1230191"]
+    local get_addr = NON_AGI_MAP['CHUFFY']["1230796"]
     if CURRENT_MAP == 0xD0 or CURRENT_MAP == 0xD1
     then
         return
@@ -3559,7 +3559,7 @@ function BKLogics(mapaddr)
     if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_CHUFFY == true
     then
         CHUFFY_MAP_TRANS = true
-    elseif ENABLE_AP_CHUFFY == false and BKCHUFFY["1230191"] == false then
+    elseif ENABLE_AP_CHUFFY == false and BKCHUFFY["1230796"] == false then
         if CURRENT_MAP == 0xD1 -- Only watch for King Coal Check.
         then
             watchChuffyFlag()
@@ -3629,10 +3629,10 @@ function BKCheckAssetLogic()
     end
     if CHUFFY_MAP_TRANS == true or CHUFFY_STOP_WATCH == false
     then
-        if AGI_CHUFFY["1230191"] == false and CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false
+        if AGI_CHUFFY["1230796"] == false and CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false
         then
             moveLevitatePad()
-        elseif AGI_CHUFFY["1230191"] == false and CURRENT_MAP ~= 0xD7 and LEVI_PAD_MOVED == true
+        elseif AGI_CHUFFY["1230796"] == false and CURRENT_MAP ~= 0xD7 and LEVI_PAD_MOVED == true
         then
             LEVI_PAD_MOVED = false
         end
@@ -3976,7 +3976,7 @@ function processAGIItem(item_list)
             elseif(1230790 <= memlocation and memlocation <= 1230795) and ENABLE_AP_STATIONS == true -- Station Btns
             then
                 obtained_AP_STATIONS(memlocation);
-            elseif memlocation == 1230191 and ENABLE_AP_CHUFFY == true
+            elseif memlocation == 1230796 and ENABLE_AP_CHUFFY == true
             then
                 obtained_AP_CHUFFY()
             end

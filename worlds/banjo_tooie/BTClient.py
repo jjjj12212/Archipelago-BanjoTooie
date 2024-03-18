@@ -299,19 +299,15 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         if ctx.chuffy_table != chuffy:
             ctx.chuffy_table = chuffy
             chuf1 = []
-            for item_group, BTlocation_table in chuffy.items():
-                if len(BTlocation_table) == 0:
-                    continue
-   
-                for locationId, value in BTlocation_table.items():
-                    if value == True:
-                        chuf1.append(int(locationId))
+            for locationId, value in chuffy.items():
+                if value == True:
+                    chuf1.append(int(locationId))
 
-                if len(chuf1) > 0:
-                    await ctx.send_msgs([{
-                        "cmd": "LocationChecks",
-                        "locations": chuf1
-                    }])
+            if len(chuf1) > 0:
+                await ctx.send_msgs([{
+                    "cmd": "LocationChecks",
+                    "locations": chuf1
+                }])
 
     if ctx.slot_data["moves"] == "true" and ctx.sync_ready == True:
         # Locations handling
