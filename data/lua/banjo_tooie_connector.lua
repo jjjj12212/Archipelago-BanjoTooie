@@ -82,6 +82,11 @@ local CHECK_FOR_STATIONBTN = false;
 local STATION_BTN_TIMER = 0;
 local WATCH_LOADED_STATIONBTN = false;
 
+-------------- CHUFFY VARS ------------
+DEAD_COAL_CHECK = 0;
+CHUFFY_MAP_TRANS = false;
+CHUFFY_STOP_WATCH = true;
+LEVI_PAD_MOVED = false;
 
 
 
@@ -307,7 +312,8 @@ BTModel = {
         ["Banjo Split Pad"] = 0x7E2,
         ["Doubloon"] = 0x7C0,
         ["Treble Clef"] = 0x6ED,
-        ["Station Switch"] = 0x86D
+        ["Station Switch"] = 0x86D,
+        ["Levitate Pad"] = 0x7D8
     };
     model_enemy_list = {
         ["Ugger"] = 0x671,
@@ -792,11 +798,13 @@ local AGI = {};
 local AGI_MOVES = {};
 local AGI_NOTES = {};
 local AGI_STATIONS = {};
+local AGI_CHUFFY = {};
 
 
 local BKM = {}; -- Banjo Tooie Movelist Table
 local BKNOTES = {}; -- Notes
 local BKSTATIONS = {} -- Stations
+local BKCHUFFY = {} -- King Coal Progress Flag
 
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
@@ -3031,6 +3039,130 @@ function watchBtnAnimation()
     end
 end
 
+---------------------------------- Chuffy ------------------------------------
+
+function init_CHUFFY(type) -- Initialize BMK
+    local checks = {}
+    for k,v in pairs(NON_AGI_MAP['CHUFFY'])
+    do
+        if type == "BKCHUFFY"
+        then
+            BKSTATIONS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
+        elseif type == "AGI"
+        then
+            checks[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK_AGI")
+        end
+    end
+    return checks
+end
+
+function set_checked_BKCHUFFY() --Only when Inside Chuffy
+    local get_addr = NON_AGI_MAP['CHUFFY']["1230191"];
+    if BKCHUFFY["1230191"] == false
+    then
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+    else
+        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKCHUFFY_CHECK");
+    end
+end
+
+function watchChuffyFlag()
+    local get_addr = NON_AGI_MAP['CHUFFY']["1230191"]
+    local CoalmanDed = BTRAMOBJ:checkFlag(get_addr['addr'], get_addr['bit'])
+    if CoalmanDed == true
+    then
+        DEAD_COAL_CHECK = DEAD_COAL_CHECK + 1
+    else
+        DEAD_COAL_CHECK = 0
+    end
+    if DEAD_COAL_CHECK >= 3 then  -- Sanity check incase Pointer is moving
+        BKCHUFFY["1230191"] = true
+        CHUFFY_STOP_WATCH = true
+    end
+end
+
+function set_AP_CHUFFY() -- Only run after Transistion
+    local get_addr = NON_AGI_MAP['CHUFFY']["1230191"];
+    if AGI_CHUFFY["1230191"] == true
+    then
+        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "APCHUFFY_SET");
+        return true
+    else
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+        return false
+    end
+end
+
+function obtained_AP_CHUFFY()
+    AGI_CHUFFY["1230191"] = true
+    BTRAMOBJ:setFlag(0x0D, 5, "Levitate")
+    local get_addr = NON_AGI_MAP['CHUFFY']["1230191"]
+    if CURRENT_MAP == 0xD0 or CURRENT_MAP == 0xD1
+    then
+        return
+    end
+    BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "APCHUFFY_OBTAIN");
+end
+
+function getChuffyMaps()
+    if CURRENT_MAP ~= nil
+    then
+        return
+    end
+    if CURRENT_MAP == 0xD0 or CURRENT_MAP == 0xD1
+    then
+        set_checked_BKCHUFFY()
+    else
+        set_AP_CHUFFY()
+        CHUFFY_STOP_WATCH = true
+    end
+    if CURRENT_MAP == 0xD1
+    then
+        watchChuffyFlag()
+    else
+        CHUFFY_STOP_WATCH = true
+    end
+end
+
+function moveLevitatePad()
+    BTMODELOBJ:changeName("Levitate Pad", false)
+    local model = BTMODELOBJ:checkModel();
+    if model == false
+    then
+        return false
+    end
+    BTMODELOBJ:moveModelObject(nil, nil, -10, nil)
+    LEVI_PAD_MOVED = true;
+    print("Pads Moved")
+    return true
+end
+
+function watchBtnAnimation()
+    BTMODELOBJ:changeName("Station Switch", false);
+    local POS = BTMODELOBJ:getSingleModelCoords();
+    if POS == false
+    then
+        return false
+    end
+    local currentAnimation = BTMODELOBJ:getObjectAnimation();
+    if currentAnimation ~= 0x81 --Button Pressed
+    then
+        if DEBUG == true
+        then
+            print("Station Button not pressed")
+        end
+    else
+        if DEBUG == true
+        then
+            print("Detected Station Button got pressed")
+        end
+        BKSTATIONS[ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP]] = true;
+        WATCH_LOADED_STATIONBTN = false;
+        set_AP_STATIONS()
+    end
+end
+
+
 ---------------------------------- BKMOVES -----------------------------------
 
 function init_BMK(type) -- Initialize BMK
@@ -3337,6 +3469,7 @@ function loadGame(current_map)
             BKM = json.decode(f:read("l"));
             BKNOTES = json.decode(f:read("l"));
             BKSTATIONS = json.decode(f:read("l"));
+            BKCHUFFY = json.decode(f:read("l"));
             f:close();
             all_location_checks("AMM");
             all_location_checks("BMM");
@@ -3423,6 +3556,15 @@ function BKLogics(mapaddr)
         STATION_BTN_TIMER = 0
         CHECK_FOR_STATIONBTN = true
     end
+    if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_CHUFFY == true
+    then
+        CHUFFY_MAP_TRANS = true
+    elseif ENABLE_AP_CHUFFY == false and BKCHUFFY["1230191"] == false then
+        if CURRENT_MAP == 0xD1 -- Only watch for King Coal Check.
+        then
+            watchChuffyFlag()
+        end
+    end
     if CURRENT_MAP == 0xF4 and BATH_PADS_QOL == false
     then
         MoveBathPads()
@@ -3484,6 +3626,19 @@ function BKCheckAssetLogic()
             CHECK_FOR_STATIONBTN = false
             set_AP_STATIONS()
         end
+    end
+    if CHUFFY_MAP_TRANS == true or CHUFFY_STOP_WATCH == false
+    then
+        if set_AP_CHUFFY["1230191"] == false and CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false
+        then
+            moveLevitatePad()
+        elseif  set_AP_CHUFFY["1230191"] == false and CURRENT_MAP ~= 0xD7 and LEVI_PAD_MOVED == true
+        then
+            LEVI_PAD_MOVED = false
+        end
+        CHUFFY_STOP_WATCH = false
+        CHUFFY_MAP_TRANS = false
+        getChuffyMaps()
     end
 end
 
@@ -3821,6 +3976,9 @@ function processAGIItem(item_list)
             elseif(1230790 <= memlocation and memlocation <= 1230795) and ENABLE_AP_STATIONS == true -- Station Btns
             then
                 obtained_AP_STATIONS(memlocation);
+            elseif memlocation == 1230191 and ENABLE_AP_CHUFFY == true
+            then
+                obtained_AP_CHUFFY()
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
         end
@@ -3864,6 +4022,7 @@ function SendToBTClient()
     retTable['unlocked_moves'] = BKM;
     retTable['treble'] = BKNOTES;
     retTable['stations'] = BKSTATIONS;
+    retTable['chuffy'] = BKCHUFFY;
     retTable["isDead"] = DETECT_DEATH;
     if GAME_LOADED == false
     then
@@ -4064,6 +4223,11 @@ function savingAGI()
     f:write(json.encode(AGI_STATIONS) .. "\n");
     if DEBUGLVL2 == true
     then
+        print("Writing Chuffy");
+    end
+    f:write(json.encode(AGI_CHUFFY) .. "\n");
+    if DEBUGLVL2 == true
+    then
         print("Writing Received_Map");
     end
     f:write(json.encode(receive_map))
@@ -4087,6 +4251,9 @@ function loadAGI()
         if next(AGI_STATIONS) == nil then
             AGI_STATIONS = init_BKSTATIONS("AGI");
         end
+        if next(AGI_CHUFFY) == nil then
+            AGI_CHUFFY = init_BKSTATIONS("AGI");
+        end
         f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "w");
         if DEBUGLVL2 == true
         then
@@ -4097,6 +4264,7 @@ function loadAGI()
         f:write(json.encode(AGI_MOVES).."\n");
         f:write(json.encode(AGI_NOTES).."\n");
         f:write(json.encode(AGI_STATIONS) .. "\n");
+        f:write(json.encode(AGI_CHUFFY) .. "\n");
         f:write(json.encode(receive_map));
         f:close();
     else
@@ -4108,6 +4276,7 @@ function loadAGI()
         AGI_MOVES = json.decode(f:read("l"));
         AGI_NOTES = json.decode(f:read("l"));
         AGI_STATIONS = json.decode(f:read("l"));
+        AGI_CHUFFY = json.decode(f:read("l"));
         receive_map = json.decode(f:read("l"));
         f:close();
     end
@@ -4123,6 +4292,7 @@ function savingBMM()
     f:write(json.encode(BKM) .. "\n");
     f:write(json.encode(BKNOTES) .. "\n");
     f:write(json.encode(BKSTATIONS) .. "\n");
+    f:write(json.encode(BKCHUFFY));
     f:close()
     if DEBUG == true
     then
@@ -4289,11 +4459,15 @@ function initializeFlags()
             BTRAMOBJ:setFlag(0x10, 4) -- Dodgems 2v1 Door
             BTRAMOBJ:setFlag(0x10, 5) -- Dodgems 3v1 Door
         end
-		
+        if ENABLE_AP_CHUFFY == true
+        then
+            BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
+        end
         GAME_LOADED = true  -- We don't have a real BMM at this point.  
         init_BMK("BKM");
         init_BKNOTES("BKNOTES");
         init_BKSTATIONS("BKSTATIONS")
+        init_CHUFFY("BKCHUFFY")
         AGI_MOVES = init_BMK("AGI");
         AGI_NOTES = init_BKNOTES("AGI");
 		if (SKIP_TOT ~= "false") then
