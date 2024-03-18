@@ -89,6 +89,7 @@ class BanjoTooieContext(CommonContext):
         self.location_table = {}
         self.movelist_table = {}
         self.notelist_table = {}
+        self.stationlist_table = {}
         self.deathlink_enabled = False
         self.deathlink_pending = False
         self.deathlink_sent_this_death = False
@@ -229,7 +230,9 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_moves": ctx.slot_data["moves"],
             "slot_doubloon": ctx.slot_data["doubloons"],
             "slot_minigames": ctx.slot_data["minigames"],
-            "slot_treble": ctx.slot_data["trebleclef"]
+            "slot_treble": ctx.slot_data["trebleclef"],
+            "slot_stations": ctx.slot_data["stations"],
+            "slot_chuffy": ctx.slot_data["chuffy"]
         })
     ctx.sendSlot = False
     return payload
@@ -332,7 +335,27 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "cmd": "LocationChecks",
                 "locations": not1
             }])
-            
+
+    if ctx.slot_data["stations"] == "true" and ctx.sync_ready == True:
+         # Locations handling
+        stationlist = payload['stations']
+        sta1 = []
+
+        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
+        if isinstance(stationlist, list):
+            stationlist = {}
+
+        if ctx.stationlist_table != stationlist:
+            ctx.stationlist_table = stationlist
+
+            for locationId, value in stationlist.items():
+                if value == True:
+                    sta1.append(int(locationId))
+
+            await ctx.send_msgs([{
+                "cmd": "LocationChecks",
+                "locations": sta1
+            }])        
 
     #Send Aync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:

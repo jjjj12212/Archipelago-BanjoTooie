@@ -49,25 +49,41 @@ local SAVE_GAME = false;
 local USE_BMM_TBL = false;
 local CLOSE_TO_ALTAR = false;
 local DETECT_DEATH = false;
+
 local ENABLE_AP_HONEYCOMB = false;
 local ENABLE_AP_PAGES = false;
 local ENABLE_AP_MOVES = false; -- Enable AP Moves Logics
 local ENABLE_AP_DOUBLOONS = false;
 local ENABLE_AP_TREBLE = false;
+local ENABLE_AP_STATIONS = false;
+local ENABLE_AP_CHUFFY = false;
+
 local GAME_LOADED = false;
+-------------- SILO VARS ------------
 local CHECK_FOR_SILO = false; --  If True, you are Transistioning maps
 local WATCH_LOADED_SILOS = false; -- Silo found on Map, Need to Monitor Distance
 local LOAD_BMK_MOVES = false; -- If close to Silo
 local SILOS_LOADED = false; -- Handles if learned a move at Silo
 local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
-local TOT_SET_COMPLETE = false;
 local DOUBLOON_SILO_MOVE = false; -- Move Doubloons away from Silo in JRL
-local CHECK_FOR_TREBLE = false ; -- Treble logic
+
+local TOT_SET_COMPLETE = false;
+
+-------------- TREBLE VARS ------------
+local CHECK_FOR_TREBLE = false; -- Treble logic
 local TREBLE_WAIT_TIMER = 0; -- waits until Treble is loaded if any
 local WATCH_LOADED_TREBLE = false; -- if object is loaded or not 
 local TREBLE_SPOTED = false; -- used if Collected Treble
 local TREBLE_MAP = 0x00; -- validate TREBLE_MAP
 local TREBLE_GONE_CHECK = 2;
+
+-------------- STATION VARS -----------
+local CHECK_FOR_STATIONBTN = false;
+local STATION_BTN_TIMER = 0;
+
+
+
+
 
 local BATH_PADS_QOL = false
 
@@ -159,7 +175,8 @@ BTRAM = {
     player_index = 0x1354DF;
     flag_block_ptr = 0x12C770;
     map_addr = 0x132DC2;
-    player_pos_ptr = 0xE4
+    player_pos_ptr = 0xE4,
+    animationPointer = 0x136E70,
 } 
 
 
@@ -288,7 +305,8 @@ BTModel = {
         ["Kazooie Split Pad"] = 0x7E1,
         ["Banjo Split Pad"] = 0x7E2,
         ["Doubloon"] = 0x7C0,
-        ["Treble Clef"] = 0x6ED
+        ["Treble Clef"] = 0x6ED,
+        ["Station Switch"] = 0x86D
     };
     model_enemy_list = {
         ["Ugger"] = 0x671,
@@ -296,6 +314,8 @@ BTModel = {
     };
     singleModelPointer = nil;
     modelObjectList = {};
+    animation_index = 0x8C,
+    animationPointer = nil;
 } 
 
 function BTModel:new(BTRAM, modelName, isEnemy)
@@ -342,6 +362,31 @@ function BTModel:getModelPointers()
 	end
 
     return modelTable
+end
+
+function BTModel:getObjectAnimation()
+    self.animationPointer = mainmemory.read_u16_be(self.singleModelPointer + self.animation_index)
+    local defref = self.banjoRAM:dereferencePointer(self.banjoRAM.animationPointer)
+    if defref ~= nil
+    then
+        print("address:")
+        print(defref + 0x38 + (0x3C * self.animationPointer))
+        return mainmemory.read_u16_be(defref + 0x38 + (0x3C * self.animationPointer))
+    end
+    return false
+end
+
+function BTModel:setObjectAnimation(animation2Bytes)
+    self.animationPointer = mainmemory.read_u16_be(self.singleModelPointer + self.animation_index)
+    local defref = self.banjoRAM:dereferencePointer(self.banjoRAM.animationPointer)
+    if defref ~= nil
+    then
+        print("writing to Mem")
+        print(defref + 0x38 + (0x3C * self.animationPointer))
+        mainmemory.write_u16_be(defref + 0x38 + (0x3C * self.animationPointer), animation2Bytes)
+        return true;
+    end
+    return false;
 end
 
 function BTModel:getAnimationType(modelPtr)
@@ -726,6 +771,22 @@ local ASSET_MAP_CHECK = {
         [0x132] = "1230787", -- HF:Ice Grotto
         [0x13A] = "1230788", -- CC:Cavern
         [0x142] = "1230789" -- JV
+    },
+    ["STATIONBTN"] = {
+        [0x155] = "1230794", -- Clifftop + Button
+        [0x112] = "1230791", -- TDL Button
+        [0x100] = "1230790", -- GI Button
+        [0x127] = "1230792", -- HFP Lava button
+        [0x128] = "1230793", -- HFP Ice button
+        [0xEC] = "1230795" -- WW Button + Station
+    },
+    ["STATIONMAPS"] = { --Don't need to Include WW and Clifftop
+        0x102, -- GI
+        0x12A, -- HFP Icy
+        0x129, -- HFP Lava
+        0x114, -- TDL
+        0xD7,  -- GGM
+        0xD0,  -- SPECIAL- CHUFFY CAB
     }
 }
 
@@ -739,10 +800,12 @@ local AMM = {};
 local AGI = {};
 local AGI_MOVES = {};
 local AGI_NOTES = {};
+local AGI_STATIONS = {};
 
--- Banjo Tooie Movelist Table
-local BKM = {};
+
+local BKM = {}; -- Banjo Tooie Movelist Table
 local BKNOTES = {}; -- Notes
+local BKSTATIONS = {} -- Stations
 
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
@@ -2671,6 +2734,45 @@ local NON_AGI_MAP = {
             ['bit'] = 7,
             ['name'] = 'JV: Treble Clef'
         },
+    },
+    ["STATIONS"] = {
+        ["1230790"] = {
+            ['addr'] = 0x27,
+            ['bit'] = 3,
+            ['name'] = "Train Switch GI"
+        },
+        ["1230791"] = {
+            ['addr'] = 0x27,
+            ['bit'] = 4,
+            ['name'] = "Train Switch TDL"
+        },
+        ["1230792"] = {
+            ['addr'] = 0x34,
+            ['bit'] = 7,
+            ['name'] = "Train Switch HFP Lava"
+        },
+        ["1230793"] = {
+            ['addr'] = 0x35,
+            ['bit'] = 0,
+            ['name'] = "Train Switch HFP Ice"
+        },
+        ["1230794"] = {
+            ['addr'] = 0x7B,
+            ['bit'] = 3,
+            ['name'] = "Train Switch Clifftop"
+        },
+        ["1230795"] = {
+            ['addr'] = 0x0D,
+            ['bit'] = 6,
+            ['name'] = "Train Switch WW"
+        }
+    },
+    ["CHUFFY"] = {
+        ["1230796"] = {
+            ['addr'] = 0x0B,
+            ['bit'] = 6,
+            ['name'] = "King Coal Defeated"
+        },
     }
 }
 
@@ -2695,27 +2797,21 @@ function readAPLocationChecks(type)
     end
 end
 
-function update_BMK_MOVES_checks() --Only run when close to Silos
-    for keys, moveId in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP])
+---------------------------------- BKNOTES ---------------------------------
+
+function init_BKNOTES(type) -- Initialize BMK
+    local checks = {}
+    for k,v in pairs(NON_AGI_MAP['TREBLE'])
     do
-        if keys ~= "Exceptions"
+        if type == "BKNOTES"
         then
-            local get_addr = NON_AGI_MAP['MOVES'][moveId]
-            if BKM[moveId] == false
-            then
-                local res = BTRAMOBJ:checkFlag(get_addr['addr'], get_addr['bit'], "BMK_MOVES_CHECK")
-                if res == true
-                then
-                    if DEBUG == true 
-                    then
-                        print("Already learnt this Silo. finished")
-                    end
-                    BKM[moveId] = res
-                    SILOS_LOADED = true
-                end
-            end
+            BKNOTES[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
+        elseif type == "AGI"
+        then
+            checks[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK_AGI")
         end
     end
+    return checks
 end
 
 function set_checked_BKNOTES() --Only run transitioning maps
@@ -2761,144 +2857,6 @@ function obtained_AP_BKNOTE()
             BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_OBTAIN");
             break
         end
-    end
-end
-
-function init_BMK(type) -- Initialize BMK
-    local checks = {}
-    for k,v in pairs(NON_AGI_MAP['MOVES'])
-    do
-        if type == "BKM"
-        then
-            BKM[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
-        elseif type == "AGI"
-        then
-            checks[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK_AGI")
-        end
-    end
-    return checks
-end
-
-function init_BKNOTES(type) -- Initialize BMK
-    local checks = {}
-    for k,v in pairs(NON_AGI_MAP['TREBLE'])
-    do
-        if type == "BKNOTES"
-        then
-            BKNOTES[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
-        elseif type == "AGI"
-        then
-            checks[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK_AGI")
-        end
-    end
-    return checks
-end
-
-function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Silo Model is loaded OR Close to Silo
-    --Only clear the moves that we need to clear
-    if ASSET_MAP_CHECK["SILO"][CURRENT_MAP] == nil --Happens when exiting map too quickly when entering a new map
-    then
-        if DEBUG == true 
-        then
-            print("Canceling Clearing of AMM Moves")
-        end
-        return false
-    end
-    for keys, moveId in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP])
-    do
-        if keys ~= "Exceptions"
-        then
-            local addr_info = NON_AGI_MAP["MOVES"][moveId]
-            if BKM[moveId] == false
-            then
-                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit']);
-            elseif BKM[moveId] == true
-            then
-                BTRAMOBJ:setFlag(addr_info['addr'], addr_info['bit'])
-            end
-        else
-            for key, disable_move in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP][keys]) --Exception list, always disable
-            do
-                local addr_info = NON_AGI_MAP["MOVES"][disable_move]
-                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit']);
-            end
-        end
-    end
-    return true
-end
-
-function set_AGI_MOVES_checks() -- SET AGI Moves into RAM AFTER BT/Silo Model is loaded
-    for moveId, table in pairs(NON_AGI_MAP['MOVES'])
-    do
-        if AGI_MOVES[moveId] == true
-        then
-            BTRAMOBJ:setFlag(table['addr'], table['bit']);
-        else
-            BTRAMOBJ:clearFlag(table['addr'], table['bit']);
-        end
-    end
-end
-
-function checkConsumables(consumable_type, location_checks)
-    BTCONSUMEOBJ:changeConsumable(consumable_type)
-	for location_name, value in pairs(AGI[consumable_type])
-	do
-		if(USE_BMM_TBL == false and (value == false and location_checks[consumable_type][location_name] == true))
-		then
-			if(DEBUG == true)
-			then
-				print("Obtained local consumable. Remove from Inventory")
-			end
-			BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() - 1)
-			AGI[consumable_type][location_name] = true
-			savingAGI()
-		end
-	end
-end
-
-function loadGame(current_map)
-    if(current_map == 0x142 or current_map == 0xAF)
-    then
-        local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".BMM", "r") -- get #BTplayer_seed.BMM
-        if f==nil then
-           return false
-        else
-            if DEBUGLVL2 == true
-            then
-                print("Loading BMM Files");
-            end
-            USE_BMM_TBL = true
-            BMM = json.decode(f:read("l"));
-            BKM = json.decode(f:read("l"));
-            BKNOTES = json.decode(f:read("l"));
-            f:close();
-            all_location_checks("AMM");
-            all_location_checks("BMM");
-            BMMRestore();
-            if DEBUG == true
-            then
-                print("Restoring from Load Game")
-            end
-            set_AGI_MOVES_checks();
-            set_AP_BKNOTES();
-            for ap_id, itemId in pairs(receive_map)
-            do
-                if itemId ~= "NA"
-                then
-                    if (1230855 <= tonumber(itemId) and tonumber(itemId) <= 1230863) or (1230174 <= tonumber(itemId) and tonumber(itemId) <= 1230182)
-                    then
-                        processMagicItem(itemId);
-                    end
-                end
-            end
-            GAME_LOADED = true;
-        end
-    else
-        if BYPASS_GAME_LOAD == true
-        then
-            GAME_LOADED = true;
-        end
-        return false;
     end
 end
 
@@ -2953,6 +2911,154 @@ function nearTreble()
     TREBLE_SPOTED = true
     TREBLE_MAP = CURRENT_MAP
     return true
+end
+
+---------------------------------- BKStation ---------------------------------
+
+function init_BKSTATIONS(type) -- Initialize BMK
+    local checks = {}
+    for k,v in pairs(NON_AGI_MAP['STATIONS'])
+    do
+        if type == "BKSTATIONS"
+        then
+            BKSTATIONS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
+        elseif type == "AGI"
+        then
+            checks[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK_AGI")
+        end
+    end
+    return checks
+end
+
+function set_checked_BKSTATIONS() --Only run transitioning maps
+    if ASSET_MAP_CHECK["STATIONS"][CURRENT_MAP] == nil --Happens when exiting map too quickly when entering a new map
+    then
+        if DEBUG == true 
+        then
+            print("Canceling Clearing of Stations")
+        end
+        return false
+    end
+    local stationId = ASSET_MAP_CHECK["STATIONS"][CURRENT_MAP];
+    local get_addr = NON_AGI_MAP['STATIONS'][stationId];
+    if BKSTATIONS[stationId] == true
+    then
+        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKSTATIONS_CHECK");
+    else
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+    end
+    return true;
+end
+
+function set_AP_BKSTATIONS() -- Only run after Transistion
+    for stationId, value in pairs(AGI_STATIONS)
+    do
+        local get_addr = NON_AGI_MAP['STATIONS'][stationId]
+        if value == true
+        then
+            BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKSTATIONS_SET");
+        else
+            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+        end
+    end
+end
+
+function obtained_AP_BKSTATIONS()
+    for locationId, value in pairs(AGI_STATIONS)
+    do
+        if value == false
+        then
+            AGI_STATIONS[locationId] = true;
+            local get_addr = NON_AGI_MAP['STATIONS'][tostring(locationId)]
+            BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKSTATIONS_OBTAIN");
+            break
+        end
+    end
+end
+
+---------------------------------- BKMOVES -----------------------------------
+
+function init_BMK(type) -- Initialize BMK
+    local checks = {}
+    for k,v in pairs(NON_AGI_MAP['MOVES'])
+    do
+        if type == "BKM"
+        then
+            BKM[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
+        elseif type == "AGI"
+        then
+            checks[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK_AGI")
+        end
+    end
+    return checks
+end
+
+function update_BMK_MOVES_checks() --Only run when close to Silos
+    for keys, moveId in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP])
+    do
+        if keys ~= "Exceptions"
+        then
+            local get_addr = NON_AGI_MAP['MOVES'][moveId]
+            if BKM[moveId] == false
+            then
+                local res = BTRAMOBJ:checkFlag(get_addr['addr'], get_addr['bit'], "BMK_MOVES_CHECK")
+                if res == true
+                then
+                    if DEBUG == true 
+                    then
+                        print("Already learnt this Silo. finished")
+                    end
+                    BKM[moveId] = res
+                    SILOS_LOADED = true
+                end
+            end
+        end
+    end
+end
+
+function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Silo Model is loaded OR Close to Silo
+    --Only clear the moves that we need to clear
+    if ASSET_MAP_CHECK["SILO"][CURRENT_MAP] == nil --Happens when exiting map too quickly when entering a new map
+    then
+        if DEBUG == true 
+        then
+            print("Canceling Clearing of AMM Moves")
+        end
+        return false
+    end
+    for keys, moveId in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP])
+    do
+        if keys ~= "Exceptions"
+        then
+            local addr_info = NON_AGI_MAP["MOVES"][moveId]
+            if BKM[moveId] == false
+            then
+                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit']);
+            elseif BKM[moveId] == true
+            then
+                BTRAMOBJ:setFlag(addr_info['addr'], addr_info['bit'])
+            end
+        else
+            for key, disable_move in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP][keys]) --Exception list, always disable
+            do
+                local addr_info = NON_AGI_MAP["MOVES"][disable_move]
+                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit']);
+            end
+        end
+    end
+    return true
+end
+
+function set_AGI_MOVES_checks() -- SET AGI Moves into RAM AFTER BT/Silo Model is loaded
+    for moveId, table in pairs(NON_AGI_MAP['MOVES'])
+    do
+        if AGI_MOVES[moveId] == true
+        then
+            BTRAMOBJ:setFlag(table['addr'], table['bit']);
+        else
+            BTRAMOBJ:clearFlag(table['addr'], table['bit']);
+        end
+    end
 end
 
 function getSiloPlayerModel()
@@ -3141,6 +3247,71 @@ function MoveDoubloon()
     end
 end
 
+
+
+function checkConsumables(consumable_type, location_checks)
+    BTCONSUMEOBJ:changeConsumable(consumable_type)
+	for location_name, value in pairs(AGI[consumable_type])
+	do
+		if(USE_BMM_TBL == false and (value == false and location_checks[consumable_type][location_name] == true))
+		then
+			if(DEBUG == true)
+			then
+				print("Obtained local consumable. Remove from Inventory")
+			end
+			BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() - 1)
+			AGI[consumable_type][location_name] = true
+			savingAGI()
+		end
+	end
+end
+
+function loadGame(current_map)
+    if(current_map == 0x142 or current_map == 0xAF)
+    then
+        local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".BMM", "r") -- get #BTplayer_seed.BMM
+        if f==nil then
+           return false
+        else
+            if DEBUGLVL2 == true
+            then
+                print("Loading BMM Files");
+            end
+            USE_BMM_TBL = true
+            BMM = json.decode(f:read("l"));
+            BKM = json.decode(f:read("l"));
+            BKNOTES = json.decode(f:read("l"));
+            f:close();
+            all_location_checks("AMM");
+            all_location_checks("BMM");
+            BMMRestore();
+            if DEBUG == true
+            then
+                print("Restoring from Load Game")
+            end
+            set_AGI_MOVES_checks();
+            set_AP_BKNOTES();
+            for ap_id, itemId in pairs(receive_map)
+            do
+                if itemId ~= "NA"
+                then
+                    if (1230855 <= tonumber(itemId) and tonumber(itemId) <= 1230863) or (1230174 <= tonumber(itemId) and tonumber(itemId) <= 1230182)
+                    then
+                        processMagicItem(itemId);
+                    end
+                end
+            end
+            GAME_LOADED = true;
+        end
+    else
+        if BYPASS_GAME_LOAD == true
+        then
+            GAME_LOADED = true;
+        end
+        return false;
+    end
+end
+
 function MoveBathPads()
     BTMODELOBJ:changeName("Kazooie Split Pad", false)
     POS = BTMODELOBJ:getSingleModelCoords(nil)
@@ -3168,7 +3339,7 @@ function locationControl()
     BTMODELOBJ:changeName("Player", false)
     local player = BTMODELOBJ:checkModel();
 
-    if USE_BMM_TBL == true
+    if USE_BMM_TBL == true --Only used If Maps are AROUND or IN Wooded Hollow or JWTemple
     then
         if BTRAMOBJ:checkFlag(0x1F, 0, "LocControl1")== true -- DEMO FILE
         then
@@ -3215,7 +3386,7 @@ function locationControl()
             local DEMO = { ['DEMO'] = true}
             return DEMO
         else
-            if (CURRENT_MAP ~= mapaddr) and ENABLE_AP_MOVES == true
+            if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_MOVES == true
             then
                 WATCH_LOADED_SILOS = false
                 for map,moves in pairs(ASSET_MAP_CHECK["SILO"])
@@ -3236,6 +3407,12 @@ function locationControl()
                 set_checked_BKNOTES();
                 TREBLE_WAIT_TIMER = 0
                 CHECK_FOR_TREBLE = true
+            end
+            if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_STATIONS == true
+            then
+                set_checked_BKSTATIONS()
+                STATION_BTN_TIMER = 0
+                CHECK_FOR_STATIONBTN = true
             end
             if CURRENT_MAP == 0xF4 and BATH_PADS_QOL == false
             then
@@ -3910,6 +4087,14 @@ function process_slot(block)
     then
         ENABLE_AP_TREBLE = true
     end
+    if block['slot_stations'] ~= nil and block['slot_stations'] ~= "false"
+    then
+        ENABLE_AP_STATIONS = true
+    end
+    if block['slot_chuffy'] ~= nil and block['slot_chuffy'] ~= "false"
+    then
+        ENABLE_AP_CHUFFY = true
+    end
     if SEED ~= 0
     then
         loadAGI()
@@ -4009,6 +4194,7 @@ function saveGame()
     GAME_LOADED = false;
     SAVE_GAME = false;
 end
+
 
 function main()
     if not checkBizHawkVersion() then
