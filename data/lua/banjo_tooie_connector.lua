@@ -313,7 +313,8 @@ BTModel = {
         ["Doubloon"] = 0x7C0,
         ["Treble Clef"] = 0x6ED,
         ["Station Switch"] = 0x86D,
-        ["Levitate Pad"] = 0x7D8
+        ["Levitate Pad"] = 0x7D8,
+        ["Jiggy"] = 0x610
     };
     model_enemy_list = {
         ["Ugger"] = 0x671,
@@ -3066,24 +3067,19 @@ function set_checked_BKCHUFFY() --Only when Inside Chuffy
     end
 end
 
-function watchChuffyFlag()
-    local get_addr = NON_AGI_MAP['CHUFFY']["1230796"]
-    local CoalmanDed = BTRAMOBJ:checkFlag(get_addr['addr'], get_addr['bit'])
-    if CoalmanDed == true
-    then
-        DEAD_COAL_CHECK = DEAD_COAL_CHECK + 1
-    else
-        DEAD_COAL_CHECK = 0
-    end
-    if DEAD_COAL_CHECK >= 3 then  -- Sanity check incase Pointer is moving
+function watchChuffyFlag() 
+    BTMODELOBJ:changeName("Jiggy", false)
+    killedKing = BTMODELOBJ:checkModel()
+    if killedKing == true
+    then  -- Sanity check incase Pointer is moving
         BKCHUFFY["1230796"] = true
         CHUFFY_STOP_WATCH = true
     end
 end
 
 function set_AP_CHUFFY() -- Only run after Transistion
-    local get_addr = NON_AGI_MAP['CHUFFY']["1230191"];
-    if AGI_CHUFFY["1230191"] == true
+    local get_addr = NON_AGI_MAP['CHUFFY']["1230796"];
+    if AGI_CHUFFY["1230796"] == true
     then
         BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "APCHUFFY_SET");
         return true
@@ -3105,7 +3101,7 @@ function obtained_AP_CHUFFY()
 end
 
 function getChuffyMaps()
-    if CURRENT_MAP ~= nil
+    if CURRENT_MAP == nil
     then
         return
     end
@@ -3131,9 +3127,8 @@ function moveLevitatePad()
     then
         return false
     end
-    BTMODELOBJ:moveModelObject(nil, nil, -10, nil)
+    BTMODELOBJ:moveModelObject(nil, nil, -100, nil)
     LEVI_PAD_MOVED = true;
-    print("Pads Moved")
     return true
 end
 
@@ -3147,10 +3142,10 @@ function watchBtnAnimation()
     local currentAnimation = BTMODELOBJ:getObjectAnimation();
     if currentAnimation ~= 0x81 --Button Pressed
     then
-        if DEBUG == true
-        then
-            print("Station Button not pressed")
-        end
+        -- if DEBUG == true
+        -- then
+        --     print("Station Button not pressed")
+        -- end
     else
         if DEBUG == true
         then
@@ -3627,7 +3622,7 @@ function BKCheckAssetLogic()
             set_AP_STATIONS()
         end
     end
-    if CHUFFY_MAP_TRANS == true or CHUFFY_STOP_WATCH == false
+    if CHUFFY_MAP_TRANS == true or CHUFFY_STOP_WATCH == false or (CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false)
     then
         if AGI_CHUFFY["1230796"] == false and CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false
         then
