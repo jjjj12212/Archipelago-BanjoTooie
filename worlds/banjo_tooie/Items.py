@@ -101,12 +101,12 @@ misc_collectable_table = {
 }
 
 stations_table = {
-    itemName.TRAINSWIH:     ItemData(1230185,  1, "progress", locationName.TRAINSWIH),
-    itemName.TRAINSWTD:     ItemData(1230186,  1, "progress", locationName.TRAINSWTD),
-    itemName.TRAINSWGI:     ItemData(1230187,  1, "progress", locationName.TRAINSWGI),
-    itemName.TRAINSWHP1:    ItemData(1230188,  1, "progress", locationName.TRAINSWHP1),
-    itemName.TRAINSWHP2:    ItemData(1230189,  1, "progress", locationName.TRAINSWHP2),
-    itemName.TRAINSWWW:     ItemData(1230190,  1, "progress", locationName.TRAINSWWW),
+    itemName.TRAINSWIH:     ItemData(1230794,  1, "progress", locationName.TRAINSWIH),
+    itemName.TRAINSWTD:     ItemData(1230791,  1, "progress", locationName.TRAINSWTD),
+    itemName.TRAINSWGI:     ItemData(1230790,  1, "progress", locationName.TRAINSWGI),
+    itemName.TRAINSWHP1:    ItemData(1230792,  1, "progress", locationName.TRAINSWHP1),
+    itemName.TRAINSWHP2:    ItemData(1230793,  1, "progress", locationName.TRAINSWHP2),
+    itemName.TRAINSWWW:     ItemData(1230795,  1, "progress", locationName.TRAINSWWW),
 }
 
 
