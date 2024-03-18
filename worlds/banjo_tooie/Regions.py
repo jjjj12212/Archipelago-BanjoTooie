@@ -88,14 +88,14 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.BBAYONET,
         locationName.TREBLEGM
     ],
+    regionName.GMS: [
+    ],
+    regionName.CHUFFY: [
+        locationName.JIGGYGM1,
+        locationName.CHUFFY
+    ],
     regionName.IOHPG:   [
         locationName.GEGGS
-    ],
-    regionName.IOHCT:   [
-        locationName.JINJOIH3,
-        locationName.GLOWBOIH1,
-        locationName.IEGGS,
-        locationName.TRAINSWIH
     ],
     regionName.WW:      [
         locationName.JINJOWW1,
@@ -126,6 +126,17 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.PACKWH,
         locationName.TREBLEWW
     ],
+    regionName.WWS: [
+        locationName.TRAINSWWW
+    ],
+    regionName.IOHCT:   [
+        locationName.JINJOIH3,
+        locationName.GLOWBOIH1,
+        locationName.IEGGS,
+        locationName.TRAINSWIH
+    ],
+    regionName.IOHCTS: [],
+    
     regionName.JR:      [
         locationName.JRLDB1,
         locationName.JRLDB2,
@@ -222,6 +233,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.TL_HATCH: [
         locationName.HATCH,
     ],
+    regionName.TLS: [],
     regionName.IOHQM:   [],
     regionName.GI:      [
         locationName.JINJOGI1,
@@ -253,7 +265,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.TREBLEGI,
         locationName.TRAINSWGI,
     ],
-    regionName.HP:      [
+    regionName.GIS: [],
+    regionName.HP: [
         locationName.JINJOHP1,
         locationName.JINJOHP2,
         locationName.JINJOHP3,
@@ -281,6 +294,10 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.TREBLEHP,
         locationName.TRAINSWHP1,
         locationName.TRAINSWHP2
+    ],
+    regionName.HPLS: [],      
+    regionName.HPIS: [
+        locationName.JIGGYHP5,
     ],
     regionName.CC:      [
         locationName.JINJOCC1,
@@ -313,22 +330,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.CK: [],
     regionName.H1: [
         locationName.HAG1
-    ],
-    regionName.GMS: [
-    ],
-    regionName.CHUFFY: [
-        locationName.JIGGYGM1,
-        locationName.CHUFFY
-    ],
-    regionName.TLS: [],
-    regionName.GIS: [],     
-    regionName.HPLS: [],      
-    regionName.HPIS: [
-        locationName.JIGGYHP5,
-    ],     
-    regionName.IOHCTS: [],
-    regionName.WWS: [
-        locationName.TRAINSWWW
     ]
 }
 
