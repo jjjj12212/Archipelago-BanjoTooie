@@ -839,7 +839,7 @@ class BanjoTooieRules:
         if self.world.options.multiworld_chuffy == False:
             return self.check_mumbo_magic(state, itemName.MUMBOGM)
         else:
-            state.has(itemName.CHUFFY, self.player)
+            return state.has(itemName.CHUFFY, self.player)
 
     def WW_train_station(self, state) -> bool:
         return state.has(itemName.CHUFFY, self.player) and \
