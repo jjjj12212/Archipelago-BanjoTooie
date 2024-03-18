@@ -164,7 +164,10 @@ class BanjoTooieRules:
             locationName.JIGGYGM6: lambda state: self.dilberta_free(state),
             locationName.JIGGYGM7: lambda state: self.check_mumbo_magic(state, itemName.MUMBOGM),
             locationName.JIGGYGM8: lambda state: state.has(itemName.SPRINGB, self.player) or
-                                                 (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)),
+                                                 ((self.check_solo_moves(state, itemName.WWHACK) or 
+                                                   self.check_solo_moves(state, itemName.GLIDE)) and
+                                                  (state.has(itemName.BDRILL, self.player) or 
+                                                   self.check_humba_magic(state, itemName.HUMBAGM))),
             locationName.JIGGYGM9: lambda state: self.GM_boulders(state) and
                                                  (state.has(itemName.SPLITUP, self.player) or
                                                   self.has_fire(state)),
