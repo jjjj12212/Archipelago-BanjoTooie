@@ -4177,6 +4177,39 @@ function checkTotalMenu()
     end
 end
 
+function DPadStats()
+    if GAME_LOADED == true
+    then
+        local check_controls = joypad.get()
+        if check_controls ~= nil and check_controls['P1 DPad R'] == true
+        then
+            print(" ")
+            print(" ")
+            print("Unlocked Moves:")
+            for locationId, values in pairs(NON_AGI_MAP["MOVES"])
+            do             
+                if AGI_MOVES[locationId] == true
+                then
+                    print(values['name'])
+                end
+            end
+        end
+        if check_controls ~= nil and check_controls['P1 DPad U'] == true
+        then
+            print(" ")
+            print(" ")
+            print("Collected Treble Clefs:")
+            for locationId, values in pairs(NON_AGI_MAP["TREBLE"])
+            do             
+                if BKNOTES[locationId] == true
+                then
+                    print(values['name'])
+                end
+            end
+        end
+    end
+end
+
 function savingAGI()
     local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "w") --generate #BTplayer_seed.AGI
     if DEBUGLVL2 == true
@@ -4528,7 +4561,8 @@ function main()
                 if not (INIT_COMPLETE) or CURRENT_MAP == 0x158 then
 					initializeFlags();
 				end
-                BKAssetFound()
+                BKAssetFound();
+                DPadStats();
             end
         elseif (CUR_STATE == STATE_UNINITIALIZED) then
             if  (FRAME % 60 == 0) then
