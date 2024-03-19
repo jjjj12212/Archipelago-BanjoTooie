@@ -155,7 +155,7 @@ class BanjoTooieRules:
             locationName.JIGGYMT10: lambda state: state.has(itemName.GGRAB, self.player) and
                                                  self.check_mumbo_magic(state, itemName.MUMBOMT),
             #Glitter Gulch Mine Jiggies
-            locationName.JIGGYGM1: lambda state: self.check_mumbo_magic(state, itemName.MUMBOGM),
+            locationName.JIGGYGM1: lambda state: self.can_beat_king_coal(state),
             locationName.JIGGYGM2: lambda state: self.canary_mary_free(state),
             locationName.JIGGYGM3: lambda state: self.has_fire(state),
             locationName.JIGGYGM5: lambda state: state.has(itemName.BBLASTER, self.player) and

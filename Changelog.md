@@ -9,6 +9,7 @@
 - Dpad right: display unlocked moves in lua console
 - Dpad down: display collected Treble Clefs
 - Text within Bizhawk on relevant items
+- correct MT Glowbo location checks
 
 # 0.8.2-beta
 - Swapped wrong Glowbos.  
