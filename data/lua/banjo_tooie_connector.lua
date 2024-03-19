@@ -183,6 +183,8 @@ BTRAM = {
     map_addr = 0x132DC2;
     player_pos_ptr = 0xE4,
     animationPointer = 0x136E70,
+    movement_ptr = 0x120,
+    current_state = 0x4
 } 
 
 
@@ -246,6 +248,16 @@ function BTRAM:getBanjoPos()
     pos["Ypos"] = mainmemory.readfloat(plptr + 0x4, true);
     pos["Zpos"] = mainmemory.readfloat(plptr + 0x8, true);
     return pos;
+end
+
+function BTRAM:getBanjoMovementState()
+    local player = BTRAM:banjoPTR()
+    if player ~= nil
+    then
+        local movestate = BTRAM:dereferencePointer(player + self.movement_ptr)
+        return mainmemory.read_u32_be(movestate + self.current_state)
+    end
+    return nil
 end
 
 
@@ -3023,7 +3035,7 @@ function watchBtnAnimation()
         return false
     end
     local currentAnimation = BTMODELOBJ:getObjectAnimation();
-    if currentAnimation ~= 0x81 --Button Pressed
+    if currentAnimation ~= 0x81 -- not yet pressed
     then
         if DEBUG == true
         then
@@ -3035,8 +3047,8 @@ function watchBtnAnimation()
             print("Detected Station Button got pressed")
         end
         BKSTATIONS[ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP]] = true;
-        WATCH_LOADED_STATIONBTN = false;
-        set_AP_STATIONS()
+        --Removed the Stop Watch here as the Stations doesn't get set right away. this will cover it at least...
+        set_AP_STATIONS() 
     end
 end
 
@@ -3131,32 +3143,6 @@ function moveLevitatePad()
     LEVI_PAD_MOVED = true;
     return true
 end
-
-function watchBtnAnimation()
-    BTMODELOBJ:changeName("Station Switch", false);
-    local POS = BTMODELOBJ:getSingleModelCoords();
-    if POS == false
-    then
-        return false
-    end
-    local currentAnimation = BTMODELOBJ:getObjectAnimation();
-    if currentAnimation ~= 0x81 --Button Pressed
-    then
-        -- if DEBUG == true
-        -- then
-        --     print("Station Button not pressed")
-        -- end
-    else
-        if DEBUG == true
-        then
-            print("Detected Station Button got pressed")
-        end
-        BKSTATIONS[ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP]] = true;
-        WATCH_LOADED_STATIONBTN = false;
-        set_AP_STATIONS()
-    end
-end
-
 
 ---------------------------------- BKMOVES -----------------------------------
 
@@ -3476,7 +3462,7 @@ function loadGame(current_map)
             set_AGI_MOVES_checks();
             set_AP_BKNOTES();
             set_AP_STATIONS();
-            for ap_id, itemId in pairs(receive_map)
+            for ap_id, itemId in pairs(receive_map) -- Sanity Check
             do
                 if itemId ~= "NA"
                 then
