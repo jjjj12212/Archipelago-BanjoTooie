@@ -8,8 +8,10 @@
 - Dpad Up: Banjo Tiptoes
 - Dpad right: display unlocked moves in lua console
 - Dpad down: display collected Treble Clefs
+- Dpad left: aim assist (homing eggs)
 - Text within Bizhawk on relevant items
 - correct MT Glowbo location checks
+- Fix for Puzzle Check dump.
 
 # 0.8.2-beta
 - Swapped wrong Glowbos.  

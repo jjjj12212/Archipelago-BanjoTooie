@@ -5,6 +5,7 @@ Banjo Tooie for Archipelago
  - Dpad Up: Banjo Tiptoes
  - Dpad right: display unlocked moves in lua console
  - Dpad down: display collected Treble Clefs
+ - Dpad left: Aim Assist (Homing Eggs)
 
 # Current implementation
 - Death Link **(Still ongoing progress)** **(Disabled for the time being)**

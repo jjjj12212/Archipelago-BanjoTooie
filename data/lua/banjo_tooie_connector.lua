@@ -4567,6 +4567,9 @@ function initializeFlags()
         init_CHUFFY("BKCHUFFY")
         AGI_MOVES = init_BMK("AGI");
         AGI_NOTES = init_BKNOTES("AGI");
+        receive_map = { -- initialize incase suffered a hard crash and losing save file.
+        ["NA"] = "NA"
+        }
 		if (SKIP_TOT ~= "false") then
 			-- ToT Misc Flags
 			BTRAMOBJ:setFlag(0xAB, 2)
