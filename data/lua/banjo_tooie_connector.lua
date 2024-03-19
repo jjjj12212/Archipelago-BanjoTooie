@@ -3509,6 +3509,20 @@ function MoveBathPads()
     BATH_PADS_QOL = true
 end
 
+function SolvingPuzzle(mapaddr) -- Avoid false checks when working on puzzles
+    if CURRENT_MAP ~= 0x151 --The Temple
+    then
+        return false
+    end
+    if mapaddr == 0xC5 or mapaddr == 0xD8 or mapaddr == 0x152 or mapaddr == 0xE1
+        or mapaddr == 0x154 or mapaddr == 0xF4 or mapaddr == 0x155 or mapaddr == 0x114
+        or mapaddr == 0x15A or mapaddr == 0x107 or mapaddr == 0x15C or mapaddr == 0x129
+        or mapaddr == 0x13A or mapaddr == 0x151 or mapaddr == 0x15D or mapaddr == 0x160
+    then
+        return true
+    end
+end
+
 function BKLogics(mapaddr)
     BTMODELOBJ:changeName("Player", false)
     local player = BTMODELOBJ:checkModel();
@@ -3667,9 +3681,19 @@ end
 
 function locationControl()
     local mapaddr = BTRAMOBJ:getMap()
-
-    if USE_BMM_TBL == true --Only used If Maps are AROUND or IN Wooded Hollow or JWTemple
+    if mapaddr == nil --We don't want this to process anything
     then
+        local DEMO = { ['DEMO'] = true}
+        return DEMO
+    end
+    if SolvingPuzzle(mapaddr) == true
+    then
+        local DEMO = { ['DEMO'] = true}
+        return DEMO
+    end
+    
+    if USE_BMM_TBL == true --Only used If Maps are AROUND or IN Wooded Hollow or JWTemple
+    then 
         if BTRAMOBJ:checkFlag(0x1F, 0, "LocControl1")== true -- DEMO FILE
         then
             local DEMO = { ['DEMO'] = true}
