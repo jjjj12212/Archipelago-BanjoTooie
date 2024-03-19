@@ -3034,6 +3034,10 @@ function watchBtnAnimation()
     then
         return false
     end
+    if CURRENT_MAP == nil
+    then
+        return
+    end
     local currentAnimation = BTMODELOBJ:getObjectAnimation();
     if currentAnimation ~= 0x81 -- not yet pressed
     then
