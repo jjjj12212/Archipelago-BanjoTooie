@@ -50,6 +50,8 @@ local USE_BMM_TBL = false;
 local CLOSE_TO_ALTAR = false;
 local DETECT_DEATH = false;
 local YJOY = nil;
+local TEXT_TIMER = 3;
+local TEXT_START = false;
 
 local ENABLE_AP_HONEYCOMB = false;
 local ENABLE_AP_PAGES = false;
@@ -58,6 +60,7 @@ local ENABLE_AP_DOUBLOONS = false;
 local ENABLE_AP_TREBLE = false;
 local ENABLE_AP_STATIONS = false;
 local ENABLE_AP_CHUFFY = false;
+local AP_MESSAGES = {};
 
 local GAME_LOADED = false;
 -------------- SILO VARS ------------
@@ -88,9 +91,6 @@ DEAD_COAL_CHECK = 0;
 CHUFFY_MAP_TRANS = false;
 CHUFFY_STOP_WATCH = true;
 LEVI_PAD_MOVED = false;
-
-
-
 
 local BATH_PADS_QOL = false
 
@@ -260,7 +260,6 @@ function BTRAM:getBanjoMovementState()
     end
     return nil
 end
-
 
 function BTRAM:getMap()
     local map = mainmemory.read_u16_be(self.map_addr);
@@ -3848,17 +3847,36 @@ function all_location_checks(type)
     return location_checks
 end
 
+function processMessages()
+    if next(AP_MESSAGES) ~= nil
+    then
+        if TEXT_START == false
+        then
+            message = table.remove(AP_MESSAGES)
+            archipelago_msg_box(message)
+        end
+    end
+end
+
 function archipelago_msg_box(msg)
-    i = 0
-    while i<100 do
         bgcolor = "#FC6600"
         brcolor = "#000000"
+        if TEXT_START == false
+        then
+            gui.drawText(300, 1500, msg, bgcolor, bgcolor, 40)
+            TEXT_START = true
+        end
+end
 
-        gui.drawText(400, 1500, msg, bgcolor, bgcolor, 58)
-        emu.frameadvance()
-        i = i + 1
+function clearText()
+    if TEXT_TIMER > 0
+    then
+        TEXT_TIMER = TEXT_TIMER - 1
+    else
+        gui.clearGraphics()
+        TEXT_TIMER = 3
+        TEXT_START = false
     end
-    gui.clearGraphics()
 end
 
 function processMagicItem(loc_ID)
@@ -3981,10 +3999,13 @@ function process_block(block)
     then
         processAGIItem(block['items'])
     end
---     if block['messages'] ~= nil and block['messages'] ~= "" 
---     then
---  --       archipelago_msg_box(block['messages']);
---     end
+    if next(block['messages']) ~= nil
+    then
+        for k, message in pairs(block['messages'])
+        do
+            table.insert(AP_MESSAGES, message)
+        end
+    end
 --     if block['triggerDeath'] == true
 --     then
 --         KILL_BANJO = true;
@@ -4218,6 +4239,7 @@ function DPadStats()
             joypad.setanalog({['P1 Y Axis'] = '' })
             YJOY = false
         end
+
     end
 end
 
@@ -4565,6 +4587,11 @@ function main()
                 end
                 BKCheckAssetLogic()
                 gameSaving();
+                if TEXT_START == true then
+                    clearText()
+                elseif TEXT_START == false then
+                    processMessages()
+                end
             elseif (FRAME % 10 == 0)
             then
                 checkPause();
@@ -4585,7 +4612,6 @@ function main()
                     BT_SOCK = client
                     BT_SOCK:settimeout(0)
                 else
-                    archipelago_msg_box('Connection failed, ensure Banjo Tooie Client is running, connected and rerun banjotooie_connector.lua')
                     print('Connection failed, ensure Banjo Tooie Client is running, connected and rerun banjotooie_connector.lua')
                     return
                 end
