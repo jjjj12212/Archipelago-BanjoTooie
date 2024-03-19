@@ -49,8 +49,9 @@ local SAVE_GAME = false;
 local USE_BMM_TBL = false;
 local CLOSE_TO_ALTAR = false;
 local DETECT_DEATH = false;
-local YJOY = nil;
-local TEXT_TIMER = 3;
+local SNEAK = false;
+local AIMASSIST = false;
+local TEXT_TIMER = 2;
 local TEXT_START = false;
 
 local ENABLE_AP_HONEYCOMB = false;
@@ -3691,9 +3692,9 @@ function locationControl()
         local DEMO = { ['DEMO'] = true}
         return DEMO
     end
-    
+
     if USE_BMM_TBL == true --Only used If Maps are AROUND or IN Wooded Hollow or JWTemple
-    then 
+    then     
         if BTRAMOBJ:checkFlag(0x1F, 0, "LocControl1")== true -- DEMO FILE
         then
             local DEMO = { ['DEMO'] = true}
@@ -3902,7 +3903,7 @@ function clearText()
         TEXT_TIMER = TEXT_TIMER - 1
     else
         gui.clearGraphics()
-        TEXT_TIMER = 3
+        TEXT_TIMER = 2
         TEXT_START = false
     end
 end
@@ -4243,6 +4244,15 @@ function DPadStats()
                     print(values['name'])
                 end
             end
+            print(" ")
+            print("Unlocked Magic:")
+            for locationId, values in pairs(NON_AGI_MAP["MAGIC"])
+            do        
+                local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
+                if results == true then
+                    print(values['name'])
+                end
+            end
         end
         if check_controls ~= nil and check_controls['P1 DPad D'] == true
         then
@@ -4258,14 +4268,26 @@ function DPadStats()
             end
         end
 
-        if check_controls ~= nil and check_controls['P1 DPad U'] == true
+        if check_controls ~= nil and check_controls['P1 DPad L'] == true and AIMASSIST == false
+        then
+           BTRAMOBJ:setFlag(0xAF, 3, "Aim Assist")
+           AIMASSIST = true
+           print("Aim Assist Enabled")
+        elseif check_controls ~= nil and check_controls['P1 DPad L'] == true and AIMASSIST == true
+        then
+            BTRAMOBJ:clearFlag(0xAF, 3)
+            AIMASSIST = false
+            print("Aim Assist Disabled")
+        end
+
+        if check_controls ~= nil and check_controls['P1 DPad U'] == true and SNEAK == false
         then
             joypad.setanalog({['P1 Y Axis'] = 18 })
-            YJOY = true
-        elseif check_controls ~= nil and check_controls['P1 DPad U'] == false and YJOY == true
+            SNEAK = true
+        elseif check_controls ~= nil and check_controls['P1 DPad U'] == false and SNEAK == true
         then
             joypad.setanalog({['P1 Y Axis'] = '' })
-            YJOY = false
+            SNEAK = false
         end
 
     end
