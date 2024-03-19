@@ -5,6 +5,9 @@
     - Once Obtained, you can summon Chuffy, but you still need to beat Old King Coal to travel.
   - Beating Old King Coal is now an additional check
 - Logic Changes
+- Dpad Up: Banjo Tiptoes
+- Dpad right: display unlocked moves in lua console
+- Dpad down: display collected Treble Clefs
 
 # 0.8.2-beta
 - Swapped wrong Glowbos.  

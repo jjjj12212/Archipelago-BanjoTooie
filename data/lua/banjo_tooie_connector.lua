@@ -49,6 +49,7 @@ local SAVE_GAME = false;
 local USE_BMM_TBL = false;
 local CLOSE_TO_ALTAR = false;
 local DETECT_DEATH = false;
+local YJOY = nil;
 
 local ENABLE_AP_HONEYCOMB = false;
 local ENABLE_AP_PAGES = false;
@@ -4194,7 +4195,7 @@ function DPadStats()
                 end
             end
         end
-        if check_controls ~= nil and check_controls['P1 DPad U'] == true
+        if check_controls ~= nil and check_controls['P1 DPad D'] == true
         then
             print(" ")
             print(" ")
@@ -4206,6 +4207,16 @@ function DPadStats()
                     print(values['name'])
                 end
             end
+        end
+
+        if check_controls ~= nil and check_controls['P1 DPad U'] == true
+        then
+            joypad.setanalog({['P1 Y Axis'] = 18 })
+            YJOY = true
+        elseif check_controls ~= nil and check_controls['P1 DPad U'] == false and YJOY == true
+        then
+            joypad.setanalog({['P1 Y Axis'] = '' })
+            YJOY = false
         end
     end
 end
