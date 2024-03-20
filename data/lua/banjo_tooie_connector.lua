@@ -4628,7 +4628,7 @@ function main()
             PREV_STATE = CUR_STATE
         end
         if (CUR_STATE == STATE_OK) or (CUR_STATE == STATE_INITIAL_CONNECTION_MADE) or (CUR_STATE == STATE_TENTATIVELY_CONNECTED) then
-            if (FRAME % 60 == 0) then
+            if (FRAME % 60 == 1) then
                 BTRAM:banjoPTR()
                 receive();
                 if SKIP_TOT == "true" and CURRENT_MAP == 0x15E then
@@ -4645,7 +4645,7 @@ function main()
                 elseif TEXT_START == false then
                     processMessages()
                 end
-            elseif (FRAME % 10 == 0)
+            elseif (FRAME % 10 == 1)
             then
                 checkPause();
                 checkTotalMenu();
@@ -4656,7 +4656,7 @@ function main()
                 DPadStats();
             end
         elseif (CUR_STATE == STATE_UNINITIALIZED) then
-            if  (FRAME % 60 == 0) then
+            if  (FRAME % 60 == 1) then
                 server:settimeout(2)
                 local client, timeout = server:accept()
                 if timeout == nil then
