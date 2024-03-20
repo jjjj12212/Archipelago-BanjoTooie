@@ -68,6 +68,8 @@ local WATCH_LOADED_TREBLE = false; -- if object is loaded or not
 local TREBLE_SPOTED = false; -- used if Collected Treble
 local TREBLE_MAP = 0x00; -- validate TREBLE_MAP
 local TREBLE_GONE_CHECK = 2;
+local SKIP_PUZZLES = false;
+local OPEN_HAG1 = false;
 
 local BATH_PADS_QOL = false
 
@@ -3574,7 +3576,9 @@ function processAGIItem(item_list)
                         break
                     end
                 end
-            check_open_level() -- check if the current jiggy count opens a new level
+                if SKIP_PUZZLES == true then
+                    check_open_level() -- check if the current jiggy count opens a new level
+                end
             elseif((1230855 <= memlocation and memlocation <= 1230863) or (1230174 <= memlocation and memlocation <= 1230182))
             then
                 processMagicItem(memlocation)
@@ -4016,6 +4020,14 @@ function process_slot(block)
     then
         ENABLE_AP_TREBLE = true
     end
+    if block['slot_skip_puzzles'] ~= nil and block['slot_skip_puzzles'] ~= "false"
+    then
+        SKIP_PUZZLES = true
+    end
+    if block['slot_open_hag1'] ~= nil and block['slot_open_hag1'] ~= "false"
+    then
+        OPEN_HAG1 = true
+    end
     if SEED ~= 0
     then
         loadAGI()
@@ -4095,7 +4107,9 @@ function initializeFlags()
 		INIT_COMPLETE = true
 	-- Otherwise, the flags were already set, so just stop checking
 	elseif (current_map == 0xAF or current_map == 0x142) then
-        check_open_level() -- sanity check that level open flags are still set
+        if SKIP_PUZZLES == true then
+            check_open_level() -- sanity check that level open flags are still set
+        end
 		INIT_COMPLETE = true
     elseif current_map == 0x158 and INIT_COMPLETE == true
     then
@@ -4132,12 +4146,15 @@ function main()
             PREV_STATE = CUR_STATE
         end
         if (CUR_STATE == STATE_OK) or (CUR_STATE == STATE_INITIAL_CONNECTION_MADE) or (CUR_STATE == STATE_TENTATIVELY_CONNECTED) then
-            if (FRAME % 60 == 0) then
+            if (FRAME % 60 == 1) then
                 BTRAM:banjoPTR()
                 receive();
                 if SKIP_TOT == "true" and CURRENT_MAP == 0x15E then
 					setToTComplete();
 				end
+                if OPEN_HAG1 == "true" and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                    BTRAMOBJ:setFlag(0x6E, 3);
+                end
                 if SAVE_GAME == true
                 then
                     saveGame();
@@ -4173,7 +4190,7 @@ function main()
                     end
                 end
                 gameSaving();
-            elseif (FRAME % 10 == 0)
+            elseif (FRAME % 10 == 1)
             then
                 checkPause();
                 checkTotalMenu();
@@ -4213,7 +4230,7 @@ function main()
                 end
             end
         elseif (CUR_STATE == STATE_UNINITIALIZED) then
-            if  (FRAME % 60 == 0) then
+            if  (FRAME % 60 == 1) then
                 server:settimeout(2)
                 local client, timeout = server:accept()
                 if timeout == nil then

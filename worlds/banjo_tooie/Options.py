@@ -37,6 +37,14 @@ class KingJingalingHasJiggy(Toggle):
     """King Jingaling will always have a Jiggy to give you."""
     display_name = "King Jingaling Jiggy"
 
+class SkipPuzzles(Toggle):
+    """Open world entrances without having to go to Jiggywiggy."""
+    display_name = "Skip Puzzles"
+
+class OpenHag1(Toggle):
+    """HAG 1 boss fight is opened when Cauldron Keep is. Only 55 jiggies are needed to win."""
+    display_name = "HAG 1 Open"
+
 class SkipToT(Choice):
     """Choose whether to play the full quiz, start at round 3, or skip it."""
     display_name = "Tower of Tragedy Quiz"
@@ -62,6 +70,8 @@ class BanjoTooieOptions(PerGameCommonOptions):
     multiworld_glowbos: EnableMultiWorldGlowbos
     multiworld_treble: EnableMultiWorldTrebleClefs
     jingaling_jiggy: KingJingalingHasJiggy
+    skip_puzzles: SkipPuzzles
+    open_hag1: OpenHag1
     skip_tower_of_tragedy: SkipToT
     speed_up_minigames: SpeedUpMinigames
     
