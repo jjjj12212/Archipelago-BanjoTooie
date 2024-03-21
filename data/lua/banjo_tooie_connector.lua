@@ -4163,7 +4163,7 @@ function main()
                 if SKIP_TOT == "true" and CURRENT_MAP == 0x15E then
 					setToTComplete();
 				end
-                if OPEN_HAG1 == "true" and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
                     BTRAMOBJ:setFlag(0x6E, 3);
                 end
                 if SAVE_GAME == true
