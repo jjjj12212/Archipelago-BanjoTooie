@@ -113,11 +113,7 @@ class BanjoTooieRules:
             regionName.HP: lambda state: state.has(itemName.JIGGY, self.player, 36),
             regionName.CC: lambda state: state.has(itemName.JIGGY, self.player, 45),
             regionName.CK: lambda state: state.has(itemName.JIGGY, self.player, 55) and state.has(itemName.CLAWBTS, self.player),
-            regionName.H1: lambda state: state.has(itemName.JIGGY, self.player, 70) and
-                                         (self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK)) and
-                                         #(self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)) and
-                                         state.has(itemName.BBLASTER, self.player) and
-                                         state.has(itemName.CEGGS, self.player)
+            regionName.H1: lambda state: self.check_hag1_options(state)
         }
         self.jiggy_rules = {
             #Mayahem Temple Jiggies
@@ -882,6 +878,16 @@ class BanjoTooieRules:
 
     def grow_beanstalk(self, state: CollectionState) -> bool:
         return state.has(itemName.BDRILL, self.player) and self.check_mumbo_magic(state, itemName.MUMBOCC)
+
+    def check_hag1_options(self, state: CollectionState) -> bool:
+        if self.world.options.open_hag1 == 1:
+            return True
+        else:
+            return state.has(itemName.JIGGY, self.player, 70) and \
+                   (self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK) or
+                    self.check_solo_moves(state, itemName.SHPACK)) and \
+                   state.has(itemName.BBLASTER, self.player) and \
+                   state.has(itemName.CEGGS, self.player)
 
     def set_rules(self) -> None:
         for region_name, rules in self.region_rules.items():

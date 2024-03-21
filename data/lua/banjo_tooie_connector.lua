@@ -68,8 +68,11 @@ local WATCH_LOADED_TREBLE = false; -- if object is loaded or not
 local TREBLE_SPOTED = false; -- used if Collected Treble
 local TREBLE_MAP = 0x00; -- validate TREBLE_MAP
 local TREBLE_GONE_CHECK = 2;
+local SKIP_PUZZLES = false;
+local OPEN_HAG1 = false;
 
 local BATH_PADS_QOL = false
+
 
 local receive_map = { -- [ap_id] = item_id; --  Required for Async Items
     ["NA"] = "NA"
@@ -265,6 +268,14 @@ function BTRAM:setFlag(byte, _bit)
 		local address = self:dereferencePointer(self.flag_block_ptr);
         local currentValue = mainmemory.readbyte(address + byte);
         mainmemory.writebyte(address + byte, bit.set(currentValue, _bit));
+	end
+end
+
+function BTRAM:setMultipleFlags(byte, mask, flags)
+	if type(byte) == "number" and type(mask) == "number" and mask >= 0 and mask < 0xFF then
+		local address = self:dereferencePointer(self.flag_block_ptr);
+        local currentValue = mainmemory.readbyte(address + byte);
+        mainmemory.writebyte(address + byte, (currentValue & mask) | flags);
 	end
 end
 
@@ -2674,6 +2685,90 @@ local NON_AGI_MAP = {
     }
 }
 
+-- Properties of world entrances and associated puzzles
+local WORLD_ENTRANCE_MAP = {
+    ["WORLD 1"] = {
+        ["defaultName"] = "Mayahem Temple",
+        ["defaultCost"] = 1,
+        ["addr"] = 0x6D,
+        ["bit"] = 2,
+        ["puzzleFlags"] = 0x10, -- 0b00010000
+        ["opened"] = false,
+    },
+    ["WORLD 2"] = {
+        ["defaultName"] = "Glitter Gulch Mine",
+        ["defaultCost"] = 4,
+        ["addr"] = 0x6D,
+        ["bit"] = 3,
+        ["puzzleFlags"] = 0x20, -- 0b00100000
+        ["opened"] = false,
+    },
+    ["WORLD 3"] = {
+        ["defaultName"] = "Witchyworld",
+        ["defaultCost"] = 8,
+        ["addr"] = 0x6D,
+        ["bit"] = 4,
+        ["puzzleFlags"] = 0x30, -- 0b00110000
+        ["opened"] = false,
+    },
+    ["WORLD 4"] = {
+        ["defaultName"] = "Jolly Roger's Lagoon",
+        ["defaultCost"] = 14,
+        ["addr"] = 0x6D,
+        ["bit"] = 5,
+        ["puzzleFlags"] = 0x40, -- 0b01000000
+        ["opened"] = false,
+    },
+    ["WORLD 5"] = {
+        ["defaultName"] = "Terrydactyland",
+        ["defaultCost"] = 20,
+        ["addr"] = 0x6D,
+        ["bit"] = 6,
+        ["puzzleFlags"] = 0x50, -- 0b01010000
+        ["opened"] = false,
+    },
+    ["WORLD 6"] = {
+        ["defaultName"] = "Grunty Industries",
+        ["defaultCost"] = 28,
+        ["addr"] = 0x6D,
+        ["bit"] = 7,
+        ["puzzleFlags"] = 0x60, -- 0b01100000
+        ["opened"] = false,
+    },
+    ["WORLD 7"] = {
+        ["defaultName"] = "Hailfire Peaks",
+        ["defaultCost"] = 36,
+        ["addr"] = 0x6E,
+        ["bit"] = 0,
+        ["puzzleFlags"] = 0x70, -- 0b01110000
+        ["opened"] = false,
+    },
+    ["WORLD 8"] = {
+        ["defaultName"] = "Cloud Cuckooland",
+        ["defaultCost"] = 45,
+        ["addr"] = 0x6E,
+        ["bit"] = 1,
+        ["puzzleFlags"] = 0x80, -- 0b10000000
+        ["opened"] = false,
+    },
+    ["WORLD 9"] = {
+        ["defaultName"] = "Cauldron Keep",
+        ["defaultCost"] = 55,
+        ["addr"] = 0x6E,
+        ["bit"] = 2,
+        ["puzzleFlags"] = 0x90, -- 0b10010000
+        ["opened"] = false,
+    },
+    ["HAG 1"] = {
+        ["defaultName"] = "HAG 1",
+        ["defaultCost"] = 70,
+        ["addr"] = 0x6E,
+        ["bit"] = 3,
+        ["puzzleFlags"] = 0xA0, -- 0b10100000
+        ["opened"] = false,
+    },
+}
+
 function readAPLocationChecks(type)
     local checks = {}
     if type ~= "BMM"
@@ -2854,6 +2949,29 @@ function checkConsumables(consumable_type, location_checks)
 			savingAGI()
 		end
 	end
+end
+
+function check_open_level()  -- See if entrance conditions for a level have been met
+    local jiggy_count = 0;
+    for location, values in pairs(AGI_MASTER_MAP["JIGGY"])
+    do
+        if AGI['JIGGY'][location] == true
+        then
+            jiggy_count = jiggy_count + 1
+        end
+    end
+    for location, values in pairs(WORLD_ENTRANCE_MAP)
+    do
+        if values["opened"] == false
+        then
+            if jiggy_count >= values["defaultCost"]
+            then
+                BTRAMOBJ:setFlag(values["addr"], values["bit"])
+                BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                values["opened"] = true
+            end
+        end
+    end
 end
 
 function loadGame(current_map)
@@ -3469,6 +3587,9 @@ function processAGIItem(item_list)
                         break
                     end
                 end
+                if SKIP_PUZZLES == true then
+                    check_open_level() -- check if the current jiggy count opens a new level
+                end
             elseif((1230855 <= memlocation and memlocation <= 1230863) or (1230174 <= memlocation and memlocation <= 1230182))
             then
                 processMagicItem(memlocation)
@@ -3910,6 +4031,14 @@ function process_slot(block)
     then
         ENABLE_AP_TREBLE = true
     end
+    if block['slot_skip_puzzles'] ~= nil and block['slot_skip_puzzles'] ~= "false"
+    then
+        SKIP_PUZZLES = true
+    end
+    if block['slot_open_hag1'] ~= nil and block['slot_open_hag1'] ~= "false"
+    then
+        OPEN_HAG1 = true
+    end
     if SEED ~= 0
     then
         loadAGI()
@@ -3989,6 +4118,9 @@ function initializeFlags()
 		INIT_COMPLETE = true
 	-- Otherwise, the flags were already set, so just stop checking
 	elseif (current_map == 0xAF or current_map == 0x142) then
+        if SKIP_PUZZLES == true then
+            check_open_level() -- sanity check that level open flags are still set
+        end
 		INIT_COMPLETE = true
     elseif current_map == 0x158 and INIT_COMPLETE == true
     then
@@ -4025,12 +4157,15 @@ function main()
             PREV_STATE = CUR_STATE
         end
         if (CUR_STATE == STATE_OK) or (CUR_STATE == STATE_INITIAL_CONNECTION_MADE) or (CUR_STATE == STATE_TENTATIVELY_CONNECTED) then
-            if (FRAME % 60 == 0) then
+            if (FRAME % 60 == 1) then
                 BTRAM:banjoPTR()
                 receive();
                 if SKIP_TOT == "true" and CURRENT_MAP == 0x15E then
 					setToTComplete();
 				end
+                if OPEN_HAG1 == "true" and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                    BTRAMOBJ:setFlag(0x6E, 3);
+                end
                 if SAVE_GAME == true
                 then
                     saveGame();
@@ -4066,7 +4201,7 @@ function main()
                     end
                 end
                 gameSaving();
-            elseif (FRAME % 10 == 0)
+            elseif (FRAME % 10 == 1)
             then
                 checkPause();
                 checkTotalMenu();
@@ -4106,7 +4241,7 @@ function main()
                 end
             end
         elseif (CUR_STATE == STATE_UNINITIALIZED) then
-            if  (FRAME % 60 == 0) then
+            if  (FRAME % 60 == 1) then
                 server:settimeout(2)
                 local client, timeout = server:accept()
                 if timeout == nil then

@@ -220,6 +220,8 @@ class BanjoTooieWorld(World):
         btoptions['doubloons'] = "true" if self.options.multiworld_doubloons == 1 else "false"
         btoptions['minigames'] = 'skip' if self.options.speed_up_minigames == 1 else "full"
         btoptions['trebleclef'] = "true" if self.options.multiworld_treble == 1 else "false"
+        btoptions['skip_puzzles'] = "true" if self.options.skip_puzzles == 1 else "false"
+        btoptions['open_hag1'] = "true" if self.options.open_hag1 == 1 else "false"
 
         return btoptions
 
