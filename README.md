@@ -1,6 +1,12 @@
 # Archipelago Banjo-Tooie (US-Only) | v0.8.2-beta
 Banjo Tooie for Archipelago 
 
+# Controller Shortcuts with this implementation
+ - Dpad Up: Banjo Tiptoes
+ - Dpad right: display unlocked moves in lua console
+ - Dpad down: display collected Treble Clefs
+ - Dpad left: Aim Assist (Homing Eggs)
+
 # Current implementation
 - Death Link **(Still ongoing progress)** **(Disabled for the time being)**
 - Jiggies are scattered throughout Archipelago games

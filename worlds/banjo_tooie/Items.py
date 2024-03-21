@@ -96,9 +96,18 @@ misc_collectable_table = {
     itemName.HONEY:         ItemData(1230512, 25, "useful", None),
     itemName.PAGES:         ItemData(1230513, 25, "useful", None),
     itemName.DOUBLOON:      ItemData(1230514, 30, "progress", None),
-    itemName.TREBLE:        ItemData(1230778,  9, "progress", None)
+    itemName.TREBLE:        ItemData(1230778,  9, "progress", None),
+    itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY)
 }
 
+stations_table = {
+    itemName.TRAINSWIH:     ItemData(1230794,  1, "progress", locationName.TRAINSWIH),
+    itemName.TRAINSWTD:     ItemData(1230791,  1, "progress", locationName.TRAINSWTD),
+    itemName.TRAINSWGI:     ItemData(1230790,  1, "progress", locationName.TRAINSWGI),
+    itemName.TRAINSWHP1:    ItemData(1230792,  1, "progress", locationName.TRAINSWHP1),
+    itemName.TRAINSWHP2:    ItemData(1230793,  1, "progress", locationName.TRAINSWHP2),
+    itemName.TRAINSWWW:     ItemData(1230795,  1, "progress", locationName.TRAINSWWW),
+}
 
 
 all_item_table = {
@@ -107,6 +116,7 @@ all_item_table = {
     **level_progress_table,
     **misc_collectable_table,
     **jiggy_table,
+    **stations_table,
 
 }
 
@@ -115,7 +125,8 @@ all_group_table = {
     'jinjo' : jinjo_table,
     'misc' : misc_collectable_table,
     'moves': moves_table,
-    "magic": level_progress_table
+    "magic": level_progress_table,
+    "stations": stations_table
 }
 
 

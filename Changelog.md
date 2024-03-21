@@ -1,3 +1,18 @@
+# 0.9-Beta
+- The Big Train Update!
+  - Stations can now be randomized
+  - Chuffy can now be an AP Item
+    - Once obtained, you can summon Chuffy at a unlocked station, but you still need to beat Old King Coal to travel.
+  - Beating Old King Coal is now an additional check
+- Logic Changes
+- Dpad Up: Banjo Tiptoes
+- Dpad right: display unlocked moves in lua console
+- Dpad down: display collected Treble Clefs
+- Dpad left: aim assist (homing eggs)
+- Text within Bizhawk on relevant items
+- correct MT Glowbo location checks
+- Fix for Puzzle Check dump.
+
 # 0.8.2-beta
 - Swapped wrong Glowbos.  
 

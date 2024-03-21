@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from Options import Toggle, DeathLink, PerGameCommonOptions, Choice
+from Options import Toggle, DeathLink, PerGameCommonOptions, Choice, DefaultOnToggle
 
-class EnableMultiWorldMoveList(Toggle):
+class EnableMultiWorldMoveList(DefaultOnToggle):
     """Jamjars' Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves."""
     display_name = "Jamjars' Movelist"
 
@@ -21,17 +21,25 @@ class SetMultiWorldCheatoPagesFiller(Toggle):
     """If Cheato pages are scattered, set to Cheato Items as filler."""
     display_name = "Use Cheato Pages as Filler."
 
-class EnableMultiWorldHoneycombs(Toggle):
+class EnableMultiWorldHoneycombs(DefaultOnToggle):
     """Honeycombs are scattered across the MultiWorld."""
     display_name = "Randomize Honeycombs"
 
-class EnableMultiWorldGlowbos(Toggle):
+class EnableMultiWorldGlowbos(DefaultOnToggle):
     """Glowbos are scattered across the MultiWorld."""
     display_name = "Randomize Glowbos"
 
 class EnableMultiWorldTrebleClefs(Toggle):
     """Treble Clefs are scattered across the MultiWorld."""
     display_name = "Randomize Treble Clefs"
+
+class EnableMultiWorldTrainStationSwitches(Toggle):
+    """Train Stations are scattered across the MultiWorld."""
+    display_name = "Randomize Train Station Switches"
+
+class EnableMultiWorldChuffyTrain(Toggle):
+    """Chuffy is lost across the MultiWorld."""
+    display_name = "Chuffy as a randomized AP Item."
 
 class KingJingalingHasJiggy(Toggle):
     """King Jingaling will always have a Jiggy to give you."""
@@ -53,7 +61,7 @@ class SkipToT(Choice):
     option_round_3 = 2
     default = 1
 
-class SpeedUpMinigames(Toggle):
+class SpeedUpMinigames(DefaultOnToggle):
     """Start 3-round minigames at Round 3"""
     display_name = "Speed Up Minigames"
 
@@ -69,6 +77,8 @@ class BanjoTooieOptions(PerGameCommonOptions):
     multiworld_honeycombs: EnableMultiWorldHoneycombs
     multiworld_glowbos: EnableMultiWorldGlowbos
     multiworld_treble: EnableMultiWorldTrebleClefs
+    multiworld_stations: EnableMultiWorldTrainStationSwitches
+    multiworld_chuffy: EnableMultiWorldChuffyTrain
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
     open_hag1: OpenHag1

@@ -52,8 +52,8 @@ MTLoc_Table = {
     locationName.JIGGYMT8:  LocationData(1230603, 0x45, 7),
     locationName.JIGGYMT9:  LocationData(1230604, 0x46, 0),
     locationName.JIGGYMT10: LocationData(1230605, 0x46, 1),
-    locationName.GLOWBOMT1: LocationData(1230687, 0x42, 7),
-    locationName.GLOWBOMT2: LocationData(1230686, 0x43, 0),
+    locationName.GLOWBOMT1: LocationData(1230686, 0x42, 7),
+    locationName.GLOWBOMT2: LocationData(1230687, 0x43, 0),
     locationName.HONEYCMT1: LocationData(1230703, 0x3F, 2),
     locationName.HONEYCMT2: LocationData(1230704, 0x3F, 3),
     locationName.HONEYCMT3: LocationData(1230705, 0x3F, 4),
@@ -99,7 +99,8 @@ GMLoc_table = {
     locationName.CHEATOGM3: LocationData(1230733, 0x57, 0),
     locationName.BDRILL:    LocationData(1230757, 0x1B, 6),
     locationName.BBAYONET:  LocationData(1230758, 0x1B, 7),
-    locationName.TREBLEGM:  LocationData(1230782, 0x89, 0)
+    locationName.TREBLEGM:  LocationData(1230782, 0x89, 0),
+    locationName.CHUFFY:    LocationData(1230796, 0x0B, 6)
 }
 
 PGLov_table = {
@@ -133,7 +134,8 @@ WWLoc_table = {
     locationName.AIREAIM:   LocationData(1230760, 0x1C, 0),
     locationName.SPLITUP:   LocationData(1230761, 0x1C, 1),
     locationName.PACKWH:    LocationData(1230762, 0x1D, 6),
-    locationName.TREBLEWW:  LocationData(1230783, 0x8B, 1)
+    locationName.TREBLEWW:  LocationData(1230783, 0x8B, 1),
+    locationName.TRAINSWWW: LocationData(1230795, 0x0D, 6)
 }
 
 JRLoc_table = {
@@ -223,7 +225,8 @@ TLLoc_table = {
     locationName.SPRINGB:   LocationData(1230768, 0x1D, 3),
     locationName.TAXPACK:   LocationData(1230769, 0x1D, 4),
     locationName.HATCH:     LocationData(1230770, 0x1D, 5),
-    locationName.TREBLETL:  LocationData(1230785, 0x8F, 3)
+    locationName.TREBLETL:  LocationData(1230785, 0x8F, 3),
+    locationName.TRAINSWTD: LocationData(1230791, 0x27, 4),
 }
 
 GILoc_table = {
@@ -254,6 +257,7 @@ GILoc_table = {
     locationName.LSPRING:   LocationData(1230772, 0x1D, 1),
     locationName.CLAWBTS:   LocationData(1230773, 0x1D, 2),
     locationName.TREBLEGI:  LocationData(1230786, 0x91, 4),
+    locationName.TRAINSWGI: LocationData(1230790, 0x27, 3),
 }
 
 HPLoc_table = {
@@ -282,7 +286,9 @@ HPLoc_table = {
     locationName.CHEATOHP3: LocationData(1230748, 0x58, 7),
     locationName.SHPACK:   LocationData(1230774, 0x1C, 6),
     locationName.GLIDE:    LocationData(1230775, 0x1C, 7),
-    locationName.TREBLEHP: LocationData(1230787, 0x93, 5)
+    locationName.TREBLEHP: LocationData(1230787, 0x93, 5),
+    locationName.TRAINSWHP1: LocationData(1230792, 0x34, 7),
+    locationName.TRAINSWHP2: LocationData(1230793, 0x35, 0),
 }
 
 CCLoc_table = {
@@ -326,7 +332,8 @@ IHWLLoc_table = {
 IHCTLoc_table = {
     # locationName.JINJOIH3: LocationData(1230593, 0x3E, 6),
     locationName.GLOWBOIH1: LocationData(1230702, 0x44, 7),
-    locationName.IEGGS:   LocationData(1230763, 0x1E, 4)
+    locationName.IEGGS:   LocationData(1230763, 0x1E, 4),
+    locationName.TRAINSWIH: LocationData(1230794, 0x7B, 3),
 
 }
 

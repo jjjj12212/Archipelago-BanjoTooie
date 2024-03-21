@@ -216,6 +216,7 @@ HONEYCCC2  = "CCL: Trash Can Honeycomb"
 HONEYCCC3  = "CCL: Pot O' Gold Honeycomb"
 HONEYCIH1  = "IoH: Plateau Honeycomb"
 
+#Treble Clef
 TREBLEJV   = "JV: Treble Clef"
 TREBLEMT   = "MT: Treble Clef"
 TREBLEGM   = "GGM: Treble Clef"
@@ -225,6 +226,16 @@ TREBLETL   = "TDL: Treble Clef"
 TREBLEGI   = "GI: Treble Clef"
 TREBLEHP   = "HFP: Treble Clef"
 TREBLECC   = "CCL: Treble Clef"
+
+#Train Switches
+TRAINSWIH  = "IoH: Train Switch"
+TRAINSWTD  = "TDL: Train Switch"
+TRAINSWGI  = "GI: Train Switch"
+TRAINSWHP1 = "HFP: Lava Side Train Switch"
+TRAINSWHP2 = "HFP: Icy Side Train Switch"
+TRAINSWWW  = "WW: Train Switch"
+
+CHUFFY = "GGM: Chuffy"
 
 #Cheato Pages
 CHEATOMT1 = "MT: Snake Head Cheato Page"
