@@ -12,6 +12,8 @@
 - Text within Bizhawk on relevant items
 - correct MT Glowbo location checks
 - Fix for Puzzle Check dump.
+- Skip Puzzles as an Option
+- Hag 1 require 55 Jiggies Option
 
 # 0.8.2-beta
 - Swapped wrong Glowbos.  
