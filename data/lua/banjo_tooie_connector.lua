@@ -2783,13 +2783,13 @@ local NON_AGI_MAP = {
             ['name'] = "Train Switch TDL"
         },
         ["1230792"] = {
-            ['addr'] = 0x34,
-            ['bit'] = 7,
+            ['addr'] = 0x35,
+            ['bit'] = 0,
             ['name'] = "Train Switch HFP Lava"
         },
         ["1230793"] = {
-            ['addr'] = 0x35,
-            ['bit'] = 0,
+            ['addr'] = 0x34,
+            ['bit'] = 7,
             ['name'] = "Train Switch HFP Ice"
         },
         ["1230794"] = {
