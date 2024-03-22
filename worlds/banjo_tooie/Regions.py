@@ -124,10 +124,10 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.AIREAIM,
         locationName.SPLITUP,
         locationName.PACKWH,
-        locationName.TREBLEWW
+        locationName.TREBLEWW,
+        locationName.TRAINSWWW
     ],
     regionName.WWS: [
-        locationName.TRAINSWWW
     ],
     regionName.IOHCT:   [
         locationName.JINJOIH3,

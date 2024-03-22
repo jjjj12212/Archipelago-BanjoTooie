@@ -120,6 +120,7 @@ class BanjoTooieRules:
             regionName.TLS:     lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWTD, self.player),
             regionName.GIS:     lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWGI, self.player),
             regionName.HPLS:    lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, self.player),
+            regionName.WWS:     lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWWW, self.player),
             regionName.HPIS:    lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, self.player) and
                                               state.has(itemName.TRAINSWHP2, self.player) and state.has(itemName.GEGGS, self.player) and
                                               state.has(itemName.TRAINSWWW, self.player),
