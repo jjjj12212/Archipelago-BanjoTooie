@@ -2917,6 +2917,14 @@ function readAPLocationChecks(type)
     end
 end
 
+function init_AGI()
+    local checks = {}
+    for location, value in pairs(AGI_MASTER_MAP['JIGGY'])
+    do
+        AGI['JIGGY'][location] = false
+    end
+end
+
 ---------------------------------- BKNOTES ---------------------------------
 
 function init_BKNOTES(type) -- Initialize BMK
@@ -4795,6 +4803,7 @@ function initializeFlags()
         init_BKNOTES("BKNOTES");
         init_BKSTATIONS("BKSTATIONS")
         init_CHUFFY("BKCHUFFY")
+        init_AGI()
         AGI_MOVES = init_BMK("AGI");
         AGI_NOTES = init_BKNOTES("AGI");
         receive_map = { -- initialize incase suffered a hard crash and losing save file.
