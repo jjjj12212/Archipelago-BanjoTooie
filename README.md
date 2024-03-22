@@ -1,5 +1,11 @@
-# Archipelago Banjo-Tooie (US-Only) | v0.8.2-beta
+# Archipelago Banjo-Tooie (US-Only) | v0.9-beta
 Banjo Tooie for Archipelago 
+
+# Controller Shortcuts with this implementation
+ - Dpad Up: Banjo Tiptoes
+ - Dpad right: display unlocked moves in lua console
+ - Dpad down: display collected Treble Clefs
+ - Dpad left: Aim Assist (Homing Eggs)
 
 # Current implementation
 - Death Link **(Still ongoing progress)** **(Disabled for the time being)**
@@ -15,13 +21,15 @@ Banjo Tooie for Archipelago
 - Auto skip certian dialogs and cutscenes
 - Doubloons are scattered throughout Archipelago games
 - Treble Clef are scattered throughout Archipelago games
+- Train Station are scattered throughout Archipelago games
+- Chuffy as a AP Item (optional)
+
 
 # How to install
 Go to worlds/banjo_tooie/docs/setup_en.md for detailed instructions how to setup this APWorld.
 
 # Future goals for this project
 - Jinjos are scattered throughout Archipelago games 
-- Train Station are scattered throughout Archipelago games **(if Possible)**
 
 # Contributors
  - @oohnahleevay Unalive (coder)

@@ -66,7 +66,8 @@ class BanjoTooieWorld(World):
         # "Jiggy": all_group_table["jiggy"],
         "Jinjo": all_group_table["jinjo"],
         "Moves": all_group_table["moves"],
-        "Magic": all_group_table["magic"]
+        "Magic": all_group_table["magic"],
+        "Stations": all_group_table["stations"]
     }
     
 
@@ -156,6 +157,12 @@ class BanjoTooieWorld(World):
         
         if(item.code == 1230778 and self.options.multiworld_treble == False):
             return False
+        
+        if item.code == 1230796 and self.options.multiworld_chuffy == False:
+            return False
+        
+        if item.code in range(1230790, 1230796) and self.options.multiworld_stations == False:
+            return False
 
         return True
 
@@ -185,6 +192,12 @@ class BanjoTooieWorld(World):
 
         if self.options.multiworld_treble == False:
             self.banjo_pre_fills(itemName.TREBLE, "Treble Clef", False)
+        
+        if self.options.multiworld_stations == False:
+            self.banjo_pre_fills("Stations", None, True)
+
+        if self.options.multiworld_chuffy == False:
+            self.banjo_pre_fills(itemName.CHUFFY, "Chuffy", False)
 
 
     def banjo_pre_fills(self, itemNameOrGroup: str, locationFindCriteria: str|None, useGroup: bool ) -> None:
@@ -220,6 +233,11 @@ class BanjoTooieWorld(World):
         btoptions['doubloons'] = "true" if self.options.multiworld_doubloons == 1 else "false"
         btoptions['minigames'] = 'skip' if self.options.speed_up_minigames == 1 else "full"
         btoptions['trebleclef'] = "true" if self.options.multiworld_treble == 1 else "false"
+        btoptions['skip_puzzles'] = "true" if self.options.skip_puzzles == 1 else "false"
+        btoptions['open_hag1'] = "true" if self.options.open_hag1 == 1 else "false"
+        btoptions['stations']= "true" if self.options.multiworld_stations == 1 else "false"
+        btoptions['chuffy']= "true" if self.options.multiworld_chuffy == 1 else "false"
+
 
         return btoptions
 
