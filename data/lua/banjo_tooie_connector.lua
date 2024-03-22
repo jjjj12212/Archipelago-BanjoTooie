@@ -112,27 +112,27 @@ BTConsumable = {
     CONSUME_PTR = 0x12B250;
     CONSUME_IDX = 0x11B080;
     consumeTable = {
-        [0]  = {key=0x27BD, name="BLUE EGGS"},
-        [1]  = {key=0x0C03, name="FIRE EGGS"},
-        [2]  = {key=0x0002, name="ICE EGGS"},
-        [3]  = {key=0x01EE, name="GRENADE EGGS"},
-        [4]  = {key=0x2401, name="CWK EGGS"},
+        [0]  = {key=0x27BD, name="BLUE EGGS", max=100},
+        [1]  = {key=0x0C03, name="FIRE EGGS", max=50},
+        [2]  = {key=0x0002, name="ICE EGGS", max=50},
+        [3]  = {key=0x01EE, name="GRENADE EGGS", max=25},
+        [4]  = {key=0x2401, name="CWK EGGS", max=10},
         [5]  = {key=0x15E0, name="Proximity Eggs"},
-        [6]  = {key=0x1000, name="Red Feathers"},
-        [7]  = {key=0x3C18, name="Gold Feathers"},
-        [8]  = {key=0x0003, name="GLOWBO"},
-        [9]  = {key=0x3C0C, name="HONEYCOMB"},
-        [10] = {key=0x0319, name="CHEATO"},
+        [6]  = {key=0x1000, name="Red Feathers", max=100},
+        [7]  = {key=0x3C18, name="Gold Feathers", max=10},
+        [8]  = {key=0x0003, name="GLOWBO",max=16},
+        [9]  = {key=0x3C0C, name="HONEYCOMB",max=25},
+        [10] = {key=0x0319, name="CHEATO",max=25},
         [11] = {key=0x858C, name="Burgers"},
         [12] = {key=0x03E0, name="Fries"},
         [13] = {key=0x27BD, name="Tickets"},
-        [14] = {key=0x0C03, name="DOUBLOON"},
+        [14] = {key=0x0C03, name="DOUBLOON",max=30},
         [15] = {key=0x3C05, name="Gold Idols"},
         [16] = {key=0x0002, name="Beans"}, -- CCL
         [17] = {key=0x85E3, name="Fish"}, -- HFP
         [18] = {key=0x0040, name="Eggs"}, -- Stop'n'Swop
         [19] = {key=0x8FBF, name="Ice Keys"}, -- Stop'n'Swop
-        [20] = {key=0x1461, name="MEGA GLOWBO"}
+        [20] = {key=0x1461, name="MEGA GLOWBO",max=1}
     };
     consumeIndex = nil;
     consumeKey = nil;
@@ -160,6 +160,10 @@ end
 function BTConsumable:getConsumable()
     local amount = mainmemory.read_u16_be(self.CONSUME_IDX + self.consumeIndex * 0x0C);
 	return amount;
+end
+
+function BTConsumable:getConsumableMax()
+    return self.consumeTable[self.consumeIndex]["max"]
 end
 
 function BTConsumable:changeConsumable(itemName)
@@ -3569,13 +3573,13 @@ function checkConsumables(consumable_type, location_checks)
     BTCONSUMEOBJ:changeConsumable(consumable_type)
 	for location_name, value in pairs(AGI[consumable_type])
 	do
-		if(USE_BMM_TBL == false and (value == false and location_checks[consumable_type][location_name] == true))
-		then
-			if(DEBUG == true)
-			then
-				print("Obtained local consumable. Remove from Inventory")
-			end
-			BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() - 1)
+        if(USE_BMM_TBL == false and (value == false and location_checks[consumable_type][location_name] == true))
+        then
+            if(DEBUG == true)
+            then
+                print("Obtained local consumable. Remove from Inventory")
+            end
+            BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() - 1)
 			AGI[consumable_type][location_name] = true
 			savingAGI()
 		end
