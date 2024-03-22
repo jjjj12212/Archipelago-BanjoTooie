@@ -3546,8 +3546,11 @@ function check_open_level()  -- See if entrance conditions for a level have been
                 BTRAMOBJ:setFlag(values["addr"], values["bit"])
                 BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
                 values["opened"] = true
-                table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
-                print(values["defaultName"] .. " is now unlocked!")
+                if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
+                then
+                    table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
+                    print(values["defaultName"] .. " is now unlocked!")
+                end
             end
         end
     end
@@ -3610,6 +3613,14 @@ function loadGame(current_map)
                 end
             end
             check_open_level()
+            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                BTRAMOBJ:setFlag(0x6E, 3);
+                table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                print("HAG 1 is now unlocked!")
+            elseif OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == true then
+                table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                print("HAG 1 is now unlocked!")
+            end
             GAME_LOADED = true;
         end
     else
@@ -3824,10 +3835,6 @@ function BKCheckAssetLogic()
             set_AP_STATIONS()
         end
     end
-    if WATCH_LOADED_STATIONBTN == true --Don't need to watch every 10 frames
-    then
-        watchBtnAnimation()
-    end
     if CHUFFY_MAP_TRANS == true or CHUFFY_STOP_WATCH == false or (CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false)
     then
         if AGI_CHUFFY["1230796"] == false and CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false
@@ -3874,6 +3881,10 @@ function BKAssetFound()
             TREBLE_MAP = 0x00;
             WATCH_LOADED_TREBLE = false
         end
+    end
+    if WATCH_LOADED_STATIONBTN == true --Don't need to watch every 10 frames
+    then
+        watchBtnAnimation()
     end
     ChuffyCheck()
 end
@@ -4491,6 +4502,17 @@ function DPadStats()
             SNEAK = false
         end
 
+        if check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 A'] == true
+        then
+            for location, values in pairs(WORLD_ENTRANCE_MAP)
+            do
+                local open = BTRAMOBJ:checkFlag(values["addr"], values["bit"])
+                if open == true
+                then
+                    print(values["defaultName"] .. " is unlocked!")
+                end
+            end
+        end
     end
 end
 
@@ -4800,6 +4822,15 @@ function initializeFlags()
         if SKIP_PUZZLES == true then
             check_open_level() -- sanity check that level open flags are still set
         end
+        if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+            BTRAMOBJ:setFlag(0x6E, 3);
+            table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+            print("HAG 1 is now unlocked!")
+        elseif OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == true then
+            table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+            print("HAG 1 is now unlocked!")
+        end
+        
 	-- Otherwise, the flags were already set, so just stop checking
 	elseif (current_map == 0xAF or current_map == 0x142) then
 		INIT_COMPLETE = true
@@ -4845,9 +4876,6 @@ function main()
                 if SKIP_TOT == "true" and CURRENT_MAP == 0x15E then
 					setToTComplete();
 				end
-                if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-                    BTRAMOBJ:setFlag(0x6E, 3);
-                end
                 if SAVE_GAME == true
                 then
                     saveGame();
@@ -4858,6 +4886,11 @@ function main()
                     clearText()
                 elseif TEXT_START == false then
                     processMessages()
+                end
+                if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                    BTRAMOBJ:setFlag(0x6E, 3);
+                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                    print("HAG 1 is now unlocked!")
                 end
             elseif (FRAME % 10 == 1)
             then
