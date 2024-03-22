@@ -94,6 +94,10 @@ DEAD_COAL_CHECK = 0;
 CHUFFY_MAP_TRANS = false;
 CHUFFY_STOP_WATCH = true;
 LEVI_PAD_MOVED = false;
+CHUFF_GOT = false;
+CHUFFY_COAL = false;
+FINAL_CHUFF = false;
+CHUFFY_CC = false;
 
 local BATH_PADS_QOL = false
 
@@ -189,7 +193,9 @@ BTRAM = {
     player_pos_ptr = 0xE4,
     animationPointer = 0x136E70,
     movement_ptr = 0x120,
-    current_state = 0x4
+    current_state = 0x4,
+    map_dest = 0x045702,
+    character_state = 0x136F63,
 } 
 
 
@@ -253,6 +259,10 @@ function BTRAM:getBanjoPos()
     pos["Ypos"] = mainmemory.readfloat(plptr + 0x4, true);
     pos["Zpos"] = mainmemory.readfloat(plptr + 0x8, true);
     return pos;
+end
+
+function BTRAM:getBanjoTState()
+    return mainmemory.readbyte(self.character_state);
 end
 
 function BTRAM:getBanjoMovementState()
@@ -338,7 +348,9 @@ BTModel = {
         ["Treble Clef"] = 0x6ED,
         ["Station Switch"] = 0x86D,
         ["Levitate Pad"] = 0x7D8,
-        ["Jiggy"] = 0x610
+        ["Jiggy"] = 0x610,
+        ["Breakable Door"] = 0x651,
+        ["Sign Post"] = 0x7A2
     };
     model_enemy_list = {
         ["Ugger"] = 0x671,
@@ -834,52 +846,52 @@ local BKCHUFFY = {} -- King Coal Progress Flag
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
     ['JIGGY'] = {
-        -- ["1230676"] = {
-        --     ['addr'] = 0x4F,
-        --     ['bit'] = 0,
-        --     ['name'] = 'JV: White Jinjo Family Jiggy'
-        -- },
-        -- ["1230677"] = {
-        --     ['addr'] = 0x4F,
-        --     ['bit'] = 1,
-        --     ['name'] = 'Jinjo Village: Orange Jinjo Family Jiggy'
-        -- },
-        -- ["1230678"] = {
-        --     ['addr'] = 0x4F,
-        --     ['bit'] = 2,
-        --     ['name'] = 'JV: Yellow Jinjo Family Jiggy'
-        -- },
-        -- ["1230679"] = {
-        --     ['addr'] = 0x4F,
-        --     ['bit'] = 3,
-        --     ['name'] = 'JV: Brown Jinjo Family Jiggy'
+        ["1230676"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 0,
+            ['name'] = 'JV: White Jinjo Family Jiggy'
+        },
+        ["1230677"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 1,
+            ['name'] = 'Jinjo Village: Orange Jinjo Family Jiggy'
+        },
+        ["1230678"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 2,
+            ['name'] = 'JV: Yellow Jinjo Family Jiggy'
+        },
+        ["1230679"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 3,
+            ['name'] = 'JV: Brown Jinjo Family Jiggy'
 
-        -- },
-        -- ["1230680"] = {
-        --     ['addr'] = 0x4F,
-        --     ['bit'] = 4,
-        --     ['name'] = 'JV: Green Jinjo Family Jiggy'
-        -- },
-        -- ["1230681"] = {
-        --     ['addr'] = 0x4F,
-        --     ['bit'] = 5,
-        --     ['name'] = 'JV: Red Jinjo Family Jiggy'
-        -- },
-        -- ["1230682"] = {
-        --     ['addr'] = 0x4F,
-        --     ['bit'] = 6,
-        --     ['name'] = 'JV: Blue Jinjo Family Jiggy'
-        -- },
-        -- ["1230683"] = {
-        --     ['addr'] = 0x4F,
-        --     ['bit'] = 7,
-        --     ['name'] = 'JV: Purple Jinjo Family Jiggy'
-        -- },
-        -- ["1230684"] = {
-        --     ['addr'] = 0x50,
-        --     ['bit'] = 0,
-        --     ['name'] = 'JV: Black Jinjo Family Jiggy'
-        -- },
+        },
+        ["1230680"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 4,
+            ['name'] = 'JV: Green Jinjo Family Jiggy'
+        },
+        ["1230681"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 5,
+            ['name'] = 'JV: Red Jinjo Family Jiggy'
+        },
+        ["1230682"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 6,
+            ['name'] = 'JV: Blue Jinjo Family Jiggy'
+        },
+        ["1230683"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 7,
+            ['name'] = 'JV: Purple Jinjo Family Jiggy'
+        },
+        ["1230684"] = {
+            ['addr'] = 0x50,
+            ['bit'] = 0,
+            ['name'] = 'JV: Black Jinjo Family Jiggy'
+        },
         ["1230685"] = {
             ['addr'] = 0x50,
             ['bit'] = 1,
@@ -3535,6 +3547,7 @@ function check_open_level()  -- See if entrance conditions for a level have been
                 BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
                 values["opened"] = true
                 table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
+                print(values["defaultName"] .. " is now unlocked!")
             end
         end
     end
@@ -3596,6 +3609,7 @@ function loadGame(current_map)
                     end
                 end
             end
+            check_open_level()
             GAME_LOADED = true;
         end
     else
@@ -3700,6 +3714,70 @@ function BKLogics(mapaddr)
     end
 end
 
+function ChuffyCheck()
+    if CHUFF_GOT == true and BTRAMOBJ:getBanjoPos() == false
+    then
+        CHUFF_GOT = false
+        mainmemory.write_u16_be(0x045702, 0xAD);
+        mainmemory.write_u16_be(0x127640, 0xAD);
+        mainmemory.write_u16_be(0x127642, 0x0101);
+        print("Pheefer")
+    elseif CHUFFY_COAL == true and BTRAMOBJ:getBanjoPos() == false then
+        CHUFFY_COAL = false
+        mainmemory.write_u16_be(0x045702, 0x142);
+        mainmemory.write_u16_be(0x127640, 0x142);
+        mainmemory.write_u16_be(0x127642, 0x0101);
+        print("is")
+    elseif CHUFF_FINAL == true then
+        CHUFF_FINAL = false
+        mainmemory.write_u16_be(0x045702, 0xBC);
+        mainmemory.write_u16_be(0x127640, 0xBC);
+        mainmemory.write_u16_be(0x127642, 0x0101);
+        CHUFFY_CC = true
+        print("my bro bro :D YOU DID IT! - Jjjj12212")
+    end
+
+
+    BTMODELOBJ:changeName("Breakable Door")
+    door_there = BTMODELOBJ:checkModel()
+    banjo = BTRAMOBJ:getBanjoTState()
+    BTMODELOBJ:changeName("Sign Post")
+    sign_there = BTMODELOBJ:checkModel()
+    if CURRENT_MAP == 0xC4 and door_there == true and banjo == 8 and CHUFFY_CC == false
+    then
+        BTMODELOBJ:changeName("Breakable Door")
+        BTMODELOBJ:checkModel()
+        POS = BTMODELOBJ:getSingleModelCoords()
+        if POS ~= false
+        then
+            if POS["Distance"] <= 1000
+            then
+                CHUFF_GOT = true;
+            else
+                return
+            end
+        end
+    elseif CURRENT_MAP == 0x173 and banjo == 8
+    then
+        CHUFFY_COAL = true
+    elseif CURRENT_MAP == 0x142 and banjo == 8 and sign_there == true
+    then
+        BTMODELOBJ:changeName("Sign Post")
+        BTMODELOBJ:checkModel()
+        POS = BTMODELOBJ:getSingleModelCoords()
+        if POS ~= false
+        then
+            if POS["Distance"] <= 150
+            then
+                CHUFF_FINAL = true;
+            else
+                return
+            end
+        end
+    end
+
+end
+
 function BKCheckAssetLogic()
     if CHECK_FOR_SILO == true
     then
@@ -3745,6 +3823,10 @@ function BKCheckAssetLogic()
             CHECK_FOR_STATIONBTN = false
             set_AP_STATIONS()
         end
+    end
+    if WATCH_LOADED_STATIONBTN == true --Don't need to watch every 10 frames
+    then
+        watchBtnAnimation()
     end
     if CHUFFY_MAP_TRANS == true or CHUFFY_STOP_WATCH == false or (CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false)
     then
@@ -3793,10 +3875,7 @@ function BKAssetFound()
             WATCH_LOADED_TREBLE = false
         end
     end
-    if WATCH_LOADED_STATIONBTN == true
-    then
-        watchBtnAnimation()
-    end
+    ChuffyCheck()
 end
 
 function locationControl()
@@ -4546,7 +4625,6 @@ function getSlotData()
     end
     local msg = json.encode(retTable).."\n"
     local ret, error = BT_SOCK:send(msg)
-
     l, e = BT_SOCK:receive()
     -- Handle incoming message
     if e == 'closed' then
@@ -4719,11 +4797,11 @@ function initializeFlags()
         BMMBackup()
         BMMRestore()
 		INIT_COMPLETE = true
-	-- Otherwise, the flags were already set, so just stop checking
-	elseif (current_map == 0xAF or current_map == 0x142) then
         if SKIP_PUZZLES == true then
             check_open_level() -- sanity check that level open flags are still set
         end
+	-- Otherwise, the flags were already set, so just stop checking
+	elseif (current_map == 0xAF or current_map == 0x142) then
 		INIT_COMPLETE = true
     elseif current_map == 0x158 and INIT_COMPLETE == true
     then
