@@ -208,7 +208,9 @@ class BanjoTooieRules:
                                                   state.has(itemName.CEGGS, self.player) or
                                                   state.has(itemName.BDRILL, self.player)) and
                                                  self.HFP_hot_water_cooled(state),
-            locationName.JIGGYJR5: lambda state: state.has(itemName.SPLITUP, self.player) and
+            locationName.JIGGYJR5: lambda state: (state.has(itemName.GEGGS, self.player) or
+                                                  state.has(itemName.CEGGS, self.player)) and
+                                                 state.has(itemName.SPLITUP, self.player) and
                                                  self.check_solo_moves(state, itemName.GLIDE),
             locationName.JIGGYJR6: lambda state: state.has(itemName.AUQAIM, self.player) and
                                                  self.can_reach_atlantis(state),
@@ -791,8 +793,10 @@ class BanjoTooieRules:
                             count += 10
                         if self.can_reach_GI_2F(state):  # Rest of GI
                             count += 35
-            if state.has(itemName.SPLITUP, self.player): # Cliff Top
-                count += 20
+            if state.has(itemName.SPLITUP, self.player) or (self.world.options.multiworld_stations == 1 and
+                self.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, self.player)): # Cliff Top
+                    count += 20
+            if state.has(itemName.SPLITUP, self.player):
                 if state.has(itemName.JIGGY, self.player, 14): # JRL Town Center
                     count += 60
                     if state.has(itemName.AUQAIM, self.player) or state.has(itemName.TTORP, self.player): # Squid Notes

@@ -62,12 +62,12 @@ HUMBACC = "Humba: Bee"
 HUMBAIH = "Humba: Dragon"
 
 #Train Switches
-TRAINSWIH  = "IoH: Train Station Opened"
-TRAINSWTD  = "TDL: Train Station Opened"
-TRAINSWGI  = "GI: Train Station Opened"
-TRAINSWHP1 = "HFP: Lava Side Train Station Opened"
-TRAINSWHP2 = "HFP: Icy Side Train Station Opened"
-TRAINSWWW  = "WW: Train Station Opened"
+TRAINSWIH  = "IoH: Train Station"
+TRAINSWTD  = "TDL: Train Station"
+TRAINSWGI  = "GI: Train Station"
+TRAINSWHP1 = "HFP: Lava Side Train Station"
+TRAINSWHP2 = "HFP: Icy Side Train Station"
+TRAINSWWW  = "WW: Train Station"
 
 CHUFFY = "Chuffy"
 
