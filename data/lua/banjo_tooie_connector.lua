@@ -4514,17 +4514,17 @@ function DPadStats()
             SNEAK = false
         end
 
-        if check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 A'] == true
-        then
-            for location, values in pairs(WORLD_ENTRANCE_MAP)
-            do
-                local open = BTRAMOBJ:checkFlag(values["addr"], values["bit"])
-                if open == true
-                then
-                    print(values["defaultName"] .. " is unlocked!")
-                end
-            end
-        end
+        -- if check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 A'] == true
+        -- then
+        --     for location, values in pairs(WORLD_ENTRANCE_MAP)
+        --     do
+        --         local open = BTRAMOBJ:checkFlag(values["addr"], values["bit"])
+        --         if open == true
+        --         then
+        --             print(values["defaultName"] .. " is unlocked!")
+        --         end
+        --     end
+        -- end
     end
 end
 
