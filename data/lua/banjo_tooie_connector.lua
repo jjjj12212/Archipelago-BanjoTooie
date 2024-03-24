@@ -3159,6 +3159,10 @@ function watchBtnAnimation()
     then
         return
     end
+    if ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP] == nil or BKSTATIONS[ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP]] == nil
+    then
+        return
+    end
     local currentAnimation = BTMODELOBJ:getObjectAnimation();
     if currentAnimation ~= 0x81 -- not yet pressed
     then
