@@ -275,7 +275,12 @@ class BanjoTooieRules:
                                                  self.can_use_battery(state) and
                                                  (self.check_humba_magic(state, itemName.HUMBAGI) or
                                                   self.check_solo_moves(state, itemName.LSPRING)),
-            locationName.JIGGYGI7: lambda state: self.can_reach_GI_2F(state),
+            locationName.JIGGYGI7: lambda state: (state.has(itemName.CLAWBTS, self.player) and state.has(itemName.SPLITUP, self.player)) or \
+                                                  (self.GI_front_door(state) and
+                                                    self.check_solo_moves(state, itemName.LSPRING) and
+                                                    self.check_solo_moves(state, itemName.GLIDE) and
+                                                    (self.check_solo_moves(state, itemName.WWHACK) or
+                                                    state.has(itemName.EGGAIM, self.player))),
             locationName.JIGGYGI8: lambda state: self.enter_GI(state) and
                                                  self.check_solo_moves(state, itemName.SNPACK),
             locationName.JIGGYGI9: lambda state: self.can_reach_GI_2F(state) and

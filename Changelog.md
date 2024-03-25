@@ -1,3 +1,7 @@
+# 0.91-Beta
+- Logic Change
+  - GI: Guarded Jiggy now requires Split Up With Claw Climbers whereas before you only needed Claw Climbers
+
 # 0.9-Beta
 - The Big Train Update!
   - Stations can now be randomized

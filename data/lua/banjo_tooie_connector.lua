@@ -3200,7 +3200,7 @@ end
 
 function set_checked_BKCHUFFY() --Only when Inside Chuffy
     local get_addr = NON_AGI_MAP['CHUFFY']["1230796"];
-    if BKCHUFFY["1230796"] == false
+    if BKCHUFFY["1230796"] == false and BMM['JIGGY']["1230606"] == false
     then
         BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
     else
@@ -3208,7 +3208,7 @@ function set_checked_BKCHUFFY() --Only when Inside Chuffy
     end
 end
 
-function watchChuffyFlag() 
+function watchChuffyFlag()
     BTMODELOBJ:changeName("Jiggy", false)
     killedKing = BTMODELOBJ:checkModel()
     if killedKing == true

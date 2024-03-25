@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | v0.9-beta
+# Archipelago Banjo-Tooie (US-Only) | v0.91-beta
 Banjo Tooie for Archipelago 
 
 # Controller Shortcuts with this implementation
