@@ -1,4 +1,4 @@
-PAGES = "Cheato Page"
+PAGES = "Kongkrete's Page"
 HONEY = "Empty Honeycomb"
 WJINJO = "white Jinjo"
 OJINJO = "Orange Jinjo"
