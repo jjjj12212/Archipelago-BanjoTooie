@@ -39,6 +39,7 @@ GEGGS       = "Grenade Eggs"
 CEGGS       = "Clockwork Kazooie Eggs"
 IEGGS       = "Ice Eggs"
 FSWIM       = "Fast Swimming"
+JUMP        = "Full Jump"
 
 # Mumbo Magics
 MUMBOMT = "Mumbo: Golden Goliath"

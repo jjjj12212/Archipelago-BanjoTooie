@@ -8,7 +8,7 @@ from .Locations import BanjoTooieLocation, all_location_table
 from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
-from .Names import itemName
+from .Names import itemName, locationName
 
 #from Utils import get_options
 from BaseClasses import ItemClassification, Tutorial, Item, Region, MultiWorld
@@ -132,6 +132,9 @@ class BanjoTooieWorld(World):
         if item.code == 0: #Events
             return False
         
+        if item.code == 1230797: #Full Jump Joke
+            return False
+        
         if(item.code == 1230514 and self.options.multiworld_doubloons == False) :
             return False
         
@@ -198,6 +201,8 @@ class BanjoTooieWorld(World):
 
         if self.options.multiworld_chuffy == False:
             self.banjo_pre_fills(itemName.CHUFFY, "Chuffy", False)
+
+        self.banjo_pre_fills(itemName.JUMP, locationName.JIGGYMT9, False)
 
 
     def banjo_pre_fills(self, itemNameOrGroup: str, locationFindCriteria: str|None, useGroup: bool ) -> None:

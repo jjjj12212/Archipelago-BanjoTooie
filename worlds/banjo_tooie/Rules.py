@@ -98,10 +98,10 @@ class BanjoTooieRules:
 
         self.region_rules = {
             regionName.MT: lambda state: state.has(itemName.JIGGY, self.player, 1),
-            regionName.IOHPL: lambda state: state.has(itemName.GGRAB, self.player) or
-                                            self.dilberta_free(state),
-            regionName.GM: lambda state: state.has(itemName.JIGGY, self.player, 4) or
-                                         self.dilberta_free(state),
+            regionName.IOHPL: lambda state: (state.has(itemName.GGRAB, self.player) or
+                                            self.dilberta_free(state)) and state.has(itemName.JUMP, self.player),
+            regionName.GM: lambda state: (state.has(itemName.JIGGY, self.player, 4) or
+                                         self.dilberta_free(state)) and state.has(itemName.JUMP, self.player),
             regionName.IOHPG: lambda state: state.has(itemName.FEGGS, self.player),
             regionName.WW: lambda state: state.has(itemName.JIGGY, self.player, 8),
             regionName.IOHCT: lambda state: state.has(itemName.SPLITUP, self.player),
@@ -581,6 +581,7 @@ class BanjoTooieRules:
             #                                      state.has(itemName.CLAWBTS, self.player),
         }
         self.cheato_rules = {
+            locationName.CHEATOSM1: lambda state: state.has(itemName.JUMP, self.player),
             locationName.CHEATOMT1: lambda state: self.MT_flight_pad(state) or (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GGRAB, self.player)),
             locationName.CHEATOMT2: lambda state: self.prison_compound_open(state) and state.has(itemName.GGRAB, self.player),
             locationName.CHEATOMT3: lambda state: self.check_mumbo_magic(state, itemName.MUMBOMT) and state.has(itemName.GGRAB, self.player),
