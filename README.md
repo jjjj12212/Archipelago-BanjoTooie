@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | v0.91-beta
+# Archipelago Banjo-Tooie (US-Only) | v99-FinalRelease
 Banjo Tooie for Archipelago 
 
 # Controller Shortcuts with this implementation
@@ -8,28 +8,10 @@ Banjo Tooie for Archipelago
  - Dpad left: Aim Assist (Homing Eggs)
 
 # Current implementation
-- Death Link **(Still ongoing progress)** **(Disabled for the time being)**
-- Jiggies are scattered throughout Archipelago games
-- Empty Honeycombs are scattered throughout Archipelago games (YAML Option) 
-- Pause Menu -> Totals acts like a in-game Tracker for check locations
-- Pause Menu will display total items collected in your game + Multi-world
-- Skippable Tower of Tragedy
-- Victory condition when you defeat HAG1
-- Cheato Pages are scattered throughout Archipelago games
-- Glowbos are scattered throughout Archipelago games and activates magic automatically
-- Banjo Advanced Jamjar Moves are scattered throughout Archipelago games
-- Auto skip certian dialogs and cutscenes
-- Doubloons are scattered throughout Archipelago games
-- Treble Clef are scattered throughout Archipelago games
-- Train Station are scattered throughout Archipelago games
-- Chuffy as a AP Item (optional)
-
+- Everything
 
 # How to install
 Go to worlds/banjo_tooie/docs/setup_en.md for detailed instructions how to setup this APWorld.
-
-# Future goals for this project
-- Jinjos are scattered throughout Archipelago games 
 
 # Contributors
  - @oohnahleevay Unalive (coder)

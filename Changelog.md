@@ -1,4 +1,4 @@
-# 0.91-Beta
+# 99-FinalRelease
 - Logic Change
   - GI: Guarded Jiggy now requires Split Up With Claw Climbers whereas before you only needed Claw Climbers
 

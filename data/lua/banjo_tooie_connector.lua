@@ -43,6 +43,7 @@ local CURRENT_MAP = nil;
 local SKIP_TOT = ""
 local MINIGAMES = ""
 local INIT_COMPLETE = false
+local POST_INIT = true;
 local PAUSED = false;
 local TOTALS_MENU = false;
 local SAVE_GAME = false;
@@ -3625,6 +3626,9 @@ function loadGame(current_map)
                     if (1230855 <= tonumber(itemId) and tonumber(itemId) <= 1230863) or (1230174 <= tonumber(itemId) and tonumber(itemId) <= 1230182)
                     then
                         processMagicItem(itemId);
+                    elseif itemId == "1230797"
+                    then
+                        BTRAMOBJ:setFlag(0x20, 2)
                     end
                 end
             end
@@ -3944,7 +3948,18 @@ function locationControl()
             local DEMO = { ['DEMO'] = true}
             return DEMO
         else
-            BKLogics(mapaddr)         
+            BKLogics(mapaddr)
+            --April
+            if POST_INIT == false and CURRENT_MAP == 0xAF
+            then
+                -- local player = BTRAM:banjoPTR()
+                -- if player ~= nil then
+                    BTRAMOBJ:clearFlag(0x20, 2)
+                    -- BTRAMOBJ:clearFlag(0x21, 0)
+                    -- BTRAMOBJ:clearFlag(0x1E, 6)
+                -- end
+            end
+            --April
             if (mapaddr == 335 or mapaddr == 337) and TOTALS_MENU == false -- Wooded Hollow / JiggyTemple
             then
                 if CURRENT_MAP ~= 335 and CURRENT_MAP ~= 337
@@ -4236,6 +4251,9 @@ function processAGIItem(item_list)
             elseif memlocation == 1230796 and ENABLE_AP_CHUFFY == true
             then
                 obtained_AP_CHUFFY()
+            elseif memlocation == 1230797
+            then
+                BTRAMOBJ:setFlag(0x20, 2)
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
         end
@@ -4836,6 +4854,7 @@ function initializeFlags()
         BMMBackup()
         BMMRestore()
 		INIT_COMPLETE = true
+        POST_INIT = false
         if SKIP_PUZZLES == true then
             check_open_level() -- sanity check that level open flags are still set
         end
