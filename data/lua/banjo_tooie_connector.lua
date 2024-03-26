@@ -43,7 +43,6 @@ local CURRENT_MAP = nil;
 local SKIP_TOT = ""
 local MINIGAMES = ""
 local INIT_COMPLETE = false
-local POST_INIT = true;
 local PAUSED = false;
 local TOTALS_MENU = false;
 local SAVE_GAME = false;
@@ -2053,6 +2052,11 @@ local AGI_MASTER_MAP = {
 			['bit'] = 3,
             ['name'] = "Hag 1 Defeated"
 		},
+        ["1230797"] = {
+            ['addr'] = 0x5E,
+            ['bit'] = 0,
+            ['name'] = "Klungo 1"
+        }
 	},
 }
 
@@ -3628,7 +3632,9 @@ function loadGame(current_map)
                         processMagicItem(itemId);
                     elseif itemId == "1230797"
                     then
-                        BTRAMOBJ:setFlag(0x20, 2)
+                        BTRAMOBJ:setFlag(0x19, 7)
+                        BTRAMOBJ:setFlag(0x19, 5)
+                        BTRAMOBJ:setFlag(0x1A, 5)
                     end
                 end
             end
@@ -3949,17 +3955,6 @@ function locationControl()
             return DEMO
         else
             BKLogics(mapaddr)
-            --April
-            if POST_INIT == false and CURRENT_MAP == 0xAF
-            then
-                -- local player = BTRAM:banjoPTR()
-                -- if player ~= nil then
-                    BTRAMOBJ:clearFlag(0x20, 2)
-                    -- BTRAMOBJ:clearFlag(0x21, 0)
-                    -- BTRAMOBJ:clearFlag(0x1E, 6)
-                -- end
-            end
-            --April
             if (mapaddr == 335 or mapaddr == 337) and TOTALS_MENU == false -- Wooded Hollow / JiggyTemple
             then
                 if CURRENT_MAP ~= 335 and CURRENT_MAP ~= 337
@@ -4253,7 +4248,9 @@ function processAGIItem(item_list)
                 obtained_AP_CHUFFY()
             elseif memlocation == 1230797
             then
-                BTRAMOBJ:setFlag(0x20, 2)
+                BTRAMOBJ:setFlag(0x19, 7)
+                BTRAMOBJ:setFlag(0x19, 5)
+                BTRAMOBJ:setFlag(0x1A, 5)
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
         end
@@ -4853,8 +4850,12 @@ function initializeFlags()
         all_location_checks("AMM")
         BMMBackup()
         BMMRestore()
+        -- April 
+        BTRAMOBJ:clearFlag(0x19, 7)
+        BTRAMOBJ:clearFlag(0x19, 5)
+        BTRAMOBJ:clearFlag(0x1A, 5)
+        --
 		INIT_COMPLETE = true
-        POST_INIT = false
         if SKIP_PUZZLES == true then
             check_open_level() -- sanity check that level open flags are still set
         end

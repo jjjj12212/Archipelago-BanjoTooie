@@ -202,7 +202,7 @@ class BanjoTooieWorld(World):
         if self.options.multiworld_chuffy == False:
             self.banjo_pre_fills(itemName.CHUFFY, "Chuffy", False)
 
-        self.banjo_pre_fills(itemName.JUMP, locationName.JIGGYMT9, False)
+        self.banjo_pre_fills(itemName.JUMP, locationName.BBLASTER, False)
 
 
     def banjo_pre_fills(self, itemNameOrGroup: str, locationFindCriteria: str|None, useGroup: bool ) -> None:
