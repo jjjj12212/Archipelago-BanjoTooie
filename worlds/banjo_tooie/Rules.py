@@ -660,8 +660,8 @@ class BanjoTooieRules:
             locationName.HONEYCGI2: lambda state: self.enter_GI(state) and (state.has(itemName.GGRAB, self.player) or state.has(itemName.SPLITUP, self.player)),
             locationName.HONEYCGI3: lambda state: self.can_reach_GI_2F(state),
 
-            # locationName.HONEYCHP1: lambda state: (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or
-            #                                       state.has(itemName.SPLITUP, self.player),
+            locationName.HONEYCHP1: lambda state: (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or
+                                                  state.has(itemName.SPLITUP, self.player),
             locationName.HONEYCHP2: lambda state: state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING) or
                                                   self.check_solo_moves(state, itemName.GLIDE),
             locationName.HONEYCHP3: lambda state: state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.GLIDE) or
@@ -916,14 +916,12 @@ class BanjoTooieRules:
         return state.has(itemName.BDRILL, self.player) and self.check_mumbo_magic(state, itemName.MUMBOCC)
 
     def check_hag1_options(self, state: CollectionState) -> bool:
-        if self.world.options.open_hag1 == 1:
-            return True
-        else:
-            return state.has(itemName.JIGGY, self.player, 70) and \
-                   (self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK) or
-                    self.check_solo_moves(state, itemName.SHPACK)) and \
-                   state.has(itemName.BBLASTER, self.player) and \
-                   state.has(itemName.CEGGS, self.player)
+        enough_jiggies = state.has(itemName.JIGGY, self.player, 55) if self.world.options.open_hag1 == 1 else state.has(itemName.JIGGY, self.player, 70)
+        return enough_jiggies and \
+                (self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK) or
+                self.check_solo_moves(state, itemName.SHPACK)) and \
+                state.has(itemName.BBLASTER, self.player) and \
+                state.has(itemName.CEGGS, self.player)
 
     def set_rules(self) -> None:
         for region_name, rules in self.region_rules.items():
