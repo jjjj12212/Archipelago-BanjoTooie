@@ -29,7 +29,7 @@ local PREV_STATE = ""
 local CUR_STATE =  STATE_UNINITIALIZED
 local FRAME = 0
 
-local DEBUG = false
+local DEBUG = true
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
@@ -88,6 +88,10 @@ local OPEN_HAG1 = false;
 local CHECK_FOR_STATIONBTN = false;
 local STATION_BTN_TIMER = 0;
 local WATCH_LOADED_STATIONBTN = false;
+
+-------------- JINJO VARS -----------
+local CHECK_FOR_JINJO = false;
+local JINJO_TIMER = 0;
 
 -------------- CHUFFY VARS ------------
 DEAD_COAL_CHECK = 0;
@@ -354,7 +358,12 @@ BTModel = {
         ["Levitate Pad"] = 0x7D8,
         ["Jiggy"] = 0x610,
         ["Breakable Door"] = 0x651,
-        ["Sign Post"] = 0x7A2
+        ["Sign Post"] = 0x7A2,
+        ["Loggo"] = 0x63E,
+        ["Mary"] = 0x67B,
+        ["Rare"] = 0x632,
+        ["Cheato"] = 0x787,
+        ["N64"] = 0x631,
     };
     model_enemy_list = {
         ["Ugger"] = 0x671,
@@ -408,7 +417,6 @@ function BTModel:getModelPointers()
     do
         table.insert(modelTable, objectArray + self:getModelSlotBase(i));
 	end
-
     return modelTable
 end
 
@@ -427,7 +435,6 @@ function BTModel:setObjectAnimation(animation2Bytes)
     local defref = self.banjoRAM:dereferencePointer(self.banjoRAM.animationPointer)
     if defref ~= nil
     then
-        print("writing to Mem")
         print(defref + 0x38 + (0x3C * self.animationPointer))
         mainmemory.write_u16_be(defref + 0x38 + (0x3C * self.animationPointer), animation2Bytes)
         return true;
@@ -443,6 +450,22 @@ function BTModel:getAnimationType(modelPtr)
     end
     self.singleModelIndex = mainmemory.read_u16_be(objectIDPointer + 0x14);
     return self.singleModelIndex;
+end
+
+function BTModel:setAnimationType(modelPtr, name)
+    if self.model_list[name] == nil
+    then
+        print(name .. " Object not found!")
+        return
+    end
+    local objaddr = self.model_list[name];
+	local objectIDPointer = self.banjoRAM:dereferencePointer(modelPtr + 0x0);
+    if objectIDPointer == nil
+    then
+        return nil
+    end
+    mainmemory.write_u16_be(objectIDPointer + 0x14, objaddr);
+    return 
 end
 
 function BTModel:checkModel()
@@ -477,6 +500,32 @@ function BTModel:checkModel()
         end
     end
     return false;
+end
+
+function BTModel:setModelTypes(name)
+    if self.model_list[name] == nil
+    then
+        print(name .. " Object not found!")
+        return
+    end
+    local objaddr = self.model_list[name];
+    local pointer_list = self:getModelPointers()
+    if pointer_list == nil
+    then
+        return
+    end
+
+    for k, modelptr in pairs(pointer_list)
+    do
+        local ObjectAddr = self:getAnimationType(modelptr); -- Required for special data
+        if ObjectAddr ~= nil
+        then
+            if ObjectAddr == self.model_list[self.model_name]
+            then
+                BTModel:setAnimationType(modelptr, name)
+            end
+        end
+    end
 end
 
 function BTModel:getModels() -- returns list
@@ -3549,6 +3598,46 @@ function MoveDoubloon()
     end
 end
 
+--------------- JINJO CHECK -------------
+function getJinjoPlayerModel()
+    BTMODELOBJ:changeName("Jinjo", false)
+    object = BTMODELOBJ:checkModel()
+    if JINJO_TIMER <= 3 and object == false
+    then
+        if DEBUG == true
+        then
+            print("Watching Jinjo")
+        end
+        JINJO_TIMER = JINJO_TIMER + 1
+        return
+    end
+
+    if object == false
+    then
+        BTMODELOBJ:changeName("Player", false)
+        local player = BTMODELOBJ:checkModel();
+        if player == false
+        then
+            return
+        end
+        if DEBUG == true
+        then
+            print("No Jinjo on Map")
+        end
+        JINJO_TIMER = 0
+        CHECK_FOR_JINJO = false
+        return
+    end
+    if DEBUG == true
+    then
+        print("Jinjo Found")
+        print("Evolving to Mary")
+    end
+    BTMODELOBJ:setModelTypes("Mary")
+    JINJO_TIMER = 0
+    CHECK_FOR_JINJO = false
+end
+
 function check_open_level()  -- See if entrance conditions for a level have been met
     local jiggy_count = 0;
     for location, values in pairs(AGI_MASTER_MAP["JIGGY"])
@@ -3749,6 +3838,11 @@ function BKLogics(mapaddr)
     then
         DOUBLOON_SILO_MOVE = false
     end
+    if ((CURRENT_MAP ~= mapaddr) or player == false)
+    then
+        print("Checking for Jinjos")
+        CHECK_FOR_JINJO = true
+    end
 end
 
 function ChuffyCheck()
@@ -3873,6 +3967,10 @@ function BKCheckAssetLogic()
         CHUFFY_STOP_WATCH = false
         CHUFFY_MAP_TRANS = false
         getChuffyMaps()
+    end
+    if CHECK_FOR_JINJO == true
+    then
+        getJinjoPlayerModel()
     end
 end
 
