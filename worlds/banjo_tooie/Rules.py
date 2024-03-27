@@ -726,8 +726,9 @@ class BanjoTooieRules:
                                                self.has_enough_notes(state, 265),
 
             locationName.SPRINGB: lambda state: self.has_enough_notes(state, 390),
-            locationName.TAXPACK: lambda state: state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GGRAB, self.player)) or
-                                                self.check_solo_moves(state, itemName.PACKWH) and self.has_enough_notes(state, 405),
+            locationName.TAXPACK: lambda state: state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GGRAB, self.player) or
+                                                self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK))
+                                                and self.has_enough_notes(state, 405),
             locationName.HATCH: lambda state:   state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 420),
 
             locationName.SNPACK: lambda state:  self.enter_GI(state) and self.can_use_battery(state) and self.has_enough_notes(state, 525),
