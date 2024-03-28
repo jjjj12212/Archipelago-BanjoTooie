@@ -3159,6 +3159,10 @@ function watchBtnAnimation()
     then
         return
     end
+    if ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP] == nil or BKSTATIONS[ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP]] == nil
+    then
+        return
+    end
     local currentAnimation = BTMODELOBJ:getObjectAnimation();
     if currentAnimation ~= 0x81 -- not yet pressed
     then
@@ -3173,7 +3177,7 @@ function watchBtnAnimation()
         end
         BKSTATIONS[ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP]] = true;
         --Removed the Stop Watch here as the Stations doesn't get set right away. this will cover it at least...
-        set_AP_STATIONS() 
+        set_AP_STATIONS()
     end
 end
 
@@ -3196,7 +3200,7 @@ end
 
 function set_checked_BKCHUFFY() --Only when Inside Chuffy
     local get_addr = NON_AGI_MAP['CHUFFY']["1230796"];
-    if BKCHUFFY["1230796"] == false
+    if BKCHUFFY["1230796"] == false and BMM['JIGGY']["1230606"] == false
     then
         BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
     else
@@ -3204,7 +3208,7 @@ function set_checked_BKCHUFFY() --Only when Inside Chuffy
     end
 end
 
-function watchChuffyFlag() 
+function watchChuffyFlag()
     BTMODELOBJ:changeName("Jiggy", false)
     killedKing = BTMODELOBJ:checkModel()
     if killedKing == true
@@ -3624,7 +3628,10 @@ function loadGame(current_map)
                     end
                 end
             end
-            check_open_level()
+            if SKIP_PUZZLES == true
+            then
+                check_open_level()
+            end
             if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
                 BTRAMOBJ:setFlag(0x6E, 3);
                 table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")

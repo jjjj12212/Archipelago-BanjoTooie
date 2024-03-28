@@ -1,7 +1,11 @@
 import typing
 from BaseClasses import Region
+
+import worlds.banjo_tooie
 from .Names import regionName, locationName, itemName
 from .Locations import BanjoTooieLocation
+from .Rules import BanjoTooieRules
+
 
 BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     "Menu":              [],
@@ -131,12 +135,13 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     ],
     regionName.IOHCT:   [
         locationName.JINJOIH3,
-        locationName.GLOWBOIH1,
         locationName.IEGGS,
         locationName.TRAINSWIH
     ],
     regionName.IOHCTS: [],
-    
+    regionName.IOHCT_HFP_ENTRANCE: [
+        locationName.GLOWBOIH1,
+    ],
     regionName.JR:      [
         locationName.JRLDB1,
         locationName.JRLDB2,
@@ -340,7 +345,7 @@ BANJOTOOIECONNECTIONS: typing.Dict[str, typing.Set[str]] = {
         regionName.IOHWH:              {regionName.MT, regionName.IOHPL},
         regionName.MT:                 {regionName.TL_HATCH},
         regionName.IOHPL:              {regionName.GM, regionName.IOHCT, regionName.IOHPG},
-        regionName.IOHCT:              {regionName.JR, regionName.HP},
+        regionName.IOHCT:              {regionName.JR, regionName.HP, regionName.IOHCT_HFP_ENTRANCE},
         regionName.IOHPG:              {regionName.WW, regionName.IOHWL},
         regionName.IOHWL:              {regionName.TL, regionName.CC, regionName.IOHQM},
         regionName.TL:                 {regionName.TL_HATCH},
@@ -352,6 +357,7 @@ BANJOTOOIECONNECTIONS: typing.Dict[str, typing.Set[str]] = {
         regionName.CHUFFY:             {regionName.IOHCTS, regionName.TLS, regionName.GIS, regionName.HPLS, regionName.WWS, regionName.HPIS},
         regionName.TLS:                {regionName.TL},
         regionName.GIS:                {regionName.GI},
+        regionName.HP:                 {regionName.IOHCT_HFP_ENTRANCE},
         regionName.HPLS:               {regionName.HP},
         regionName.IOHCTS:             {regionName.IOHCT},
         regionName.WWS:                {regionName.WW}
@@ -382,10 +388,11 @@ def create_region(multiworld, player: int, active_locations, name: str, location
 def connect_regions(self):
     multiworld = self.multiworld
     player = self.player
+    rules = BanjoTooieRules(self)
 
     for source, target in BANJOTOOIECONNECTIONS.items():
         source_region = multiworld.get_region(source, player)
-        if regionName.TL_HATCH in target:
+        if any(region in (regionName.TL_HATCH, regionName.IOHCT_HFP_ENTRANCE) for region in target):
             continue
         source_region.add_exits(target)
 
@@ -396,4 +403,12 @@ def connect_regions(self):
     region_TL = multiworld.get_region(regionName.TL, player)
     region_TL.add_exits({regionName.TL_HATCH,})
 
+    region_IOHCT = multiworld.get_region(regionName.IOHCT, player)
+    region_IOHCT.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.HP, regionName.JR})
+
+    region_HP = multiworld.get_region(regionName.HP, player)
+
+    region_HP.add_exits({regionName.IOHCT_HFP_ENTRANCE,},
+                        {regionName.IOHCT_HFP_ENTRANCE: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, player) and
+                                                                      (self.options.multiworld_stations == 1)})
 

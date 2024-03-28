@@ -209,7 +209,9 @@ class BanjoTooieRules:
                                                   state.has(itemName.CEGGS, self.player) or
                                                   state.has(itemName.BDRILL, self.player)) and
                                                  self.HFP_hot_water_cooled(state),
-            locationName.JIGGYJR5: lambda state: state.has(itemName.SPLITUP, self.player) and
+            locationName.JIGGYJR5: lambda state: (state.has(itemName.GEGGS, self.player) or
+                                                  state.has(itemName.CEGGS, self.player)) and
+                                                 state.has(itemName.SPLITUP, self.player) and
                                                  self.check_solo_moves(state, itemName.GLIDE),
             locationName.JIGGYJR6: lambda state: state.has(itemName.AUQAIM, self.player) and
                                                  self.can_reach_atlantis(state),
@@ -273,7 +275,12 @@ class BanjoTooieRules:
                                                  self.can_use_battery(state) and
                                                  (self.check_humba_magic(state, itemName.HUMBAGI) or
                                                   self.check_solo_moves(state, itemName.LSPRING)),
-            locationName.JIGGYGI7: lambda state: self.can_reach_GI_2F(state),
+            locationName.JIGGYGI7: lambda state: (state.has(itemName.CLAWBTS, self.player) and state.has(itemName.SPLITUP, self.player)) or \
+                                                  (self.GI_front_door(state) and
+                                                    self.check_solo_moves(state, itemName.LSPRING) and
+                                                    self.check_solo_moves(state, itemName.GLIDE) and
+                                                    (self.check_solo_moves(state, itemName.WWHACK) or
+                                                    state.has(itemName.EGGAIM, self.player))),
             locationName.JIGGYGI8: lambda state: self.enter_GI(state) and
                                                  self.check_solo_moves(state, itemName.SNPACK),
             locationName.JIGGYGI9: lambda state: self.can_reach_GI_2F(state) and
@@ -653,8 +660,8 @@ class BanjoTooieRules:
             locationName.HONEYCGI2: lambda state: self.enter_GI(state) and (state.has(itemName.GGRAB, self.player) or state.has(itemName.SPLITUP, self.player)),
             locationName.HONEYCGI3: lambda state: self.can_reach_GI_2F(state),
 
-            # locationName.HONEYCHP1: lambda state: (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or
-            #                                       state.has(itemName.SPLITUP, self.player),
+            locationName.HONEYCHP1: lambda state: (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or
+                                                  state.has(itemName.SPLITUP, self.player),
             locationName.HONEYCHP2: lambda state: state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING) or
                                                   self.check_solo_moves(state, itemName.GLIDE),
             locationName.HONEYCHP3: lambda state: state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.GLIDE) or
@@ -719,8 +726,9 @@ class BanjoTooieRules:
                                                self.has_enough_notes(state, 265),
 
             locationName.SPRINGB: lambda state: self.has_enough_notes(state, 390),
-            locationName.TAXPACK: lambda state: state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GGRAB, self.player)) or
-                                                self.check_solo_moves(state, itemName.PACKWH) and self.has_enough_notes(state, 405),
+            locationName.TAXPACK: lambda state: state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GGRAB, self.player) or
+                                                self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK))
+                                                and self.has_enough_notes(state, 405),
             locationName.HATCH: lambda state:   state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 420),
 
             locationName.SNPACK: lambda state:  self.enter_GI(state) and self.can_use_battery(state) and self.has_enough_notes(state, 525),
@@ -792,8 +800,10 @@ class BanjoTooieRules:
                             count += 10
                         if self.can_reach_GI_2F(state):  # Rest of GI
                             count += 35
-            if state.has(itemName.SPLITUP, self.player): # Cliff Top
-                count += 20
+            if state.has(itemName.SPLITUP, self.player) or (self.world.options.multiworld_stations == 1 and
+                self.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, self.player)): # Cliff Top
+                    count += 20
+            if state.has(itemName.SPLITUP, self.player):
                 if state.has(itemName.JIGGY, self.player, 14): # JRL Town Center
                     count += 60
                     if state.has(itemName.AUQAIM, self.player) or state.has(itemName.TTORP, self.player): # Squid Notes
@@ -907,14 +917,12 @@ class BanjoTooieRules:
         return state.has(itemName.BDRILL, self.player) and self.check_mumbo_magic(state, itemName.MUMBOCC)
 
     def check_hag1_options(self, state: CollectionState) -> bool:
-        if self.world.options.open_hag1 == 1:
-            return True
-        else:
-            return state.has(itemName.JIGGY, self.player, 70) and \
-                   (self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK) or
-                    self.check_solo_moves(state, itemName.SHPACK)) and \
-                   state.has(itemName.BBLASTER, self.player) and \
-                   state.has(itemName.CEGGS, self.player)
+        enough_jiggies = state.has(itemName.JIGGY, self.player, 55) if self.world.options.open_hag1 == 1 else state.has(itemName.JIGGY, self.player, 70)
+        return enough_jiggies and \
+                (self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK) or
+                self.check_solo_moves(state, itemName.SHPACK)) and \
+                state.has(itemName.BBLASTER, self.player) and \
+                state.has(itemName.CEGGS, self.player)
 
     def set_rules(self) -> None:
         for region_name, rules in self.region_rules.items():

@@ -25,6 +25,8 @@ Once BizHawk has been installed, open EmuHawk and change the following settings:
 
 It is strongly recommended to associate N64 rom extensions (*.n64, *.z64) to the EmuHawk we've just installed. To do so, we simply have to search any N64 rom we happened to own, right click and select "Open with…", unfold the list that appears and select the bottom option "Look for another application", then browse to the BizHawk folder and select EmuHawk.exe.
 
+## Prerequisite
+
 ## How to Install - Server Side
 - Copy banjo_tooie.apworld into the worlds folder in your existing Archipelago folder (\libs\worlds)
 
@@ -35,6 +37,9 @@ It is strongly recommended to associate N64 rom extensions (*.n64, *.z64) to the
 - Connect the Archipelago Client with the server.
 - Open Bizhawk (2.9.1+) and open your Banjo-Tooie (US) game.
 - Once you are in the game select screen, apply the banjo_tooie_connector lua script (drag and drop)
+
+## Generate your world
+- Familiarize yourself on how Archipelago works. Here is a guide to learn how to generate your world: https://archipelago.gg/tutorial/Archipelago/setup/en#on-your-local-installation
 
 ## Connect to the Multiserver
 
