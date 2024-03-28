@@ -3231,7 +3231,7 @@ function watchBtnAnimation()
         end
         BKSTATIONS[ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP]] = true;
         --Removed the Stop Watch here as the Stations doesn't get set right away. this will cover it at least...
-        set_AP_STATIONS() 
+        set_AP_STATIONS()
     end
 end
 
@@ -3727,7 +3727,10 @@ function loadGame(current_map)
                     end
                 end
             end
-            check_open_level()
+            if SKIP_PUZZLES == true
+            then
+                check_open_level()
+            end
             if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
                 BTRAMOBJ:setFlag(0x6E, 3);
                 table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")

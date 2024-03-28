@@ -1,6 +1,10 @@
 # 99-FinalRelease
 - Logic Change
   - GI: Guarded Jiggy now requires Split Up With Claw Climbers whereas before you only needed Claw Climbers
+  - Hailfire Peak Honeycomb Logic
+  - fix HAG 1 requirements
+- fix King Coal defeated bug
+- fix open level sanity check
 
 # 0.9-Beta
 - The Big Train Update!
