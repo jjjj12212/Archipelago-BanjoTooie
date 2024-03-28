@@ -3177,7 +3177,7 @@ function watchBtnAnimation()
         end
         BKSTATIONS[ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP]] = true;
         --Removed the Stop Watch here as the Stations doesn't get set right away. this will cover it at least...
-        set_AP_STATIONS() 
+        set_AP_STATIONS()
     end
 end
 
