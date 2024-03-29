@@ -4852,12 +4852,9 @@ function initializeFlags()
             print("HAG 1 is now unlocked!")
         end
         if ENABLE_AP_JINJO == true then
-            BTRAMOBJ:setFlag(0x6A, 1)
-            BTRAMOBJ:clearFlag(0x6A, 2)
-            BTRAMOBJ:clearFlag(0x6A, 3)
-            BTRAMOBJ:clearFlag(0x6A, 4)
-            BTRAMOBJ:clearFlag(0x6A, 5)
-            BTRAMOBJ:clearFlag(0x6A, 6)
+            -- 129 is 1000 0001
+            -- 2 is 0000 0010
+            BTRAMOBJ:setMultipleFlags(0x6A, 129, 2)
         end
 
         
