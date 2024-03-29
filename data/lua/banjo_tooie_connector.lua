@@ -3843,7 +3843,6 @@ function BKLogics(mapaddr)
     end
     if ((CURRENT_MAP ~= mapaddr) or player == false)
     then
-        print("Checking for Jinjos")
         CHECK_FOR_JINJO = true
     end
 end
