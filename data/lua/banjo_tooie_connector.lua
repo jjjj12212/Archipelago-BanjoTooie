@@ -61,6 +61,7 @@ local ENABLE_AP_DOUBLOONS = false;
 local ENABLE_AP_TREBLE = false;
 local ENABLE_AP_STATIONS = false;
 local ENABLE_AP_CHUFFY = false;
+local ENABLE_AP_JINJO = false;
 local AP_MESSAGES = {};
 
 local GAME_LOADED = false;
@@ -4850,6 +4851,15 @@ function initializeFlags()
             table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
             print("HAG 1 is now unlocked!")
         end
+        if ENABLE_AP_JINJO == true then
+            BTRAMOBJ:setFlag(0x6A, 1)
+            BTRAMOBJ:clearFlag(0x6A, 2)
+            BTRAMOBJ:clearFlag(0x6A, 3)
+            BTRAMOBJ:clearFlag(0x6A, 4)
+            BTRAMOBJ:clearFlag(0x6A, 5)
+            BTRAMOBJ:clearFlag(0x6A, 6)
+        end
+
         
 	-- Otherwise, the flags were already set, so just stop checking
 	elseif (current_map == 0xAF or current_map == 0x142) then
