@@ -17,31 +17,31 @@ class LocationData(typing.NamedTuple):
 
 SMLoc_table = {
     locationName.CHEATOSM1: LocationData(1230752, 0x59, 3),
-    # locationName.JINJOIH5: LocationData(1230595, 0x3F, 0)
+     locationName.JINJOIH5: LocationData(1230595, 0x3F, 0)
     # locationName.FSWIM:    LocationData(1230777, 0x1E, 5)
 
 }
 
 JVLoc_table = {
-    #locationName.JIGGYIH1:  LocationData(1230676, 0x4F, 0),
-    #locationName.JIGGYIH2:  LocationData(1230677, 0x4F, 1),
-    #locationName.JIGGYIH3:  LocationData(1230678, 0x4F, 2),
-    #locationName.JIGGYIH4:  LocationData(1230679, 0x4F, 3),
-    #locationName.JIGGYIH5:  LocationData(1230680, 0x4F, 4),
-    #locationName.JIGGYIH6:  LocationData(1230681, 0x4F, 5),
-    #locationName.JIGGYIH7:  LocationData(1230682, 0x4F, 6),
-    #locationName.JIGGYIH8:  LocationData(1230683, 0x4F, 7),
-    #locationName.JIGGYIH9:  LocationData(1230684, 0x50, 0),
+    locationName.JIGGYIH1:  LocationData(1230676, 0x4F, 0),
+    locationName.JIGGYIH2:  LocationData(1230677, 0x4F, 1),
+    locationName.JIGGYIH3:  LocationData(1230678, 0x4F, 2),
+    locationName.JIGGYIH4:  LocationData(1230679, 0x4F, 3),
+    locationName.JIGGYIH5:  LocationData(1230680, 0x4F, 4),
+    locationName.JIGGYIH6:  LocationData(1230681, 0x4F, 5),
+    locationName.JIGGYIH7:  LocationData(1230682, 0x4F, 6),
+    locationName.JIGGYIH8:  LocationData(1230683, 0x4F, 7),
+    locationName.JIGGYIH9:  LocationData(1230684, 0x50, 0),
     locationName.JIGGYIH10: LocationData(1230685, 0x50, 1),
     locationName.TREBLEJV:  LocationData(1230789, 0x97, 7)  #Set last ID for Clef Family. Client Reasons
 }
 
 MTLoc_Table = {
-    # locationName.JINJOMT1: LocationData(1230551, 0x39, 4), 
-    # locationName.JINJOMT2: LocationData(1230552, 0x39, 5),
-    # locationName.JINJOMT3: LocationData(1230553, 0x39, 6),
-    # locationName.JINJOMT4: LocationData(1230554, 0x39, 7),
-    # locationName.JINJOMT5: LocationData(1230555, 0x3A, 0),
+    locationName.JINJOMT1: LocationData(1230551, 0x39, 4), 
+    locationName.JINJOMT2: LocationData(1230552, 0x39, 5),
+    locationName.JINJOMT3: LocationData(1230553, 0x39, 6),
+    locationName.JINJOMT4: LocationData(1230554, 0x39, 7),
+    locationName.JINJOMT5: LocationData(1230555, 0x3A, 0),
     locationName.JIGGYMT1:  LocationData(1230596, 0x45, 0),
     locationName.JIGGYMT2:  LocationData(1230597, 0x45, 1),
     locationName.JIGGYMT3:  LocationData(1230598, 0x45, 2),
@@ -67,17 +67,17 @@ MTLoc_Table = {
 }
 
 IHPLLoc_table = {
-    # locationName.JINJOIH4: LocationData(1230594, 0x3E, 7),
+    locationName.JINJOIH4:  LocationData(1230594, 0x3E, 7),
     locationName.HONEYCIH1: LocationData(1230727, 0x42, 2),
     locationName.FEGGS:     LocationData(1230756, 0x1E, 1)
 }
 
 GMLoc_table = {
-    # locationName.JINJOGM1: LocationData(1230556, 0x3A, 1),
-    # locationName.JINJOGM2: LocationData(1230557, 0x3A, 2),
-    # locationName.JINJOGM3: LocationData(1230558, 0x3A, 3),
-    # locationName.JINJOGM4: LocationData(1230559, 0x3A, 4),
-    # locationName.JINJOGM5: LocationData(1230560, 0x3A, 5),
+    locationName.JINJOGM1: LocationData(1230556, 0x3A, 1),
+    locationName.JINJOGM2: LocationData(1230557, 0x3A, 2),
+    locationName.JINJOGM3: LocationData(1230558, 0x3A, 3),
+    locationName.JINJOGM4: LocationData(1230559, 0x3A, 4),
+    locationName.JINJOGM5: LocationData(1230560, 0x3A, 5),
     locationName.JIGGYGM1:  LocationData(1230606, 0x46, 2),
     locationName.JIGGYGM2:  LocationData(1230607, 0x46, 3),
     locationName.JIGGYGM3:  LocationData(1230608, 0x46, 4),
@@ -108,11 +108,11 @@ PGLov_table = {
 }
 
 WWLoc_table = {
-    # locationName.JINJOWW1: LocationData(1230561, 0x3A, 6),
-    # locationName.JINJOWW2: LocationData(1230562, 0x3A, 7),
-    # locationName.JINJOWW3: LocationData(1230563, 0x3B, 0),
-    # locationName.JINJOWW4: LocationData(1230564, 0x3B, 1),
-    # locationName.JINJOWW5: LocationData(1230565, 0x3B, 2),
+    locationName.JINJOWW1: LocationData(1230561, 0x3A, 6),
+    locationName.JINJOWW2: LocationData(1230562, 0x3A, 7),
+    locationName.JINJOWW3: LocationData(1230563, 0x3B, 0),
+    locationName.JINJOWW4: LocationData(1230564, 0x3B, 1),
+    locationName.JINJOWW5: LocationData(1230565, 0x3B, 2),
     locationName.JIGGYWW1:  LocationData(1230616, 0x47, 4),
     locationName.JIGGYWW2:  LocationData(1230617, 0x47, 5),
     locationName.JIGGYWW3:  LocationData(1230618, 0x47, 6),
@@ -169,11 +169,11 @@ JRLoc_table = {
     locationName.JRLDB28: LocationData(1230548, 0x26, 2),
     locationName.JRLDB29: LocationData(1230549, 0x26, 3),
     locationName.JRLDB30: LocationData(1230550, 0x26, 4),
-    # locationName.JINJOJR1:  LocationData(1230566, 0x3B, 3),
-    # locationName.JINJOJR2:  LocationData(1230567, 0x3B, 4),
-    # locationName.JINJOJR3:  LocationData(1230568, 0x3B, 5),
-    # locationName.JINJOJR4:  LocationData(1230569, 0x3B, 6),
-    # locationName.JINJOJR5:  LocationData(1230570, 0x3B, 7),
+    locationName.JINJOJR1:  LocationData(1230566, 0x3B, 3),
+    locationName.JINJOJR2:  LocationData(1230567, 0x3B, 4),
+    locationName.JINJOJR3:  LocationData(1230568, 0x3B, 5),
+    locationName.JINJOJR4:  LocationData(1230569, 0x3B, 6),
+    locationName.JINJOJR5:  LocationData(1230570, 0x3B, 7),
     locationName.JIGGYJR1:  LocationData(1230626, 0x48, 6),
     locationName.JIGGYJR2:  LocationData(1230627, 0x48, 7),
     locationName.JIGGYJR3:  LocationData(1230628, 0x49, 0),
@@ -199,11 +199,11 @@ JRLoc_table = {
 }
 
 TLLoc_table = {
-    # locationName.JINJOTL1:  LocationData(1230571, 0x3C, 0),
-    # locationName.JINJOTL2:  LocationData(1230572, 0x3C, 1),
-    # locationName.JINJOTL3:  LocationData(1230573, 0x3C, 2),
-    # locationName.JINJOTL4:  LocationData(1230574, 0x3C, 3),
-    # locationName.JINJOTL5:  LocationData(1230575, 0x3C, 4),
+    locationName.JINJOTL1:  LocationData(1230571, 0x3C, 0),
+    locationName.JINJOTL2:  LocationData(1230572, 0x3C, 1),
+    locationName.JINJOTL3:  LocationData(1230573, 0x3C, 2),
+    locationName.JINJOTL4:  LocationData(1230574, 0x3C, 3),
+    locationName.JINJOTL5:  LocationData(1230575, 0x3C, 4),
     locationName.JIGGYTD1:  LocationData(1230636, 0x4A, 0),
     locationName.JIGGYTD2:  LocationData(1230637, 0x4A, 1),
     locationName.JIGGYTD3:  LocationData(1230638, 0x4A, 2),
@@ -230,11 +230,11 @@ TLLoc_table = {
 }
 
 GILoc_table = {
-    # locationName.JINJOGI1:  LocationData(1230576, 0x3C, 5),
-    # locationName.JINJOGI2:  LocationData(1230577, 0x3C, 6),
-    # locationName.JINJOGI3:  LocationData(1230578, 0x3C, 7),
-    # locationName.JINJOGI4:  LocationData(1230579, 0x3D, 0),
-    # locationName.JINJOGI5:  LocationData(1230580, 0x3D, 1),
+    locationName.JINJOGI1:  LocationData(1230576, 0x3C, 5),
+    locationName.JINJOGI2:  LocationData(1230577, 0x3C, 6),
+    locationName.JINJOGI3:  LocationData(1230578, 0x3C, 7),
+    locationName.JINJOGI4:  LocationData(1230579, 0x3D, 0),
+    locationName.JINJOGI5:  LocationData(1230580, 0x3D, 1),
     locationName.JIGGYGI1:  LocationData(1230646, 0x4B, 2),
     locationName.JIGGYGI2:  LocationData(1230647, 0x4B, 3),
     locationName.JIGGYGI3:  LocationData(1230648, 0x4B, 4),
@@ -261,11 +261,11 @@ GILoc_table = {
 }
 
 HPLoc_table = {
-    # locationName.JINJOHP1:  LocationData(1230581, 0x3D, 2),
-    # locationName.JINJOHP2:  LocationData(1230582, 0x3D, 3),
-    # locationName.JINJOHP3:  LocationData(1230583, 0x3D, 4),
-    # locationName.JINJOHP4:  LocationData(1230584, 0x3D, 5),
-    # locationName.JINJOHP5:  LocationData(1230585, 0x3D, 6),
+    locationName.JINJOHP1:  LocationData(1230581, 0x3D, 2),
+    locationName.JINJOHP2:  LocationData(1230582, 0x3D, 3),
+    locationName.JINJOHP3:  LocationData(1230583, 0x3D, 4),
+    locationName.JINJOHP4:  LocationData(1230584, 0x3D, 5),
+    locationName.JINJOHP5:  LocationData(1230585, 0x3D, 6),
     locationName.JIGGYHP1:  LocationData(1230656, 0x4C, 4),
     locationName.JIGGYHP2:  LocationData(1230657, 0x4C, 5),
     locationName.JIGGYHP3:  LocationData(1230658, 0x4C, 6),
@@ -292,11 +292,11 @@ HPLoc_table = {
 }
 
 CCLoc_table = {
-    # locationName.JINJOCC1:  LocationData(1230586, 0x3D, 7),
-    # locationName.JINJOCC2:  LocationData(1230587, 0x3E, 0),
-    # locationName.JINJOCC3:  LocationData(1230588, 0x3E, 1),
-    # locationName.JINJOCC4:  LocationData(1230589, 0x3E, 2),
-    # locationName.JINJOCC5:  LocationData(1230590, 0x3E, 3),
+    locationName.JINJOCC1:  LocationData(1230586, 0x3D, 7),
+    locationName.JINJOCC2:  LocationData(1230587, 0x3E, 0),
+    locationName.JINJOCC3:  LocationData(1230588, 0x3E, 1),
+    locationName.JINJOCC4:  LocationData(1230589, 0x3E, 2),
+    locationName.JINJOCC5:  LocationData(1230590, 0x3E, 3),
     locationName.JIGGYCC1:  LocationData(1230666, 0x4D, 6),
     locationName.JIGGYCC2:  LocationData(1230667, 0x4D, 7),
     locationName.JIGGYCC3:  LocationData(1230668, 0x4E, 0),
@@ -320,17 +320,17 @@ CCLoc_table = {
 }
 
 IHWHLoc_table = {
-    # locationName.JINJOIH1: LocationData(1230591, 0x3E, 4)
+    locationName.JINJOIH1: LocationData(1230591, 0x3E, 4)
 }
 
 IHWLLoc_table = {
-    # locationName.JINJOIH2: LocationData(1230592, 0x3E, 5),
+    locationName.JINJOIH2: LocationData(1230592, 0x3E, 5),
     locationName.CEGGS:   LocationData(1230767, 0x1E, 3)
 
 }
 
 IHCTLoc_table = {
-    # locationName.JINJOIH3: LocationData(1230593, 0x3E, 6),
+    locationName.JINJOIH3: LocationData(1230593, 0x3E, 6),
     locationName.GLOWBOIH1: LocationData(1230702, 0x44, 7),
     locationName.IEGGS:   LocationData(1230763, 0x1E, 4),
     locationName.TRAINSWIH: LocationData(1230794, 0x7B, 3),

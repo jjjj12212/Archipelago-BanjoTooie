@@ -8,7 +8,7 @@ from .Locations import BanjoTooieLocation, all_location_table
 from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
-from .Names import itemName
+from .Names import itemName, locationName
 
 #from Utils import get_options
 from BaseClasses import ItemClassification, Tutorial, Item, Region, MultiWorld
@@ -150,9 +150,7 @@ class BanjoTooieWorld(World):
         if(item.code in range(1230855, 1230864) and self.options.multiworld_glowbos == False) : #range you need to add +1 to the end.
             return False
 
-        if((item.code == 1230501 or item.code == 1230502 or item.code == 1230503 or item.code == 1230504 or
-            item.code == 1230505 or item.code == 1230506 or item.code == 1230507 or item.code == 1230508 or
-            item.code == 1230509 ) and self.options.multiworld_jinjos == False) :
+        if(item.code in range(1230501, 1230510) and self.options.multiworld_jinjos == False) :#range you need to add +1 to the end.
             return False
         
         if(item.code == 1230778 and self.options.multiworld_treble == False):
@@ -198,6 +196,70 @@ class BanjoTooieWorld(World):
 
         if self.options.multiworld_chuffy == False:
             self.banjo_pre_fills(itemName.CHUFFY, "Chuffy", False)
+        
+        if self.options.multiworld_jinjos == False:
+            item = self.create_item(itemName.WJINJO)
+            self.multiworld.get_location(locationName.JINJOJR5, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.OJINJO)
+            self.multiworld.get_location(locationName.JINJOWW4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOHP2, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.YJINJO)
+            self.multiworld.get_location(locationName.JINJOWW3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOHP4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOHP3, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.BRJINJO)
+            self.multiworld.get_location(locationName.JINJOGM1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOJR2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOTL2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOTL5, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.GJINJO)
+            self.multiworld.get_location(locationName.JINJOWW5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOJR1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOTL4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGI2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOHP1, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.RJINJO)
+            self.multiworld.get_location(locationName.JINJOMT2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOMT3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOMT5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOJR3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOJR4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOWW2, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.BLJINJO)
+            self.multiworld.get_location(locationName.JINJOGM3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOTL1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOHP5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOCC2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOIH1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOIH4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOIH5, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.PJINJO)
+            self.multiworld.get_location(locationName.JINJOMT1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGM5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGI3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOCC1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOCC3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOCC5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOIH2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOIH3, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.BKJINJO)
+            self.multiworld.get_location(locationName.JINJOMT4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGM2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGM4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOWW1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOTL3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGI1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGI5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOCC4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGI4, self.player).place_locked_item(item)
 
 
     def banjo_pre_fills(self, itemNameOrGroup: str, locationFindCriteria: str|None, useGroup: bool ) -> None:
@@ -237,6 +299,8 @@ class BanjoTooieWorld(World):
         btoptions['open_hag1'] = "true" if self.options.open_hag1 == 1 else "false"
         btoptions['stations']= "true" if self.options.multiworld_stations == 1 else "false"
         btoptions['chuffy']= "true" if self.options.multiworld_chuffy == 1 else "false"
+        btoptions['jinjo']= "true" if self.options.multiworld_jinjos == 1 else "false"
+
 
 
         return btoptions
