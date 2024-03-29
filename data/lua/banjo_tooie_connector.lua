@@ -29,7 +29,7 @@ local PREV_STATE = ""
 local CUR_STATE =  STATE_UNINITIALIZED
 local FRAME = 0
 
-local DEBUG = true
+local DEBUG = false
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
