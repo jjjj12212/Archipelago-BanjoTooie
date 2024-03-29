@@ -613,8 +613,8 @@ class BanjoTooieRules:
             locationName.CHEATOTL3: lambda state: state.has(itemName.BDRILL, self.player) and 
                                                   (state.has(itemName.GGRAB, self.player) or self.can_beat_terry(state)),
 
-            locationName.CHEATOGI1: lambda state: state.has(itemName.GEGGS, self.player) and
-                                                  self.enter_GI(state),
+            locationName.CHEATOGI1: lambda state: (state.has(itemName.GEGGS, self.player) or (state.has(itemName.CEGGS, self.player) and 
+                                                    state.has(itemName.BDRILL, self.player))) and self.enter_GI(state),
             locationName.CHEATOGI2: lambda state: self.can_reach_GI_2F(state),
             locationName.CHEATOGI3: lambda state: self.can_beat_weldar(state),
 
