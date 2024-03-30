@@ -90,6 +90,7 @@ class BanjoTooieContext(CommonContext):
         self.movelist_table = {}
         self.notelist_table = {}
         self.stationlist_table = {}
+        self.jinjofamlist_table = {}
         self.chuffy_table = {}
         self.deathlink_enabled = False
         self.deathlink_pending = False
@@ -252,7 +253,8 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_skip_puzzles": ctx.slot_data["skip_puzzles"],
             "slot_open_hag1": ctx.slot_data["open_hag1"],
             "slot_stations": ctx.slot_data["stations"],
-            "slot_chuffy": ctx.slot_data["chuffy"]
+            "slot_chuffy": ctx.slot_data["chuffy"],
+            "slot_jinjo": ctx.slot_data["jinjo"],
         })
     ctx.sendSlot = False
     return payload
@@ -390,7 +392,28 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             await ctx.send_msgs([{
                 "cmd": "LocationChecks",
                 "locations": sta1
-            }])        
+            }])   
+
+    if ctx.sync_ready == True:
+         # Locations handling
+        jinjofamlist = payload['jinjofam']
+        fam1 = []
+
+        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
+        if isinstance(jinjofamlist, list):
+            jinjofamlist = {}
+
+        if ctx.jinjofamlist_table != jinjofamlist:
+            ctx.jinjofamlist_table = jinjofamlist
+
+            for locationId, value in jinjofamlist.items():
+                if value == True:
+                    sta1.append(int(locationId))
+
+            await ctx.send_msgs([{
+                "cmd": "LocationChecks",
+                "locations": fam1
+            }])     
 
     #Send Aync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:

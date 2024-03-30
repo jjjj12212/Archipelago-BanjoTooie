@@ -201,8 +201,209 @@ BTRAM = {
     current_state = 0x4,
     map_dest = 0x045702,
     character_state = 0x136F63,
-} 
+}
 
+-- Pattern 1 Map
+JINJO_PATTER_MAP = {
+    ["1230501"] = {
+        ["0"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 7
+        }
+    },
+    ["1230502"] = {
+        ["0"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 1
+        },
+        ["1"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 3
+        },
+    },
+    ["1230503"] = {
+        ["0"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 0
+        },
+        ["1"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 5
+        },
+        ["2"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 4
+        },
+    },
+    ["1230504"] = {
+        ["0"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 1
+        },
+        ["1"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 4
+        },
+        ["2"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 1
+        },
+        ["3"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 4
+        },
+    },
+    ["1230505"] = {
+        ["0"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 2
+        },
+        ["1"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 3
+        },
+        ["2"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 3
+        },
+        ["3"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 6
+        },
+        ["4"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 2
+        },
+    },
+    ["1230506"] = {
+        ["0"] = {
+            ['addr'] = 0x39,
+            ['bit'] = 5
+        },
+        ["1"] = {
+            ['addr'] = 0x39,
+            ['bit'] = 6
+        },
+        ["2"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 0
+        },
+        ["3"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 5
+        },
+        ["4"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 6
+        },
+        ["5"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 7
+        },
+    },
+    ["1230507"] = {
+        ["0"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 3
+        },
+        ["1"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 0
+        },
+        ["2"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 6
+        },
+        ["3"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 0
+        },
+        ["4"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 4
+        },
+        ["5"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 7
+        },
+        ["6"] = {
+            ['addr'] = 0x3F,
+            ['bit'] = 0
+        },
+    },
+    ["1230508"] = {
+        ["0"] = {
+            ['addr'] = 0x39,
+            ['bit'] = 4
+        },
+        ["1"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 5
+        },
+        ["2"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 7
+        },
+        ["3"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 7
+        },
+        ["4"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 1
+        },
+        ["5"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 3
+        },
+        ["6"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 5
+        },
+        ["7"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 6
+        },
+    },
+    ["1230509"] = {
+        ["0"] = {
+            ['addr'] = 0x39,
+            ['bit'] = 7
+        },
+        ["1"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 2
+        },
+        ["2"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 4
+        },
+        ["3"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 6
+        },
+        ["4"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 2
+        },
+        ["5"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 5
+        },
+        ["6"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 1
+        },
+        ["7"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 2
+        },
+        ["8"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 0
+        },
+    },
+}
 
 function BTRAM:new(t)
     t = t or {}
@@ -840,13 +1041,24 @@ local AGI_MOVES = {};
 local AGI_NOTES = {};
 local AGI_STATIONS = {};
 local AGI_CHUFFY = {};
-local AGI_JINJO = {};
+local AGI_JINJOS = {
+    ["1230501"] = 0, -- white
+    ["1230502"] = 0, -- oragne
+    ["1230503"] = 0, -- yellow
+    ["1230504"] = 0, -- brown
+    ["1230505"] = 0, -- green
+    ["1230506"] = 0, -- red
+    ["1230507"] = 0, -- blue
+    ["1230508"] = 0, -- purple
+    ["1230509"] = 0, -- black
+};
 
 local BKM = {}; -- Banjo Tooie Movelist Table
 local BKNOTES = {}; -- Notes
 local BKSTATIONS = {} -- Stations
 local BKCHUFFY = {} -- King Coal Progress Flag
-local BKJINJO = {} -- Jinjos
+local BKJINJOFAM = {} -- Jinjo Family check 
+
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
     ['JIGGY'] = {
@@ -2813,7 +3025,55 @@ local NON_AGI_MAP = {
             ['bit'] = 6,
             ['name'] = "King Coal Defeated"
         },
+    },
+    ["JINJOFAM"] = {
+        ["1230676"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 0,
+            ['name'] = 'JV: White Jinjo Family Jiggy'
+        },
+        ["1230677"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 1,
+            ['name'] = 'JV: Orange Jinjo Family Jiggy'
+        },
+        ["1230678"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 2,
+            ['name'] = 'JV: Yellow Jinjo Family Jiggy'
+        },
+        ["1230679"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 3,
+            ['name'] = 'JV: Brown Jinjo Family Jiggy'
+        },
+        ["1230680"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 4,
+            ['name'] = 'JV: Green Jinjo Family Jiggy'
+        },
+        ["1230681"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 5,
+            ['name'] = 'JV: Red Jinjo Family Jiggy'
+        },
+        ["1230682"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 6,
+            ['name'] = 'JV: Blue Jinjo Family Jiggy'
+        },
+        ["1230683"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 7,
+            ['name'] = 'JV: Purple Jinjo Family Jiggy'
+        },
+        ["1230684"] = {
+            ['addr'] = 0x50,
+            ['bit'] = 0,
+            ['name'] = 'JV: Black Jinjo Family Jiggy'
+        },
     }
+
 }
 
 -- Properties of world entrances and associated puzzles
@@ -2908,11 +3168,23 @@ function readAPLocationChecks(type)
         do
             for locId, table in pairs(location)
             do
-                if checks[check_type] == nil 
+                -- Don't check AMM Jinjo Fam Jiggies. uses a different table
+                if type == "AMM" and locId ~= "1230676" and locId ~= "1230677" and locId ~= "1230678" 
+                    and locId ~= "1230679" and locId ~= "1230680" and locId ~= "1230681"
+                    and locId ~= "1230682" and locId ~= "1230683" and locId ~= "1230684"
                 then
-                    checks[check_type] = {}
+                    if checks[check_type] == nil
+                    then
+                        checks[check_type] = {}
+                    end
+                    checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
+                elseif type == "AGI"
+                then
+                    if checks[check_type] == nil
+                    then
+                        checks[check_type] = {}
+                    end
                 end
-                checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
             end
         end
         return checks;
@@ -3544,6 +3816,101 @@ function MoveDoubloon()
     end
 end
 
+------------------ Jinjos -------------------
+-- Jinjos themselves are stored in MASTER_AGI_MAP
+-- Famify complete checks are stored in BKJINJOFAM
+
+function init_JinjoFam()
+    for locId, table in pairs(NON_AGI_MAP["JINJOFAM"])
+    do
+        BKJINJOFAM[locId] = false
+    end
+end
+
+function JinjoCounter() -- counts AP jinjos and Marks as Completed if true
+    for locId, value in pairs(BKJINJOFAM) do
+        if value == false
+        then
+            if locId == "1230676"
+            then
+                if AGI_JINJOS[1230501] == 1 then
+                    BKJINJOFAM[locId] = true
+                end
+            end
+            if locId == "1230677"
+            then
+                if AGI_JINJOS[1230502] == 2 then
+                    BKJINJOFAM[locId] = true
+                end
+            end
+            if locId == "1230678"
+            then
+                if AGI_JINJOS[1230503] == 3 then
+                    BKJINJOFAM[locId] = true
+                end
+            end
+            if locId == "1230679"
+            then
+                if AGI_JINJOS[1230504] == 4 then
+                    BKJINJOFAM[locId] = true
+                end
+            end
+            if locId == "1230680"
+            then
+                if AGI_JINJOS[1230505] == 5 then
+                    BKJINJOFAM[locId] = true
+                end
+            end
+            if locId == "1230681"
+            then
+                if AGI_JINJOS[1230506] == 6 then
+                    BKJINJOFAM[locId] = true
+                end
+            end
+            if locId == "1230682"
+            then
+                if AGI_JINJOS[1230507] == 7 then
+                    BKJINJOFAM[locId] = true
+                end
+            end
+            if locId == "1230683"
+            then
+                if AGI_JINJOS[1230508] == 8 then
+                    BKJINJOFAM[locId] = true
+                end
+            end
+            if locId == "1230684"
+            then
+                if AGI_JINJOS[1230509] == 9 then
+                    BKJINJOFAM[locId] = true
+                end
+            end
+        end
+    end
+end
+
+function JinjoPause()
+for itemId, value in pairs(AGI_JINJOS)
+    do
+        if value > 0
+        then
+            for i = 0, value,1
+            do
+                if JINJO_PATTER_MAP[itemId][tostring(i)] == nil 
+                then
+                    if DEBUG == true
+                    then
+                        print("Jinjo Overflow. Stopping Loop but everything is OK.")
+                    end
+                    break;
+                end
+                BTRAMOBJ:setFlag(JINJO_PATTER_MAP[itemId][tostring(i)]['addr'], JINJO_PATTER_MAP[itemId][tostring(i)]['bit'])
+            end
+        end
+    end
+end
+
+
 function check_open_level()  -- See if entrance conditions for a level have been met
     local jiggy_count = 0;
     for location, values in pairs(AGI_MASTER_MAP["JIGGY"])
@@ -3571,7 +3938,6 @@ function check_open_level()  -- See if entrance conditions for a level have been
         end
     end
 end
-
 
 function checkConsumables(consumable_type, location_checks)
     BTCONSUMEOBJ:changeConsumable(consumable_type)
@@ -3607,6 +3973,7 @@ function loadGame(current_map)
             BKNOTES = json.decode(f:read("l"));
             BKSTATIONS = json.decode(f:read("l"));
             BKCHUFFY = json.decode(f:read("l"));
+            BKJINJOFAM = json.decode(f:read("l"));
             f:close();
             all_location_checks("AMM");
             all_location_checks("BMM");
@@ -3618,6 +3985,10 @@ function loadGame(current_map)
             set_AGI_MOVES_checks();
             set_AP_BKNOTES();
             set_AP_STATIONS();
+            if ENABLE_AP_CHUFFY == true -- Sanity Check
+            then
+                BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
+            end
             for ap_id, itemId in pairs(receive_map) -- Sanity Check
             do
                 if itemId ~= "NA"
@@ -3741,6 +4112,11 @@ function BKLogics(mapaddr)
     elseif DOUBLOON_SILO_MOVE == true and  CURRENT_MAP ~= 0x1A7 
     then
         DOUBLOON_SILO_MOVE = false
+    end
+    if (CURRENT_MAP ~= mapaddr)
+    then
+        JinjoCounter()
+        client.saveram()
     end
 end
 
@@ -4239,6 +4615,10 @@ function processAGIItem(item_list)
             elseif memlocation == 1230796 and ENABLE_AP_CHUFFY == true
             then
                 obtained_AP_CHUFFY()
+            elseif( 1230501 <= memlocation and memlocation <= 1230509)
+            then
+                AGI_JINJOS[tostring(memlocation)] = AGI_JINJOS[tostring(memlocation)] + 1
+                JinjoCounter() -- check and see if family completes and mark true
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
         end
@@ -4287,6 +4667,7 @@ function SendToBTClient()
     retTable['stations'] = BKSTATIONS;
     retTable['chuffy'] = BKCHUFFY;
     retTable["isDead"] = DETECT_DEATH;
+    retTable["jinjofam"] = BKJINJOFAM;
     if GAME_LOADED == false
     then
         retTable["sync_ready"] = "false"
@@ -4363,6 +4744,7 @@ function checkPause()
         end
         BMMBackup();
         useAGI();
+        JinjoPause();
         PAUSED = true;
     elseif pause_menu == 0 and PAUSED == true  -- unpaused
     then
@@ -4567,6 +4949,11 @@ function savingAGI()
     f:write(json.encode(AGI_CHUFFY) .. "\n");
     if DEBUGLVL2 == true
     then
+        print("Writing JINJOS");
+    end
+    f:write(json.encode(AGI_JINJOS) .. "\n");
+    if DEBUGLVL2 == true
+    then
         print("Writing Received_Map");
     end
     f:write(json.encode(receive_map))
@@ -4604,6 +4991,7 @@ function loadAGI()
         f:write(json.encode(AGI_NOTES).."\n");
         f:write(json.encode(AGI_STATIONS) .. "\n");
         f:write(json.encode(AGI_CHUFFY) .. "\n");
+        f:write(json.encode(AGI_JINJOS) .. "\n");
         f:write(json.encode(receive_map));
         f:close();
     else
@@ -4616,6 +5004,7 @@ function loadAGI()
         AGI_NOTES = json.decode(f:read("l"));
         AGI_STATIONS = json.decode(f:read("l"));
         AGI_CHUFFY = json.decode(f:read("l"));
+        AGI_JINJOS = json.decode(f:read("l"));
         receive_map = json.decode(f:read("l"));
         f:close();
     end
@@ -4631,7 +5020,8 @@ function savingBMM()
     f:write(json.encode(BKM) .. "\n");
     f:write(json.encode(BKNOTES) .. "\n");
     f:write(json.encode(BKSTATIONS) .. "\n");
-    f:write(json.encode(BKCHUFFY));
+    f:write(json.encode(BKCHUFFY) .. "\n");
+    f:write(json.encode(BKJINJOFAM));
     f:close()
     if DEBUG == true
     then
@@ -4812,8 +5202,9 @@ function initializeFlags()
         GAME_LOADED = true  -- We don't have a real BMM at this point.  
         init_BMK("BKM");
         init_BKNOTES("BKNOTES");
-        init_BKSTATIONS("BKSTATIONS")
-        init_CHUFFY("BKCHUFFY")
+        init_BKSTATIONS("BKSTATIONS");
+        init_CHUFFY("BKCHUFFY");
+        init_JinjoFam();
         init_AGI()
         AGI_MOVES = init_BMK("AGI");
         AGI_NOTES = init_BKNOTES("AGI");

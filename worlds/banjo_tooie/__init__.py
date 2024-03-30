@@ -277,7 +277,6 @@ class BanjoTooieWorld(World):
                     self.multiworld.get_location(name, self.player).place_locked_item(item)
 
 
-
     def fill_slot_data(self) -> dict[str, any]:
         btoptions = dict[str, any]()
         btoptions["player_name"] = self.multiworld.player_name[self.player]
