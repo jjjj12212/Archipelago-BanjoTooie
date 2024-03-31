@@ -15,15 +15,15 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     #    locationName.FSWIM
     ],
     regionName.IOHJV:    [
-        # locationName.JIGGYIH1,
-        # locationName.JIGGYIH2,
-        # locationName.JIGGYIH3,
-        # locationName.JIGGYIH4,
-        # locationName.JIGGYIH5,
-        # locationName.JIGGYIH6,
-        # locationName.JIGGYIH7,
-        # locationName.JIGGYIH8,
-        # locationName.JIGGYIH9,
+        locationName.JIGGYIH1,
+        locationName.JIGGYIH2,
+        locationName.JIGGYIH3,
+        locationName.JIGGYIH4,
+        locationName.JIGGYIH5,
+        locationName.JIGGYIH6,
+        locationName.JIGGYIH7,
+        locationName.JIGGYIH8,
+        locationName.JIGGYIH9,
         locationName.JIGGYIH10,
         locationName.TREBLEJV
     ],
@@ -178,6 +178,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JINJOJR3,
         locationName.JINJOJR4,
         locationName.JINJOJR5,
+        locationName.JINJOGI3,
         locationName.JIGGYJR1,
         locationName.JIGGYJR2,
         locationName.JIGGYJR3,
@@ -243,7 +244,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.GI:      [
         locationName.JINJOGI1,
         locationName.JINJOGI2,
-        locationName.JINJOGI3,
+        # locationName.JINJOGI3, Moved to JRL
         locationName.JINJOGI4,
         locationName.JINJOGI5,
         locationName.JIGGYGI1,
@@ -410,5 +411,5 @@ def connect_regions(self):
 
     region_HP.add_exits({regionName.IOHCT_HFP_ENTRANCE,},
                         {regionName.IOHCT_HFP_ENTRANCE: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, player) and
-                                                                      (self.options.multiworld_stations == 1)})
+                                                                      (self.options.randomize_stations == 1)})
 

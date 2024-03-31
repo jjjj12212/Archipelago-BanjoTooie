@@ -5,9 +5,13 @@ class EnableMultiWorldMoveList(DefaultOnToggle):
     """Jamjars' Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves."""
     display_name = "Jamjars' Movelist"
 
-class EnableMultiWorldJinjos(Toggle):
+class EnableMultiWorldJinjos(DefaultOnToggle):
     """Jinjos fled to other worlds. Other players need return them home."""
     display_name = "Randomize Jinjos"
+
+class ForbidMovesOnJinjoFamilyTreasure(Toggle):
+    """If Jinjos are randomized, do not allow unlockable moves behind Jinjo Families."""
+    display_name = "Forbid Unlockable Moves on Jinjo Family Treasure"
 
 class EnableMultiWorldDoubloons(Toggle):
     """Jolly Roger's Doubloons are scattered across the MultiWorld."""
@@ -69,16 +73,17 @@ class SpeedUpMinigames(DefaultOnToggle):
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
-    multiworld_moves: EnableMultiWorldMoveList
-    multiworld_jinjos: EnableMultiWorldJinjos
-    multiworld_doubloons: EnableMultiWorldDoubloons
-    multiworld_cheato: EnableMultiWorldCheatoPages
+    randomize_moves: EnableMultiWorldMoveList
+    randomize_jinjos: EnableMultiWorldJinjos
+    forbid_moves_on_jinjo_family: ForbidMovesOnJinjoFamilyTreasure
+    randomize_doubloons: EnableMultiWorldDoubloons
+    randomize_cheato: EnableMultiWorldCheatoPages
     cheato_as_filler: SetMultiWorldCheatoPagesFiller
-    multiworld_honeycombs: EnableMultiWorldHoneycombs
-    multiworld_glowbos: EnableMultiWorldGlowbos
-    multiworld_treble: EnableMultiWorldTrebleClefs
-    multiworld_stations: EnableMultiWorldTrainStationSwitches
-    multiworld_chuffy: EnableMultiWorldChuffyTrain
+    randomize_honeycombs: EnableMultiWorldHoneycombs
+    randomize_glowbos: EnableMultiWorldGlowbos
+    randomize_treble: EnableMultiWorldTrebleClefs
+    randomize_stations: EnableMultiWorldTrainStationSwitches
+    randomize_chuffy: EnableMultiWorldChuffyTrain
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
     open_hag1: OpenHag1
