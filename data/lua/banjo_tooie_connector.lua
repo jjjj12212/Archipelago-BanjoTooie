@@ -203,208 +203,6 @@ BTRAM = {
     character_state = 0x136F63,
 }
 
--- Pattern 1 Map
-JINJO_PATTER_MAP = {
-    ["1230501"] = {
-        ["0"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 7
-        }
-    },
-    ["1230502"] = {
-        ["0"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 1
-        },
-        ["1"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 3
-        },
-    },
-    ["1230503"] = {
-        ["0"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 0
-        },
-        ["1"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 5
-        },
-        ["2"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 4
-        },
-    },
-    ["1230504"] = {
-        ["0"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 1
-        },
-        ["1"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 4
-        },
-        ["2"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 1
-        },
-        ["3"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 4
-        },
-    },
-    ["1230505"] = {
-        ["0"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 2
-        },
-        ["1"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 3
-        },
-        ["2"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 3
-        },
-        ["3"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 6
-        },
-        ["4"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 2
-        },
-    },
-    ["1230506"] = {
-        ["0"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 5
-        },
-        ["1"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 6
-        },
-        ["2"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 0
-        },
-        ["3"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 5
-        },
-        ["4"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 6
-        },
-        ["5"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 7
-        },
-    },
-    ["1230507"] = {
-        ["0"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 3
-        },
-        ["1"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 0
-        },
-        ["2"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 6
-        },
-        ["3"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 0
-        },
-        ["4"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 4
-        },
-        ["5"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 7
-        },
-        ["6"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 0
-        },
-    },
-    ["1230508"] = {
-        ["0"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 4
-        },
-        ["1"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 5
-        },
-        ["2"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 7
-        },
-        ["3"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 7
-        },
-        ["4"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 1
-        },
-        ["5"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 3
-        },
-        ["6"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 5
-        },
-        ["7"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 6
-        },
-    },
-    ["1230509"] = {
-        ["0"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 7
-        },
-        ["1"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 2
-        },
-        ["2"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 4
-        },
-        ["3"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 6
-        },
-        ["4"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 2
-        },
-        ["5"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 5
-        },
-        ["6"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 1
-        },
-        ["7"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 2
-        },
-        ["8"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 0
-        },
-    },
-}
-
 function BTRAM:new(t)
     t = t or {}
     setmetatable(t, self)
@@ -1027,6 +825,73 @@ local ASSET_MAP_CHECK = {
         [0x128] = "1230793", -- HFP Ice button
         [0xEC]  = "1230795" -- WW Button + Station
     }
+}
+
+-- Pattern 1 Map
+local JINJO_PATTER_MAP = {
+    ["1230501"] = {
+        ["0"] = "1230570"
+    },
+    ["1230502"] = {
+        ["0"] = "1230564",
+        ["1"] = "1230582"
+    },
+    ["1230503"] = {
+        ["0"] = "1230563",
+        ["1"] =  "1230584",
+        ["2"] = "1230583"
+    },
+    ["1230504"] = {
+        ["0"] = "1230556",
+        ["1"] =  "1230567",
+        ["2"] = "1230572",
+        ["3"] = "1230575"
+    },
+    ["1230505"] = {
+        ["0"] = "1230565",
+        ["1"] = "1230566",
+        ["2"] =  "1230574",
+        ["3"] = "1230577",
+        ["4"] = "1230581",
+    },
+    ["1230506"] = {
+        ["0"] = "1230552",
+        ["1"] = "1230553",
+        ["2"] = "1230555",
+        ["3"] = "1230568",
+        ["4"] = "1230569",
+        ["5"] = "1230562",
+    },
+    ["1230507"] = {
+        ["0"] = "1230558",
+        ["1"] = "1230571",
+        ["2"] = "1230585",
+        ["3"] = "1230587",
+        ["4"] = "1230591",
+        ["5"] = "1230594",
+        ["6"] = "1230595"
+    },
+    ["1230508"] = {
+        ["0"] = "1230551",
+        ["1"] = "1230560",
+        ["2"] = "1230578",
+        ["3"] = "1230586",
+        ["4"] = "1230588",
+        ["5"] = "1230590",
+        ["6"] = "1230592",
+        ["7"] = "1230593",
+    },
+    ["1230509"] = {
+        ["0"] = "1230554",
+        ["1"] = "1230557",
+        ["2"] = "1230559",
+        ["3"] = "1230561",
+        ["4"] = "1230573",
+        ["5"] = "1230576",
+        ["6"] = "1230580",
+        ["7"] = "1230589",
+        ["8"] = "1230579",
+    },
 }
 
 -- BMM - Backup Memory Map 
@@ -3833,55 +3698,55 @@ function JinjoCounter() -- counts AP jinjos and Marks as Completed if true
         then
             if locId == "1230676"
             then
-                if AGI_JINJOS[1230501] == 1 then
+                if AGI_JINJOS["1230501"] >= 1 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230677"
             then
-                if AGI_JINJOS[1230502] == 2 then
+                if AGI_JINJOS["1230502"] >= 2 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230678"
             then
-                if AGI_JINJOS[1230503] == 3 then
+                if AGI_JINJOS["1230503"] >= 3 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230679"
             then
-                if AGI_JINJOS[1230504] == 4 then
+                if AGI_JINJOS["1230504"] >= 4 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230680"
             then
-                if AGI_JINJOS[1230505] == 5 then
+                if AGI_JINJOS["1230505"] >= 5 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230681"
             then
-                if AGI_JINJOS[1230506] == 6 then
+                if AGI_JINJOS["1230506"] >= 6 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230682"
             then
-                if AGI_JINJOS[1230507] == 7 then
+                if AGI_JINJOS["1230507"] >= 7 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230683"
             then
-                if AGI_JINJOS[1230508] == 8 then
+                if AGI_JINJOS["1230508"] >= 8 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230684"
             then
-                if AGI_JINJOS[1230509] == 9 then
+                if AGI_JINJOS["1230509"] >= 9 then
                     BKJINJOFAM[locId] = true
                 end
             end
@@ -3890,13 +3755,28 @@ function JinjoCounter() -- counts AP jinjos and Marks as Completed if true
 end
 
 function JinjoPause()
-for itemId, value in pairs(AGI_JINJOS)
+
+    -- Clear all Jinjo AMM Flags first, then Set. after
+    for locId, value in pairs(AGI_MASTER_MAP["JINJO"])
+    do
+        AMM[locId] = false
+    end
+    -- 15 =  0000 1111
+    -- 254 = 1111 1110
+    BTRAMOBJ:setMultipleFlags(0x39, 15, 0)
+    BTRAMOBJ:setMultipleFlags(0x3A, 0, 0)
+    BTRAMOBJ:setMultipleFlags(0x3B, 0, 0)
+    BTRAMOBJ:setMultipleFlags(0x3C, 0, 0)
+    BTRAMOBJ:setMultipleFlags(0x3D, 0, 0)
+    BTRAMOBJ:setMultipleFlags(0x3E, 0, 0)
+    BTRAMOBJ:setMultipleFlags(0x3F, 254, 0)
+    for itemId, value in pairs(AGI_JINJOS)
     do
         if value > 0
         then
-            for i = 0, value,1
+            for i = 0, value - 1,1
             do
-                if JINJO_PATTER_MAP[itemId][tostring(i)] == nil 
+                if JINJO_PATTER_MAP[itemId][tostring(i)] == nil
                 then
                     if DEBUG == true
                     then
@@ -3904,7 +3784,13 @@ for itemId, value in pairs(AGI_JINJOS)
                     end
                     break;
                 end
-                BTRAMOBJ:setFlag(JINJO_PATTER_MAP[itemId][tostring(i)]['addr'], JINJO_PATTER_MAP[itemId][tostring(i)]['bit'])
+                if DEBUG == true
+                then
+                    print("Setting Jinjo ID: " .. itemId .. " # " .. tostring(i))
+                end
+                AMM["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]] = true
+                BTRAMOBJ:setFlag(AGI_MASTER_MAP["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]]['addr'],
+                 AGI_MASTER_MAP["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]]['bit'])
             end
         end
     end
@@ -5143,6 +5029,10 @@ function process_slot(block)
     then
         ENABLE_AP_CHUFFY = true
     end
+    if block['slot_jinjo'] ~= nil and block['slot_jinjo'] ~= "false"
+    then
+        ENABLE_AP_JINJO = true
+    end
     if SEED ~= 0
     then
         loadAGI()
@@ -5243,7 +5133,11 @@ function initializeFlags()
         end
         if ENABLE_AP_JINJO == true then
             -- 129 is 1000 0001
-            -- 2 is 0000 0010
+            -- 2 is   0000 0010
+            if DEBUG == true
+            then
+                print("Setting Jinjo Pattern")
+            end
             BTRAMOBJ:setMultipleFlags(0x6A, 129, 2)
         end
 
