@@ -71,7 +71,7 @@ local WATCH_LOADED_SILOS = false; -- Silo found on Map, Need to Monitor Distance
 local LOAD_BMK_MOVES = false; -- If close to Silo
 local SILOS_LOADED = false; -- Handles if learned a move at Silo
 local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
-local DOUBLOON_SILO_MOVE = false; -- Move Doubloons away from Silo in JRL
+-- local DOUBLOON_SILO_MOVE = false; -- Move Doubloons away from Silo in JRL
 
 local TOT_SET_COMPLETE = false;
 
@@ -3583,7 +3583,7 @@ function nearSilo()
         end
     end
    
-    if siloPOS["Distance"] <= 650 and CURRENT_MAP ~= 0x1A7
+    if siloPOS["Distance"] <= 650 -- and CURRENT_MAP ~= 0x1A7
     then
         if LOAD_BMK_MOVES == false
         then
@@ -3603,17 +3603,17 @@ function nearSilo()
             -- print("BKM Move Learnt");
             -- end
         end
-    elseif siloPOS["Distance"] <= 300 and CURRENT_MAP == 0x1A7  -- Doubloon issue 
-    then
-        if LOAD_BMK_MOVES == false
-        then
-            clear_AMM_MOVES_checks();
-            update_BMK_MOVES_checks();
-            LOAD_BMK_MOVES = true
-        elseif SILOS_LOADED == false
-        then
-            update_BMK_MOVES_checks();
-        end
+-- elseif siloPOS["Distance"] <= 300 and CURRENT_MAP == 0x1A7  -- Doubloon issue 
+-- then
+--     if LOAD_BMK_MOVES == false
+    --     then
+    --         clear_AMM_MOVES_checks();
+    --         update_BMK_MOVES_checks();
+    --         LOAD_BMK_MOVES = true
+--     elseif SILOS_LOADED == false
+    --     then
+    --         update_BMK_MOVES_checks();
+--     end
     else
         if LOAD_BMK_MOVES == true
         then
@@ -3660,36 +3660,36 @@ function MoveWitchyPads()
     end
 end
 
-function MoveDoubloon()
-    BTMODELOBJ:changeName("Doubloon", false)
-    local modelPOS = BTMODELOBJ:getMultipleModelCoords()
-    if modelPOS == false
-    then
-        return;
-    end
-    for modelObjPtr, POS in pairs(modelPOS) do
-        if POS ~= false
-        then
-            if (POS["Xpos"] == -3226 and POS["Zpos"] == -4673) -- bottom right
-            then
-                BTMODELOBJ:moveModelObject(modelObjPtr, nil, nil, POS["Zpos"] + 65);
-            end
-            if (POS["Xpos"] == -3526 and POS["Zpos"] == -4972) --bottom left
-            then
-                BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 65);
-            end
-            if (POS["Xpos"] == -3226 and POS["Zpos"] == -5273) -- top left
-            then
-                BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 50);
-            end
-            if (POS["Xpos"] == -2926 and POS["Zpos"] == -4972) -- top right
-            then
-                BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] + 25, nil, POS["Zpos"] + 65);
-            end
-        end
-        DOUBLOON_SILO_MOVE = true;
-    end
-end
+-- function MoveDoubloon()
+--     BTMODELOBJ:changeName("Doubloon", false)
+--     local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+--     if modelPOS == false
+--     then
+--         return;
+--     end
+--     for modelObjPtr, POS in pairs(modelPOS) do
+--         if POS ~= false
+--         then
+--             if (POS["Xpos"] == -3226 and POS["Zpos"] == -4673) -- bottom right
+--             then
+--                 BTMODELOBJ:moveModelObject(modelObjPtr, nil, nil, POS["Zpos"] + 65);
+--             end
+--             if (POS["Xpos"] == -3526 and POS["Zpos"] == -4972) --bottom left
+--             then
+--                 BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 65);
+--             end
+--             if (POS["Xpos"] == -3226 and POS["Zpos"] == -5273) -- top left
+--             then
+--                 BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 50);
+--             end
+--             if (POS["Xpos"] == -2926 and POS["Zpos"] == -4972) -- top right
+--             then
+--                 BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] + 25, nil, POS["Zpos"] + 65);
+--             end
+--         end
+--         DOUBLOON_SILO_MOVE = true;
+--     end
+-- end
 
 ------------------ Jinjos -------------------
 -- Jinjos themselves are stored in MASTER_AGI_MAP
@@ -3885,10 +3885,6 @@ function loadGame(current_map)
             then
                 BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
             end
-            if ENABLE_AP_JINJO == true
-            then
-                JinjoPause();
-            end
             for ap_id, itemId in pairs(receive_map) -- Sanity Check
             do
                 if itemId ~= "NA"
@@ -4006,13 +4002,13 @@ function BKLogics(mapaddr)
     then
         BATH_PADS_QOL = false
     end
-    if CURRENT_MAP == 0x1A7 and DOUBLOON_SILO_MOVE == false
-    then
-        MoveDoubloon()
-    elseif DOUBLOON_SILO_MOVE == true and  CURRENT_MAP ~= 0x1A7 
-    then
-        DOUBLOON_SILO_MOVE = false
-    end
+    -- if CURRENT_MAP == 0x1A7 and DOUBLOON_SILO_MOVE == false
+    -- then
+    --     MoveDoubloon()
+    -- elseif DOUBLOON_SILO_MOVE == true and  CURRENT_MAP ~= 0x1A7 
+    -- then
+    --     DOUBLOON_SILO_MOVE = false
+    -- end
     if (CURRENT_MAP ~= mapaddr)
     then
         if ENABLE_AP_JINJO == true

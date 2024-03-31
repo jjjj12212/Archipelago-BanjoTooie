@@ -67,7 +67,7 @@ class BanjoTooieRules:
             itemName.GLIDE
         ]
 
-        self.jinjo_forbid = [
+        self.moves_forbid = [
             itemName.MUMBOMT,
             itemName.BDRILL,
             itemName.GGRAB,
@@ -967,15 +967,21 @@ class BanjoTooieRules:
             train = self.world.multiworld.get_location(location, self.player)
             set_rule(train, rules)
 
-        # for item in self.jinjo_forbid:
-        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
-        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)
-        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH3, self.player), item, self.player)
-        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH4, self.player), item, self.player)
-        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH5, self.player), item, self.player)
-        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH6, self.player), item, self.player)
-        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH7, self.player), item, self.player)
-        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH8, self.player), item, self.player)
-        #     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
+        for item in self.moves_forbid:
+            #The Doubloons near Wing Wack Silo
+            forbid_item(self.world.multiworld.get_location(locationName.JRLDB10, self.player), item, self.player)
+            forbid_item(self.world.multiworld.get_location(locationName.JRLDB9, self.player), item, self.player)
+            forbid_item(self.world.multiworld.get_location(locationName.JRLDB8, self.player), item, self.player)
+            forbid_item(self.world.multiworld.get_location(locationName.JRLDB7, self.player), item, self.player)
+            if self.world.options.forbid_moves_on_jinjo_family == True:
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH3, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH4, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH5, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH6, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH7, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH8, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
 
         self.world.multiworld.completion_condition[self.player] = lambda state: state.has("Kick Around", self.player)
