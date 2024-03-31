@@ -43,5 +43,5 @@ Huge thank you for the following individuals / teams. Without them, this project
  - <a href='https://github.com/Isotarge/ScriptHawk'>ScriptHawk</a>
  - <a href="https://github.com/kaptainkohl/BTRandoLUA">Kaptainkohl - Banjo Tooie Randomizer</a>
  - @Icebound777
- - **Of course, the people who brought Banjo Kazooie in our lives**
+ - **Of course, the people who brought Banjo Kazooie to the world**
     - Rareware

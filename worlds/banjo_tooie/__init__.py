@@ -114,10 +114,16 @@ class BanjoTooieWorld(World):
             if self.item_filter(item):
                 if item.code == 1230515 and self.kingjingalingjiggy == True:
                     for i in range(id.qty - 1): #note the -1 in the count here. King Took one already.
-                        itempool += [self.create_item(name)]
+                        if self.options.randomize_jinjos == False and self.jiggy_counter > 81:
+                            break
+                        else:
+                            itempool += [self.create_item(name)]
                 else:
                     for i in range(id.qty):
-                        itempool += [self.create_item(name)]
+                        if self.options.randomize_jinjos == False and self.jiggy_counter > 81 and item.code == 1230515:
+                            break
+                        else:
+                            itempool += [self.create_item(name)]
         
         for item in itempool:
             self.multiworld.itempool.append(item)
@@ -198,6 +204,17 @@ class BanjoTooieWorld(World):
             self.banjo_pre_fills(itemName.CHUFFY, "Chuffy", False)
         
         if self.options.randomize_jinjos == False:
+            item = self.create_item(itemName.JIGGY)
+            self.multiworld.get_location(locationName.JIGGYIH1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH6, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH7, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH8, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH9, self.player).place_locked_item(item)
+
             item = self.create_item(itemName.WJINJO)
             self.multiworld.get_location(locationName.JINJOJR5, self.player).place_locked_item(item)
 
