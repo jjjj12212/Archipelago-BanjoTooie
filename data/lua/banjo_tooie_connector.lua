@@ -4129,7 +4129,7 @@ function BKCheckAssetLogic()
             set_AP_STATIONS()
         end
     end
-    if CHUFFY_MAP_TRANS == true or CHUFFY_STOP_WATCH == false or (CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false)
+    if (CHUFFY_MAP_TRANS == true or CHUFFY_STOP_WATCH == false or (CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false)) and ENABLE_AP_CHUFFY == true
     then
         if AGI_CHUFFY["1230796"] == false and CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false
         then

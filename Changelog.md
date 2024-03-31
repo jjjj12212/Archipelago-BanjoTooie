@@ -9,6 +9,10 @@
 - YAML Option name changes
   - multiworld_ to randomize_
 - Doubloons near Wing Wack Silo will not have any Unlockable Silo Moves (bug fix for this silo) 
+- Fix Levitation pad for Chuffy gone when Chuffy is not in the pool.
+- Logic for Jinjos and Jinjo Family Jiggies
+  - Jinjo Family Option to NOT allow Moves behind them
+  - Jinjo Faimly Jiggies WILL NOT allow other Jinjos behind them
 
 # 0.9.2-Beta
 - Logic Change

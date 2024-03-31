@@ -21,6 +21,7 @@ class BanjoTooieRules:
     humba_magic = []
     solo_moves = []
     jinjo_forbid = []
+    moves_forbid = []
     # banjo_moves = []
     # kazooie_moves = []
     jiggy_rules = {}
@@ -95,6 +96,17 @@ class BanjoTooieRules:
             itemName.MUMBOGM
         ]
 
+        self.jinjo_forbid = [
+            itemName.WJINJO,
+            itemName.OJINJO,
+            itemName.YJINJO,
+            itemName.BRJINJO,
+            itemName.GJINJO,
+            itemName.RJINJO,
+            itemName.BLJINJO,
+            itemName.PJINJO,
+            itemName.BLJINJO,
+        ]
 
         self.region_rules = {
             regionName.MT: lambda state: state.has(itemName.JIGGY, self.player, 1),
@@ -344,241 +356,16 @@ class BanjoTooieRules:
             locationName.JIGGYCC10: lambda state: self.check_solo_moves(state, itemName.SHPACK),
 
             #Jinjo Family Jiggies
-            #locationName.JIGGYIH1: lambda state: state.has(itemName.JIGGY, self.player, 36),
-            #locationName.JIGGYIH2: lambda state: state.has(itemName.JIGGY, self.player, 36),
-            #locationName.JIGGYIH3: lambda state: state.has(itemName.JIGGY, self.player, 45),
-            #locationName.JIGGYIH4: lambda state: state.has(itemName.JIGGY, self.player, 45),
-            #locationName.JIGGYIH5: lambda state: state.has(itemName.JIGGY, self.player, 45),
-            #locationName.JIGGYIH6: lambda state: state.has(itemName.JIGGY, self.player, 45),
-            #locationName.JIGGYIH7: lambda state: state.has(itemName.JIGGY, self.player, 45),
-            #locationName.JIGGYIH8: lambda state: state.has(itemName.JIGGY, self.player, 45),
-            #locationName.JIGGYIH9: lambda state: state.has(itemName.JIGGY, self.player, 45),
+            locationName.JIGGYIH1: lambda state: state.has(itemName.WJINJO, self.player, 1),
+            locationName.JIGGYIH2: lambda state: state.has(itemName.OJINJO, self.player, 2),
+            locationName.JIGGYIH3: lambda state: state.has(itemName.YJINJO, self.player, 3),
+            locationName.JIGGYIH4: lambda state: state.has(itemName.BRJINJO, self.player, 4),
+            locationName.JIGGYIH5: lambda state: state.has(itemName.GJINJO, self.player, 5),
+            locationName.JIGGYIH6: lambda state: state.has(itemName.RJINJO, self.player, 6),
+            locationName.JIGGYIH7: lambda state: state.has(itemName.BLJINJO, self.player, 7),
+            locationName.JIGGYIH8: lambda state: state.has(itemName.PJINJO, self.player, 8),
+            locationName.JIGGYIH9: lambda state: state.has(itemName.BKJINJO, self.player, 9),
 
-            # locationName.JIGGYIH1: lambda state: self.jiggy_unlock(state, 36) and
-            #                                      self.check_mumbo_magic(state, itemName.MUMBOMT) and
-            #                                      state.has(itemName.BDRILL, self.player) and
-            #                                      state.has(itemName.GGRAB, self.player) and
-            #                                      state.has(itemName.BBLASTER, self.player) and
-            #                                      state.has(itemName.FEGGS, self.player) and
-            #                                      state.has(itemName.TTORP, self.player) and
-            #                                      state.has(itemName.IEGGS, self.player) and
-            #                                      state.has(itemName.AUQAIM, self.player) and
-            #                                      self.can_reach_atlantis(state) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAGM) and
-            #                                      state.has(itemName.GEGGS, self.player) and
-            #                                      state.has(itemName.CEGGS, self.player) and
-            #                                      self.check_mumbo_magic(state, itemName.MUMBOTD) and
-            #                                      self.check_humba_magic(state, itemName.HUMBATD) and
-            #                                      state.has(itemName.SPLITUP, self.player) and
-            #                                      self.can_reach_GI_2F(state) and
-            #                                      state.has(itemName.AIREAIM, self.player) and
-            #                                      self.check_solo_moves(state, itemName.SHPACK) and
-            #                                      state.has(itemName.SPRINGB, self.player),
-            # locationName.JIGGYIH2: lambda state: self.jiggy_unlock(state, 36) and
-            #                                      self.check_mumbo_magic(state, itemName.MUMBOMT) and
-            #                                      state.has(itemName.BDRILL, self.player) and
-            #                                      state.has(itemName.GGRAB, self.player) and
-            #                                      state.has(itemName.BBLASTER, self.player) and
-            #                                      state.has(itemName.FEGGS, self.player) and
-            #                                      state.has(itemName.TTORP, self.player) and
-            #                                      state.has(itemName.IEGGS, self.player) and
-            #                                      state.has(itemName.AUQAIM, self.player) and
-            #                                      self.can_reach_atlantis(state) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAGM) and
-            #                                      state.has(itemName.EGGAIM, self.player) and
-            #                                      state.has(itemName.GEGGS, self.player) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAWW) and
-            #                                      state.has(itemName.CEGGS, self.player) and
-            #                                      state.has(itemName.SPLITUP, self.player) and
-            #                                      self.can_reach_GI_2F(state) and
-            #                                      state.has(itemName.AIREAIM, self.player) and
-            #                                      self.check_solo_moves(state, itemName.SHPACK) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAHP) and
-            #                                      state.has(itemName.SPRINGB, self.player),
-            # locationName.JIGGYIH3: lambda state: self.jiggy_unlock(state, 45) and
-            #                                      self.check_mumbo_magic(state, itemName.MUMBOMT) and
-            #                                      state.has(itemName.BDRILL, self.player) and
-            #                                      state.has(itemName.GGRAB, self.player) and
-            #                                      state.has(itemName.BBLASTER, self.player) and
-            #                                      state.has(itemName.FEGGS, self.player) and
-            #                                      state.has(itemName.TTORP, self.player) and
-            #                                      state.has(itemName.IEGGS, self.player) and
-            #                                      state.has(itemName.AUQAIM, self.player) and
-            #                                      self.can_reach_atlantis(state) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAGM) and
-            #                                      state.has(itemName.EGGAIM, self.player) and
-            #                                      state.has(itemName.GEGGS, self.player) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAWW) and
-            #                                      state.has(itemName.CEGGS, self.player) and
-            #                                      self.check_mumbo_magic(state, itemName.MUMBOTD) and
-            #                                      self.check_humba_magic(state, itemName.HUMBATD) and
-            #                                      state.has(itemName.SPLITUP, self.player) and
-            #                                      self.check_humba_magic(itemName.HUMBAGI, self.player) and
-            #                                      self.can_reach_GI_2F(state) and
-            #                                      self.check_solo_moves(state, itemName.LSPRING) and
-            #                                      state.has(itemName.AIREAIM, self.player) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAHP) and
-            #                                      self.check_solo_moves(state, itemName.GLIDE) and
-            #                                      state.has(itemName.SPRINGB, self.player) and
-            #                                      state.has(itemName.CLAWBTS, self.player),
-            # locationName.JIGGYIH4: lambda state: self.jiggy_unlock(state, 45) and
-            #                                      self.check_mumbo_magic(state, itemName.MUMBOMT) and
-            #                                      state.has(itemName.BDRILL, self.player) and
-            #                                      state.has(itemName.GGRAB, self.player) and
-            #                                      state.has(itemName.BBLASTER, self.player) and
-            #                                      state.has(itemName.FEGGS, self.player) and
-            #                                      state.has(itemName.TTORP, self.player) and
-            #                                      state.has(itemName.IEGGS, self.player) and
-            #                                      state.has(itemName.AUQAIM, self.player) and
-            #                                      self.can_reach_atlantis(state) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAGM) and
-            #                                      state.has(itemName.EGGAIM, self.player) and
-            #                                      state.has(itemName.GEGGS, self.player) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAWW) and
-            #                                      state.has(itemName.CEGGS, self.player) and
-            #                                      self.check_mumbo_magic(state, itemName.MUMBOTD) and
-            #                                      self.check_humba_magic(state, itemName.HUMBATD) and
-            #                                      state.has(itemName.SPLITUP, self.player) and
-            #                                      self.check_humba_magic(itemName.HUMBAGI, self.player) and
-            #                                      self.can_reach_GI_2F(state) and
-            #                                      self.check_solo_moves(state, itemName.LSPRING) and
-            #                                      state.has(itemName.AIREAIM, self.player) and
-            #                                      self.check_solo_moves(state, itemName.SHPACK) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAHP) and
-            #                                      self.check_solo_moves(state, itemName.GLIDE) and
-            #                                      state.has(itemName.SPRINGB, self.player) and
-            #                                      state.has(itemName.CLAWBTS, self.player),
-            # locationName.JIGGYIH5: lambda state: self.jiggy_unlock(state, 45) and
-            #                                      self.check_mumbo_magic(state, itemName.MUMBOMT) and
-            #                                      state.has(itemName.BDRILL, self.player) and
-            #                                      state.has(itemName.GGRAB, self.player) and
-            #                                      state.has(itemName.BBLASTER, self.player) and
-            #                                      state.has(itemName.FEGGS, self.player) and
-            #                                      state.has(itemName.TTORP, self.player) and
-            #                                      state.has(itemName.IEGGS, self.player) and
-            #                                      state.has(itemName.AUQAIM, self.player) and
-            #                                      self.can_reach_atlantis(state) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAGM) and
-            #                                      state.has(itemName.EGGAIM, self.player) and
-            #                                      state.has(itemName.GEGGS, self.player) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAWW) and
-            #                                      state.has(itemName.CEGGS, self.player) and
-            #                                      self.check_mumbo_magic(state, itemName.MUMBOTD) and
-            #                                      self.check_humba_magic(state, itemName.HUMBATD) and
-            #                                      state.has(itemName.SPLITUP, self.player) and
-            #                                      self.check_humba_magic(itemName.HUMBAGI, self.player) and
-            #                                      self.can_reach_GI_2F(state) and
-            #                                      self.check_solo_moves(state, itemName.LSPRING) and
-            #                                      state.has(itemName.AIREAIM, self.player) and
-            #                                      self.check_solo_moves(state, itemName.SHPACK) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAHP) and
-            #                                      self.check_solo_moves(state, itemName.GLIDE) and
-            #                                      state.has(itemName.SPRINGB, self.player) and
-            #                                      state.has(itemName.CLAWBTS, self.player),
-            # locationName.JIGGYIH6: lambda state: self.jiggy_unlock(state, 45) and
-            #                                      state.has(itemName.BDRILL, self.player) and
-            #                                      state.has(itemName.GGRAB, self.player) and
-            #                                      state.has(itemName.BBLASTER, self.player) and
-            #                                      state.has(itemName.FEGGS, self.player) and
-            #                                      state.has(itemName.TTORP, self.player) and
-            #                                      state.has(itemName.IEGGS, self.player) and
-            #                                      state.has(itemName.AUQAIM, self.player) and
-            #                                      self.can_reach_atlantis(state) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAGM) and
-            #                                      state.has(itemName.EGGAIM, self.player) and
-            #                                      state.has(itemName.GEGGS, self.player) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAWW) and
-            #                                      state.has(itemName.CEGGS, self.player) and
-            #                                      self.check_mumbo_magic(state, itemName.MUMBOTD) and
-            #                                      self.check_humba_magic(state, itemName.HUMBATD) and
-            #                                      state.has(itemName.SPLITUP, self.player) and
-            #                                      self.check_humba_magic(itemName.HUMBAGI, self.player) and
-            #                                      self.can_reach_GI_2F(state) and
-            #                                      self.check_solo_moves(state, itemName.LSPRING) and
-            #                                      state.has(itemName.AIREAIM, self.player) and
-            #                                      self.check_solo_moves(state, itemName.SHPACK) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAHP) and
-            #                                      state.has(itemName.SPRINGB, self.player) and
-            #                                      state.has(itemName.CLAWBTS, self.player),
-            # locationName.JIGGYIH7: lambda state: self.jiggy_unlock(state, 45) and
-            #                                      state.has(itemName.BDRILL, self.player) and
-            #                                      state.has(itemName.GGRAB, self.player) and
-            #                                      state.has(itemName.BBLASTER, self.player) and
-            #                                      state.has(itemName.FEGGS, self.player) and
-            #                                      state.has(itemName.TTORP, self.player) and
-            #                                      state.has(itemName.IEGGS, self.player) and
-            #                                      state.has(itemName.AUQAIM, self.player) and
-            #                                      self.can_reach_atlantis(state) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAGM) and
-            #                                      state.has(itemName.EGGAIM, self.player) and
-            #                                      state.has(itemName.GEGGS, self.player) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAWW) and
-            #                                      state.has(itemName.CEGGS, self.player) and
-            #                                      self.check_mumbo_magic(state, itemName.MUMBOTD) and
-            #                                      self.check_humba_magic(state, itemName.HUMBATD) and
-            #                                      state.has(itemName.SPLITUP, self.player) and
-            #                                      self.check_humba_magic(itemName.HUMBAGI, self.player) and
-            #                                      self.can_reach_GI_2F(state) and
-            #                                      self.check_solo_moves(state, itemName.LSPRING) and
-            #                                      state.has(itemName.AIREAIM, self.player) and
-            #                                      self.check_solo_moves(state, itemName.SHPACK) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAHP) and
-            #                                      self.check_solo_moves(state, itemName.GLIDE) and
-            #                                      state.has(itemName.SPRINGB, self.player) and
-            #                                      state.has(itemName.CLAWBTS, self.player),
-            # locationName.JIGGYIH8: lambda state: self.jiggy_unlock(state, 45) and
-            #                                      self.check_mumbo_magic(state, itemName.MUMBOMT) and
-            #                                      state.has(itemName.BDRILL, self.player) and
-            #                                      state.has(itemName.GGRAB, self.player) and
-            #                                      state.has(itemName.BBLASTER, self.player) and
-            #                                      state.has(itemName.FEGGS, self.player) and
-            #                                      state.has(itemName.TTORP, self.player) and
-            #                                      state.has(itemName.IEGGS, self.player) and
-            #                                      state.has(itemName.AUQAIM, self.player) and
-            #                                      self.can_reach_atlantis(state) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAGM) and
-            #                                      state.has(itemName.EGGAIM, self.player) and
-            #                                      state.has(itemName.GEGGS, self.player) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAWW) and
-            #                                      state.has(itemName.CEGGS, self.player) and
-            #                                      self.check_mumbo_magic(state, itemName.MUMBOTD) and
-            #                                      self.check_humba_magic(state, itemName.HUMBATD) and
-            #                                      state.has(itemName.SPLITUP, self.player) and
-            #                                      self.check_humba_magic(itemName.HUMBAGI, self.player) and
-            #                                      self.can_reach_GI_2F(state) and
-            #                                      self.check_solo_moves(state, itemName.LSPRING) and
-            #                                      state.has(itemName.AIREAIM, self.player) and
-            #                                      self.check_solo_moves(state, itemName.SHPACK) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAHP) and
-            #                                      self.check_solo_moves(state, itemName.GLIDE) and
-            #                                      state.has(itemName.SPRINGB, self.player) and
-            #                                      state.has(itemName.CLAWBTS, self.player),
-            # locationName.JIGGYIH9: lambda state: self.jiggy_unlock(state, 45) and
-            #                                      state.has(itemName.BDRILL, self.player) and
-            #                                      state.has(itemName.GGRAB, self.player) and
-            #                                      state.has(itemName.BBLASTER, self.player) and
-            #                                      state.has(itemName.FEGGS, self.player) and
-            #                                      state.has(itemName.TTORP, self.player) and
-            #                                      state.has(itemName.IEGGS, self.player) and
-            #                                      state.has(itemName.AUQAIM, self.player) and
-            #                                      self.can_reach_atlantis(state) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAGM) and
-            #                                      state.has(itemName.EGGAIM, self.player) and
-            #                                      state.has(itemName.GEGGS, self.player) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAWW) and
-            #                                      state.has(itemName.CEGGS, self.player) and
-            #                                      self.check_mumbo_magic(state, itemName.MUMBOTD) and
-            #                                      self.check_humba_magic(state, itemName.HUMBATD) and
-            #                                      state.has(itemName.SPLITUP, self.player) and
-            #                                      self.check_humba_magic(itemName.HUMBAGI, self.player) and
-            #                                      self.can_reach_GI_2F(state) and
-            #                                      self.check_solo_moves(state, itemName.LSPRING) and
-            #                                      state.has(itemName.AIREAIM, self.player) and
-            #                                      self.check_solo_moves(state, itemName.SHPACK) and
-            #                                      self.check_humba_magic(state, itemName.HUMBAHP) and
-            #                                      self.check_solo_moves(state, itemName.GLIDE) and
-            #                                      state.has(itemName.SPRINGB, self.player) and
-            #                                      state.has(itemName.CLAWBTS, self.player),
         }
         self.cheato_rules = {
             locationName.CHEATOMT1: lambda state: self.MT_flight_pad(state) or (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GGRAB, self.player)),
@@ -747,6 +534,59 @@ class BanjoTooieRules:
             locationName.CEGGS: lambda state: self.has_enough_notes(state, 315),
         }
 
+        self.jinjo_rules = {
+            locationName.JINJOIH5: lambda state: state.has(itemName.TTORP, self.player),
+            locationName.JINJOIH4: lambda state: state.has(itemName.BDRILL, self.player),
+            locationName.JINJOIH3: lambda state: state.has(itemName.CLAWBTS, self.player),
+            locationName.JINJOIH2: lambda state: state.has(itemName.GGRAB, self.player),
+
+            locationName.JINJOMT1: lambda state: state.has(itemName.GGRAB, self.player) and self.check_mumbo_magic(state, itemName.MUMBOMT),
+            locationName.JINJOMT2: lambda state: self.MT_flight_pad(state),
+            locationName.JINJOMT3: lambda state: state.has(itemName.BBLASTER, self.player),
+
+            #TODO Needs to be refined later
+            locationName.JINJOGM1: lambda state: self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and
+                                                 self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state),
+            locationName.JINJOGM2: lambda state: self.check_humba_magic(state, itemName.HUMBAGM),
+            locationName.JINJOGM4: lambda state: self.GM_boulders(state),
+
+            locationName.JINJOWW3: lambda state: state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) and
+                                                 self.check_humba_magic(state, itemName.HUMBAWW),
+            locationName.JINJOWW5: lambda state: state.has(itemName.GGRAB, self.player),
+            locationName.JINJOWW2: lambda state: state.has(itemName.GEGGS, self.player),
+
+            locationName.JINJOJR1: lambda state: state.has(itemName.DOUBLOON, self.player, 28),
+            locationName.JINJOJR5: lambda state: self.can_reach_atlantis(state),
+            locationName.JINJOJR4: lambda state: self.can_reach_atlantis(state) and state.has(itemName.GGRAB, self.player),
+            locationName.JINJOJR3: lambda state: self.can_reach_atlantis(state),
+
+            locationName.JINJOTL2: lambda state: state.has(itemName.GEGGS, self.player),
+            locationName.JINJOTL1: lambda state: state.has(itemName.TTORP, self.player),
+            locationName.JINJOTL3: lambda state: state.has(itemName.CEGGS, self.player),
+            locationName.JINJOTL4: lambda state: self.check_mumbo_magic(state, itemName.MUMBOTD) and self.check_humba_magic(state, itemName.HUMBATD),
+            locationName.JINJOTL5: lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.SPRINGB, self.player),
+
+            locationName.JINJOGI1: lambda state: self.can_reach_GI_2F(state),
+            locationName.JINJOGI2: lambda state: self.can_reach_GI_2F(state) and state.has(itemName.LSPRING, self.player),
+            locationName.JINJOGI3: lambda state: state.has(itemName.TTORP, self.player) and state.has(itemName.AUQAIM, self.player) and
+                                                 state.has(itemName.IEGGS, self.player),
+            locationName.JINJOGI4: lambda state: self.can_reach_GI_2F(state),
+            locationName.JINJOGI5: lambda state: self.can_reach_GI_2F(state) and state.has(itemName.SPLITUP, self.player),
+
+            locationName.JINJOHP2: lambda state: self.check_solo_moves(state, itemName.SHPACK),
+            locationName.JINJOHP3: lambda state: self.check_humba_magic(state, itemName.HUMBAHP),
+            locationName.JINJOHP4: lambda state: self.check_solo_moves(state, itemName.GLIDE) or (self.check_solo_moves(state, itemName.LSPRING) and 
+                                                  self.check_solo_moves(state, itemName.WWHACK)),
+            locationName.JINJOHP5: lambda state: state.has(itemName.FEGGS, self.player) or state.has(itemName.GEGGS, self.player) or 
+                                                 state.has(itemName.CEGGS, self.player) or state.has(itemName.BDRILL, self.player) or 
+                                                 self.check_mumbo_magic(state, itemName.MUMBOHP),
+            
+            locationName.JINJOCC1: lambda state: self.check_solo_moves(state, itemName.SHPACK) or self.check_solo_moves(state, itemName.LSPRING),
+            locationName.JINJOCC2: lambda state: self.check_solo_moves(state, itemName.LSPRING) or (self.check_solo_moves(state, itemName.SAPACK) and
+                                                 self.grow_beanstalk(state) and
+                                                 self.can_use_floatus(state)),
+            locationName.JINJOCC3: lambda state: state.has(itemName.SPLITUP, self.player),
+        }
     # def jiggy_unlock(self, state: CollectionState, Amount) -> bool:
     #     return state.has_group("Jiggy", self.player, Amount)
 
@@ -967,6 +807,10 @@ class BanjoTooieRules:
             train = self.world.multiworld.get_location(location, self.player)
             set_rule(train, rules)
 
+        for location, rules in self.jinjo_rules.items():
+            jinjo = self.world.multiworld.get_location(location, self.player)
+            set_rule(jinjo, rules)
+
         for item in self.moves_forbid:
             #The Doubloons near Wing Wack Silo
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB10, self.player), item, self.player)
@@ -974,6 +818,17 @@ class BanjoTooieRules:
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB8, self.player), item, self.player)
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB7, self.player), item, self.player)
             if self.world.options.forbid_moves_on_jinjo_family == True:
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH3, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH4, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH5, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH6, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH7, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH8, self.player), item, self.player)
+                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
+        
+        for item in self.jinjo_forbid:
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH3, self.player), item, self.player)
