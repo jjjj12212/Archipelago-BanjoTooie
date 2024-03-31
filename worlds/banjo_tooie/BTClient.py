@@ -394,7 +394,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "locations": sta1
             }])   
 
-    if ctx.sync_ready == True:
+    if ctx.slot_data["jinjo"] == "true" and ctx.sync_ready == True:
          # Locations handling
         jinjofamlist = payload['jinjofam']
         fam1 = []
@@ -408,7 +408,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
 
             for locationId, value in jinjofamlist.items():
                 if value == True:
-                    sta1.append(int(locationId))
+                    fam1.append(int(locationId))
 
             await ctx.send_msgs([{
                 "cmd": "LocationChecks",

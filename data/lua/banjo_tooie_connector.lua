@@ -3034,15 +3034,25 @@ function readAPLocationChecks(type)
             for locId, table in pairs(location)
             do
                 -- Don't check AMM Jinjo Fam Jiggies. uses a different table
-                if type == "AMM" and locId ~= "1230676" and locId ~= "1230677" and locId ~= "1230678" 
+                if type == "AMM" and ENABLE_AP_JINJO == true
+                then
+                    if  locId ~= "1230676" and locId ~= "1230677" and locId ~= "1230678" 
                     and locId ~= "1230679" and locId ~= "1230680" and locId ~= "1230681"
                     and locId ~= "1230682" and locId ~= "1230683" and locId ~= "1230684"
+                    then
+                        if checks[check_type] == nil
+                        then
+                            checks[check_type] = {}
+                        end
+                        checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
+                    end
+                elseif type == "AMM" and ENABLE_AP_JINJO == false
                 then
                     if checks[check_type] == nil
                     then
                         checks[check_type] = {}
                     end
-                    checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
+                    checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name']) 
                 elseif type == "AGI"
                 then
                     if checks[check_type] == nil
@@ -3875,6 +3885,10 @@ function loadGame(current_map)
             then
                 BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
             end
+            if ENABLE_AP_JINJO == true
+            then
+                JinjoPause();
+            end
             for ap_id, itemId in pairs(receive_map) -- Sanity Check
             do
                 if itemId ~= "NA"
@@ -4001,7 +4015,10 @@ function BKLogics(mapaddr)
     end
     if (CURRENT_MAP ~= mapaddr)
     then
-        JinjoCounter()
+        if ENABLE_AP_JINJO == true
+        then
+            JinjoCounter()
+        end
         client.saveram()
     end
 end
@@ -4501,7 +4518,7 @@ function processAGIItem(item_list)
             elseif memlocation == 1230796 and ENABLE_AP_CHUFFY == true
             then
                 obtained_AP_CHUFFY()
-            elseif( 1230501 <= memlocation and memlocation <= 1230509)
+            elseif( 1230501 <= memlocation and memlocation <= 1230509) and ENABLE_AP_JINJO == true
             then
                 AGI_JINJOS[tostring(memlocation)] = AGI_JINJOS[tostring(memlocation)] + 1
                 JinjoCounter() -- check and see if family completes and mark true
@@ -4630,7 +4647,10 @@ function checkPause()
         end
         BMMBackup();
         useAGI();
-        JinjoPause();
+        if ENABLE_AP_JINJO == true
+        then
+            JinjoPause();
+        end
         PAUSED = true;
     elseif pause_menu == 0 and PAUSED == true  -- unpaused
     then
