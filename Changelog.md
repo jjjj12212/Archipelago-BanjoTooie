@@ -1,3 +1,15 @@
+# 1.0-Beta
+- Jinjos are now added to the pool
+  - In-game, it will use a set pattern as its easier to control for logic / AP sending correct Jinjo colour
+  - Pausing -> Jinjos will display your AP Jinjos, not in-game located Jinjos
+  - minor issue: Jinjo Menu will not appear until you collected at least 1 Jinjo Check Location
+
+- Added Experimental "fail-safe" (Thanks to Adeleine64DS for the suggestion)
+  - Auto Flush Bizhawk Ram between loading zones. Should avoid hard crashes during gameplay and lose "a lot" of progress
+- YAML Option name changes
+  - multiworld_ to randomize_
+- Doubloons near Wing Wack Silo will not have any Unlockable Silo Moves (bug fix for this silo) 
+
 # 0.9.2-Beta
 - Logic Change
   - GI: Guarded Jiggy now requires Split Up With Claw Climbers whereas before you only needed Claw Climbers
