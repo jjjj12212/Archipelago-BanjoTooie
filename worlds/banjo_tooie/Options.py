@@ -69,16 +69,16 @@ class SpeedUpMinigames(DefaultOnToggle):
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
-    multiworld_moves: EnableMultiWorldMoveList
-    multiworld_jinjos: EnableMultiWorldJinjos
-    multiworld_doubloons: EnableMultiWorldDoubloons
-    multiworld_cheato: EnableMultiWorldCheatoPages
+    randomize_moves: EnableMultiWorldMoveList
+    randomize_jinjos: EnableMultiWorldJinjos
+    randomize_doubloons: EnableMultiWorldDoubloons
+    randomize_cheato: EnableMultiWorldCheatoPages
     cheato_as_filler: SetMultiWorldCheatoPagesFiller
-    multiworld_honeycombs: EnableMultiWorldHoneycombs
-    multiworld_glowbos: EnableMultiWorldGlowbos
-    multiworld_treble: EnableMultiWorldTrebleClefs
-    multiworld_stations: EnableMultiWorldTrainStationSwitches
-    multiworld_chuffy: EnableMultiWorldChuffyTrain
+    randomize_honeycombs: EnableMultiWorldHoneycombs
+    randomize_glowbos: EnableMultiWorldGlowbos
+    randomize_treble: EnableMultiWorldTrebleClefs
+    randomize_stations: EnableMultiWorldTrainStationSwitches
+    randomize_chuffy: EnableMultiWorldChuffyTrain
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
     open_hag1: OpenHag1

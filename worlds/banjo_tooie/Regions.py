@@ -410,5 +410,5 @@ def connect_regions(self):
 
     region_HP.add_exits({regionName.IOHCT_HFP_ENTRANCE,},
                         {regionName.IOHCT_HFP_ENTRANCE: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, player) and
-                                                                      (self.options.multiworld_stations == 1)})
+                                                                      (self.options.randomize_stations == 1)})
 

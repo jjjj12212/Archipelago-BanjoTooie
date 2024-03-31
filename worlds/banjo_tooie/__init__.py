@@ -132,34 +132,34 @@ class BanjoTooieWorld(World):
         if item.code == 0: #Events
             return False
         
-        if(item.code == 1230514 and self.options.multiworld_doubloons == False) :
+        if(item.code == 1230514 and self.options.randomize_doubloons == False) :
             return False
         
-        if(item.code == 1230513 and self.options.multiworld_cheato == False) : # Added later in Prefill
+        if(item.code == 1230513 and self.options.randomize_cheato == False) : # Added later in Prefill
             return False
         
-        if(item.code == 1230512 and self.options.multiworld_honeycombs == False) : # Added later in Prefill
+        if(item.code == 1230512 and self.options.randomize_honeycombs == False) : # Added later in Prefill
             return False
         
-        if(item.code in range(1230753, 1230778) and self.options.multiworld_moves == False) : #range you need to add +1 to the end. 
+        if(item.code in range(1230753, 1230778) and self.options.randomize_moves == False) : #range you need to add +1 to the end. 
             return False
         
-        if(item.code in range(1230174, 1230183) and self.options.multiworld_glowbos == False) : #range you need to add +1 to the end.
+        if(item.code in range(1230174, 1230183) and self.options.randomize_glowbos == False) : #range you need to add +1 to the end.
             return False
         
-        if(item.code in range(1230855, 1230864) and self.options.multiworld_glowbos == False) : #range you need to add +1 to the end.
+        if(item.code in range(1230855, 1230864) and self.options.randomize_glowbos == False) : #range you need to add +1 to the end.
             return False
 
-        if(item.code in range(1230501, 1230510) and self.options.multiworld_jinjos == False) :#range you need to add +1 to the end.
+        if(item.code in range(1230501, 1230510) and self.options.randomize_jinjos == False) :#range you need to add +1 to the end.
             return False
         
-        if(item.code == 1230778 and self.options.multiworld_treble == False):
+        if(item.code == 1230778 and self.options.randomize_treble == False):
             return False
         
-        if item.code == 1230796 and self.options.multiworld_chuffy == False:
+        if item.code == 1230796 and self.options.randomize_chuffy == False:
             return False
         
-        if item.code in range(1230790, 1230796) and self.options.multiworld_stations == False:
+        if item.code in range(1230790, 1230796) and self.options.randomize_stations == False:
             return False
 
         return True
@@ -173,31 +173,31 @@ class BanjoTooieWorld(World):
         return rules.set_rules()
     
     def pre_fill(self) -> None:
-        if self.options.multiworld_honeycombs == False:
+        if self.options.randomize_honeycombs == False:
             self.banjo_pre_fills(itemName.HONEY, "Honeycomb", False)
                     
-        if self.options.multiworld_cheato == False:
+        if self.options.randomize_cheato == False:
             self.banjo_pre_fills(itemName.PAGES, "Page", False)
 
-        if self.options.multiworld_doubloons == False:
+        if self.options.randomize_doubloons == False:
             self.banjo_pre_fills(itemName.DOUBLOON, "Doubloon", False)
 
-        if self.options.multiworld_moves == False:
+        if self.options.randomize_moves == False:
             self.banjo_pre_fills("Moves", None, True)
 
-        if self.options.multiworld_glowbos == False:
+        if self.options.randomize_glowbos == False:
             self.banjo_pre_fills("Magic", None, True)
 
-        if self.options.multiworld_treble == False:
+        if self.options.randomize_treble == False:
             self.banjo_pre_fills(itemName.TREBLE, "Treble Clef", False)
         
-        if self.options.multiworld_stations == False:
+        if self.options.randomize_stations == False:
             self.banjo_pre_fills("Stations", None, True)
 
-        if self.options.multiworld_chuffy == False:
+        if self.options.randomize_chuffy == False:
             self.banjo_pre_fills(itemName.CHUFFY, "Chuffy", False)
         
-        if self.options.multiworld_jinjos == False:
+        if self.options.randomize_jinjos == False:
             item = self.create_item(itemName.WJINJO)
             self.multiworld.get_location(locationName.JINJOJR5, self.player).place_locked_item(item)
 
@@ -288,17 +288,17 @@ class BanjoTooieWorld(World):
             btoptions["skip_tot"] = "round 3"
         else:
             btoptions["skip_tot"] = "false"
-        btoptions['honeycomb'] = "true" if self.options.multiworld_honeycombs == 1 else "false"
-        btoptions['pages'] = "true" if self.options.multiworld_cheato == 1 else "false"
-        btoptions['moves'] = "true" if self.options.multiworld_moves == 1 else "false"
-        btoptions['doubloons'] = "true" if self.options.multiworld_doubloons == 1 else "false"
+        btoptions['honeycomb'] = "true" if self.options.randomize_honeycombs == 1 else "false"
+        btoptions['pages'] = "true" if self.options.randomize_cheato == 1 else "false"
+        btoptions['moves'] = "true" if self.options.randomize_moves == 1 else "false"
+        btoptions['doubloons'] = "true" if self.options.randomize_doubloons == 1 else "false"
         btoptions['minigames'] = 'skip' if self.options.speed_up_minigames == 1 else "full"
-        btoptions['trebleclef'] = "true" if self.options.multiworld_treble == 1 else "false"
+        btoptions['trebleclef'] = "true" if self.options.randomize_treble == 1 else "false"
         btoptions['skip_puzzles'] = "true" if self.options.skip_puzzles == 1 else "false"
         btoptions['open_hag1'] = "true" if self.options.open_hag1 == 1 else "false"
-        btoptions['stations']= "true" if self.options.multiworld_stations == 1 else "false"
-        btoptions['chuffy']= "true" if self.options.multiworld_chuffy == 1 else "false"
-        btoptions['jinjo']= "true" if self.options.multiworld_jinjos == 1 else "false"
+        btoptions['stations']= "true" if self.options.randomize_stations == 1 else "false"
+        btoptions['chuffy']= "true" if self.options.randomize_chuffy == 1 else "false"
+        btoptions['jinjo']= "true" if self.options.randomize_jinjos == 1 else "false"
 
 
 

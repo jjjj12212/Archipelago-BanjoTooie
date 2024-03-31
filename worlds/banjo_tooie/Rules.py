@@ -800,7 +800,7 @@ class BanjoTooieRules:
                             count += 10
                         if self.can_reach_GI_2F(state):  # Rest of GI
                             count += 35
-            if state.has(itemName.SPLITUP, self.player) or (self.world.options.multiworld_stations == 1 and
+            if state.has(itemName.SPLITUP, self.player) or (self.world.options.randomize_stations == 1 and
                 self.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, self.player)): # Cliff Top
                     count += 20
             if state.has(itemName.SPLITUP, self.player):
@@ -846,7 +846,7 @@ class BanjoTooieRules:
         return self.check_humba_magic(state, itemName.HUMBAGM)
 
     def can_beat_king_coal(self, state) -> bool:
-        if self.world.options.multiworld_chuffy == False:
+        if self.world.options.randomize_chuffy == False:
             return self.check_mumbo_magic(state, itemName.MUMBOGM)
         else:
             return state.has(itemName.CHUFFY, self.player)
