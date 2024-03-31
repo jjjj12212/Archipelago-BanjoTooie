@@ -3,7 +3,6 @@
   - In-game, it will use a set pattern as its easier to control for logic / AP sending correct Jinjo colour
   - Pausing -> Jinjos will display your AP Jinjos, not in-game located Jinjos
   - minor issue: Jinjo Menu will not appear until you collected at least 1 Jinjo Check Location
-
 - Added Experimental "fail-safe" (Thanks to Adeleine64DS for the suggestion)
   - Auto Flush Bizhawk Ram between loading zones. Should avoid hard crashes during gameplay and lose "a lot" of progress
 - YAML Option name changes
