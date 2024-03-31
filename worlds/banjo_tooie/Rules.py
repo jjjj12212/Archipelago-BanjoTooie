@@ -865,9 +865,10 @@ class BanjoTooieRules:
                self.check_humba_magic(state, itemName.HUMBAWW)
 
     def saucer_door_open(self, state: CollectionState) -> bool:
-        return (state.has(itemName.GGRAB, self.player) or state.has(itemName.EGGAIM, self.player) or
-                (self.check_solo_moves(state, itemName.GLIDE) and self.check_solo_moves(state, itemName.LSPRING))) \
-               and (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player))
+        return state.has(itemName.GGRAB, self.player) or \
+            (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GEGGS, self.player)) or \
+            ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) and \
+            self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.GLIDE))
 
     def can_beat_terry(self, state: CollectionState) -> bool:
         return state.has(itemName.EGGAIM, self.player) and state.has(itemName.SPRINGB, self.player)
