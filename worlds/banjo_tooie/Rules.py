@@ -716,7 +716,7 @@ class BanjoTooieRules:
 
             locationName.AIREAIM: lambda state: self.has_enough_notes(state, 180),
             locationName.SPLITUP: lambda state: self.has_enough_notes(state, 160),
-            locationName.PACKWH: lambda state: state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 120),
+            locationName.PACKWH: lambda state: state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 170),
 
             locationName.AUQAIM: lambda state: (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or state.has(itemName.DOUBLOON, self.player, 28)) and
                                                self.has_enough_notes(state, 275),
