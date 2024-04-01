@@ -22,11 +22,10 @@ class BanjoTooieRules:
     solo_moves = []
     jinjo_forbid = []
     moves_forbid = []
+    magic_forbid = []
     # banjo_moves = []
     # kazooie_moves = []
     jiggy_rules = {}
-
-
 
     def __init__(self, world: BanjoTooieWorld) -> None:
         self.player = world.player
@@ -69,32 +68,53 @@ class BanjoTooieRules:
         ]
 
         self.moves_forbid = [
-            itemName.MUMBOMT,
-            itemName.BDRILL,
             itemName.GGRAB,
             itemName.BBLASTER,
-            itemName.FEGGS,
-            itemName.TTORP,
-            itemName.IEGGS,
-            itemName.AUQAIM,
-            itemName.HUMBAGM,
             itemName.EGGAIM,
+            itemName.FEGGS,
+            itemName.BDRILL,
+            itemName.BBAYONET,
             itemName.GEGGS,
-            itemName.HUMBAWW,
-            itemName.CEGGS,
-            itemName.MUMBOTD,
-            itemName.HUMBATD,
-            itemName.SPLITUP,
-            itemName.HUMBAGI,
             itemName.AIREAIM,
-            itemName.HUMBAHP,
-            itemName.SHPACK,
+            itemName.SPLITUP,
+            itemName.PACKWH,
+            itemName.IEGGS,
+            itemName.WWHACK,
+            itemName.TTORP,
+            itemName.AUQAIM,
+            itemName.CEGGS,
             itemName.SPRINGB,
-            itemName.CLAWBTS,
-            itemName.GLIDE,
+            itemName.TAXPACK,
+            itemName.HATCH,
+            itemName.SNPACK,
             itemName.LSPRING,
-            itemName.MUMBOGM
+            itemName.CLAWBTS,
+            itemName.SHPACK,
+            itemName.GLIDE,
+            itemName.SAPACK,
         ]
+
+        self.magic_forbid = {
+            itemName.MUMBOMT,
+            itemName.MUMBOGM,
+            itemName.MUMBOWW,
+            itemName.MUMBOJR,
+            itemName.MUMBOTD,
+            itemName.MUMBOGI,
+            itemName.MUMBOHP,
+            itemName.MUMBOCC,
+            itemName.MUMBOIH,
+
+            itemName.HUMBAMT,
+            itemName.HUMBAGM,
+            itemName.HUMBAWW,
+            itemName.HUMBAJR,
+            itemName.HUMBATD,
+            itemName.HUMBAGI,
+            itemName.HUMBAHP,
+            itemName.HUMBACC,
+            itemName.HUMBAIH,
+        }
 
         self.jinjo_forbid = [
             itemName.WJINJO,
@@ -146,30 +166,21 @@ class BanjoTooieRules:
 
         self.jiggy_rules = {
             #Mayahem Temple Jiggies
-            locationName.JIGGYMT1: lambda state: state.has(itemName.BBLASTER, self.player),
-            locationName.JIGGYMT2: lambda state: state.has(itemName.BBLASTER, self.player),
-            locationName.JIGGYMT3: lambda state: self.check_humba_magic(state, itemName.HUMBAMT) and
-                                                 self.check_mumbo_magic(state, itemName.MUMBOMT),
-            locationName.JIGGYMT4: lambda state: state.has(itemName.EGGAIM, self.player) or
-                                                 (self.MT_flight_pad(state) and 
-                                                  state.has(itemName.AIREAIM, self.player)),
-            locationName.JIGGYMT5: lambda state: state.has(itemName.EGGAIM,  self.player) and
-                                                 state.has(itemName.GGRAB, self.player) or
-                                                 self.MT_flight_pad(state),
-            locationName.JIGGYMT6: lambda state: self.check_mumbo_magic(state, itemName.MUMBOMT),
-            locationName.JIGGYMT7: lambda state: state.has(itemName.GGRAB, self.player) and
-                                                 self.prison_compound_open(state),
-            locationName.JIGGYMT8: lambda state: state.has(itemName.BDRILL, self.player) and
-                                                 self.prison_compound_open(state),
-            locationName.JIGGYMT10: lambda state: state.has(itemName.GGRAB, self.player) and
-                                                 self.check_mumbo_magic(state, itemName.MUMBOMT),
+            locationName.JIGGYMT1:  lambda state: self.jiggy_targitzan(state),
+            locationName.JIGGYMT2:  lambda state: self.jiggy_sschamber(state),
+            locationName.JIGGYMT3:  lambda state: self.jiggy_mayhem_kickball(state),
+            locationName.JIGGYMT4:  lambda state: self.jiggy_bovina(state),
+            locationName.JIGGYMT5:  lambda state: self.jiggy_treasure_chamber(state),
+            locationName.JIGGYMT6:  lambda state: self.jiggy_golden_goliath(state),
+            locationName.JIGGYMT7:  lambda state: self.jiggy_prison_quicksand(state),
+            locationName.JIGGYMT8:  lambda state: self.jiggy_pillars(state),
+            locationName.JIGGYMT10: lambda state: self.jiggy_ssslumber(state),
+
             #Glitter Gulch Mine Jiggies
             locationName.JIGGYGM1: lambda state: self.can_beat_king_coal(state),
             locationName.JIGGYGM2: lambda state: self.canary_mary_free(state),
-            locationName.JIGGYGM3: lambda state: self.has_fire(state),
-            locationName.JIGGYGM5: lambda state: state.has(itemName.BBLASTER, self.player) and
-                                                 state.has(itemName.BBAYONET, self.player) and
-                                                 self.GM_boulders(state),
+            locationName.JIGGYGM3: lambda state: self.jiggy_generator_cavern(state),
+            locationName.JIGGYGM5: lambda state: self.jiggy_ordnance_storage(state),
             locationName.JIGGYGM6: lambda state: self.dilberta_free(state),
             locationName.JIGGYGM7: lambda state: self.check_mumbo_magic(state, itemName.MUMBOGM),
             locationName.JIGGYGM8: lambda state: state.has(itemName.SPRINGB, self.player) or
@@ -587,8 +598,119 @@ class BanjoTooieRules:
                                                  self.can_use_floatus(state)),
             locationName.JINJOCC3: lambda state: state.has(itemName.SPLITUP, self.player),
         }
-    # def jiggy_unlock(self, state: CollectionState, Amount) -> bool:
-    #     return state.has_group("Jiggy", self.player, Amount)
+
+    def jiggy_targitzan(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+          logic = state.has(itemName.BBLASTER, self.player)
+        elif self.world.options.logic_type == 1: # normal
+          logic = state.has(itemName.BBLASTER, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+          logic = state.has(itemName.BBLASTER, self.player)
+        return logic
+
+    def jiggy_sschamber(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.BBLASTER, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.BBLASTER, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.BBLASTER, self.player)
+        return logic
+    
+    def jiggy_mayhem_kickball(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT)
+        return logic
+
+    def jiggy_bovina(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+          logic = state.has(itemName.EGGAIM, self.player)
+        elif self.world.options.logic_type == 1: # normal
+          logic = state.has(itemName.EGGAIM, self.player) or (self.MT_flight_pad(state) and state.has(itemName.AIREAIM, self.player))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True # N/A
+        return logic
+    
+    def jiggy_treasure_chamber(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.EGGAIM,  self.player) and state.has(itemName.GGRAB, self.player) or self.MT_flight_pad(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.EGGAIM,  self.player) and state.has(itemName.GGRAB, self.player) or self.MT_flight_pad(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.EGGAIM,  self.player) and state.has(itemName.GGRAB, self.player) or self.MT_flight_pad(state)
+        return logic
+    
+    def jiggy_golden_goliath(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_mumbo_magic(state, itemName.MUMBOMT)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_mumbo_magic(state, itemName.MUMBOMT)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_mumbo_magic(state, itemName.MUMBOMT)
+        return logic
+    
+    def jiggy_prison_quicksand(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player) and self.prison_compound_open(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GGRAB, self.player) and self.prison_compound_open(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.GGRAB, self.player) and self.prison_compound_open(state)
+        return logic
+    
+    def jiggy_pillars(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.BDRILL, self.player) and self.prison_compound_open(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.BDRILL, self.player) and self.prison_compound_open(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.BDRILL, self.player) and self.prison_compound_open(state)
+        return logic
+    
+    def jiggy_ssslumber(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player) and self.check_mumbo_magic(state, itemName.MUMBOMT)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_mumbo_magic(state, itemName.MUMBOMT)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_mumbo_magic(state, itemName.MUMBOMT)
+        return logic
+
+    def jiggy_generator_cavern(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+          logic = self.has_fire(state)
+        elif self.world.options.logic_type == 1: # normal
+          logic = True # N/A
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True # N/A
+        return logic
+    
+    def jiggy_ordnance_storage(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.BBLASTER, self.player) and state.has(itemName.BBAYONET, self.player) and \
+                    self.GM_boulders(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.BBLASTER, self.player) and state.has(itemName.BBAYONET, self.player) and \
+                    self.GM_boulders(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.BBLASTER, self.player) and state.has(itemName.BBAYONET, self.player) and \
+                    self.GM_boulders(state)
+        return logic
 
     def check_mumbo_magic(self, state: CollectionState, name) -> bool:
         for item_name in self.mumbo_magic:
@@ -668,22 +790,44 @@ class BanjoTooieRules:
         return state.has(itemName.BDRILL, self.player) or self.check_mumbo_magic(state, itemName.MUMBOMT)
 
     def prison_compound_open(self, state: CollectionState) -> bool:
-        return state.has(itemName.JIGGY, self.player, 1) and \
-               (state.has(itemName.GEGGS, self.player) or
-                state.has(itemName.CEGGS, self.player) or
-                self.check_mumbo_magic(state, itemName.MUMBOMT))
+        if self.world.options.logic_type == 0: # beginner
+            return state.has(itemName.JIGGY, self.player, 1) and \
+                (state.has(itemName.GEGGS, self.player) or self.check_mumbo_magic(state, itemName.MUMBOMT))
+        
+        elif self.world.options.logic_type == 1: # normal
+            return state.has(itemName.JIGGY, self.player, 1) and \
+                (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
+                 self.check_mumbo_magic(state, itemName.MUMBOMT))
+        
+        elif self.world.options.logic_type == 2: # advanced
+            return state.has(itemName.JIGGY, self.player, 1) and \
+                (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
+                 self.check_mumbo_magic(state, itemName.MUMBOMT))
+        
 
     def dilberta_free(self, state: CollectionState) -> bool:
-        return self.prison_compound_open(state) and \
-               self.check_humba_magic(state, itemName.HUMBAMT) and \
-               self.check_mumbo_magic(state, itemName.MUMBOMT) and \
-               state.has(itemName.BDRILL, self.player)
+        if self.world.options.logic_type == 0: # beginner
+            return self.prison_compound_open(state) and state.has(itemName.BDRILL, self.player) and \
+                    self.check_humba_magic(state, itemName.HUMBAMT)
+        
+        elif self.world.options.logic_type == 1: # normal
+            return self.prison_compound_open(state) and state.has(itemName.BDRILL, self.player)
+        
+        elif self.world.options.logic_type == 2: # advanced
+            return self.prison_compound_open(state) and state.has(itemName.BDRILL, self.player)
 
     def GM_boulders(self, state: CollectionState) -> bool:
         return state.has(itemName.BDRILL, self.player) or self.check_humba_magic(state, itemName.HUMBAGM)
 
     def canary_mary_free(self, state: CollectionState) -> bool:
-        return self.check_humba_magic(state, itemName.HUMBAGM)
+        if self.world.options.logic_type == 0: # beginner
+            return self.check_humba_magic(state, itemName.HUMBAGM)
+ 
+        elif self.world.options.logic_type == 1: # normal
+            return self.check_humba_magic(state, itemName.HUMBAGM) or state.has(itemName.CEGGS, self.player)
+        
+        elif self.world.options.logic_type == 2: # advanced
+            return self.check_humba_magic(state, itemName.HUMBAGM) or state.has(itemName.CEGGS, self.player)
 
     def can_beat_king_coal(self, state) -> bool:
         if self.world.options.randomize_chuffy == False:
@@ -818,7 +962,7 @@ class BanjoTooieRules:
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB9, self.player), item, self.player)
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB8, self.player), item, self.player)
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB7, self.player), item, self.player)
-            if self.world.options.forbid_moves_on_jinjo_family == True:
+            if self.world.options.forbid_moves_on_jinjo_family == 1 or self.world.options.forbid_moves_on_jinjo_family or 2:
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH3, self.player), item, self.player)
@@ -829,7 +973,8 @@ class BanjoTooieRules:
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH8, self.player), item, self.player)
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
         
-        for item in self.jinjo_forbid:
+        if self.world.options.forbid_moves_on_jinjo_family == 2:
+            for item in self.magic_forbid:
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH3, self.player), item, self.player)
@@ -839,5 +984,17 @@ class BanjoTooieRules:
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH7, self.player), item, self.player)
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH8, self.player), item, self.player)
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
+
+        if self.world.options.forbid_jinjos_on_jinjo_family == True:
+            for item in self.jinjo_forbid:
+                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
+                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)
+                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH3, self.player), item, self.player)
+                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH4, self.player), item, self.player)
+                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH5, self.player), item, self.player)
+                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH6, self.player), item, self.player)
+                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH7, self.player), item, self.player)
+                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH8, self.player), item, self.player)
+                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
 
         self.world.multiworld.completion_condition[self.player] = lambda state: state.has("Kick Around", self.player)
