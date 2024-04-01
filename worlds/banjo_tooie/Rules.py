@@ -253,38 +253,15 @@ class BanjoTooieRules:
                                                   self.GI_front_door(state),
 
             #Hailfire Peaks Jiggies
-            locationName.JIGGYHP1: lambda state: state.has(itemName.FEGGS, self.player) and
-                                                 state.has(itemName.IEGGS, self.player) and
-                                                 state.has(itemName.CLAWBTS, self.player),
-            locationName.JIGGYHP3: lambda state: self.check_mumbo_magic(state, itemName.MUMBOHP) and
-                                                 self.has_fire(state) and
-                                                 self.check_solo_moves(state, itemName.TAXPACK),
-            locationName.JIGGYHP4: lambda state: self.check_solo_moves(state, itemName.SHPACK),
-            locationName.JIGGYHP5: lambda state: self.can_beat_king_coal(state) and
-                                                 state.has(itemName.GEGGS, self.player) and
-                                                 state.has(itemName.FEGGS, self.player) and
-                                                 self.check_humba_magic(state, itemName.HUMBAHP),
-            locationName.JIGGYHP6: lambda state: self.check_humba_magic(state, itemName.HUMBAHP) and
-                                                 self.check_solo_moves(state, itemName.SHPACK) and
-                                                 (self.check_solo_moves(state, itemName.PACKWH) or
-                                                  state.has(itemName.GGRAB, self.player)),
-            locationName.JIGGYHP7: lambda state: self.check_solo_moves(state, itemName.SNPACK) and
-                                                 state.has(itemName.IEGGS, self.player) and
-                                                 state.has(itemName.SPRINGB, self.player),
-            locationName.JIGGYHP8: lambda state: self.check_humba_magic(state, itemName.HUMBAMT) and
-                                                 self.check_mumbo_magic(state, itemName.MUMBOMT) and
-                                                 (state.has(itemName.GEGGS, self.player) or
-                                                  state.has(itemName.CEGGS, self.player) or
-                                                  self.check_mumbo_magic(state, itemName.MUMBOHP)),
-            locationName.JIGGYHP9: lambda state: state.has(itemName.EGGAIM, self.player) and
-                                                 state.has(itemName.IEGGS, self.player) and
-                                                 state.has(itemName.TTORP, self.player) and
-                                                 self.check_mumbo_magic(state, itemName.MUMBOHP) and
-                                                 state.has(itemName.BDRILL, self.player) and
-                                                 self.check_solo_moves(state, itemName.HATCH) and
-                                                 (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)),
-            locationName.JIGGYHP10: lambda state: state.has(itemName.SPLITUP, self.player) and
-                                                  state.has(itemName.GGRAB, self.player),
+            locationName.JIGGYHP1:  lambda state: self.jiggy_dragons_bros(state),
+            locationName.JIGGYHP3:  lambda state: self.jiggy_sabreman(state),
+            locationName.JIGGYHP4:  lambda state: self.check_solo_moves(state, itemName.SHPACK),
+            locationName.JIGGYHP5:  lambda state: self.jiggy_ice_station(state),
+            locationName.JIGGYHP6:  lambda state: self.jiggy_oil_drill(state),
+            locationName.JIGGYHP7:  lambda state: self.jiggy_hfp_stomping(state),
+            locationName.JIGGYHP8:  lambda state: self.jiggy_hfp_kickball(state),
+            locationName.JIGGYHP9:  lambda state: self.jiggy_aliens(state),
+            locationName.JIGGYHP10: lambda state: self.jiggy_colosseum_split(state),
 
             #Cloud Cuckooland Jiggies
             locationName.JIGGYCC2: lambda state: state.has(itemName.SPRINGB, self.player) and
@@ -934,6 +911,16 @@ class BanjoTooieRules:
             logic = state.has(itemName.TTORP, self.player) and state.has(itemName.IEGGS, self.player)
         return logic
     
+    def jiggy_colosseum_split(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.SPLITUP, self.player) and state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.SPLITUP, self.player) and state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.SPLITUP, self.player) and state.has(itemName.GGRAB, self.player)
+        return logic
+    
     def jiggy_terry_nest(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -981,13 +968,15 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = self.oogle_boogles_open(state) and state.has(itemName.FEGGS, self.player) and \
-                    self.smuggle_food(state) and state.has(itemName.GGRAB, self.player)
+                    self.smuggle_food(state) and state.has(itemName.GGRAB, self.player) and \
+                    state.has(itemName.BDRILL, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = self.oogle_boogles_open(state) and self.has_fire(state) and \
-                    self.smuggle_food(state) and state.has(itemName.GGRAB, self.player)
+                    self.smuggle_food(state) and state.has(itemName.GGRAB, self.player) and \
+                    state.has(itemName.BDRILL, self.player)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.oogle_boogles_open(state) and self.has_fire(state) and \
-                    state.has(itemName.GGRAB, self.player)
+                    state.has(itemName.GGRAB, self.player) and state.has(itemName.BDRILL, self.player)
         return logic
 
     def jiggy_terry_kids(self, state: CollectionState) -> bool:
@@ -1024,6 +1013,104 @@ class BanjoTooieRules:
             logic = state.has(itemName.CEGGS, self.player)
         return logic
     
+    def jiggy_dragons_bros(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.IEGGS, self.player) and \
+                    state.has(itemName.CLAWBTS, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.IEGGS, self.player) and \
+                    state.has(itemName.CLAWBTS, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.IEGGS, self.player)
+        return logic
+    
+    def jiggy_sabreman(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_mumbo_magic(state, itemName.MUMBOHP) and state.has(itemName.FEGGS, self.player) and \
+                    self.check_solo_moves(state, itemName.TAXPACK)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_mumbo_magic(state, itemName.MUMBOHP) and self.has_fire(state) and \
+                    self.check_solo_moves(state, itemName.TAXPACK)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_mumbo_magic(state, itemName.MUMBOHP) and self.has_fire(state) and \
+                    self.check_solo_moves(state, itemName.TAXPACK)
+        return logic
+    
+    def jiggy_ice_station(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_beat_king_coal(state) and state.has(itemName.GEGGS, self.player) and \
+                    state.has(itemName.TRAINSWHP1, self.player) and state.has(itemName.TRAINSWHP2, self.player) and \
+                    state.has(itemName.EGGAIM, self.player) and (state.has(itemName.FEGGS, self.player) or \
+                     state.has(itemName.TRAINSWWW, self.player))
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_beat_king_coal(state) and state.has(itemName.GEGGS, self.player) and \
+                    state.has(itemName.TRAINSWHP1, self.player) and state.has(itemName.TRAINSWHP2, self.player) and \
+                    (state.has(itemName.FEGGS, self.player) or state.has(itemName.TRAINSWWW, self.player))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.can_beat_king_coal(state) and state.has(itemName.GEGGS, self.player) and \
+                    state.has(itemName.TRAINSWHP1, self.player) and state.has(itemName.TRAINSWHP2, self.player) and \
+                    (state.has(itemName.FEGGS, self.player) or state.has(itemName.TRAINSWWW, self.player))
+        return logic
+
+    def jiggy_oil_drill(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_humba_magic(state, itemName.HUMBAHP) and \
+                    self.check_solo_moves(state, itemName.SHPACK) and state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_humba_magic(state, itemName.HUMBAHP) and self.check_solo_moves(state, itemName.SHPACK) and \
+                    (self.check_solo_moves(state, itemName.PACKWH) or state.has(itemName.GGRAB, self.player))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_humba_magic(state, itemName.HUMBAHP) and self.check_solo_moves(state, itemName.SHPACK) and \
+                    (self.check_solo_moves(state, itemName.PACKWH) or state.has(itemName.GGRAB, self.player))
+        return logic
+    
+    def jiggy_hfp_stomping(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_solo_moves(state, itemName.SNPACK) and state.has(itemName.IEGGS, self.player) and \
+                    state.has(itemName.SPRINGB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.SPRINGB, self.player) and state.has(itemName.IEGGS, self.player) or \
+                    (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)) and \
+                    self.check_solo_moves(state, itemName.SNPACK)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.SPRINGB, self.player) and state.has(itemName.SPLITUP, self.player)
+        return logic
+    
+    def jiggy_hfp_kickball(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
+                    state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
+                    (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
+                    self.check_mumbo_magic(state, itemName.MUMBOHP))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
+                    (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
+                    self.check_mumbo_magic(state, itemName.MUMBOHP))
+        return logic
+    
+    def jiggy_aliens(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.jiggy_ufo(state) and state.has(itemName.BDRILL, self.player) and \
+                    self.check_solo_moves(state, itemName.HATCH) and self.check_solo_moves(state, itemName.GLIDE) and \
+                    self.check_mumbo_magic(state, itemName.MUMBOHP)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.jiggy_ufo(state) and self.check_mumbo_magic(state, itemName.MUMBOHP) and \
+                    state.has(itemName.BDRILL, self.player) and self.check_solo_moves(state, itemName.HATCH) and \
+                    (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.jiggy_ufo(state) and self.check_mumbo_magic(state, itemName.MUMBOHP) and \
+                    state.has(itemName.BDRILL, self.player) and self.check_solo_moves(state, itemName.HATCH)
+        return logic
+
     def check_mumbo_magic(self, state: CollectionState, name) -> bool:
         for item_name in self.mumbo_magic:
             if name == item_name:
