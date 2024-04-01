@@ -2,7 +2,8 @@ Banjo-Tooie:
   death_link: 'false'
   randomize_moves: 'true'
   randomize_jinjos: 'true'
-  forbid_moves_on_jinjo_family: 'false' # don't allow moves behind completing jinjo family
+  forbid_moves_on_jinjo_family: 0 # 0 = none,  1 = moves only, 2 = moves and magic
+  forbid_jinjos_on_jinjo_family: 'true'
   randomize_doubloons: 'true'
   randomize_cheato: 'true'
   cheato_as_filler: 'true'
@@ -11,7 +12,8 @@ Banjo-Tooie:
   randomize_treble: 'true'
   randomize_stations: 'true' #Randomize Stations
   randomize_chuffy: 'true' #Chuffy as a AP Item
-
+  
+  logic_type: 1  # 0 = beginner, 1 = normal, 2 = advanced 
   jingaling_jiggy: 'false' #True = Always get Jiggy from Jingaling #recommended when playing Multiworld.
   skip_tower_of_tragedy: 1 #0 = no skip, #1 = skip fully, #2 = 3rd round only 
   speed_up_minigames: 'true' #skip to round 3 of kickball, dodgems

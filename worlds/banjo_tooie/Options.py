@@ -9,9 +9,17 @@ class EnableMultiWorldJinjos(DefaultOnToggle):
     """Jinjos fled to other worlds. Other players need return them home."""
     display_name = "Randomize Jinjos"
 
-class ForbidMovesOnJinjoFamilyTreasure(Toggle):
+class ForbidMovesOnJinjoFamilyTreasure(Choice):
     """If Jinjos are randomized, do not allow unlockable moves behind Jinjo Families."""
     display_name = "Forbid Unlockable Moves on Jinjo Family Treasure"
+    option_none = 0
+    option_moves_only = 1
+    option_moves_and_magic = 2
+    default = 1
+
+class ForbidJinjosOnJinjoFamilyTreasure(Toggle):
+    """If Jinjos are randomized, do not allow other colour Jinjos behind Jinjo Families."""
+    display_name = "Forbid Jinjos on Jinjo Family Treasure"
 
 class EnableMultiWorldDoubloons(Toggle):
     """Jolly Roger's Doubloons are scattered across the MultiWorld."""
@@ -65,6 +73,14 @@ class SkipToT(Choice):
     option_round_3 = 2
     default = 1
 
+class LogicType(Choice):
+    """Choose your logic difficulty if you are expected to perform tricks to reach certian areas."""
+    display_name = "Logic Type"
+    option_beginner = 0
+    option_normal = 1
+    option_advanced = 2
+    default = 1
+
 class SpeedUpMinigames(DefaultOnToggle):
     """Start 3-round minigames at Round 3"""
     display_name = "Speed Up Minigames"
@@ -76,6 +92,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_moves: EnableMultiWorldMoveList
     randomize_jinjos: EnableMultiWorldJinjos
     forbid_moves_on_jinjo_family: ForbidMovesOnJinjoFamilyTreasure
+    forbid_jinjos_on_jinjo_family: ForbidJinjosOnJinjoFamilyTreasure
     randomize_doubloons: EnableMultiWorldDoubloons
     randomize_cheato: EnableMultiWorldCheatoPages
     cheato_as_filler: SetMultiWorldCheatoPagesFiller
@@ -89,4 +106,5 @@ class BanjoTooieOptions(PerGameCommonOptions):
     open_hag1: OpenHag1
     skip_tower_of_tragedy: SkipToT
     speed_up_minigames: SpeedUpMinigames
+    logic_type: LogicType
     
