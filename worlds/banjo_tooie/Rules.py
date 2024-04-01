@@ -199,33 +199,16 @@ class BanjoTooieRules:
             locationName.JIGGYWW10: lambda state: self.jiggy_cactus(state),
 
             #Jolly Joger's Lagoon Jiggies
-            locationName.JIGGYJR1: lambda state: self.check_humba_magic(state, itemName.HUMBAJR) and
-                                                 self.can_reach_atlantis(state),
-            locationName.JIGGYJR2: lambda state: self.check_solo_moves(state, itemName.HATCH) and
-                                                 (state.has(itemName.GEGGS, self.player) or
-                                                  state.has(itemName.CEGGS, self.player)),
-            locationName.JIGGYJR3: lambda state: self.can_reach_atlantis(state),
-            locationName.JIGGYJR4: lambda state: (state.has(itemName.GEGGS, self.player) or
-                                                  state.has(itemName.CEGGS, self.player) or
-                                                  state.has(itemName.BDRILL, self.player)) and
-                                                 self.HFP_hot_water_cooled(state),
-            locationName.JIGGYJR5: lambda state: (state.has(itemName.GEGGS, self.player) or
-                                                  state.has(itemName.CEGGS, self.player)) and
-                                                 state.has(itemName.SPLITUP, self.player) and
-                                                 self.check_solo_moves(state, itemName.GLIDE),
-            locationName.JIGGYJR6: lambda state: state.has(itemName.AUQAIM, self.player) and
-                                                 self.can_reach_atlantis(state),
-            locationName.JIGGYJR7: lambda state: state.has(itemName.AUQAIM, self.player) and
-                                                 state.has(itemName.GEGGS, self.player) and
-                                                 self.can_reach_atlantis(state) and
-                                                 (self.check_mumbo_magic(state, itemName.MUMBOJR) or
-                                                  self.check_humba_magic(state, itemName.HUMBAJR)),
-            locationName.JIGGYJR8: lambda state: state.has(itemName.TTORP, self.player) and
-                                                 self.can_reach_atlantis(state),
-            locationName.JIGGYJR9: lambda state: state.has(itemName.DOUBLOON, self.player, 23),
-            locationName.JIGGYJR10: lambda state: state.has(itemName.EGGAIM, self.player) and
-                                                  state.has(itemName.IEGGS, self.player) and
-                                                  state.has(itemName.TTORP, self.player),
+            locationName.JIGGYJR1:  lambda state: self.jiggy_sub_challenge(state),
+            locationName.JIGGYJR2:  lambda state: self.jiggy_tiptup(state),
+            locationName.JIGGYJR3:  lambda state: self.jiggy_bacon(state),
+            locationName.JIGGYJR4:  lambda state: self.jiggy_pigpool(state),
+            locationName.JIGGYJR5:  lambda state: self.jiggy_smuggler(state),
+            locationName.JIGGYJR6:  lambda state: self.jiggy_merry_maggie(state),
+            locationName.JIGGYJR7:  lambda state: self.jiggy_lord_woo(state),
+            locationName.JIGGYJR8:  lambda state: self.jiggy_see_mee(state),
+            locationName.JIGGYJR9:  lambda state: state.has(itemName.DOUBLOON, self.player, 23),
+            locationName.JIGGYJR10: lambda state: self.jiggy_ufo(state),
 
             #Terrydactyland Jiggies
             locationName.JIGGYTD1: lambda state: (state.has(itemName.GEGGS, self.player) or
@@ -863,6 +846,112 @@ class BanjoTooieRules:
             logic = state.has(itemName.BDRILL, self.player) and state.has(itemName.GEGGS, self.player)
         return logic
     
+    def jiggy_sub_challenge(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_humba_magic(state, itemName.HUMBAJR) and self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_humba_magic(state, itemName.HUMBAJR) and self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_humba_magic(state, itemName.HUMBAJR)
+        return logic
+    
+    def jiggy_tiptup(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_solo_moves(state, itemName.HATCH) and state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_solo_moves(state, itemName.HATCH) and (state.has(itemName.GEGGS, self.player) or \
+                    state.has(itemName.CEGGS, self.player))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_solo_moves(state, itemName.HATCH) and (state.has(itemName.GEGGS, self.player) or \
+                    state.has(itemName.CEGGS, self.player))
+        return logic
+    
+    def jiggy_bacon(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.AUQAIM, self.player) or self.check_humba_magic(state, itemName.HUMBAJR)
+        return logic
+    
+    def jiggy_pigpool(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.HFP_hot_water_cooled(state) and \
+                    (state.has(itemName.GEGGS, self.player) or state.has(itemName.BDRILL, self.player))
+        elif self.world.options.logic_type == 1: # normal
+            logic = (state.has(itemName.GEGGS, self.player) or \
+                    state.has(itemName.CEGGS, self.player) or \
+                    state.has(itemName.BDRILL, self.player)) and \
+                    self.HFP_hot_water_cooled(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = (state.has(itemName.GEGGS, self.player) or \
+                    state.has(itemName.CEGGS, self.player) or \
+                    state.has(itemName.BDRILL, self.player)) and \
+                    self.HFP_hot_water_cooled(state)
+        return logic
+    
+    def jiggy_smuggler(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GEGGS, self.player) and \
+                     state.has(itemName.SPLITUP, self.player) and self.check_solo_moves(state, itemName.GLIDE)
+        elif self.world.options.logic_type == 1: # normal
+            logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) and \
+                     state.has(itemName.SPLITUP, self.player) and self.check_solo_moves(state, itemName.GLIDE)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) and \
+                     state.has(itemName.SPLITUP, self.player) and self.check_solo_moves(state, itemName.GLIDE)
+        return logic
+    
+    def jiggy_merry_maggie(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or \
+                    state.has(itemName.AUQAIM, self.player)
+        return logic
+    
+    def jiggy_lord_woo(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_reach_atlantis(state) and state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = ((state.has(itemName.TTORP, self.player) and state.has(itemName.BDRILL, self.player)) or \
+                     self.check_mumbo_magic(state, itemName.MUMBOJR)) and state.has(itemName.AUQAIM, self.player) and \
+                     state.has(itemName.GEGGS, self.player)
+        return logic
+    
+    def jiggy_see_mee(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.TTORP, self.player)
+        return logic
+    
+    def jiggy_ufo(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_mumbo_magic(state, itemName.MUMBOJR) and state.has(itemName.TTORP, self.player) and \
+                    state.has(itemName.EGGAIM, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.TTORP, self.player) and state.has(itemName.EGGAIM, self.player) and \
+                    state.has(itemName.IEGGS, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.TTORP, self.player) and state.has(itemName.IEGGS, self.player)
+        return logic
     def check_mumbo_magic(self, state: CollectionState, name) -> bool:
         for item_name in self.mumbo_magic:
             if name == item_name:
@@ -932,7 +1021,12 @@ class BanjoTooieRules:
         return state.has(itemName.FEGGS, self.player) or self.check_humba_magic(state, itemName.HUMBAIH)
 
     def long_swim(self, state: CollectionState) -> bool:
-        return state.has(itemName.BDRILL, self.player) or self.check_mumbo_magic(state, itemName.MUMBOJR)
+        if self.world.options.logic_type == 0: # beginner
+            return self.check_mumbo_magic(state, itemName.MUMBOJR)
+        elif self.world.options.logic_type == 1: # normal
+            return state.has(itemName.BDRILL, self.player) or self.check_mumbo_magic(state, itemName.MUMBOJR)
+        elif self.world.options.logic_type == 2: # advanced
+            return state.has(itemName.BDRILL, self.player) or self.check_mumbo_magic(state, itemName.MUMBOJR)
 
     def can_reach_atlantis(self, state: CollectionState) -> bool:
         return state.has(itemName.IEGGS, self.player) and self.long_swim(state) and state.has(itemName.AUQAIM, self.player)
@@ -1046,6 +1140,7 @@ class BanjoTooieRules:
     def can_use_battery(self, state) -> bool:
         return self.check_solo_moves(state, itemName.PACKWH) and self.check_solo_moves(state, itemName.TAXPACK)
 
+    #TODO Needs to handle proper world access
     def HFP_hot_water_cooled(self, state) -> bool:
         return state.has(itemName.JIGGY, self.player, 45) and \
                state.has(itemName.SPLITUP, self.player) and \
