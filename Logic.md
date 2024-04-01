@@ -248,7 +248,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Switch|Beginner Logic|Normal Logic|Advanced Logic|
 |-|-|-|-|
 |3 doubloons on the upper ledge|Split Up, Grenade Eggs|Split Up, Grenade Eggs or Clockwork Eggs|Split Up, Grenade Eggs or Clockwork Eggs|
-|3 doubloons in the dirt datches|Grenade Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|
+|3 doubloons in the dirt patches|Grenade Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|
 |The other 24 doubloons|<N/A>|<N/A>|<N/A>|
 
 # Miscellaneous stuff
