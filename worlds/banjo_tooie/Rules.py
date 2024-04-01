@@ -339,39 +339,31 @@ class BanjoTooieRules:
             locationName.CHEATOCC3: lambda state: self.check_humba_magic(state, itemName.HUMBACC)
         }
         self.honey_rules = {
-            locationName.HONEYCMT1: lambda state: (self.check_humba_magic(state, itemName.HUMBAMT) and
-                                                   self.check_mumbo_magic(state, itemName.MUMBOMT)) or
-                                                  state.has(itemName.CEGGS, self.player),
-            locationName.HONEYCMT2: lambda state: self.MT_flight_pad(state) or state.has(itemName.GGRAB, self.player),
-            locationName.HONEYCMT3: lambda state: self.MT_flight_pad(state) or state.has(itemName.EGGAIM, self.player),
+            locationName.HONEYCMT1: lambda state: self.honeycomb_mt_entrance(state),
+            locationName.HONEYCMT2: lambda state: self.honeycomb_bovina(state),
+            locationName.HONEYCMT3: lambda state: self.honeycomb_tchamber(state),
 
             locationName.HONEYCGM1: lambda state: self.GM_boulders(state),
             locationName.HONEYCGM2: lambda state: self.GM_boulders(state),
 
-            locationName.HONEYCWW1: lambda state: state.has(itemName.GGRAB, self.player),
+            locationName.HONEYCWW1: lambda state: self.honeycomb_spacezone(state),
             locationName.HONEYCWW2: lambda state: self.check_humba_magic(state, itemName.HUMBAWW),
-            locationName.HONEYCWW3: lambda state: state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player),
+            locationName.HONEYCWW3: lambda state: self.honeycomb_crazycastle(state),
 
-            locationName.HONEYCJR1: lambda state: self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player),
-            locationName.HONEYCJR2: lambda state: self.can_reach_atlantis(state),
-            locationName.HONEYCJR3: lambda state: ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) or
-                                                    state.has(itemName.BDRILL, self.player)) and (state.has(itemName.GGRAB, self.player) or 
-                                                    (state.has(itemName.SPLITUP, self.player) and self.check_solo_moves(state, itemName.LSPRING) and
-                                                     (self.check_solo_moves(state, itemName.GLIDE) or self.check_solo_moves(state, itemName.WWHACK)))),
+            locationName.HONEYCJR1: lambda state: self.honeycomb_seemee(state),
+            locationName.HONEYCJR2: lambda state: self.honeycomb_atlantis(state),
+            locationName.HONEYCJR3: lambda state: self.honeycomb_jrlpipes(state),
                                                 
-            locationName.HONEYCTL2: lambda state: state.has(itemName.BDRILL, self.player) and state.has(itemName.SPLITUP, self.player),
+            locationName.HONEYCTL2: lambda state: self.honeycomb_styracosaurus(state),
 
             locationName.HONEYCGI1: lambda state: self.can_reach_GI_2F(state) and
                                                   (state.has(itemName.GGRAB, self.player) or state.has(itemName.SPLITUP, self.player)),
             locationName.HONEYCGI2: lambda state: self.enter_GI(state) and (state.has(itemName.GGRAB, self.player) or state.has(itemName.SPLITUP, self.player)),
             locationName.HONEYCGI3: lambda state: self.can_reach_GI_2F(state),
 
-            locationName.HONEYCHP1: lambda state: (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or
-                                                  state.has(itemName.SPLITUP, self.player),
-            locationName.HONEYCHP2: lambda state: state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING) or
-                                                  self.check_solo_moves(state, itemName.GLIDE),
-            locationName.HONEYCHP3: lambda state: state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.GLIDE) or
-                                                  (self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.WWHACK)),
+            locationName.HONEYCHP1: lambda state: self.honeycomb_volcano(state),
+            locationName.HONEYCHP2: lambda state: self.honeycomb_station(state),
+            locationName.HONEYCHP3: lambda state: self.honeycomb_lavaside(state),
 
             locationName.HONEYCCC1: lambda state: state.has(itemName.BDRILL, self.player)
 
@@ -1098,7 +1090,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.SPLITUP, self.player) and state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.SPLITUP, self.player) and state.has(itemName.GGRAB, self.player)
+            logic = state.has(itemName.SPLITUP, self.player)
         return logic
     
     def jiggy_mr_fit(self, state: CollectionState) -> bool:
@@ -1161,6 +1153,140 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.CEGGS, self.player) and (state.has(itemName.GGRAB, self.player) or \
                     self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE))
+        return logic
+
+    def honeycomb_mt_entrance(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT)
+        elif self.world.options.logic_type == 1: # normal
+            logic = (self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT)) or \
+                    state.has(itemName.CEGGS, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = (self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT)) or \
+                    state.has(itemName.CEGGS, self.player)
+        return logic
+    
+    def honeycomb_bovina(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.MT_flight_pad(state) or state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True # N/A
+        return logic
+    
+    def honeycomb_tchamber(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.EGGAIM, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.MT_flight_pad(state) or state.has(itemName.EGGAIM, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.MT_flight_pad(state) or state.has(itemName.EGGAIM, self.player)
+        return logic
+    
+    def honeycomb_spacezone(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def honeycomb_crazycastle(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)
+        return logic
+    
+    def honeycomb_seemee(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.TTORP, self.player)
+        return logic
+    
+    def honeycomb_atlantis(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_reach_atlantis(state) 
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+
+    def honeycomb_jrlpipes(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GEGGS, self.player) and state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
+                     state.has(itemName.BDRILL, self.player)) and (state.has(itemName.GGRAB, self.player) or \
+                    (self.check_solo_moves(state, itemName.LSPRING) and (self.check_solo_moves(state, itemName.GLIDE) or \
+                     self.check_solo_moves(state, itemName.WWHACK))))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
+                     state.has(itemName.BDRILL, self.player)) and (state.has(itemName.GGRAB, self.player) or \
+                    (self.check_solo_moves(state, itemName.LSPRING) and (self.check_solo_moves(state, itemName.GLIDE) or \
+                     self.check_solo_moves(state, itemName.WWHACK))))
+        return logic
+    
+    def honeycomb_styracosaurus(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.BDRILL, self.player) and state.has(itemName.SPLITUP, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.BDRILL, self.player) and state.has(itemName.SPLITUP, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = (state.has(itemName.BDRILL, self.player) and state.has(itemName.SPLITUP, self.player)) or \
+                    (self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.GLIDE))
+        return logic
+    
+    def honeycomb_volcano(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or \
+                    state.has(itemName.SPLITUP, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or \
+                    state.has(itemName.SPLITUP, self.player)
+        return logic
+    
+    def honeycomb_station(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING) or \
+                    self.check_solo_moves(state, itemName.GLIDE)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING) or \
+                    self.check_solo_moves(state, itemName.GLIDE) or (state.has(itemName.SPLITUP, self.player) and \
+                     state.has(itemName.CHUFFY, self.player))
+        return logic
+    
+    def honeycomb_lavaside(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
         return logic
 
     def check_mumbo_magic(self, state: CollectionState, name) -> bool:
