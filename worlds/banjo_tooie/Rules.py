@@ -287,55 +287,35 @@ class BanjoTooieRules:
 
         }
         self.cheato_rules = {
-            locationName.CHEATOMT1: lambda state: self.MT_flight_pad(state) or (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GGRAB, self.player)),
-            locationName.CHEATOMT2: lambda state: self.prison_compound_open(state) and state.has(itemName.GGRAB, self.player),
-            locationName.CHEATOMT3: lambda state: self.check_mumbo_magic(state, itemName.MUMBOMT) and state.has(itemName.GGRAB, self.player),
+            locationName.CHEATOMT1: lambda state: self.cheato_snakehead(state),
+            locationName.CHEATOMT2: lambda state: self.cheato_prison(state),
+            locationName.CHEATOMT3: lambda state: self.cheato_snakegrove(state),
 
             locationName.CHEATOGM1: lambda state: self.canary_mary_free(state),
-            locationName.CHEATOGM3: lambda state: state.has(itemName.GGRAB, self.player),
+            locationName.CHEATOGM3: lambda state: self.cheato_waterstorage(state),
 
-            locationName.CHEATOWW1: lambda state: state.has(itemName.GGRAB, self.player) or 
-                                                  (self.check_solo_moves(state, itemName.LSPRING) and 
-                                                  (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE))),
+            locationName.CHEATOWW1: lambda state: self.cheato_hauntedcavern(state),
             locationName.CHEATOWW2: lambda state: self.check_humba_magic(state, itemName.HUMBAWW),
-            locationName.CHEATOWW3: lambda state: self.check_humba_magic(state, itemName.HUMBAGM) and
-                                                  self.check_mumbo_magic(state, itemName.MUMBOWW) and
-                                                  self.check_humba_magic(state, itemName.HUMBAWW) and
-                                                  self.saucer_door_open(state),
+            locationName.CHEATOWW3: lambda state: self.cheato_sauceperil(state),
                                             
             locationName.CHEATOJR1: lambda state: state.has(itemName.DOUBLOON, self.player, 28),
-            locationName.CHEATOJR2: lambda state: (self.long_swim(state) or
-                                                   state.has(itemName.GEGGS, self.player) or
-                                                   state.has(itemName.CEGGS, self.player)) and
-                                                  state.has(itemName.TTORP, self.player),
-            locationName.CHEATOJR3: lambda state: self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player) and
-                                                  (self.check_solo_moves(state, itemName.GLIDE) or self.check_solo_moves(state, itemName.LSPRING) or
-                                                   self.check_solo_moves(state, itemName.WWHACK) or
-                                                  (self.check_solo_moves(state, itemName.PACKWH) and state.has(itemName.GGRAB, self.player))),
+            locationName.CHEATOJR2: lambda state: self.cheato_seemee(state),
+            locationName.CHEATOJR3: lambda state: self.cheato_ancientbath(state),
 
-            locationName.CHEATOTL1: lambda state: state.has(itemName.JIGGY, self.player, 45) and state.has(itemName.SPRINGB, self.player) and
-                                                  state.has(itemName.TTORP, self.player),
+            locationName.CHEATOTL1: lambda state: self.cheato_dippypool(state),
             locationName.CHEATOTL2: lambda state: self.check_humba_magic(state, itemName.HUMBATD),
-            locationName.CHEATOTL3: lambda state: state.has(itemName.BDRILL, self.player) and 
-                                                  (state.has(itemName.GGRAB, self.player) or self.can_beat_terry(state)),
+            locationName.CHEATOTL3: lambda state: self.cheato_tdlboulder(state),
 
-            locationName.CHEATOGI1: lambda state: (state.has(itemName.GEGGS, self.player) or (state.has(itemName.CEGGS, self.player) and 
-                                                    state.has(itemName.BDRILL, self.player))) and self.enter_GI(state),
+            locationName.CHEATOGI1: lambda state: self.cheato_loggo(state),
             locationName.CHEATOGI2: lambda state: self.can_reach_GI_2F(state),
             locationName.CHEATOGI3: lambda state: self.can_beat_weldar(state),
 
-            locationName.CHEATOHP1: lambda state: state.has(itemName.CLAWBTS, self.player) and
-                                                  (state.has(itemName.GEGGS, self.player) or
-                                                   state.has(itemName.CEGGS, self.player) or
-                                                   self.check_mumbo_magic(state, itemName.MUMBOHP)),
+            locationName.CHEATOHP1: lambda state: self.cheato_colosseum(state),
             locationName.CHEATOHP2: lambda state: state.has(itemName.CEGGS, self.player) or self.check_solo_moves(state, itemName.SHPACK),
-            locationName.CHEATOHP3: lambda state: state.has(itemName.SPLITUP, self.player),
+            locationName.CHEATOHP3: lambda state: self.cheato_icypillar(state),
 
             locationName.CHEATOCC1: lambda state: self.canary_mary_free(state),
-            locationName.CHEATOCC2: lambda state: state.has(itemName.FEGGS, self.player) and
-                                                  state.has(itemName.GEGGS, self.player) and
-                                                  state.has(itemName.IEGGS, self.player) and
-                                                  self.check_mumbo_magic(state, itemName.MUMBOCC),
+            locationName.CHEATOCC2: lambda state: self.cheato_potgold(state),
             locationName.CHEATOCC3: lambda state: self.check_humba_magic(state, itemName.HUMBACC)
         }
         self.honey_rules = {
@@ -1283,6 +1263,227 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+
+    def cheato_snakehead(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GGRAB, self.player))
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.MT_flight_pad(state) or (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GGRAB, self.player))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.MT_flight_pad(state) or (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GGRAB, self.player))
+        return logic
+    
+    def cheato_prison(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.prison_compound_open(state) and state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.prison_compound_open(state) and state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.prison_compound_open(state) and state.has(itemName.GGRAB, self.player)
+        return logic
+    
+    def cheato_snakegrove(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_mumbo_magic(state, itemName.MUMBOMT) and state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_mumbo_magic(state, itemName.MUMBOMT) and state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_mumbo_magic(state, itemName.MUMBOMT) and state.has(itemName.GGRAB, self.player)
+        return logic
+    
+    def cheato_waterstorage(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def cheato_hauntedcavern(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GGRAB, self.player) or (self.check_solo_moves(state, itemName.LSPRING) and \
+                    (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.GGRAB, self.player) or (self.check_solo_moves(state, itemName.LSPRING) and \
+                    (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)))
+        return logic
+    
+    def cheato_sauceperil(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.jiggy_peril(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.jiggy_peril(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.jiggy_peril(state)
+        return logic
+    
+    def cheato_seemee(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.jiggy_see_mee(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.jiggy_see_mee(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.jiggy_see_mee(state)
+        return logic
+    
+    def cheato_ancientbath(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player) and \
+                    self.check_solo_moves(state, itemName.GLIDE)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player) and \
+                    (self.check_solo_moves(state, itemName.GLIDE) or self.check_solo_moves(state, itemName.LSPRING) or
+                    self.check_solo_moves(state, itemName.WWHACK) or
+                    (self.check_solo_moves(state, itemName.PACKWH) and state.has(itemName.GGRAB, self.player)))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = (self.check_solo_moves(state, itemName.GLIDE) or self.check_solo_moves(state, itemName.LSPRING) or
+                    self.check_solo_moves(state, itemName.WWHACK) or
+                    (self.check_solo_moves(state, itemName.PACKWH) and state.has(itemName.GGRAB, self.player)))
+        return logic
+    
+    def cheato_dippypool(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.JIGGY, self.player, 45) and state.has(itemName.SPRINGB, self.player) and \
+                                                  state.has(itemName.TTORP, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.JIGGY, self.player, 45) and state.has(itemName.SPRINGB, self.player) and \
+                                                  state.has(itemName.TTORP, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.JIGGY, self.player, 45) and state.has(itemName.SPRINGB, self.player) and \
+                                                  state.has(itemName.TTORP, self.player)
+        return logic
+    
+    def cheato_tdlboulder(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.BDRILL, self.player) and state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.BDRILL, self.player) and (state.has(itemName.GGRAB, self.player) or self.can_beat_terry(state))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.BDRILL, self.player) and (state.has(itemName.GGRAB, self.player) or self.can_beat_terry(state))
+        return logic
+    
+    def cheato_loggo(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = (state.has(itemName.GEGGS, self.player) or (state.has(itemName.CEGGS, self.player) and \
+                     state.has(itemName.BDRILL, self.player))) and self.enter_GI(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = (state.has(itemName.GEGGS, self.player) or (state.has(itemName.CEGGS, self.player) and \
+                     state.has(itemName.BDRILL, self.player))) and self.enter_GI(state)
+        return logic
+    
+    def cheato_colosseum(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.CLAWBTS, self.player) and state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.CLAWBTS, self.player) and \
+                    (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or
+                    self.check_mumbo_magic(state, itemName.MUMBOHP))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.CLAWBTS, self.player) and \
+                    (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or
+                    self.check_mumbo_magic(state, itemName.MUMBOHP))
+        return logic
+    
+    def cheato_icypillar(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.SPLITUP, self.player) and state.has(itemName.GEGGS, self.player) and \
+                    state.has(itemName.EGGAIM, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.SPLITUP, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.SPLITUP, self.player)
+        return logic
+    
+    def cheato_potgold(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.GEGGS, self.player) and \
+                    state.has(itemName.IEGGS, self.player) and self.check_mumbo_magic(state, itemName.MUMBOCC)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.GEGGS, self.player) and \
+                    state.has(itemName.IEGGS, self.player) and self.check_mumbo_magic(state, itemName.MUMBOCC)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.GEGGS, self.player) and \
+                    state.has(itemName.IEGGS, self.player) 
+        return logic
+    
+    def cheato_(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = True
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def cheato_(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = True
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def cheato_(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = True
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def cheato_(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = True
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def cheato_(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = True
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def cheato_(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = True
         elif self.world.options.logic_type == 1: # normal
             logic = True
         elif self.world.options.logic_type == 2: # advanced
