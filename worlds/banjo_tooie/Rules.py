@@ -1429,66 +1429,6 @@ class BanjoTooieRules:
             logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.GEGGS, self.player) and \
                     state.has(itemName.IEGGS, self.player) 
         return logic
-    
-    def cheato_(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == 0: # beginner
-            logic = True
-        elif self.world.options.logic_type == 1: # normal
-            logic = True
-        elif self.world.options.logic_type == 2: # advanced
-            logic = True
-        return logic
-    
-    def cheato_(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == 0: # beginner
-            logic = True
-        elif self.world.options.logic_type == 1: # normal
-            logic = True
-        elif self.world.options.logic_type == 2: # advanced
-            logic = True
-        return logic
-    
-    def cheato_(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == 0: # beginner
-            logic = True
-        elif self.world.options.logic_type == 1: # normal
-            logic = True
-        elif self.world.options.logic_type == 2: # advanced
-            logic = True
-        return logic
-    
-    def cheato_(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == 0: # beginner
-            logic = True
-        elif self.world.options.logic_type == 1: # normal
-            logic = True
-        elif self.world.options.logic_type == 2: # advanced
-            logic = True
-        return logic
-    
-    def cheato_(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == 0: # beginner
-            logic = True
-        elif self.world.options.logic_type == 1: # normal
-            logic = True
-        elif self.world.options.logic_type == 2: # advanced
-            logic = True
-        return logic
-    
-    def cheato_(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == 0: # beginner
-            logic = True
-        elif self.world.options.logic_type == 1: # normal
-            logic = True
-        elif self.world.options.logic_type == 2: # advanced
-            logic = True
-        return logic
 
     def check_mumbo_magic(self, state: CollectionState, name) -> bool:
         for item_name in self.mumbo_magic:
