@@ -58,7 +58,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Dippy |CCL access, Talon Torpedo|CCL access, Talon Torpedo|CCL access, Talon Torpedo
 |Scrotty|WW Train Switch, TDL Train Switch, IoH Train Switch, Enlarge, Heal, Chuffy, Grenade Eggs, Split Up, Taxi Pack, Bill Drill|WW Train Switch, TDL Train Switch, IoH Train Switch, Enlarge, Heal, Chuffy, Grenade Eggs, Split Up, Taxi Pack, Bill Drill|WW Train Switch, TDL Train Switch, IoH Train Switch, Enlarge, Heal, Chuffy, Grenade Eggs, Split Up, Taxi Pack, Bill Drill
 |Terry |Springy Step Shoes, Egg Aim|Springy Step Shoes, Egg Aim|Springy Step Shoes
-|Oogle Boogle Tribe |Enlarge, T-Rex, Grip Grab, Fire Eggs, Claw Clamber Boots|Enlarge, T-Rex, Grip Grab, (Fire Eggs or Dragon), Claw Clamber Boots|Enlarge, T-Rex, Grip Grab, (Fire Eggs or Dragon)
+|Oogle Boogle Tribe |Enlarge, T-Rex, Grip Grab, Fire Eggs, Claw Clamber Boots, Bill Drill|Enlarge, T-Rex, Grip Grab, (Fire Eggs or Dragon), Claw Clamber Boots, Bill Drill|Enlarge, T-Rex, Grip Grab, (Fire Eggs or Dragon), Bill Drill|
 |Chompas Belly|Breegull Blaster|Breegull Blaster|Breegull Blaster
 |Terry's Kids|Enlarge, T-Rex, Springy Step Shoes, Egg Aim, Split Up, Hatch, Taxi Pack|Enlarge, T-Rex, Springy Step Shoes, Egg Aim, Split Up, Hatch, Taxi Pack|Enlarge, T-Rex, Springy Step Shoes, Split Up, Hatch, Taxi Pack
 |Stomping Plains (BK Switch)|Springy Step Shoes, Ice Eggs|Springy Step Shoes, Ice Eggs or (Split Up, (Wing Whack or Glide))|Springy Step Shoes|
@@ -127,7 +127,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Floor 4|Floor 3+ Access, Split Up, Claw Clamber Boots|Floor 2+ Access, Split Up|Floor 2+ Access, Split Up|
 |Floor 3|Floor 3+ Access|Floor 2+ Access|Floor 2+ Access|
 |Floor 2|Floor 2 Access, Split Up, Leg Spring|Floor 2 Access, Split Up, Leg Spring|Floor 2 Access, Split Up, Leg Spring|
-|Floor 1|JRL Access, Oxygenate, Ice Eggs, Sub-Aqua  Egg Aiming|JRL Access, (Oxygenate or Bill Drill), Ice Eggs, Sub-Aqua Egg Aiming|JRL Access, Ice Eggs, Sub-Aqua Egg Aiming|
+|Floor 1|Deep JRL Access, Talon Torpedo|Deep JRL Access, Talon Torpedo|JRL Access, Ice Eggs, Sub-Aqua Egg Aiming, Talon Torpedo|
 |Lava Waterfall|<N/A>|<N/A>|<N/A>|
 |Hot Pool|Split Up, Shack Pack|Split Up, Shack Pack|Split Up, Shack Pack|
 |Windy Hole|Snowball|Snowball|Snowball|
