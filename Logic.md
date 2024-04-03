@@ -238,7 +238,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Sub-Aqua Egg Aim|285 notes, 28 Doubloons or Grenade Eggs|285 notes, 28 Doubloons or Grenade Eggs or Clockwork Eggs|285 notes, 28 Doubloons or Grenade Eggs or Clockwork Eggs
 |Talon Torpedo|290 notes, Deep JRL Access, Grip Grab|290 notes, Deep JRL Access|290 notes, Deep JRL Access
 |Springy Step Shoes|390 notes, Grip Grab|390 notes|390 notes
-|Taxi Pack|405 notes, Split Up, Grip Grab|405 notes, Split Up, Grip Grab or Pack Whack|405 notes, Split Up, Grip Grab or Pack Whack
+|Taxi Pack|405 notes, Split Up, Grip Grab|405 notes, Split Up, Grip Grab or Pack Whack or Sack Pack|405 notes, Split Up, Grip Grab or Pack Whack or Sack Pack
 |Hatch|420 notes, Split Up|420 notes, Split Up|420 notes, Split Up
 |Claw Clamber Boots|505 notes, Inside GI access|505 notes, Inside GI access|505 notes, Inside GI access
 |Snooze Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack
