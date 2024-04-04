@@ -363,19 +363,13 @@ class BanjoTooieRules:
         }
         self.doubloon_rules = {
             #Alcove
-            locationName.JRLDB22:   lambda state: state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GEGGS, self.player) or
-                                                  state.has(itemName.CEGGS, self.player)),
-            locationName.JRLDB23:   lambda state: state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GEGGS, self.player) or
-                                                  state.has(itemName.CEGGS, self.player)),
-            locationName.JRLDB24:   lambda state: state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GEGGS, self.player) or
-                                                  state.has(itemName.CEGGS, self.player)),
+            locationName.JRLDB22:   lambda state: self.doubloon_ledge(state),
+            locationName.JRLDB23:   lambda state: self.doubloon_ledge(state),
+            locationName.JRLDB24:   lambda state: self.doubloon_ledge(state),
             #Underground
-            locationName.JRLDB19:   lambda state: state.has(itemName.BDRILL, self.player) or state.has(itemName.GEGGS, self.player) or
-                                                  state.has(itemName.CEGGS, self.player),
-            locationName.JRLDB20:   lambda state: state.has(itemName.BDRILL, self.player) or state.has(itemName.GEGGS, self.player) or
-                                                  state.has(itemName.CEGGS, self.player),
-            locationName.JRLDB21:   lambda state: state.has(itemName.BDRILL, self.player) or state.has(itemName.GEGGS, self.player) or
-                                                  state.has(itemName.CEGGS, self.player),
+            locationName.JRLDB19:   lambda state: self.doubloon_dirtpatch(state),
+            locationName.JRLDB20:   lambda state: self.doubloon_dirtpatch(state),
+            locationName.JRLDB21:   lambda state: self.doubloon_dirtpatch(state),
         }
         self.treble_clef_rules = {
             locationName.TREBLEJV:  lambda state: self.treble_jv(state),
@@ -1212,7 +1206,8 @@ class BanjoTooieRules:
     def honeycomb_jrlpipes(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.GEGGS, self.player) and state.has(itemName.GGRAB, self.player)
+            logic = (state.has(itemName.GEGGS, self.player) or  state.has(itemName.BDRILL, self.player)) and \
+                    state.has(itemName.GGRAB, self.player) 
         elif self.world.options.logic_type == 1: # normal
             logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
                      state.has(itemName.BDRILL, self.player)) and (state.has(itemName.GGRAB, self.player) or \
@@ -1675,6 +1670,30 @@ class BanjoTooieRules:
             logic = True
         elif self.world.options.logic_type == 2: # advanced
             logic = True
+        return logic
+    
+    def doubloon_ledge(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.SPLITUP, self.player) and state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GEGGS, self.player) or \
+                    state.has(itemName.CEGGS, self.player))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GEGGS, self.player) or \
+                    state.has(itemName.CEGGS, self.player))
+        return logic
+    
+    def doubloon_dirtpatch(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.BDRILL, self.player) or state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.BDRILL, self.player) or state.has(itemName.GEGGS, self.player) or \
+                    state.has(itemName.CEGGS, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.BDRILL, self.player) or state.has(itemName.GEGGS, self.player) or \
+                    state.has(itemName.CEGGS, self.player)
         return logic
 
 
