@@ -161,7 +161,8 @@ class BanjoTooieRules:
             locationName.CHUFFY: lambda state: self.can_beat_king_coal(state),
             locationName.TRAINSWIH: lambda state: state.has(itemName.GGRAB, self.player),
             locationName.TRAINSWHP2: lambda state: self.check_humba_magic(state, itemName.HUMBAHP),
-            locationName.TRAINSWWW: lambda state: state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING)
+            locationName.TRAINSWHP1: lambda state: self.tswitch_lavaside(state),
+            locationName.TRAINSWWW: lambda state: self.tswitch_ww(state)
         }
 
         self.jiggy_rules = {
@@ -1654,6 +1655,26 @@ class BanjoTooieRules:
             logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or state.has(itemName.SPLITUP, self.player)
         elif self.world.options.logic_type == 2: # advanced
             logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or state.has(itemName.SPLITUP, self.player)
+        return logic
+    
+    def tswitch_ww(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING)
+        return logic
+    
+    def tswitch_lavaside(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
         return logic
 
 
