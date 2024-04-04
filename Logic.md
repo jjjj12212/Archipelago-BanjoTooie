@@ -185,7 +185,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |The Inferno|Money Van, Grip Grab|Money Van|Money Van
 |Saucer of Peril|Detonator, Power, Money Van, Grip Grab|Detonator, Power, Money Van<br>AND<br>(<br>Grenade Eggs and Egg Aim<br>OR<br>(Grenade Eggs or Clockwork Eggs) and (Grip Grab or (Split Up, Leg Spring, Glide))<br>)|Detonator, Power, Money Van<br>AND<br>(<br>Grenade Eggs and Egg Aim<br>OR<br>(Grenade Eggs or Clockwork Eggs) and (Grip Grab or (Split Up, Leg Spring, Glide))<br>)
 |Pawno|28 Doubloons|28 Doubloons|28 Doubloons
-|Seemee|Oxygenate or Grenades, Talon Torpedo|Talon Torpedo, (Bill Drill or Oxygenate) or (Grenade Eggs or Clockwork Eggs)|
+|Seemee|Oxygenate or Grenades, Talon Torpedo|Talon Torpedo, (Bill Drill or Oxygenate) or (Grenade Eggs or Clockwork Eggs)|Talon Torpedo|
 |Ancient Swimming Baths|Deep JRL Access, Talon Torpedo, Split Up, Glide|Deep JRL Access, Talon Torpedo, Split Up, (Pack Whack and Grip Grab) or Wing Whack or Leg Spring or Glide|Deep JRL Access, Talon Torpedo, Split Up, (Pack Whack and Grip Grab) or Wing Whack or Leg Spring or Glide
 |Dippy's Pool|CCL access, Talon Torpedo, Springy Step Shoes|CCL access, Talon Torpedo, Springy Step Shoes|CCL access, Talon Torpedo, Springy Step Shoes
 |Inside the Mountain|T-Rex|T-Rex|T-Rex
