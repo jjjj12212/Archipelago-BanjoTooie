@@ -149,6 +149,10 @@ function BTConsumable:new(BTRAM, itemName)
 end
 
 function BTConsumable:setConsumable(value)
+    if DEBUG == true
+    then
+        print("Setting Consumable value to :" .. tostring(value))
+    end
     local addr = self.banjoRAM:dereferencePointer(self.CONSUME_PTR);
     mainmemory.write_u16_be(addr + self.consumeIndex * 2, value ~ self.consumeKey);
     mainmemory.write_u16_be(self.CONSUME_IDX + self.consumeIndex * 0x0C, value);
@@ -2285,7 +2289,7 @@ local NON_AGI_MAP = {
         ["1230859"] = {
           ['addr'] = 0x6B,
           ['bit'] = 3,
-          ['name'] = 'Mumbo: Grow/Shrink'
+          ['name'] = 'Mumbo: Enlarge'
         },
         ["1230860"] = {
           ['addr'] = 0x6B,
@@ -2295,7 +2299,7 @@ local NON_AGI_MAP = {
         ["1230861"] = {
           ['addr'] = 0x6B,
           ['bit'] = 4,
-          ['name'] = 'Mumbo: Revive'
+          ['name'] = 'Mumbo: Life Force'
         },
         ["1230862"] = {
           ['addr'] = 0x6B,
@@ -3052,13 +3056,14 @@ function readAPLocationChecks(type)
                     then
                         checks[check_type] = {}
                     end
-                    checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name']) 
+                    checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
                 elseif type == "AGI"
                 then
                     if checks[check_type] == nil
                     then
                         checks[check_type] = {}
                     end
+                    checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
                 end
             end
         end
