@@ -12,6 +12,10 @@
 - Logic for Jinjos and Jinjo Family Jiggies
   - Jinjo Family Option to NOT allow Moves behind them
   - Jinjo Faimly Jiggies WILL NOT allow other Jinjos behind them
+- Handle Multiple Logic behaviours based on YAML options
+  - Beginner - Intended Banjo-Tooie strats
+  - Normal - Same as previous versions
+  - Advanced - Will require tricks
 
 # 0.9.2-Beta
 - Logic Change
