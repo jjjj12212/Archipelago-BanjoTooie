@@ -45,8 +45,12 @@ TL = "Terrydactyland"
 TLS = "Terrydactyland Station"
 TL_HATCH = "Terrydactyland - Hatch Cave"
 
-GI = "Grunty's Industries"
+GIO = "Outside Grunty's Industries"
+GI1 = "Grunty's Industries 1st Floor"
+GI2 = "Grunty's Industries 2nd Floor"
+GI3ALL = "Grunty's Industries 3rd Floor Onwords"
 GIS = "Grunty's Industries Station"
+
 HP = "Hailfire Peaks"
 HPIS = "Hailfire Peaks Icy Station"
 HPLS = "Hailfire Peaks Lava Station"

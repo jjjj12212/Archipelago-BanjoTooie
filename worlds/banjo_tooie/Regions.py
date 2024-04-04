@@ -241,10 +241,26 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     ],
     regionName.TLS: [],
     regionName.IOHQM:   [],
-    regionName.GI:      [
+    regionName.GIO: [
+        locationName.TRAINSWGI,
+    ],
+    regionName.GI1: [
+        # locationName.JINJOGI3, Moved to JRL
+        locationName.JIGGYGI8,
+        locationName.JIGGYGI10,
+        locationName.CHEATOGI1,
+        locationName.SNPACK,
+        locationName.CLAWBTS,
+        
+    ],
+    regionName.GI2: [
+        locationName.GLOWBOGI1,
+        locationName.LSPRING,
+        locationName.JIGGYGI7,
+    ],
+    regionName.GI3ALL: [
         locationName.JINJOGI1,
         locationName.JINJOGI2,
-        # locationName.JINJOGI3, Moved to JRL
         locationName.JINJOGI4,
         locationName.JINJOGI5,
         locationName.JIGGYGI1,
@@ -253,25 +269,18 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JIGGYGI4,
         locationName.JIGGYGI5,
         locationName.JIGGYGI6,
-        locationName.JIGGYGI7,
-        locationName.JIGGYGI8,
         locationName.JIGGYGI9,
-        locationName.JIGGYGI10,
-        locationName.GLOWBOGI1,
-        locationName.GLOWBOGI2,
         locationName.HONEYCGI1,
-        locationName.HONEYCGI2,
         locationName.HONEYCGI3,
-        locationName.CHEATOGI1,
+        locationName.GLOWBOGI2,
         locationName.CHEATOGI2,
         locationName.CHEATOGI3,
-        locationName.SNPACK,
-        locationName.LSPRING,
-        locationName.CLAWBTS,
         locationName.TREBLEGI,
-        locationName.TRAINSWGI,
+
     ],
-    regionName.GIS: [],
+    regionName.GIS: [
+        locationName.HONEYCGI2,
+    ],
     regionName.HP: [
         locationName.JINJOHP1,
         locationName.JINJOHP2,
@@ -350,18 +359,23 @@ BANJOTOOIECONNECTIONS: typing.Dict[str, typing.Set[str]] = {
         regionName.IOHPG:              {regionName.WW, regionName.IOHWL},
         regionName.IOHWL:              {regionName.TL, regionName.CC, regionName.IOHQM},
         regionName.TL:                 {regionName.TL_HATCH},
-        regionName.IOHQM:              {regionName.GI, regionName.CK},
+        regionName.IOHQM:              {regionName.GIO, regionName.CK},
         regionName.CK:                 {regionName.H1},
+        #GI
+        regionName.GIO:                {regionName.GI1},
+        regionName.GI1:                {regionName.GI2},
+        regionName.GI2:                {regionName.GI3ALL},
         #Train Station Connections
         regionName.GM:                 {regionName.GMS},
         regionName.GMS:                {regionName.CHUFFY},
         regionName.CHUFFY:             {regionName.IOHCTS, regionName.TLS, regionName.GIS, regionName.HPLS, regionName.WWS, regionName.HPIS},
         regionName.TLS:                {regionName.TL},
-        regionName.GIS:                {regionName.GI},
+        regionName.GIS:                {regionName.GI1},
         regionName.HP:                 {regionName.IOHCT_HFP_ENTRANCE},
         regionName.HPLS:               {regionName.HP},
         regionName.IOHCTS:             {regionName.IOHCT},
         regionName.WWS:                {regionName.WW}
+
     }
     
 def create_regions(self):

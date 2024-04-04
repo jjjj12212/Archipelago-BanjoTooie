@@ -130,18 +130,16 @@ class BanjoTooieRules:
 
         self.region_rules = {
             regionName.MT: lambda state: state.has(itemName.JIGGY, self.player, 1),
-            regionName.IOHPL: lambda state: state.has(itemName.GGRAB, self.player) or
-                                            self.dilberta_free(state),
-            regionName.GM: lambda state: state.has(itemName.JIGGY, self.player, 4) or
-                                         self.dilberta_free(state),
-            regionName.IOHPG: lambda state: state.has(itemName.FEGGS, self.player),
-            regionName.WW: lambda state: state.has(itemName.JIGGY, self.player, 8),
-            regionName.IOHCT: lambda state: state.has(itemName.SPLITUP, self.player),
-            regionName.JR: lambda state: state.has(itemName.JIGGY, self.player, 14),
-            regionName.IOHWL: lambda state: state.has(itemName.TTORP, self.player),
-            regionName.TL: lambda state: state.has(itemName.JIGGY, self.player, 20),
+            regionName.IOHPL: lambda state: self.can_access_plateau(state),
+            regionName.GM: lambda state: self.can_access_GM(state),
+            regionName.IOHPG: lambda state: self.can_access_pinegrove(state),
+            regionName.WW: lambda state: self.can_access_witchyworld(state),
+            regionName.IOHCT: lambda state: self.can_access_clifftop(state),
+            regionName.JR: lambda state: self.can_access_jrl(state),
+            regionName.IOHWL: lambda state: self.can_access_wasteland(state),
+            regionName.TL: lambda state: self.can_access_tdl(state),
             regionName.IOHQM: lambda state: state.has(itemName.SPRINGB, self.player),
-            regionName.GI: lambda state: state.has(itemName.JIGGY, self.player, 28),
+            regionName.GIO: lambda state: state.has(itemName.JIGGY, self.player, 28),
             regionName.HP: lambda state: state.has(itemName.JIGGY, self.player, 36),
             regionName.CC: lambda state: state.has(itemName.JIGGY, self.player, 45),
             regionName.CK: lambda state: state.has(itemName.JIGGY, self.player, 55) and state.has(itemName.CLAWBTS, self.player),
@@ -1891,6 +1889,89 @@ class BanjoTooieRules:
     def can_use_battery(self, state) -> bool:
         return self.check_solo_moves(state, itemName.PACKWH) and self.check_solo_moves(state, itemName.TAXPACK)
 
+    def can_access_plateau(self, state) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def can_access_GM(self, state) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = (state.has(itemName.GGRAB, self.player) and state.has(itemName.JIGGY, self.player, 4)) or \
+                    self.dilberta_free(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = (state.has(itemName.GGRAB, self.player) and state.has(itemName.JIGGY, self.player, 4)) or \
+                    self.dilberta_free(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = (state.has(itemName.GGRAB, self.player) and state.has(itemName.JIGGY, self.player, 4)) or \
+                    self.dilberta_free(state)
+        return logic
+    
+    def can_access_pinegrove(self, state) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state)
+        return logic
+    
+    def can_access_witchyworld(self, state) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.JIGGY, self.player, 8) and self.can_access_pinegrove(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.JIGGY, self.player, 8) and self.can_access_pinegrove(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.JIGGY, self.player, 8) and self.can_access_pinegrove(state)
+        return logic
+    
+    def can_access_clifftop(self, state) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.SPLITUP, self.player) and self.can_access_plateau(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.SPLITUP, self.player) and self.can_access_plateau(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.SPLITUP, self.player) and self.can_access_plateau(state)
+        return logic
+    
+    def can_access_jrl(self, state) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_access_clifftop(state) and state.has(itemName.JIGGY, self.player, 14)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_access_clifftop(state) and state.has(itemName.JIGGY, self.player, 14)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.can_access_clifftop(state) and state.has(itemName.JIGGY, self.player, 14)
+        return logic
+    
+    def can_access_wasteland(self, state) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_access_pinegrove(state) and state.has(itemName.TTORP, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_access_pinegrove(state) and state.has(itemName.TTORP, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.can_access_pinegrove(state) and state.has(itemName.TTORP, self.player)
+        return logic
+    
+    def can_access_tdl(self, state) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_access_wasteland(state) and state.has(itemName.JIGGY, self.player, 20)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_access_wasteland(state) and state.has(itemName.JIGGY, self.player, 20)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.can_access_wasteland(state) and state.has(itemName.JIGGY, self.player, 20)
+        return logic
+    
     #TODO Needs to handle proper world access
     def HFP_hot_water_cooled(self, state) -> bool:
         return state.has(itemName.JIGGY, self.player, 45) and \
