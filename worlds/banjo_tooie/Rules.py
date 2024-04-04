@@ -350,10 +350,13 @@ class BanjoTooieRules:
         }
         self.glowbo_rules = {
             locationName.GLOWBOMT2: lambda state: self.check_mumbo_magic(state, itemName.MUMBOMT),
-            locationName.GLOWBOWW1: lambda state: self.check_humba_magic(state, itemName.HUMBAWW),
-            locationName.GLOWBOJR2: lambda state: self.can_reach_atlantis(state),
+            locationName.GLOWBOWW1: lambda state: self.glowbo_inferno(state),
+            locationName.GLOWBOWW2: lambda state: self.glowbo_wigwam(state),
+
+            locationName.GLOWBOJR2: lambda state: self.glowbo_underwigwam(state),
             locationName.GLOWBOGI1: lambda state: self.can_reach_GI_2F(state),
             locationName.GLOWBOGI2: lambda state: self.can_reach_GI_2F(state),
+            locationName.GLOWBOCC2: lambda state: self.glowbo_cavern(state),
             locationName.GLOWBOMEG: lambda state: state.has(itemName.GGRAB, self.player) and state.has(itemName.TTORP, self.player)
 
         }
@@ -429,9 +432,9 @@ class BanjoTooieRules:
             locationName.JINJOIH5: lambda state: state.has(itemName.TTORP, self.player),
             locationName.JINJOIH4: lambda state: state.has(itemName.BDRILL, self.player),
             locationName.JINJOIH3: lambda state: state.has(itemName.CLAWBTS, self.player),
-            locationName.JINJOIH2: lambda state: state.has(itemName.GGRAB, self.player),
+            locationName.JINJOIH2: lambda state: self.jinjo_wasteland(state),
 
-            locationName.JINJOMT1: lambda state: state.has(itemName.GGRAB, self.player) and self.check_mumbo_magic(state, itemName.MUMBOMT),
+            locationName.JINJOMT1: lambda state: self.jinjo_jadesnakegrove(state),
             locationName.JINJOMT2: lambda state: self.MT_flight_pad(state),
             locationName.JINJOMT3: lambda state: state.has(itemName.BBLASTER, self.player),
 
@@ -441,10 +444,9 @@ class BanjoTooieRules:
             locationName.JINJOGM2: lambda state: self.check_humba_magic(state, itemName.HUMBAGM),
             locationName.JINJOGM4: lambda state: self.GM_boulders(state),
 
-            locationName.JINJOWW3: lambda state: state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) and
-                                                 self.check_humba_magic(state, itemName.HUMBAWW),
+            locationName.JINJOWW3: lambda state: self.jinjo_vandoor(state),
             locationName.JINJOWW5: lambda state: state.has(itemName.GGRAB, self.player),
-            locationName.JINJOWW2: lambda state: state.has(itemName.GEGGS, self.player),
+            locationName.JINJOWW2: lambda state: self.jinjo_caveofhorror(state),
 
             locationName.JINJOJR1: lambda state: state.has(itemName.DOUBLOON, self.player, 28),
             locationName.JINJOJR5: lambda state: self.can_reach_atlantis(state),
@@ -1428,6 +1430,89 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.GEGGS, self.player) and \
                     state.has(itemName.IEGGS, self.player) 
+        return logic
+
+    def glowbo_inferno(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player) and self.check_humba_magic(state, itemName.HUMBAWW)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_humba_magic(state, itemName.HUMBAWW)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_humba_magic(state, itemName.HUMBAWW)
+        return logic
+    
+    def glowbo_wigwam(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def glowbo_underwigwam(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+
+    def glowbo_cavern(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def jinjo_wasteland(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def jinjo_jadesnakegrove(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player) and self.check_mumbo_magic(state,itemName.MUMBOMT)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_mumbo_magic(state,itemName.MUMBOMT)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_mumbo_magic(state,itemName.MUMBOMT)
+        return logic
+    
+    def jinjo_caveofhorror(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.GEGGS, self.player)
+        return logic
+    
+    def jinjo_vandoor(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) and \
+                    self.check_humba_magic(state, itemName.HUMBAWW) and state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) and \
+                    self.check_humba_magic(state, itemName.HUMBAWW)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) and \
+                    self.check_humba_magic(state, itemName.HUMBAWW)
         return logic
 
     def check_mumbo_magic(self, state: CollectionState, name) -> bool:
