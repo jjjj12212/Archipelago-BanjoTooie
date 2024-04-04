@@ -26,7 +26,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Ssslumber|Golden Goliath, Grip Grab|Golden Goliath|Golden Goliath
 |Old King Coal|Levitate|Levitate|Levitate
 |Canary Mary 1|Detonator|Detonator or Clockwork Eggs|Detonator or Clockwork Eggs
-|Generator Cavern|Fire Eggs|<N/A>|<N/A>
+|Generator Cavern|Fire Eggs, Egg Aim|<N/A>|<N/A>
 |Waterfall Cavern|<N/A>|<N/A>|<N/A>
 |Ordnance Storage|Breegull Blaster, Beak Bayonet, (Bill Drill or Detonator)|Breegull Blaster, Beak Bayonet, (Bill Drill or Detonator)|Breegull Blaster, Beak Bayonet, (Bill Drill or Detonator)
 |Dilberta|MT access, Bill Drill, Stony, (Golden Goliath or Grenade Eggs)|MT access, Bill Drill, (Golden Goliath or Grenade Eggs or Clockwork Eggs)|MT access, Bill Drill, (Golden Goliath or Grenade Eggs or Clockwork Eggs)
@@ -37,7 +37,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Hoop Hurry|Split Up, Grenade Eggs|Split Up, (Grenade Eggs or Clockwork Eggs)|Split Up, (Grenade Eggs or Clockwork Eggs)
 |Dodgem Dome|Money Van, Power, Grip Grab|Money Van, Power|Money Van, Power
 |Mr. Patch|Airborne Egg Aiming, Egg Aim, Grenade Eggs|Airborne Egg Aiming, Egg Aim, Grenade Eggs|Airborne Egg Aiming, Egg Aim, Grenade Eggs
-|Saucer of Peril|Detonator, Power, Money Van, Grip Grab|Detonator, Power, Money Van<br>AND<br>(<br>Grenade Eggs and Egg Aim<br>OR<br>(Grenade Eggs or Clockwork Eggs) and (Grip Grab or (Split Up, Leg Spring, Glide))<br>)|Detonator, Power, Money Van<br>AND<br>(<br>Grenade Eggs and Egg Aim<br>OR<br>(Grenade Eggs or Clockwork Eggs) and (Grip Grab or (Split Up, Leg Spring, Glide))<br>)
+|Saucer of Peril|Detonator, Power, Money Van, Grip Grab, Grenade Eggs|Detonator, Power, Money Van<br>AND<br>(<br>Grenade Eggs and Egg Aim<br>OR<br>(Grenade Eggs or Clockwork Eggs) and (Grip Grab or (Split Up, Leg Spring, Glide))<br>)|Detonator, Power, Money Van<br>AND<br>(<br>Grenade Eggs and Egg Aim<br>OR<br>(Grenade Eggs or Clockwork Eggs) and (Grip Grab or (Split Up, Leg Spring, Glide))<br>)
 |Balloon Burst|Split Up, Airborne Egg Aiming, Grenade Eggs|Split Up, Airborne Egg Aiming, (Grenade Eggs or Clockwork Eggs)|Split Up, Airborne Egg Aiming, (Grenade Eggs or Clockwork Eggs)
 |Dive of Death|Grip Grab|<N/A>|<N/A>
 |Mrs. Boggy|Money Van, Power, Taxi Pack, Split Up, Grenade Eggs, Grip Grab|Money Van, Power, Taxi Pack, Split Up, (Grenade Eggs or Clockwork Eggs)|Money Van, Power, Taxi Pack, Split Up, (Grenade Eggs or Clockwork Eggs)
@@ -50,7 +50,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Pig Pool|HFP access, CCL access, (Grenade Eggs or Bill Drill), Split Up|HFP access, CCL access, (Grenade Eggs or Clockwork Eggs or Bill Drill), Split Up|HFP access, CCL access, (Grenade Eggs or Clockwork Eggs or Bill Drill), Split Up
 |Smuggler's Cavern|Split Up, Grenade Eggs, Glide|Split Up, Grenade Eggs or Clockwork Eggs, Glide|Split Up, Grenade Eggs or Clockwork Eggs, Glide
 |Merry Maggie|Deep JRL Access|Deep JRL Access|Sub-Aqua Egg Aim
-|Woo Fak Fak|Deep JRL Access, Grenade Eggs|Deep JRL Access, Grenade Eggs|((Talon Torpedo, Bill Drill) or Oxygenate), Sub-Aqua Egg Aiming, Grenade Eggs
+|Woo Fak Fak|Deep JRL Access, Grenade Eggs|Deep JRL Access, Grenade Eggs|(((Talon Torpedo, Bill Drill) or Oxygenate), Sub-Aqua Egg Aiming, Grenade Eggs) or Sub
 |Seemee|Oxygenate, Sub-Aqua Egg Aiming, Ice Eggs, Talon Torpedo|Bill Drill or Oxygenate, Sub-Aqua Egg Aiming, Ice Eggs, Talon Torpedo|Talon Torpedo
 |Pawno |23 Doubloons|23 Doubloons|23 Doubloons
 |UFO |Oxygenate, Talon Torpedo, Egg Aim, Ice Eggs|Talon Torpedo, Egg Aim, Ice Eggs|Talon Torpedo, Ice Eggs
@@ -98,7 +98,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 ## Jinjos
 |Jinjo|Beginner Logic|Normal Logic|Advanced Logic|
 |-|-|-|-|
-|Jade Snake Grove|Grip Grab|<N/A>|<N/A>|
+|Jade Snake Grove|Grip Grab, Golden Goliath|Golden Goliath|Golden Goliath|
 |Stadium|Goliath or Bill Drill|Goliath or Bill Drill|Goliath or Bill Drill|
 |Tagitzan Temple|Breegull Blaster|Breegull Blaster|Breegull Blaster|
 |MT Entrance Pool|<N/A>|<N/A>|<N/A>|
@@ -110,7 +110,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Mine Tracks|<N/A>|<N/A>|<N/A>|
 |Big Top|<N/A>|<N/A>|<N/A>|
 |Cave of Horrors|Grenade Eggs, Egg Aim|Grenade Eggs|Grenade Eggs|
-|Van Door|Money Van, Grip Grab|Money Van|Money Van|
+|Van Door|Money Van, Grip Grab, Grenade Eggs|Money Van, (Grenade Eggs or Clockwork Eggs)|Money Van, (Grenade Eggs or Clockwork Eggs)|
 |Dodgem Dome|<N/A>|<N/A>|<N/A>|
 |Cactus of Strength|Bill Drill, Grenade Eggs|Bill Drill, Grenade Eggs|Bill Drill, Grenade Eggs|
 |Lagoon Alcove|28 Doubloons|<N/A>|<N/A>|

@@ -563,7 +563,7 @@ class BanjoTooieRules:
     def jiggy_generator_cavern(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-          logic = self.has_fire(state)
+          logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.EGGAIM, self.player)
         elif self.world.options.logic_type == 1: # normal
           logic = True # N/A
         elif self.world.options.logic_type == 2: # advanced
@@ -831,8 +831,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.can_reach_atlantis(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or \
-                    state.has(itemName.AUQAIM, self.player)
+            logic = state.has(itemName.AUQAIM, self.player)
         return logic
     
     def jiggy_lord_woo(self, state: CollectionState) -> bool:
@@ -842,9 +841,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.can_reach_atlantis(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = ((state.has(itemName.TTORP, self.player) and state.has(itemName.BDRILL, self.player)) or \
+            logic = (((state.has(itemName.TTORP, self.player) and state.has(itemName.BDRILL, self.player)) or \
                      self.check_mumbo_magic(state, itemName.MUMBOJR)) and state.has(itemName.AUQAIM, self.player) and \
-                     state.has(itemName.GEGGS, self.player)
+                     state.has(itemName.GEGGS, self.player)) or self.check_humba_magic(state, itemName.HUMBAJR)
         return logic
     
     def jiggy_see_mee(self, state: CollectionState) -> bool:
@@ -1500,7 +1499,7 @@ class BanjoTooieRules:
     def jinjo_vandoor(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) and \
+            logic = state.has(itemName.GEGGS, self.player) and \
                     self.check_humba_magic(state, itemName.HUMBAWW) and state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) and \
@@ -1840,7 +1839,7 @@ class BanjoTooieRules:
 
     def saucer_door_open(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
-            return state.has(itemName.GGRAB, self.player)
+            return state.has(itemName.GGRAB, self.player) and state.has(itemName.GEGGS, self.player)
         elif self.world.options.logic_type == 1: # normal
             return state.has(itemName.EGGAIM, self.player) and state.has(itemName.GEGGS, self.player) or \
             (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) and \
