@@ -254,7 +254,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 ## Notes
 |Note|Beginner Logic|Normal Logic|Advanced Logic|
 |-|-|-|-|
-|IoH: Jinjo Village Treble Clef|Grip Grab|<N/A>|<N/A>|
+|IoH: Jinjo Village Treble Clef|Grip Grab|Grip Grab|<N/A>|
 |IoH: Honey B Notes|Plateau access|Plateau access|Plateau access|
 |IoH: Plateau sign|Plateau access, Grip Grab|Plateau access|Plateau access|
 |IoH: Pine Grove notes|Pine Grove access|Pine Grove access|Pine Grove access|

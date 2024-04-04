@@ -377,13 +377,12 @@ class BanjoTooieRules:
                                                   state.has(itemName.CEGGS, self.player),
         }
         self.treble_clef_rules = {
-            locationName.TREBLEJV:  lambda state: state.has(itemName.GGRAB, self.player),
-            locationName.TREBLEWW:  lambda state: self.check_humba_magic(state, itemName.HUMBAWW),
-            locationName.TREBLEJR:  lambda state: self.can_reach_atlantis(state),
-            locationName.TREBLETL:  lambda state: state.has(itemName.BDRILL, self.player) and (self.can_beat_terry(state) or state.has(itemName.GGRAB, self.player)),
+            locationName.TREBLEJV:  lambda state: self.treble_jv(state),
+            locationName.TREBLEWW:  lambda state: self.treble_ww(state),
+            locationName.TREBLEJR:  lambda state: self.treble_jrl(state),
+            locationName.TREBLETL:  lambda state: self.treble_tdl(state),
             locationName.TREBLEGI:  lambda state: self.can_reach_GI_2F(state),
-            locationName.TREBLEHP:  lambda state: (state.has(itemName.GEGGS, self.player) and 
-                                                   state.has(itemName.EGGAIM, self.player)) or state.has(itemName.SPLITUP, self.player),
+            locationName.TREBLEHP:  lambda state: self.treble_hfp(state),
             
         }
 
@@ -644,7 +643,8 @@ class BanjoTooieRules:
     def jiggy_dodgem(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.check_humba_magic(state, itemName.HUMBAWW) and self.check_mumbo_magic(state, itemName.MUMBOWW)
+            logic = self.check_humba_magic(state, itemName.HUMBAWW) and self.check_mumbo_magic(state, itemName.MUMBOWW) and \
+                    state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = self.check_humba_magic(state, itemName.HUMBAWW) and self.check_mumbo_magic(state, itemName.MUMBOWW)
         elif self.world.options.logic_type == 2: # advanced
@@ -670,7 +670,7 @@ class BanjoTooieRules:
             logic = self.check_humba_magic(state, itemName.HUMBAGM) and \
                     self.check_mumbo_magic(state, itemName.MUMBOWW) and \
                     self.check_humba_magic(state, itemName.HUMBAWW) and \
-                    self.saucer_door_open(state)
+                    self.saucer_door_open(state) and state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = self.check_humba_magic(state, itemName.HUMBAGM) and \
                     self.check_mumbo_magic(state, itemName.MUMBOWW) and \
@@ -715,7 +715,8 @@ class BanjoTooieRules:
             logic = self.check_humba_magic(state, itemName.HUMBAWW) and \
                 self.check_mumbo_magic(state, itemName.MUMBOWW) and \
                 self.check_solo_moves(state, itemName.TAXPACK) and \
-                state.has(itemName.GEGGS, self.player)
+                state.has(itemName.GEGGS, self.player) and \
+                state.has(itemName.GGRAB, self.player)
             
         elif self.world.options.logic_type == 1: # normal
             logic = self.check_humba_magic(state, itemName.HUMBAWW) and \
@@ -734,7 +735,8 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = self.check_mumbo_magic(state, itemName.MUMBOWW) and \
-                    self.check_humba_magic(state, itemName.HUMBAWW)
+                    self.check_humba_magic(state, itemName.HUMBAWW) and \
+                    state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = self.check_mumbo_magic(state, itemName.MUMBOWW) and \
                     self.check_humba_magic(state, itemName.HUMBAWW)
@@ -746,7 +748,9 @@ class BanjoTooieRules:
     def jiggy_inferno(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.check_humba_magic(state, itemName.HUMBAWW) and state.has(itemName.SPLITUP, self.player)
+            logic = self.check_humba_magic(state, itemName.HUMBAWW) and \
+                    state.has(itemName.SPLITUP, self.player) and \
+                    state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = self.check_humba_magic(state, itemName.HUMBAWW)
         elif self.world.options.logic_type == 2: # advanced
@@ -1601,6 +1605,57 @@ class BanjoTooieRules:
             logic = self.check_solo_moves(state, itemName.LSPRING) or (self.check_solo_moves(state, itemName.SAPACK) and
                     self.grow_beanstalk(state) and self.can_use_floatus(state))
         return logic
+    
+    def treble_jv(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def treble_ww(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player) and self.check_humba_magic(state, itemName.HUMBAWW)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_humba_magic(state, itemName.HUMBAWW)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_humba_magic(state, itemName.HUMBAWW)
+        return logic
+    
+    def treble_jrl(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.AUQAIM, self.player) or state.has(itemName.TTORP, self.player)
+        return logic
+    
+    def treble_tdl(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.BDRILL, self.player) and (self.can_beat_terry(state) or state.has(itemName.GGRAB, self.player))
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.BDRILL, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.BDRILL, self.player)
+        return logic
+    
+    def treble_hfp(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+        elif self.world.options.logic_type == 1: # normal
+            logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or state.has(itemName.SPLITUP, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or state.has(itemName.SPLITUP, self.player)
+        return logic
+
 
     def check_mumbo_magic(self, state: CollectionState, name) -> bool:
         for item_name in self.mumbo_magic:
