@@ -898,7 +898,8 @@ class BanjoTooieRules:
             logic = state.has(itemName.GEGGS, self.player) and self.WW_train_station(state) and \
                     self.CT_train_station(state) and state.has(itemName.TRAINSWTD, self.player) and \
                     self.check_solo_moves(state, itemName.TAXPACK) and self.check_mumbo_magic(state, itemName.MUMBOIH) and \
-                    state.has(itemName.BDRILL, self.player) and self.check_mumbo_magic(state, itemName.MUMBOTD)
+                    state.has(itemName.BDRILL, self.player) and self.check_mumbo_magic(state, itemName.MUMBOTD) and \
+                    state.has(itemName.EGGAIM, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.GEGGS, self.player) and self.WW_train_station(state) and \
                     self.CT_train_station(state) and state.has(itemName.TRAINSWTD, self.player) and \

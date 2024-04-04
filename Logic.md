@@ -1,4 +1,4 @@
-# Current Logic Implementation | v0.9.0-Beta
+# Current Logic Implementation | v1.0.0-Beta
 
 We currently have 3 logics put in place. None of them require glitches.
 
@@ -56,7 +56,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |UFO |Oxygenate, Talon Torpedo, Egg Aim, Ice Eggs|Talon Torpedo, Egg Aim, Ice Eggs|Talon Torpedo, Ice Eggs
 |Under Terry's Nest |Springy Step Shoes, (Grenade Eggs or Bill Drill), Egg Aim|Springy Step Shoes, (Grenade Eggs or Clockwork Eggs or Bill Drill), Egg Aim|Springy Step Shoes, (Grenade Eggs or Clockwork Eggs or Bill Drill)
 |Dippy |CCL access, Talon Torpedo|CCL access, Talon Torpedo|CCL access, Talon Torpedo
-|Scrotty|WW Train Switch, TDL Train Switch, IoH Train Switch, Enlarge, Heal, Chuffy, Grenade Eggs, Split Up, Taxi Pack, Bill Drill|WW Train Switch, TDL Train Switch, IoH Train Switch, Enlarge, Heal, Chuffy, Grenade Eggs, Split Up, Taxi Pack, Bill Drill|WW Train Switch, TDL Train Switch, IoH Train Switch, Enlarge, Heal, Chuffy, Grenade Eggs, Split Up, Taxi Pack, Bill Drill
+|Scrotty|WW Train Switch, TDL Train Switch, IoH Train Switch, Enlarge, Heal, Chuffy, Grenade Eggs, Split Up, Taxi Pack, Bill Drill, Egg Aim|WW Train Switch, TDL Train Switch, IoH Train Switch, Enlarge, Heal, Chuffy, Grenade Eggs, Split Up, Taxi Pack, Bill Drill|WW Train Switch, TDL Train Switch, IoH Train Switch, Enlarge, Heal, Chuffy, Grenade Eggs, Split Up, Taxi Pack, Bill Drill
 |Terry |Springy Step Shoes, Egg Aim|Springy Step Shoes, Egg Aim|Springy Step Shoes
 |Oogle Boogle Tribe |Enlarge, T-Rex, Grip Grab, Fire Eggs, Claw Clamber Boots, Bill Drill|Enlarge, T-Rex, Grip Grab, (Fire Eggs or Dragon), Claw Clamber Boots, Bill Drill|Enlarge, T-Rex, Grip Grab, (Fire Eggs or Dragon), Bill Drill|
 |Chompas Belly|Breegull Blaster|Breegull Blaster|Breegull Blaster
@@ -119,7 +119,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Seaweed Sanctum|Deep JRL Access, Grip Grab|Deep JRL Access|Deep JRL Access|
 |Sunken Ship|Deep JRL Access|Deep JRL Access|Sub, Sub-Aqua Egg Aiming or Talon Torpedo|
 |TDL: Underwater|Talon Torpedo|Talon Torpedo|Talon Torpedo|
-|TDL: Entrance|Grenade Eggs, Egg Aim|Grenade Eggs|Grenade Eggs|
+|TDL: Entrance|Grenade Eggs, Egg Aim, Spring Shoes|Grenade Eggs|Grenade Eggs|
 |Beside Rocknut|Clockwork Kazooie Eggs|Clockwork Kazooie Eggs|Clockwork Kazooie Eggs|
 |Big T-Rex|T-Rex, Enlarge|T-Rex, Enlarge|T-Rex, Enlarge|
 |Stomping Plains|Springy Step Shoes, Ice Eggs, Split Up|Springy Step Shoes, Ice Eggs or (Wing Whack or Glide), Split Up|Springy Step Shoes, Split Up|
@@ -189,7 +189,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Ancient Swimming Baths|Deep JRL Access, Talon Torpedo, Split Up, Glide|Deep JRL Access, Talon Torpedo, Split Up, (Pack Whack and Grip Grab) or Wing Whack or Leg Spring or Glide|Deep JRL Access, Talon Torpedo, Split Up, (Pack Whack and Grip Grab) or Wing Whack or Leg Spring or Glide
 |Dippy's Pool|CCL access, Talon Torpedo, Springy Step Shoes|CCL access, Talon Torpedo, Springy Step Shoes|CCL access, Talon Torpedo, Springy Step Shoes
 |Inside the Mountain|T-Rex|T-Rex|T-Rex
-|TDL Boulder|Bill Drill, Grip Grab|Bill Drill, Grip Grab|Bill Drill, Grip Grab
+|TDL Boulder|Bill Drill, Grip Grab|Bill Drill, (Grip Grab or Beat Terry)|Bill Drill, (Grip Grab or Beat Terry)
 |Loggo|Inside GI access, Grenades|Inside GI access, Grenades or (Clockworks, Bill Drill)|Inside GI access, Grenades or (Clockworks, Bill Drill)
 |Floor 2 Window|Floor 3+ access|Floor 2+ access|Floor 2+ access
 |Weldar|Floor 3+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack|Floor 2+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack|Floor 2+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack
