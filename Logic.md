@@ -116,7 +116,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Lagoon Alcove|28 Doubloons|<N/A>|<N/A>|
 |Blubber|<N/A>|<N/A>|<N/A>|
 |Big Fish|Deep JRL Access|Deep JRL Access|Deep JRL Access, (Grenades or Sub-Aqua Egg Aim)|
-|Seeweed Sanctum|Deep JRL Access|Deep JRL Access|Deep JRL Access|
+|Seaweed Sanctum|Deep JRL Access, Grip Grab|Deep JRL Access|Deep JRL Access|
 |Sunken Ship|Deep JRL Access|Deep JRL Access|Sub, Sub-Aqua Egg Aiming or Talon Torpedo|
 |TDL: Underwater|Talon Torpedo|Talon Torpedo|Talon Torpedo|
 |TDL: Entrance|Grenade Eggs, Egg Aim|Grenade Eggs|Grenade Eggs|
@@ -132,7 +132,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Hot Pool|Split Up, Shack Pack|Split Up, Shack Pack|Split Up, Shack Pack|
 |Windy Hole|Snowball|Snowball|Snowball|
 |Icicle Grotto|Split Up, Glide|Split Up, ((Leg Spring and Wing Whack) or Glide)|Split Up, Glide|Split Up, ((Leg Spring and Wing Whack) or Glide)|
-|Mildred|Grenade Eggs or Bill Drill|Life Force or Grenade Eggs or Clockwork Eggs or Bill Drill|Life Force or Grenade Eggs or Clockwork Eggs or Bill Drill|
+|Mildred|Grenade Eggs or Bill Drill or Fire Eggs|Life Force or Grenade Eggs or Clockwork Eggs or Bill Drill or Fire Eggs|Life Force or Grenade Eggs or Clockwork Eggs or Bill Drill or Fire Eggs|
 |Trash Can|Split Up, Shack Pack|Split Up, (Leg Spring or Shack Pack)|Split Up, (Leg Spring or Shack Pack)|
 |Cheese Wedge|Rain Dance, Bill Drill, Split Up, Hatch, Taxi Pack, Sack Pack|<N/A>|<N/A>|
 |Central Cavern|Split Up|Split Up|Split Up|
