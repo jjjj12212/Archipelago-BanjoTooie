@@ -125,7 +125,7 @@ class BanjoTooieRules:
             itemName.RJINJO,
             itemName.BLJINJO,
             itemName.PJINJO,
-            itemName.BLJINJO,
+            itemName.BKJINJO,
         ]
 
         self.region_rules = {
@@ -417,10 +417,10 @@ class BanjoTooieRules:
             locationName.JINJOGM4: lambda state: self.GM_boulders(state),
 
             locationName.JINJOWW3: lambda state: self.jinjo_vandoor(state),
-            locationName.JINJOWW5: lambda state: state.has(itemName.GGRAB, self.player),
+            locationName.JINJOWW5: lambda state: self.jinjo_cactus(state),
             locationName.JINJOWW2: lambda state: self.jinjo_caveofhorror(state),
 
-            locationName.JINJOJR1: lambda state: state.has(itemName.DOUBLOON, self.player, 28),
+            locationName.JINJOJR1: lambda state: self.jinjo_alcove(state),
             locationName.JINJOJR5: lambda state: self.jinjo_sunkenship(state),
             locationName.JINJOJR4: lambda state: self.jinjo_seaweedsanctum(state),
             locationName.JINJOJR3: lambda state: self.jinjo_bigfish(state),
@@ -1548,6 +1548,16 @@ class BanjoTooieRules:
             logic = state.has(itemName.GEGGS, self.player)
         return logic
     
+    def jinjo_cactus(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
     def jinjo_vandoor(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -1561,6 +1571,17 @@ class BanjoTooieRules:
                     self.check_humba_magic(state, itemName.HUMBAWW)
         return logic
     
+    def jinjo_alcove(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.DOUBLOON, self.player, 28)
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+
     def jinjo_bigfish(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
