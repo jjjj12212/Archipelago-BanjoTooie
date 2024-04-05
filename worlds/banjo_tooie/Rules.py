@@ -837,11 +837,11 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.can_reach_atlantis(state) and state.has(itemName.GEGGS, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.can_reach_atlantis(state)
+            logic = self.can_reach_atlantis(state) and state.has(itemName.GEGGS, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (((state.has(itemName.TTORP, self.player) and state.has(itemName.BDRILL, self.player)) or \
-                     self.check_mumbo_magic(state, itemName.MUMBOJR)) and state.has(itemName.AUQAIM, self.player) and \
-                     state.has(itemName.GEGGS, self.player)) or self.check_humba_magic(state, itemName.HUMBAJR)
+            logic = ((((state.has(itemName.TTORP, self.player) and state.has(itemName.BDRILL, self.player)) or \
+                     self.check_mumbo_magic(state, itemName.MUMBOJR)) and state.has(itemName.AUQAIM, self.player)) or \
+                    self.check_humba_magic(state, itemName.HUMBAJR)) and state.has(itemName.GEGGS, self.player)
         return logic
     
     def jiggy_see_mee(self, state: CollectionState) -> bool:
@@ -2034,6 +2034,44 @@ class BanjoTooieRules:
             logic = state.has(itemName.JIGGY, self.player, 28) and self.can_access_quagmire(state, fromTrain)
         return logic
     
+    def can_access_gi_outside_from_inside(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.has_train_access(state, "GI") and state.has(itemName.SPLITUP, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_leave_GI_from_inside(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.can_leave_GI_from_inside(state)
+        return logic
+    
+    def can_access_gi_fl1_2fl2(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.CLAWBTS, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.CLAWBTS, self.player) or self.check_solo_moves(state, itemName.LSPRING) and \
+                    self.check_solo_moves(state, itemName.GLIDE) and (self.check_solo_moves(state, itemName.WWHACK) or \
+                    state.has(itemName.EGGAIM, self.player))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.CLAWBTS, self.player) or self.check_solo_moves(state, itemName.LSPRING) and \
+                    self.check_solo_moves(state, itemName.GLIDE) and (self.check_solo_moves(state, itemName.WWHACK) or \
+                    state.has(itemName.EGGAIM, self.player))
+        return logic
+    
+    #TODO check
+    def can_access_gi_fl2_2fl3all(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player) and state.has(itemName.CLAWBTS, self.player) or \
+                    self.check_solo_moves(state, itemName.LSPRING)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GGRAB, self.player) and state.has(itemName.CLAWBTS, self.player) or \
+                    self.check_solo_moves(state, itemName.LSPRING)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.GGRAB, self.player) and state.has(itemName.CLAWBTS, self.player) or \
+                    self.check_solo_moves(state, itemName.LSPRING)
+        return logic
+    
     def can_access_hailfire(self, state: CollectionState, fromTrain) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -2104,7 +2142,7 @@ class BanjoTooieRules:
                 return True
             if (self.can_access_clifftop(state, True) and self.CT_train_station(state)) and self.HFPF_train_station(state):
                 return True
-            if (self.TDL_train_station(state) and self.can_access_tdl(state)) and self.HFPF_train_station(state):
+            if (self.TDL_train_station(state) and self.can_access_tdl(state, True)) and self.HFPF_train_station(state):
                 return True
             if (self.can_beat_king_coal(state) and self.can_access_GM(state)) and self.HFPF_train_station(state):
                 return True
