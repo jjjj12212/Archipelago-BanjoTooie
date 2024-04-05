@@ -227,29 +227,13 @@ class BanjoTooieRules:
             locationName.JIGGYGI3: lambda state: self.check_mumbo_magic(state, itemName.MUMBOGI) and
                                                  state.has(itemName.CLAWBTS, self.player) and
                                                  state.has(itemName.BBLASTER, self.player),
-            locationName.JIGGYGI4: lambda state: self.check_humba_magic(state, itemName.HUMBAGI) and
-                                                 self.can_reach_GI_2F(state) and
-                                                 state.has(itemName.BDRILL, self.player),
-            locationName.JIGGYGI5: lambda state: self.can_reach_GI_2F(state) and state.has(itemName.SPLITUP, self.player),
-            locationName.JIGGYGI6: lambda state: self.check_mumbo_magic(state, itemName.MUMBOGI) and
-                                                 self.can_reach_GI_2F(state) and
-                                                 (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) and
-                                                 state.has(itemName.EGGAIM, self.player) and
-                                                 self.can_use_battery(state) and
-                                                 (self.check_humba_magic(state, itemName.HUMBAGI) or
-                                                  self.check_solo_moves(state, itemName.LSPRING)),
-            locationName.JIGGYGI7: lambda state: (state.has(itemName.CLAWBTS, self.player) and state.has(itemName.SPLITUP, self.player)) or \
-                                                  (self.GI_front_door(state) and
-                                                    self.check_solo_moves(state, itemName.LSPRING) and
-                                                    self.check_solo_moves(state, itemName.GLIDE) and
-                                                    (self.check_solo_moves(state, itemName.WWHACK) or
-                                                    state.has(itemName.EGGAIM, self.player))),
-            locationName.JIGGYGI8: lambda state: self.enter_GI(state) and
-                                                 self.check_solo_moves(state, itemName.SNPACK),
-            locationName.JIGGYGI9: lambda state: self.can_reach_GI_2F(state) and
-                                                 self.can_use_battery(state),
-            locationName.JIGGYGI10: lambda state: self.can_use_battery(state) and
-                                                  self.GI_front_door(state),
+            locationName.JIGGYGI4: lambda state: self.jiggy_skivvy(state),
+            locationName.JIGGYGI5: lambda state: state.has(itemName.SPLITUP, self.player),
+            locationName.JIGGYGI6: lambda state: self.jiggy_qa(state),
+            locationName.JIGGYGI7: lambda state: state.has(itemName.SPLITUP, self.player),
+            locationName.JIGGYGI8: lambda state: self.jiggy_compactor(state),
+            locationName.JIGGYGI9: lambda state: self.jiggy_twinkly(state),
+            locationName.JIGGYGI10: lambda state: self.jiggy_plantbox(state),
 
             #Hailfire Peaks Jiggies
             locationName.JIGGYHP1:  lambda state: self.jiggy_dragons_bros(state),
@@ -306,7 +290,6 @@ class BanjoTooieRules:
             locationName.CHEATOTL3: lambda state: self.cheato_tdlboulder(state),
 
             locationName.CHEATOGI1: lambda state: self.cheato_loggo(state),
-            locationName.CHEATOGI2: lambda state: self.can_reach_GI_2F(state),
             locationName.CHEATOGI3: lambda state: self.can_beat_weldar(state),
 
             locationName.CHEATOHP1: lambda state: self.cheato_colosseum(state),
@@ -335,10 +318,8 @@ class BanjoTooieRules:
                                                 
             locationName.HONEYCTL2: lambda state: self.honeycomb_styracosaurus(state),
 
-            locationName.HONEYCGI1: lambda state: self.can_reach_GI_2F(state) and
-                                                  (state.has(itemName.GGRAB, self.player) or state.has(itemName.SPLITUP, self.player)),
-            locationName.HONEYCGI2: lambda state: self.enter_GI(state) and (state.has(itemName.GGRAB, self.player) or state.has(itemName.SPLITUP, self.player)),
-            locationName.HONEYCGI3: lambda state: self.can_reach_GI_2F(state),
+            locationName.HONEYCGI1: lambda state: self.honeycomb_floor3(state),
+            locationName.HONEYCGI2: lambda state: self.honeycomb_station(state),
 
             locationName.HONEYCHP1: lambda state: self.honeycomb_volcano(state),
             locationName.HONEYCHP2: lambda state: self.honeycomb_station(state),
@@ -353,9 +334,9 @@ class BanjoTooieRules:
             locationName.GLOWBOWW2: lambda state: self.glowbo_wigwam(state),
 
             locationName.GLOWBOJR2: lambda state: self.glowbo_underwigwam(state),
-            locationName.GLOWBOGI1: lambda state: self.can_reach_GI_2F(state),
-            locationName.GLOWBOGI2: lambda state: self.can_reach_GI_2F(state),
+
             locationName.GLOWBOCC2: lambda state: self.glowbo_cavern(state),
+
             locationName.GLOWBOMEG: lambda state: state.has(itemName.GGRAB, self.player) and state.has(itemName.TTORP, self.player)
 
         }
@@ -374,9 +355,8 @@ class BanjoTooieRules:
             locationName.TREBLEWW:  lambda state: self.treble_ww(state),
             locationName.TREBLEJR:  lambda state: self.treble_jrl(state),
             locationName.TREBLETL:  lambda state: self.treble_tdl(state),
-            locationName.TREBLEGI:  lambda state: self.can_reach_GI_2F(state),
+            locationName.TREBLEGI:  lambda state: self.treble_gi(state),
             locationName.TREBLEHP:  lambda state: self.treble_hfp(state),
-            
         }
 
         self.silo_rules = {
@@ -451,12 +431,9 @@ class BanjoTooieRules:
             locationName.JINJOTL4: lambda state: self.check_mumbo_magic(state, itemName.MUMBOTD) and self.check_humba_magic(state, itemName.HUMBATD),
             locationName.JINJOTL5: lambda state: self.jinjo_stompingplains(state),
 
-            locationName.JINJOGI1: lambda state: self.can_reach_GI_2F(state),
-            locationName.JINJOGI2: lambda state: self.can_reach_GI_2F(state) and state.has(itemName.LSPRING, self.player),
-            locationName.JINJOGI3: lambda state: state.has(itemName.TTORP, self.player) and state.has(itemName.AUQAIM, self.player) and
-                                                 state.has(itemName.IEGGS, self.player),
-            locationName.JINJOGI4: lambda state: self.can_reach_GI_2F(state),
-            locationName.JINJOGI5: lambda state: self.can_reach_GI_2F(state) and state.has(itemName.SPLITUP, self.player),
+            locationName.JINJOGI2: lambda state: state.has(itemName.LSPRING, self.player),
+            locationName.JINJOGI3: lambda state: self.jinjo_wasteplant(state),
+            locationName.JINJOGI5: lambda state: state.has(itemName.SPLITUP, self.player),
 
             locationName.JINJOHP2: lambda state: self.check_solo_moves(state, itemName.SHPACK),
             locationName.JINJOHP3: lambda state: self.check_humba_magic(state, itemName.HUMBAHP),
@@ -959,6 +936,62 @@ class BanjoTooieRules:
             logic = state.has(itemName.CEGGS, self.player)
         return logic
     
+    def jiggy_skivvy(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_humba_magic(state, itemName.HUMBAGI) and state.has(itemName.BDRILL, self.player) and \
+                    state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_humba_magic(state, itemName.HUMBAGI) and state.has(itemName.BDRILL, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_humba_magic(state, itemName.HUMBAGI) and state.has(itemName.BDRILL, self.player)
+        return logic
+
+    def jiggy_qa(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_mumbo_magic(state, itemName.MUMBOGI) and state.has(itemName.GEGGS, self.player) and \
+                    state.has(itemName.EGGAIM, self.player) and \
+                    self.can_use_battery(state) and self.check_humba_magic(state, itemName.HUMBAGI)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_mumbo_magic(state, itemName.MUMBOGI) and state.has(itemName.GEGGS, self.player) and \
+                    ((state.has(itemName.EGGAIM, self.player) and (self.check_humba_magic(state, itemName.HUMBAGI)) or \
+                    self.check_solo_moves(state, itemName.LSPRING))) and self.can_use_battery(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_mumbo_magic(state, itemName.MUMBOGI) and state.has(itemName.GEGGS, self.player) and \
+                    self.can_use_battery(state)
+        return logic
+    
+    def jiggy_compactor(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_solo_moves(state, itemName.SNPACK)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_solo_moves(state, itemName.SNPACK) or self.check_solo_moves(state, itemName.PACKWH)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_solo_moves(state, itemName.SNPACK) or self.check_solo_moves(state, itemName.PACKWH)
+        return logic
+    
+    def jiggy_twinkly(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_use_battery(state) and state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_use_battery(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.can_use_battery(state)
+        return logic
+    
+    def jiggy_plantbox(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_use_battery(state) and self.check_solo_moves(state, itemName.SAPACK)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_use_battery(state) 
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.can_use_battery(state)
+        return logic
+
     def jiggy_dragons_bros(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -1229,6 +1262,26 @@ class BanjoTooieRules:
                     (self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.GLIDE))
         return logic
     
+    def honeycomb_floor3(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic =  (state.has(itemName.GGRAB, self.player) or state.has(itemName.SPLITUP, self.player))
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def honeycomb_station(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+
     def honeycomb_volcano(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -1378,13 +1431,13 @@ class BanjoTooieRules:
     def cheato_loggo(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)
+            logic = state.has(itemName.GEGGS, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = (state.has(itemName.GEGGS, self.player) or (state.has(itemName.CEGGS, self.player) and \
-                     state.has(itemName.BDRILL, self.player))) and self.enter_GI(state)
+            logic = state.has(itemName.GEGGS, self.player) or (state.has(itemName.CEGGS, self.player) and \
+                     state.has(itemName.BDRILL, self.player))
         elif self.world.options.logic_type == 2: # advanced
-            logic = (state.has(itemName.GEGGS, self.player) or (state.has(itemName.CEGGS, self.player) and \
-                     state.has(itemName.BDRILL, self.player))) and self.enter_GI(state)
+            logic = state.has(itemName.GEGGS, self.player) or (state.has(itemName.CEGGS, self.player) and \
+                     state.has(itemName.BDRILL, self.player))
         return logic
     
     def cheato_colosseum(self, state: CollectionState) -> bool:
@@ -1559,6 +1612,17 @@ class BanjoTooieRules:
             logic = self.jiggy_stomping_plains(state)
         return logic
     
+    def jinjo_wasteplant(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.IEGGS, self.player) and state.has(itemName.AUQAIM, self.player) and \
+                    state.has(itemName.TTORP, self.player)
+        return logic
+
     def jinjo_icegrotto(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -1640,6 +1704,16 @@ class BanjoTooieRules:
             logic = state.has(itemName.BDRILL, self.player)
         return logic
     
+    def treble_gi(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.SPLITUP, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+
     def treble_hfp(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -1850,7 +1924,6 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             return state.has(itemName.SPRINGB, self.player)
         
-
     def smuggle_food(self, state: CollectionState) -> bool:
         return state.has(itemName.CLAWBTS, self.player)
 
@@ -1872,13 +1945,9 @@ class BanjoTooieRules:
                 state.has(itemName.EGGAIM, self.player)))
 
     def can_beat_weldar(self, state: CollectionState) -> bool:
-        return self.enter_GI(state) and \
-               self.can_use_battery(state) and \
-               self.check_mumbo_magic(state, itemName.MUMBOGI) and \
-               self.can_reach_GI_2F(state) and \
-               self.check_humba_magic(state, itemName.HUMBAGI) and \
-                state.has(itemName.GEGGS, self.player) and \
-                state.has(itemName.BDRILL, self.player)
+        return self.can_use_battery(state) and self.check_mumbo_magic(state, itemName.MUMBOGI) and \
+               self.check_humba_magic(state, itemName.HUMBAGI) and state.has(itemName.GEGGS, self.player) and \
+               state.has(itemName.BDRILL, self.player)
 
     def can_use_battery(self, state: CollectionState) -> bool:
         return self.check_solo_moves(state, itemName.PACKWH) and self.check_solo_moves(state, itemName.TAXPACK)
@@ -2024,7 +2093,7 @@ class BanjoTooieRules:
                         self.can_leave_GI_from_inside(state)
         return logic
     
-    def can_access_gruntyindustries_outside(self, state: CollectionState, fromTrain) -> bool:
+    def can_access_gruntyindustries_outside(self, state: CollectionState, fromTrain: bool) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.JIGGY, self.player, 28) and self.can_access_quagmire(state, False)
@@ -2062,14 +2131,12 @@ class BanjoTooieRules:
     def can_access_gi_fl2_2fl3all(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.GGRAB, self.player) and state.has(itemName.CLAWBTS, self.player) or \
-                    self.check_solo_moves(state, itemName.LSPRING)
+            logic = (state.has(itemName.GGRAB, self.player) or self.check_humba_magic(state, itemName.HUMBAGI)) and \
+                    state.has(itemName.CLAWBTS, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.GGRAB, self.player) and state.has(itemName.CLAWBTS, self.player) or \
-                    self.check_solo_moves(state, itemName.LSPRING)
+            logic = self.check_humba_magic(state, itemName.HUMBAGI) and state.has(itemName.CLAWBTS, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.GGRAB, self.player) and state.has(itemName.CLAWBTS, self.player) or \
-                    self.check_solo_moves(state, itemName.LSPRING)
+            logic = self.check_humba_magic(state, itemName.HUMBAGI) and state.has(itemName.CLAWBTS, self.player)
         return logic
     
     def can_access_hailfire(self, state: CollectionState, fromTrain) -> bool:
@@ -2128,6 +2195,9 @@ class BanjoTooieRules:
                 return True
             if (self.can_beat_king_coal(state) and self.can_access_GM(state)) and self.WW_train_station(state):
                 return True
+            if (self.can_access_gruntyindustries_outside(state, True) and self.GI_train_station(state)) and \
+                (state.has(itemName.CLAWBTS, self.player)) and self.WW_train_station(state):
+                return True
         if station == "TDL":
             if(self.WW_train_station(state) and self.can_access_witchyworld(state, True)) and self.TDL_train_station(state):
                 return True
@@ -2136,6 +2206,9 @@ class BanjoTooieRules:
             if (self.can_access_hailfire(state, True) and self.HFPF_train_station(state)) and self.TDL_train_station(state):
                 return True
             if (self.can_beat_king_coal(state) and self.can_access_GM(state)) and self.TDL_train_station(state):
+                return True
+            if (self.can_access_gruntyindustries_outside(state, True) and self.GI_train_station(state)) and \
+                (state.has(itemName.CLAWBTS, self.player)) and self.WW_train_station(state):
                 return True
         if station == "HFP":
             if(self.WW_train_station(state) and self.can_access_witchyworld(state, True)) and self.HFPF_train_station(state):

@@ -251,12 +251,12 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOGI1,
         locationName.SNPACK,
         locationName.CLAWBTS,
-        
     ],
     regionName.GI2: [
         locationName.GLOWBOGI1,
         locationName.LSPRING,
         locationName.JIGGYGI7,
+        locationName.TREBLEGI,
     ],
     regionName.GI3ALL: [
         locationName.JINJOGI1,
@@ -275,8 +275,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GLOWBOGI2,
         locationName.CHEATOGI2,
         locationName.CHEATOGI3,
-        locationName.TREBLEGI,
-
+        
     ],
     regionName.GIS: [
         locationName.HONEYCGI2,
