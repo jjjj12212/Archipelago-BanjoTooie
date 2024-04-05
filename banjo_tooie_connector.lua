@@ -61,7 +61,6 @@ local ENABLE_AP_DOUBLOONS = false;
 local ENABLE_AP_TREBLE = false;
 local ENABLE_AP_STATIONS = false;
 local ENABLE_AP_CHUFFY = false;
-local ENABLE_AP_JINJO = false;
 local AP_MESSAGES = {};
 
 local GAME_LOADED = false;
@@ -71,7 +70,7 @@ local WATCH_LOADED_SILOS = false; -- Silo found on Map, Need to Monitor Distance
 local LOAD_BMK_MOVES = false; -- If close to Silo
 local SILOS_LOADED = false; -- Handles if learned a move at Silo
 local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
--- local DOUBLOON_SILO_MOVE = false; -- Move Doubloons away from Silo in JRL
+local DOUBLOON_SILO_MOVE = false; -- Move Doubloons away from Silo in JRL
 
 local TOT_SET_COMPLETE = false;
 
@@ -89,6 +88,10 @@ local OPEN_HAG1 = false;
 local CHECK_FOR_STATIONBTN = false;
 local STATION_BTN_TIMER = 0;
 local WATCH_LOADED_STATIONBTN = false;
+
+-------------- JINJO VARS -----------
+local CHECK_FOR_JINJO = false;
+local JINJO_TIMER = 0;
 
 -------------- CHUFFY VARS ------------
 DEAD_COAL_CHECK = 0;
@@ -149,10 +152,6 @@ function BTConsumable:new(BTRAM, itemName)
 end
 
 function BTConsumable:setConsumable(value)
-    if DEBUG == true
-    then
-        print("Setting Consumable value to :" .. tostring(value))
-    end
     local addr = self.banjoRAM:dereferencePointer(self.CONSUME_PTR);
     mainmemory.write_u16_be(addr + self.consumeIndex * 2, value ~ self.consumeKey);
     mainmemory.write_u16_be(self.CONSUME_IDX + self.consumeIndex * 0x0C, value);
@@ -205,7 +204,8 @@ BTRAM = {
     current_state = 0x4,
     map_dest = 0x045702,
     character_state = 0x136F63,
-}
+} 
+
 
 function BTRAM:new(t)
     t = t or {}
@@ -358,7 +358,12 @@ BTModel = {
         ["Levitate Pad"] = 0x7D8,
         ["Jiggy"] = 0x610,
         ["Breakable Door"] = 0x651,
-        ["Sign Post"] = 0x7A2
+        ["Sign Post"] = 0x7A2,
+        ["Loggo"] = 0x63E,
+        ["Mary"] = 0x67B,
+        ["Rare"] = 0x632,
+        ["Cheato"] = 0x787,
+        ["N64"] = 0x631,
     };
     model_enemy_list = {
         ["Ugger"] = 0x671,
@@ -412,7 +417,6 @@ function BTModel:getModelPointers()
     do
         table.insert(modelTable, objectArray + self:getModelSlotBase(i));
 	end
-
     return modelTable
 end
 
@@ -431,7 +435,6 @@ function BTModel:setObjectAnimation(animation2Bytes)
     local defref = self.banjoRAM:dereferencePointer(self.banjoRAM.animationPointer)
     if defref ~= nil
     then
-        print("writing to Mem")
         print(defref + 0x38 + (0x3C * self.animationPointer))
         mainmemory.write_u16_be(defref + 0x38 + (0x3C * self.animationPointer), animation2Bytes)
         return true;
@@ -447,6 +450,22 @@ function BTModel:getAnimationType(modelPtr)
     end
     self.singleModelIndex = mainmemory.read_u16_be(objectIDPointer + 0x14);
     return self.singleModelIndex;
+end
+
+function BTModel:setAnimationType(modelPtr, name)
+    if self.model_list[name] == nil
+    then
+        print(name .. " Object not found!")
+        return
+    end
+    local objaddr = self.model_list[name];
+	local objectIDPointer = self.banjoRAM:dereferencePointer(modelPtr + 0x0);
+    if objectIDPointer == nil
+    then
+        return nil
+    end
+    mainmemory.write_u16_be(objectIDPointer + 0x14, objaddr);
+    return 
 end
 
 function BTModel:checkModel()
@@ -481,6 +500,32 @@ function BTModel:checkModel()
         end
     end
     return false;
+end
+
+function BTModel:setModelTypes(name)
+    if self.model_list[name] == nil
+    then
+        print(name .. " Object not found!")
+        return
+    end
+    local objaddr = self.model_list[name];
+    local pointer_list = self:getModelPointers()
+    if pointer_list == nil
+    then
+        return
+    end
+
+    for k, modelptr in pairs(pointer_list)
+    do
+        local ObjectAddr = self:getAnimationType(modelptr); -- Required for special data
+        if ObjectAddr ~= nil
+        then
+            if ObjectAddr == self.model_list[self.model_name]
+            then
+                BTModel:setAnimationType(modelptr, name)
+            end
+        end
+    end
 end
 
 function BTModel:getModels() -- returns list
@@ -672,6 +717,7 @@ function nearWHJinjo()
 end
 
 
+
 -- Moves that needs to be checked Per Map. some silos NEEDS other moves as well to get to.
 local ASSET_MAP_CHECK = {
     ["SILO"] = {
@@ -831,73 +877,6 @@ local ASSET_MAP_CHECK = {
     }
 }
 
--- Pattern 1 Map
-local JINJO_PATTER_MAP = {
-    ["1230501"] = {
-        ["0"] = "1230570"
-    },
-    ["1230502"] = {
-        ["0"] = "1230564",
-        ["1"] = "1230582"
-    },
-    ["1230503"] = {
-        ["0"] = "1230563",
-        ["1"] =  "1230584",
-        ["2"] = "1230583"
-    },
-    ["1230504"] = {
-        ["0"] = "1230556",
-        ["1"] =  "1230567",
-        ["2"] = "1230572",
-        ["3"] = "1230575"
-    },
-    ["1230505"] = {
-        ["0"] = "1230565",
-        ["1"] = "1230566",
-        ["2"] =  "1230574",
-        ["3"] = "1230577",
-        ["4"] = "1230581",
-    },
-    ["1230506"] = {
-        ["0"] = "1230552",
-        ["1"] = "1230553",
-        ["2"] = "1230555",
-        ["3"] = "1230568",
-        ["4"] = "1230569",
-        ["5"] = "1230562",
-    },
-    ["1230507"] = {
-        ["0"] = "1230558",
-        ["1"] = "1230571",
-        ["2"] = "1230585",
-        ["3"] = "1230587",
-        ["4"] = "1230591",
-        ["5"] = "1230594",
-        ["6"] = "1230595"
-    },
-    ["1230508"] = {
-        ["0"] = "1230551",
-        ["1"] = "1230560",
-        ["2"] = "1230578",
-        ["3"] = "1230586",
-        ["4"] = "1230588",
-        ["5"] = "1230590",
-        ["6"] = "1230592",
-        ["7"] = "1230593",
-    },
-    ["1230509"] = {
-        ["0"] = "1230554",
-        ["1"] = "1230557",
-        ["2"] = "1230559",
-        ["3"] = "1230561",
-        ["4"] = "1230573",
-        ["5"] = "1230576",
-        ["6"] = "1230580",
-        ["7"] = "1230589",
-        ["8"] = "1230579",
-    },
-}
-
 -- BMM - Backup Memory Map 
 local BMM =  {};
 
@@ -910,23 +889,12 @@ local AGI_MOVES = {};
 local AGI_NOTES = {};
 local AGI_STATIONS = {};
 local AGI_CHUFFY = {};
-local AGI_JINJOS = {
-    ["1230501"] = 0, -- white
-    ["1230502"] = 0, -- oragne
-    ["1230503"] = 0, -- yellow
-    ["1230504"] = 0, -- brown
-    ["1230505"] = 0, -- green
-    ["1230506"] = 0, -- red
-    ["1230507"] = 0, -- blue
-    ["1230508"] = 0, -- purple
-    ["1230509"] = 0, -- black
-};
+
 
 local BKM = {}; -- Banjo Tooie Movelist Table
 local BKNOTES = {}; -- Notes
 local BKSTATIONS = {} -- Stations
 local BKCHUFFY = {} -- King Coal Progress Flag
-local BKJINJOFAM = {} -- Jinjo Family check 
 
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
@@ -1384,231 +1352,231 @@ local AGI_MASTER_MAP = {
         },
     },
     ['JINJO'] = {
-        ["1230591"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 4,
-            ['name'] = 'IoH:Wooded Hollow Jinjo'
-        },
-        ["1230595"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 0,
-            ['name'] = 'SM: Jinjo'
-        },
-        ["1230594"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 7,
-            ['name'] = 'IoH: Plateau Jinjo'
-        },
-        ["1230551"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 4,
-            ['name'] = 'MT: Jade Snake Grove Jinjo'
-        },
-        ["1230552"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 5,
-            ['name'] = 'MT: Stadium Jinjo'
-        },
-        ["1230553"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 6,
-            ['name'] = 'Mayahem Temple: Targitzan Temple Jinjo'
-        },
-        ["1230554"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 7,
-            ['name'] = 'MT: Water Pool Jinjo'
-        },
-        ["1230555"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 0,
-            ['name'] = 'MT: Bridge Jinjo'
-        },
-        ["1230556"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 1,
-            ['name'] = 'GGM: Water Storage Jinjo'
-        },
-        ["1230557"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 2,
-            ['name'] = 'GGM: Jail Jinjo'
-        },
-        ["1230558"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 3,
-            ['name'] = 'GGM: Toxic Gas Cave Jinjo'
-        },
-        ["1230559"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 4,
-            ['name'] = 'GGM: Boulder Jinjo'
-        },
-        ["1230560"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 5,
-            ['name'] = 'GGM: Mine Tracks Jinjo'
-        },
-        ["1230561"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 6,
-            ['name'] = 'WW: Big Top Jinjo'
-        },
-        ["1230562"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 7,
-            ['name'] = 'WW: Cave of Horrors Jinjo'
-        },
-        ["1230563"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 0,
-            ['name'] = 'WW: Van Door Jinjo'
-        },
-        ["1230564"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 1,
-            ['name'] = 'WW: Dodgem Dome Jinjo'
-        },
-        ["1230565"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 2,
-            ['name'] = 'WW: Cactus of Strength Jinjo'
-        },
-        ["1230593"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 6,
-            ['name'] = 'IoH: Clifftop Jinjo'
-        },
-        ["1230566"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 3,
-            ['name'] = 'JRL: Lagoon Alcove Jinjo'
-        },
-        ["1230567"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 4,
-            ['name'] = 'JRL: Blubber Jinjo'
-        },
-        ["1230568"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 5,
-            ['name'] = 'JRL: Big Fish Jinjo'
-        },
-        ["1230569"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 6,
-            ['name'] = 'JRL: Seaweed Sanctum Jinjo'
-        },
-        ["1230570"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 7,
-            ['name'] = 'JRL: Sunken Ship Jinjo'
-        },
-        ["1230592"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 5,
-            ['name'] = 'IoH: Wasteland Jinjo'
-        },
-        ["1230571"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 0,
-            ['name'] = 'TDL: Talon Torp Jinjo'
-        },
-        ["1230572"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 1,
-            ['name'] = 'TDL: Cutscene Skip Jinjo'
-        },
-        ["1230573"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 2,
-            ['name'] = 'TDL: Beside Rocknut Jinjo'
-        },
-        ["1230574"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 3,
-            ['name'] = 'TDL: Big T. Rex Skip Jinjo'
-        },
-        ["1230575"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 4,
-            ['name'] = 'TDL: Stomping Plains Jinjo'
-        },
-        ["1230576"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 5,
-            ['name'] = 'GI: Floor 5 Jinjo'
-        },
-        ["1230577"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 6,
-            ['name'] = 'GI: Leg Spring Jinjo'
-        },
-        ["1230578"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 7,
-            ['name'] = 'GI: Waste Disposal Plant Jinjo'
-        },
-        ["1230579"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 0,
-            ['name'] = 'GI: Boiler Plant Jinjo'
-        },
-        ["1230580"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 1,
-            ['name'] = 'GI: Outside Jinjo'
-        },
-        ["1230581"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 2,
-            ['name'] = 'HFP: Lava Waterfall Jinjo'
-        },
-        ["1230582"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 3,
-            ['name'] = 'HFP: Boiling Hot Pool Jinjo'
-        },
-        ["1230583"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 4,
-            ['name'] = 'HFP: Windy Hole Jinjo'
-        },
-        ["1230584"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 5,
-            ['name'] = 'HFP: Icicle Grotto Jinjo'
-        },
-        ["1230585"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 6,
-            ['name'] = 'HFP: Mildred Ice Cube Jinjo'
-        },
-        ["1230586"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 7,
-            ['name'] = 'CCL: Trash Can Jinjo'
-        },
-        ["1230587"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 0,
-            ['name'] = 'CCL: Cheese Wedge Jinjo'
-        },
-        ["1230588"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 1,
-            ['name'] = 'CCL: Central Cavern Jinjo'
-        },
-        ["1230589"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 2,
-            ['name'] = 'CCL: Fake Mumbo Skull Jinjo'
-        },
-        ["1230590"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 3,
-            ['name'] = 'CCL: Wumba Jinjo'
-        }
+        -- ['Wooded Hollow: Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230591
+        -- },
+        -- ['Spiral Mountain: Jinjo'] = {
+        --     ['addr'] = 0x3F,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230595
+        -- },
+        -- ['Plateau: Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230594
+        -- },
+        -- ['Mayahem Temple: Jade Snake Grove Jinjo'] = {
+        --     ['addr'] = 0x39,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230551
+        -- },
+        -- ['Mayahem Temple: Stadium Jinjo'] = {
+        --     ['addr'] = 0x39,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230552
+        -- },
+        -- ['Mayahem Temple: Targitzan Temple Jinjo'] = {
+        --     ['addr'] = 0x39,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230553
+        -- },
+        -- ['Mayahem Temple: Water Pool Jinjo'] = {
+        --     ['addr'] = 0x39,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230554
+        -- },
+        -- ['Mayahem Temple: Bridge Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230555
+        -- },
+        -- ['Glitter Gultch Mine: Water Storage Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230556
+        -- },
+        -- ['Glitter Gultch Mine: Jail Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230557
+        -- },
+        -- ['Glitter Gultch Mine: Toxic Gas Cave Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230558
+        -- },
+        -- ['Glitter Gultch Mine: Boulder Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230559
+        -- },
+        -- ['Glitter Gultch Mine: Mine Tracks Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230560
+        -- },
+        -- ['Witchyworld: Big Top Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230561
+        -- },
+        -- ['Witchyworld: Cave of Horrors Jinjo'] = {
+        --     ['addr'] = 0x3A,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230562
+        -- },
+        -- ['Witchyworld: Van Door Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230563
+        -- },
+        -- ['Witchyworld: Dodgem Dome Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230564
+        -- },
+        -- ['Witchyworld: Cactus of Strength Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230565
+        -- },
+        -- ['Cliff Top: Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230593
+        -- },
+        -- ['Jolly Rogers: Lagoon Alcove Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230566
+        -- },
+        -- ['Jolly Rogers: Blubber Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230567
+        -- },
+        -- ['Jolly Rogers: Big Fish Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230568
+        -- },
+        -- ['Jolly Rogers: Seaweed Sanctum Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230569
+        -- },
+        -- ['Jolly Rogers: Sunken Ship Jinjo'] = {
+        --     ['addr'] = 0x3B,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230570
+        -- },
+        -- ['Wasteland: Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230592
+        -- },
+        -- ['Terrydactyland: Talon Torp Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230571
+        -- },
+        -- ['Terrydactyland: Cutscene Skip Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230572
+        -- },
+        -- ['Terrydactyland: Beside Rocknut Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230573
+        -- },
+        -- ['Terrydactyland: Big T. Rex Skip Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230574
+        -- },
+        -- ['Terrydactyland: Stomping Plains Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230575
+        -- },
+        -- ['Gruntys Industries: Floor 5 Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230576
+        -- },
+        -- ['Gruntys Industries: Leg Spring Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230577
+        -- },
+        -- ['Gruntys Industries: Waste Disposal Plant Jinjo'] = {
+        --     ['addr'] = 0x3C,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230578
+        -- },
+        -- ['Gruntys Industries: Boiler Plant Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230579
+        -- },
+        -- ['Gruntys Industries: Outside Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230580
+        -- },
+        -- ['Hailfire Peaks: Lava Waterfall Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230581
+        -- },
+        -- ['Hailfire Peaks: Boiling Hot Pool Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230582
+        -- },
+        -- ['Hailfire Peaks: Windy Hole Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 4,
+        --     ['locationId'] = 1230583
+        -- },
+        -- ['Hailfire Peaks: Icicle Grotto Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 5,
+        --     ['locationId'] = 1230584
+        -- },
+        -- ['Hailfire Peaks: Mildred Ice Cube Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 6,
+        --     ['locationId'] = 1230585
+        -- },
+        -- ['Cloud Cuckcooland: Trash Can Jinjo'] = {
+        --     ['addr'] = 0x3D,
+        --     ['bit'] = 7,
+        --     ['locationId'] = 1230586
+        -- },
+        -- ['Cloud Cuckcooland: Cheese Wedge Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 0,
+        --     ['locationId'] = 1230587
+        -- },
+        -- ['Cloud Cuckcooland: Central Cavern Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 1,
+        --     ['locationId'] = 1230588
+        -- },
+        -- ['Cloud Cuckcooland: Fake Mumbo Skull Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 2,
+        --     ['locationId'] = 1230589
+        -- },
+        -- ['Cloud Cuckcooland: Wumba Jinjo'] = {
+        --     ['addr'] = 0x3E,
+        --     ['bit'] = 3,
+        --     ['locationId'] = 1230590
+        -- },
     },
     ['CHEATO'] = {
         ["1230752"] = {
@@ -2133,6 +2101,11 @@ local AGI_MASTER_MAP = {
 			['bit'] = 3,
             ['name'] = "Hag 1 Defeated"
 		},
+        ["1230797"] = {
+            ['addr'] = 0x5E,
+            ['bit'] = 0,
+            ['name'] = "Klungo 1"
+        }
 	},
 }
 
@@ -2289,7 +2262,7 @@ local NON_AGI_MAP = {
         ["1230859"] = {
           ['addr'] = 0x6B,
           ['bit'] = 3,
-          ['name'] = 'Mumbo: Enlarge'
+          ['name'] = 'Mumbo: Grow/Shrink'
         },
         ["1230860"] = {
           ['addr'] = 0x6B,
@@ -2299,7 +2272,7 @@ local NON_AGI_MAP = {
         ["1230861"] = {
           ['addr'] = 0x6B,
           ['bit'] = 4,
-          ['name'] = 'Mumbo: Life Force'
+          ['name'] = 'Mumbo: Revive'
         },
         ["1230862"] = {
           ['addr'] = 0x6B,
@@ -2894,55 +2867,7 @@ local NON_AGI_MAP = {
             ['bit'] = 6,
             ['name'] = "King Coal Defeated"
         },
-    },
-    ["JINJOFAM"] = {
-        ["1230676"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 0,
-            ['name'] = 'JV: White Jinjo Family Jiggy'
-        },
-        ["1230677"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 1,
-            ['name'] = 'JV: Orange Jinjo Family Jiggy'
-        },
-        ["1230678"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 2,
-            ['name'] = 'JV: Yellow Jinjo Family Jiggy'
-        },
-        ["1230679"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 3,
-            ['name'] = 'JV: Brown Jinjo Family Jiggy'
-        },
-        ["1230680"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 4,
-            ['name'] = 'JV: Green Jinjo Family Jiggy'
-        },
-        ["1230681"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 5,
-            ['name'] = 'JV: Red Jinjo Family Jiggy'
-        },
-        ["1230682"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 6,
-            ['name'] = 'JV: Blue Jinjo Family Jiggy'
-        },
-        ["1230683"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 7,
-            ['name'] = 'JV: Purple Jinjo Family Jiggy'
-        },
-        ["1230684"] = {
-            ['addr'] = 0x50,
-            ['bit'] = 0,
-            ['name'] = 'JV: Black Jinjo Family Jiggy'
-        },
     }
-
 }
 
 -- Properties of world entrances and associated puzzles
@@ -3037,34 +2962,11 @@ function readAPLocationChecks(type)
         do
             for locId, table in pairs(location)
             do
-                -- Don't check AMM Jinjo Fam Jiggies. uses a different table
-                if type == "AMM" and ENABLE_AP_JINJO == true
+                if checks[check_type] == nil 
                 then
-                    if  locId ~= "1230676" and locId ~= "1230677" and locId ~= "1230678" 
-                    and locId ~= "1230679" and locId ~= "1230680" and locId ~= "1230681"
-                    and locId ~= "1230682" and locId ~= "1230683" and locId ~= "1230684"
-                    then
-                        if checks[check_type] == nil
-                        then
-                            checks[check_type] = {}
-                        end
-                        checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
-                    end
-                elseif type == "AMM" and ENABLE_AP_JINJO == false
-                then
-                    if checks[check_type] == nil
-                    then
-                        checks[check_type] = {}
-                    end
-                    checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
-                elseif type == "AGI"
-                then
-                    if checks[check_type] == nil
-                    then
-                        checks[check_type] = {}
-                    end
-                    checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
+                    checks[check_type] = {}
                 end
+                checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
             end
         end
         return checks;
@@ -3588,7 +3490,7 @@ function nearSilo()
         end
     end
    
-    if siloPOS["Distance"] <= 650 -- and CURRENT_MAP ~= 0x1A7
+    if siloPOS["Distance"] <= 650 and CURRENT_MAP ~= 0x1A7
     then
         if LOAD_BMK_MOVES == false
         then
@@ -3608,17 +3510,17 @@ function nearSilo()
             -- print("BKM Move Learnt");
             -- end
         end
--- elseif siloPOS["Distance"] <= 300 and CURRENT_MAP == 0x1A7  -- Doubloon issue 
--- then
---     if LOAD_BMK_MOVES == false
-    --     then
-    --         clear_AMM_MOVES_checks();
-    --         update_BMK_MOVES_checks();
-    --         LOAD_BMK_MOVES = true
---     elseif SILOS_LOADED == false
-    --     then
-    --         update_BMK_MOVES_checks();
---     end
+    elseif siloPOS["Distance"] <= 300 and CURRENT_MAP == 0x1A7  -- Doubloon issue 
+    then
+        if LOAD_BMK_MOVES == false
+        then
+            clear_AMM_MOVES_checks();
+            update_BMK_MOVES_checks();
+            LOAD_BMK_MOVES = true
+        elseif SILOS_LOADED == false
+        then
+            update_BMK_MOVES_checks();
+        end
     else
         if LOAD_BMK_MOVES == true
         then
@@ -3665,152 +3567,76 @@ function MoveWitchyPads()
     end
 end
 
--- function MoveDoubloon()
---     BTMODELOBJ:changeName("Doubloon", false)
---     local modelPOS = BTMODELOBJ:getMultipleModelCoords()
---     if modelPOS == false
---     then
---         return;
---     end
---     for modelObjPtr, POS in pairs(modelPOS) do
---         if POS ~= false
---         then
---             if (POS["Xpos"] == -3226 and POS["Zpos"] == -4673) -- bottom right
---             then
---                 BTMODELOBJ:moveModelObject(modelObjPtr, nil, nil, POS["Zpos"] + 65);
---             end
---             if (POS["Xpos"] == -3526 and POS["Zpos"] == -4972) --bottom left
---             then
---                 BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 65);
---             end
---             if (POS["Xpos"] == -3226 and POS["Zpos"] == -5273) -- top left
---             then
---                 BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 50);
---             end
---             if (POS["Xpos"] == -2926 and POS["Zpos"] == -4972) -- top right
---             then
---                 BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] + 25, nil, POS["Zpos"] + 65);
---             end
---         end
---         DOUBLOON_SILO_MOVE = true;
---     end
--- end
-
------------------- Jinjos -------------------
--- Jinjos themselves are stored in MASTER_AGI_MAP
--- Famify complete checks are stored in BKJINJOFAM
-
-function init_JinjoFam()
-    for locId, table in pairs(NON_AGI_MAP["JINJOFAM"])
-    do
-        BKJINJOFAM[locId] = false
+function MoveDoubloon()
+    BTMODELOBJ:changeName("Doubloon", false)
+    local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+    if modelPOS == false
+    then
+        return;
     end
-end
-
-function JinjoCounter() -- counts AP jinjos and Marks as Completed if true
-    for locId, value in pairs(BKJINJOFAM) do
-        if value == false
+    for modelObjPtr, POS in pairs(modelPOS) do
+        if POS ~= false
         then
-            if locId == "1230676"
+            if (POS["Xpos"] == -3226 and POS["Zpos"] == -4673) -- bottom right
             then
-                if AGI_JINJOS["1230501"] >= 1 then
-                    BKJINJOFAM[locId] = true
-                end
+                BTMODELOBJ:moveModelObject(modelObjPtr, nil, nil, POS["Zpos"] + 65);
             end
-            if locId == "1230677"
+            if (POS["Xpos"] == -3526 and POS["Zpos"] == -4972) --bottom left
             then
-                if AGI_JINJOS["1230502"] >= 2 then
-                    BKJINJOFAM[locId] = true
-                end
+                BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 65);
             end
-            if locId == "1230678"
+            if (POS["Xpos"] == -3226 and POS["Zpos"] == -5273) -- top left
             then
-                if AGI_JINJOS["1230503"] >= 3 then
-                    BKJINJOFAM[locId] = true
-                end
+                BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 50);
             end
-            if locId == "1230679"
+            if (POS["Xpos"] == -2926 and POS["Zpos"] == -4972) -- top right
             then
-                if AGI_JINJOS["1230504"] >= 4 then
-                    BKJINJOFAM[locId] = true
-                end
-            end
-            if locId == "1230680"
-            then
-                if AGI_JINJOS["1230505"] >= 5 then
-                    BKJINJOFAM[locId] = true
-                end
-            end
-            if locId == "1230681"
-            then
-                if AGI_JINJOS["1230506"] >= 6 then
-                    BKJINJOFAM[locId] = true
-                end
-            end
-            if locId == "1230682"
-            then
-                if AGI_JINJOS["1230507"] >= 7 then
-                    BKJINJOFAM[locId] = true
-                end
-            end
-            if locId == "1230683"
-            then
-                if AGI_JINJOS["1230508"] >= 8 then
-                    BKJINJOFAM[locId] = true
-                end
-            end
-            if locId == "1230684"
-            then
-                if AGI_JINJOS["1230509"] >= 9 then
-                    BKJINJOFAM[locId] = true
-                end
+                BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] + 25, nil, POS["Zpos"] + 65);
             end
         end
+        DOUBLOON_SILO_MOVE = true;
     end
 end
 
-function JinjoPause()
-
-    -- Clear all Jinjo AMM Flags first, then Set. after
-    for locId, value in pairs(AGI_MASTER_MAP["JINJO"])
-    do
-        AMM[locId] = false
-    end
-    -- 15 =  0000 1111
-    -- 254 = 1111 1110
-    BTRAMOBJ:setMultipleFlags(0x39, 15, 0)
-    BTRAMOBJ:setMultipleFlags(0x3A, 0, 0)
-    BTRAMOBJ:setMultipleFlags(0x3B, 0, 0)
-    BTRAMOBJ:setMultipleFlags(0x3C, 0, 0)
-    BTRAMOBJ:setMultipleFlags(0x3D, 0, 0)
-    BTRAMOBJ:setMultipleFlags(0x3E, 0, 0)
-    BTRAMOBJ:setMultipleFlags(0x3F, 254, 0)
-    for itemId, value in pairs(AGI_JINJOS)
-    do
-        if value > 0
+--------------- JINJO CHECK -------------
+function getJinjoPlayerModel()
+    BTMODELOBJ:changeName("Jinjo", false)
+    object = BTMODELOBJ:checkModel()
+    if JINJO_TIMER <= 3 and object == false
+    then
+        if DEBUG == true
         then
-            for i = 0, value - 1,1
-            do
-                if JINJO_PATTER_MAP[itemId][tostring(i)] == nil
-                then
-                    if DEBUG == true
-                    then
-                        print("Jinjo Overflow. Stopping Loop but everything is OK.")
-                    end
-                    break;
-                end
-                if DEBUG == true
-                then
-                    print("Setting Jinjo ID: " .. itemId .. " # " .. tostring(i))
-                end
-                AMM["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]] = true
-                BTRAMOBJ:setFlag(AGI_MASTER_MAP["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]]['addr'],
-                 AGI_MASTER_MAP["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]]['bit'])
-            end
+            print("Watching Jinjo")
         end
+        JINJO_TIMER = JINJO_TIMER + 1
+        return
     end
-end
 
+    if object == false
+    then
+        BTMODELOBJ:changeName("Player", false)
+        local player = BTMODELOBJ:checkModel();
+        if player == false
+        then
+            return
+        end
+        if DEBUG == true
+        then
+            print("No Jinjo on Map")
+        end
+        JINJO_TIMER = 0
+        CHECK_FOR_JINJO = false
+        return
+    end
+    if DEBUG == true
+    then
+        print("Jinjo Found")
+        print("Evolving to Mary")
+    end
+    BTMODELOBJ:setModelTypes("Mary")
+    JINJO_TIMER = 0
+    CHECK_FOR_JINJO = false
+end
 
 function check_open_level()  -- See if entrance conditions for a level have been met
     local jiggy_count = 0;
@@ -3839,6 +3665,7 @@ function check_open_level()  -- See if entrance conditions for a level have been
         end
     end
 end
+
 
 function checkConsumables(consumable_type, location_checks)
     BTCONSUMEOBJ:changeConsumable(consumable_type)
@@ -3874,7 +3701,6 @@ function loadGame(current_map)
             BKNOTES = json.decode(f:read("l"));
             BKSTATIONS = json.decode(f:read("l"));
             BKCHUFFY = json.decode(f:read("l"));
-            BKJINJOFAM = json.decode(f:read("l"));
             f:close();
             all_location_checks("AMM");
             all_location_checks("BMM");
@@ -3886,10 +3712,6 @@ function loadGame(current_map)
             set_AGI_MOVES_checks();
             set_AP_BKNOTES();
             set_AP_STATIONS();
-            if ENABLE_AP_CHUFFY == true -- Sanity Check
-            then
-                BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
-            end
             for ap_id, itemId in pairs(receive_map) -- Sanity Check
             do
                 if itemId ~= "NA"
@@ -3897,6 +3719,11 @@ function loadGame(current_map)
                     if (1230855 <= tonumber(itemId) and tonumber(itemId) <= 1230863) or (1230174 <= tonumber(itemId) and tonumber(itemId) <= 1230182)
                     then
                         processMagicItem(itemId);
+                    elseif itemId == "1230797"
+                    then
+                        BTRAMOBJ:setFlag(0x19, 7)
+                        BTRAMOBJ:setFlag(0x19, 5)
+                        BTRAMOBJ:setFlag(0x1A, 5)
                     end
                 end
             end
@@ -4007,20 +3834,16 @@ function BKLogics(mapaddr)
     then
         BATH_PADS_QOL = false
     end
-    -- if CURRENT_MAP == 0x1A7 and DOUBLOON_SILO_MOVE == false
-    -- then
-    --     MoveDoubloon()
-    -- elseif DOUBLOON_SILO_MOVE == true and  CURRENT_MAP ~= 0x1A7 
-    -- then
-    --     DOUBLOON_SILO_MOVE = false
-    -- end
-    if (CURRENT_MAP ~= mapaddr)
+    if CURRENT_MAP == 0x1A7 and DOUBLOON_SILO_MOVE == false
     then
-        if ENABLE_AP_JINJO == true
-        then
-            JinjoCounter()
-        end
-        client.saveram()
+        MoveDoubloon()
+    elseif DOUBLOON_SILO_MOVE == true and  CURRENT_MAP ~= 0x1A7 
+    then
+        DOUBLOON_SILO_MOVE = false
+    end
+    if ((CURRENT_MAP ~= mapaddr) or player == false)
+    then
+        CHECK_FOR_JINJO = true
     end
 end
 
@@ -4134,7 +3957,7 @@ function BKCheckAssetLogic()
             set_AP_STATIONS()
         end
     end
-    if (CHUFFY_MAP_TRANS == true or CHUFFY_STOP_WATCH == false or (CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false)) and ENABLE_AP_CHUFFY == true
+    if CHUFFY_MAP_TRANS == true or CHUFFY_STOP_WATCH == false or (CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false)
     then
         if AGI_CHUFFY["1230796"] == false and CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false
         then
@@ -4146,6 +3969,10 @@ function BKCheckAssetLogic()
         CHUFFY_STOP_WATCH = false
         CHUFFY_MAP_TRANS = false
         getChuffyMaps()
+    end
+    if CHECK_FOR_JINJO == true
+    then
+        getJinjoPlayerModel()
     end
 end
 
@@ -4227,7 +4054,7 @@ function locationControl()
             local DEMO = { ['DEMO'] = true}
             return DEMO
         else
-            BKLogics(mapaddr)         
+            BKLogics(mapaddr)
             if (mapaddr == 335 or mapaddr == 337) and TOTALS_MENU == false -- Wooded Hollow / JiggyTemple
             then
                 if CURRENT_MAP ~= 335 and CURRENT_MAP ~= 337
@@ -4519,10 +4346,11 @@ function processAGIItem(item_list)
             elseif memlocation == 1230796 and ENABLE_AP_CHUFFY == true
             then
                 obtained_AP_CHUFFY()
-            elseif( 1230501 <= memlocation and memlocation <= 1230509) and ENABLE_AP_JINJO == true
+            elseif memlocation == 1230797
             then
-                AGI_JINJOS[tostring(memlocation)] = AGI_JINJOS[tostring(memlocation)] + 1
-                JinjoCounter() -- check and see if family completes and mark true
+                BTRAMOBJ:setFlag(0x19, 7)
+                BTRAMOBJ:setFlag(0x19, 5)
+                BTRAMOBJ:setFlag(0x1A, 5)
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
         end
@@ -4571,7 +4399,6 @@ function SendToBTClient()
     retTable['stations'] = BKSTATIONS;
     retTable['chuffy'] = BKCHUFFY;
     retTable["isDead"] = DETECT_DEATH;
-    retTable["jinjofam"] = BKJINJOFAM;
     if GAME_LOADED == false
     then
         retTable["sync_ready"] = "false"
@@ -4648,10 +4475,6 @@ function checkPause()
         end
         BMMBackup();
         useAGI();
-        if ENABLE_AP_JINJO == true
-        then
-            JinjoPause();
-        end
         PAUSED = true;
     elseif pause_menu == 0 and PAUSED == true  -- unpaused
     then
@@ -4856,11 +4679,6 @@ function savingAGI()
     f:write(json.encode(AGI_CHUFFY) .. "\n");
     if DEBUGLVL2 == true
     then
-        print("Writing JINJOS");
-    end
-    f:write(json.encode(AGI_JINJOS) .. "\n");
-    if DEBUGLVL2 == true
-    then
         print("Writing Received_Map");
     end
     f:write(json.encode(receive_map))
@@ -4898,7 +4716,6 @@ function loadAGI()
         f:write(json.encode(AGI_NOTES).."\n");
         f:write(json.encode(AGI_STATIONS) .. "\n");
         f:write(json.encode(AGI_CHUFFY) .. "\n");
-        f:write(json.encode(AGI_JINJOS) .. "\n");
         f:write(json.encode(receive_map));
         f:close();
     else
@@ -4911,7 +4728,6 @@ function loadAGI()
         AGI_NOTES = json.decode(f:read("l"));
         AGI_STATIONS = json.decode(f:read("l"));
         AGI_CHUFFY = json.decode(f:read("l"));
-        AGI_JINJOS = json.decode(f:read("l"));
         receive_map = json.decode(f:read("l"));
         f:close();
     end
@@ -4927,8 +4743,7 @@ function savingBMM()
     f:write(json.encode(BKM) .. "\n");
     f:write(json.encode(BKNOTES) .. "\n");
     f:write(json.encode(BKSTATIONS) .. "\n");
-    f:write(json.encode(BKCHUFFY) .. "\n");
-    f:write(json.encode(BKJINJOFAM));
+    f:write(json.encode(BKCHUFFY));
     f:close()
     if DEBUG == true
     then
@@ -5050,10 +4865,6 @@ function process_slot(block)
     then
         ENABLE_AP_CHUFFY = true
     end
-    if block['slot_jinjo'] ~= nil and block['slot_jinjo'] ~= "false"
-    then
-        ENABLE_AP_JINJO = true
-    end
     if SEED ~= 0
     then
         loadAGI()
@@ -5113,9 +4924,8 @@ function initializeFlags()
         GAME_LOADED = true  -- We don't have a real BMM at this point.  
         init_BMK("BKM");
         init_BKNOTES("BKNOTES");
-        init_BKSTATIONS("BKSTATIONS");
-        init_CHUFFY("BKCHUFFY");
-        init_JinjoFam();
+        init_BKSTATIONS("BKSTATIONS")
+        init_CHUFFY("BKCHUFFY")
         init_AGI()
         AGI_MOVES = init_BMK("AGI");
         AGI_NOTES = init_BKNOTES("AGI");
@@ -5140,6 +4950,11 @@ function initializeFlags()
         all_location_checks("AMM")
         BMMBackup()
         BMMRestore()
+        -- April 
+        BTRAMOBJ:clearFlag(0x19, 7)
+        BTRAMOBJ:clearFlag(0x19, 5)
+        BTRAMOBJ:clearFlag(0x1A, 5)
+        --
 		INIT_COMPLETE = true
         if SKIP_PUZZLES == true then
             check_open_level() -- sanity check that level open flags are still set
@@ -5152,16 +4967,6 @@ function initializeFlags()
             table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
             print("HAG 1 is now unlocked!")
         end
-        if ENABLE_AP_JINJO == true then
-            -- 129 is 1000 0001
-            -- 2 is   0000 0010
-            if DEBUG == true
-            then
-                print("Setting Jinjo Pattern")
-            end
-            BTRAMOBJ:setMultipleFlags(0x6A, 129, 2)
-        end
-
         
 	-- Otherwise, the flags were already set, so just stop checking
 	elseif (current_map == 0xAF or current_map == 0x142) then
