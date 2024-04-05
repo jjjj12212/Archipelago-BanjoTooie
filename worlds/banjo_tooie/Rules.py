@@ -429,7 +429,7 @@ class BanjoTooieRules:
             locationName.JINJOTL1: lambda state: state.has(itemName.TTORP, self.player),
             locationName.JINJOTL3: lambda state: state.has(itemName.CEGGS, self.player),
             locationName.JINJOTL4: lambda state: self.check_mumbo_magic(state, itemName.MUMBOTD) and self.check_humba_magic(state, itemName.HUMBATD),
-            locationName.JINJOTL5: lambda state: self.jinjo_stompingplains(state),
+            locationName.JINJOTL5: lambda state: self.jiggy_stomping_plains(state) and state.has(itemName.SPLITUP, self.player),
 
             locationName.JINJOGI2: lambda state: state.has(itemName.LSPRING, self.player),
             locationName.JINJOGI3: lambda state: self.jinjo_wasteplant(state),
@@ -440,7 +440,7 @@ class BanjoTooieRules:
             locationName.JINJOHP4: lambda state: self.jinjo_icegrotto(state),
             locationName.JINJOHP5: lambda state: self.jinjo_mildred(state),
             
-            locationName.JINJOCC1: lambda state: self.check_solo_moves(state, itemName.SHPACK) or self.check_solo_moves(state, itemName.LSPRING),
+            locationName.JINJOCC1: lambda state: self.jinjo_trashcan(state),
             locationName.JINJOCC2: lambda state: self.jinjo_cheese(state),
             locationName.JINJOCC3: lambda state: state.has(itemName.SPLITUP, self.player),
         }
@@ -920,8 +920,9 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.IEGGS, self.player) and state.has(itemName.SPRINGB, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.IEGGS, self.player) and state.has(itemName.SPRINGB, self.player) or \
-            (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE))
+            logic = state.has(itemName.SPRINGB, self.player) and \
+            (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE) or \
+            state.has(itemName.IEGGS, self.player))
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.SPRINGB, self.player)
         return logic
@@ -1053,8 +1054,9 @@ class BanjoTooieRules:
             logic = self.check_solo_moves(state, itemName.SNPACK) and state.has(itemName.IEGGS, self.player) and \
                     state.has(itemName.SPRINGB, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.SPRINGB, self.player) and state.has(itemName.IEGGS, self.player) or \
-                    (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)) and \
+            logic = state.has(itemName.SPRINGB, self.player) and \
+                    (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE) or \
+                     state.has(itemName.IEGGS, self.player)) and \
                     self.check_solo_moves(state, itemName.SNPACK)
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.SPRINGB, self.player) and state.has(itemName.SPLITUP, self.player)
@@ -1097,7 +1099,8 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.SPLITUP, self.player) and state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.SPLITUP, self.player)
+            logic = state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GGRAB, self.player) or \
+                    self.check_solo_moves(state, itemName.PACKWH))
         return logic
     
     def jiggy_mr_fit(self, state: CollectionState) -> bool:
@@ -1581,7 +1584,6 @@ class BanjoTooieRules:
             logic = True
         return logic
     
-
     def jinjo_bigfish(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -1599,7 +1601,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.can_reach_atlantis(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.can_reach_atlantis(state)
+            logic = True
         return logic
     
     def jinjo_sunkenship(self, state: CollectionState) -> bool:
@@ -1622,16 +1624,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.GEGGS, self.player)
         return logic
-    
-    def jinjo_stompingplains(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == 0: # beginner
-            logic = self.jiggy_stomping_plains(state)
-        elif self.world.options.logic_type == 1: # normal
-            logic = self.jiggy_stomping_plains(state)
-        elif self.world.options.logic_type == 2: # advanced
-            logic = self.jiggy_stomping_plains(state)
-        return logic
+
     
     def jinjo_wasteplant(self, state: CollectionState) -> bool:
         logic = True
@@ -1672,17 +1665,25 @@ class BanjoTooieRules:
                     self.check_mumbo_magic(state, itemName.MUMBOHP)
         return logic
     
+    def jinjo_trashcan(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic =  self.check_solo_moves(state, itemName.SHPACK)
+        elif self.world.options.logic_type == 1: # normal
+            logic =  self.check_solo_moves(state, itemName.SHPACK) or self.check_solo_moves(state, itemName.LSPRING)
+        elif self.world.options.logic_type == 2: # advanced
+            logic =  self.check_solo_moves(state, itemName.SHPACK) or self.check_solo_moves(state, itemName.LSPRING)
+        return logic
+
     def jinjo_cheese(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = (self.check_solo_moves(state, itemName.SAPACK) and self.grow_beanstalk(state) and \
                      self.can_use_floatus(state))
         elif self.world.options.logic_type == 1: # normal
-            logic = self.check_solo_moves(state, itemName.LSPRING) or (self.check_solo_moves(state, itemName.SAPACK) and
-                    self.grow_beanstalk(state) and self.can_use_floatus(state))
+            logic = True
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.check_solo_moves(state, itemName.LSPRING) or (self.check_solo_moves(state, itemName.SAPACK) and
-                    self.grow_beanstalk(state) and self.can_use_floatus(state))
+            logic = True
         return logic
     
     def treble_jv(self, state: CollectionState) -> bool:
@@ -2365,7 +2366,7 @@ class BanjoTooieRules:
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB9, self.player), item, self.player)
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB8, self.player), item, self.player)
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB7, self.player), item, self.player)
-            if self.world.options.forbid_moves_on_jinjo_family == 1 or self.world.options.forbid_moves_on_jinjo_family or 2:
+            if self.world.options.forbid_moves_on_jinjo_family == 1 or self.world.options.forbid_moves_on_jinjo_family == 2:
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH3, self.player), item, self.player)
