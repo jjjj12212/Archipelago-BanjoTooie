@@ -1,4 +1,4 @@
-# No longer Maintained
+# This branch is no longer maintained
 
 # Archipelago Banjo-Tooie (US-Only) | v99-FinalRelease
 Banjo Tooie for Archipelago 
