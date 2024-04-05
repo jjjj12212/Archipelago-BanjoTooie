@@ -132,17 +132,17 @@ class BanjoTooieRules:
             regionName.MT: lambda state: state.has(itemName.JIGGY, self.player, 1),
             regionName.IOHPL: lambda state: self.can_access_plateau(state),
             regionName.GM: lambda state: self.can_access_GM(state),
-            regionName.IOHPG: lambda state: self.can_access_pinegrove(state),
-            regionName.WW: lambda state: self.can_access_witchyworld(state),
-            regionName.IOHCT: lambda state: self.can_access_clifftop(state),
+            regionName.IOHPG: lambda state: self.can_access_pinegrove(state, False),
+            regionName.WW: lambda state: self.can_access_witchyworld(state, False),
+            regionName.IOHCT: lambda state: self.can_access_clifftop(state, False),
             regionName.JR: lambda state: self.can_access_jrl(state),
-            regionName.IOHWL: lambda state: self.can_access_wasteland(state),
-            regionName.TL: lambda state: self.can_access_tdl(state),
-            regionName.IOHQM: lambda state: state.has(itemName.SPRINGB, self.player),
-            regionName.GIO: lambda state: state.has(itemName.JIGGY, self.player, 28),
-            regionName.HP: lambda state: state.has(itemName.JIGGY, self.player, 36),
-            regionName.CC: lambda state: state.has(itemName.JIGGY, self.player, 45),
-            regionName.CK: lambda state: state.has(itemName.JIGGY, self.player, 55) and state.has(itemName.CLAWBTS, self.player),
+            regionName.IOHWL: lambda state: self.can_access_wasteland(state, False),
+            regionName.TL: lambda state: self.can_access_tdl(state, False),
+            regionName.IOHQM: lambda state: self.can_access_quagmire(state, False),
+            regionName.GIO: lambda state: self.can_access_gruntyindustries_outside(state, False),
+            regionName.HP: lambda state: self.can_access_hailfire(state, False),
+            regionName.CC: lambda state: self.can_access_ccl(state),
+            regionName.CK: lambda state: self.can_access_ck(state),
             regionName.H1: lambda state: self.check_hag1_options(state)
         }
         self.station_rules = {
@@ -1823,13 +1823,7 @@ class BanjoTooieRules:
         else:
             return state.has(itemName.CHUFFY, self.player)
 
-    def WW_train_station(self, state) -> bool:
-        return state.has(itemName.CHUFFY, self.player) and \
-            (state.has(itemName.TRAINSWWW, self.player))
 
-    def CT_train_station(self, state) -> bool:
-        return state.has(itemName.CHUFFY, self.player) and \
-            (state.has(itemName.TRAINSWIH, self.player))
     #deprecated but might be useful for ticket randomization
     def can_kill_fruity(self, state: CollectionState) -> bool:
         return state.has(itemName.GEGGS, self.player) or \
@@ -1886,20 +1880,20 @@ class BanjoTooieRules:
                 state.has(itemName.GEGGS, self.player) and \
                 state.has(itemName.BDRILL, self.player)
 
-    def can_use_battery(self, state) -> bool:
+    def can_use_battery(self, state: CollectionState) -> bool:
         return self.check_solo_moves(state, itemName.PACKWH) and self.check_solo_moves(state, itemName.TAXPACK)
 
-    def can_access_plateau(self, state) -> bool:
+    def can_access_plateau(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = True
+            logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
         return logic
     
-    def can_access_GM(self, state) -> bool:
+    def can_access_GM(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = (state.has(itemName.GGRAB, self.player) and state.has(itemName.JIGGY, self.player, 4)) or \
@@ -1912,66 +1906,259 @@ class BanjoTooieRules:
                     self.dilberta_free(state)
         return logic
     
-    def can_access_pinegrove(self, state) -> bool:
+    def can_access_pinegrove(self, state: CollectionState, fromTrain: bool) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state)
-        elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state)
+        elif self.world.options.logic_type == 1 : # normal
+            if fromTrain:
+                logic = (state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state))
+            else:
+                logic = (state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state)) or \
+                        self.can_access_plateau(state) and (self.has_train_access(state, "WW") or self.has_train_access(state, "TDL"))
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state)
+            if fromTrain:
+                logic = (state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state))
+            else:
+                logic = (state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state)) or \
+                        self.can_access_plateau(state) and (self.has_train_access(state, "WW") or self.has_train_access(state, "TDL"))
         return logic
     
-    def can_access_witchyworld(self, state) -> bool:
+    def can_access_witchyworld(self, state: CollectionState, fromTrain: bool) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.JIGGY, self.player, 8) and self.can_access_pinegrove(state)
+            logic = (state.has(itemName.JIGGY, self.player, 8) and self.can_access_pinegrove(state, False))
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.JIGGY, self.player, 8) and self.can_access_pinegrove(state)
+            if fromTrain:
+                logic = state.has(itemName.JIGGY, self.player, 8) and self.can_access_pinegrove(state, fromTrain)
+            else:
+                logic = state.has(itemName.JIGGY, self.player, 8) and self.can_access_pinegrove(state, fromTrain) or \
+                        self.has_train_access(state, "WW")
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.JIGGY, self.player, 8) and self.can_access_pinegrove(state)
+            if fromTrain:
+                logic = state.has(itemName.JIGGY, self.player, 8) and self.can_access_pinegrove(state, fromTrain)
+            else:
+                logic = state.has(itemName.JIGGY, self.player, 8) and self.can_access_pinegrove(state, fromTrain) or \
+                        self.has_train_access(state, "WW")
         return logic
     
-    def can_access_clifftop(self, state) -> bool:
+    def can_access_clifftop(self, state: CollectionState, fromTrain: bool) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.SPLITUP, self.player) and self.can_access_plateau(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.SPLITUP, self.player) and self.can_access_plateau(state)
+            if fromTrain:
+                logic = (state.has(itemName.SPLITUP, self.player) and self.can_access_plateau(state))
+            else: 
+                logic = (state.has(itemName.SPLITUP, self.player) and self.can_access_plateau(state)) or \
+                    self.has_train_access(state, "CT")
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.SPLITUP, self.player) and self.can_access_plateau(state)
+            if fromTrain:
+                logic = (state.has(itemName.SPLITUP, self.player) and self.can_access_plateau(state))
+            else: 
+                logic = (state.has(itemName.SPLITUP, self.player) and self.can_access_plateau(state)) or \
+                    self.has_train_access(state, "CT")
         return logic
     
-    def can_access_jrl(self, state) -> bool:
+    def can_access_jrl(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.can_access_clifftop(state) and state.has(itemName.JIGGY, self.player, 14)
+            logic = self.can_access_clifftop(state, False) and state.has(itemName.JIGGY, self.player, 14)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.can_access_clifftop(state) and state.has(itemName.JIGGY, self.player, 14)
+            logic = self.can_access_clifftop(state, False) and state.has(itemName.JIGGY, self.player, 14)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.can_access_clifftop(state) and state.has(itemName.JIGGY, self.player, 14)
+            logic = self.can_access_clifftop(state, False) and state.has(itemName.JIGGY, self.player, 14)
         return logic
     
-    def can_access_wasteland(self, state) -> bool:
+    def can_access_wasteland(self, state: CollectionState, fromTrain: bool) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.can_access_pinegrove(state) and state.has(itemName.TTORP, self.player)
+            logic = self.can_access_pinegrove(state, False) and state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.can_access_pinegrove(state) and state.has(itemName.TTORP, self.player)
+            if fromTrain:
+                logic = self.can_access_pinegrove(state, fromTrain) and state.has(itemName.TTORP, self.player)
+            else:
+                logic = (self.can_access_pinegrove(state, fromTrain) and state.has(itemName.TTORP, self.player)) or \
+                        self.has_train_access(state, "TDL") or self.can_leave_GI_from_inside(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.can_access_pinegrove(state) and state.has(itemName.TTORP, self.player)
+            if fromTrain:
+                logic = self.can_access_pinegrove(state, fromTrain) and state.has(itemName.TTORP, self.player)
+            else:
+                logic = (self.can_access_pinegrove(state, fromTrain) and state.has(itemName.TTORP, self.player)) or \
+                        self.has_train_access(state, "TDL") or self.can_leave_GI_from_inside(state)
         return logic
     
-    def can_access_tdl(self, state) -> bool:
+    def can_access_tdl(self, state: CollectionState, fromTrain: bool) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.can_access_wasteland(state) and state.has(itemName.JIGGY, self.player, 20)
+            logic = self.can_access_wasteland(state, False) and state.has(itemName.JIGGY, self.player, 20)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.can_access_wasteland(state) and state.has(itemName.JIGGY, self.player, 20)
+            if fromTrain:  
+                logic = (self.can_access_wasteland(state, fromTrain) and state.has(itemName.JIGGY, self.player, 20))
+            else:
+                logic = (self.can_access_wasteland(state, fromTrain) and state.has(itemName.JIGGY, self.player, 20)) or \
+                        self.has_train_access(state, "TDL")
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.can_access_wasteland(state) and state.has(itemName.JIGGY, self.player, 20)
+            if fromTrain:  
+                    logic = (self.can_access_wasteland(state, fromTrain) and state.has(itemName.JIGGY, self.player, 20))
+            else:
+                    logic = (self.can_access_wasteland(state, fromTrain) and state.has(itemName.JIGGY, self.player, 20)) or \
+                            self.has_train_access(state, "TDL")
         return logic
     
+    def can_access_quagmire(self, state: CollectionState, fromTrain: bool) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, False)
+        elif self.world.options.logic_type == 1: # normal
+            if fromTrain:
+                logic = state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, fromTrain)
+            else:
+                logic = (state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, fromTrain)) or \
+                        self.can_leave_GI_from_inside(state)
+        elif self.world.options.logic_type == 2: # advanced
+            if fromTrain:
+                logic = state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, fromTrain)
+            else:
+                logic = (state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, fromTrain)) or \
+                        self.can_leave_GI_from_inside(state)
+        return logic
+    
+    def can_access_gruntyindustries_outside(self, state: CollectionState, fromTrain) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.JIGGY, self.player, 28) and self.can_access_quagmire(state, False)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.JIGGY, self.player, 28) and self.can_access_quagmire(state, fromTrain)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.JIGGY, self.player, 28) and self.can_access_quagmire(state, fromTrain)
+        return logic
+    
+    def can_access_hailfire(self, state: CollectionState, fromTrain) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.JIGGY, self.player, 36) and self.can_access_clifftop(state, False)
+        elif self.world.options.logic_type == 1: # normal
+            if fromTrain:
+                logic = state.has(itemName.JIGGY, self.player, 36) and self.can_access_clifftop(state, fromTrain)
+            else:
+                logic = (state.has(itemName.JIGGY, self.player, 36) and self.can_access_clifftop(state, fromTrain)) or \
+                        self.has_train_access(state, "HFP")
+        elif self.world.options.logic_type == 2: # advanced
+            if fromTrain:
+                logic = state.has(itemName.JIGGY, self.player, 36) and self.can_access_clifftop(state, fromTrain)
+            else:
+                logic = (state.has(itemName.JIGGY, self.player, 36) and self.can_access_clifftop(state, fromTrain)) or \
+                        self.has_train_access(state, "HFP")
+        return logic
+    
+    def can_access_ccl(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.JIGGY, self.player, 45) and self.can_access_wasteland(state, False)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.JIGGY, self.player, 45) and self.can_access_wasteland(state, False)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.JIGGY, self.player, 45) and self.can_access_wasteland(state, False)
+        return logic
+    
+    def can_access_ck(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False)
+        return logic
+    
+    def has_train_access(self, state: CollectionState, station) -> bool:
+        # sys.setrecursionlimit(1500)
+        logic = False
+        if station == "WW":
+            #Can't make it 1 Statement, get Python Recursion limit error due to ALOT of checking 
+            # logic = (self.TDL_train_station(state) and self.can_access_tdl(state)) or \
+            #         (self.can_access_clifftop(state) and self.CT_train_station(state)) or \
+            #         (self.can_access_hailfire(state) and self.HFPF_train_station(state)) or \
+            #         (self.can_beat_king_coal(state) and self.can_access_GM(state)) and \
+            #         self.WW_train_station(state)
+            if(self.TDL_train_station(state) and self.can_access_tdl(state, True)) and self.WW_train_station(state):
+               return True
+            if (self.can_access_clifftop(state, True) and self.CT_train_station(state)) and self.WW_train_station(state):
+                return True
+            if (self.can_access_hailfire(state, True) and self.HFPF_train_station(state)) and self.WW_train_station(state):
+                return True
+            if (self.can_beat_king_coal(state) and self.can_access_GM(state)) and self.WW_train_station(state):
+                return True
+        if station == "TDL":
+            if(self.WW_train_station(state) and self.can_access_witchyworld(state, True)) and self.TDL_train_station(state):
+                return True
+            if (self.can_access_clifftop(state, True) and self.CT_train_station(state)) and self.TDL_train_station(state):
+                return True
+            if (self.can_access_hailfire(state, True) and self.HFPF_train_station(state)) and self.TDL_train_station(state):
+                return True
+            if (self.can_beat_king_coal(state) and self.can_access_GM(state)) and self.TDL_train_station(state):
+                return True
+        if station == "HFP":
+            if(self.WW_train_station(state) and self.can_access_witchyworld(state, True)) and self.HFPF_train_station(state):
+                return True
+            if (self.can_access_clifftop(state, True) and self.CT_train_station(state)) and self.HFPF_train_station(state):
+                return True
+            if (self.TDL_train_station(state) and self.can_access_tdl(state)) and self.HFPF_train_station(state):
+                return True
+            if (self.can_beat_king_coal(state) and self.can_access_GM(state)) and self.HFPF_train_station(state):
+                return True
+            if (self.can_access_gruntyindustries_outside(state, True) and self.GI_train_station(state)) and \
+                (state.has(itemName.CLAWBTS, self.player)) and self.HFPF_train_station(state):
+                return True
+        if station == "CT":
+            if(self.WW_train_station(state) and self.can_access_witchyworld(state, True)) and self.CT_train_station(state):
+                return True
+            if (self.can_access_tdl(state, True) and self.TDL_train_station(state)) and self.CT_train_station(state):
+                return True
+            if (self.can_beat_king_coal(state) and self.can_access_GM(state)) and self.CT_train_station(state):
+                return True
+            if (self.can_access_gruntyindustries_outside(state, True) and self.GI_train_station(state)) and \
+                (state.has(itemName.CLAWBTS, self.player)) and self.CT_train_station(state):
+                return True
+        if station == "GI":
+            if(self.WW_train_station(state) and self.can_access_witchyworld(state, True)) and self.GI_train_station(state):
+                return True
+            if (self.can_access_clifftop(state, True) and self.CT_train_station(state)) and self.GI_train_station(state):
+                return True
+            if (self.can_access_hailfire(state, True) and self.HFPF_train_station(state)) and self.GI_train_station(state):
+                return True
+            if (self.can_beat_king_coal(state) and self.can_access_GM(state)) and self.GI_train_station(state):
+                return True
+            if(self.TDL_train_station(state) and self.can_access_tdl(state, True)) and self.GI_train_station(state):
+               return True
+        # sys.setrecursionlimit(997)
+        return logic
+    
+    def can_leave_GI_from_inside(self, state:CollectionState) -> bool:
+        return self.has_train_access(state, "GI") and (state.has(itemName.SPLITUP, self.player) or \
+               state.has(itemName.CLAWBTS, self.player))
+
+    def WW_train_station(self, state) -> bool:
+        return self.can_beat_king_coal(state) and \
+            (state.has(itemName.TRAINSWWW, self.player))
+
+    def CT_train_station(self, state) -> bool:
+        return self.can_beat_king_coal(state) and \
+            (state.has(itemName.TRAINSWIH, self.player))
+    
+    def HFPF_train_station(self, state) -> bool:
+        return self.can_beat_king_coal(state) and \
+            (state.has(itemName.TRAINSWHP1, self.player))
+    
+    def GI_train_station(self, state) -> bool:
+        return self.can_beat_king_coal(state) and \
+            (state.has(itemName.TRAINSWGI, self.player))
+    
+    def TDL_train_station(self, state) -> bool:
+        return self.can_beat_king_coal(state) and \
+            (state.has(itemName.TRAINSWTD, self.player))
+
     #TODO Needs to handle proper world access
     def HFP_hot_water_cooled(self, state) -> bool:
         return state.has(itemName.JIGGY, self.player, 45) and \
