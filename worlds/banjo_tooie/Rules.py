@@ -1984,7 +1984,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
+            logic = True
         return logic
     
     def can_access_GM(self, state: CollectionState) -> bool:
@@ -1996,8 +1996,7 @@ class BanjoTooieRules:
             logic = (state.has(itemName.GGRAB, self.player) and state.has(itemName.JIGGY, self.player, 4)) or \
                     self.dilberta_free(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (state.has(itemName.GGRAB, self.player) and state.has(itemName.JIGGY, self.player, 4)) or \
-                    self.dilberta_free(state)
+            logic = state.has(itemName.JIGGY, self.player, 4)
         return logic
     
     def can_access_pinegrove(self, state: CollectionState, fromTrain: bool) -> bool:
@@ -2075,13 +2074,15 @@ class BanjoTooieRules:
                 logic = self.can_access_pinegrove(state, fromTrain) and state.has(itemName.TTORP, self.player)
             else:
                 logic = (self.can_access_pinegrove(state, fromTrain) and state.has(itemName.TTORP, self.player)) or \
-                        self.has_train_access(state, "TDL") or self.can_leave_GI_from_inside(state)
+                        self.has_train_access(state, "TDL") or (self.can_leave_GI_from_inside(state) and \
+                        state.has(itemName.JIGGY, self.player, 28))
         elif self.world.options.logic_type == 2: # advanced
             if fromTrain:
                 logic = self.can_access_pinegrove(state, fromTrain) and state.has(itemName.TTORP, self.player)
             else:
                 logic = (self.can_access_pinegrove(state, fromTrain) and state.has(itemName.TTORP, self.player)) or \
-                        self.has_train_access(state, "TDL") or self.can_leave_GI_from_inside(state)
+                        self.has_train_access(state, "TDL") or (self.can_leave_GI_from_inside(state) and \
+                        state.has(itemName.JIGGY, self.player, 28))
         return logic
     
     def can_access_tdl(self, state: CollectionState, fromTrain: bool) -> bool:
@@ -2197,11 +2198,14 @@ class BanjoTooieRules:
     def can_access_ck(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False)
+            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False) and \
+            state.has(itemName.SPRINGB, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False)
+            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False) and \
+            state.has(itemName.SPRINGB, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False)
+            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False) and \
+            state.has(itemName.SPRINGB, self.player)
         return logic
     
     def has_train_access(self, state: CollectionState, station) -> bool:
