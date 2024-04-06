@@ -768,7 +768,8 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.can_reach_atlantis(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.AUQAIM, self.player) or self.check_humba_magic(state, itemName.HUMBAJR)
+            logic = state.has(itemName.AUQAIM, self.player) or \
+                (self.check_humba_magic(state, itemName.HUMBAJR) and state.has(itemName.EGGAIM, self.player))
         return logic
     
     def jiggy_pigpool(self, state: CollectionState) -> bool:
@@ -816,11 +817,13 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.can_reach_atlantis(state) and state.has(itemName.GEGGS, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.can_reach_atlantis(state) and state.has(itemName.GEGGS, self.player)
+            logic = self.can_reach_atlantis(state) and state.has(itemName.GEGGS, self.player) \
+                and (self.check_humba_magic(state, itemName.HUMBAJR) or self.check_mumbo_magic(state, itemName.MUMBOJR))
         elif self.world.options.logic_type == 2: # advanced
-            logic = ((((state.has(itemName.TTORP, self.player) and state.has(itemName.BDRILL, self.player)) or \
-                     self.check_mumbo_magic(state, itemName.MUMBOJR)) and state.has(itemName.AUQAIM, self.player)) or \
-                    self.check_humba_magic(state, itemName.HUMBAJR)) and state.has(itemName.GEGGS, self.player)
+            logic = state.has(itemName.GEGGS, self.player) and state.has(itemName.AUQAIM, self.player) and \
+                ((state.has(itemName.TTORP, self.player) and state.has(itemName.BDRILL, self.player)) or \
+                     self.check_mumbo_magic(state, itemName.MUMBOJR) or \
+                    self.check_humba_magic(state, itemName.HUMBAJR))
         return logic
     
     def jiggy_see_mee(self, state: CollectionState) -> bool:
