@@ -1,4 +1,4 @@
-# Current Logic Implementation | v0.9.0-Beta
+# Current Logic Implementation | v1.0.0-Beta
 
 We currently have 3 logics put in place. None of them require glitches.
 
@@ -26,7 +26,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Ssslumber|Golden Goliath, Grip Grab|Golden Goliath|Golden Goliath
 |Old King Coal|Levitate|Levitate|Levitate
 |Canary Mary 1|Detonator|Detonator or Clockwork Eggs|Detonator or Clockwork Eggs
-|Generator Cavern|Fire Eggs|<N/A>|<N/A>
+|Generator Cavern|Fire Eggs, Egg Aim|<N/A>|<N/A>
 |Waterfall Cavern|<N/A>|<N/A>|<N/A>
 |Ordnance Storage|Breegull Blaster, Beak Bayonet, (Bill Drill or Detonator)|Breegull Blaster, Beak Bayonet, (Bill Drill or Detonator)|Breegull Blaster, Beak Bayonet, (Bill Drill or Detonator)
 |Dilberta|MT access, Bill Drill, Stony, (Golden Goliath or Grenade Eggs)|MT access, Bill Drill, (Golden Goliath or Grenade Eggs or Clockwork Eggs)|MT access, Bill Drill, (Golden Goliath or Grenade Eggs or Clockwork Eggs)
@@ -35,30 +35,30 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Power Hut|(Bill Drill or Detonator), Split Up|Bill Drill or Detonator|Bill Drill or Detonator
 |Flooded Caves|<N/A>|<N/A>|<N/A>
 |Hoop Hurry|Split Up, Grenade Eggs|Split Up, (Grenade Eggs or Clockwork Eggs)|Split Up, (Grenade Eggs or Clockwork Eggs)
-|Dodgem Dome|Money Van, Power|Money Van, Power|Money Van, Power
+|Dodgem Dome|Money Van, Power, Grip Grab|Money Van, Power|Money Van, Power
 |Mr. Patch|Airborne Egg Aiming, Egg Aim, Grenade Eggs|Airborne Egg Aiming, Egg Aim, Grenade Eggs|Airborne Egg Aiming, Egg Aim, Grenade Eggs
-|Saucer of Peril|Detonator, Power, Money Van, Grip Grab|Detonator, Power, Money Van<br>AND<br>(<br>Grenade Eggs and Egg Aim<br>OR<br>(Grenade Eggs or Clockwork Eggs) and (Grip Grab or (Split Up, Leg Spring, Glide))<br>)|Detonator, Power, Money Van<br>AND<br>(<br>Grenade Eggs and Egg Aim<br>OR<br>(Grenade Eggs or Clockwork Eggs) and (Grip Grab or (Split Up, Leg Spring, Glide))<br>)
+|Saucer of Peril|Detonator, Power, Money Van, Grip Grab, Grenade Eggs|Detonator, Power, Money Van<br>AND<br>(<br>Grenade Eggs and Egg Aim<br>OR<br>(Grenade Eggs or Clockwork Eggs) and (Grip Grab or (Split Up, Leg Spring, Glide))<br>)|Detonator, Power, Money Van<br>AND<br>(<br>Grenade Eggs and Egg Aim<br>OR<br>(Grenade Eggs or Clockwork Eggs) and (Grip Grab or (Split Up, Leg Spring, Glide))<br>)
 |Balloon Burst|Split Up, Airborne Egg Aiming, Grenade Eggs|Split Up, Airborne Egg Aiming, (Grenade Eggs or Clockwork Eggs)|Split Up, Airborne Egg Aiming, (Grenade Eggs or Clockwork Eggs)
 |Dive of Death|Grip Grab|<N/A>|<N/A>
-|Mrs. Boggy|Money Van, Power, Taxi Pack, Split Up, Grenade Eggs|Money Van, Power, Taxi Pack, Split Up, (Grenade Eggs or Clockwork Eggs)|Money Van, Power, Taxi Pack, Split Up, (Grenade Eggs or Clockwork Eggs)
-|Star Spinner|Power, Money Van|Power, Money Van|Power, Money Van
-|The Inferno|Money Van, Split Up|Money Van|Money Van
+|Mrs. Boggy|Money Van, Power, Taxi Pack, Split Up, Grenade Eggs, Grip Grab|Money Van, Power, Taxi Pack, Split Up, (Grenade Eggs or Clockwork Eggs)|Money Van, Power, Taxi Pack, Split Up, (Grenade Eggs or Clockwork Eggs)
+|Star Spinner|Power, Money Van, Grip Grab|Power, Money Van|Power, Money Van
+|The Inferno|Money Van, Split Up, Grip Grab|Money Van|Money Van
 |Cactus of Strength|Bill Drill, Grenade Eggs|Bill Drill, Grenade Eggs|Bill Drill, Grenade Eggs
-|Sub Minigame|Oxygenate, Sub, Sub-Aqua Egg Aiming, Ice Eggs|Bill Drill or Oxygenate, Sub, Sub-Aqua Egg Aiming, Ice Eggs|Sub
+|Sub Minigame|Deep JRL Access, Sub|Deep JRL Access, Sub|Deep JRL Access, Sub
 |Tiptup|Grenade Eggs, Split Up, Hatch|Grenade Eggs or Clockwork Eggs, Split Up, Hatch|Grenade Eggs or Clockwork Eggs, Split Up, Hatch
-|Chris P. Bacon|Oxygenate, Sub-Aqua Egg Aiming, Ice Eggs|Bill Drill or Oxygenate, Sub-Aqua Egg Aiming, Ice Eggs| Sub-Aqua Egg Aiming or Sub
+|Chris P. Bacon|Deep JRL Access|Deep JRL Access|Deep JRL Access, Sub-Aqua Egg Aiming or Sub
 |Pig Pool|HFP access, CCL access, (Grenade Eggs or Bill Drill), Split Up|HFP access, CCL access, (Grenade Eggs or Clockwork Eggs or Bill Drill), Split Up|HFP access, CCL access, (Grenade Eggs or Clockwork Eggs or Bill Drill), Split Up
 |Smuggler's Cavern|Split Up, Grenade Eggs, Glide|Split Up, Grenade Eggs or Clockwork Eggs, Glide|Split Up, Grenade Eggs or Clockwork Eggs, Glide
-|Merry Maggie|Oxygenate, Sub-Aqua Egg Aiming, Ice Eggs|Bill Drill or Oxygenate, Sub-Aqua Egg Aiming, Ice Eggs|(Grenade Eggs, Egg Aim) or Sub-Aqua Egg Aim
-|Woo Fak Fak|Oxygenate, Sub-Aqua Egg Aiming, Grenade Eggs, Ice Eggs|Bill Drill or Oxygenate, Sub-Aqua Egg Aiming, Grenade Eggs, Ice Eggs|((Talon Torpedo, Bill Drill) or Oxygenate), Sub-Aqua Egg Aiming, Grenade Eggs
+|Merry Maggie|Deep JRL Access|Deep JRL Access|Deep JRL Access, Sub-Aqua Egg Aim
+|Woo Fak Fak|Deep JRL Access, Grenade Eggs|Deep JRL Access, Grenade Eggs|(((Talon Torpedo, Bill Drill) or Oxygenate), Sub-Aqua Egg Aiming, Grenade Eggs) or Sub
 |Seemee|Oxygenate, Sub-Aqua Egg Aiming, Ice Eggs, Talon Torpedo|Bill Drill or Oxygenate, Sub-Aqua Egg Aiming, Ice Eggs, Talon Torpedo|Talon Torpedo
 |Pawno |23 Doubloons|23 Doubloons|23 Doubloons
 |UFO |Oxygenate, Talon Torpedo, Egg Aim, Ice Eggs|Talon Torpedo, Egg Aim, Ice Eggs|Talon Torpedo, Ice Eggs
 |Under Terry's Nest |Springy Step Shoes, (Grenade Eggs or Bill Drill), Egg Aim|Springy Step Shoes, (Grenade Eggs or Clockwork Eggs or Bill Drill), Egg Aim|Springy Step Shoes, (Grenade Eggs or Clockwork Eggs or Bill Drill)
 |Dippy |CCL access, Talon Torpedo|CCL access, Talon Torpedo|CCL access, Talon Torpedo
-|Scrotty|WW Train Switch, TDL Train Switch, IoH Train Switch, Enlarge, Heal, Chuffy, Grenade Eggs, Split Up, Taxi Pack, Bill Drill|WW Train Switch, TDL Train Switch, IoH Train Switch, Enlarge, Heal, Chuffy, Grenade Eggs, Split Up, Taxi Pack, Bill Drill|WW Train Switch, TDL Train Switch, IoH Train Switch, Enlarge, Heal, Chuffy, Grenade Eggs, Split Up, Taxi Pack, Bill Drill
+|Scrotty|WW Train Switch, TDL Train Switch, IoH Train Switch, Enlarge, Heal, Chuffy, Grenade Eggs, Split Up, Taxi Pack, Bill Drill, Egg Aim|WW Train Switch, TDL Train Switch, IoH Train Switch, Enlarge, Heal, Chuffy, Grenade Eggs, Split Up, Taxi Pack, Bill Drill|WW Train Switch, TDL Train Switch, IoH Train Switch, Enlarge, Heal, Chuffy, Grenade Eggs, Split Up, Taxi Pack, Bill Drill
 |Terry |Springy Step Shoes, Egg Aim|Springy Step Shoes, Egg Aim|Springy Step Shoes
-|Oogle Boogle Tribe |Enlarge, T-Rex, Grip Grab, Fire Eggs, Claw Clamber Boots|Enlarge, T-Rex, Grip Grab, (Fire Eggs or Dragon), Claw Clamber Boots|Enlarge, T-Rex, Grip Grab, (Fire Eggs or Dragon)
+|Oogle Boogle Tribe |Enlarge, T-Rex, Grip Grab, Fire Eggs, Claw Clamber Boots, Bill Drill|Enlarge, T-Rex, Grip Grab, (Fire Eggs or Dragon), Claw Clamber Boots, Bill Drill|Enlarge, T-Rex, Grip Grab, (Fire Eggs or Dragon), Bill Drill|
 |Chompas Belly|Breegull Blaster|Breegull Blaster|Breegull Blaster
 |Terry's Kids|Enlarge, T-Rex, Springy Step Shoes, Egg Aim, Split Up, Hatch, Taxi Pack|Enlarge, T-Rex, Springy Step Shoes, Egg Aim, Split Up, Hatch, Taxi Pack|Enlarge, T-Rex, Springy Step Shoes, Split Up, Hatch, Taxi Pack
 |Stomping Plains (BK Switch)|Springy Step Shoes, Ice Eggs|Springy Step Shoes, Ice Eggs or (Split Up, (Wing Whack or Glide))|Springy Step Shoes|
@@ -66,12 +66,12 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Code of the Dinosaurs|T-Rex|T-Rex|T-Rex
 |Underwater Waste Disposal Plant |Floor 3+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack, Shack Pack|Floor 2+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack, Shack Pack|Floor 2+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack, Shack Pack
 |Weldar|Floor 3+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack|Floor 2+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack|Floor 2+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack
-|Clinker's Cavern |Floor 3+ access, EMP, Breegull Blaster, Claw Clamber Boots|EMP, Breegull Blaster, Claw Clamber Boots|EMP, Breegull Blaster, Claw Clamber Boots
-|Skivvy Workers |Floor 3+ Access, Bill Drill, Washing Machine|Floor 2+ Access, Bill Drill, Washing Machine|Floor 2+ Access, Bill Drill, Washing Machine
+|Clinker's Cavern |Floor 3+ access, EMP, Breegull Blaster, Claw Clamber Boots|Floor 2+ access, EMP, Breegull Blaster, Claw Clamber Boots|Floor 2+ access, EMP, Breegull Blaster, Claw Clamber Boots
+|Skivvy Workers |Floor 3+ Access, Bill Drill, Washing Machine, Grip Grab|Floor 2+ Access, Bill Drill, Washing Machine|Floor 2+ Access, Bill Drill, Washing Machine
 |Floor 5 |Floor 3+ access|Floor 2+ access|Floor 2+ access
 |Quality Control |Floor 3+ access, EMP, Washing Machine, Grenade Eggs, Egg Aim, Split Up, Pack Whack, Taxi Pack|Floor 2+ access, EMP, (Washing Machine, Egg Aim) or Leg Spring, Grenade Eggs, Split Up, Pack Whack, Taxi Pack|Floor 2+ access, EMP, Grenade Eggs, Split Up, Pack Whack, Taxi Pack
 |Floor 1 Guarded |Floor 2+ access, Split Up|Floor 2+ access, Split Up|Floor 2+ access, Split Up
-|Trash Compactor |Inside GI access, Split Up, Snooze Pack|Inside GI access, Split Up, Snooze Pack|Inside GI access, Split Up, Pack Whack or Snooze Pack
+|Trash Compactor |Inside GI access, Split Up, Snooze Pack|Inside GI access, Split Up, Snooze Pack or Pack Whack|Inside GI access, Split Up, Pack Whack or Snooze Pack
 |Twinkly Packing |Floor 3+ access, Split Up, Pack Whack, Taxi Pack, Grip Grab|Floor 2+ access, Split Up, Pack Whack, Taxi Pack|Floor 2+ access, Split Up, Pack Whack, Taxi Pack
 |Waste Disposal Plant Box |Inside GI Access, Split Up, Pack Whack, Taxi Pack, Sack Pack|Inside GI Access, Split Up, Pack Whack, Taxi Pack|Inside GI Access, Split Up, Pack Whack, Taxi Pack
 |Dragon Brothers |Fire Eggs, Ice Eggs, Claw Clamber Boots|Fire Eggs, Ice Eggs, Claw Clamber Boots|Fire Eggs, Ice Eggs
@@ -83,7 +83,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Stomping Plains (Banjo Switch)|Springy Step Shoes, Ice Eggs, Split Up, Snooze Pack|Springy Step Shoes, Ice Eggs or (Wing Whack or Glide), Split Up, Snooze Pack|Springy Step Shoes, Split Up
 |HFP Kickball|Goliath, Stony, Grenade Eggs|Goliath, Stony, Life Force or Grenade Eggs or Clockwork Eggs|Goliath, Stony, Life Force or Grenade Eggs or Clockwork Eggs
 |Aliens|JRL access, Life Force, Talon Torpedo, Egg Aim, Ice Eggs, Bill Drill, Split Up, Hatch, Glide|JRL access, Life Force, Talon Torpedo, Egg Aim, Ice Eggs, Bill Drill, Split Up, Hatch, Wing Whack or Glide|JRL access, Life Force, Talon Torpedo, Ice Eggs, Bill Drill, Split Up, Hatch
-|Colosseum Split-Up|Split Up, Grip Grab|Split Up, Grip Grab|Split Up, Grip Grab TODO: check if grip grab is necessary
+|Colosseum Split-Up|Split Up, Grip Grab|Split Up, Grip Grab|Split Up, (Grip Grab or Pack Whack)|
 |Mingy Jongo|<N/A>|<N/A>|<N/A>
 |Mr Fit|Rain Dance, Springy Step Shoes, Bill Drill, Split Up, Hatch, Taxi Pack, Sack Pack|Rain Dance, Springy Step Shoes, Bill Drill, Split Up, Hatch, Taxi Pack, Sack Pack|Rain Dance, Springy Step Shoes, Bill Drill, Split Up, (Hatch or Pack Whack), Taxi Pack, Sack Pack
 |Pot O' Gold|Rain Dance, Fire Eggs, Grenade Eggs, Ice Eggs|Rain Dance, Fire Eggs, Grenade Eggs, Ice Eggs|Fire Eggs, Grenade Eggs, Ice Eggs
@@ -95,6 +95,55 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Superstash|Clockwork Eggs, Grip Grab|Clockwork Eggs, (Grip Grab or Wing Whack or Glide)|Clockwork Eggs, (Grip Grab or Wing Whack or Glide)
 |Jelly Castle|Shack Pack|Shack Pack|Shack Pack
 
+## Jinjos
+|Jinjo|Beginner Logic|Normal Logic|Advanced Logic|
+|-|-|-|-|
+|Jade Snake Grove|Grip Grab, Golden Goliath|Golden Goliath|Golden Goliath|
+|Stadium|Goliath or Bill Drill|Goliath or Bill Drill|Goliath or Bill Drill|
+|Tagitzan Temple|Breegull Blaster|Breegull Blaster|Breegull Blaster|
+|MT Entrance Pool|<N/A>|<N/A>|<N/A>|
+|MT Bridge|<N/A>|<N/A>|<N/A>|
+|Water Storage<br>(Currently, getting it from GGM with leg Spring, Wing Whack and Glide is the only way in the logic. Will be changed soon)|JRL Access, Oxygenate, Ice Eggs, Sub-Aqua Egg Aiming|JRL Access, (Oxygenate or Bill Drill), Ice Eggs, Sub-Aqua Egg Aiming<br>OR<br>GGM Access, (Bill Drill or Detonator) Split Up, Wing Whack, Leg Spring, Glide|JRL Access, (Oxygenate or Bill Drill), Ice Eggs, Sub-Aqua Egg Aiming<br>OR<br>GGM Access, (Bill Drill or Detonator) Split Up, Wing Whack, Leg Spring, Glide|
+|Jail|Detonator|Detonator|Detonator|
+|Toxic Gas Cave|<N/A>|<N/A>|<N/A>|
+|Boulder|Bill Drill or Detonator|Bill Drill or Detonator|Bill Drill or Detonator|
+|Mine Tracks|<N/A>|<N/A>|<N/A>|
+|Big Top|<N/A>|<N/A>|<N/A>|
+|Cave of Horrors|Grenade Eggs, Egg Aim|Grenade Eggs|Grenade Eggs|
+|Van Door|Money Van, Grip Grab, Grenade Eggs|Money Van, (Grenade Eggs or Clockwork Eggs)|Money Van, (Grenade Eggs or Clockwork Eggs)|
+|Dodgem Dome|<N/A>|<N/A>|<N/A>|
+|Cactus of Strength|Grip Grab|<N/A> Grab|<N/A>|
+|Lagoon Alcove|28 Doubloons|<N/A>|<N/A>|
+|Blubber|<N/A>|<N/A>|<N/A>|
+|Big Fish|Deep JRL Access|Deep JRL Access|Deep JRL Access, Sub-Aqua Egg Aiming|
+|Seaweed Sanctum|Deep JRL Access, Grip Grab|Deep JRL Access|Deep JRL Access|
+|Sunken Ship|Deep JRL Access|Deep JRL Access|Sub or Sub-Aqua Egg Aiming or Talon Torpedo|
+|TDL: Underwater|Talon Torpedo|Talon Torpedo|Talon Torpedo|
+|TDL: Entrance|Grenade Eggs, Egg Aim, Springy Step Shoes|Grenade Eggs|Grenade Eggs|
+|Beside Rocknut|Clockwork Kazooie Eggs|Clockwork Kazooie Eggs|Clockwork Kazooie Eggs|
+|Big T-Rex|T-Rex, Enlarge|T-Rex, Enlarge|T-Rex, Enlarge|
+|Stomping Plains|Springy Step Shoes, Ice Eggs, Split Up|Springy Step Shoes, (Ice Eggs or Wing Whack or Glide), Split Up|Springy Step Shoes, Split Up|
+|Floor 5|Floor 3+ Access|Floor 2+ Access|Floor 2+ Access|
+|Floor 4|Floor 3+ Access, Split Up, Claw Clamber Boots|Floor 2+ Access, Split Up|Floor 2+ Access, Split Up|
+|Floor 3|Floor 3+ Access|Floor 2+ Access|Floor 2+ Access|
+|Floor 2|Floor 2 Access, Split Up, Leg Spring|Floor 2 Access, Split Up, Leg Spring|Floor 2 Access, Split Up, Leg Spring|
+|Floor 1|Deep JRL Access, Talon Torpedo|Deep JRL Access, Talon Torpedo|JRL Access, Ice Eggs, Sub-Aqua Egg Aiming, Talon Torpedo|
+|Lava Waterfall|<N/A>|<N/A>|<N/A>|
+|Hot Pool|Split Up, Shack Pack|Split Up, Shack Pack|Split Up, Shack Pack|
+|Windy Hole|Snowball|Snowball|Snowball|
+|Icicle Grotto|Split Up, Glide, Grenade Eggs, Glide|Split Up, ((Leg Spring and Wing Whack) or Glide)|Split Up, ((Leg Spring and Wing Whack) or Glide)|
+|Mildred|Grenade Eggs or Bill Drill or Fire Eggs|Life Force or Grenade Eggs or Clockwork Eggs or Bill Drill or Fire Eggs|Life Force or Grenade Eggs or Clockwork Eggs or Bill Drill or Fire Eggs|
+|Trash Can|Split Up, Shack Pack|Split Up, (Leg Spring or Shack Pack)|Split Up, (Leg Spring or Shack Pack)|
+|Cheese Wedge|Rain Dance, Bill Drill, Split Up, Hatch, Taxi Pack, Sack Pack|<N/A>|<N/A>|
+|Central Cavern|Split Up|Split Up|Split Up|
+|Mingy Jongo|<N/A>|<N/A>|<N/A>|
+|Humba Wigwam|<N/A>|<N/A>|<N/A>|
+|Spiral Mountain|Talon Torpedo|Talon Torpedo|Talon Torpedo|
+|Wooded Hollow|<N/A>|<N/A>|<N/A>|
+|Plateau|Bill Drill|Bill Drill|Bill Drill|
+|Cliff Top|Claw Clamber Boots|Claw Clamber Boots|Claw Clamber Boots|
+|Wasteland|Grip Grab|<N/A>|<N/A>|
+
 ## Empty Honeycombs
 |Honeycomb|Beginner Logic|Normal Logic|Advanced Logic|
 |-|-|-|-|
@@ -105,10 +154,10 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |GGM Boulder|Detonator or Bill Drill|Detonator or Bill Drill|Detonator or Bill Drill
 |GGM Train Station|<N/A>|<N/A>|<N/A>
 |Space Zone|Grip Grab|Grip Grab|<N/A>
-|WW Mumbo Skull|Money Van|Money Van|Money Van
+|WW Mumbo Skull|Money Van, Grip Grab|Money Van|Money Van
 |Crazy Castle|Grenade Eggs|Grenade Eggs or Clockwork Eggs|Grenade Eggs or Clockwork Eggs
 |Seemee|Talon Torpedo, Sub-Aqua Egg Aim, Ice Eggs, Oxygenate|Talon Torpedo, Sub-Aqua Egg Aim, Ice Eggs, (Bill Drill or Oxygenate)|Talon Torpedo
-|Atlantis|Sub-Aqua Egg Aim, Ice Eggs, Oxygenate|Sub-Aqua Egg Aim, Ice Eggs, (Bill Drill or Oxygenate)|<N/A>
+|Atlantis|Deep JRL Access|Deep JRL Access|Deep JRL Access
 |Waste Pipe|Grenade Eggs, Grip Grab|(Grenade Eggs or Clockwork Eggs or Bill Drill), Grip Grab<br>OR<br>(Grenade Eggs or Clockwork Eggs), Split Up, Leg Spring, (Wing Whack or Glide)|(Grenade Eggs or Clockwork Eggs or Bill Drill), Grip Grab<br>OR<br>(Grenade Eggs or Clockwork Eggs), Split Up, Leg Spring, (Wing Whack or Glide)
 |Lakeside|<N/A>|<N/A>|<N/A>
 |Styracosaurus Cave|Bill Drill, Split Up|Bill Drill, Split Up|Split Up, Bill Drill or (Wing Whack, Glide)
@@ -132,15 +181,15 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Canary Mary 2|Detonator|Detonator or Clockwork Eggs|Detonator or Clockwork Eggs
 |GGM Entrance|Springy Step Shoes|<N/A>|<N/A>
 |Water Storage|Grip Grab|Grip Grab|<N/A>
-|Haunted Cavern|Grip Grab|Grip Grab or Leg Spring and (Wing Whack or Glide)|Grip Grab or Leg Spring and (Wing Whack or Glide)
-|The Inferno|Money Van|Money Van|Money Van
+|Haunted Cavern|Grip Grab|Grip Grab or Split Up and Leg Spring and (Wing Whack or Glide)|Grip Grab or Split Up and Leg Spring and (Wing Whack or Glide)|
+|The Inferno|Money Van, Grip Grab|Money Van|Money Van
 |Saucer of Peril|Detonator, Power, Money Van, Grip Grab|Detonator, Power, Money Van<br>AND<br>(<br>Grenade Eggs and Egg Aim<br>OR<br>(Grenade Eggs or Clockwork Eggs) and (Grip Grab or (Split Up, Leg Spring, Glide))<br>)|Detonator, Power, Money Van<br>AND<br>(<br>Grenade Eggs and Egg Aim<br>OR<br>(Grenade Eggs or Clockwork Eggs) and (Grip Grab or (Split Up, Leg Spring, Glide))<br>)
 |Pawno|28 Doubloons|28 Doubloons|28 Doubloons
-|Seemee|Oxygenate or Grenades, Talon Torpedo|Talon Torpedo, (Bill Drill or Oxygenate) or (Grenade Eggs or Clockwork Eggs)|
-|Ancient Swimming Baths|Oxygenate, Sub-Aqua Egg Aim, Ice Eggs, Talon Torpedo, Split Up, Glide|Bill Drill or Oxygenate, Sub-Aqua Egg Aim, Ice Eggs, Talon Torpedo, Split Up, (Pack Whack and Grip Grab) or Wing Whack or Leg Spring or Glide|Talon Torpedo, Split Up, (Pack Whack and Grip Grab) or Wing Whack or Leg Spring or Glide
+|Seemee|Oxygenate or Grenades, Talon Torpedo|Talon Torpedo, (Bill Drill or Oxygenate) or (Grenade Eggs or Clockwork Eggs)|Talon Torpedo|
+|Ancient Swimming Baths|Deep JRL Access, Talon Torpedo, Split Up, Glide|Deep JRL Access, Talon Torpedo, Split Up, (Pack Whack and Grip Grab) or Wing Whack or Leg Spring or Glide|Deep JRL Access, Talon Torpedo, Split Up, (Pack Whack and Grip Grab) or Wing Whack or Leg Spring or Glide
 |Dippy's Pool|CCL access, Talon Torpedo, Springy Step Shoes|CCL access, Talon Torpedo, Springy Step Shoes|CCL access, Talon Torpedo, Springy Step Shoes
 |Inside the Mountain|T-Rex|T-Rex|T-Rex
-|TDL Boulder|Bill Drill, Grip Grab|Bill Drill, Grip Grab|Bill Drill, Grip Grab
+|TDL Boulder|Bill Drill, Grip Grab|Bill Drill, (Grip Grab or Beat Terry)|Bill Drill, (Grip Grab or Beat Terry)
 |Loggo|Inside GI access, Grenades|Inside GI access, Grenades or (Clockworks, Bill Drill)|Inside GI access, Grenades or (Clockworks, Bill Drill)
 |Floor 2 Window|Floor 3+ access|Floor 2+ access|Floor 2+ access
 |Weldar|Floor 3+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack|Floor 2+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack|Floor 2+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack
@@ -187,9 +236,9 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Pack Whack|120 notes, Split Up|120 notes, Split Up|120 notes, Split Up
 |Wing Whack|265 notes, Split Up, Grenade Eggs|265 notes, Split Up, Grenade Eggs or Clockwork Eggs|265 notes, Split Up, Grenade Eggs or Clockwork Eggs
 |Sub-Aqua Egg Aim|285 notes, 28 Doubloons or Grenade Eggs|285 notes, 28 Doubloons or Grenade Eggs or Clockwork Eggs|285 notes, 28 Doubloons or Grenade Eggs or Clockwork Eggs
-|Talon Torpedo|290 notes, Oxygenate, Sub-Aqua Egg Aim, Ice Eggs, Grip Grab|290 notes, Oxygenate or Bill Drill, Sub-Aqua Egg Aim, Ice Eggs|290 notes
+|Talon Torpedo|290 notes, Deep JRL Access, Grip Grab|290 notes, Deep JRL Access|290 notes, Deep JRL Access
 |Springy Step Shoes|390 notes, Grip Grab|390 notes|390 notes
-|Taxi Pack|405 notes, Split Up, Grip Grab|405 notes, Split Up, Grip Grab or Pack Whack|405 notes, Split Up, Grip Grab or Pack Whack
+|Taxi Pack|405 notes, Split Up, Grip Grab|405 notes, Split Up, Grip Grab or Pack Whack or Sack Pack|405 notes, Split Up, Grip Grab or Pack Whack or Sack Pack
 |Hatch|420 notes, Split Up|420 notes, Split Up|420 notes, Split Up
 |Claw Clamber Boots|505 notes, Inside GI access|505 notes, Inside GI access|505 notes, Inside GI access
 |Snooze Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack
@@ -205,7 +254,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 ## Notes
 |Note|Beginner Logic|Normal Logic|Advanced Logic|
 |-|-|-|-|
-|IoH: Jinjo Village Treble Clef|Grip Grab|<N/A>|<N/A>|
+|IoH: Jinjo Village Treble Clef|Grip Grab|Grip Grab|<N/A>|
 |IoH: Honey B Notes|Plateau access|Plateau access|Plateau access|
 |IoH: Plateau sign|Plateau access, Grip Grab|Plateau access|Plateau access|
 |IoH: Pine Grove notes|Pine Grove access|Pine Grove access|Pine Grove access|
@@ -215,11 +264,11 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |GGM: All notes|<N/A>|<N/A>|<N/A>|
 |WW:70 notes around the level|<N/A>|<N/A>|<N/A>|
 |WW: 10 notes in Area 51|Grenade Eggs|Grenade Eggs or Clockwork Eggs|Grenade Eggs or Clockwork Eggs or Split Up|
-|WW: Trebleclef|Money Van|Money Van|Money Van|
+|WW: Trebleclef|Money Van, Grip Grab|Money Van|Money Van|
 |JRL: 60 notes in Town Center|<N/A>|<N/A>|<N/A>|
 |JRL: 10 notes in blubbuls|Oxygenate, Sub-Aqua Egg Aim or Talon Torpedo|Sub-Aqua Egg Aim or Talon Torpedo|Sub-Aqua Egg Aim or Talon Torpedo|
-|JRL: Trebleclef|Oxygenate, Sub-Aqua Egg Aiming, Ice Eggs|Bill Drill or Oxygenate, Sub-Aqua Egg Aiming, Ice Eggs |Talon Torpedo or Sub-Aqua Egg Aiming
-|JRL: 10 notes in Atlantis|Oxygenate, Sub-Aqua Egg Aiming, Ice Eggs|Bill Drill or Oxygenate, Sub-Aqua Egg Aiming, Ice Eggs |<N/A>
+|JRL: Trebleclef|Oxygenate, Sub-Aqua Egg Aiming, Ice Eggs|Deep JRL Access|Talon Torpedo or Sub-Aqua Egg Aiming
+|JRL: 10 notes in Atlantis|Deep JRL Access|Deep JRL Access|Deep JRL Access
 |TDL: Trebleclef|Grip Grab, Bill Drill|Bill Drill|Bill Drill|
 |TDL: The other 80 notes|<N/A>|<N/A>|<N/A>|
 |GI: Train Station notes|Inside GI access|Inside GI access|Inside GI access|
@@ -230,8 +279,8 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |GI: 10 notes on floor 3|Floor 3 access|Floor 2+ access|Floor 2+ access|
 |GI: Trebleclef|Floor 3 access|Floor 2+ access|Floor 2+ access|
 |HFP: 80 regular notes|<N/A>|<N/A>|<N/A>|
-|HFP: Trebleclef|Grenade Eggs, Egg Aim, Split Up|Grenade Eggs, Egg Aim, Split Up|Grenade Eggs, Egg Aim, Split Up
-|CCL: 10 notes near Sack Pack Silo|Split Up, Shack Pack|(Split Up, Shack Pack) or Clockwork Eggs|(Split Up, Shack Pack) or Clockwork Eggs|
+|HFP: Trebleclef|Grenade Eggs, Egg Aim|(Grenade Eggs, Egg Aim) or Split Up|(Grenade Eggs, Egg Aim) or Split Up|
+CCL: 10 notes near Sack Pack Silo|Split Up, Shack Pack|(Split Up, Shack Pack) or Clockwork Eggs|(Split Up, Shack Pack) or Clockwork Eggs|
 |CCL: The other 90 notes|<N/A>|<N/A>|<N/A>|
 
 ## Train Switches
@@ -248,7 +297,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Switch|Beginner Logic|Normal Logic|Advanced Logic|
 |-|-|-|-|
 |3 doubloons on the upper ledge|Split Up, Grenade Eggs|Split Up, Grenade Eggs or Clockwork Eggs|Split Up, Grenade Eggs or Clockwork Eggs|
-|3 doubloons in the dirt datches|Grenade Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|
+|3 doubloons in the dirt patches|Grenade Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|
 |The other 24 doubloons|<N/A>|<N/A>|<N/A>|
 
 # Miscellaneous stuff
@@ -258,3 +307,5 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Inside GI access|GI Train Switch, Levitate|(GI Train Switch, Levitate) or Claw Clamber Boots|(GI Train Switch, Levitate) or Claw Clamber Boots
 |Floor 2 access|Inside GI access, Claw Clamber Boots|(Inside GI Access, Split Up, Leg Spring, Glide) or Claw Clamber Boots|(Inside GI Access, Split Up, Leg Spring, Glide) or Claw Clamber Boots|
 |Floor 3+ access|Floor 2 access, Grip Grab|Same as floor 2|Same as floor 2|
+|Deep JRL Access|Oxygenate, Sub-Aqua Egg Aim, Ice Eggs|(Oxygenate or Faster Swimming) Sub-Aqua Egg Aim, Ice Eggs|<N/A>|
+|Faster Swimming|Bill Drill|Bill Drill|Bill Drill|

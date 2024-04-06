@@ -1,6 +1,6 @@
 PAGES = "Cheato Page"
 HONEY = "Empty Honeycomb"
-WJINJO = "white Jinjo"
+WJINJO = "White Jinjo"
 OJINJO = "Orange Jinjo"
 YJINJO = "Yellow Jinjo"
 BRJINJO = "Brown Jinjo"

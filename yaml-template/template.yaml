@@ -1,16 +1,20 @@
 Banjo-Tooie:
   death_link: 'false'
-  multiworld_moves: 'true'
-  multiworld_jinjos: 'false'
-  multiworld_doubloons: 'true'
-  multiworld_cheato: 'true'
+  randomize_moves: 'true'
+  randomize_jinjos: 'true'
+  forbid_moves_on_jinjo_family: 0 # 0 = none,  1 = moves only, 2 = moves and magic
+  forbid_jinjos_on_jinjo_family: 'true'
+  randomize_doubloons: 'true'
+  randomize_cheato: 'true'
   cheato_as_filler: 'true'
-  multiworld_honeycombs: 'true'
-  multiworld_glowbos: 'true'
-  multiworld_treble: 'true'
-  multiworld_stations: 'true' #Randomize Stations
-  multiworld_chuffy: 'true' #Chuffy as a AP Item
-  jingaling_jiggy: 'true'  #True = Always get Jiggy from Jingaling #recommended when playing Multiworld.
+  randomize_honeycombs: 'true'
+  randomize_glowbos: 'true'
+  randomize_treble: 'true'
+  randomize_stations: 'true' #Randomize Stations
+  randomize_chuffy: 'true' #Chuffy as a AP Item
+  
+  logic_type: 1  # 0 = beginner, 1 = normal, 2 = advanced 
+  jingaling_jiggy: 'false' #True = Always get Jiggy from Jingaling #recommended when playing Multiworld.
   skip_tower_of_tragedy: 1 #0 = no skip, #1 = skip fully, #2 = 3rd round only 
   speed_up_minigames: 'true' #skip to round 3 of kickball, dodgems
   skip_puzzles: 'true'

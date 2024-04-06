@@ -27,7 +27,7 @@ jinjo_table = {
 }
 
 jiggy_table = {
-    itemName.JIGGY:         ItemData(1230515, 81, "progress", None),
+    itemName.JIGGY:         ItemData(1230515, 90, "progress", None),
 }
 
 moves_table = {

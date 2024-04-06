@@ -8,7 +8,7 @@ from .Locations import BanjoTooieLocation, all_location_table
 from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
-from .Names import itemName
+from .Names import itemName, locationName
 
 #from Utils import get_options
 from BaseClasses import ItemClassification, Tutorial, Item, Region, MultiWorld
@@ -114,10 +114,16 @@ class BanjoTooieWorld(World):
             if self.item_filter(item):
                 if item.code == 1230515 and self.kingjingalingjiggy == True:
                     for i in range(id.qty - 1): #note the -1 in the count here. King Took one already.
-                        itempool += [self.create_item(name)]
+                        if self.options.randomize_jinjos == False and self.jiggy_counter > 81:
+                            break
+                        else:
+                            itempool += [self.create_item(name)]
                 else:
                     for i in range(id.qty):
-                        itempool += [self.create_item(name)]
+                        if self.options.randomize_jinjos == False and self.jiggy_counter > 81 and item.code == 1230515:
+                            break
+                        else:
+                            itempool += [self.create_item(name)]
         
         for item in itempool:
             self.multiworld.itempool.append(item)
@@ -132,36 +138,34 @@ class BanjoTooieWorld(World):
         if item.code == 0: #Events
             return False
         
-        if(item.code == 1230514 and self.options.multiworld_doubloons == False) :
+        if(item.code == 1230514 and self.options.randomize_doubloons == False) :
             return False
         
-        if(item.code == 1230513 and self.options.multiworld_cheato == False) : # Added later in Prefill
+        if(item.code == 1230513 and self.options.randomize_cheato == False) : # Added later in Prefill
             return False
         
-        if(item.code == 1230512 and self.options.multiworld_honeycombs == False) : # Added later in Prefill
+        if(item.code == 1230512 and self.options.randomize_honeycombs == False) : # Added later in Prefill
             return False
         
-        if(item.code in range(1230753, 1230778) and self.options.multiworld_moves == False) : #range you need to add +1 to the end. 
+        if(item.code in range(1230753, 1230778) and self.options.randomize_moves == False) : #range you need to add +1 to the end. 
             return False
         
-        if(item.code in range(1230174, 1230183) and self.options.multiworld_glowbos == False) : #range you need to add +1 to the end.
+        if(item.code in range(1230174, 1230183) and self.options.randomize_glowbos == False) : #range you need to add +1 to the end.
             return False
         
-        if(item.code in range(1230855, 1230864) and self.options.multiworld_glowbos == False) : #range you need to add +1 to the end.
+        if(item.code in range(1230855, 1230864) and self.options.randomize_glowbos == False) : #range you need to add +1 to the end.
             return False
 
-        if((item.code == 1230501 or item.code == 1230502 or item.code == 1230503 or item.code == 1230504 or
-            item.code == 1230505 or item.code == 1230506 or item.code == 1230507 or item.code == 1230508 or
-            item.code == 1230509 ) and self.options.multiworld_jinjos == False) :
+        if(item.code in range(1230501, 1230510) and self.options.randomize_jinjos == False) :#range you need to add +1 to the end.
             return False
         
-        if(item.code == 1230778 and self.options.multiworld_treble == False):
+        if(item.code == 1230778 and self.options.randomize_treble == False):
             return False
         
-        if item.code == 1230796 and self.options.multiworld_chuffy == False:
+        if item.code == 1230796 and self.options.randomize_chuffy == False:
             return False
         
-        if item.code in range(1230790, 1230796) and self.options.multiworld_stations == False:
+        if item.code in range(1230790, 1230796) and self.options.randomize_stations == False:
             return False
 
         return True
@@ -175,29 +179,104 @@ class BanjoTooieWorld(World):
         return rules.set_rules()
     
     def pre_fill(self) -> None:
-        if self.options.multiworld_honeycombs == False:
+        if self.options.randomize_honeycombs == False:
             self.banjo_pre_fills(itemName.HONEY, "Honeycomb", False)
                     
-        if self.options.multiworld_cheato == False:
+        if self.options.randomize_cheato == False:
             self.banjo_pre_fills(itemName.PAGES, "Page", False)
 
-        if self.options.multiworld_doubloons == False:
+        if self.options.randomize_doubloons == False:
             self.banjo_pre_fills(itemName.DOUBLOON, "Doubloon", False)
 
-        if self.options.multiworld_moves == False:
+        if self.options.randomize_moves == False:
             self.banjo_pre_fills("Moves", None, True)
 
-        if self.options.multiworld_glowbos == False:
+        if self.options.randomize_glowbos == False:
             self.banjo_pre_fills("Magic", None, True)
 
-        if self.options.multiworld_treble == False:
+        if self.options.randomize_treble == False:
             self.banjo_pre_fills(itemName.TREBLE, "Treble Clef", False)
         
-        if self.options.multiworld_stations == False:
+        if self.options.randomize_stations == False:
             self.banjo_pre_fills("Stations", None, True)
 
-        if self.options.multiworld_chuffy == False:
+        if self.options.randomize_chuffy == False:
             self.banjo_pre_fills(itemName.CHUFFY, "Chuffy", False)
+        
+        if self.options.randomize_jinjos == False:
+            item = self.create_item(itemName.JIGGY)
+            self.multiworld.get_location(locationName.JIGGYIH1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH6, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH7, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH8, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH9, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.WJINJO)
+            self.multiworld.get_location(locationName.JINJOJR5, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.OJINJO)
+            self.multiworld.get_location(locationName.JINJOWW4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOHP2, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.YJINJO)
+            self.multiworld.get_location(locationName.JINJOWW3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOHP4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOHP3, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.BRJINJO)
+            self.multiworld.get_location(locationName.JINJOGM1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOJR2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOTL2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOTL5, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.GJINJO)
+            self.multiworld.get_location(locationName.JINJOWW5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOJR1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOTL4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGI2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOHP1, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.RJINJO)
+            self.multiworld.get_location(locationName.JINJOMT2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOMT3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOMT5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOJR3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOJR4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOWW2, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.BLJINJO)
+            self.multiworld.get_location(locationName.JINJOGM3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOTL1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOHP5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOCC2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOIH1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOIH4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOIH5, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.PJINJO)
+            self.multiworld.get_location(locationName.JINJOMT1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGM5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGI3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOCC1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOCC3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOCC5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOIH2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOIH3, self.player).place_locked_item(item)
+
+            item = self.create_item(itemName.BKJINJO)
+            self.multiworld.get_location(locationName.JINJOMT4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGM2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGM4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOWW1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOTL3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGI1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGI5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOCC4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGI4, self.player).place_locked_item(item)
 
 
     def banjo_pre_fills(self, itemNameOrGroup: str, locationFindCriteria: str|None, useGroup: bool ) -> None:
@@ -215,7 +294,6 @@ class BanjoTooieWorld(World):
                     self.multiworld.get_location(name, self.player).place_locked_item(item)
 
 
-
     def fill_slot_data(self) -> dict[str, any]:
         btoptions = dict[str, any]()
         btoptions["player_name"] = self.multiworld.player_name[self.player]
@@ -227,16 +305,18 @@ class BanjoTooieWorld(World):
             btoptions["skip_tot"] = "round 3"
         else:
             btoptions["skip_tot"] = "false"
-        btoptions['honeycomb'] = "true" if self.options.multiworld_honeycombs == 1 else "false"
-        btoptions['pages'] = "true" if self.options.multiworld_cheato == 1 else "false"
-        btoptions['moves'] = "true" if self.options.multiworld_moves == 1 else "false"
-        btoptions['doubloons'] = "true" if self.options.multiworld_doubloons == 1 else "false"
+        btoptions['honeycomb'] = "true" if self.options.randomize_honeycombs == 1 else "false"
+        btoptions['pages'] = "true" if self.options.randomize_cheato == 1 else "false"
+        btoptions['moves'] = "true" if self.options.randomize_moves == 1 else "false"
+        btoptions['doubloons'] = "true" if self.options.randomize_doubloons == 1 else "false"
         btoptions['minigames'] = 'skip' if self.options.speed_up_minigames == 1 else "full"
-        btoptions['trebleclef'] = "true" if self.options.multiworld_treble == 1 else "false"
+        btoptions['trebleclef'] = "true" if self.options.randomize_treble == 1 else "false"
         btoptions['skip_puzzles'] = "true" if self.options.skip_puzzles == 1 else "false"
         btoptions['open_hag1'] = "true" if self.options.open_hag1 == 1 else "false"
-        btoptions['stations']= "true" if self.options.multiworld_stations == 1 else "false"
-        btoptions['chuffy']= "true" if self.options.multiworld_chuffy == 1 else "false"
+        btoptions['stations']= "true" if self.options.randomize_stations == 1 else "false"
+        btoptions['chuffy']= "true" if self.options.randomize_chuffy == 1 else "false"
+        btoptions['jinjo']= "true" if self.options.randomize_jinjos == 1 else "false"
+
 
 
         return btoptions

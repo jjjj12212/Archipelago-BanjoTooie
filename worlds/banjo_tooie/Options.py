@@ -5,9 +5,21 @@ class EnableMultiWorldMoveList(DefaultOnToggle):
     """Jamjars' Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves."""
     display_name = "Jamjars' Movelist"
 
-class EnableMultiWorldJinjos(Toggle):
+class EnableMultiWorldJinjos(DefaultOnToggle):
     """Jinjos fled to other worlds. Other players need return them home."""
     display_name = "Randomize Jinjos"
+
+class ForbidMovesOnJinjoFamilyTreasure(Choice):
+    """If Jinjos are randomized, do not allow unlockable moves behind Jinjo Families."""
+    display_name = "Forbid Unlockable Moves on Jinjo Family Treasure"
+    option_none = 0
+    option_moves_only = 1
+    option_moves_and_magic = 2
+    default = 1
+
+class ForbidJinjosOnJinjoFamilyTreasure(Toggle):
+    """If Jinjos are randomized, do not allow other colour Jinjos behind Jinjo Families."""
+    display_name = "Forbid Jinjos on Jinjo Family Treasure"
 
 class EnableMultiWorldDoubloons(Toggle):
     """Jolly Roger's Doubloons are scattered across the MultiWorld."""
@@ -61,6 +73,14 @@ class SkipToT(Choice):
     option_round_3 = 2
     default = 1
 
+class LogicType(Choice):
+    """Choose your logic difficulty if you are expected to perform tricks to reach certian areas."""
+    display_name = "Logic Type"
+    option_beginner = 0
+    option_normal = 1
+    option_advanced = 2
+    default = 1
+
 class SpeedUpMinigames(DefaultOnToggle):
     """Start 3-round minigames at Round 3"""
     display_name = "Speed Up Minigames"
@@ -69,19 +89,22 @@ class SpeedUpMinigames(DefaultOnToggle):
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
-    multiworld_moves: EnableMultiWorldMoveList
-    multiworld_jinjos: EnableMultiWorldJinjos
-    multiworld_doubloons: EnableMultiWorldDoubloons
-    multiworld_cheato: EnableMultiWorldCheatoPages
+    randomize_moves: EnableMultiWorldMoveList
+    randomize_jinjos: EnableMultiWorldJinjos
+    forbid_moves_on_jinjo_family: ForbidMovesOnJinjoFamilyTreasure
+    forbid_jinjos_on_jinjo_family: ForbidJinjosOnJinjoFamilyTreasure
+    randomize_doubloons: EnableMultiWorldDoubloons
+    randomize_cheato: EnableMultiWorldCheatoPages
     cheato_as_filler: SetMultiWorldCheatoPagesFiller
-    multiworld_honeycombs: EnableMultiWorldHoneycombs
-    multiworld_glowbos: EnableMultiWorldGlowbos
-    multiworld_treble: EnableMultiWorldTrebleClefs
-    multiworld_stations: EnableMultiWorldTrainStationSwitches
-    multiworld_chuffy: EnableMultiWorldChuffyTrain
+    randomize_honeycombs: EnableMultiWorldHoneycombs
+    randomize_glowbos: EnableMultiWorldGlowbos
+    randomize_treble: EnableMultiWorldTrebleClefs
+    randomize_stations: EnableMultiWorldTrainStationSwitches
+    randomize_chuffy: EnableMultiWorldChuffyTrain
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
     open_hag1: OpenHag1
     skip_tower_of_tragedy: SkipToT
     speed_up_minigames: SpeedUpMinigames
+    logic_type: LogicType
     
