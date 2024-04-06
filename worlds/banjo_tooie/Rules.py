@@ -521,7 +521,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.BDRILL, self.player) and self.prison_compound_open(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.BDRILL, self.player) and self.prison_compound_open(state)
+            logic = self.prison_compound_open(state)
         return logic
     
     def jiggy_ssslumber(self, state: CollectionState) -> bool:
@@ -1161,11 +1161,9 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.CEGGS, self.player) and state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.CEGGS, self.player) and (state.has(itemName.GGRAB, self.player) or \
-                    self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE))
+            logic = state.has(itemName.CEGGS, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.CEGGS, self.player) and (state.has(itemName.GGRAB, self.player) or \
-                    self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE))
+            logic = state.has(itemName.CEGGS, self.player)
         return logic
 
     def honeycomb_mt_entrance(self, state: CollectionState) -> bool:
