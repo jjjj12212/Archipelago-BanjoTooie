@@ -1185,7 +1185,7 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.MT_flight_pad(state) or state.has(itemName.GGRAB, self.player)
+            logic = True # N/A
         elif self.world.options.logic_type == 2: # advanced
             logic = True # N/A
         return logic
