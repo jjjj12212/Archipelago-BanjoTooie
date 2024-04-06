@@ -1568,10 +1568,10 @@ class BanjoTooieRules:
             logic = state.has(itemName.GEGGS, self.player) and \
                     self.check_humba_magic(state, itemName.HUMBAWW) and state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) and \
+            logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) and \
                     self.check_humba_magic(state, itemName.HUMBAWW)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) and \
+            logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) and \
                     self.check_humba_magic(state, itemName.HUMBAWW)
         return logic
     
