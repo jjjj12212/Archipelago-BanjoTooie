@@ -242,7 +242,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Hatch|420 notes, Split Up|420 notes, Split Up|420 notes, Split Up
 |Claw Clamber Boots|505 notes, Inside GI access|505 notes, Inside GI access|505 notes, Inside GI access
 |Snooze Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack
-|Leg Spring|545 notes, Floor 2 access, Claw Clamber Boots|545 notes, Floor 2+ access, Split Up|545 notes, Floor 2+ access, Split Up
+|Leg Spring|545 notes, Floor 2 access, Claw Clamber Boots, Split Up|545 notes, Floor 2+ access, Split Up|545 notes, Floor 2+ access, Split Up
 |Shack Pack|640 notes, Split Up|640 notes, Split Up|640 notes, Split Up
 |Glide|660 notes, Split Up, Grenade Eggs, Egg Aim|660 notes, Split Up|660 notes, Split Up
 |Sack Pack|765 notes, Split Up, Shack Pack|765 notes, Split Up, Shack Pack|765 notes, Split Up, Shack Pack
