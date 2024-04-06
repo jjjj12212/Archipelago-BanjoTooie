@@ -640,17 +640,19 @@ class BanjoTooieRules:
                     self.check_mumbo_magic(state, itemName.MUMBOWW) and \
                     self.check_humba_magic(state, itemName.HUMBAWW) and \
                     self.saucer_door_open(state) and state.has(itemName.GGRAB, self.player) and \
-                    self.can_access_GM(state)
+                    self.can_access_GM(state) and state.has(itemName.GEGGS, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = self.check_humba_magic(state, itemName.HUMBAGM) and \
                     self.check_mumbo_magic(state, itemName.MUMBOWW) and \
                     self.check_humba_magic(state, itemName.HUMBAWW) and \
-                    self.saucer_door_open(state) and self.can_access_GM(state)
+                    self.saucer_door_open(state) and self.can_access_GM(state) and \
+                    (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player))
         elif self.world.options.logic_type == 2: # advanced
             logic = self.check_humba_magic(state, itemName.HUMBAGM) and \
                     self.check_mumbo_magic(state, itemName.MUMBOWW) and \
                     self.check_humba_magic(state, itemName.HUMBAWW) and \
-                    self.saucer_door_open(state) and self.can_access_GM(state)
+                    self.saucer_door_open(state) and self.can_access_GM(state) and \
+                    (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player))
         return logic
     
     def jiggy_balloon_burst(self, state: CollectionState) -> bool:
