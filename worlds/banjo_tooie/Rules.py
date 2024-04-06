@@ -1008,7 +1008,8 @@ class BanjoTooieRules:
             logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.IEGGS, self.player) and \
                     state.has(itemName.CLAWBTS, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.IEGGS, self.player)
+            logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.IEGGS, self.player) and \
+                (self.check_solo_moves(state, itemName.PACKWH) or state.has(itemName.CLAWBTS, self.player))
         return logic
     
     def jiggy_sabreman(self, state: CollectionState) -> bool:
@@ -1404,10 +1405,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player) and \
                     (self.check_solo_moves(state, itemName.GLIDE) or self.check_solo_moves(state, itemName.LSPRING) or
-                    self.check_solo_moves(state, itemName.WWHACK) or
                     (self.check_solo_moves(state, itemName.PACKWH) and state.has(itemName.GGRAB, self.player)))
         elif self.world.options.logic_type == 2: # advanced
-            logic = (self.check_solo_moves(state, itemName.GLIDE) or self.check_solo_moves(state, itemName.LSPRING) or
+            logic = state.has(itemName.TTORP, self.player) and (self.check_solo_moves(state, itemName.GLIDE) or self.check_solo_moves(state, itemName.LSPRING) or
                     self.check_solo_moves(state, itemName.WWHACK) or
                     (self.check_solo_moves(state, itemName.PACKWH) and state.has(itemName.GGRAB, self.player)))
         return logic
