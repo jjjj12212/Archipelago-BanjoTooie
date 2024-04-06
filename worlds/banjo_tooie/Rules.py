@@ -2199,13 +2199,13 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False) and \
-            state.has(itemName.SPRINGB, self.player)
+            state.has(itemName.CLAWBTS, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False) and \
-            state.has(itemName.SPRINGB, self.player)
+            state.has(itemName.CLAWBTS, self.player)
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False) and \
-            state.has(itemName.SPRINGB, self.player)
+            state.has(itemName.CLAWBTS, self.player)
         return logic
     
     def has_train_access(self, state: CollectionState, station) -> bool:
