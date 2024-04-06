@@ -1984,7 +1984,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
+            logic = True
         return logic
     
     def can_access_GM(self, state: CollectionState) -> bool:
@@ -1996,8 +1996,7 @@ class BanjoTooieRules:
             logic = (state.has(itemName.GGRAB, self.player) and state.has(itemName.JIGGY, self.player, 4)) or \
                     self.dilberta_free(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (state.has(itemName.GGRAB, self.player) and state.has(itemName.JIGGY, self.player, 4)) or \
-                    self.dilberta_free(state)
+            logic = state.has(itemName.JIGGY, self.player, 4)
         return logic
     
     def can_access_pinegrove(self, state: CollectionState, fromTrain: bool) -> bool:
