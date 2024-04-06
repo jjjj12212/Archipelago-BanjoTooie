@@ -112,7 +112,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Cave of Horrors|Grenade Eggs, Egg Aim|Grenade Eggs|Grenade Eggs|
 |Van Door|Money Van, Grip Grab, Grenade Eggs|Money Van, (Grenade Eggs or Clockwork Eggs)|Money Van, (Grenade Eggs or Clockwork Eggs)|
 |Dodgem Dome|<N/A>|<N/A>|<N/A>|
-|Cactus of Strength|Grip Grab|<N/A> Grab|<N/A>|
+|Cactus of Strength|Grip Grab|<N/A>|<N/A>|
 |Lagoon Alcove|28 Doubloons|<N/A>|<N/A>|
 |Blubber|<N/A>|<N/A>|<N/A>|
 |Big Fish|Deep JRL Access|Deep JRL Access|Deep JRL Access, Sub-Aqua Egg Aiming|
