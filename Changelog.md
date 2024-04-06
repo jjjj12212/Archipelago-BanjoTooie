@@ -1,3 +1,12 @@
+# 1.0.1-Beta
+- Various logic bug fixes.
+- Logic changes:
+ - Beginner and normal logic only need Clockwork Eggs for superstash.
+ - Intermediate logic doesn't need faster swimming, oxygenate or ice eggs to reach the Seemee Cheato page.
+ - Advanced logic got (Pack Whack or Claw Clamber Boots) added to the Dragon Brothers logic to prevent softlocks.
+ - Advanced logic can get the JRL trebleclef with the sub.
+ 
+
 # 1.0-Beta
 - Jinjos are now added to the pool
   - In-game, it will use a set pattern as its easier to control for logic / AP sending correct Jinjo colour

@@ -431,7 +431,7 @@ def connect_regions(self):
     
     region_QM = multiworld.get_region(regionName.IOHQM, player)
     region_QM.add_exits({regionName.GIO},
-                        {regionName.GIO: lambda state: rules.can_access_gruntyindustries_outside(state)})
+                        {regionName.GIO: lambda state: rules.can_access_gruntyindustries_outside(state, False)})
     
     region_GIO = multiworld.get_region(regionName.GIO, player)
     region_GIO.add_exits({regionName.GI1},
