@@ -73,7 +73,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Floor 1 Guarded |Floor 2+ access, Split Up|Floor 2+ access, Split Up|Floor 2+ access, Split Up
 |Trash Compactor |Inside GI access, Split Up, Snooze Pack|Inside GI access, Split Up, Snooze Pack or Pack Whack|Inside GI access, Split Up, Pack Whack or Snooze Pack
 |Twinkly Packing |Floor 3+ access, Split Up, Pack Whack, Taxi Pack, Grip Grab|Floor 2+ access, Split Up, Pack Whack, Taxi Pack|Floor 2+ access, Split Up, Pack Whack, Taxi Pack
-|Waste Disposal Plant Box |Inside GI Access, Split Up, Pack Whack, Taxi Pack, Sack Pack|Inside GI Access, Split Up, Pack Whack, Taxi Pack|Inside GI Access, Split Up, Pack Whack, Taxi Pack
+|Waste Disposal Plant Box |Inside GI Access, Split Up, Pack Whack, Taxi Pack, Sack Pack, Grip Grab|Inside GI Access, Split Up, Pack Whack, Taxi Pack|Inside GI Access, Split Up, Pack Whack, Taxi Pack
 |Dragon Brothers |Fire Eggs, Ice Eggs, Claw Clamber Boots|Fire Eggs, Ice Eggs, Claw Clamber Boots|Fire Eggs, Ice Eggs
 |Inside the Volcano|<N/A>|<N/A>|<N/A>
 |Sabreman |Life Force, Fire Eggs, Split Up, Taxi Pack|Life Force, Fire Eggs or Dragon, Split Up, Taxi Pack|Life Force, Fire Eggs or Dragon, Split Up, Taxi Pack
@@ -241,7 +241,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Taxi Pack|405 notes, Split Up, Grip Grab|405 notes, Split Up, Grip Grab or Pack Whack or Sack Pack|405 notes, Split Up, Grip Grab or Pack Whack or Sack Pack
 |Hatch|420 notes, Split Up|420 notes, Split Up|420 notes, Split Up
 |Claw Clamber Boots|505 notes, Inside GI access|505 notes, Inside GI access|505 notes, Inside GI access
-|Snooze Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack
+|Snooze Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack, Grip Grab|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack
 |Leg Spring|545 notes, Floor 2 access, Claw Clamber Boots, Split Up|545 notes, Floor 2+ access, Split Up|545 notes, Floor 2+ access, Split Up
 |Shack Pack|640 notes, Split Up|640 notes, Split Up|640 notes, Split Up
 |Glide|660 notes, Split Up, Grenade Eggs, Egg Aim|660 notes, Split Up|660 notes, Split Up
