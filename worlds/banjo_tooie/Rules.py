@@ -1030,16 +1030,18 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.can_beat_king_coal(state) and state.has(itemName.GEGGS, self.player) and \
                     state.has(itemName.TRAINSWHP1, self.player) and state.has(itemName.TRAINSWHP2, self.player) and \
-                    state.has(itemName.EGGAIM, self.player) and (state.has(itemName.FEGGS, self.player) or \
-                     state.has(itemName.TRAINSWWW, self.player))
+                    state.has(itemName.EGGAIM, self.player) and ((state.has(itemName.FEGGS, self.player) \
+                    and state.has(itemName.JIGGY, self.player, 8)) or state.has(itemName.TRAINSWWW, self.player))
         elif self.world.options.logic_type == 1: # normal
             logic = self.can_beat_king_coal(state) and state.has(itemName.GEGGS, self.player) and \
                     state.has(itemName.TRAINSWHP1, self.player) and state.has(itemName.TRAINSWHP2, self.player) and \
-                    (state.has(itemName.FEGGS, self.player) or state.has(itemName.TRAINSWWW, self.player))
+                    ((state.has(itemName.FEGGS, self.player) \
+                    and state.has(itemName.JIGGY, self.player, 8)) or state.has(itemName.TRAINSWWW, self.player))
         elif self.world.options.logic_type == 2: # advanced
             logic = self.can_beat_king_coal(state) and state.has(itemName.GEGGS, self.player) and \
                     state.has(itemName.TRAINSWHP1, self.player) and state.has(itemName.TRAINSWHP2, self.player) and \
-                    (state.has(itemName.FEGGS, self.player) or state.has(itemName.TRAINSWWW, self.player))
+                    ((state.has(itemName.FEGGS, self.player) \
+                    and state.has(itemName.JIGGY, self.player, 8)) or state.has(itemName.TRAINSWWW, self.player))
         return logic
 
     def jiggy_oil_drill(self, state: CollectionState) -> bool:
