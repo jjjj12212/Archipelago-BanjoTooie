@@ -384,10 +384,9 @@ class BanjoTooieRules:
                                                 and self.has_enough_notes(state, 405),
             locationName.HATCH: lambda state:   state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 420),
 
-            locationName.SNPACK: lambda state:  self.enter_GI(state) and self.can_use_battery(state) and self.has_enough_notes(state, 525),
-            locationName.LSPRING: lambda state: self.can_reach_GI_2F(state) and self.has_enough_notes(state, 545) and
-                                                state.has(itemName.SPLITUP, self.player),
-            locationName.CLAWBTS: lambda state: self.enter_GI(state) and self.has_enough_notes(state, 505),
+            locationName.SNPACK: lambda state:  self.can_use_battery(state) and self.has_enough_notes(state, 525),
+            locationName.LSPRING: lambda state: self.has_enough_notes(state, 545),
+            locationName.CLAWBTS: lambda state: self.has_enough_notes(state, 505),
 
             locationName.SHPACK: lambda state: state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 640),
             locationName.GLIDE: lambda state: state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 660),
@@ -1790,7 +1789,6 @@ class BanjoTooieRules:
             logic = state.has(itemName.BDRILL, self.player) or state.has(itemName.GEGGS, self.player) or \
                     state.has(itemName.CEGGS, self.player)
         return logic
-
 
     def check_mumbo_magic(self, state: CollectionState, name) -> bool:
         for item_name in self.mumbo_magic:
