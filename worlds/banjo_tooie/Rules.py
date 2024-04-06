@@ -384,7 +384,7 @@ class BanjoTooieRules:
                                                 and self.has_enough_notes(state, 405),
             locationName.HATCH: lambda state:   state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 420),
 
-            locationName.SNPACK: lambda state:  self.can_use_battery(state) and self.has_enough_notes(state, 525),
+            locationName.SNPACK: lambda state:  self.silo_snooze(state),
             locationName.LSPRING: lambda state: self.has_enough_notes(state, 545),
             locationName.CLAWBTS: lambda state: self.has_enough_notes(state, 505),
 
@@ -986,7 +986,8 @@ class BanjoTooieRules:
     def jiggy_plantbox(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.can_use_battery(state) and self.check_solo_moves(state, itemName.SAPACK)
+            logic = self.can_use_battery(state) and self.check_solo_moves(state, itemName.SAPACK) and \
+                    state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = self.can_use_battery(state) 
         elif self.world.options.logic_type == 2: # advanced
@@ -1744,6 +1745,16 @@ class BanjoTooieRules:
             logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or state.has(itemName.SPLITUP, self.player)
         elif self.world.options.logic_type == 2: # advanced
             logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or state.has(itemName.SPLITUP, self.player)
+        return logic
+    
+    def silo_snooze(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player) and self.can_use_battery(state) and self.has_enough_notes(state, 525)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_use_battery(state) and self.has_enough_notes(state, 525)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.can_use_battery(state) and self.has_enough_notes(state, 525)
         return logic
     
     def tswitch_ww(self, state: CollectionState) -> bool:
