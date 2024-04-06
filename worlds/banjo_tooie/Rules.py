@@ -1122,8 +1122,8 @@ class BanjoTooieRules:
                     self.grow_beanstalk(state) and self.can_use_floatus(state)
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.SPRINGB, self.player) and self.check_solo_moves(state, itemName.SAPACK) and \
-                    self.grow_beanstalk(state) and self.check_solo_moves(state, itemName.TAXPACK) and \
-                    (self.check_solo_moves(state, itemName.HATCH) or self.check_solo_moves(state, itemName.PACKWH))
+                    self.grow_beanstalk(state) and \
+                    (self.can_use_floatus(state) or self.check_solo_moves(state, itemName.PACKWH))
         return logic
     
     def jiggy_gold_pot(self, state: CollectionState) -> bool:
@@ -1250,15 +1250,17 @@ class BanjoTooieRules:
             logic = (state.has(itemName.GEGGS, self.player) or  state.has(itemName.BDRILL, self.player)) and \
                     state.has(itemName.GGRAB, self.player) 
         elif self.world.options.logic_type == 1: # normal
-            logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
-                     state.has(itemName.BDRILL, self.player)) and (state.has(itemName.GGRAB, self.player) or \
-                    (self.check_solo_moves(state, itemName.LSPRING) and (self.check_solo_moves(state, itemName.GLIDE) or \
-                     self.check_solo_moves(state, itemName.WWHACK))))
+            logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player or state.has(itemName.BDRILL, self.player))\
+                    and state.has(itemName.GGRAB, self.player))\
+                    or (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)\
+                    and (self.check_solo_moves(state, itemName.LSPRING) and (self.check_solo_moves(state, itemName.GLIDE) or \
+                    self.check_solo_moves(state, itemName.WWHACK))))
         elif self.world.options.logic_type == 2: # advanced
-            logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
-                     state.has(itemName.BDRILL, self.player)) and (state.has(itemName.GGRAB, self.player) or \
-                    (self.check_solo_moves(state, itemName.LSPRING) and (self.check_solo_moves(state, itemName.GLIDE) or \
-                     self.check_solo_moves(state, itemName.WWHACK))))
+            logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player or state.has(itemName.BDRILL, self.player))\
+                    and state.has(itemName.GGRAB, self.player))\
+                    or (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)\
+                    and (self.check_solo_moves(state, itemName.LSPRING) and (self.check_solo_moves(state, itemName.GLIDE) or \
+                    self.check_solo_moves(state, itemName.WWHACK))))
         return logic
     
     def honeycomb_styracosaurus(self, state: CollectionState) -> bool:
@@ -1269,7 +1271,7 @@ class BanjoTooieRules:
             logic = state.has(itemName.BDRILL, self.player) and state.has(itemName.SPLITUP, self.player)
         elif self.world.options.logic_type == 2: # advanced
             logic = (state.has(itemName.BDRILL, self.player) and state.has(itemName.SPLITUP, self.player)) or \
-                    (self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.GLIDE))
+                    (self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.GLIDE))
         return logic
     
     def honeycomb_floor3(self, state: CollectionState) -> bool:
@@ -1314,7 +1316,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING) or \
                     self.check_solo_moves(state, itemName.GLIDE) or (state.has(itemName.SPLITUP, self.player) and \
-                     state.has(itemName.CHUFFY, self.player))
+                     state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, self.player))
         return logic
     
     def honeycomb_lavaside(self, state: CollectionState) -> bool:
@@ -1394,7 +1396,7 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.jiggy_see_mee(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.jiggy_see_mee(state)
+            logic = state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.jiggy_see_mee(state)
         return logic
@@ -1477,14 +1479,11 @@ class BanjoTooieRules:
     def cheato_potgold(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.GEGGS, self.player) and \
-                    state.has(itemName.IEGGS, self.player) and self.check_mumbo_magic(state, itemName.MUMBOCC)
+            logic = self.jiggy_gold_pot(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.GEGGS, self.player) and \
-                    state.has(itemName.IEGGS, self.player) and self.check_mumbo_magic(state, itemName.MUMBOCC)
+            logic = self.jiggy_gold_pot(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.GEGGS, self.player) and \
-                    state.has(itemName.IEGGS, self.player) 
+            logic = self.jiggy_gold_pot(state)
         return logic
 
     def glowbo_inferno(self, state: CollectionState) -> bool:
@@ -1719,7 +1718,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.can_reach_atlantis(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.AUQAIM, self.player) or state.has(itemName.TTORP, self.player)
+            logic = state.has(itemName.AUQAIM, self.player) or state.has(itemName.TTORP, self.player) or self.check_humba_magic(state, itemName.HUMBAJR)
         return logic
     
     def treble_tdl(self, state: CollectionState) -> bool:
