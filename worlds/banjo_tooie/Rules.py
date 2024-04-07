@@ -1157,9 +1157,9 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.check_solo_moves(state, itemName.WWHACK)
         elif self.world.options.logic_type == 1: # normal
-            logic = True
+            logic = state.has(itemName.SPLITUP, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = True
+            logic = state.has(itemName.SPLITUP, self.player)
         return logic
     
     def jiggy_sstash(self, state: CollectionState) -> bool:
@@ -1250,15 +1250,15 @@ class BanjoTooieRules:
             logic = (state.has(itemName.GEGGS, self.player) or  state.has(itemName.BDRILL, self.player)) and \
                     state.has(itemName.GGRAB, self.player) 
         elif self.world.options.logic_type == 1: # normal
-            logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player or state.has(itemName.BDRILL, self.player))\
+            logic = ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or state.has(itemName.BDRILL, self.player))\
                     and state.has(itemName.GGRAB, self.player))\
-                    or (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)\
+                    or ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player))\
                     and (self.check_solo_moves(state, itemName.LSPRING) and (self.check_solo_moves(state, itemName.GLIDE) or \
                     self.check_solo_moves(state, itemName.WWHACK))))
         elif self.world.options.logic_type == 2: # advanced
-            logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player or state.has(itemName.BDRILL, self.player))\
+            logic = ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or state.has(itemName.BDRILL, self.player))\
                     and state.has(itemName.GGRAB, self.player))\
-                    or (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)\
+                    or ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player))\
                     and (self.check_solo_moves(state, itemName.LSPRING) and (self.check_solo_moves(state, itemName.GLIDE) or \
                     self.check_solo_moves(state, itemName.WWHACK))))
         return logic
