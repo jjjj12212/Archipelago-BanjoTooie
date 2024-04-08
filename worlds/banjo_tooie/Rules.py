@@ -1136,7 +1136,8 @@ class BanjoTooieRules:
                     state.has(itemName.IEGGS, self.player) and self.check_mumbo_magic(state, itemName.MUMBOCC)
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.GEGGS, self.player) and \
-                    state.has(itemName.IEGGS, self.player)
+                    state.has(itemName.IEGGS, self.player) and\
+                    (self.check_mumbo_magic(state, itemName.MUMBOCC) or state.has(itemName.SPLITUP, self.player))
         return logic
     
     def jiggy_cheese(self, state: CollectionState) -> bool:

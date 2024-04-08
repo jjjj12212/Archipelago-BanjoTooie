@@ -1,7 +1,8 @@
 # 1.0.2-Beta
 - Mrs. Boggy now stays at the park
 - Logic changes:
- - Checks pinegrove access if you have Dragon unlocked 
+ - Checks pinegrove access if you have Dragon unlocked
+ - Pot o' Gold now requires split up or Rain dance in advanced logic 
 
 
 # 1.0.1-Beta
