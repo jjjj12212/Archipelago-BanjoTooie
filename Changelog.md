@@ -3,7 +3,7 @@
 - restarting connector for "fixing" opening levels no longer required (if skip_puzzle enabled)
 - Logic changes:
  - Checks pinegrove access if you have Dragon unlocked
- - Pot o' Gold now requires split up or Rain dance in advanced logic 
+ - Pot o' Gold now requires Split Up or Rain dance in advanced logic 
 
 
 # 1.0.1-Beta
