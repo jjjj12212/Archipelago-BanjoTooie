@@ -1871,7 +1871,8 @@ class BanjoTooieRules:
         return count >= Amount
 
     def has_fire(self, state: CollectionState) -> bool:
-        return state.has(itemName.FEGGS, self.player) or self.check_humba_magic(state, itemName.HUMBAIH)
+        return state.has(itemName.FEGGS, self.player) or (self.check_humba_magic(state, itemName.HUMBAIH) and \
+                self.can_access_pinegrove(state, False))
 
     def long_swim(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
