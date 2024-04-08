@@ -309,7 +309,10 @@ function BTRAM:checkFlag(byte, _bit, fromfuncDebug)
     end
 end
 
-function BTRAM:clearFlag(byte, _bit)
+function BTRAM:clearFlag(byte, _bit, fromfuncDebug)
+    if DEBUGLVL2 == true then
+        print(fromfuncDebug)
+    end
 	if type(byte) == "number" and type(_bit) == "number" and _bit >= 0 and _bit < 8 then
 		local flags = self:dereferencePointer(self.flag_block_ptr);
         local currentValue = mainmemory.readbyte(flags + byte);
@@ -3113,7 +3116,7 @@ function set_checked_BKNOTES() --Only run transitioning maps
     then
         BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_CHECK");
     else
-        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKNOTES_CHECK");
     end
     return true;
 end
@@ -3126,7 +3129,7 @@ function set_AP_BKNOTES() -- Only run after Transistion
         then
             BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_SET");
         else
-            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKNOTES_SET");
         end
     end
 end
@@ -3230,7 +3233,7 @@ function set_checked_BKSTATIONS() --Only run transitioning maps
     then
         BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKSTATIONS_CHECK");
     else
-        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKSTATIONS_CHECK");
     end
     return true;
 end
@@ -3243,7 +3246,7 @@ function set_AP_STATIONS() -- Only run after Transistion
         then
             BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKSTATIONS_SET");
         else
-            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKSTATIONS_SET");
         end
     end
 end
@@ -3354,7 +3357,7 @@ function set_checked_BKCHUFFY() --Only when Inside Chuffy
     local get_addr = NON_AGI_MAP['CHUFFY']["1230796"];
     if BKCHUFFY["1230796"] == false and BMM['JIGGY']["1230606"] == false
     then
-        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKCHUFFY_CHECK");
     else
         BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKCHUFFY_CHECK");
     end
@@ -3377,7 +3380,7 @@ function set_AP_CHUFFY() -- Only run after Transistion
         BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "APCHUFFY_SET");
         return true
     else
-        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_APCHUFFY_SET");
         return false
     end
 end
@@ -3482,7 +3485,7 @@ function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Si
             local addr_info = NON_AGI_MAP["MOVES"][moveId]
             if BKM[moveId] == false
             then
-                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit']);
+                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit'], "CLEAR_AMM_MOVES");
             elseif BKM[moveId] == true
             then
                 BTRAMOBJ:setFlag(addr_info['addr'], addr_info['bit'])
@@ -3491,7 +3494,7 @@ function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Si
             for key, disable_move in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP][keys]) --Exception list, always disable
             do
                 local addr_info = NON_AGI_MAP["MOVES"][disable_move]
-                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit']);
+                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit'], "CLEAR_AMM_MOVES_EXCEPTION");
             end
         end
     end
@@ -3505,7 +3508,7 @@ function set_AGI_MOVES_checks() -- SET AGI Moves into RAM AFTER BT/Silo Model is
         then
             BTRAMOBJ:setFlag(table['addr'], table['bit']);
         else
-            BTRAMOBJ:clearFlag(table['addr'], table['bit']);
+            BTRAMOBJ:clearFlag(table['addr'], table['bit'], "CLEAR_AGI_MOVES");
         end
     end
 end
@@ -3770,11 +3773,10 @@ function JinjoCounter() -- counts AP jinjos and Marks as Completed if true
 end
 
 function JinjoPause()
-
     -- Clear all Jinjo AMM Flags first, then Set. after
     for locId, value in pairs(AGI_MASTER_MAP["JINJO"])
     do
-        AMM[locId] = false
+        AMM["JINJO"][locId] = false
     end
     -- 15 =  0000 1111
     -- 254 = 1111 1110
@@ -3804,8 +3806,9 @@ function JinjoPause()
                     print("Setting Jinjo ID: " .. itemId .. " # " .. tostring(i))
                 end
                 AMM["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]] = true
+                AGI["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]] = true
                 BTRAMOBJ:setFlag(AGI_MASTER_MAP["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]]['addr'],
-                 AGI_MASTER_MAP["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]]['bit'])
+                AGI_MASTER_MAP["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]]['bit'])
             end
         end
     end
@@ -4294,7 +4297,7 @@ function BMMRestore()
                 end
             elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
             then
-                BTRAMOBJ:clearFlag(v['addr'], v['bit'])
+                BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE")
                 AMM[item_group][loc] = BMM[item_group][loc]
                 if DEBUG == true
                 then
@@ -4321,15 +4324,15 @@ function useAGI()
                 AMM[item_group][location] = true
                 if DEBUG == true
                 then
-                    print(location .. " Flag Set");
+                    print(location .. " Flag Set from AGI");
                 end
             elseif AMM[item_group][location] == true and AGI[item_group][location] == false
             then
-                BTRAMOBJ:clearFlag(values['addr'], values['bit']);
+                BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
                 AMM[item_group][location] = false;
                 if DEBUG == true
                 then
-                    print(location .. " Flag Cleared");
+                    print(location .. " Flag Cleared from AGI");
                 end
             end
         end
@@ -4347,7 +4350,7 @@ function all_location_checks(type)
              if AMM[item_group] == nil
              then
                  AMM[item_group] = {}
-             end  
+             end
              for locationId, value in pairs(locations)
              do
                  AMM[item_group][locationId] = value
