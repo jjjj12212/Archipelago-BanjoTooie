@@ -1,5 +1,6 @@
 # 1.0.2-Beta
 - Mrs. Boggy now stays at the park
+- restarting connector for "fixing" opening levels no longer required (if skip_puzzle enabled)
 - Logic changes:
  - Checks pinegrove access if you have Dragon unlocked 
 
