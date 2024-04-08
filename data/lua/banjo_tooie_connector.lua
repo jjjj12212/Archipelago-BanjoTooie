@@ -3815,7 +3815,7 @@ function JinjoPause()
 end
 
 
-function check_open_level()  -- See if entrance conditions for a level have been met
+function check_open_level(show_message)  -- See if entrance conditions for a level have been met
     local jiggy_count = 0;
     for location, values in pairs(AGI_MASTER_MAP["JIGGY"])
     do
@@ -3834,10 +3834,17 @@ function check_open_level()  -- See if entrance conditions for a level have been
                 BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
                 values["opened"] = true
                 if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
+                    and show_message == true
                 then
                     table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
                     print(values["defaultName"] .. " is now unlocked!")
                 end
+            end
+        else --Make sure its open regardless but no message
+            if jiggy_count >= values["defaultCost"] and values["opened"] == true
+            then
+                BTRAMOBJ:setFlag(values["addr"], values["bit"])
+                BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
             end
         end
     end
@@ -3905,7 +3912,7 @@ function loadGame(current_map)
             end
             if SKIP_PUZZLES == true
             then
-                check_open_level()
+                check_open_level(true)
             end
             if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
                 BTRAMOBJ:setFlag(0x6E, 3);
@@ -4024,6 +4031,10 @@ function BKLogics(mapaddr)
             JinjoCounter()
         end
         client.saveram()
+        if SKIP_PUZZLES == true -- another sanity check
+        then
+            check_open_level(false)
+        end
     end
 end
 
@@ -4469,7 +4480,7 @@ function processAGIItem(item_list)
                     end
                 end
                 if SKIP_PUZZLES == true then
-                    check_open_level() -- check if the current jiggy count opens a new level
+                    check_open_level(true) -- check if the current jiggy count opens a new level
                 end
             elseif((1230855 <= memlocation and memlocation <= 1230863) or (1230174 <= memlocation and memlocation <= 1230182))
             then
@@ -5145,7 +5156,7 @@ function initializeFlags()
         BMMRestore()
 		INIT_COMPLETE = true
         if SKIP_PUZZLES == true then
-            check_open_level() -- sanity check that level open flags are still set
+            check_open_level(true) -- sanity check that level open flags are still set
         end
         if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
             BTRAMOBJ:setFlag(0x6E, 3);
