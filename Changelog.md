@@ -1,3 +1,9 @@
+# 1.0.2-Beta
+- Mrs. Boggy now stays at the park
+- Logic changes:
+ - Checks pinegrove access if you have Dragon unlocked 
+
+
 # 1.0.1-Beta
 - Various logic bug fixes.
 - Logic changes:
