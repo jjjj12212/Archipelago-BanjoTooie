@@ -4345,6 +4345,19 @@ function useAGI()
                 then
                     print(location .. " Flag Cleared from AGI");
                 end
+            elseif ENABLE_AP_JINJO == true
+            then
+                if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
+                or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
+                or location == "1230684") and AGI[item_group][location] == true
+                then
+                    BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                    AMM[item_group][location] = true
+                    if DEBUG == true
+                    then
+                        print(location .. " Flag Set from AGI");
+                    end
+                end
             end
         end
     end
