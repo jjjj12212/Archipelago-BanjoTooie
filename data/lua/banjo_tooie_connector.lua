@@ -3898,7 +3898,22 @@ function loadGame(current_map)
             set_AP_STATIONS();
             if ENABLE_AP_CHUFFY == true -- Sanity Check
             then
-                BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
+                if BTRAMOBJ:checkFlag(0x98, 5) == false and BTRAMOBJ:checkFlag(0x98, 6) == false and
+                BTRAMOBJ:checkFlag(0x98, 7) == false and BTRAMOBJ:clearFlag(0x99, 0) == false and
+                BTRAMOBJ:clearFlag(0x99, 1) == false and BTRAMOBJ:clearFlag(0x99, 2) == false and
+                BTRAMOBJ:clearFlag(0x99, 3) == false
+                then
+                    if DEBUG == true
+                    then
+                        print("Moving Chuffy to GGM")
+                    end
+                    BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
+                else
+                    if DEBUG == true
+                    then
+                        print("Sorry, but Chuffy is at a different Station")
+                    end
+                end
             end
             for ap_id, itemId in pairs(receive_map) -- Sanity Check
             do
