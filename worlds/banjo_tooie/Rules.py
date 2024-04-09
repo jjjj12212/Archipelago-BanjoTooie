@@ -184,6 +184,7 @@ class BanjoTooieRules:
             locationName.JIGGYGM7: lambda state: self.jiggy_crushing_shed(state),
             locationName.JIGGYGM8: lambda state: self.jiggy_waterfall(state),
             locationName.JIGGYGM9: lambda state: self.jiggy_power_hut(state),
+            locationName.JIGGYGM10: lambda state: self.jiggy_flooded_caves(state),
 
             #Witchyworld Jiggies
             locationName.JIGGYWW1:  lambda state: self.jiggy_hoop_hurry(state),
@@ -593,6 +594,18 @@ class BanjoTooieRules:
             
         elif self.world.options.logic_type == 2: # advanced
             logic = self.GM_boulders(state)
+        return logic
+    
+    def jiggy_flooded_caves(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_humba_magic(state, itemName.HUMBAGM)
+
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+            
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
         return logic
     
     def jiggy_hoop_hurry(self, state: CollectionState) -> bool:

@@ -1,3 +1,8 @@
+# 1.0.3-Beta
+- Added glitched logic
+- Logic Changes:
+  - Flooded Caves Jiggy requires the detonator for beginner logic.
+
 # 1.0.2-Beta
 - Mrs. Boggy now stays at the park
 - restarting connector for "fixing" opening levels no longer required (if skip_puzzle enabled)
