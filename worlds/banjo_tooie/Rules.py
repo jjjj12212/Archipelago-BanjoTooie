@@ -1136,7 +1136,8 @@ class BanjoTooieRules:
                     state.has(itemName.IEGGS, self.player) and self.check_mumbo_magic(state, itemName.MUMBOCC)
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.GEGGS, self.player) and \
-                    state.has(itemName.IEGGS, self.player)
+                    state.has(itemName.IEGGS, self.player) and\
+                    (self.check_mumbo_magic(state, itemName.MUMBOCC) or state.has(itemName.SPLITUP, self.player))
         return logic
     
     def jiggy_cheese(self, state: CollectionState) -> bool:
@@ -1157,9 +1158,9 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.check_solo_moves(state, itemName.WWHACK)
         elif self.world.options.logic_type == 1: # normal
-            logic = True
+            logic = state.has(itemName.SPLITUP, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = True
+            logic = state.has(itemName.SPLITUP, self.player)
         return logic
     
     def jiggy_sstash(self, state: CollectionState) -> bool:
@@ -1250,15 +1251,15 @@ class BanjoTooieRules:
             logic = (state.has(itemName.GEGGS, self.player) or  state.has(itemName.BDRILL, self.player)) and \
                     state.has(itemName.GGRAB, self.player) 
         elif self.world.options.logic_type == 1: # normal
-            logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player or state.has(itemName.BDRILL, self.player))\
+            logic = ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or state.has(itemName.BDRILL, self.player))\
                     and state.has(itemName.GGRAB, self.player))\
-                    or (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)\
+                    or ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player))\
                     and (self.check_solo_moves(state, itemName.LSPRING) and (self.check_solo_moves(state, itemName.GLIDE) or \
                     self.check_solo_moves(state, itemName.WWHACK))))
         elif self.world.options.logic_type == 2: # advanced
-            logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player or state.has(itemName.BDRILL, self.player))\
+            logic = ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or state.has(itemName.BDRILL, self.player))\
                     and state.has(itemName.GGRAB, self.player))\
-                    or (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)\
+                    or ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player))\
                     and (self.check_solo_moves(state, itemName.LSPRING) and (self.check_solo_moves(state, itemName.GLIDE) or \
                     self.check_solo_moves(state, itemName.WWHACK))))
         return logic
@@ -1871,7 +1872,8 @@ class BanjoTooieRules:
         return count >= Amount
 
     def has_fire(self, state: CollectionState) -> bool:
-        return state.has(itemName.FEGGS, self.player) or self.check_humba_magic(state, itemName.HUMBAIH)
+        return state.has(itemName.FEGGS, self.player) or (self.check_humba_magic(state, itemName.HUMBAIH) and \
+                self.can_access_pinegrove(state, False))
 
     def long_swim(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner

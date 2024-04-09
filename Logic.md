@@ -91,7 +91,7 @@ The advanced logic may expect almost all the tricks to be done. This logic inclu
 |Zubbas|Bee|Bee|Bee
 |Jiggium Plant|Bee|Bee|Bee
 |Cheese Wedge|Rain Dance, Bill Drill, Split Up, Hatch, Taxi Pack, Shack Pack, Sack Pack|Rain Dance, Bill Drill, Split Up, Hatch, Taxi Pack, Shack Pack, Sack Pack|Rain Dance, Bill Drill, Split Up, Hatch, Taxi Pack, Shack Pack, Sack Pack
-|Trash Can|Wing Whack|<N/A>|<N/A>
+|Trash Can|Wing Whack|Split Up|Split Up|
 |Superstash|Clockwork Eggs, Grip Grab|Clockwork Eggs|Clockwork Eggs|
 |Jelly Castle|Shack Pack|Shack Pack|Shack Pack
 

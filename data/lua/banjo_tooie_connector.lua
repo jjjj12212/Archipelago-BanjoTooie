@@ -309,7 +309,10 @@ function BTRAM:checkFlag(byte, _bit, fromfuncDebug)
     end
 end
 
-function BTRAM:clearFlag(byte, _bit)
+function BTRAM:clearFlag(byte, _bit, fromfuncDebug)
+    if DEBUGLVL2 == true then
+        print(fromfuncDebug)
+    end
 	if type(byte) == "number" and type(_bit) == "number" and _bit >= 0 and _bit < 8 then
 		local flags = self:dereferencePointer(self.flag_block_ptr);
         local currentValue = mainmemory.readbyte(flags + byte);
@@ -2551,7 +2554,7 @@ local NON_AGI_MAP = {
 			},
 			['Three-Armed Pig'] = {
 				['addr'] = 0x34,
-				['bit'] = 5
+				['bit'] = 6
 			},
 			['Oogle Boogle Guard'] = {
 				['addr'] = 0x5F,
@@ -3113,7 +3116,7 @@ function set_checked_BKNOTES() --Only run transitioning maps
     then
         BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_CHECK");
     else
-        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKNOTES_CHECK");
     end
     return true;
 end
@@ -3126,7 +3129,7 @@ function set_AP_BKNOTES() -- Only run after Transistion
         then
             BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_SET");
         else
-            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKNOTES_SET");
         end
     end
 end
@@ -3230,7 +3233,7 @@ function set_checked_BKSTATIONS() --Only run transitioning maps
     then
         BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKSTATIONS_CHECK");
     else
-        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKSTATIONS_CHECK");
     end
     return true;
 end
@@ -3243,7 +3246,7 @@ function set_AP_STATIONS() -- Only run after Transistion
         then
             BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKSTATIONS_SET");
         else
-            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKSTATIONS_SET");
         end
     end
 end
@@ -3354,7 +3357,7 @@ function set_checked_BKCHUFFY() --Only when Inside Chuffy
     local get_addr = NON_AGI_MAP['CHUFFY']["1230796"];
     if BKCHUFFY["1230796"] == false and BMM['JIGGY']["1230606"] == false
     then
-        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKCHUFFY_CHECK");
     else
         BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKCHUFFY_CHECK");
     end
@@ -3377,7 +3380,7 @@ function set_AP_CHUFFY() -- Only run after Transistion
         BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "APCHUFFY_SET");
         return true
     else
-        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_APCHUFFY_SET");
         return false
     end
 end
@@ -3482,7 +3485,7 @@ function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Si
             local addr_info = NON_AGI_MAP["MOVES"][moveId]
             if BKM[moveId] == false
             then
-                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit']);
+                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit'], "CLEAR_AMM_MOVES");
             elseif BKM[moveId] == true
             then
                 BTRAMOBJ:setFlag(addr_info['addr'], addr_info['bit'])
@@ -3491,7 +3494,7 @@ function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Si
             for key, disable_move in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP][keys]) --Exception list, always disable
             do
                 local addr_info = NON_AGI_MAP["MOVES"][disable_move]
-                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit']);
+                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit'], "CLEAR_AMM_MOVES_EXCEPTION");
             end
         end
     end
@@ -3505,7 +3508,7 @@ function set_AGI_MOVES_checks() -- SET AGI Moves into RAM AFTER BT/Silo Model is
         then
             BTRAMOBJ:setFlag(table['addr'], table['bit']);
         else
-            BTRAMOBJ:clearFlag(table['addr'], table['bit']);
+            BTRAMOBJ:clearFlag(table['addr'], table['bit'], "CLEAR_AGI_MOVES");
         end
     end
 end
@@ -3770,11 +3773,10 @@ function JinjoCounter() -- counts AP jinjos and Marks as Completed if true
 end
 
 function JinjoPause()
-
     -- Clear all Jinjo AMM Flags first, then Set. after
     for locId, value in pairs(AGI_MASTER_MAP["JINJO"])
     do
-        AMM[locId] = false
+        AMM["JINJO"][locId] = false
     end
     -- 15 =  0000 1111
     -- 254 = 1111 1110
@@ -3804,15 +3806,16 @@ function JinjoPause()
                     print("Setting Jinjo ID: " .. itemId .. " # " .. tostring(i))
                 end
                 AMM["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]] = true
+                AGI["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]] = true
                 BTRAMOBJ:setFlag(AGI_MASTER_MAP["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]]['addr'],
-                 AGI_MASTER_MAP["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]]['bit'])
+                AGI_MASTER_MAP["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]]['bit'])
             end
         end
     end
 end
 
 
-function check_open_level()  -- See if entrance conditions for a level have been met
+function check_open_level(show_message)  -- See if entrance conditions for a level have been met
     local jiggy_count = 0;
     for location, values in pairs(AGI_MASTER_MAP["JIGGY"])
     do
@@ -3831,10 +3834,17 @@ function check_open_level()  -- See if entrance conditions for a level have been
                 BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
                 values["opened"] = true
                 if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
+                    and show_message == true
                 then
                     table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
                     print(values["defaultName"] .. " is now unlocked!")
                 end
+            end
+        else --Make sure its open regardless but no message
+            if jiggy_count >= values["defaultCost"] and values["opened"] == true
+            then
+                BTRAMOBJ:setFlag(values["addr"], values["bit"])
+                BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
             end
         end
     end
@@ -3888,7 +3898,22 @@ function loadGame(current_map)
             set_AP_STATIONS();
             if ENABLE_AP_CHUFFY == true -- Sanity Check
             then
-                BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
+                if BTRAMOBJ:checkFlag(0x98, 5) == false and BTRAMOBJ:checkFlag(0x98, 6) == false and
+                BTRAMOBJ:checkFlag(0x98, 7) == false and BTRAMOBJ:clearFlag(0x99, 0) == false and
+                BTRAMOBJ:clearFlag(0x99, 1) == false and BTRAMOBJ:clearFlag(0x99, 2) == false and
+                BTRAMOBJ:clearFlag(0x99, 3) == false
+                then
+                    if DEBUG == true
+                    then
+                        print("Moving Chuffy to GGM")
+                    end
+                    BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
+                else
+                    if DEBUG == true
+                    then
+                        print("Sorry, but Chuffy is at a different Station")
+                    end
+                end
             end
             for ap_id, itemId in pairs(receive_map) -- Sanity Check
             do
@@ -3902,7 +3927,7 @@ function loadGame(current_map)
             end
             if SKIP_PUZZLES == true
             then
-                check_open_level()
+                check_open_level(true)
             end
             if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
                 BTRAMOBJ:setFlag(0x6E, 3);
@@ -4021,6 +4046,10 @@ function BKLogics(mapaddr)
             JinjoCounter()
         end
         client.saveram()
+        if SKIP_PUZZLES == true -- another sanity check
+        then
+            check_open_level(false)
+        end
     end
 end
 
@@ -4294,7 +4323,7 @@ function BMMRestore()
                 end
             elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
             then
-                BTRAMOBJ:clearFlag(v['addr'], v['bit'])
+                BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE")
                 AMM[item_group][loc] = BMM[item_group][loc]
                 if DEBUG == true
                 then
@@ -4321,15 +4350,28 @@ function useAGI()
                 AMM[item_group][location] = true
                 if DEBUG == true
                 then
-                    print(location .. " Flag Set");
+                    print(location .. " Flag Set from AGI");
                 end
             elseif AMM[item_group][location] == true and AGI[item_group][location] == false
             then
-                BTRAMOBJ:clearFlag(values['addr'], values['bit']);
+                BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
                 AMM[item_group][location] = false;
                 if DEBUG == true
                 then
-                    print(location .. " Flag Cleared");
+                    print(location .. " Flag Cleared from AGI");
+                end
+            elseif ENABLE_AP_JINJO == true
+            then
+                if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
+                or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
+                or location == "1230684") and AGI[item_group][location] == true
+                then
+                    BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                    AMM[item_group][location] = true
+                    if DEBUG == true
+                    then
+                        print(location .. " Flag Set from AGI");
+                    end
                 end
             end
         end
@@ -4347,7 +4389,7 @@ function all_location_checks(type)
              if AMM[item_group] == nil
              then
                  AMM[item_group] = {}
-             end  
+             end
              for locationId, value in pairs(locations)
              do
                  AMM[item_group][locationId] = value
@@ -4466,7 +4508,7 @@ function processAGIItem(item_list)
                     end
                 end
                 if SKIP_PUZZLES == true then
-                    check_open_level() -- check if the current jiggy count opens a new level
+                    check_open_level(true) -- check if the current jiggy count opens a new level
                 end
             elseif((1230855 <= memlocation and memlocation <= 1230863) or (1230174 <= memlocation and memlocation <= 1230182))
             then
@@ -5142,7 +5184,7 @@ function initializeFlags()
         BMMRestore()
 		INIT_COMPLETE = true
         if SKIP_PUZZLES == true then
-            check_open_level() -- sanity check that level open flags are still set
+            check_open_level(true) -- sanity check that level open flags are still set
         end
         if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
             BTRAMOBJ:setFlag(0x6E, 3);
