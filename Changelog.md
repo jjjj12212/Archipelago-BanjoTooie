@@ -6,6 +6,8 @@
 # 1.0.2-Beta
 - Mrs. Boggy now stays at the park
 - restarting connector for "fixing" opening levels no longer required (if skip_puzzle enabled)
+- Jinjo Menu shows jinjos
+- Chuffy at multiple stations fixed
 - Logic changes:
  - Checks pinegrove access if you have Dragon unlocked
  - Pot o' Gold now requires Split Up or Rain dance in advanced logic 

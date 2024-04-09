@@ -3898,7 +3898,22 @@ function loadGame(current_map)
             set_AP_STATIONS();
             if ENABLE_AP_CHUFFY == true -- Sanity Check
             then
-                BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
+                if BTRAMOBJ:checkFlag(0x98, 5) == false and BTRAMOBJ:checkFlag(0x98, 6) == false and
+                BTRAMOBJ:checkFlag(0x98, 7) == false and BTRAMOBJ:clearFlag(0x99, 0) == false and
+                BTRAMOBJ:clearFlag(0x99, 1) == false and BTRAMOBJ:clearFlag(0x99, 2) == false and
+                BTRAMOBJ:clearFlag(0x99, 3) == false
+                then
+                    if DEBUG == true
+                    then
+                        print("Moving Chuffy to GGM")
+                    end
+                    BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
+                else
+                    if DEBUG == true
+                    then
+                        print("Sorry, but Chuffy is at a different Station")
+                    end
+                end
             end
             for ap_id, itemId in pairs(receive_map) -- Sanity Check
             do
@@ -4344,6 +4359,19 @@ function useAGI()
                 if DEBUG == true
                 then
                     print(location .. " Flag Cleared from AGI");
+                end
+            elseif ENABLE_AP_JINJO == true
+            then
+                if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
+                or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
+                or location == "1230684") and AGI[item_group][location] == true
+                then
+                    BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                    AMM[item_group][location] = true
+                    if DEBUG == true
+                    then
+                        print(location .. " Flag Set from AGI");
+                    end
                 end
             end
         end
