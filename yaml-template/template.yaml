@@ -13,7 +13,7 @@ Banjo-Tooie:
   randomize_stations: 'true' #Randomize Stations
   randomize_chuffy: 'true' #Chuffy as a AP Item
   
-  logic_type: 1  # 0 = beginner, 1 = normal, 2 = advanced 
+  logic_type: 0  # 0 = beginner, 1 = normal, 2 = advanced 
   jingaling_jiggy: 'false' #True = Always get Jiggy from Jingaling #recommended when playing Multiworld.
   skip_tower_of_tragedy: 1 #0 = no skip, #1 = skip fully, #2 = 3rd round only 
   speed_up_minigames: 'true' #skip to round 3 of kickball, dodgems

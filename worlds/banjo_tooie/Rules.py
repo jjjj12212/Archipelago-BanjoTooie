@@ -360,33 +360,34 @@ class BanjoTooieRules:
         }
 
         self.silo_rules = {
-            locationName.EGGAIM: lambda state: self.has_enough_notes(state, 25),
-            locationName.BBLASTER: lambda state: self.has_enough_notes(state, 30),
-            locationName.GGRAB: lambda state: self.check_mumbo_magic(state, itemName.MUMBOMT) and self.has_enough_notes(state, 35),
+            locationName.EGGAIM: lambda state: state.has(itemName.NOTE, self.player, (25 / 5)),
+            locationName.BBLASTER: lambda state: state.has(itemName.NOTE, self.player, (30 / 5)),
+            locationName.GGRAB: lambda state: self.check_mumbo_magic(state, itemName.MUMBOMT) and 
+                                              state.has(itemName.NOTE, self.player, (35 / 5)),
 
-            locationName.BDRILL: lambda state: self.has_enough_notes(state, 85),
-            locationName.BBAYONET: lambda state: self.GM_boulders(state) and self.has_enough_notes(state, 95),
+            locationName.BDRILL: lambda state: state.has(itemName.NOTE, self.player, (85 / 5)),
+            locationName.BBAYONET: lambda state: self.GM_boulders(state) and state.has(itemName.NOTE, self.player, (95 / 5)),
 
-            locationName.AIREAIM: lambda state: self.has_enough_notes(state, 180),
-            locationName.SPLITUP: lambda state: self.has_enough_notes(state, 160),
-            locationName.PACKWH: lambda state: state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 170),
+            locationName.AIREAIM: lambda state: state.has(itemName.NOTE, self.player, (180 / 5)),
+            locationName.SPLITUP: lambda state: state.has(itemName.NOTE, self.player, (160 / 5)),
+            locationName.PACKWH: lambda state: state.has(itemName.SPLITUP, self.player) and state.has(itemName.NOTE, self.player, (170 / 5)),
 
             locationName.AUQAIM: lambda state: (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or state.has(itemName.DOUBLOON, self.player, 28)) and
-                                               self.has_enough_notes(state, 275),
+                                               state.has(itemName.NOTE, self.player, (275 / 5)),
             locationName.TTORP: lambda state:  self.can_reach_atlantis(state) and state.has(itemName.GGRAB, self.player) and
-                                               self.has_enough_notes(state, 290),
+                                               state.has(itemName.NOTE, self.player, (290 / 5)),
             locationName.WWHACK: lambda state: (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) and state.has(itemName.SPLITUP, self.player) and
-                                               self.has_enough_notes(state, 265),
+                                               state.has(itemName.NOTE, self.player, (265 / 5)),
 
-            locationName.SPRINGB: lambda state: self.has_enough_notes(state, 390),
+            locationName.SPRINGB: lambda state: state.has(itemName.NOTE, self.player, (390 / 5)),
             locationName.TAXPACK: lambda state: state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GGRAB, self.player) or
                                                 self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK))
-                                                and self.has_enough_notes(state, 405),
-            locationName.HATCH: lambda state:   state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 420),
+                                                and state.has(itemName.NOTE, self.player, (405 / 5)),
+            locationName.HATCH: lambda state:   state.has(itemName.SPLITUP, self.player) and state.has(itemName.NOTE, self.player, (420 / 5)),
 
             locationName.SNPACK: lambda state:  self.silo_snooze(state),
-            locationName.LSPRING: lambda state: self.has_enough_notes(state, 545),
-            locationName.CLAWBTS: lambda state: self.has_enough_notes(state, 505),
+            locationName.LSPRING: lambda state: state.has(itemName.NOTE, self.player, (545 / 5)),
+            locationName.CLAWBTS: lambda state: state.has(itemName.NOTE, self.player, (505 / 5)),
 
             locationName.SHPACK: lambda state: state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 640),
             locationName.GLIDE: lambda state: state.has(itemName.SPLITUP, self.player) and self.has_enough_notes(state, 660),
@@ -442,6 +443,29 @@ class BanjoTooieRules:
             locationName.JINJOCC1: lambda state: self.jinjo_trashcan(state),
             locationName.JINJOCC2: lambda state: self.jinjo_cheese(state),
             locationName.JINJOCC3: lambda state: state.has(itemName.SPLITUP, self.player),
+        }
+
+        self.notes_rules = {
+            locationName.NOTEIH1:  lambda state: self.notes_plateau(state),
+            locationName.NOTEIH2:  lambda state: self.notes_plateau(state),
+
+            locationName.NOTEWW9:   lambda state: self.notes_ww_area51(state),
+            locationName.NOTEWW10:  lambda state: self.notes_ww_area51(state),
+
+            locationName.NOTEJRL4:  lambda state: self.notes_jrl_blubs(state),
+            locationName.NOTEJRL5:  lambda state: self.notes_jrl_blubs(state),
+
+            locationName.NOTEJRL6:  lambda state: self.notes_jrl_eels(state),
+            locationName.NOTEJRL7:  lambda state: self.notes_jrl_eels(state),
+            
+            locationName.NOTEGI4:  lambda state: self.notes_gi_floor1(state),
+            locationName.NOTEGI5:  lambda state: self.notes_gi_floor1(state),
+
+            locationName.NOTEGI11:  lambda state: self.can_use_battery(state),
+            locationName.NOTEGI12:  lambda state: self.can_use_battery(state),
+
+            locationName.NOTECCL3: lambda state: self.notes_ccl_silo(state),
+            locationName.NOTECCL4: lambda state: self.notes_ccl_silo(state),
         }
 
     def jiggy_targitzan(self, state: CollectionState) -> bool:
@@ -861,15 +885,14 @@ class BanjoTooieRules:
                      state.has(itemName.CEGGS, self.player)) and self.can_beat_terry(state)
         return logic
     
-    #TODO handle CCL access when randomized
     def jiggy_dippy(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.TTORP, self.player) and state.has(itemName.JIGGY, self.player, 45)
+            logic = state.has(itemName.TTORP, self.player) and self.can_access_ccl(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.TTORP, self.player) and state.has(itemName.JIGGY, self.player, 45)
+            logic = state.has(itemName.TTORP, self.player) and self.can_access_ccl(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.TTORP, self.player) and state.has(itemName.JIGGY, self.player, 45)
+            logic = state.has(itemName.TTORP, self.player) and self.can_access_ccl(state)
         return logic
     
     def jiggy_scrotty(self, state: CollectionState) -> bool:
@@ -1173,6 +1196,7 @@ class BanjoTooieRules:
             logic = state.has(itemName.CEGGS, self.player)
         return logic
 
+
     def honeycomb_mt_entrance(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -1329,6 +1353,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = True
         return logic
+
 
     def cheato_snakehead(self, state: CollectionState) -> bool:
         logic = True
@@ -1487,6 +1512,7 @@ class BanjoTooieRules:
             logic = self.jiggy_gold_pot(state)
         return logic
 
+
     def glowbo_inferno(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -1527,6 +1553,7 @@ class BanjoTooieRules:
             logic = True
         return logic
     
+
     def jinjo_wasteland(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -1631,7 +1658,6 @@ class BanjoTooieRules:
             logic = state.has(itemName.GEGGS, self.player)
         return logic
 
-    
     def jinjo_wasteplant(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -1691,7 +1717,8 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = True
         return logic
-    
+
+
     def treble_jv(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -1752,14 +1779,16 @@ class BanjoTooieRules:
             logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or state.has(itemName.SPLITUP, self.player)
         return logic
     
+
     def silo_snooze(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.GGRAB, self.player) and self.can_use_battery(state) and self.has_enough_notes(state, 525)
+            logic = state.has(itemName.GGRAB, self.player) and self.can_use_battery(state) and \
+                    state.has(itemName.NOTE, self.player, (525 / 5))
         elif self.world.options.logic_type == 1: # normal
-            logic = self.can_use_battery(state) and self.has_enough_notes(state, 525)
+            logic = self.can_use_battery(state) and state.has(itemName.NOTE, self.player, (525 / 5))
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.can_use_battery(state) and self.has_enough_notes(state, 525)
+            logic = self.can_use_battery(state) and state.has(itemName.NOTE, self.player, (525 / 5))
         return logic
     
     def tswitch_ww(self, state: CollectionState) -> bool:
@@ -1805,6 +1834,70 @@ class BanjoTooieRules:
             logic = state.has(itemName.BDRILL, self.player) or state.has(itemName.GEGGS, self.player) or \
                     state.has(itemName.CEGGS, self.player)
         return logic
+
+    def notes_plateau(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def notes_ww_area51(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
+                    state.has(itemName.SPLITUP, self.player)
+        return logic
+    
+    def notes_jrl_blubs(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_mumbo_magic(state, itemName.MUMBOJR) and (state.has(itemName.AUQAIM, self.player) or 
+                    state.has(itemName.TTORP, self.player))
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.AUQAIM, self.player) or state.has(itemName.TTORP, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.AUQAIM, self.player) or state.has(itemName.TTORP, self.player)
+        return logic
+    
+    def notes_jrl_eels(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def notes_gi_floor1(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.can_access_gi_fl1_2fl2(state) or state.has(itemName.GGRAB, self.player) or \
+                    self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.LSPRING)
+        return logic
+    
+    def notes_ccl_silo(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_solo_moves(state, itemName.SHPACK)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_solo_moves(state, itemName.SHPACK) or state.has(itemName.CEGGS, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_solo_moves(state, itemName.SHPACK) or state.has(itemName.CEGGS, self.player)
+        return logic
+
 
     def check_mumbo_magic(self, state: CollectionState, name) -> bool:
         for item_name in self.mumbo_magic:
@@ -2383,6 +2476,10 @@ class BanjoTooieRules:
         for location, rules in self.jinjo_rules.items():
             jinjo = self.world.multiworld.get_location(location, self.player)
             set_rule(jinjo, rules)
+
+        for location, rules in self.notes_rules.items():
+            notes = self.world.multiworld.get_location(location, self.player)
+            set_rule(notes, rules)
 
         for item in self.moves_forbid:
             #The Doubloons near Wing Wack Silo

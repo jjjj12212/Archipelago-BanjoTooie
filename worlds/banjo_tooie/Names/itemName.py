@@ -13,6 +13,7 @@ DOUBLOON = "Doubloon"
 GLOWBO = "Glowbo"
 JIGGY = "Jiggy"
 TREBLE = "Treble Clef"
+NOTE = "5 Notes"
 
 GGRAB       = "Grip Grab"
 BBLASTER    = "Breegull Blaster"

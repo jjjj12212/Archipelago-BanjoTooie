@@ -167,6 +167,9 @@ class BanjoTooieWorld(World):
         
         if item.code in range(1230790, 1230796) and self.options.randomize_stations == False:
             return False
+        
+        if item.code == 1230797: #Notes
+            return False
 
         return True
 
@@ -202,6 +205,9 @@ class BanjoTooieWorld(World):
 
         if self.options.randomize_chuffy == False:
             self.banjo_pre_fills(itemName.CHUFFY, "Chuffy", False)
+
+        # if self.options.randomize_treble == False:  #Notes later
+        self.banjo_pre_fills(itemName.NOTE, "Note", False)
         
         if self.options.randomize_jinjos == False:
             item = self.create_item(itemName.JIGGY)
