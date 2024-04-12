@@ -175,139 +175,139 @@ The glitched logic will expect all the reasonable glitches to be done, as well a
 |Pot O' Gold|<N/A>|<N/A>|<N/A>|<N/A>
 
 ## Cheato Pages
-|Cheato Page|Beginner Logic|Normal Logic|Advanced Logic|
-|-|-|-|-|
-|Snake Heads|Goliath or Bill Drill or (Egg Aim and Grip Grab)|Goliath or Bill Drill or (Egg Aim and Grip Grab)|Goliath or Bill Drill or (Egg Aim and Grip Grab)
-|Prison Compound|(Goliath or Grenade Eggs) and Grip Grab|(Goliath or Grenade Eggs or Clockwork Eggs) and Grip Grab|(Goliath or Grenade Eggs or Clockwork Eggs) and Grip Grab
-|Jade Snake Grove|Goliath and Grip Grab|Goliath and Grip Grab|Goliath and Grip Grab
-|Canary Mary 2|Detonator|Detonator or Clockwork Eggs|Detonator or Clockwork Eggs
-|GGM Entrance|Springy Step Shoes|<N/A>|<N/A>
-|Water Storage|Grip Grab|Grip Grab|<N/A>
-|Haunted Cavern|Grip Grab|Grip Grab or Split Up and Leg Spring and (Wing Whack or Glide)|Grip Grab or Split Up and Leg Spring and (Wing Whack or Glide)|
-|The Inferno|Money Van, Grip Grab|Money Van|Money Van
-|Saucer of Peril|Detonator, Power, Money Van, Grip Grab|Detonator, Power, Money Van<br>AND<br>(<br>Grenade Eggs and Egg Aim<br>OR<br>(Grenade Eggs or Clockwork Eggs) and (Grip Grab or (Split Up, Leg Spring, Glide))<br>)|Detonator, Power, Money Van<br>AND<br>(<br>Grenade Eggs and Egg Aim<br>OR<br>(Grenade Eggs or Clockwork Eggs) and (Grip Grab or (Split Up, Leg Spring, Glide))<br>)
-|Pawno|28 Doubloons|28 Doubloons|28 Doubloons
-|Seemee|Oxygenate or Grenades, Talon Torpedo|Talon Torpedo|Talon Torpedo|
-|Ancient Swimming Baths|Deep JRL Access, Talon Torpedo, Split Up, Glide|Deep JRL Access, Talon Torpedo, Split Up, (Pack Whack and Grip Grab) or Leg Spring or Glide|Deep JRL Access, Talon Torpedo, Split Up, (Pack Whack and Grip Grab) or Wing Whack or Leg Spring or Glide
-|Dippy's Pool|CCL access, Talon Torpedo, Springy Step Shoes|CCL access, Talon Torpedo, Springy Step Shoes|CCL access, Talon Torpedo, Springy Step Shoes
-|Inside the Mountain|T-Rex|T-Rex|T-Rex
-|TDL Boulder|Bill Drill, Grip Grab|Bill Drill, (Grip Grab or Beat Terry)|Bill Drill, (Grip Grab or Beat Terry)
-|Loggo|Inside GI access, Grenades|Inside GI access, Grenades or (Clockworks, Bill Drill)|Inside GI access, Grenades or (Clockworks, Bill Drill)
-|Floor 2 Window|Floor 3+ access|Floor 2+ access|Floor 2+ access
-|Weldar|Floor 3+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack|Floor 2+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack|Floor 2+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack
-|Colosseum|Claw Clamber Boots, Grenade Egg|Claw Clamber Boots, Grenade Egg or Clockwork Eggs or Life Force|Claw Clamber Boots, Grenade Egg or Clockwork Eggs or Life Force
-|Icicle Grotto|(Split, Shack Pack) or Clockwork Eggs|(Split, Shack Pack) or Clockwork Eggs|(Split, Shack Pack) or Clockwork Eggs
-|Icy Side Pillar|Grenade Eggs, Egg Aim, Split Up|Split Up|Split Up
-|Canary Mary 4|GGM access, detonator|GGM access, detonator or Clockwork Eggs|GGM access, detonator or Clockwork Eggs
-|Pot O' Gold|Rain Dance, Fire Eggs, Grenade Eggs, Ice Eggs|Rain Dance, Fire Eggs, Grenade Eggs, Ice Eggs|Fire Eggs, Grenade Eggs, Ice Eggs
-|Zubbas|Bee|Bee|Bee
-|Spiral Mountain|<N/A>|<N/A>|<N/A>
+|Cheato Page|Beginner Logic|Normal Logic|Advanced Logic|Glitched Logic|
+|-|-|-|-|-|
+|Snake Heads|Goliath or Bill Drill or (Egg Aim and Grip Grab)|Goliath or Bill Drill or (Egg Aim and Grip Grab)|Goliath or Bill Drill or (Egg Aim and Grip Grab)|Goliath or Bill Drill or (Egg Aim and Grip Grab)
+|Prison Compound|(Goliath or Grenade Eggs) and Grip Grab|(Goliath or Grenade Eggs or Clockwork Eggs) and Grip Grab|(Goliath or Grenade Eggs or Clockwork Eggs) and Grip Grab|(Goliath or Grenade Eggs or Clockwork Eggs) and Grip Grab
+|Jade Snake Grove|Goliath and Grip Grab|Goliath and Grip Grab|Goliath and Grip Grab|(Goliath or Bill Drill) and Grip Grab
+|Canary Mary 2|Detonator|Detonator or Clockwork Eggs|Detonator or Clockwork Eggs|Detonator or Clockwork Eggs
+|GGM Entrance|Springy Step Shoes|<N/A>|<N/A>|<N/A>
+|Water Storage|Grip Grab|Grip Grab|<N/A>|<N/A>
+|Haunted Cavern|Grip Grab|Grip Grab or Split Up and Leg Spring and (Wing Whack or Glide)|Grip Grab or Split Up and Leg Spring and (Wing Whack or Glide)|Grip Grab or Split Up and Leg Spring and (Wing Whack or Glide)|
+|The Inferno|Money Van, Grip Grab|Money Van|Money Van|Money Van or Clockwork Eggs
+|Saucer of Peril|GGM Access, Detonator, Power, Money Van, Grip Grab, Grenade Eggs|GGM Access, Detonator, Power, Money Van, (Grenade Eggs or Clockwork Eggs), (Grip Grab or (Egg Aim and Grenade Eggs) or (Split Up, Leg Spring, Glide))|GGM Access, Detonator, Power, Money Van, (Grenade Eggs or Clockwork Eggs), (Grip Grab or (Egg Aim and Grenade Eggs) or (Split Up, Leg Spring, Glide))|GGM Access, Detonator, Power, (Money Van or Clockworks), (Grenade Eggs or Clockwork Eggs), (Grip Grab or Clockwork Eggs or (Grenade Eggs and (Egg Aim or (Split up and (Leg Spring or Glide))))
+|Pawno|28 Doubloons|28 Doubloons|28 Doubloons|28 Doubloons|
+|Seemee|Oxygenate or Grenades, Talon Torpedo|Talon Torpedo|Talon Torpedo|Talon Torpedo|
+|Ancient Swimming Baths|Deep JRL Access, Talon Torpedo, Split Up, Glide|Deep JRL Access, Talon Torpedo, Split Up, (Pack Whack and Grip Grab) or Leg Spring or Glide|Deep JRL Access, Talon Torpedo, Split Up, (Pack Whack and Grip Grab) or Wing Whack or Leg Spring or Glide|Deep JRL Access, Talon Torpedo, Split Up, (Pack Whack and Grip Grab) or Wing Whack or Leg Spring or Glide
+|Dippy's Pool|CCL access, Talon Torpedo, Springy Step Shoes|CCL access, Talon Torpedo, Springy Step Shoes|CCL access, Talon Torpedo, Springy Step Shoes|CCL access, Talon Torpedo, Springy Step Shoes
+|Inside the Mountain|T-Rex|T-Rex|T-Rex|T-Rex or Clockwork Eggs|
+|TDL Boulder|Bill Drill, Grip Grab|Bill Drill, (Grip Grab or Beat Terry)|Bill Drill, (Grip Grab or Beat Terry)|Grip Grab or Beat Terry
+|Loggo|Inside GI access, Grenades|Inside GI access, Grenades or (Clockworks, Bill Drill)|Inside GI access, Grenades or (Clockworks, Bill Drill)|Inside GI access, Grenades or (Clockworks, Bill Drill)
+|Floor 2 Window|Floor 3+ access|Floor 2+ access|Floor 2+ access|Floor 2+ access
+|Weldar|Floor 3+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack|Floor 2+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack|Floor 2+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack|Floor 2+ access, EMP, Washing Machine, Bill Drill, Grenade Eggs, Split Up, Pack Whack, Taxi Pack
+|Colosseum|Claw Clamber Boots, Grenade Egg|Claw Clamber Boots, Grenade Egg or Clockwork Eggs or Life Force|Claw Clamber Boots, Grenade Egg or Clockwork Eggs or Life Force|<N/A>
+|Icicle Grotto|(Split, Shack Pack) or Clockwork Eggs|(Split, Shack Pack) or Clockwork Eggs|(Split, Shack Pack) or Clockwork Eggs|(Split, Shack Pack) or Clockwork Eggs
+|Icy Side Pillar|Grenade Eggs, Egg Aim, Split Up|Split Up|Split Up|Split Up
+|Canary Mary 4|GGM access, detonator|GGM access, detonator or Clockwork Eggs|GGM access, detonator or Clockwork Eggs|GGM access, detonator or Clockwork Eggs
+|Pot O' Gold|Rain Dance, Fire Eggs, Grenade Eggs, Ice Eggs|Rain Dance, Fire Eggs, Grenade Eggs, Ice Eggs|(Split Up or Rain Dance), Fire Eggs, Grenade Eggs, Ice Eggs|(Split Up or Rain Dance), Fire Eggs, Grenade Eggs, Ice Eggs
+|Zubbas|Bee|Bee|Bee|Bee
+|Spiral Mountain|<N/A>|<N/A>|<N/A>|<N/A>
 
 ## Glowbos
-|Glowbo|Beginner Logic|Normal Logic|Advanced Logic|
-|-|-|-|-|
-|MT Mumbo's Skull|<N/A>|<N/A>|<N/A>
-|Behind Humba's Wigwam|Goliath|Goliath|Goliath
-|GGM Near entrance|<N/A>|<N/A>|<N/A>
-|Mine Entrance 2|<N/A>|<N/A>|<N/A>
-|WW Inside Humba's Wigwam|Grip Grab|<N/A>|<N/A>
-|The Inferno|Grip Grab, Money Van|Money Van|Money Van
-|Pawno|<N/A>|<N/A>|<N/A>
-|Under Humba's Wigwam|Oxygenate, Sub-Aqua Egg Aim, Ice Eggs|Bill Drill or Oxygenate, Sub-Aqua Egg Aim, Ice Eggs|<N/A>
-|Unga Bunga Cave Entrance|<N/A>|<N/A>|<N/A>
-|Bedhing Mumbo's Skull|<N/A>|<N/A>|<N/A>
-|Floor 2|Floor 2 access|Floor 2+ access|Floor 2+ access
-|Floor 3|Floor 3+ access|Floor 2+ access|Floor 2+ access
-|Lava Side|<N/A>|<N/A>|<N/A>
-|Icy Side|<N/A>|<N/A>|<N/A>
-|Green Pool|<N/A>|<N/A>|<N/A>
-|Central Cavern|Grip Grab|<N/A>|<N/A>
-|Cliff Top|<N/A>|<N/A>|<N/A>
-|Mega Glowbo|GGM access, Talon Torpedo, Ice Key|GGM access, Talon Torpedo, Ice Key|GGM access, Talon Torpedo, Ice Key
+|Glowbo|Beginner Logic|Normal Logic|Advanced Logic|Glitched Logic|
+|-|-|-|-|-|
+|MT Mumbo's Skull|<N/A>|<N/A>|<N/A>|<N/A>
+|Behind Humba's Wigwam|Goliath|Goliath|Goliath|(Goliath or Bill Drill)
+|GGM Near entrance|<N/A>|<N/A>|<N/A>|<N/A>
+|Mine Entrance 2|<N/A>|<N/A>|<N/A>|<N/A>
+|WW Inside Humba's Wigwam|Grip Grab|<N/A>|<N/A>|<N/A>
+|The Inferno|Grip Grab, Money Van|Money Van|Money Van or Clockwork Eggs
+|Pawno|<N/A>|<N/A>|<N/A>|<N/A>
+|Under Humba's Wigwam|Oxygenate, Sub-Aqua Egg Aim, Ice Eggs|Bill Drill or Oxygenate, Sub-Aqua Egg Aim, Ice Eggs|<N/A>|<N/A>
+|Unga Bunga Cave Entrance|<N/A>|<N/A>|<N/A>|<N/A>
+|Bedhing Mumbo's Skull|<N/A>|<N/A>|<N/A>|<N/A>
+|Floor 2|Floor 2 access|Floor 2+ access|Floor 2+ access|Floor 2+ access
+|Floor 3|Floor 3+ access|Floor 2+ access|Floor 2+ access|Floor 2+ access
+|Lava Side|<N/A>|<N/A>|<N/A>|<N/A>
+|Icy Side|<N/A>|<N/A>|<N/A>|<N/A>
+|Green Pool|<N/A>|<N/A>|<N/A>|<N/A>
+|Central Cavern|Grip Grab|<N/A>|<N/A>|<N/A>
+|Cliff Top|<N/A>|<N/A>|<N/A>|<N/A>
+|Mega Glowbo|GGM access, Talon Torpedo, Ice Key|GGM access, Talon Torpedo, Ice Key|GGM access, Talon Torpedo, Ice Key|GGM access, Talon Torpedo, Ice Key
 
 ## Move silos
-|Silo|Beginner Logic|Normal Logic|Advanced Logic|
-|-|-|-|-|
-|Egg Aim|25 notes|25 notes|25 notes
-|Breegull Blaster|30 notes|30 notes|30 notes
-|Grip Grab|35 notes, Goliath|35 notes, Goliath|35 notes, Goliath
-|Bill Drill|85 notes|85 notes|85 notes
-|Beak Bayonet|95 notes, detonator or Bill Drill|95 notes, detonator or Bill Drill|95 notes, detonator or Bill Drill
-|Airborne Egg Aiming|180 notes|180 notes|180 notes
-|Split Up|160 notes|160 notes|160 notes
-|Pack Whack|120 notes, Split Up|120 notes, Split Up|120 notes, Split Up
-|Wing Whack|265 notes, Split Up, Grenade Eggs|265 notes, Split Up, Grenade Eggs or Clockwork Eggs|265 notes, Split Up, Grenade Eggs or Clockwork Eggs
-|Sub-Aqua Egg Aim|285 notes, 28 Doubloons or Grenade Eggs|285 notes, 28 Doubloons or Grenade Eggs or Clockwork Eggs|285 notes, 28 Doubloons or Grenade Eggs or Clockwork Eggs
-|Talon Torpedo|290 notes, Deep JRL Access, Grip Grab|290 notes, Deep JRL Access|290 notes, Deep JRL Access
-|Springy Step Shoes|390 notes, Grip Grab|390 notes|390 notes
-|Taxi Pack|405 notes, Split Up, Grip Grab|405 notes, Split Up, Grip Grab or Pack Whack or Sack Pack|405 notes, Split Up, Grip Grab or Pack Whack or Sack Pack
-|Hatch|420 notes, Split Up|420 notes, Split Up|420 notes, Split Up
-|Claw Clamber Boots|505 notes, Inside GI access|505 notes, Inside GI access|505 notes, Inside GI access
-|Snooze Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack, Grip Grab|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack
-|Leg Spring|545 notes, Floor 2 access, Claw Clamber Boots, Split Up|545 notes, Floor 2+ access, Split Up|545 notes, Floor 2+ access, Split Up
-|Shack Pack|640 notes, Split Up|640 notes, Split Up|640 notes, Split Up
-|Glide|660 notes, Split Up, Grenade Eggs, Egg Aim|660 notes, Split Up|660 notes, Split Up
-|Sack Pack|765 notes, Split Up, Shack Pack|765 notes, Split Up, Shack Pack|765 notes, Split Up, Shack Pack
-|Fire Eggs|45 notes|45 notes|45 notes
-|Grenade Eggs|110 notes|110 notes|110 notes
-|Ice Eggs|200 notes|200 notes|200 notes
-|Clockwork Eggs|315 notes|315 notes|315 notes
+|Silo|Beginner Logic|Normal Logic|Advanced Logic|Glitched Logic|
+|-|-|-|-|-|
+|Egg Aim|25 notes|25 notes|25 notes|25 notes
+|Breegull Blaster|30 notes|30 notes|30 notes|30 notes
+|Grip Grab|35 notes, Goliath|35 notes, Goliath|35 notes, Goliath|35 notes, (Goliath or Bill Drill)
+|Bill Drill|85 notes|85 notes|85 notes|85 notes
+|Beak Bayonet|95 notes, detonator or Bill Drill|95 notes, detonator or Bill Drill|95 notes, detonator or Bill Drill|95 notes, detonator or Bill Drill
+|Airborne Egg Aiming|180 notes|180 notes|180 notes|180 notes
+|Split Up|160 notes|160 notes|160 notes|160 notes
+|Pack Whack|170 notes, Split Up|170 notes, Split Up|170 notes, Split Up|170 notes, Split Up
+|Wing Whack|265 notes, Split Up, Grenade Eggs|265 notes, Split Up, Grenade Eggs or Clockwork Eggs|265 notes, Split Up, Grenade Eggs or Clockwork Eggs|265 notes, Split Up, Grenade Eggs or Clockwork Eggs
+|Sub-Aqua Egg Aim|285 notes, 28 Doubloons or Grenade Eggs|285 notes, 28 Doubloons or Grenade Eggs or Clockwork Eggs|285 notes, 28 Doubloons or Grenade Eggs or Clockwork Eggs|285 notes, 28 Doubloons or Grenade Eggs or Clockwork Eggs
+|Talon Torpedo|290 notes, Deep JRL Access, Grip Grab|290 notes, Deep JRL Access|290 notes, Deep JRL Access|290 notes, Deep JRL Access
+|Springy Step Shoes|390 notes, Grip Grab|390 notes|390 notes|390 notes
+|Taxi Pack|405 notes, Split Up, Grip Grab|405 notes, Split Up, Grip Grab or Pack Whack or Sack Pack|405 notes, Split Up, Grip Grab or Pack Whack or Sack Pack|405 notes, Split Up, Grip Grab or Pack Whack or Sack Pack
+|Hatch|420 notes, Split Up|420 notes, Split Up|420 notes, Split Up|420 notes, Split Up
+|Claw Clamber Boots|505 notes, Inside GI access|505 notes, Inside GI access|505 notes, Inside GI access|505 notes, Inside GI access
+|Snooze Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack, Grip Grab|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack|525 notes, Inside GI access, Split Up, Pack Whack, Taxi Pack
+|Leg Spring|545 notes, Floor 2 access, Claw Clamber Boots, Split Up|545 notes, Floor 2+ access, Split Up|545 notes, Floor 2+ access, Split Up|545 notes, Floor 2+ access, Split Up
+|Shack Pack|640 notes, Split Up|640 notes, Split Up|640 notes, Split Up|640 notes, Split Up
+|Glide|660 notes, Split Up, Grenade Eggs, Egg Aim|660 notes, Split Up|660 notes, Split Up|660 notes, Split Up
+|Sack Pack|765 notes, Split Up, Shack Pack|765 notes, Split Up, Shack Pack|765 notes, Split Up, Shack Pack|765 notes, Split Up, Shack Pack
+|Fire Eggs|45 notes|45 notes|45 notes|45 notes
+|Grenade Eggs|110 notes|110 notes|110 notes|110 notes
+|Ice Eggs|200 notes|200 notes|200 notes|200 notes
+|Clockwork Eggs|315 notes|315 notes|315 notes|315 notes
 
 ## Notes
-|Note|Beginner Logic|Normal Logic|Advanced Logic|
-|-|-|-|-|
-|IoH: Jinjo Village Treble Clef|Grip Grab|Grip Grab|<N/A>|
-|IoH: Honey B Notes|Plateau access|Plateau access|Plateau access|
-|IoH: Plateau sign|Plateau access, Grip Grab|Plateau access|Plateau access|
-|IoH: Pine Grove notes|Pine Grove access|Pine Grove access|Pine Grove access|
-|IoH: Cliff Top notes|Cliff Top access|Cliff Top access or HFP access|Cliff Top access or HFP access|
-|IoH: Wasteland notes|Wasteland access|Wasteland access|Wasteland access|
-|MT: All notes|<N/A>|<N/A>|<N/A>|
-|GGM: All notes|<N/A>|<N/A>|<N/A>|
-|WW:70 notes around the level|<N/A>|<N/A>|<N/A>|
-|WW: 10 notes in Area 51|Grenade Eggs|Grenade Eggs or Clockwork Eggs|Grenade Eggs or Clockwork Eggs or Split Up|
-|WW: Trebleclef|Money Van, Grip Grab|Money Van|Money Van|
-|JRL: 60 notes in Town Center|<N/A>|<N/A>|<N/A>|
-|JRL: 10 notes in blubbuls|Oxygenate, Sub-Aqua Egg Aim or Talon Torpedo|Sub-Aqua Egg Aim or Talon Torpedo|Sub-Aqua Egg Aim or Talon Torpedo|
-|JRL: Trebleclef|Oxygenate, Sub-Aqua Egg Aiming, Ice Eggs|Deep JRL Access|Talon Torpedo or Sub-Aqua Egg Aiming or Sub|
-|JRL: 10 notes in Atlantis|Deep JRL Access|Deep JRL Access|Deep JRL Access
-|TDL: Trebleclef|Grip Grab, Bill Drill|Bill Drill|Bill Drill|
-|TDL: The other 80 notes|<N/A>|<N/A>|<N/A>|
-|GI: Train Station notes|Inside GI access|Inside GI access|Inside GI access|
-|GI: Air Conditioning Plant|Inside GI access|Inside GI access|Inside GI access|
-|GI: 10 notes on Floor 1|Inside GI access, Grip Grab|Inside GI access, Grip Grab|Floor 2+ access or Grip Grab or (Split Up, (Pack Whack or Leg Spring))|Floor 2+ access or Grip Grab or (Split Up, (Pack Whack or Leg Spring or Wing Whack))
-|GI: 10 notes in Waste Disposal Plant|Inside GI access, Split Up, Pack Whack, Taxi Pack|Inside GI access, Split Up, Pack Whack, Taxi Pack|Inside GI access, Split Up, Pack Whack, Taxi Pack|
-|GI: 25 notes on floor 2|Floor 2 access|Floor 2+ access|Floor 2+ access|
-|GI: 10 notes on floor 3|Floor 3 access|Floor 2+ access|Floor 2+ access|
-|GI: Trebleclef|Floor 3 access|Floor 2+ access|Floor 2+ access|
-|HFP: 80 regular notes|<N/A>|<N/A>|<N/A>|
-|HFP: Trebleclef|Grenade Eggs, Egg Aim|(Grenade Eggs, Egg Aim) or Split Up|(Grenade Eggs, Egg Aim) or Split Up|
-CCL: 10 notes near Sack Pack Silo|Split Up, Shack Pack|(Split Up, Shack Pack) or Clockwork Eggs|(Split Up, Shack Pack) or Clockwork Eggs|
-|CCL: The other 90 notes|<N/A>|<N/A>|<N/A>|
+|Note|Beginner Logic|Normal Logic|Advanced Logic|Glitched Logic
+|-|-|-|-|-|
+|IoH: Jinjo Village Treble Clef|Grip Grab|Grip Grab|<N/A>|<N/A>|
+|IoH: 10 Honey B Notes|Plateau access|Plateau access|Plateau access|Plateau access|
+|IoH: 10 Plateau sign|Plateau access, Grip Grab|Plateau access|Plateau access|Plateau access|
+|IoH: 20 Pine Grove notes|Pine Grove access|Pine Grove access|Pine Grove access|Pine Grove access|
+|IoH: 20 Cliff Top notes|Cliff Top access|Cliff Top access or HFP access|Cliff Top access or HFP access|Cliff Top access or HFP access|
+|IoH: Wasteland notes|Wasteland access|Wasteland access|Wasteland access|Wasteland access|
+|MT: All notes|<N/A>|<N/A>|<N/A>|<N/A>|
+|GGM: All notes|<N/A>|<N/A>|<N/A>|<N/A>|
+|WW:70 notes around the level|<N/A>|<N/A>|<N/A>|<N/A>|
+|WW: 10 notes in Area 51|Grenade Eggs|Grenade Eggs or Clockwork Eggs|Grenade Eggs or Clockwork Eggs or Split Up|Grenade Eggs or Clockwork Eggs or Split Up|
+|WW: Trebleclef|Money Van, Grip Grab|Money Van|Money Van|Money Van or Clockwork Egg|
+|JRL: 60 notes in Town Center|<N/A>|<N/A>|<N/A>|<N/A>|
+|JRL: 10 notes in blubbuls|Oxygenate, Sub-Aqua Egg Aim or Talon Torpedo|Sub-Aqua Egg Aim or Talon Torpedo|Sub-Aqua Egg Aim or Talon Torpedo|Sub-Aqua Egg Aim or Talon Torpedo|
+|JRL: Trebleclef|Oxygenate, Sub-Aqua Egg Aiming, Ice Eggs|Deep JRL Access|Talon Torpedo or Sub-Aqua Egg Aiming or Sub|Talon Torpedo or Sub-Aqua Egg Aiming or Sub|
+|JRL: 10 notes in Atlantis|Deep JRL Access|Deep JRL Access|Deep JRL Access|Deep JRL Access|
+|TDL: Trebleclef|Grip Grab, Bill Drill|Bill Drill|Bill Drill|<N/A>
+|TDL: The other 80 notes|<N/A>|<N/A>|<N/A>|<N/A>|
+|GI: Train Station notes|Inside GI access|Inside GI access|Inside GI access|Inside GI access|
+|GI: Air Conditioning Plant|Inside GI access|Inside GI access|Inside GI access|Inside GI access|
+|GI: 10 notes on Floor 1|Inside GI access, Grip Grab|Inside GI access, Grip Grab|Floor 2+ access or Grip Grab or (Split Up, (Pack Whack or Leg Spring))|Floor 2+ access or Grip Grab or (Split Up, (Pack Whack or Leg Spring or Wing Whack))|Floor 2+ access or Grip Grab or (Split Up, (Pack Whack or Leg Spring or Wing Whack))
+|GI: 10 notes in Waste Disposal Plant|Inside GI access, Split Up, Pack Whack, Taxi Pack|Inside GI access, Split Up, Pack Whack, Taxi Pack|Inside GI access, Split Up, Pack Whack, Taxi Pack|Inside GI access, (Split Up, Pack Whack, Taxi Pack) or (Clockwork Eggs and Egg Aim)|
+|GI: 25 notes on floor 2|Floor 2 access|Floor 2+ access|Floor 2+ access|Floor 2+ access|
+|GI: 10 notes on floor 3|Floor 3 access|Floor 2+ access|Floor 2+ access|Floor 2+ access|
+|GI: Trebleclef|Floor 3 access|Floor 2+ access|Floor 2+ access|Floor 2+ access|
+|HFP: 80 regular notes|<N/A>|<N/A>|<N/A>|<N/A>|
+|HFP: Trebleclef|Grenade Eggs, Egg Aim|(Grenade Eggs, Egg Aim) or Split Up|(Grenade Eggs, Egg Aim) or Split Up|(Grenade Eggs, Egg Aim) or Split Up|
+CCL: 10 notes near Sack Pack Silo|Split Up, Shack Pack|(Split Up, Shack Pack) or Clockwork Eggs|(Split Up, Shack Pack) or Clockwork Eggs|(Split Up, Shack Pack) or Clockwork Eggs|
+|CCL: The other 90 notes|<N/A>|<N/A>|<N/A>|<N/A>|
 
 ## Train Switches
-|Switch|Beginner Logic|Normal Logic|Advanced Logic|
-|-|-|-|-|
-|Cliff Top|Grip Grab|Grip Grab|Grip Grab|
-|Witchyworld|Grip Grab|Grip Grab or (Split Up, Leg Spring)|Grip Grab or (Split Up, Leg Spring)|
-|Terrydactyland|<N/A>|<N/A>|<N/A>|
-|Grunty Industries|<N/A>|<N/A>|<N/A>|
-|Hailfire Peaks Lava Side|Grip Grab|<N/A>|<N/A>|
-|Hailfire Peaks Icy Side|Snowball|Snowball|Snowball|
+|Switch|Beginner Logic|Normal Logic|Advanced Logic|Glitched Logic|
+|-|-|-|-|-|
+|Cliff Top|Grip Grab|Grip Grab|Grip Grab|Grip Grab|
+|Witchyworld|Grip Grab|Grip Grab or (Split Up, Leg Spring)|Grip Grab or (Split Up, Leg Spring)|Grip Grab or (Split Up, Leg Spring)|
+|Terrydactyland|<N/A>|<N/A>|<N/A>|<N/A>|
+|Grunty Industries|<N/A>|<N/A>|<N/A>|<N/A>|
+|Hailfire Peaks Lava Side|Grip Grab|<N/A>|<N/A>|<N/A>|
+|Hailfire Peaks Icy Side|Snowball|Snowball|Snowball|Snowball|
 
 ## Doubloons
-|Switch|Beginner Logic|Normal Logic|Advanced Logic|
-|-|-|-|-|
-|3 doubloons on the upper ledge|Split Up, Grenade Eggs|Split Up, Grenade Eggs or Clockwork Eggs|Split Up, Grenade Eggs or Clockwork Eggs|
-|3 doubloons in the dirt patches|Grenade Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|
-|The other 24 doubloons|<N/A>|<N/A>|<N/A>|
+|Switch|Beginner Logic|Normal Logic|Advanced Logic|Glitched Logic|
+|-|-|-|-|-|
+|3 doubloons on the upper ledge|Split Up, Grenade Eggs|Split Up, Grenade Eggs or Clockwork Eggs|Split Up, Grenade Eggs or Clockwork Eggs|Split Up, Grenade Eggs or Clockwork Eggs|
+|3 doubloons in the dirt patches|Grenade Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|
+|The other 24 doubloons|<N/A>|<N/A>|<N/A>|<N/A>|
 
 # Miscellaneous stuff
-|Stuff|Beginner Logic|Normal Logic|Advanced Logic|
-|-|-|-|-|
-|Ice Key|Grip Grab|Grip Grab|Grip Grab|
-|Inside GI access|GI Train Switch, Levitate|(GI Train Switch, Levitate) or Claw Clamber Boots|(GI Train Switch, Levitate) or Claw Clamber Boots
-|Floor 2 access|Inside GI access, Claw Clamber Boots|(Inside GI Access, Split Up, Leg Spring, Glide) or Claw Clamber Boots|(Inside GI Access, Split Up, Leg Spring, Glide) or Claw Clamber Boots|
-|Floor 3+ access|Floor 2 access, Grip Grab|Same as floor 2|Same as floor 2|
-|Deep JRL Access|Oxygenate, Sub-Aqua Egg Aim, Ice Eggs|(Oxygenate or Faster Swimming) Sub-Aqua Egg Aim, Ice Eggs|<N/A>|
-|Faster Swimming|Bill Drill|Bill Drill|Bill Drill|
+|Stuff|Beginner Logic|Normal Logic|Advanced Logic|Glitched Logic|
+|-|-|-|-|-|
+|Ice Key|Grip Grab|Grip Grab|Grip Grab|Grip Grab or (Egg Aim and Clockwork Eggs)
+|Inside GI access|GI Train Switch, Levitate|(GI Train Switch, Levitate) or Claw Clamber Boots|(GI Train Switch, Levitate) or Claw Clamber Boots|(GI Train Switch, Levitate) or Claw Clamber Boots or Clockwork Eggs
+|Floor 2 access|Inside GI access, Claw Clamber Boots|(Inside GI Access, Split Up, Leg Spring, Glide) or Claw Clamber Boots|(Inside GI Access, Split Up, Leg Spring, Glide) or Claw Clamber Boots|(Inside GI Access, Split Up, Leg Spring, Glide) or Claw Clamber Boots or Clockwork Eggs|
+|Floor 3+ access|Floor 2 access, Grip Grab|Same as floor 2|Same as floor 2|Same as floor 2|
+|Deep JRL Access|Oxygenate, Sub-Aqua Egg Aim, Ice Eggs|(Oxygenate or Faster Swimming) Sub-Aqua Egg Aim, Ice Eggs|<N/A>|<N/A>|
+|Faster Swimming|Bill Drill|Bill Drill|Bill Drill|Bill Drill|
