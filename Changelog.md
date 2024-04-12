@@ -1,3 +1,13 @@
+# 1.1-Beta
+- Dpad changes:
+  - Dpad Left - Shows unlocked Magic
+  - Dpad Down - Shows unlocked Treble Clef & Stations
+  - Dpad Up + Z - Refill Comsumables
+  - Dpad Right + Z - Super Banjo
+  - Dpad Left + Z - Aim Assist
+  - Dpad Down + Z - Health Regen
+- Notes
+
 # 1.0.2-Beta
 - Mrs. Boggy now stays at the park
 - restarting connector for "fixing" opening levels no longer required (if skip_puzzle enabled)

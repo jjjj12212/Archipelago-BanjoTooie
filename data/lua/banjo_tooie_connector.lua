@@ -95,10 +95,6 @@ DEAD_COAL_CHECK = 0;
 CHUFFY_MAP_TRANS = false;
 CHUFFY_STOP_WATCH = true;
 LEVI_PAD_MOVED = false;
-CHUFF_GOT = false;
-CHUFFY_COAL = false;
-FINAL_CHUFF = false;
-CHUFFY_CC = false;
 
 local BATH_PADS_QOL = false
 
@@ -4053,70 +4049,6 @@ function BKLogics(mapaddr)
     end
 end
 
-function ChuffyCheck()
-    if CHUFF_GOT == true and BTRAMOBJ:getBanjoPos() == false
-    then
-        CHUFF_GOT = false
-        mainmemory.write_u16_be(0x045702, 0xAD);
-        mainmemory.write_u16_be(0x127640, 0xAD);
-        mainmemory.write_u16_be(0x127642, 0x0101);
-        print("Pheefer")
-    elseif CHUFFY_COAL == true and BTRAMOBJ:getBanjoPos() == false then
-        CHUFFY_COAL = false
-        mainmemory.write_u16_be(0x045702, 0x142);
-        mainmemory.write_u16_be(0x127640, 0x142);
-        mainmemory.write_u16_be(0x127642, 0x0101);
-        print("is")
-    elseif CHUFF_FINAL == true then
-        CHUFF_FINAL = false
-        mainmemory.write_u16_be(0x045702, 0xBC);
-        mainmemory.write_u16_be(0x127640, 0xBC);
-        mainmemory.write_u16_be(0x127642, 0x0101);
-        CHUFFY_CC = true
-        print("my bro bro :D YOU DID IT! - Jjjj12212")
-    end
-
-
-    BTMODELOBJ:changeName("Breakable Door")
-    door_there = BTMODELOBJ:checkModel()
-    banjo = BTRAMOBJ:getBanjoTState()
-    BTMODELOBJ:changeName("Sign Post")
-    sign_there = BTMODELOBJ:checkModel()
-    if CURRENT_MAP == 0xC4 and door_there == true and banjo == 8 and CHUFFY_CC == false
-    then
-        BTMODELOBJ:changeName("Breakable Door")
-        BTMODELOBJ:checkModel()
-        POS = BTMODELOBJ:getSingleModelCoords()
-        if POS ~= false
-        then
-            if POS["Distance"] <= 1000
-            then
-                CHUFF_GOT = true;
-            else
-                return
-            end
-        end
-    elseif CURRENT_MAP == 0x173 and banjo == 8
-    then
-        CHUFFY_COAL = true
-    elseif CURRENT_MAP == 0x142 and banjo == 8 and sign_there == true
-    then
-        BTMODELOBJ:changeName("Sign Post")
-        BTMODELOBJ:checkModel()
-        POS = BTMODELOBJ:getSingleModelCoords()
-        if POS ~= false
-        then
-            if POS["Distance"] <= 150
-            then
-                CHUFF_FINAL = true;
-            else
-                return
-            end
-        end
-    end
-
-end
-
 function BKCheckAssetLogic()
     if CHECK_FOR_SILO == true
     then
@@ -4214,7 +4146,6 @@ function BKAssetFound()
     then
         watchBtnAnimation()
     end
-    ChuffyCheck()
 end
 
 function locationControl()
@@ -4794,7 +4725,18 @@ function DPadStats()
     if GAME_LOADED == true
     then
         local check_controls = joypad.get()
-        if check_controls ~= nil and check_controls['P1 DPad R'] == true
+        
+		if check_controls ~= nil and check_controls['P1 DPad U'] == true and SNEAK == false
+        then
+            joypad.setanalog({['P1 Y Axis'] = 18 })
+            SNEAK = true
+        elseif check_controls ~= nil and check_controls['P1 DPad U'] == false and SNEAK == true
+        then
+            joypad.setanalog({['P1 Y Axis'] = '' })
+            SNEAK = false
+        end
+		
+		if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 Z'] == false
         then
             print(" ")
             print(" ")
@@ -4806,6 +4748,11 @@ function DPadStats()
                     print(values['name'])
                 end
             end
+		end
+		
+		if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 Z'] == false
+        then
+            print(" ")
             print(" ")
             print("Unlocked Magic:")
             for locationId, values in pairs(NON_AGI_MAP["MAGIC"])
@@ -4816,53 +4763,91 @@ function DPadStats()
                 end
             end
         end
-        if check_controls ~= nil and check_controls['P1 DPad D'] == true
+		
+		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 Z'] == false
         then
             print(" ")
             print(" ")
             print("Collected Treble Clefs:")
             for locationId, values in pairs(NON_AGI_MAP["TREBLE"])
-            do             
-                if BKNOTES[locationId] == true
-                then
+            do        
+                local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
+                if results == true then
+                    print(values['name'])
+                end
+            end
+			print(" ")
+			print("Opened Train Stations:")
+            for locationId, values in pairs(NON_AGI_MAP["STATIONS"])
+            do        
+                local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
+                if results == true then
                     print(values['name'])
                 end
             end
         end
+		
+        if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 Z'] == true
+        then
+			BTCONSUMEOBJ:changeConsumable("Red Feathers")
+			BTCONSUMEOBJ:setConsumable(100)
+			BTCONSUMEOBJ:changeConsumable("Gold Feathers")
+			BTCONSUMEOBJ:setConsumable(10)
+			BTCONSUMEOBJ:changeConsumable("BLUE EGGS")
+			BTCONSUMEOBJ:setConsumable(100)
+			BTCONSUMEOBJ:changeConsumable("FIRE EGGS")
+			BTCONSUMEOBJ:setConsumable(50)
+            BTCONSUMEOBJ:changeConsumable("GRENADE EGGS")
+            BTCONSUMEOBJ:setConsumable(25)
+            BTCONSUMEOBJ:changeConsumable("ICE EGGS")
+            BTCONSUMEOBJ:setConsumable(50)
+            BTCONSUMEOBJ:changeConsumable("CWK EGGS")
+            BTCONSUMEOBJ:setConsumable(10)
+			print(" ")
+			print("Eggs and Feathers Refilled")
+        end
 
-        if check_controls ~= nil and check_controls['P1 DPad L'] == true and AIMASSIST == false
+        if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 Z'] == true and SUPERBANJO == false
+        then
+           BTRAMOBJ:setFlag(0xA2, 2, "Super Banjo")
+           SUPERBANJO = true
+           print(" ")
+           print("Super Banjo Enabled")
+        elseif check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 Z'] == true and SUPERBANJO == true
+        then
+            BTRAMOBJ:clearFlag(0xA2, 2)
+            SUPERBANJO = false
+            print(" ")
+            print("Super Banjo Disabled")
+        end
+
+        if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 Z'] == true and AIMASSIST == false
         then
            BTRAMOBJ:setFlag(0xAF, 3, "Aim Assist")
            AIMASSIST = true
+           print(" ")
            print("Aim Assist Enabled")
-        elseif check_controls ~= nil and check_controls['P1 DPad L'] == true and AIMASSIST == true
+        elseif check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 Z'] == true and AIMASSIST == true
         then
             BTRAMOBJ:clearFlag(0xAF, 3)
             AIMASSIST = false
+            print(" ")
             print("Aim Assist Disabled")
         end
-
-        if check_controls ~= nil and check_controls['P1 DPad U'] == true and SNEAK == false
+		
+		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 Z'] == true and REGEN == false
         then
-            joypad.setanalog({['P1 Y Axis'] = 18 })
-            SNEAK = true
-        elseif check_controls ~= nil and check_controls['P1 DPad U'] == false and SNEAK == true
+           BTRAMOBJ:setFlag(0xA1, 7, "Automatic Energy Regain")
+           REGEN = true
+           print(" ")
+           print("Automatic Energy Regain Enabled")
+        elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 Z'] == true and REGEN == true
         then
-            joypad.setanalog({['P1 Y Axis'] = '' })
-            SNEAK = false
+            BTRAMOBJ:clearFlag(0xA1, 7)
+            REGEN = false
+            print(" ")
+            print("Automatic Energy Regain Disabled")
         end
-
-        -- if check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 A'] == true
-        -- then
-        --     for location, values in pairs(WORLD_ENTRANCE_MAP)
-        --     do
-        --         local open = BTRAMOBJ:checkFlag(values["addr"], values["bit"])
-        --         if open == true
-        --         then
-        --             print(values["defaultName"] .. " is unlocked!")
-        --         end
-        --     end
-        -- end
     end
 end
 
