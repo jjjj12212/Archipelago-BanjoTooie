@@ -65,6 +65,10 @@ class OpenHag1(Toggle):
     """HAG 1 boss fight is opened when Cauldron Keep is. Only 55 jiggies are needed to win."""
     display_name = "HAG 1 Open"
 
+class RandomizeWorlds(Toggle):
+    """Worlds will open in a randomized order."""
+    display_name = "Randomize Worlds"
+
 class SkipToT(Choice):
     """Choose whether to play the full quiz, start at round 3, or skip it."""
     display_name = "Tower of Tragedy Quiz"
@@ -104,6 +108,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
     open_hag1: OpenHag1
+    randomize_worlds: RandomizeWorlds
     skip_tower_of_tragedy: SkipToT
     speed_up_minigames: SpeedUpMinigames
     logic_type: LogicType

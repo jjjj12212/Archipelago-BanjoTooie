@@ -2097,17 +2097,17 @@ class BanjoTooieRules:
     def can_access_mt(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.JIGGY, self.player, 1)
+            logic = state.has(itemName.JIGGY, self.player, 8)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.JIGGY, self.player, 1)
+            logic = state.has(itemName.JIGGY, self.player, 8)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.JIGGY, self.player, 1)
+            logic = state.has(itemName.JIGGY, self.player, 8)
         return logic
 
     def can_access_plateau(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
+            logic = state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
         elif self.world.options.logic_type == 2: # advanced
@@ -2127,7 +2127,7 @@ class BanjoTooieRules:
         return logic
     
     def gm_jiggy(self, state: CollectionState) -> bool:
-        return state.has(itemName.JIGGY, self.player, 4)
+        return state.has(itemName.JIGGY, self.player, 10)
     
     def can_access_pinegrove(self, state: CollectionState, fromTrain: bool) -> bool:
         logic = True
@@ -2168,7 +2168,7 @@ class BanjoTooieRules:
         return logic
     
     def ww_jiggy(self, state: CollectionState) -> bool:
-            return state.has(itemName.JIGGY, self.player, 8)
+            return state.has(itemName.JIGGY, self.player, 1)
     
     def can_access_clifftop(self, state: CollectionState, fromTrain: bool) -> bool:
         logic = True
