@@ -8,7 +8,7 @@ from .Locations import BanjoTooieLocation, all_location_table
 from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
-from .Names import itemName, locationName
+from .Names import itemName, locationName, regionName
 
 #from Utils import get_options
 from BaseClasses import ItemClassification, Tutorial, Item, Region, MultiWorld
@@ -52,6 +52,21 @@ class BanjoTooieWorld(World):
     doubloon_counter: int = 0
     slot_data = []
     use_cheato_filler = False
+    randomize_worlds = {}
+    world_sphere_1 = [
+        regionName.MT,
+        regionName.GM,
+        regionName.WW,
+        regionName.JR,
+        regionName.HP,
+        regionName.TL,
+        regionName.CC,
+        regionName.GIO
+    ]
+
+    world_sphere_2 = [
+
+    ]
 
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
     item_name_to_id = {}
@@ -168,7 +183,7 @@ class BanjoTooieWorld(World):
         if item.code in range(1230790, 1230796) and self.options.randomize_stations == False:
             return False
         
-        if item.code == 1230797: #Notes
+        if item.code == 1230797 and self.options.randomize_notes == False: #Notes
             return False
 
         return True
@@ -176,6 +191,98 @@ class BanjoTooieWorld(World):
     def create_regions(self) -> None:
         create_regions(self)
         connect_regions(self)
+
+    def generate_early(self) -> None:
+        if self.options.randomize_worlds and self.options.randomize_moves == True and \
+        self.options.skip_puzzles == True:
+            random.shuffle(self.world_sphere_1)
+            first_level = self.world_sphere_1[0]
+            #temp
+            while first_level != regionName.TL:
+                random.shuffle(self.world_sphere_1)
+                first_level = self.world_sphere_1[0]
+            #temp
+            all_good = False
+            while(all_good == False):
+                if first_level == regionName.GIO and (self.options.randomize_cheato == False or self.options.randomize_jinjos == False or \
+                self.options.randomize_notes == False):
+                    random.shuffle(self.world_sphere_1)
+                    first_level = self.world_sphere_1[0]
+                    continue
+                elif first_level == regionName.TL and (self.options.randomize_cheato == False or self.options.randomize_jinjos == False) and \
+                self.options.randomize_notes == False:
+                    random.shuffle(self.world_sphere_1)
+                    first_level = self.world_sphere_1[0]
+                    continue
+                elif first_level == regionName.CC and (self.options.randomize_cheato == False or self.options.randomize_jinjos == False) and \
+                self.options.randomize_notes == False:
+                    random.shuffle(self.world_sphere_1)
+                    first_level = self.world_sphere_1[0]
+                    continue
+                elif first_level == regionName.WW and (self.options.randomize_cheato == False or self.options.randomize_jinjos == False) and \
+                self.options.randomize_notes == False:
+                    random.shuffle(self.world_sphere_1)
+                    first_level = self.world_sphere_1[0]
+                    continue
+                else:
+                    all_good = True
+
+            i = 1
+            for world in self.world_sphere_1:
+                if i == 1:
+                    self.randomize_worlds.update({world: 1})
+                    i = i+1
+                else:
+                    self.world_sphere_2.append(world)
+
+            random.shuffle(self.world_sphere_2)
+            for world in self.world_sphere_2:
+                if i == 2:
+                    self.randomize_worlds.update({world: 4})
+                elif i == 3:
+                    self.randomize_worlds.update({world: 8})
+                elif i == 4:
+                    self.randomize_worlds.update({world: 14})
+                elif i == 5:
+                    self.randomize_worlds.update({world: 20})
+                elif i == 6:
+                    self.randomize_worlds.update({world: 28})
+                elif i == 7:
+                    self.randomize_worlds.update({world: 36})
+                elif i == 8:
+                    self.randomize_worlds.update({world: 45})
+                i = i+1
+            first_level = list(self.randomize_worlds.keys())[0]
+            if  first_level != regionName.MT and self.options.logic_type != 2:
+                self.multiworld.early_items[self.player][itemName.GGRAB] = 1
+            if  first_level == regionName.WW:
+                self.multiworld.early_items[self.player][itemName.FEGGS] = 1
+            if  first_level == regionName.JR or first_level == regionName.HP:
+                self.multiworld.early_items[self.player][itemName.SPLITUP] = 1
+            if first_level == regionName.TL or first_level == regionName.CC:
+                self.multiworld.early_items[self.player][itemName.FEGGS] = 1
+                self.multiworld.early_items[self.player][itemName.TTORP] = 1
+            if first_level == regionName.GIO:
+                self.multiworld.early_items[self.player][itemName.FEGGS] = 1
+                self.multiworld.early_items[self.player][itemName.TTORP] = 1
+                # self.multiworld.early_items[self.player][itemName.SPRINGB] = 1
+                # self.multiworld.early_items[self.player][itemName.CLAWBTS] = 1
+
+        else:
+            self.randomize_worlds = {
+                regionName.MT: 1,
+                regionName.GM: 4,
+                regionName.WW: 8,
+                regionName.JR: 14,
+                regionName.TL: 20,
+                regionName.GIO: 28,
+                regionName.HP:  36,
+                regionName.CC:  45, 
+            }
+        
+        # self.multiworld.early_items[self.player][itemName.GGRAB] = 1
+        # self.multiworld.early_items[self.player][itemName.SPLITUP] = 1
+
 
     def set_rules(self) -> None:
         rules = Rules.BanjoTooieRules(self)
@@ -206,8 +313,8 @@ class BanjoTooieWorld(World):
         if self.options.randomize_chuffy == False:
             self.banjo_pre_fills(itemName.CHUFFY, "Chuffy", False)
 
-        # if self.options.randomize_treble == False:  #Notes later
-        self.banjo_pre_fills(itemName.NOTE, "Note", False)
+        if self.options.randomize_notes == False:
+         self.banjo_pre_fills(itemName.NOTE, "Note", False)
         
         if self.options.randomize_jinjos == False:
             item = self.create_item(itemName.JIGGY)
@@ -322,6 +429,7 @@ class BanjoTooieWorld(World):
         btoptions['stations']= "true" if self.options.randomize_stations == 1 else "false"
         btoptions['chuffy']= "true" if self.options.randomize_chuffy == 1 else "false"
         btoptions['jinjo']= "true" if self.options.randomize_jinjos == 1 else "false"
+        btoptions['world_order'] = self.randomize_worlds
 
 
 

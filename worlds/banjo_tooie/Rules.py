@@ -1442,16 +1442,17 @@ class BanjoTooieRules:
                     (self.check_solo_moves(state, itemName.PACKWH) and state.has(itemName.GGRAB, self.player)))
         return logic
     
+    #handle CCL access
     def cheato_dippypool(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.JIGGY, self.player, 45) and state.has(itemName.SPRINGB, self.player) and \
+            logic = self.ccl_jiggy(state) and state.has(itemName.SPRINGB, self.player) and \
                                                   state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.JIGGY, self.player, 45) and state.has(itemName.SPRINGB, self.player) and \
+            logic = self.ccl_jiggy(state) and state.has(itemName.SPRINGB, self.player) and \
                                                   state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.JIGGY, self.player, 45) and state.has(itemName.SPRINGB, self.player) and \
+            logic = self.ccl_jiggy(state) and state.has(itemName.SPRINGB, self.player) and \
                                                   state.has(itemName.TTORP, self.player)
         return logic
     
@@ -1925,7 +1926,7 @@ class BanjoTooieRules:
 
     def has_enough_notes(self, state: CollectionState, Amount) -> bool:
         count:int = 0
-        if state.has(itemName.JIGGY, self.player, 1): # MT Access
+        if self.can_access_mt(state): # MT Access
             count += 80
         if state.has(itemName.GGRAB, self.player): # JV Treble + Plateau Sign
             count += 10
@@ -1944,11 +1945,11 @@ class BanjoTooieRules:
                     count += 20
                     if state.has(itemName.JIGGY, self.player, 20): # TDL Access
                         count += 80
-                    if state.has(itemName.JIGGY, self.player, 45): # CCL Access
+                    if self.ccl_jiggy(state): # CCL Access
                         count += 70
                         if state.has(itemName.CEGGS, self.player) or state.has(itemName.SHPACK, self.player): # Sack Pack Notes
                             count += 10
-                    if state.has(itemName.SPRINGB, self.player) and state.has(itemName.JIGGY, self.player, 28) and self.enter_GI(state): # GI 1F
+                    if state.has(itemName.SPRINGB, self.player) and self.gi_jiggy(state) and self.enter_GI(state): # GI 1F
                         count += 25
                         if self.can_use_battery(state):  # Waste Disposal
                             count += 10
@@ -1962,7 +1963,7 @@ class BanjoTooieRules:
                 self.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, self.player)): # Cliff Top
                     count += 20
             if state.has(itemName.SPLITUP, self.player):
-                if state.has(itemName.JIGGY, self.player, 14): # JRL Town Center
+                if self.jrl_jiggy(state): # JRL Town Center
                     count += 60
                     if state.has(itemName.AUQAIM, self.player) or state.has(itemName.TTORP, self.player): # Squid Notes
                         count += 10
@@ -2002,11 +2003,10 @@ class BanjoTooieRules:
                  self.check_mumbo_magic(state, itemName.MUMBOMT))
         
         elif self.world.options.logic_type == 2: # advanced
-            return state.has(itemName.JIGGY, self.player, 1) and \
+            return self.can_access_mt(state) and \
                 (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
                  self.check_mumbo_magic(state, itemName.MUMBOMT))
         
-
     def dilberta_free(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
             return self.prison_compound_open(state) and state.has(itemName.BDRILL, self.player) and \
@@ -2094,20 +2094,21 @@ class BanjoTooieRules:
     def can_use_battery(self, state: CollectionState) -> bool:
         return self.check_solo_moves(state, itemName.PACKWH) and self.check_solo_moves(state, itemName.TAXPACK)
 
-    def can_access_mt(self, state: CollectionState) -> bool:
+    def can_access_mt(self, state: CollectionState) -> bool: #1
+        amt = self.world.randomize_worlds[regionName.MT]
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.JIGGY, self.player, 8)
+            logic = state.has(itemName.JIGGY, self.player, amt)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.JIGGY, self.player, 8)
+            logic = state.has(itemName.JIGGY, self.player, amt)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.JIGGY, self.player, 8)
+            logic = state.has(itemName.JIGGY, self.player, amt)
         return logic
 
     def can_access_plateau(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.GGRAB, self.player)
+            logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
         elif self.world.options.logic_type == 2: # advanced
@@ -2126,13 +2127,15 @@ class BanjoTooieRules:
             logic = self.gm_jiggy(state)
         return logic
     
-    def gm_jiggy(self, state: CollectionState) -> bool:
-        return state.has(itemName.JIGGY, self.player, 10)
+    def gm_jiggy(self, state: CollectionState) -> bool: #4
+        amt = self.world.randomize_worlds[regionName.GM]
+        return state.has(itemName.JIGGY, self.player, amt)
     
     def can_access_pinegrove(self, state: CollectionState, fromTrain: bool) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state)
+            logic = state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state) and \
+                    state.has(itemName.EGGAIM, self.player)
         elif self.world.options.logic_type == 1 : # normal
             if fromTrain:
                 logic = (state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state))
@@ -2167,8 +2170,9 @@ class BanjoTooieRules:
                         self.has_train_access(state, "WW")
         return logic
     
-    def ww_jiggy(self, state: CollectionState) -> bool:
-            return state.has(itemName.JIGGY, self.player, 1)
+    def ww_jiggy(self, state: CollectionState) -> bool: #8
+            amt = self.world.randomize_worlds[regionName.WW]
+            return state.has(itemName.JIGGY, self.player, amt)
     
     def can_access_clifftop(self, state: CollectionState, fromTrain: bool) -> bool:
         logic = True
@@ -2191,12 +2195,16 @@ class BanjoTooieRules:
     def can_access_jrl(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.can_access_clifftop(state, False) and state.has(itemName.JIGGY, self.player, 14)
+            logic = self.can_access_clifftop(state, False) and self.jrl_jiggy(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.can_access_clifftop(state, False) and state.has(itemName.JIGGY, self.player, 14)
+            logic = self.can_access_clifftop(state, False) and self.jrl_jiggy(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.can_access_clifftop(state, False) and state.has(itemName.JIGGY, self.player, 14)
+            logic = self.can_access_clifftop(state, False) and self.jrl_jiggy(state)
         return logic
+    
+    def jrl_jiggy(self, state: CollectionState) -> bool: #14
+        amt = self.world.randomize_worlds[regionName.JR]
+        return state.has(itemName.JIGGY, self.player, amt)
     
     def can_access_wasteland(self, state: CollectionState, fromTrain: bool) -> bool:
         logic = True
@@ -2208,33 +2216,37 @@ class BanjoTooieRules:
             else:
                 logic = (self.can_access_pinegrove(state, fromTrain) and state.has(itemName.TTORP, self.player)) or \
                         self.has_train_access(state, "TDL") or (self.can_leave_GI_from_inside(state) and \
-                        state.has(itemName.JIGGY, self.player, 28))
+                        self.gi_jiggy(state))
         elif self.world.options.logic_type == 2: # advanced
             if fromTrain:
                 logic = self.can_access_pinegrove(state, fromTrain) and state.has(itemName.TTORP, self.player)
             else:
                 logic = (self.can_access_pinegrove(state, fromTrain) and state.has(itemName.TTORP, self.player)) or \
                         self.has_train_access(state, "TDL") or (self.can_leave_GI_from_inside(state) and \
-                        state.has(itemName.JIGGY, self.player, 28))
+                        self.gi_jiggy(state))
         return logic
     
     def can_access_tdl(self, state: CollectionState, fromTrain: bool) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.can_access_wasteland(state, False) and state.has(itemName.JIGGY, self.player, 20)
+            logic = self.can_access_wasteland(state, False) and self.tdl_jiggy(state)
         elif self.world.options.logic_type == 1: # normal
             if fromTrain:  
-                logic = (self.can_access_wasteland(state, fromTrain) and state.has(itemName.JIGGY, self.player, 20))
+                logic = (self.can_access_wasteland(state, fromTrain) and self.tdl_jiggy(state))
             else:
-                logic = (self.can_access_wasteland(state, fromTrain) and state.has(itemName.JIGGY, self.player, 20)) or \
+                logic = (self.can_access_wasteland(state, fromTrain) and self.tdl_jiggy(state)) or \
                         self.has_train_access(state, "TDL")
         elif self.world.options.logic_type == 2: # advanced
             if fromTrain:  
-                    logic = (self.can_access_wasteland(state, fromTrain) and state.has(itemName.JIGGY, self.player, 20))
+                    logic = (self.can_access_wasteland(state, fromTrain) and self.tdl_jiggy(state))
             else:
-                    logic = (self.can_access_wasteland(state, fromTrain) and state.has(itemName.JIGGY, self.player, 20)) or \
+                    logic = (self.can_access_wasteland(state, fromTrain) and self.tdl_jiggy(state)) or \
                             self.has_train_access(state, "TDL")
         return logic
+    
+    def tdl_jiggy(self, state: CollectionState) -> bool: #20
+        amt = self.world.randomize_worlds[regionName.TL]
+        return state.has(itemName.JIGGY, self.player, amt)
     
     def can_access_quagmire(self, state: CollectionState, fromTrain: bool) -> bool:
         logic = True
@@ -2245,7 +2257,7 @@ class BanjoTooieRules:
                 logic = state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, fromTrain)
             else:
                 logic = (state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, fromTrain)) or \
-                        (self.can_leave_GI_from_inside(state) and state.has(itemName.JIGGY, self.player, 28))
+                        (self.can_leave_GI_from_inside(state) and self.gi_jiggy(state))
         elif self.world.options.logic_type == 2: # advanced
             if fromTrain:
                 logic = state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, fromTrain)
@@ -2257,13 +2269,17 @@ class BanjoTooieRules:
     def can_access_gruntyindustries_outside(self, state: CollectionState, fromTrain: bool) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.JIGGY, self.player, 28) and self.can_access_quagmire(state, False)
+            logic = self.gi_jiggy(state) and self.can_access_quagmire(state, False)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.JIGGY, self.player, 28) and self.can_access_quagmire(state, fromTrain)
+            logic = self.gi_jiggy(state) and self.can_access_quagmire(state, fromTrain)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.JIGGY, self.player, 28) and self.can_access_quagmire(state, fromTrain)
+            logic = self.gi_jiggy(state) and self.can_access_quagmire(state, fromTrain)
         return logic
     
+    def gi_jiggy(self, state: CollectionState) -> bool: #28
+        amt = self.world.randomize_worlds[regionName.GIO]
+        return state.has(itemName.JIGGY, self.player, amt)
+
     def can_access_gi_outside_from_inside(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -2303,30 +2319,38 @@ class BanjoTooieRules:
     def can_access_hailfire(self, state: CollectionState, fromTrain) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.JIGGY, self.player, 36) and self.can_access_clifftop(state, False)
+            logic = self.hfp_jiggy(state) and self.can_access_clifftop(state, False)
         elif self.world.options.logic_type == 1: # normal
             if fromTrain:
-                logic = state.has(itemName.JIGGY, self.player, 36) and self.can_access_clifftop(state, fromTrain)
+                logic = self.hfp_jiggy(state) and self.can_access_clifftop(state, fromTrain)
             else:
-                logic = (state.has(itemName.JIGGY, self.player, 36) and self.can_access_clifftop(state, fromTrain)) or \
+                logic = (self.hfp_jiggy(state) and self.can_access_clifftop(state, fromTrain)) or \
                         self.has_train_access(state, "HFP")
         elif self.world.options.logic_type == 2: # advanced
             if fromTrain:
-                logic = state.has(itemName.JIGGY, self.player, 36) and self.can_access_clifftop(state, fromTrain)
+                logic = self.hfp_jiggy(state) and self.can_access_clifftop(state, fromTrain)
             else:
-                logic = (state.has(itemName.JIGGY, self.player, 36) and self.can_access_clifftop(state, fromTrain)) or \
+                logic = (self.hfp_jiggy(state) and self.can_access_clifftop(state, fromTrain)) or \
                         self.has_train_access(state, "HFP")
         return logic
+    
+    def hfp_jiggy(self, state: CollectionState) -> bool: # 36
+        amt = self.world.randomize_worlds[regionName.HP]
+        return state.has(itemName.JIGGY, self.player, amt)
     
     def can_access_ccl(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.JIGGY, self.player, 45) and self.can_access_wasteland(state, False)
+            logic = self.ccl_jiggy(state) and self.can_access_wasteland(state, False)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.JIGGY, self.player, 45) and self.can_access_wasteland(state, False)
+            logic = self.ccl_jiggy(state) and self.can_access_wasteland(state, False)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.JIGGY, self.player, 45) and self.can_access_wasteland(state, False)
+            logic = self.ccl_jiggy(state) and self.can_access_wasteland(state, False)
         return logic
+    
+    def ccl_jiggy(self, state: CollectionState) -> bool: # 45
+        amt = self.world.randomize_worlds[regionName.CC]
+        return state.has(itemName.JIGGY, self.player, amt)
     
     def can_access_ck(self, state: CollectionState) -> bool:
         logic = True
@@ -2436,7 +2460,7 @@ class BanjoTooieRules:
 
     #TODO Needs to handle proper world access
     def HFP_hot_water_cooled(self, state) -> bool:
-        return state.has(itemName.JIGGY, self.player, 45) and \
+        return self.ccl_jiggy(state) and \
                state.has(itemName.SPLITUP, self.player) and \
                state.has(itemName.FEGGS, self.player) and \
                state.has(itemName.TTORP, self.player)

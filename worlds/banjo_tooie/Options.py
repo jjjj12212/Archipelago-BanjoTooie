@@ -53,6 +53,10 @@ class EnableMultiWorldChuffyTrain(Toggle):
     """Chuffy is lost across the MultiWorld."""
     display_name = "Chuffy as a randomized AP Item."
 
+class EnableMultiWorldNotes(Toggle):
+    """Note Nests are scattered across the MultiWorld."""
+    display_name = "Randomize Note Nests"
+
 class KingJingalingHasJiggy(Toggle):
     """King Jingaling will always have a Jiggy to give you."""
     display_name = "King Jingaling Jiggy"
@@ -66,7 +70,7 @@ class OpenHag1(Toggle):
     display_name = "HAG 1 Open"
 
 class RandomizeWorlds(Toggle):
-    """Worlds will open in a randomized order."""
+    """Worlds will open in a randomized order. Randomized Moves & Puzzle Skip Required."""
     display_name = "Randomize Worlds"
 
 class SkipToT(Choice):
@@ -105,6 +109,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_treble: EnableMultiWorldTrebleClefs
     randomize_stations: EnableMultiWorldTrainStationSwitches
     randomize_chuffy: EnableMultiWorldChuffyTrain
+    randomize_notes: EnableMultiWorldNotes
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
     open_hag1: OpenHag1
