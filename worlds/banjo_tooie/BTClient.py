@@ -309,6 +309,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
 
                     else:
                         for locationId, value in BTlocation_table.items():
+                            if locationId in range(1230676, 1230685) and ctx.slot_data["jinjo"] == "true":
+                                continue
                             if value == True:
                                 locs1.append(int(locationId))
             if len(locs1) > 0:
