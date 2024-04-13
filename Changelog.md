@@ -3,6 +3,8 @@
 - Logic Changes:
   - Flooded Caves Jiggy requires the detonator in beginner logic.
   - Mrs. Boggy jiggy no longer requires explosives in advanced logic.
+- Bugfix for Jinjos
+
 # 1.0.2-Beta
 - Mrs. Boggy now stays at the park
 - restarting connector for "fixing" opening levels no longer required (if skip_puzzle enabled)
