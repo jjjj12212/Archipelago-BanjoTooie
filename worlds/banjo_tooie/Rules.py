@@ -1598,7 +1598,10 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.DOUBLOON, self.player, 28)
         elif self.world.options.logic_type == 1: # normal
-            logic = True
+            logic = state.has(itemName.DOUBLOON, self.player, 28) or ((state.has(itemName.GEGGS, self.player) or \
+                    state.has(itemName.CEGGS, self.player)) and (self.check_solo_moves(state, itemName.PACKWH) or \
+                    self.check_solo_moves(state, itemName.SAPACK) or (self.check_solo_moves(state, itemName.LSPRING) and \
+                    self.check_solo_moves(state, itemName.GLIDE))))
         elif self.world.options.logic_type == 2: # advanced
             logic = True
         return logic
