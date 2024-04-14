@@ -309,9 +309,12 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
 
                     else:
                         for locationId, value in BTlocation_table.items():
-                            if locationId in range(1230676, 1230685) and ctx.slot_data["jinjo"] == "true":
-                                continue
                             if value == True:
+                                if (locationId == "1230676" or locationId == "1230677" or locationId == "1230678" or
+                                    locationId == "1230679" or locationId == "1230680" or locationId == "1230681" or
+                                    locationId == "1230682" or locationId == "1230683" or locationId == "1230684") \
+                                    and ctx.slot_data["jinjo"] == "true":
+                                    continue
                                 locs1.append(int(locationId))
             if len(locs1) > 0:
                 await ctx.send_msgs([{
