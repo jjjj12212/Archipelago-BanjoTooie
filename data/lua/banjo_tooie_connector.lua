@@ -3895,9 +3895,9 @@ function loadGame(current_map)
             if ENABLE_AP_CHUFFY == true -- Sanity Check
             then
                 if BTRAMOBJ:checkFlag(0x98, 5) == false and BTRAMOBJ:checkFlag(0x98, 6) == false and
-                BTRAMOBJ:checkFlag(0x98, 7) == false and BTRAMOBJ:clearFlag(0x99, 0) == false and
-                BTRAMOBJ:clearFlag(0x99, 1) == false and BTRAMOBJ:clearFlag(0x99, 2) == false and
-                BTRAMOBJ:clearFlag(0x99, 3) == false
+                BTRAMOBJ:checkFlag(0x98, 7) == false and BTRAMOBJ:checkFlag(0x99, 0) == false and
+                BTRAMOBJ:checkFlag(0x99, 1) == false and BTRAMOBJ:checkFlag(0x99, 2) == false and
+                BTRAMOBJ:checkFlag(0x99, 3) == false
                 then
                     if DEBUG == true
                     then
