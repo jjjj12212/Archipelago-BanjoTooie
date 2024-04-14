@@ -115,7 +115,7 @@ The glitched logic will expect all the reasonable glitches to be done, as well a
 |Van Door|Money Van, Grip Grab, Grenade Eggs|Money Van, (Grenade Eggs or Clockwork Eggs)|Money Van, (Grenade Eggs or Clockwork Eggs)|Clockwork Eggs or (Money Van, Grenade Eggs)|
 |Dodgem Dome|<N/A>|<N/A>|<N/A>|<N/A>|
 |Cactus of Strength|Grip Grab|<N/A>|<N/A>|<N/A>|
-|Lagoon Alcove|28 Doubloons|<N/A>|<N/A>|<N/A>|
+|Lagoon Alcove|28 Doubloons|28 Doubloons or ((Grenade Eggs or Clockwork Eggs) and Split-up and (Pack Wack or Sack Pack or (Leg Sping and Glide)))|<N/A>|<N/A>|
 |Blubber|<N/A>|<N/A>|<N/A>|<N/A>|
 |Big Fish|Deep JRL Access|Deep JRL Access|Deep JRL Access, Sub-Aqua Egg Aiming|Deep JRL Access, Sub-Aqua Egg Aiming|
 |Seaweed Sanctum|Deep JRL Access, Grip Grab|Deep JRL Access|Deep JRL Access|Deep JRL Access|
