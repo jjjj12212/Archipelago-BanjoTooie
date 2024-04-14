@@ -1,3 +1,9 @@
+# 1.0.4-Beta
+- Logic Changes:
+  - Talon Torpedo required on Normal Logic from Wasteland to Pinegrove.
+  - Modify Alcove Jinjo requirements on Normal Logic.
+- Real bugfix for Jinjos
+
 # 1.0.3-Beta
 - Added glitched logic
 - Logic Changes:
