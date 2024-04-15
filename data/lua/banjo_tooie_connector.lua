@@ -362,7 +362,8 @@ BTModel = {
         ["Levitate Pad"] = 0x7D8,
         ["Jiggy"] = 0x610,
         ["Breakable Door"] = 0x651,
-        ["Sign Post"] = 0x7A2
+        ["Sign Post"] = 0x7A2,
+        ["Jiggy Guy"] = 0x937
     };
     model_enemy_list = {
         ["Ugger"] = 0x671,
@@ -672,6 +673,28 @@ function nearWHJinjo()
             print("Near Jinjo");
         end
         BMMRestore();
+    end
+end
+
+function nearDisiple()
+    BTMODELOBJ:changeName("Jiggy Guy", false);
+    local playerDist = BTMODELOBJ:getClosestModelDistance()
+    if playerDist == false
+    then
+        BMMBackup()
+        useAGI()
+        return;
+    end
+    if playerDist <= 1500
+    then
+        if DEBUG == true
+        then
+            print("Near Disiple");
+        end
+        useAGINoJiggies();
+    elseif playerDist > 1500
+    then
+        useAGI()
     end
 end
 
@@ -4825,6 +4848,10 @@ function locationControl()
         else
             getAltar()
             nearWHJinjo()
+            if ENABLE_AP_WORLDS == true
+            then
+                nearDisiple()
+            end
             CURRENT_MAP = mapaddr
             return all_location_checks("BMM");
         end
@@ -4845,6 +4872,10 @@ function locationControl()
                     CURRENT_MAP = mapaddr
                 end
                 nearWHJinjo()
+                if ENABLE_AP_WORLDS == true
+                then
+                    nearDisiple()
+                end
                 return all_location_checks("BMM");
             else
                 CURRENT_MAP = mapaddr
@@ -5113,6 +5144,21 @@ function useAGI()
                         end
                     end
                 end
+            end
+        end
+    end
+end
+
+function useAGINoJiggies()
+    for location,values in pairs(AGI_MASTER_MAP["JIGGY"])
+    do
+        if AMM["JIGGY"][location] == true
+        then
+            BTRAMOBJ:clearFlag(values['addr'], values['bit'])
+            AMM["JIGGY"][location] = false
+            if DEBUG == true
+            then
+                print(location .. " Flag Cleared from AGI JIGGY");
             end
         end
     end
