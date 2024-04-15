@@ -15,6 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
+local BT_VERSION = "V1.1.0"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -47,6 +48,9 @@ local PAUSED = false;
 local TOTALS_MENU = false;
 local SAVE_GAME = false;
 local USE_BMM_TBL = false;
+local USE_BMM_ONLY_TBL = false;
+local USE_BMM_ONLY_TYP = "";
+
 local CLOSE_TO_ALTAR = false;
 local DETECT_DEATH = false;
 local SNEAK = false;
@@ -73,8 +77,7 @@ local WATCH_LOADED_SILOS = false; -- Silo found on Map, Need to Monitor Distance
 local LOAD_BMK_MOVES = false; -- If close to Silo
 local SILOS_LOADED = false; -- Handles if learned a move at Silo
 local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
--- local DOUBLOON_SILO_MOVE = false; -- Move Doubloons away from Silo in JRL
-
+local LOAD_SILO_NOTES = false;
 local TOT_SET_COMPLETE = false;
 
 -------------- TREBLE VARS ------------
@@ -3010,6 +3013,50 @@ local NON_AGI_MAP = {
 				['addr'] = 0xAC,
 				['bit'] = 2
 			},
+            ['Targitzan'] = {
+                ['addr'] = 0x0C,
+                ['bit'] = 7
+            },
+            ['Klungo 3'] = {
+                ['addr'] = 0x11,
+                ['bit'] = 7
+            },
+            ['Klungo 2'] = {
+                ['addr'] = 0x32,
+                ['bit'] = 2
+            },
+            ['Klungo 1'] = {
+                ['addr'] = 0x13,
+                ['bit'] = 1
+            },
+            ['Terry'] = {
+                ['addr'] = 0x29,
+                ['bit'] = 2
+            },
+            ['Weldar'] = {
+                ['addr'] = 0x29,
+                ['bit'] = 4
+            },
+            ['King Coal'] = {
+                ['addr'] = 0x2A,
+                ['bit'] = 1
+            },
+            ['Patches'] = {
+                ['addr'] = 0x2A,
+                ['bit'] = 7
+            },
+            ['Woo Fak Fak'] = {
+                ['addr'] = 0x30,
+                ['bit'] = 7
+            },
+            ['Chilly Willy'] = {
+                ['addr'] = 0x35,
+                ['bit'] = 3
+            },
+            ['Chilly Billi'] = {
+                ['addr'] = 0x35,
+                ['bit'] = 4
+            },
 		},
 		['INTRO'] = {
 			['Bovina'] = {
@@ -3622,13 +3669,37 @@ function readAPLocationChecks(type)
     then
         for check_type, location in pairs(AGI_MASTER_MAP)
         do
-            for locId, table in pairs(location)
-            do
-                if checks[check_type] == nil
+            if USE_BMM_ONLY_TBL == true
+            then
+                if check_type == USE_BMM_ONLY_TYP
                 then
-                    checks[check_type] = {}
+                    for locId, value in pairs(BMM[check_type])
+                    do
+                        if checks[check_type] == nil
+                        then
+                            checks[check_type] = {}
+                        end
+                        checks[check_type][locId] = value
+                    end
+                else
+                    for locId, table in pairs(location)
+                    do
+                        if checks[check_type] == nil
+                        then
+                            checks[check_type] = {}
+                        end
+                        checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
+                    end
                 end
-                checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
+            else
+                for locId, table in pairs(location)
+                do
+                    if checks[check_type] == nil
+                    then
+                        checks[check_type] = {}
+                    end
+                    checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
+                end
             end
         end
         return checks;
@@ -4158,6 +4229,8 @@ function nearSilo()
         then
             clear_AMM_MOVES_checks();
             update_BMK_MOVES_checks();
+            BMMBackupOnly("NOTES");
+            useAGIOnly("NOTES");
             LOAD_BMK_MOVES = true
         elseif SILOS_LOADED == false
         then
@@ -4172,17 +4245,6 @@ function nearSilo()
             -- print("BKM Move Learnt");
             -- end
         end
--- elseif siloPOS["Distance"] <= 300 and CURRENT_MAP == 0x1A7  -- Doubloon issue 
--- then
---     if LOAD_BMK_MOVES == false
-    --     then
-    --         clear_AMM_MOVES_checks();
-    --         update_BMK_MOVES_checks();
-    --         LOAD_BMK_MOVES = true
---     elseif SILOS_LOADED == false
-    --     then
-    --         update_BMK_MOVES_checks();
---     end
     else
         if LOAD_BMK_MOVES == true
         then
@@ -4190,9 +4252,51 @@ function nearSilo()
             then
                 print("Reseting Movelist");
             end
-            set_AGI_MOVES_checks()
-            LOAD_BMK_MOVES = false
+            set_AGI_MOVES_checks();
+            BMMRestoreOnly("NOTES");
+            LOAD_BMK_MOVES = false;
             SILOS_LOADED = false;
+        end
+    end
+
+    if siloPOS["Distance"] <= 410 and CURRENT_MAP ~= 0x13A -- Notes and not CCL
+    then
+        if LOAD_SILO_NOTES == false
+        then
+            BMMBackupOnly("NOTES");
+            useAGIOnly("NOTES");
+            LOAD_SILO_NOTES = true
+        end
+    elseif siloPOS["Distance"] > 410 and CURRENT_MAP ~= 0x13A
+    then
+        if LOAD_SILO_NOTES == true
+        then
+            if DEBUG == true
+            then
+                print("Reseting Note Count");
+            end
+            BMMRestoreOnly("NOTES");
+            LOAD_SILO_NOTES = false;
+        end
+    end
+    if siloPOS["Distance"] <= 260 and CURRENT_MAP == 0x13A -- Notes and CCL
+    then
+        if LOAD_SILO_NOTES == false
+        then
+            BMMBackupOnly("NOTES");
+            useAGIOnly("NOTES");
+            LOAD_SILO_NOTES = true
+        end
+    elseif siloPOS["Distance"] > 260 and CURRENT_MAP == 0x13A -- Notes and CCL
+    then
+        if LOAD_SILO_NOTES == true
+        then
+            if DEBUG == true
+            then
+                print("Reseting Note Count");
+            end
+            BMMRestoreOnly("NOTES");
+            LOAD_SILO_NOTES = false;
         end
     end
 end
@@ -4360,6 +4464,10 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
         then
             if jiggy_count >= values["defaultCost"]
             then
+                if DEBUG == true
+                then
+                    print(values["defaultName"] .. tostring(values["defaultCost"]))
+                end
                 BTRAMOBJ:setFlag(values["addr"], values["bit"])
                 if ENABLE_AP_WORLDS == false
                 then
@@ -4761,9 +4869,26 @@ function BMMBackup()
         if BMM[item_group] == nil then
             BMM[item_group] = {}
         end
-        for location, values in pairs(table)
-        do
-            BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
+        if USE_BMM_ONLY_TBL == true
+        then
+            if USE_BMM_ONLY_TYP ~= item_group
+            then
+
+                for location, values in pairs(table)
+                do
+                    BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
+                end
+            else
+                if DEBUG == true
+                then
+                    print("Backup excluding " .. USE_BMM_ONLY_TYP);
+                end
+            end
+        else
+            for location, values in pairs(table)
+            do
+                BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
+            end
         end
     end
     if DEBUG == true
@@ -4774,6 +4899,33 @@ function BMMBackup()
     USE_BMM_TBL = true
 end
 
+function BMMBackupOnly(backup_type)
+    if USE_BMM_TBL == true or GAME_LOADED == false or
+    (USE_BMM_ONLY_TBL == true and USE_BMM_ONLY_TYP == backup_type)
+    then
+        return
+    end
+    for item_group, table in pairs(AGI_MASTER_MAP)
+    do
+        if BMM[item_group] == nil then
+            BMM[item_group] = {}
+        end
+        if item_group == backup_type
+        then
+            for location, values in pairs(table)
+            do
+                BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
+            end
+        end
+    end
+    if DEBUG == true
+    then
+        print("Backup " .. backup_type .. " complete");
+    end
+    USE_BMM_ONLY_TBL = true
+    USE_BMM_ONLY_TYP = backup_type
+end
+
 function BMMRestore()
     if USE_BMM_TBL == false
     then
@@ -4782,23 +4934,55 @@ function BMMRestore()
 
     for item_group , location in pairs(AGI_MASTER_MAP)
     do
-        for loc,v in pairs(location)
-        do
-            if AMM[item_group][loc] == false and BMM[item_group][loc] == true
+        if USE_BMM_ONLY_TBL == true
+        then
+            if item_group ~= USE_BMM_ONLY_TYP
             then
-                BTRAMOBJ:setFlag(v['addr'], v['bit'])
-                AMM[item_group][loc] = BMM[item_group][loc]
-                if DEBUG == true
-                then
-                    print(loc .. " Flag Set")
+                for loc,v in pairs(location)
+                do
+                    if AMM[item_group][loc] == false and BMM[item_group][loc] == true
+                    then
+                        BTRAMOBJ:setFlag(v['addr'], v['bit'])
+                        AMM[item_group][loc] = BMM[item_group][loc]
+                        if DEBUG == true
+                        then
+                            print(loc .. " Flag Set")
+                        end
+                    elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
+                    then
+                        BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE")
+                        AMM[item_group][loc] = BMM[item_group][loc]
+                        if DEBUG == true
+                        then
+                            print(loc .. " Flag Cleared")
+                        end
+                    end
                 end
-            elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
-            then
-                BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE")
-                AMM[item_group][loc] = BMM[item_group][loc]
+            else
                 if DEBUG == true
                 then
-                    print(loc .. " Flag Cleared")
+                    print("BMM Restoring exlude " .. USE_BMM_ONLY_TYP)
+                end
+            end
+        else
+            for loc,v in pairs(location)
+            do
+                if AMM[item_group][loc] == false and BMM[item_group][loc] == true
+                then
+                    BTRAMOBJ:setFlag(v['addr'], v['bit'])
+                    AMM[item_group][loc] = BMM[item_group][loc]
+                    if DEBUG == true
+                    then
+                        print(loc .. " Flag Set")
+                    end
+                elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
+                then
+                    BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE")
+                    AMM[item_group][loc] = BMM[item_group][loc]
+                    if DEBUG == true
+                    then
+                        print(loc .. " Flag Cleared")
+                    end
                 end
             end
         end
@@ -4810,38 +4994,165 @@ function BMMRestore()
     USE_BMM_TBL = false;
 end
 
+function BMMRestoreOnly(backup_type)
+    if USE_BMM_ONLY_TBL == false
+    then
+        return
+    end
+
+    for item_group , location in pairs(AGI_MASTER_MAP)
+    do
+        if item_group == backup_type
+        then
+            for loc,v in pairs(location)
+            do
+                if AMM[item_group][loc] == false and BMM[item_group][loc] == true
+                then
+                    BTRAMOBJ:setFlag(v['addr'], v['bit'])
+                    AMM[item_group][loc] = BMM[item_group][loc]
+                    if DEBUG == true
+                    then
+                        print(loc .. " Flag Set")
+                    end
+                elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
+                then
+                    BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE_ONLY")
+                    AMM[item_group][loc] = BMM[item_group][loc]
+                    if DEBUG == true
+                    then
+                        print(loc .. " Flag Cleared")
+                    end
+                end
+            end
+            USE_BMM_ONLY_TBL = false;
+            USE_BMM_ONLY_TYP = "";
+            if DEBUG == true
+            then
+                print(backup_type .. " BMM Restored")
+            end
+        end
+    end
+end
+
 function useAGI()
     for item_group, table in pairs(AGI_MASTER_MAP)
     do
-        for location,values in pairs(table)
-        do
-            if AMM[item_group][location] == false and AGI[item_group][location] == true
+        if USE_BMM_ONLY_TBL == true
+        then
+            if USE_BMM_ONLY_TYP ~= item_group
             then
-                BTRAMOBJ:setFlag(values['addr'], values['bit'])
-                AMM[item_group][location] = true
+                for location,values in pairs(table)
+                do
+                    if AMM[item_group][location] == false and AGI[item_group][location] == true
+                    then
+                        BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                        AMM[item_group][location] = true
+                        if DEBUG == true
+                        then
+                            print(location .. " Flag Set from AGI");
+                        end
+                    elseif AMM[item_group][location] == true and AGI[item_group][location] == false
+                    then
+                        BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
+                        AMM[item_group][location] = false;
+                        if DEBUG == true
+                        then
+                            print(location .. " Flag Cleared from AGI");
+                        end
+                    elseif ENABLE_AP_JINJO == true
+                    then
+                        if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
+                        or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
+                        or location == "1230684") and AGI[item_group][location] == true
+                        then
+                            BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                            AMM[item_group][location] = true
+                            if DEBUG == true
+                            then
+                                print(location .. " Flag Set from AGI");
+                            end
+                        end
+                    end
+                end
+            else
                 if DEBUG == true
                 then
-                    print(location .. " Flag Set from AGI");
+                    print("AGI exclude " .. USE_BMM_ONLY_TYP);
                 end
-            elseif AMM[item_group][location] == true and AGI[item_group][location] == false
-            then
-                BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
-                AMM[item_group][location] = false;
-                if DEBUG == true
-                then
-                    print(location .. " Flag Cleared from AGI");
-                end
-            elseif ENABLE_AP_JINJO == true
-            then
-                if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
-                or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
-                or location == "1230684") and AGI[item_group][location] == true
+            end
+        else
+            for location,values in pairs(table)
+            do
+                if AMM[item_group][location] == false and AGI[item_group][location] == true
                 then
                     BTRAMOBJ:setFlag(values['addr'], values['bit'])
                     AMM[item_group][location] = true
                     if DEBUG == true
                     then
                         print(location .. " Flag Set from AGI");
+                    end
+                elseif AMM[item_group][location] == true and AGI[item_group][location] == false
+                then
+                    BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
+                    AMM[item_group][location] = false;
+                    if DEBUG == true
+                    then
+                        print(location .. " Flag Cleared from AGI");
+                    end
+                elseif ENABLE_AP_JINJO == true
+                then
+                    if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
+                    or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
+                    or location == "1230684") and AGI[item_group][location] == true
+                    then
+                        BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                        AMM[item_group][location] = true
+                        if DEBUG == true
+                        then
+                            print(location .. " Flag Set from AGI");
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+function useAGIOnly(agi_type)
+    for item_group, table in pairs(AGI_MASTER_MAP)
+    do
+        if item_group == agi_type
+        then
+            for location,values in pairs(table)
+            do
+                if AMM[item_group][location] == false and AGI[item_group][location] == true
+                then
+                    BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                    AMM[item_group][location] = true
+                    if DEBUG == true
+                    then
+                        print(location .. " Flag Set from AGI");
+                    end
+                elseif AMM[item_group][location] == true and AGI[item_group][location] == false
+                then
+                    BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
+                    AMM[item_group][location] = false;
+                    if DEBUG == true
+                    then
+                        print(location .. " Flag Cleared from AGI");
+                    end
+                elseif ENABLE_AP_JINJO == true
+                then
+                    if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
+                    or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
+                    or location == "1230684") and AGI[item_group][location] == true
+                    then
+                        BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                        AMM[item_group][location] = true
+                        if DEBUG == true
+                        then
+                            print(location .. " Flag Set from AGI");
+                        end
                     end
                 end
             end
@@ -4857,14 +5168,25 @@ function all_location_checks(type)
     then
         for item_group, locations in pairs(location_checks)
         do
-             if AMM[item_group] == nil
-             then
-                 AMM[item_group] = {}
-             end
-             for locationId, value in pairs(locations)
-             do
-                 AMM[item_group][locationId] = value
-             end
+            if AMM[item_group] == nil
+            then
+                AMM[item_group] = {}
+            end
+            if USE_BMM_ONLY_TBL == true
+            then
+                if item_group ~= USE_BMM_ONLY_TYP
+                then
+                    for locationId, value in pairs(locations)
+                    do
+                        AMM[item_group][locationId] = value
+                    end
+                end
+            else
+                for locationId, value in pairs(locations)
+                do
+                    AMM[item_group][locationId] = value
+                end
+            end
         end
     end
     if next(AGI) == nil then --Only runs first time starting the game.
@@ -5801,6 +6123,7 @@ function main()
     if not checkBizHawkVersion() then
         return
     end
+    print("Banjo-Tooie Archipelago Version " .. BT_VERSION)
     server, error = socket.bind('localhost', 21221)
     BTRAMOBJ = BTRAM:new(nil);
     BTMODELOBJ = BTModel:new(BTRAMOBJ, "Player", false);

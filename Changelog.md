@@ -7,6 +7,12 @@
   - Dpad Left + Z - Aim Assist
   - Dpad Down + Z - Health Regen
 - Notes
+- Notes Randomized
+- Handle AP Notes for Jamjars
+- Randomize World Order (NOT "World Entrances")
+- Handle framework to customize jiggy amounts (future update)
+- QOL
+  - Bosses Cutscenes, no longer have to wait until Banjo Arrives at boss
 
 # 1.0.4-Beta
 - Logic Changes:
