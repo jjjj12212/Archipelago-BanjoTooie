@@ -3036,34 +3036,11 @@ function readAPLocationChecks(type)
         do
             for locId, table in pairs(location)
             do
-                -- Don't check AMM Jinjo Fam Jiggies. uses a different table
-                if type == "AMM" and ENABLE_AP_JINJO == true
+                if checks[check_type] == nil
                 then
-                    if  locId ~= "1230676" and locId ~= "1230677" and locId ~= "1230678" 
-                    and locId ~= "1230679" and locId ~= "1230680" and locId ~= "1230681"
-                    and locId ~= "1230682" and locId ~= "1230683" and locId ~= "1230684"
-                    then
-                        if checks[check_type] == nil
-                        then
-                            checks[check_type] = {}
-                        end
-                        checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
-                    end
-                elseif type == "AMM" and ENABLE_AP_JINJO == false
-                then
-                    if checks[check_type] == nil
-                    then
-                        checks[check_type] = {}
-                    end
-                    checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
-                elseif type == "AGI"
-                then
-                    if checks[check_type] == nil
-                    then
-                        checks[check_type] = {}
-                    end
-                    checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
+                    checks[check_type] = {}
                 end
+                checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
             end
         end
         return checks;
