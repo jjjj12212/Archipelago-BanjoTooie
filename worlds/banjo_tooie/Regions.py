@@ -104,7 +104,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GLOWBOMEG,
         locationName.HONEYCGM1,
         locationName.HONEYCGM2,
-        locationName.HONEYCGM3,
         locationName.CHEATOGM1,
         locationName.CHEATOGM2,
         locationName.CHEATOGM3,
@@ -129,6 +128,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEGGM16  
     ],
     regionName.GMS: [
+        locationName.HONEYCGM3
     ],
     regionName.CHUFFY: [
         locationName.JIGGYGM1,
@@ -411,7 +411,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GLOWBOHP1,
         locationName.GLOWBOHP2,
         locationName.HONEYCHP1,
-        locationName.HONEYCHP2,
         locationName.HONEYCHP3,
         locationName.CHEATOHP1,
         locationName.CHEATOHP2,
@@ -438,7 +437,9 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEHFP15,
         locationName.NOTEHFP16
     ],
-    regionName.HPLS: [],      
+    regionName.HPLS: [
+        locationName.HONEYCHP2
+    ],      
     regionName.HPIS: [
         locationName.JIGGYHP5,
     ],
