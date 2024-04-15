@@ -3641,37 +3641,6 @@ function MoveWitchyPads()
     end
 end
 
--- function MoveDoubloon()
---     BTMODELOBJ:changeName("Doubloon", false)
---     local modelPOS = BTMODELOBJ:getMultipleModelCoords()
---     if modelPOS == false
---     then
---         return;
---     end
---     for modelObjPtr, POS in pairs(modelPOS) do
---         if POS ~= false
---         then
---             if (POS["Xpos"] == -3226 and POS["Zpos"] == -4673) -- bottom right
---             then
---                 BTMODELOBJ:moveModelObject(modelObjPtr, nil, nil, POS["Zpos"] + 65);
---             end
---             if (POS["Xpos"] == -3526 and POS["Zpos"] == -4972) --bottom left
---             then
---                 BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 65);
---             end
---             if (POS["Xpos"] == -3226 and POS["Zpos"] == -5273) -- top left
---             then
---                 BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 50);
---             end
---             if (POS["Xpos"] == -2926 and POS["Zpos"] == -4972) -- top right
---             then
---                 BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] + 25, nil, POS["Zpos"] + 65);
---             end
---         end
---         DOUBLOON_SILO_MOVE = true;
---     end
--- end
-
 ------------------ Jinjos -------------------
 -- Jinjos themselves are stored in MASTER_AGI_MAP
 -- Famify complete checks are stored in BKJINJOFAM
@@ -5057,6 +5026,27 @@ function process_slot(block)
     if block['slot_jinjo'] ~= nil and block['slot_jinjo'] ~= "false"
     then
         ENABLE_AP_JINJO = true
+    end
+    if block['slot_world_order'] ~= nil
+    then
+        for location, jiggy_amt in pairs(block['slot_world_order'])
+        do
+            if location == "Outside Grunty's Industries"
+            then
+                location = "Grunty Industries"
+            end
+            for worlds, table in pairs(WORLD_ENTRANCE_MAP)
+            do
+                if table['defaultName'] == location
+                then
+                    WORLD_ENTRANCE_MAP[worlds]["defaultCost"] = jiggy_amt
+                end
+            end
+            if DEBUGLVL3 == true
+            then
+                print(location .. " - " .. tostring(jiggy_amt))
+            end
+        end
     end
     if SEED ~= 0
     then

@@ -226,7 +226,6 @@ class BanjoTooieWorld(World):
                     continue
                 else:
                     all_good = True
-
             i = 1
             for world in self.world_sphere_1:
                 if i == 1:
@@ -282,7 +281,6 @@ class BanjoTooieWorld(World):
         
         # self.multiworld.early_items[self.player][itemName.GGRAB] = 1
         # self.multiworld.early_items[self.player][itemName.SPLITUP] = 1
-
 
     def set_rules(self) -> None:
         rules = Rules.BanjoTooieRules(self)
@@ -430,9 +428,6 @@ class BanjoTooieWorld(World):
         btoptions['chuffy']= "true" if self.options.randomize_chuffy == 1 else "false"
         btoptions['jinjo']= "true" if self.options.randomize_jinjos == 1 else "false"
         btoptions['world_order'] = self.randomize_worlds
-
-
-
         return btoptions
 
 
