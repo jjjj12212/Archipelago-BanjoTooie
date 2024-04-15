@@ -62,6 +62,8 @@ local ENABLE_AP_TREBLE = false;
 local ENABLE_AP_STATIONS = false;
 local ENABLE_AP_CHUFFY = false;
 local ENABLE_AP_JINJO = false;
+local ENABLE_AP_NOTES = false;
+local ENABLE_AP_WORLDS = false;
 local AP_MESSAGES = {};
 
 local GAME_LOADED = false;
@@ -4359,7 +4361,10 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
             if jiggy_count >= values["defaultCost"]
             then
                 BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                if ENABLE_AP_WORLDS == false
+                then
+                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                end
                 values["opened"] = true
                 if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
                     and show_message == true
@@ -4372,7 +4377,10 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
             if jiggy_count >= values["defaultCost"] and values["opened"] == true
             then
                 BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                if ENABLE_AP_WORLDS == false
+                then
+                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                end
             end
         end
     end
@@ -5028,6 +5036,20 @@ function processAGIItem(item_list)
             then
                 AGI_JINJOS[tostring(memlocation)] = AGI_JINJOS[tostring(memlocation)] + 1
                 JinjoCounter() -- check and see if family completes and mark true
+            elseif(memlocation == 1230797) and ENABLE_AP_NOTES == true
+            then
+                if DEBUG == true
+                then
+                    print("5 Notes Obtained")
+                end
+                for location, values in pairs(AGI_MASTER_MAP["NOTES"])
+                do
+                    if AGI['NOTES'][location] == false
+                    then
+                        AGI['NOTES'][location] = true
+                        break
+                    end
+                end
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
         end
@@ -5612,6 +5634,14 @@ function process_slot(block)
     if block['slot_jinjo'] ~= nil and block['slot_jinjo'] ~= "false"
     then
         ENABLE_AP_JINJO = true
+    end
+    if block['slot_worlds'] ~= nil and block['slot_worlds'] ~= "false"
+    then
+        ENABLE_AP_WORLDS = true
+    end
+    if block['slot_notes'] ~= nil and block['slot_notes'] ~= "false"
+    then
+        ENABLE_AP_NOTES = true
     end
     if block['slot_world_order'] ~= nil
     then

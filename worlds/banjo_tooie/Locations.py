@@ -66,7 +66,7 @@ MTLoc_Table = {
     locationName.EGGAIM:    LocationData(1230755, 0x1B, 3),
     locationName.TREBLEMT:  LocationData(1230781, 0x86, 7),
     locationName.NOTEMT1:   LocationData(1230800, 0x84, 7),
-    locationName.NOTEMT2:   LocationData(1230801, 0x84, 0),
+    locationName.NOTEMT2:   LocationData(1230801, 0x85, 0),
     locationName.NOTEMT3:   LocationData(1230802, 0x85, 1),
     locationName.NOTEMT4:   LocationData(1230803, 0x85, 2),
     locationName.NOTEMT5:   LocationData(1230804, 0x85, 3),

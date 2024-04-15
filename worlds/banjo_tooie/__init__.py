@@ -197,11 +197,11 @@ class BanjoTooieWorld(World):
         self.options.skip_puzzles == True:
             random.shuffle(self.world_sphere_1)
             first_level = self.world_sphere_1[0]
-            #temp
-            while first_level != regionName.TL:
-                random.shuffle(self.world_sphere_1)
-                first_level = self.world_sphere_1[0]
-            #temp
+            # #temp
+            # while first_level != regionName.TL:
+            #     random.shuffle(self.world_sphere_1)
+            #     first_level = self.world_sphere_1[0]
+            # #temp
             all_good = False
             while(all_good == False):
                 if first_level == regionName.GIO and (self.options.randomize_cheato == False or self.options.randomize_jinjos == False or \
@@ -427,6 +427,8 @@ class BanjoTooieWorld(World):
         btoptions['stations']= "true" if self.options.randomize_stations == 1 else "false"
         btoptions['chuffy']= "true" if self.options.randomize_chuffy == 1 else "false"
         btoptions['jinjo']= "true" if self.options.randomize_jinjos == 1 else "false"
+        btoptions['notes']= "true" if self.options.randomize_notes == 1 else "false"
+        btoptions['worlds']= "true" if self.options.randomize_worlds == 1 else "false"
         btoptions['world_order'] = self.randomize_worlds
         return btoptions
 
