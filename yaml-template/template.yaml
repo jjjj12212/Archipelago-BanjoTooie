@@ -22,7 +22,7 @@ Banjo-Tooie:
   skip_puzzles: 'true'
   open_hag1: 'true'
   start_inventory: { }  # ex: {Grip Grab: 1, Fire Eggs: 1}   # Start with these items.
-  exclude_locations: { } # if cheato_page filler is true, add locations you Don't want to deal with... Like Scrotty.
+  #exclude_locations: { } # if cheato_page filler is true, add locations you Don't want to deal with... Like Scrotty.
 
 
 description: 'Created By jjjj12212'
