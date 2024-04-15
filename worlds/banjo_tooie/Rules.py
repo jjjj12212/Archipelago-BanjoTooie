@@ -2552,7 +2552,7 @@ class BanjoTooieRules:
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB9, self.player), item, self.player)
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB8, self.player), item, self.player)
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB7, self.player), item, self.player)
-            if self.world.options.forbid_moves_on_jinjo_family == 1 or self.world.options.forbid_moves_on_jinjo_family == 2:
+            if self.world.options.forbid_on_jinjo_family == 1 or self.world.options.forbid_on_jinjo_family == 2:
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH3, self.player), item, self.player)
@@ -2563,7 +2563,7 @@ class BanjoTooieRules:
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH8, self.player), item, self.player)
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
         
-        if self.world.options.forbid_moves_on_jinjo_family == 2:
+        if self.world.options.forbid_on_jinjo_family == 2 or self.world.options.forbid_on_jinjo_family == 3:
             for item in self.magic_forbid:
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
                 forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)

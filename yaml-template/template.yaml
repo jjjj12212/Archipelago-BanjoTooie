@@ -2,16 +2,18 @@ Banjo-Tooie:
   death_link: 'false'
   randomize_moves: 'true'
   randomize_jinjos: 'true'
-  forbid_moves_on_jinjo_family: 0 # 0 = none,  1 = moves only, 2 = moves and magic
+  forbid_on_jinjo_family: 0 # 0 = forbid nothing,  1 = forbid moves only, 2 = forbid moves and magic, 3 = forbid magic only
   forbid_jinjos_on_jinjo_family: 'true'
   randomize_doubloons: 'true'
   randomize_cheato: 'true'
-  cheato_as_filler: 'true'
+  cheato_as_filler: 'false'
   randomize_honeycombs: 'true'
   randomize_glowbos: 'true'
   randomize_treble: 'true'
   randomize_stations: 'true' #Randomize Stations
   randomize_chuffy: 'true' #Chuffy as a AP Item
+  randomize_notes: 'true'
+  randomize_worlds: 'true' #changes which levels are open
   
   logic_type: 0  # 0 = beginner, 1 = normal, 2 = advanced 
   jingaling_jiggy: 'false' #True = Always get Jiggy from Jingaling #recommended when playing Multiworld.

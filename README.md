@@ -22,6 +22,9 @@ Banjo Tooie for Archipelago
 - Train Station are scattered throughout Archipelago games
 - Chuffy as an optional AP Item
 - Jinjos are scattered throughout Archipelago games 
+- Notes are scattered throughout Archipelago games
+- Skip Jiggywiggy puzzles to open levels
+- Option for worlds to open in random order. (requires certian amount of items randomized and puzzle skip)
 
 
 # How to install

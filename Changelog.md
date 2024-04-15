@@ -13,6 +13,8 @@
 - Handle framework to customize jiggy amounts (future update)
 - QOL
   - Bosses Cutscenes, no longer have to wait until Banjo Arrives at boss
+- change wording for forbid certian AP items on Jinjo Families
+- add YAML option to only forbid Magic behind Jinjo Families
 
 # 1.0.4-Beta
 - Logic Changes:

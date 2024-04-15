@@ -63,10 +63,9 @@ class BanjoTooieWorld(World):
         regionName.CC,
         regionName.GIO
     ]
-
     world_sphere_2 = [
-
     ]
+    worlds_randomized = False
 
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
     item_name_to_id = {}
@@ -266,7 +265,7 @@ class BanjoTooieWorld(World):
                 self.multiworld.early_items[self.player][itemName.TTORP] = 1
                 # self.multiworld.early_items[self.player][itemName.SPRINGB] = 1
                 # self.multiworld.early_items[self.player][itemName.CLAWBTS] = 1
-
+            self.worlds_randomized = True
         else:
             self.randomize_worlds = {
                 regionName.MT: 1,
@@ -278,6 +277,7 @@ class BanjoTooieWorld(World):
                 regionName.HP:  36,
                 regionName.CC:  45, 
             }
+            self.worlds_randomized = False
         
         # self.multiworld.early_items[self.player][itemName.GGRAB] = 1
         # self.multiworld.early_items[self.player][itemName.SPLITUP] = 1
@@ -428,7 +428,7 @@ class BanjoTooieWorld(World):
         btoptions['chuffy']= "true" if self.options.randomize_chuffy == 1 else "false"
         btoptions['jinjo']= "true" if self.options.randomize_jinjos == 1 else "false"
         btoptions['notes']= "true" if self.options.randomize_notes == 1 else "false"
-        btoptions['worlds']= "true" if self.options.randomize_worlds == 1 else "false"
+        btoptions['worlds']= "true" if self.worlds_randomized else "false"
         btoptions['world_order'] = self.randomize_worlds
         return btoptions
 
