@@ -1,6 +1,9 @@
 # 1.X.X-Beta
- - Logic Changes:
-   - Power Hut Jiggy now requires (Detonator or Bill Drill) and Split Up in beginner logic.
+ - Logic Changes
+   - Beginner logic
+     - Power Hut Jiggy: (Detonator or Bill Drill) and Split Up
+     - Treasure Chamber Jiggy: Egg Aim and (Grip Grab or Access to Flight pad)
+     - Snake Head Cheato Page: Access to Flight Pad or (Egg Aim and Grip Grab)
 
 # 1.0.4-Beta
 - Logic Changes:
