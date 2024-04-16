@@ -458,7 +458,18 @@ CCLoc_table = {
 }
 
 IHWHLoc_table = {
-    locationName.JINJOIH1: LocationData(1230591, 0x3E, 4)
+    locationName.JINJOIH1: LocationData(1230591, 0x3E, 4),
+
+    # locationName.MTA:      LocationData(1230944, 0, 0),
+    # locationName.GGA:      LocationData(1230945, 0, 0),
+    # locationName.WWA:      LocationData(1230946, 0, 0),
+    # locationName.JRA:      LocationData(1230947, 0, 0),
+    # locationName.TDA:      LocationData(1230948, 0, 0),
+    # locationName.GIA:      LocationData(1230949, 0, 0),
+    # locationName.HFA:      LocationData(1230950, 0, 0),
+    # locationName.CCA:      LocationData(1230951, 0, 0),
+
+
 }
 
 IHWLLoc_table = {

@@ -81,7 +81,8 @@ class BanjoTooieWorld(World):
         "Jinjo": all_group_table["jinjo"],
         "Moves": all_group_table["moves"],
         "Magic": all_group_table["magic"],
-        "Stations": all_group_table["stations"]
+        "Stations": all_group_table["stations"],
+        "Access": all_group_table["levelaccess"]
     }
     
 
@@ -184,6 +185,9 @@ class BanjoTooieWorld(World):
         
         if item.code == 1230797 and self.options.randomize_notes == False: #Notes
             return False
+        
+        if item.code in range(1230944, 1230952):
+            return False
 
         return True
 
@@ -251,6 +255,7 @@ class BanjoTooieWorld(World):
                     self.randomize_worlds.update({world: 45})
                 i = i+1
             first_level = list(self.randomize_worlds.keys())[0]
+
             if  first_level != regionName.MT and self.options.logic_type != 2:
                 self.multiworld.early_items[self.player][itemName.GGRAB] = 1
             if  first_level == regionName.WW:
@@ -313,6 +318,9 @@ class BanjoTooieWorld(World):
 
         if self.options.randomize_notes == False:
          self.banjo_pre_fills(itemName.NOTE, "Note", False)
+
+        # if self.worlds_randomized == True:
+        #     self.banjo_pre_fills("Access", None, True)
         
         if self.options.randomize_jinjos == False:
             item = self.create_item(itemName.JIGGY)
