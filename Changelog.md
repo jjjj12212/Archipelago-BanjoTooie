@@ -1,3 +1,7 @@
+# 1.1.0-Beta
+ - Logic Changes:
+   - Power Hut Jiggy now requires (Detonator or Bill Drill) and Split Up in beginner logic.
+
 # 1.0.4-Beta
 - Logic Changes:
   - Talon Torpedo required on Normal Logic from Wasteland to Pinegrove.

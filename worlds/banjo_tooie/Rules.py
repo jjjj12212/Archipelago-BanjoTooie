@@ -587,7 +587,7 @@ class BanjoTooieRules:
     def jiggy_power_hut(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.GM_boulders(state) and (state.has(itemName.SPLITUP, self.player) or self.has_fire(state))
+            logic = self.GM_boulders(state) and state.has(itemName.SPLITUP, self.player)
 
         elif self.world.options.logic_type == 1: # normal
             logic = self.GM_boulders(state)
