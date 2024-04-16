@@ -1,4 +1,4 @@
-# 1.1.0-Beta
+# 1.X.X-Beta
  - Logic Changes:
    - Power Hut Jiggy now requires (Detonator or Bill Drill) and Split Up in beginner logic.
 
