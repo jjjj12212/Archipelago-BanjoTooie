@@ -58,6 +58,8 @@ local CLOSE_TO_ALTAR = false;
 local DETECT_DEATH = false;
 local SNEAK = false;
 local AIMASSIST = false;
+local SUPERBANJO = false;
+local REGEN = false;
 local TEXT_TIMER = 2;
 local TEXT_START = false;
 
@@ -5671,7 +5673,7 @@ function DPadStats()
             SNEAK = false
         end
 		
-		if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 Z'] == false
+		if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == false
         then
             print(" ")
             print(" ")
@@ -5685,7 +5687,7 @@ function DPadStats()
             end
 		end
 		
-		if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 Z'] == false
+		if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == false
         then
             print(" ")
             print(" ")
@@ -5699,7 +5701,7 @@ function DPadStats()
             end
         end
 		
-		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 Z'] == false
+		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == false
         then
             print(" ")
             print(" ")
@@ -5722,7 +5724,7 @@ function DPadStats()
             end
         end
 		
-        if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 Z'] == true
+        if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 L'] == true
         then
 			BTCONSUMEOBJ:changeConsumable("Red Feathers")
 			BTCONSUMEOBJ:setConsumable(100)
@@ -5742,13 +5744,13 @@ function DPadStats()
 			print("Eggs and Feathers Refilled")
         end
 
-        if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 Z'] == true and SUPERBANJO == false
+        if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == false
         then
            BTRAMOBJ:setFlag(0xA2, 2, "Super Banjo")
            SUPERBANJO = true
            print(" ")
            print("Super Banjo Enabled")
-        elseif check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 Z'] == true and SUPERBANJO == true
+        elseif check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == true
         then
             BTRAMOBJ:clearFlag(0xA2, 2)
             SUPERBANJO = false
@@ -5756,13 +5758,13 @@ function DPadStats()
             print("Super Banjo Disabled")
         end
 
-        if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 Z'] == true and AIMASSIST == false
+        if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == false
         then
            BTRAMOBJ:setFlag(0xAF, 3, "Aim Assist")
            AIMASSIST = true
            print(" ")
            print("Aim Assist Enabled")
-        elseif check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 Z'] == true and AIMASSIST == true
+        elseif check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == true
         then
             BTRAMOBJ:clearFlag(0xAF, 3)
             AIMASSIST = false
@@ -5770,13 +5772,13 @@ function DPadStats()
             print("Aim Assist Disabled")
         end
 		
-		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 Z'] == true and REGEN == false
+		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == false
         then
            BTRAMOBJ:setFlag(0xA1, 7, "Automatic Energy Regain")
            REGEN = true
            print(" ")
            print("Automatic Energy Regain Enabled")
-        elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 Z'] == true and REGEN == true
+        elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == true
         then
             BTRAMOBJ:clearFlag(0xA1, 7)
             REGEN = false
