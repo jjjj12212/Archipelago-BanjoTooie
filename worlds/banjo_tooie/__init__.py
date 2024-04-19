@@ -82,7 +82,7 @@ class BanjoTooieWorld(World):
         "Moves": all_group_table["moves"],
         "Magic": all_group_table["magic"],
         "Stations": all_group_table["stations"],
-        "Access": all_group_table["levelaccess"]
+        # "Access": all_group_table["levelaccess"]
     }
     
 
@@ -186,8 +186,8 @@ class BanjoTooieWorld(World):
         if item.code == 1230797 and self.options.randomize_notes == False: #Notes
             return False
         
-        if item.code in range(1230944, 1230952):
-            return False
+        # if item.code in range(1230944, 1230952):
+        #     return False
 
         return True
 

@@ -555,38 +555,38 @@ def create_regions(self):
     multiworld.get_location(locationName.HAG1, player).place_locked_item(
         multiworld.worlds[player].create_event_item(itemName.VICTORY))
     
-    if self.worlds_randomized == True:
-        sm = multiworld.get_region(regionName.IOHWH, player)
-        sm.add_locations({locationName.MTA: None,
-            locationName.GGA: None,
-            locationName.WWA: None,
-            locationName.JRA: None,
-            locationName.TDA: None,
-            locationName.GIA: None,
-            locationName.HFA: None,
-            locationName.CCA: None,
-            locationName.CKA: None,
-            locationName.H1A: None})
-        mta = multiworld.get_location(locationName.MTA, player)
-        mta.place_locked_item(self.create_event_item(itemName.MTA))
-        gga = multiworld.get_location(locationName.GGA, player)
-        gga.place_locked_item(self.create_event_item(itemName.GGA))
-        wwa = multiworld.get_location(locationName.WWA, player)
-        wwa.place_locked_item(self.create_event_item(itemName.WWA))
-        jra = multiworld.get_location(locationName.JRA, player)
-        jra.place_locked_item(self.create_event_item(itemName.JRA))
-        tda = multiworld.get_location(locationName.TDA, player)
-        tda.place_locked_item(self.create_event_item(itemName.TDA))
-        gia = multiworld.get_location(locationName.GIA, player)
-        gia.place_locked_item(self.create_event_item(itemName.GIA))
-        hfa = multiworld.get_location(locationName.HFA, player)
-        hfa.place_locked_item(self.create_event_item(itemName.HFA))
-        cca = multiworld.get_location(locationName.CCA, player)
-        cca.place_locked_item(self.create_event_item(itemName.CCA))
-        cka = multiworld.get_location(locationName.CKA, player)
-        cka.place_locked_item(self.create_event_item(itemName.CKA))
-        h1a = multiworld.get_location(locationName.H1A, player)
-        h1a.place_locked_item(self.create_event_item(itemName.H1A))
+    # if self.worlds_randomized == True:
+    #     sm = multiworld.get_region(regionName.IOHWH, player)
+    #     sm.add_locations({locationName.MTA: None,
+    #         locationName.GGA: None,
+    #         locationName.WWA: None,
+    #         locationName.JRA: None,
+    #         locationName.TDA: None,
+    #         locationName.GIA: None,
+    #         locationName.HFA: None,
+    #         locationName.CCA: None,
+    #         locationName.CKA: None,
+    #         locationName.H1A: None})
+    #     mta = multiworld.get_location(locationName.MTA, player)
+    #     mta.place_locked_item(self.create_event_item(itemName.MTA))
+    #     gga = multiworld.get_location(locationName.GGA, player)
+    #     gga.place_locked_item(self.create_event_item(itemName.GGA))
+    #     wwa = multiworld.get_location(locationName.WWA, player)
+    #     wwa.place_locked_item(self.create_event_item(itemName.WWA))
+    #     jra = multiworld.get_location(locationName.JRA, player)
+    #     jra.place_locked_item(self.create_event_item(itemName.JRA))
+    #     tda = multiworld.get_location(locationName.TDA, player)
+    #     tda.place_locked_item(self.create_event_item(itemName.TDA))
+    #     gia = multiworld.get_location(locationName.GIA, player)
+    #     gia.place_locked_item(self.create_event_item(itemName.GIA))
+    #     hfa = multiworld.get_location(locationName.HFA, player)
+    #     hfa.place_locked_item(self.create_event_item(itemName.HFA))
+    #     cca = multiworld.get_location(locationName.CCA, player)
+    #     cca.place_locked_item(self.create_event_item(itemName.CCA))
+    #     cka = multiworld.get_location(locationName.CKA, player)
+    #     cka.place_locked_item(self.create_event_item(itemName.CKA))
+    #     h1a = multiworld.get_location(locationName.H1A, player)
+    #     h1a.place_locked_item(self.create_event_item(itemName.H1A))
 
 
 def create_region(multiworld, player: int, active_locations, name: str, locations=None):

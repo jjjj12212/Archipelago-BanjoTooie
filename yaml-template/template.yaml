@@ -13,7 +13,7 @@ Banjo-Tooie:
   randomize_stations: 'true' #Randomize Stations
   randomize_chuffy: 'true' #Chuffy as a AP Item
   randomize_notes: 'true'
-  randomize_worlds: 'true' #changes which levels are open
+  randomize_worlds: 'true' #changes which levels are open  - Incompatible with Trackers at the moment. - Skip 
   
   logic_type: 0  # 0 = beginner, 1 = normal, 2 = advanced 
   jingaling_jiggy: 'false' #True = Always get Jiggy from Jingaling #recommended when playing Multiworld.
