@@ -1,11 +1,16 @@
-# Archipelago Banjo-Tooie (US-Only) | v1.0.4-beta
+# Archipelago Banjo-Tooie (US-Only) | v1.1.0-beta
 Banjo Tooie for Archipelago 
 
 # Controller Shortcuts with this implementation
- - Dpad Up: Banjo Tiptoes
+ - Dpad up: Banjo Tiptoes
  - Dpad right: display unlocked moves in lua console
  - Dpad down: display collected Treble Clefs
- - Dpad left: Aim Assist (Homing Eggs)
+ - Dpad left: display unlocked Magic
+ - Dpad up + L: Refill Consumables
+ - Dpad right + L: Super Banjo
+ - Dpad down + L: Health Regen
+ - Dpad left + L: Aim Assist 
+
 
 # Current implementation
 - Death Link **(Still ongoing progress)** **(Disabled for the time being)**
@@ -22,6 +27,9 @@ Banjo Tooie for Archipelago
 - Train Station are scattered throughout Archipelago games
 - Chuffy as an optional AP Item
 - Jinjos are scattered throughout Archipelago games 
+- Notes are scattered throughout Archipelago games
+- Skip Jiggywiggy puzzles to open levels
+- Option for worlds to open in random order. (requires certian amount of items randomized and puzzle skip)
 
 
 # How to install

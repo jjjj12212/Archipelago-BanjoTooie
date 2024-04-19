@@ -7,6 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
     
 class LocationData(typing.NamedTuple):
+    #last good ID: 1230800
     #BAD 12C780 pointer (1230720) increment
     #12C770 pointer instead (1230704)
     btid: int|None = 0
@@ -33,7 +34,7 @@ JVLoc_table = {
     locationName.JIGGYIH8:  LocationData(1230683, 0x4F, 7),
     locationName.JIGGYIH9:  LocationData(1230684, 0x50, 0),
     locationName.JIGGYIH10: LocationData(1230685, 0x50, 1),
-    locationName.TREBLEJV:  LocationData(1230789, 0x97, 7)  #Set last ID for Clef Family. Client Reasons
+    locationName.TREBLEJV:  LocationData(1230789, 0x97, 7),  #Set last ID for Clef Family. Client Reasons
 }
 
 MTLoc_Table = {
@@ -63,13 +64,34 @@ MTLoc_Table = {
     locationName.GGRAB:     LocationData(1230753, 0x1B, 1),
     locationName.BBLASTER:  LocationData(1230754, 0x1B, 2),
     locationName.EGGAIM:    LocationData(1230755, 0x1B, 3),
-    locationName.TREBLEMT:  LocationData(1230781, 0x86, 7)
+    locationName.TREBLEMT:  LocationData(1230781, 0x86, 7),
+    locationName.NOTEMT1:   LocationData(1230800, 0x84, 7),
+    locationName.NOTEMT2:   LocationData(1230801, 0x85, 0),
+    locationName.NOTEMT3:   LocationData(1230802, 0x85, 1),
+    locationName.NOTEMT4:   LocationData(1230803, 0x85, 2),
+    locationName.NOTEMT5:   LocationData(1230804, 0x85, 3),
+    locationName.NOTEMT6:   LocationData(1230805, 0x85, 4),
+    locationName.NOTEMT7:   LocationData(1230806, 0x85, 5),
+    locationName.NOTEMT8:   LocationData(1230807, 0x85, 6),
+    locationName.NOTEMT9:   LocationData(1230808, 0x85, 7),
+    locationName.NOTEMT10:  LocationData(1230809, 0x86, 0),
+    locationName.NOTEMT11:  LocationData(1230810, 0x86, 1),
+    locationName.NOTEMT12:  LocationData(1230811, 0x86, 2),
+    locationName.NOTEMT13:  LocationData(1230812, 0x86, 3),
+    locationName.NOTEMT14:  LocationData(1230813, 0x86, 4),
+    locationName.NOTEMT15:  LocationData(1230814, 0x86, 5),
+    locationName.NOTEMT16:  LocationData(1230815, 0x86, 6)
 }
 
 IHPLLoc_table = {
     locationName.JINJOIH4:  LocationData(1230594, 0x3E, 7),
     locationName.HONEYCIH1: LocationData(1230727, 0x42, 2),
-    locationName.FEGGS:     LocationData(1230756, 0x1E, 1)
+    locationName.FEGGS:     LocationData(1230756, 0x1E, 1),
+    locationName.NOTEIH1:   LocationData(1230928, 0x95, 7),
+    locationName.NOTEIH2:   LocationData(1230929, 0x96, 0),
+    locationName.NOTEIH3:   LocationData(1230930, 0x96, 1),
+    locationName.NOTEIH4:   LocationData(1230931, 0x96, 2),
+
 }
 
 GMLoc_table = {
@@ -100,11 +122,31 @@ GMLoc_table = {
     locationName.BDRILL:    LocationData(1230757, 0x1B, 6),
     locationName.BBAYONET:  LocationData(1230758, 0x1B, 7),
     locationName.TREBLEGM:  LocationData(1230782, 0x89, 0),
-    locationName.CHUFFY:    LocationData(1230796, 0x0B, 6)
+    locationName.CHUFFY:    LocationData(1230796, 0x0B, 6),
+    locationName.NOTEGGM1:   LocationData(1230816, 0x87, 0),
+    locationName.NOTEGGM2:   LocationData(1230817, 0x87, 1),
+    locationName.NOTEGGM3:   LocationData(1230818, 0x87, 2),
+    locationName.NOTEGGM4:   LocationData(1230819, 0x87, 3),
+    locationName.NOTEGGM5:   LocationData(1230820, 0x87, 4),
+    locationName.NOTEGGM6:   LocationData(1230821, 0x87, 5),
+    locationName.NOTEGGM7:   LocationData(1230822, 0x87, 6),
+    locationName.NOTEGGM8:   LocationData(1230823, 0x87, 7),
+    locationName.NOTEGGM9:   LocationData(1230824, 0x88, 0),
+    locationName.NOTEGGM10:  LocationData(1230825, 0x88, 1),
+    locationName.NOTEGGM11:  LocationData(1230826, 0x88, 2),
+    locationName.NOTEGGM12:  LocationData(1230827, 0x88, 3),
+    locationName.NOTEGGM13:  LocationData(1230828, 0x88, 4),
+    locationName.NOTEGGM14:  LocationData(1230829, 0x88, 5),
+    locationName.NOTEGGM15:  LocationData(1230830, 0x88, 6),
+    locationName.NOTEGGM16:  LocationData(1230831, 0x88, 7)
 }
 
 PGLov_table = {
-    locationName.GEGGS:    LocationData(1230759, 0x1E, 2)
+    locationName.GEGGS:    LocationData(1230759, 0x1E, 2),
+    locationName.NOTEIH5:   LocationData(1230932, 0x96, 3),
+    locationName.NOTEIH6:   LocationData(1230933, 0x96, 4),
+    locationName.NOTEIH7:   LocationData(1230934, 0x96, 5),
+    locationName.NOTEIH8:   LocationData(1230935, 0x96, 6),
 }
 
 WWLoc_table = {
@@ -135,7 +177,23 @@ WWLoc_table = {
     locationName.SPLITUP:   LocationData(1230761, 0x1C, 1),
     locationName.PACKWH:    LocationData(1230762, 0x1D, 6),
     locationName.TREBLEWW:  LocationData(1230783, 0x8B, 1),
-    locationName.TRAINSWWW: LocationData(1230795, 0x0D, 6)
+    locationName.TRAINSWWW: LocationData(1230795, 0x0D, 6),
+    locationName.NOTEWW1:   LocationData(1230832, 0x89, 1),
+    locationName.NOTEWW2:   LocationData(1230833, 0x89, 2),
+    locationName.NOTEWW3:   LocationData(1230834, 0x89, 3),
+    locationName.NOTEWW4:   LocationData(1230835, 0x89, 4),
+    locationName.NOTEWW5:   LocationData(1230836, 0x89, 5),
+    locationName.NOTEWW6:   LocationData(1230837, 0x89, 6),
+    locationName.NOTEWW7:   LocationData(1230838, 0x89, 7),
+    locationName.NOTEWW8:   LocationData(1230839, 0x8A, 0),
+    locationName.NOTEWW9:   LocationData(1230840, 0x8A, 1),
+    locationName.NOTEWW10:  LocationData(1230841, 0x8A, 2),
+    locationName.NOTEWW11:  LocationData(1230842, 0x8A, 3),
+    locationName.NOTEWW12:  LocationData(1230843, 0x8A, 4),
+    locationName.NOTEWW13:  LocationData(1230844, 0x8A, 5),
+    locationName.NOTEWW14:  LocationData(1230845, 0x8A, 6),
+    locationName.NOTEWW15:  LocationData(1230846, 0x8A, 7),
+    locationName.NOTEWW16:  LocationData(1230847, 0x8B, 0)
 }
 
 JRLoc_table = {
@@ -195,7 +253,23 @@ JRLoc_table = {
     locationName.WWHACK:   LocationData(1230764, 0x1C, 2),
     locationName.TTORP:    LocationData(1230765, 0x1C, 3),
     locationName.AUQAIM:   LocationData(1230766, 0x1C, 4),
-    locationName.TREBLEJR: LocationData(1230784, 0x8D, 2)
+    locationName.TREBLEJR: LocationData(1230784, 0x8D, 2),
+    locationName.NOTEJRL1:   LocationData(1230848, 0x8B, 2),
+    locationName.NOTEJRL2:   LocationData(1230849, 0x8B, 3),
+    locationName.NOTEJRL3:   LocationData(1230850, 0x8B, 4),
+    locationName.NOTEJRL4:   LocationData(1230851, 0x8B, 5),
+    locationName.NOTEJRL5:   LocationData(1230852, 0x8B, 6),
+    locationName.NOTEJRL6:   LocationData(1230853, 0x8B, 7),
+    locationName.NOTEJRL7:   LocationData(1230854, 0x8C, 0),
+    locationName.NOTEJRL8:   LocationData(1230855, 0x8C, 1),
+    locationName.NOTEJRL9:   LocationData(1230856, 0x8C, 2),
+    locationName.NOTEJRL10:  LocationData(1230857, 0x8C, 3),
+    locationName.NOTEJRL11:  LocationData(1230858, 0x8C, 4),
+    locationName.NOTEJRL12:  LocationData(1230859, 0x8C, 5),
+    locationName.NOTEJRL13:  LocationData(1230860, 0x8C, 6),
+    locationName.NOTEJRL14:  LocationData(1230861, 0x8C, 6),
+    locationName.NOTEJRL15:  LocationData(1230862, 0x8D, 0),
+    locationName.NOTEJRL16:  LocationData(1230863, 0x8D, 1)
 }
 
 TLLoc_table = {
@@ -227,6 +301,22 @@ TLLoc_table = {
     locationName.HATCH:     LocationData(1230770, 0x1D, 5),
     locationName.TREBLETL:  LocationData(1230785, 0x8F, 3),
     locationName.TRAINSWTD: LocationData(1230791, 0x27, 4),
+    locationName.NOTETDL1:   LocationData(1230864, 0x8D, 3),
+    locationName.NOTETDL2:   LocationData(1230865, 0x8D, 4),
+    locationName.NOTETDL3:   LocationData(1230866, 0x8D, 5),
+    locationName.NOTETDL4:   LocationData(1230867, 0x8D, 6),
+    locationName.NOTETDL5:   LocationData(1230868, 0x8D, 7),
+    locationName.NOTETDL6:   LocationData(1230869, 0x8E, 0),
+    locationName.NOTETDL7:   LocationData(1230870, 0x8E, 1),
+    locationName.NOTETDL8:   LocationData(1230871, 0x8E, 2),
+    locationName.NOTETDL9:   LocationData(1230872, 0x8E, 3),
+    locationName.NOTETDL10:  LocationData(1230873, 0x8E, 4),
+    locationName.NOTETDL11:  LocationData(1230874, 0x8E, 5),
+    locationName.NOTETDL12:  LocationData(1230875, 0x8E, 6),
+    locationName.NOTETDL13:  LocationData(1230876, 0x8E, 7),
+    locationName.NOTETDL14:  LocationData(1230877, 0x8F, 0),
+    locationName.NOTETDL15:  LocationData(1230878, 0x8F, 1),
+    locationName.NOTETDL16:  LocationData(1230879, 0x8F, 2)
 }
 
 GILoc_table = {
@@ -258,6 +348,22 @@ GILoc_table = {
     locationName.CLAWBTS:   LocationData(1230773, 0x1D, 2),
     locationName.TREBLEGI:  LocationData(1230786, 0x91, 4),
     locationName.TRAINSWGI: LocationData(1230790, 0x27, 3),
+    locationName.NOTEGI1:   LocationData(1230880, 0x8F, 4),
+    locationName.NOTEGI2:   LocationData(1230881, 0x8F, 5),
+    locationName.NOTEGI3:   LocationData(1230882, 0x8F, 6),
+    locationName.NOTEGI4:   LocationData(1230883, 0x8F, 7),
+    locationName.NOTEGI5:   LocationData(1230884, 0x8F, 0),
+    locationName.NOTEGI6:   LocationData(1230885, 0x90, 1),
+    locationName.NOTEGI7:   LocationData(1230886, 0x90, 2),
+    locationName.NOTEGI8:   LocationData(1230887, 0x90, 3),
+    locationName.NOTEGI9:   LocationData(1230888, 0x90, 4),
+    locationName.NOTEGI10:  LocationData(1230889, 0x90, 5),
+    locationName.NOTEGI11:  LocationData(1230890, 0x90, 6),
+    locationName.NOTEGI12:  LocationData(1230891, 0x90, 7),
+    locationName.NOTEGI13:  LocationData(1230892, 0x90, 0),
+    locationName.NOTEGI14:  LocationData(1230893, 0x91, 1),
+    locationName.NOTEGI15:  LocationData(1230894, 0x91, 2),
+    locationName.NOTEGI16:  LocationData(1230895, 0x91, 3)
 }
 
 HPLoc_table = {
@@ -289,6 +395,22 @@ HPLoc_table = {
     locationName.TREBLEHP: LocationData(1230787, 0x93, 5),
     locationName.TRAINSWHP1: LocationData(1230792, 0x34, 7),
     locationName.TRAINSWHP2: LocationData(1230793, 0x35, 0),
+    locationName.NOTEHFP1:   LocationData(1230896, 0x91, 5),
+    locationName.NOTEHFP2:   LocationData(1230897, 0x91, 6),
+    locationName.NOTEHFP3:   LocationData(1230898, 0x91, 7),
+    locationName.NOTEHFP4:   LocationData(1230899, 0x92, 0),
+    locationName.NOTEHFP5:   LocationData(1230900, 0x92, 1),
+    locationName.NOTEHFP6:   LocationData(1230901, 0x92, 2),
+    locationName.NOTEHFP7:   LocationData(1230902, 0x92, 3),
+    locationName.NOTEHFP8:   LocationData(1230903, 0x92, 4),
+    locationName.NOTEHFP9:   LocationData(1230904, 0x92, 5),
+    locationName.NOTEHFP10:  LocationData(1230905, 0x92, 6),
+    locationName.NOTEHFP11:  LocationData(1230906, 0x92, 7),
+    locationName.NOTEHFP12:  LocationData(1230907, 0x93, 0),
+    locationName.NOTEHFP13:  LocationData(1230908, 0x93, 1),
+    locationName.NOTEHFP14:  LocationData(1230909, 0x93, 2),
+    locationName.NOTEHFP15:  LocationData(1230910, 0x93, 3),
+    locationName.NOTEHFP16:  LocationData(1230911, 0x93, 4)
 }
 
 CCLoc_table = {
@@ -316,17 +438,47 @@ CCLoc_table = {
     locationName.CHEATOCC2: LocationData(1230750, 0x59, 1),
     locationName.CHEATOCC3: LocationData(1230751, 0x59, 2),
     locationName.SAPACK:    LocationData(1230776, 0x1D, 7),
-    locationName.TREBLECC:  LocationData(1230788, 0x95, 6)
+    locationName.TREBLECC:  LocationData(1230788, 0x95, 6),
+    locationName.NOTECCL1:   LocationData(1230912, 0x93, 6),
+    locationName.NOTECCL2:   LocationData(1230913, 0x93, 7),
+    locationName.NOTECCL3:   LocationData(1230914, 0x94, 0),
+    locationName.NOTECCL4:   LocationData(1230915, 0x94, 1),
+    locationName.NOTECCL5:   LocationData(1230916, 0x94, 2),
+    locationName.NOTECCL6:   LocationData(1230917, 0x94, 3),
+    locationName.NOTECCL7:   LocationData(1230918, 0x94, 4),
+    locationName.NOTECCL8:   LocationData(1230919, 0x94, 5),
+    locationName.NOTECCL9:   LocationData(1230920, 0x94, 6),
+    locationName.NOTECCL10:  LocationData(1230921, 0x94, 7),
+    locationName.NOTECCL11:  LocationData(1230922, 0x95, 0),
+    locationName.NOTECCL12:  LocationData(1230923, 0x95, 1),
+    locationName.NOTECCL13:  LocationData(1230924, 0x95, 2),
+    locationName.NOTECCL14:  LocationData(1230925, 0x95, 3),
+    locationName.NOTECCL15:  LocationData(1230926, 0x95, 4),
+    locationName.NOTECCL16:  LocationData(1230927, 0x95, 5)
 }
 
 IHWHLoc_table = {
-    locationName.JINJOIH1: LocationData(1230591, 0x3E, 4)
+    locationName.JINJOIH1: LocationData(1230591, 0x3E, 4),
+
+    # locationName.MTA:      LocationData(1230944, 0, 0),
+    # locationName.GGA:      LocationData(1230945, 0, 0),
+    # locationName.WWA:      LocationData(1230946, 0, 0),
+    # locationName.JRA:      LocationData(1230947, 0, 0),
+    # locationName.TDA:      LocationData(1230948, 0, 0),
+    # locationName.GIA:      LocationData(1230949, 0, 0),
+    # locationName.HFA:      LocationData(1230950, 0, 0),
+    # locationName.CCA:      LocationData(1230951, 0, 0),
+
+
 }
 
 IHWLLoc_table = {
     locationName.JINJOIH2: LocationData(1230592, 0x3E, 5),
-    locationName.CEGGS:   LocationData(1230767, 0x1E, 3)
-
+    locationName.CEGGS:   LocationData(1230767, 0x1E, 3),
+    locationName.NOTEIH13:   LocationData(1230940, 0x97, 3),
+    locationName.NOTEIH14:   LocationData(1230941, 0x97, 4),
+    locationName.NOTEIH15:   LocationData(1230942, 0x97, 5),
+    locationName.NOTEIH16:   LocationData(1230943, 0x97, 6),
 }
 
 IHCTLoc_table = {
@@ -334,6 +486,10 @@ IHCTLoc_table = {
     locationName.GLOWBOIH1: LocationData(1230702, 0x44, 7),
     locationName.IEGGS:   LocationData(1230763, 0x1E, 4),
     locationName.TRAINSWIH: LocationData(1230794, 0x7B, 3),
+    locationName.NOTEIH9:   LocationData(1230936, 0x96, 7),
+    locationName.NOTEIH10:   LocationData(1230937, 0x97, 0),
+    locationName.NOTEIH11:   LocationData(1230938, 0x97, 1),
+    locationName.NOTEIH12:   LocationData(1230939, 0x97, 2),
 
 }
 
