@@ -525,7 +525,7 @@ class BanjoTooieRules:
     def jiggy_treasure_chamber(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.EGGAIM,  self.player) and state.has(itemName.GGRAB, self.player) or self.MT_flight_pad(state)
+            logic = state.has(itemName.EGGAIM,  self.player) and (state.has(itemName.GGRAB, self.player) or self.MT_flight_pad(state))
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.EGGAIM,  self.player) and state.has(itemName.GGRAB, self.player) or self.MT_flight_pad(state)
         elif self.world.options.logic_type == 2: # advanced
@@ -624,7 +624,7 @@ class BanjoTooieRules:
     def jiggy_power_hut(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.GM_boulders(state) and (state.has(itemName.SPLITUP, self.player) or self.has_fire(state))
+            logic = self.GM_boulders(state) and state.has(itemName.SPLITUP, self.player)
 
         elif self.world.options.logic_type == 1: # normal
             logic = self.GM_boulders(state)
@@ -1384,7 +1384,7 @@ class BanjoTooieRules:
     def cheato_snakehead(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GGRAB, self.player))
+            logic = self.MT_flight_pad(state) or (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GGRAB, self.player))
         elif self.world.options.logic_type == 1: # normal
             logic = self.MT_flight_pad(state) or (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GGRAB, self.player))
         elif self.world.options.logic_type == 2: # advanced

@@ -15,6 +15,12 @@
   - Bosses Cutscenes, no longer have to wait until Banjo Arrives at boss
 - change wording for forbid certian AP items on Jinjo Families
 - add YAML option to only forbid Magic behind Jinjo Families
+- Logic Changes
+  - Beginner logic
+  - Power Hut Jiggy: (Detonator or Bill Drill) and Split Up
+  - Treasure Chamber Jiggy: Egg Aim and (Grip Grab or Access to Flight pad)
+  - Snake Head Cheato Page: Access to Flight Pad or (Egg Aim and Grip Grab)
+  - Talon Torpedo required from  Wasteland to Pine Grove
 
 # 1.0.4-Beta
 - Logic Changes:
