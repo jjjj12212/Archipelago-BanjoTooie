@@ -11,6 +11,7 @@
 - Handle AP Notes for Jamjars
 - Randomize World Order (NOT "World Entrances")
 - Handle framework to customize jiggy amounts (future update)
+- Easter eggs removed
 - QOL
   - Bosses Cutscenes, no longer have to wait until Banjo Arrives at boss
 - change wording for forbid certian AP items on Jinjo Families
