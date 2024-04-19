@@ -29,6 +29,9 @@ local STATE_UNINITIALIZED = "Uninitialized"
 local PREV_STATE = ""
 local CUR_STATE =  STATE_UNINITIALIZED
 local FRAME = 0
+local SEND_PACKET_FRAME = false
+local RECV_PACKET_FRAME = false
+
 
 local DEBUG = false
 local DEBUGLVL2 = false
@@ -692,7 +695,7 @@ function nearDisiple()
             print("Near Disiple");
         end
         useAGINoJiggies();
-    elseif playerDist > 1500
+    elseif playerDist > 1500 and playerDist < 2000
     then
         useAGI()
     end
@@ -4833,7 +4836,7 @@ function locationControl()
     end
 
     if USE_BMM_TBL == true --Only used If Maps are AROUND or IN Wooded Hollow or JWTemple
-    then     
+    then
         if BTRAMOBJ:checkFlag(0x1F, 0, "LocControl1")== true -- DEMO FILE
         then
             local DEMO = { ['DEMO'] = true}
@@ -4904,7 +4907,6 @@ function BMMBackup()
         then
             if USE_BMM_ONLY_TYP ~= item_group
             then
-
                 for location, values in pairs(table)
                 do
                     BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
@@ -5477,16 +5479,22 @@ function SendToBTClient()
     then
         print("Send Data")
     end
-    local msg = json.encode(retTable).."\n"
-    local ret, error = BT_SOCK:send(msg)
-    if ret == nil then
-        print(error)
-    elseif CUR_STATE == STATE_INITIAL_CONNECTION_MADE then
-        CUR_STATE = STATE_TENTATIVELY_CONNECTED
-    elseif CUR_STATE == STATE_TENTATIVELY_CONNECTED then
-        archipelago_msg_box("Connected to the Banjo Tooie Client!");
-        print("Connected!")
-        CUR_STATE = STATE_OK
+    if SEND_PACKET_FRAME == false --Send data on the 60th frame
+    then
+        SEND_PACKET_FRAME = true --Send data on the 60th frame
+    else
+        local msg = json.encode(retTable).."\n"
+        local ret, error = BT_SOCK:send(msg)
+        if ret == nil then
+            print(error)
+        elseif CUR_STATE == STATE_INITIAL_CONNECTION_MADE then
+            CUR_STATE = STATE_TENTATIVELY_CONNECTED
+        elseif CUR_STATE == STATE_TENTATIVELY_CONNECTED then
+            archipelago_msg_box("Connected to the Banjo Tooie Client!");
+            print("Connected!")
+            CUR_STATE = STATE_OK
+        end
+        SEND_PACKET_FRAME = false
     end
 end
 
@@ -5498,34 +5506,39 @@ function receive()
         -- Send the message
         SendToBTClient()
 
-        l, e = BT_SOCK:receive()
-        -- Handle incoming message
-        if e == 'closed' then
-            if CUR_STATE == STATE_OK then
-                archipelago_msg_box("Connection closed")
-                print("Connection closed")
+        if RECV_PACKET_FRAME == false
+        then
+            RECV_PACKET_FRAME = true
+        else
+            l, e = BT_SOCK:receive()
+            -- Handle incoming message
+            if e == 'closed' then
+                if CUR_STATE == STATE_OK then
+                    archipelago_msg_box("Connection closed")
+                    print("Connection closed")
+                end
+                CUR_STATE = STATE_UNINITIALIZED
+                return
+            elseif e == 'timeout' then
+                archipelago_msg_box("timeout")
+                print("timeout")
+                return
+            elseif e ~= nil then
+                print(e)
+                CUR_STATE = STATE_UNINITIALIZED
+                return
             end
-            CUR_STATE = STATE_UNINITIALIZED
-            return
-        elseif e == 'timeout' then
-            archipelago_msg_box("timeout")
-            print("timeout")
-            return
-        elseif e ~= nil then
-            print(e)
-            CUR_STATE = STATE_UNINITIALIZED
-            return
+            if DEBUGLVL3 == true
+            then
+                print("Processing Block");
+            end
+            process_block(json.decode(l))
+            if DEBUGLVL3 == true
+            then
+                print("Finish");
+            end
+            RECV_PACKET_FRAME = false
         end
-        if DEBUGLVL3 == true
-        then
-            print("Processing Block");
-        end
-        process_block(json.decode(l))
-        if DEBUGLVL3 == true
-        then
-            print("Finish");
-        end
-
         -- if DETECT_DEATH == true
         -- then
         --     DETECT_DEATH = false;
@@ -6181,7 +6194,7 @@ function main()
             PREV_STATE = CUR_STATE
         end
         if (CUR_STATE == STATE_OK) or (CUR_STATE == STATE_INITIAL_CONNECTION_MADE) or (CUR_STATE == STATE_TENTATIVELY_CONNECTED) then
-            if (FRAME % 60 == 1) then
+            if (FRAME % 30 == 1) then
                 BTRAM:banjoPTR()
                 receive();
                 if SKIP_TOT == "true" and CURRENT_MAP == 0x15E then
