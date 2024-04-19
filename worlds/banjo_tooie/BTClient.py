@@ -255,6 +255,9 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_stations": ctx.slot_data["stations"],
             "slot_chuffy": ctx.slot_data["chuffy"],
             "slot_jinjo": ctx.slot_data["jinjo"],
+            "slot_notes": ctx.slot_data["notes"],
+            "slot_worlds": ctx.slot_data["worlds"],
+            "slot_world_order": ctx.slot_data["world_order"]
         })
     ctx.sendSlot = False
     return payload

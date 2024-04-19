@@ -28,7 +28,16 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.TREBLEJV
     ],
     regionName.IOHWH:    [
-        locationName.JINJOIH1
+        locationName.JINJOIH1,
+
+        # locationName.MTA,
+        # locationName.GGA,
+        # locationName.WWA,
+        # locationName.JRA,
+        # locationName.TDA,
+        # locationName.GIA,
+        # locationName.HFA,
+        # locationName.CCA
     ],
     regionName.MT:       [
         locationName.JINJOMT1, 
@@ -57,12 +66,32 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GGRAB,
         locationName.BBLASTER,
         locationName.EGGAIM,
-        locationName.TREBLEMT
+        locationName.TREBLEMT,
+        locationName.NOTEMT1,
+        locationName.NOTEMT2,
+        locationName.NOTEMT3,
+        locationName.NOTEMT4,
+        locationName.NOTEMT5,
+        locationName.NOTEMT6,
+        locationName.NOTEMT7,
+        locationName.NOTEMT8,
+        locationName.NOTEMT9,
+        locationName.NOTEMT10,
+        locationName.NOTEMT11,
+        locationName.NOTEMT12,
+        locationName.NOTEMT13,
+        locationName.NOTEMT14,
+        locationName.NOTEMT15,
+        locationName.NOTEMT16    
     ],
     regionName.IOHPL:    [
         locationName.JINJOIH4,
         locationName.HONEYCIH1,
-        locationName.FEGGS
+        locationName.FEGGS,
+        locationName.NOTEIH1,
+        locationName.NOTEIH2,
+        locationName.NOTEIH3,
+        locationName.NOTEIH4,
     ],
     regionName.GM:       [
         locationName.JINJOGM1,
@@ -84,22 +113,42 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GLOWBOMEG,
         locationName.HONEYCGM1,
         locationName.HONEYCGM2,
-        locationName.HONEYCGM3,
         locationName.CHEATOGM1,
         locationName.CHEATOGM2,
         locationName.CHEATOGM3,
         locationName.BDRILL,
         locationName.BBAYONET,
-        locationName.TREBLEGM
+        locationName.TREBLEGM,
+        locationName.NOTEGGM1,
+        locationName.NOTEGGM2,
+        locationName.NOTEGGM3,
+        locationName.NOTEGGM4,
+        locationName.NOTEGGM5,
+        locationName.NOTEGGM6,
+        locationName.NOTEGGM7,
+        locationName.NOTEGGM8,
+        locationName.NOTEGGM9,
+        locationName.NOTEGGM10,
+        locationName.NOTEGGM11,
+        locationName.NOTEGGM12,
+        locationName.NOTEGGM13,
+        locationName.NOTEGGM14,
+        locationName.NOTEGGM15,
+        locationName.NOTEGGM16  
     ],
     regionName.GMS: [
+        locationName.HONEYCGM3
     ],
     regionName.CHUFFY: [
         locationName.JIGGYGM1,
         locationName.CHUFFY
     ],
     regionName.IOHPG:   [
-        locationName.GEGGS
+        locationName.GEGGS,
+        locationName.NOTEIH5,
+        locationName.NOTEIH6,
+        locationName.NOTEIH7,
+        locationName.NOTEIH8,
     ],
     regionName.WW:      [
         locationName.JINJOWW1,
@@ -129,18 +178,39 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.SPLITUP,
         locationName.PACKWH,
         locationName.TREBLEWW,
-        locationName.TRAINSWWW
+        locationName.TRAINSWWW,
+        locationName.NOTEWW1,
+        locationName.NOTEWW2,
+        locationName.NOTEWW3,
+        locationName.NOTEWW4,
+        locationName.NOTEWW5,
+        locationName.NOTEWW6,
+        locationName.NOTEWW7,
+        locationName.NOTEWW8,
+        locationName.NOTEWW9,
+        locationName.NOTEWW10,
+        locationName.NOTEWW11,
+        locationName.NOTEWW12,
+        locationName.NOTEWW13,
+        locationName.NOTEWW14,
+        locationName.NOTEWW15,
+        locationName.NOTEWW16  
     ],
     regionName.WWS: [
     ],
     regionName.IOHCT:   [
         locationName.JINJOIH3,
         locationName.IEGGS,
-        locationName.TRAINSWIH
+        locationName.TRAINSWIH,
+
     ],
     regionName.IOHCTS: [],
     regionName.IOHCT_HFP_ENTRANCE: [
         locationName.GLOWBOIH1,
+        locationName.NOTEIH9,
+        locationName.NOTEIH10,
+        locationName.NOTEIH11,
+        locationName.NOTEIH12,
     ],
     regionName.JR:      [
         locationName.JRLDB1,
@@ -200,11 +270,31 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.WWHACK,
         locationName.TTORP,
         locationName.AUQAIM,
-        locationName.TREBLEJR
+        locationName.TREBLEJR,
+        locationName.NOTEJRL1,
+        locationName.NOTEJRL2,
+        locationName.NOTEJRL3,
+        locationName.NOTEJRL4,
+        locationName.NOTEJRL5,
+        locationName.NOTEJRL6,
+        locationName.NOTEJRL7,
+        locationName.NOTEJRL8,
+        locationName.NOTEJRL9,
+        locationName.NOTEJRL10,
+        locationName.NOTEJRL11,
+        locationName.NOTEJRL12,
+        locationName.NOTEJRL13,
+        locationName.NOTEJRL14,
+        locationName.NOTEJRL15,
+        locationName.NOTEJRL16 
     ],
     regionName.IOHWL:   [
-         locationName.JINJOIH2,
-         locationName.CEGGS
+        locationName.JINJOIH2,
+        locationName.CEGGS,
+        locationName.NOTEIH13,
+        locationName.NOTEIH14,
+        locationName.NOTEIH15,
+        locationName.NOTEIH16,
     ],
     regionName.TL:      [
         locationName.JINJOTL1,
@@ -235,6 +325,22 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.TAXPACK,
         locationName.TREBLETL,
         locationName.TRAINSWTD,
+        locationName.NOTETDL1,
+        locationName.NOTETDL2,
+        locationName.NOTETDL3,
+        locationName.NOTETDL4,
+        locationName.NOTETDL5,
+        locationName.NOTETDL6,
+        locationName.NOTETDL7,
+        locationName.NOTETDL8,
+        locationName.NOTETDL9,
+        locationName.NOTETDL10,
+        locationName.NOTETDL11,
+        locationName.NOTETDL12,
+        locationName.NOTETDL13,
+        locationName.NOTETDL14,
+        locationName.NOTETDL15,
+        locationName.NOTETDL16
     ],
     regionName.TL_HATCH: [
         locationName.HATCH,
@@ -251,12 +357,23 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOGI1,
         locationName.SNPACK,
         locationName.CLAWBTS,
+        locationName.NOTEGI4,
+        locationName.NOTEGI5,
+        locationName.NOTEGI13,
+        locationName.NOTEGI14,
+        locationName.NOTEGI11,
+        locationName.NOTEGI12,
     ],
     regionName.GI2: [
         locationName.GLOWBOGI1,
         locationName.LSPRING,
         locationName.JIGGYGI7,
         locationName.TREBLEGI,
+        locationName.NOTEGI6,
+        locationName.NOTEGI7,
+        locationName.NOTEGI8,
+        locationName.NOTEGI9,
+        locationName.NOTEGI10,
     ],
     regionName.GI3ALL: [
         locationName.JINJOGI1,
@@ -275,10 +392,15 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GLOWBOGI2,
         locationName.CHEATOGI2,
         locationName.CHEATOGI3,
+        locationName.NOTEGI15,
+        locationName.NOTEGI16,
         
     ],
     regionName.GIS: [
         locationName.HONEYCGI2,
+        locationName.NOTEGI1,
+        locationName.NOTEGI2,
+        locationName.NOTEGI3,
     ],
     regionName.HP: [
         locationName.JINJOHP1,
@@ -298,7 +420,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GLOWBOHP1,
         locationName.GLOWBOHP2,
         locationName.HONEYCHP1,
-        locationName.HONEYCHP2,
         locationName.HONEYCHP3,
         locationName.CHEATOHP1,
         locationName.CHEATOHP2,
@@ -307,9 +428,27 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GLIDE,
         locationName.TREBLEHP,
         locationName.TRAINSWHP1,
-        locationName.TRAINSWHP2
+        locationName.TRAINSWHP2,
+        locationName.NOTEHFP1,
+        locationName.NOTEHFP2,
+        locationName.NOTEHFP3,
+        locationName.NOTEHFP4,
+        locationName.NOTEHFP5,
+        locationName.NOTEHFP6,
+        locationName.NOTEHFP7,
+        locationName.NOTEHFP8,
+        locationName.NOTEHFP9,
+        locationName.NOTEHFP10,
+        locationName.NOTEHFP11,
+        locationName.NOTEHFP12,
+        locationName.NOTEHFP13,
+        locationName.NOTEHFP14,
+        locationName.NOTEHFP15,
+        locationName.NOTEHFP16
     ],
-    regionName.HPLS: [],      
+    regionName.HPLS: [
+        locationName.HONEYCHP2
+    ],      
     regionName.HPIS: [
         locationName.JIGGYHP5,
     ],
@@ -339,7 +478,23 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.CHEATOCC2,
         locationName.CHEATOCC3,
         locationName.SAPACK,
-        locationName.TREBLECC
+        locationName.TREBLECC,
+        locationName.NOTECCL1,
+        locationName.NOTECCL2,
+        locationName.NOTECCL3,
+        locationName.NOTECCL4,
+        locationName.NOTECCL5,
+        locationName.NOTECCL6,
+        locationName.NOTECCL7,
+        locationName.NOTECCL8,
+        locationName.NOTECCL9,
+        locationName.NOTECCL10,
+        locationName.NOTECCL11,
+        locationName.NOTECCL12,
+        locationName.NOTECCL13,
+        locationName.NOTECCL14,
+        locationName.NOTECCL15,
+        locationName.NOTECCL16
     ],
     regionName.CK: [],
     regionName.H1: [
@@ -383,12 +538,55 @@ def create_regions(self):
     multiworld = self.multiworld
     player = self.player
     active_locations = self.location_name_to_id
+    dellist = []
+
+    # if self.worlds_randomized == False:
+        # for location in active_locations:
+        #     if location.find("Access") != -1:
+        #         dellist.append(location)
+
+        # for name in dellist:
+        #     if( name in active_locations):
+        #         del active_locations[name]
 
     multiworld.regions += [create_region(multiworld, player, active_locations, region, locations) for region, locations in
                            BANJOTOOIEREGIONS.items()]
     
     multiworld.get_location(locationName.HAG1, player).place_locked_item(
         multiworld.worlds[player].create_event_item(itemName.VICTORY))
+    
+    # if self.worlds_randomized == True:
+    #     sm = multiworld.get_region(regionName.IOHWH, player)
+    #     sm.add_locations({locationName.MTA: None,
+    #         locationName.GGA: None,
+    #         locationName.WWA: None,
+    #         locationName.JRA: None,
+    #         locationName.TDA: None,
+    #         locationName.GIA: None,
+    #         locationName.HFA: None,
+    #         locationName.CCA: None,
+    #         locationName.CKA: None,
+    #         locationName.H1A: None})
+    #     mta = multiworld.get_location(locationName.MTA, player)
+    #     mta.place_locked_item(self.create_event_item(itemName.MTA))
+    #     gga = multiworld.get_location(locationName.GGA, player)
+    #     gga.place_locked_item(self.create_event_item(itemName.GGA))
+    #     wwa = multiworld.get_location(locationName.WWA, player)
+    #     wwa.place_locked_item(self.create_event_item(itemName.WWA))
+    #     jra = multiworld.get_location(locationName.JRA, player)
+    #     jra.place_locked_item(self.create_event_item(itemName.JRA))
+    #     tda = multiworld.get_location(locationName.TDA, player)
+    #     tda.place_locked_item(self.create_event_item(itemName.TDA))
+    #     gia = multiworld.get_location(locationName.GIA, player)
+    #     gia.place_locked_item(self.create_event_item(itemName.GIA))
+    #     hfa = multiworld.get_location(locationName.HFA, player)
+    #     hfa.place_locked_item(self.create_event_item(itemName.HFA))
+    #     cca = multiworld.get_location(locationName.CCA, player)
+    #     cca.place_locked_item(self.create_event_item(itemName.CCA))
+    #     cka = multiworld.get_location(locationName.CKA, player)
+    #     cka.place_locked_item(self.create_event_item(itemName.CKA))
+    #     h1a = multiworld.get_location(locationName.H1A, player)
+    #     h1a.place_locked_item(self.create_event_item(itemName.H1A))
 
 
 def create_region(multiworld, player: int, active_locations, name: str, locations=None):

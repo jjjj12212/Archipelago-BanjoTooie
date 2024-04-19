@@ -10,11 +10,12 @@ class EnableMultiWorldJinjos(DefaultOnToggle):
     display_name = "Randomize Jinjos"
 
 class ForbidMovesOnJinjoFamilyTreasure(Choice):
-    """If Jinjos are randomized, do not allow unlockable moves behind Jinjo Families."""
-    display_name = "Forbid Unlockable Moves on Jinjo Family Treasure"
+    """If Jinjos are randomized, do not allow unlockable moves or magic behind Jinjo Families."""
+    display_name = "Forbid Unlockable Moves or Magic on Jinjo Family Treasure"
     option_none = 0
     option_moves_only = 1
     option_moves_and_magic = 2
+    option_magic_only = 3
     default = 1
 
 class ForbidJinjosOnJinjoFamilyTreasure(Toggle):
@@ -53,6 +54,10 @@ class EnableMultiWorldChuffyTrain(Toggle):
     """Chuffy is lost across the MultiWorld."""
     display_name = "Chuffy as a randomized AP Item."
 
+class EnableMultiWorldNotes(Toggle):
+    """Note Nests are scattered across the MultiWorld."""
+    display_name = "Randomize Note Nests"
+
 class KingJingalingHasJiggy(Toggle):
     """King Jingaling will always have a Jiggy to give you."""
     display_name = "King Jingaling Jiggy"
@@ -64,6 +69,10 @@ class SkipPuzzles(Toggle):
 class OpenHag1(Toggle):
     """HAG 1 boss fight is opened when Cauldron Keep is. Only 55 jiggies are needed to win."""
     display_name = "HAG 1 Open"
+
+class RandomizeWorlds(Toggle):
+    """Worlds will open in a randomized order. Randomized Moves & Puzzle Skip Required."""
+    display_name = "Randomize Worlds"
 
 class SkipToT(Choice):
     """Choose whether to play the full quiz, start at round 3, or skip it."""
@@ -91,7 +100,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
     randomize_moves: EnableMultiWorldMoveList
     randomize_jinjos: EnableMultiWorldJinjos
-    forbid_moves_on_jinjo_family: ForbidMovesOnJinjoFamilyTreasure
+    forbid_on_jinjo_family: ForbidMovesOnJinjoFamilyTreasure
     forbid_jinjos_on_jinjo_family: ForbidJinjosOnJinjoFamilyTreasure
     randomize_doubloons: EnableMultiWorldDoubloons
     randomize_cheato: EnableMultiWorldCheatoPages
@@ -101,9 +110,11 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_treble: EnableMultiWorldTrebleClefs
     randomize_stations: EnableMultiWorldTrainStationSwitches
     randomize_chuffy: EnableMultiWorldChuffyTrain
+    randomize_notes: EnableMultiWorldNotes
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
     open_hag1: OpenHag1
+    randomize_worlds: RandomizeWorlds
     skip_tower_of_tragedy: SkipToT
     speed_up_minigames: SpeedUpMinigames
     logic_type: LogicType

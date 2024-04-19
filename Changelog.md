@@ -1,3 +1,28 @@
+# 1.1-Beta
+- Dpad changes:
+  - Dpad Left - Shows unlocked Magic
+  - Dpad Down - Shows unlocked Treble Clef & Stations
+  - Dpad Up + L - Refill Consumables
+  - Dpad Right + L - Super Banjo
+  - Dpad Left + L - Aim Assist
+  - Dpad Down + L - Health Regen
+- Notes
+- Notes Randomized
+- Handle AP Notes for Jamjars
+- Randomize World Order (NOT "World Entrances")
+- Handle framework to customize jiggy amounts (future update)
+- Easter eggs removed
+- QOL
+  - Bosses Cutscenes, no longer have to wait until Banjo Arrives at boss
+- change wording for forbid certian AP items on Jinjo Families
+- add YAML option to only forbid Magic behind Jinjo Families
+- Logic Changes
+  - Beginner logic
+  - Power Hut Jiggy: (Detonator or Bill Drill) and Split Up
+  - Treasure Chamber Jiggy: Egg Aim and (Grip Grab or Access to Flight pad)
+  - Snake Head Cheato Page: Access to Flight Pad or (Egg Aim and Grip Grab)
+  - Talon Torpedo required from  Wasteland to Pine Grove
+
 # 1.0.4-Beta
 - Logic Changes:
   - Talon Torpedo required on Normal Logic from Wasteland to Pinegrove.
