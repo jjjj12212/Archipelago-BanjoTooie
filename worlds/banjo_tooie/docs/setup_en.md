@@ -33,6 +33,7 @@ It is strongly recommended to associate N64 rom extensions (*.n64, *.z64) to the
 ## How to install - Client Side
 
 - Copy data/lua/banjo_tooie_connector.lua into data/lua in your existing Archipelago
+- Copy banjo_tooie.apworld into the worlds folder in your existing Archipelago folder (\libs\worlds)
 - Run Launcher.exe and select Banjo-Tooie Client
 - Connect the Archipelago Client with the server.
 - Open Bizhawk (2.9.1+) and open your Banjo-Tooie (US) game.
