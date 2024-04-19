@@ -97,7 +97,8 @@ misc_collectable_table = {
     itemName.PAGES:         ItemData(1230513, 25, "useful", None),
     itemName.DOUBLOON:      ItemData(1230514, 30, "progress", None),
     itemName.TREBLE:        ItemData(1230778,  9, "progress", None),
-    itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY)
+    itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY),
+    itemName.NOTE:          ItemData(1230797, 144, "progress", None)
 }
 
 stations_table = {
@@ -109,6 +110,17 @@ stations_table = {
     itemName.TRAINSWWW:     ItemData(1230795,  1, "progress", locationName.TRAINSWWW),
 }
 
+# rando_key_table = {
+#     itemName.MTA:           ItemData(1230944,   1, "progress", locationName.MTA),
+#     itemName.GGA:           ItemData(1230945,   1, "progress", locationName.GGA),
+#     itemName.WWA:           ItemData(1230946,   1, "progress", locationName.WWA),
+#     itemName.JRA:           ItemData(1230947,   1, "progress", locationName.JRA),
+#     itemName.TDA:           ItemData(1230948,   1, "progress", locationName.TDA),
+#     itemName.GIA:           ItemData(1230949,   1, "progress", locationName.GIA),
+#     itemName.HFA:           ItemData(1230950,   1, "progress", locationName.HFA),
+#     itemName.CCA:           ItemData(1230951,   1, "progress", locationName.CCA),
+# }
+
 
 all_item_table = {
     **moves_table,
@@ -117,7 +129,7 @@ all_item_table = {
     **misc_collectable_table,
     **jiggy_table,
     **stations_table,
-
+    # **rando_key_table,
 }
 
 all_group_table = {
@@ -126,7 +138,8 @@ all_group_table = {
     'misc' : misc_collectable_table,
     'moves': moves_table,
     "magic": level_progress_table,
-    "stations": stations_table
+    "stations": stations_table,
+    # "levelaccess": rando_key_table,
 }
 
 

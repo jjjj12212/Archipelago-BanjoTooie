@@ -1,7 +1,7 @@
 -- Banjo Tooie Connector Lua
 -- Created by Mike Jackson (jjjj12212) 
 -- with the help of Rose (Oktorose), the OOT Archipelago team, ScriptHawk BT.lua & kaptainkohl for BTrando.lua 
--- modifications from Unalive
+-- modifications from Unalive & HemiJackson 
 
 -- local RDRAMBase = 0x80000000;
 -- local RDRAMSize = 0x800000;
@@ -15,6 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
+local BT_VERSION = "V1.1.0"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -28,6 +29,9 @@ local STATE_UNINITIALIZED = "Uninitialized"
 local PREV_STATE = ""
 local CUR_STATE =  STATE_UNINITIALIZED
 local FRAME = 0
+local SEND_PACKET_FRAME = false
+local RECV_PACKET_FRAME = false
+
 
 local DEBUG = false
 local DEBUGLVL2 = false
@@ -47,10 +51,15 @@ local PAUSED = false;
 local TOTALS_MENU = false;
 local SAVE_GAME = false;
 local USE_BMM_TBL = false;
+local USE_BMM_ONLY_TBL = false;
+local USE_BMM_ONLY_TYP = "";
+
 local CLOSE_TO_ALTAR = false;
 local DETECT_DEATH = false;
 local SNEAK = false;
 local AIMASSIST = false;
+local SUPERBANJO = false;
+local REGEN = false;
 local TEXT_TIMER = 2;
 local TEXT_START = false;
 
@@ -62,6 +71,8 @@ local ENABLE_AP_TREBLE = false;
 local ENABLE_AP_STATIONS = false;
 local ENABLE_AP_CHUFFY = false;
 local ENABLE_AP_JINJO = false;
+local ENABLE_AP_NOTES = false;
+local ENABLE_AP_WORLDS = false;
 local AP_MESSAGES = {};
 
 local GAME_LOADED = false;
@@ -71,8 +82,7 @@ local WATCH_LOADED_SILOS = false; -- Silo found on Map, Need to Monitor Distance
 local LOAD_BMK_MOVES = false; -- If close to Silo
 local SILOS_LOADED = false; -- Handles if learned a move at Silo
 local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
--- local DOUBLOON_SILO_MOVE = false; -- Move Doubloons away from Silo in JRL
-
+local LOAD_SILO_NOTES = false;
 local TOT_SET_COMPLETE = false;
 
 -------------- TREBLE VARS ------------
@@ -95,10 +105,6 @@ DEAD_COAL_CHECK = 0;
 CHUFFY_MAP_TRANS = false;
 CHUFFY_STOP_WATCH = true;
 LEVI_PAD_MOVED = false;
-CHUFF_GOT = false;
-CHUFFY_COAL = false;
-FINAL_CHUFF = false;
-CHUFFY_CC = false;
 
 local BATH_PADS_QOL = false
 
@@ -361,7 +367,8 @@ BTModel = {
         ["Levitate Pad"] = 0x7D8,
         ["Jiggy"] = 0x610,
         ["Breakable Door"] = 0x651,
-        ["Sign Post"] = 0x7A2
+        ["Sign Post"] = 0x7A2,
+        ["Jiggy Guy"] = 0x937
     };
     model_enemy_list = {
         ["Ugger"] = 0x671,
@@ -671,6 +678,28 @@ function nearWHJinjo()
             print("Near Jinjo");
         end
         BMMRestore();
+    end
+end
+
+function nearDisiple()
+    BTMODELOBJ:changeName("Jiggy Guy", false);
+    local playerDist = BTMODELOBJ:getClosestModelDistance()
+    if playerDist == false
+    then
+        BMMBackup()
+        useAGI()
+        return;
+    end
+    if playerDist <= 1500
+    then
+        if DEBUG == true
+        then
+            print("Near Disiple");
+        end
+        useAGINoJiggies();
+    elseif playerDist > 1500 and playerDist < 2000
+    then
+        useAGI()
     end
 end
 
@@ -2130,6 +2159,592 @@ local AGI_MASTER_MAP = {
             ['name'] = 'JRL: Near Jinjo 4 Doubloon'
         }
     },
+    ['NOTES'] = {
+        ["1230800"] = {
+            ['addr'] = 0x84,
+            ['bit'] = 7,
+        },
+        ["1230801"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 0,
+        },
+        ["1230802"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 1,
+        },
+        ["1230803"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 2,
+        },
+        ["1230804"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 3,
+        },
+        ["1230805"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 4,
+        },
+        ["1230806"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 5,
+        },
+        ["1230807"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 6,
+        },
+        ["1230808"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 7,
+        },
+        ["1230809"] = {
+            ['addr'] = 0x86,
+            ['bit'] = 0,
+        },
+        ["1230810"] = {
+            ['addr'] = 0x86,
+            ['bit'] = 1,
+        },
+        ["1230811"] = {
+            ['addr'] = 0x86,
+            ['bit'] = 2,
+        },
+        ["1230812"] = {
+            ['addr'] = 0x86,
+            ['bit'] = 3,
+        },
+        ["1230813"] = {
+            ['addr'] = 0x86,
+            ['bit'] = 4,
+        },
+        ["1230814"] = {
+            ['addr'] = 0x86,
+            ['bit'] = 5,
+        },
+        ["1230815"] = {
+            ['addr'] = 0x86,
+            ['bit'] = 6,
+        },
+         -- EO Mayahem Temple
+         ["1230816"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 0,
+        },
+        ["1230817"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 1,
+        },
+        ["1230818"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 2,
+        },
+        ["1230819"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 3,
+        },
+        ["1230820"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 4,
+        },
+        ["1230821"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 5,
+        },
+        ["1230822"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 6,
+        },
+        ["1230823"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 7,
+        },
+        ["1230824"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 0,
+        },
+        ["1230825"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 1,
+        },
+        ["1230826"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 2,
+        },
+        ["1230827"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 3,
+        },
+        ["1230828"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 4,
+        },
+        ["1230829"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 5,
+        },
+        ["1230830"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 6,
+        },
+        ["1230831"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 7,
+        },
+        -- EO GGM
+        ["1230832"] = {
+            ['addr'] = 0x89,
+            ['bit'] = 1,
+        },
+        ["1230833"] = {
+            ['addr'] = 0x89,
+            ['bit'] = 2,
+        },
+        ["1230834"] = {
+            ['addr'] = 0x89,
+            ['bit'] = 3,
+        },
+        ["1230835"] = {
+            ['addr'] = 0x89,
+            ['bit'] = 4,
+        },
+        ["1230836"] = {
+            ['addr'] = 0x89,
+            ['bit'] = 5,
+        },
+        ["1230837"] = {
+            ['addr'] = 0x89,
+            ['bit'] = 6,
+        },
+        ["1230838"] = {
+            ['addr'] = 0x89,
+            ['bit'] = 7,
+        },
+        ["1230839"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 0,
+        },
+        ["1230840"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 1,
+        },
+        ["1230841"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 2,
+        },
+        ["1230842"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 3,
+        },
+        ["1230843"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 4,
+        },
+        ["1230844"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 5,
+        },
+        ["1230845"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 6,
+        },
+        ["1230846"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 7,
+        },
+        ["1230847"] = {
+            ['addr'] = 0x8B,
+            ['bit'] = 0,
+        },
+        --EO WW
+        ["1230848"] = {
+            ['addr'] = 0x8B,
+            ['bit'] = 2,
+        },
+        ["1230849"] = {
+            ['addr'] = 0x8B,
+            ['bit'] = 3,
+        },
+        ["1230850"] = {
+            ['addr'] = 0x8B,
+            ['bit'] = 4,
+        },
+        ["1230851"] = {
+            ['addr'] = 0x8B,
+            ['bit'] = 5,
+        },
+        ["1230852"] = {
+            ['addr'] = 0x8B,
+            ['bit'] = 6,
+        },
+        ["1230853"] = {
+            ['addr'] = 0x8B,
+            ['bit'] = 7,
+        },
+        ["1230854"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 0,
+        },
+        ["1230855"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 1,
+        },
+        ["1230856"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 2,
+        },
+        ["1230857"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 3,
+        },
+        ["1230858"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 4,
+        },
+        ["1230859"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 5,
+        },
+        ["1230860"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 6,
+        },
+        ["1230861"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 7,
+        },
+        ["1230862"] = {
+            ['addr'] = 0x8D,
+            ['bit'] = 0,
+        },
+        ["1230863"] = {
+            ['addr'] = 0x8D,
+            ['bit'] = 1,
+        },
+        -- EO JRL
+        ["1230864"] = {
+            ['addr'] = 0x8D,
+            ['bit'] = 3,
+        },
+        ["1230865"] = {
+            ['addr'] = 0x8D,
+            ['bit'] = 4,
+        },
+        ["1230866"] = {
+            ['addr'] = 0x8D,
+            ['bit'] = 5,
+        },
+        ["1230867"] = {
+            ['addr'] = 0x8D,
+            ['bit'] = 6,
+        },
+        ["1230868"] = {
+            ['addr'] = 0x8D,
+            ['bit'] = 7,
+        },
+        ["1230869"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 0,
+        },
+        ["1230870"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 1,
+        },
+        ["1230871"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 2,
+        },
+        ["1230872"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 3,
+        },
+        ["1230873"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 4,
+        },
+        ["1230874"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 5,
+        },
+        ["1230875"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 6,
+        },
+        ["1230876"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 7,
+        },
+        ["1230877"] = {
+            ['addr'] = 0x8F,
+            ['bit'] = 0,
+        },
+        ["1230878"] = {
+            ['addr'] = 0x8F,
+            ['bit'] = 1,
+        },
+        ["1230879"] = {
+            ['addr'] = 0x8F,
+            ['bit'] = 2,
+        },
+        -- EO TDL
+        ["1230880"] = {
+            ['addr'] = 0x8F,
+            ['bit'] = 4,
+        },
+        ["1230881"] = {
+            ['addr'] = 0x8F,
+            ['bit'] = 5,
+        },
+        ["1230882"] = {
+            ['addr'] = 0x8F,
+            ['bit'] = 6,
+        },
+        ["1230883"] = {
+            ['addr'] = 0x8F,
+            ['bit'] = 7,
+        },
+        ["1230884"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 0,
+        },
+        ["1230885"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 1,
+        },
+        ["1230886"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 2,
+        },
+        ["1230887"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 3,
+        },
+        ["1230888"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 4,
+        },
+        ["1230889"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 5,
+        },
+        ["1230890"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 6,
+        },
+        ["1230891"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 7,
+        },
+        ["1230892"] = {
+            ['addr'] = 0x91,
+            ['bit'] = 0,
+        },
+        ["1230893"] = {
+            ['addr'] = 0x91,
+            ['bit'] = 1,
+        },
+        ["1230894"] = {
+            ['addr'] = 0x91,
+            ['bit'] = 2,
+        },
+        ["1230895"] = {
+            ['addr'] = 0x91,
+            ['bit'] = 3,
+        },
+        -- EO GI
+        ["1230896"] = {
+            ['addr'] = 0x91,
+            ['bit'] = 5,
+        },
+        ["1230897"] = {
+            ['addr'] = 0x91,
+            ['bit'] = 6,
+        },
+        ["1230898"] = {
+            ['addr'] = 0x91,
+            ['bit'] = 7,
+        },
+        ["1230899"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 0,
+        },
+        ["1230900"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 1,
+        },
+        ["1230901"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 2,
+        },
+        ["1230902"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 3,
+        },
+        ["1230903"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 4,
+        },
+        ["1230904"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 5,
+        },
+        ["1230905"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 6,
+        },
+        ["1230906"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 7,
+        },
+        ["1230907"] = {
+            ['addr'] = 0x93,
+            ['bit'] = 0,
+        },
+        ["1230908"] = {
+            ['addr'] = 0x93,
+            ['bit'] = 1,
+        },
+        ["1230909"] = {
+            ['addr'] = 0x93,
+            ['bit'] = 2,
+        },
+        ["1230910"] = {
+            ['addr'] = 0x93,
+            ['bit'] = 3,
+        },
+        ["1230911"] = {
+            ['addr'] = 0x93,
+            ['bit'] = 4,
+        },
+        -- EO HFP
+        ["1230912"] = {
+            ['addr'] = 0x93,
+            ['bit'] = 6,
+        },
+        ["1230913"] = {
+            ['addr'] = 0x93,
+            ['bit'] = 7,
+        },
+        ["1230914"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 0,
+        },
+        ["1230915"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 1,
+        },
+        ["1230916"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 2,
+        },
+        ["1230917"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 3,
+        },
+        ["1230918"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 4,
+        },
+        ["1230919"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 5,
+        },
+        ["1230920"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 6,
+        },
+        ["1230921"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 7,
+        },
+        ["1230922"] = {
+            ['addr'] = 0x95,
+            ['bit'] = 0,
+        },
+        ["1230923"] = {
+            ['addr'] = 0x95,
+            ['bit'] = 1,
+        },
+        ["1230924"] = {
+            ['addr'] = 0x95,
+            ['bit'] = 2,
+        },
+        ["1230925"] = {
+            ['addr'] = 0x95,
+            ['bit'] = 3,
+        },
+        ["1230926"] = {
+            ['addr'] = 0x95,
+            ['bit'] = 4,
+        },
+        ["1230927"] = {
+            ['addr'] = 0x95,
+            ['bit'] = 5,
+        },
+        -- EO CCL
+        ["1230928"] = {
+            ['addr'] = 0x95,
+            ['bit'] = 7,
+        },
+        ["1230929"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 0,
+        },
+        ["1230930"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 1,
+        },
+        ["1230931"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 2,
+        },
+        ["1230932"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 3,
+        },
+        ["1230933"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 4,
+        },
+        ["1230934"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 5,
+        },
+        ["1230935"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 6,
+        },
+        ["1230936"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 7,
+        },
+        ["1230937"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 0,
+        },
+        ["1230938"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 1,
+        },
+        ["1230939"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 2,
+        },
+        ["1230940"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 3,
+        },
+        ["1230941"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 4,
+        },
+        ["1230942"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 5,
+        },
+        ["1230943"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 6,
+        }
+    },
 	["H1"] = {
 	 	["1230027"] = {
 			['addr'] = 0x03,
@@ -2426,6 +3041,50 @@ local NON_AGI_MAP = {
 				['addr'] = 0xAC,
 				['bit'] = 2
 			},
+            ['Targitzan'] = {
+                ['addr'] = 0x0C,
+                ['bit'] = 7
+            },
+            ['Klungo 3'] = {
+                ['addr'] = 0x11,
+                ['bit'] = 7
+            },
+            ['Klungo 2'] = {
+                ['addr'] = 0x32,
+                ['bit'] = 2
+            },
+            ['Klungo 1'] = {
+                ['addr'] = 0x13,
+                ['bit'] = 1
+            },
+            ['Terry'] = {
+                ['addr'] = 0x29,
+                ['bit'] = 2
+            },
+            ['Weldar'] = {
+                ['addr'] = 0x29,
+                ['bit'] = 4
+            },
+            ['King Coal'] = {
+                ['addr'] = 0x2A,
+                ['bit'] = 1
+            },
+            ['Patches'] = {
+                ['addr'] = 0x2A,
+                ['bit'] = 7
+            },
+            ['Woo Fak Fak'] = {
+                ['addr'] = 0x30,
+                ['bit'] = 7
+            },
+            ['Chilly Willy'] = {
+                ['addr'] = 0x35,
+                ['bit'] = 3
+            },
+            ['Chilly Billi'] = {
+                ['addr'] = 0x35,
+                ['bit'] = 4
+            },
 		},
 		['INTRO'] = {
 			['Bovina'] = {
@@ -3038,13 +3697,37 @@ function readAPLocationChecks(type)
     then
         for check_type, location in pairs(AGI_MASTER_MAP)
         do
-            for locId, table in pairs(location)
-            do
-                if checks[check_type] == nil
+            if USE_BMM_ONLY_TBL == true
+            then
+                if check_type == USE_BMM_ONLY_TYP
                 then
-                    checks[check_type] = {}
+                    for locId, value in pairs(BMM[check_type])
+                    do
+                        if checks[check_type] == nil
+                        then
+                            checks[check_type] = {}
+                        end
+                        checks[check_type][locId] = value
+                    end
+                else
+                    for locId, table in pairs(location)
+                    do
+                        if checks[check_type] == nil
+                        then
+                            checks[check_type] = {}
+                        end
+                        checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
+                    end
                 end
-                checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
+            else
+                for locId, table in pairs(location)
+                do
+                    if checks[check_type] == nil
+                    then
+                        checks[check_type] = {}
+                    end
+                    checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
+                end
             end
         end
         return checks;
@@ -3574,6 +4257,8 @@ function nearSilo()
         then
             clear_AMM_MOVES_checks();
             update_BMK_MOVES_checks();
+            BMMBackupOnly("NOTES");
+            useAGIOnly("NOTES");
             LOAD_BMK_MOVES = true
         elseif SILOS_LOADED == false
         then
@@ -3588,17 +4273,6 @@ function nearSilo()
             -- print("BKM Move Learnt");
             -- end
         end
--- elseif siloPOS["Distance"] <= 300 and CURRENT_MAP == 0x1A7  -- Doubloon issue 
--- then
---     if LOAD_BMK_MOVES == false
-    --     then
-    --         clear_AMM_MOVES_checks();
-    --         update_BMK_MOVES_checks();
-    --         LOAD_BMK_MOVES = true
---     elseif SILOS_LOADED == false
-    --     then
-    --         update_BMK_MOVES_checks();
---     end
     else
         if LOAD_BMK_MOVES == true
         then
@@ -3606,9 +4280,51 @@ function nearSilo()
             then
                 print("Reseting Movelist");
             end
-            set_AGI_MOVES_checks()
-            LOAD_BMK_MOVES = false
+            set_AGI_MOVES_checks();
+            BMMRestoreOnly("NOTES");
+            LOAD_BMK_MOVES = false;
             SILOS_LOADED = false;
+        end
+    end
+
+    if siloPOS["Distance"] <= 410 and CURRENT_MAP ~= 0x13A -- Notes and not CCL
+    then
+        if LOAD_SILO_NOTES == false
+        then
+            BMMBackupOnly("NOTES");
+            useAGIOnly("NOTES");
+            LOAD_SILO_NOTES = true
+        end
+    elseif siloPOS["Distance"] > 410 and CURRENT_MAP ~= 0x13A
+    then
+        if LOAD_SILO_NOTES == true
+        then
+            if DEBUG == true
+            then
+                print("Reseting Note Count");
+            end
+            BMMRestoreOnly("NOTES");
+            LOAD_SILO_NOTES = false;
+        end
+    end
+    if siloPOS["Distance"] <= 260 and CURRENT_MAP == 0x13A -- Notes and CCL
+    then
+        if LOAD_SILO_NOTES == false
+        then
+            BMMBackupOnly("NOTES");
+            useAGIOnly("NOTES");
+            LOAD_SILO_NOTES = true
+        end
+    elseif siloPOS["Distance"] > 260 and CURRENT_MAP == 0x13A -- Notes and CCL
+    then
+        if LOAD_SILO_NOTES == true
+        then
+            if DEBUG == true
+            then
+                print("Reseting Note Count");
+            end
+            BMMRestoreOnly("NOTES");
+            LOAD_SILO_NOTES = false;
         end
     end
 end
@@ -3644,37 +4360,6 @@ function MoveWitchyPads()
         end
     end
 end
-
--- function MoveDoubloon()
---     BTMODELOBJ:changeName("Doubloon", false)
---     local modelPOS = BTMODELOBJ:getMultipleModelCoords()
---     if modelPOS == false
---     then
---         return;
---     end
---     for modelObjPtr, POS in pairs(modelPOS) do
---         if POS ~= false
---         then
---             if (POS["Xpos"] == -3226 and POS["Zpos"] == -4673) -- bottom right
---             then
---                 BTMODELOBJ:moveModelObject(modelObjPtr, nil, nil, POS["Zpos"] + 65);
---             end
---             if (POS["Xpos"] == -3526 and POS["Zpos"] == -4972) --bottom left
---             then
---                 BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 65);
---             end
---             if (POS["Xpos"] == -3226 and POS["Zpos"] == -5273) -- top left
---             then
---                 BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] - 25, nil, POS["Zpos"] - 50);
---             end
---             if (POS["Xpos"] == -2926 and POS["Zpos"] == -4972) -- top right
---             then
---                 BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] + 25, nil, POS["Zpos"] + 65);
---             end
---         end
---         DOUBLOON_SILO_MOVE = true;
---     end
--- end
 
 ------------------ Jinjos -------------------
 -- Jinjos themselves are stored in MASTER_AGI_MAP
@@ -3807,8 +4492,15 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
         then
             if jiggy_count >= values["defaultCost"]
             then
+                if DEBUG == true
+                then
+                    print(values["defaultName"] .. tostring(values["defaultCost"]))
+                end
                 BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                if ENABLE_AP_WORLDS == false
+                then
+                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                end
                 values["opened"] = true
                 if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
                     and show_message == true
@@ -3821,7 +4513,10 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
             if jiggy_count >= values["defaultCost"] and values["opened"] == true
             then
                 BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                if ENABLE_AP_WORLDS == false
+                then
+                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                end
             end
         end
     end
@@ -4030,70 +4725,6 @@ function BKLogics(mapaddr)
     end
 end
 
-function ChuffyCheck()
-    if CHUFF_GOT == true and BTRAMOBJ:getBanjoPos() == false
-    then
-        CHUFF_GOT = false
-        mainmemory.write_u16_be(0x045702, 0xAD);
-        mainmemory.write_u16_be(0x127640, 0xAD);
-        mainmemory.write_u16_be(0x127642, 0x0101);
-        print("Pheefer")
-    elseif CHUFFY_COAL == true and BTRAMOBJ:getBanjoPos() == false then
-        CHUFFY_COAL = false
-        mainmemory.write_u16_be(0x045702, 0x142);
-        mainmemory.write_u16_be(0x127640, 0x142);
-        mainmemory.write_u16_be(0x127642, 0x0101);
-        print("is")
-    elseif CHUFF_FINAL == true then
-        CHUFF_FINAL = false
-        mainmemory.write_u16_be(0x045702, 0xBC);
-        mainmemory.write_u16_be(0x127640, 0xBC);
-        mainmemory.write_u16_be(0x127642, 0x0101);
-        CHUFFY_CC = true
-        print("my bro bro :D YOU DID IT! - Jjjj12212")
-    end
-
-
-    BTMODELOBJ:changeName("Breakable Door")
-    door_there = BTMODELOBJ:checkModel()
-    banjo = BTRAMOBJ:getBanjoTState()
-    BTMODELOBJ:changeName("Sign Post")
-    sign_there = BTMODELOBJ:checkModel()
-    if CURRENT_MAP == 0xC4 and door_there == true and banjo == 8 and CHUFFY_CC == false
-    then
-        BTMODELOBJ:changeName("Breakable Door")
-        BTMODELOBJ:checkModel()
-        POS = BTMODELOBJ:getSingleModelCoords()
-        if POS ~= false
-        then
-            if POS["Distance"] <= 1000
-            then
-                CHUFF_GOT = true;
-            else
-                return
-            end
-        end
-    elseif CURRENT_MAP == 0x173 and banjo == 8
-    then
-        CHUFFY_COAL = true
-    elseif CURRENT_MAP == 0x142 and banjo == 8 and sign_there == true
-    then
-        BTMODELOBJ:changeName("Sign Post")
-        BTMODELOBJ:checkModel()
-        POS = BTMODELOBJ:getSingleModelCoords()
-        if POS ~= false
-        then
-            if POS["Distance"] <= 150
-            then
-                CHUFF_FINAL = true;
-            else
-                return
-            end
-        end
-    end
-
-end
-
 function BKCheckAssetLogic()
     if CHECK_FOR_SILO == true
     then
@@ -4191,7 +4822,6 @@ function BKAssetFound()
     then
         watchBtnAnimation()
     end
-    ChuffyCheck()
 end
 
 function locationControl()
@@ -4208,7 +4838,7 @@ function locationControl()
     end
 
     if USE_BMM_TBL == true --Only used If Maps are AROUND or IN Wooded Hollow or JWTemple
-    then     
+    then
         if BTRAMOBJ:checkFlag(0x1F, 0, "LocControl1")== true -- DEMO FILE
         then
             local DEMO = { ['DEMO'] = true}
@@ -4223,6 +4853,10 @@ function locationControl()
         else
             getAltar()
             nearWHJinjo()
+            if ENABLE_AP_WORLDS == true
+            then
+                nearDisiple()
+            end
             CURRENT_MAP = mapaddr
             return all_location_checks("BMM");
         end
@@ -4243,6 +4877,10 @@ function locationControl()
                     CURRENT_MAP = mapaddr
                 end
                 nearWHJinjo()
+                if ENABLE_AP_WORLDS == true
+                then
+                    nearDisiple()
+                end
                 return all_location_checks("BMM");
             else
                 CURRENT_MAP = mapaddr
@@ -4267,9 +4905,25 @@ function BMMBackup()
         if BMM[item_group] == nil then
             BMM[item_group] = {}
         end
-        for location, values in pairs(table)
-        do
-            BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
+        if USE_BMM_ONLY_TBL == true
+        then
+            if USE_BMM_ONLY_TYP ~= item_group
+            then
+                for location, values in pairs(table)
+                do
+                    BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
+                end
+            else
+                if DEBUG == true
+                then
+                    print("Backup excluding " .. USE_BMM_ONLY_TYP);
+                end
+            end
+        else
+            for location, values in pairs(table)
+            do
+                BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
+            end
         end
     end
     if DEBUG == true
@@ -4280,6 +4934,33 @@ function BMMBackup()
     USE_BMM_TBL = true
 end
 
+function BMMBackupOnly(backup_type)
+    if USE_BMM_TBL == true or GAME_LOADED == false or
+    (USE_BMM_ONLY_TBL == true and USE_BMM_ONLY_TYP == backup_type)
+    then
+        return
+    end
+    for item_group, table in pairs(AGI_MASTER_MAP)
+    do
+        if BMM[item_group] == nil then
+            BMM[item_group] = {}
+        end
+        if item_group == backup_type
+        then
+            for location, values in pairs(table)
+            do
+                BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
+            end
+        end
+    end
+    if DEBUG == true
+    then
+        print("Backup " .. backup_type .. " complete");
+    end
+    USE_BMM_ONLY_TBL = true
+    USE_BMM_ONLY_TYP = backup_type
+end
+
 function BMMRestore()
     if USE_BMM_TBL == false
     then
@@ -4288,23 +4969,55 @@ function BMMRestore()
 
     for item_group , location in pairs(AGI_MASTER_MAP)
     do
-        for loc,v in pairs(location)
-        do
-            if AMM[item_group][loc] == false and BMM[item_group][loc] == true
+        if USE_BMM_ONLY_TBL == true
+        then
+            if item_group ~= USE_BMM_ONLY_TYP
             then
-                BTRAMOBJ:setFlag(v['addr'], v['bit'])
-                AMM[item_group][loc] = BMM[item_group][loc]
-                if DEBUG == true
-                then
-                    print(loc .. " Flag Set")
+                for loc,v in pairs(location)
+                do
+                    if AMM[item_group][loc] == false and BMM[item_group][loc] == true
+                    then
+                        BTRAMOBJ:setFlag(v['addr'], v['bit'])
+                        AMM[item_group][loc] = BMM[item_group][loc]
+                        if DEBUG == true
+                        then
+                            print(loc .. " Flag Set")
+                        end
+                    elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
+                    then
+                        BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE")
+                        AMM[item_group][loc] = BMM[item_group][loc]
+                        if DEBUG == true
+                        then
+                            print(loc .. " Flag Cleared")
+                        end
+                    end
                 end
-            elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
-            then
-                BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE")
-                AMM[item_group][loc] = BMM[item_group][loc]
+            else
                 if DEBUG == true
                 then
-                    print(loc .. " Flag Cleared")
+                    print("BMM Restoring exlude " .. USE_BMM_ONLY_TYP)
+                end
+            end
+        else
+            for loc,v in pairs(location)
+            do
+                if AMM[item_group][loc] == false and BMM[item_group][loc] == true
+                then
+                    BTRAMOBJ:setFlag(v['addr'], v['bit'])
+                    AMM[item_group][loc] = BMM[item_group][loc]
+                    if DEBUG == true
+                    then
+                        print(loc .. " Flag Set")
+                    end
+                elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
+                then
+                    BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE")
+                    AMM[item_group][loc] = BMM[item_group][loc]
+                    if DEBUG == true
+                    then
+                        print(loc .. " Flag Cleared")
+                    end
                 end
             end
         end
@@ -4316,38 +5029,180 @@ function BMMRestore()
     USE_BMM_TBL = false;
 end
 
+function BMMRestoreOnly(backup_type)
+    if USE_BMM_ONLY_TBL == false
+    then
+        return
+    end
+
+    for item_group , location in pairs(AGI_MASTER_MAP)
+    do
+        if item_group == backup_type
+        then
+            for loc,v in pairs(location)
+            do
+                if AMM[item_group][loc] == false and BMM[item_group][loc] == true
+                then
+                    BTRAMOBJ:setFlag(v['addr'], v['bit'])
+                    AMM[item_group][loc] = BMM[item_group][loc]
+                    if DEBUG == true
+                    then
+                        print(loc .. " Flag Set")
+                    end
+                elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
+                then
+                    BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE_ONLY")
+                    AMM[item_group][loc] = BMM[item_group][loc]
+                    if DEBUG == true
+                    then
+                        print(loc .. " Flag Cleared")
+                    end
+                end
+            end
+            USE_BMM_ONLY_TBL = false;
+            USE_BMM_ONLY_TYP = "";
+            if DEBUG == true
+            then
+                print(backup_type .. " BMM Restored")
+            end
+        end
+    end
+end
+
 function useAGI()
     for item_group, table in pairs(AGI_MASTER_MAP)
     do
-        for location,values in pairs(table)
-        do
-            if AMM[item_group][location] == false and AGI[item_group][location] == true
+        if USE_BMM_ONLY_TBL == true
+        then
+            if USE_BMM_ONLY_TYP ~= item_group
             then
-                BTRAMOBJ:setFlag(values['addr'], values['bit'])
-                AMM[item_group][location] = true
+                for location,values in pairs(table)
+                do
+                    if AMM[item_group][location] == false and AGI[item_group][location] == true
+                    then
+                        BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                        AMM[item_group][location] = true
+                        if DEBUG == true
+                        then
+                            print(location .. " Flag Set from AGI");
+                        end
+                    elseif AMM[item_group][location] == true and AGI[item_group][location] == false
+                    then
+                        BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
+                        AMM[item_group][location] = false;
+                        if DEBUG == true
+                        then
+                            print(location .. " Flag Cleared from AGI");
+                        end
+                    elseif ENABLE_AP_JINJO == true
+                    then
+                        if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
+                        or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
+                        or location == "1230684") and AGI[item_group][location] == true
+                        then
+                            BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                            AMM[item_group][location] = true
+                            if DEBUG == true
+                            then
+                                print(location .. " Flag Set from AGI");
+                            end
+                        end
+                    end
+                end
+            else
                 if DEBUG == true
                 then
-                    print(location .. " Flag Set from AGI");
+                    print("AGI exclude " .. USE_BMM_ONLY_TYP);
                 end
-            elseif AMM[item_group][location] == true and AGI[item_group][location] == false
-            then
-                BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
-                AMM[item_group][location] = false;
-                if DEBUG == true
-                then
-                    print(location .. " Flag Cleared from AGI");
-                end
-            elseif ENABLE_AP_JINJO == true
-            then
-                if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
-                or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
-                or location == "1230684") and AGI[item_group][location] == true
+            end
+        else
+            for location,values in pairs(table)
+            do
+                if AMM[item_group][location] == false and AGI[item_group][location] == true
                 then
                     BTRAMOBJ:setFlag(values['addr'], values['bit'])
                     AMM[item_group][location] = true
                     if DEBUG == true
                     then
                         print(location .. " Flag Set from AGI");
+                    end
+                elseif AMM[item_group][location] == true and AGI[item_group][location] == false
+                then
+                    BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
+                    AMM[item_group][location] = false;
+                    if DEBUG == true
+                    then
+                        print(location .. " Flag Cleared from AGI");
+                    end
+                elseif ENABLE_AP_JINJO == true
+                then
+                    if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
+                    or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
+                    or location == "1230684") and AGI[item_group][location] == true
+                    then
+                        BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                        AMM[item_group][location] = true
+                        if DEBUG == true
+                        then
+                            print(location .. " Flag Set from AGI");
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+function useAGINoJiggies()
+    for location,values in pairs(AGI_MASTER_MAP["JIGGY"])
+    do
+        if AMM["JIGGY"][location] == true
+        then
+            BTRAMOBJ:clearFlag(values['addr'], values['bit'])
+            AMM["JIGGY"][location] = false
+            if DEBUG == true
+            then
+                print(location .. " Flag Cleared from AGI JIGGY");
+            end
+        end
+    end
+end
+
+function useAGIOnly(agi_type)
+    for item_group, table in pairs(AGI_MASTER_MAP)
+    do
+        if item_group == agi_type
+        then
+            for location,values in pairs(table)
+            do
+                if AMM[item_group][location] == false and AGI[item_group][location] == true
+                then
+                    BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                    AMM[item_group][location] = true
+                    if DEBUG == true
+                    then
+                        print(location .. " Flag Set from AGI");
+                    end
+                elseif AMM[item_group][location] == true and AGI[item_group][location] == false
+                then
+                    BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
+                    AMM[item_group][location] = false;
+                    if DEBUG == true
+                    then
+                        print(location .. " Flag Cleared from AGI");
+                    end
+                elseif ENABLE_AP_JINJO == true
+                then
+                    if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
+                    or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
+                    or location == "1230684") and AGI[item_group][location] == true
+                    then
+                        BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                        AMM[item_group][location] = true
+                        if DEBUG == true
+                        then
+                            print(location .. " Flag Set from AGI");
+                        end
                     end
                 end
             end
@@ -4363,14 +5218,25 @@ function all_location_checks(type)
     then
         for item_group, locations in pairs(location_checks)
         do
-             if AMM[item_group] == nil
-             then
-                 AMM[item_group] = {}
-             end
-             for locationId, value in pairs(locations)
-             do
-                 AMM[item_group][locationId] = value
-             end
+            if AMM[item_group] == nil
+            then
+                AMM[item_group] = {}
+            end
+            if USE_BMM_ONLY_TBL == true
+            then
+                if item_group ~= USE_BMM_ONLY_TYP
+                then
+                    for locationId, value in pairs(locations)
+                    do
+                        AMM[item_group][locationId] = value
+                    end
+                end
+            else
+                for locationId, value in pairs(locations)
+                do
+                    AMM[item_group][locationId] = value
+                end
+            end
         end
     end
     if next(AGI) == nil then --Only runs first time starting the game.
@@ -4542,6 +5408,20 @@ function processAGIItem(item_list)
             then
                 AGI_JINJOS[tostring(memlocation)] = AGI_JINJOS[tostring(memlocation)] + 1
                 JinjoCounter() -- check and see if family completes and mark true
+            elseif(memlocation == 1230797) and ENABLE_AP_NOTES == true
+            then
+                if DEBUG == true
+                then
+                    print("5 Notes Obtained")
+                end
+                for location, values in pairs(AGI_MASTER_MAP["NOTES"])
+                do
+                    if AGI['NOTES'][location] == false
+                    then
+                        AGI['NOTES'][location] = true
+                        break
+                    end
+                end
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
         end
@@ -4601,16 +5481,22 @@ function SendToBTClient()
     then
         print("Send Data")
     end
-    local msg = json.encode(retTable).."\n"
-    local ret, error = BT_SOCK:send(msg)
-    if ret == nil then
-        print(error)
-    elseif CUR_STATE == STATE_INITIAL_CONNECTION_MADE then
-        CUR_STATE = STATE_TENTATIVELY_CONNECTED
-    elseif CUR_STATE == STATE_TENTATIVELY_CONNECTED then
-        archipelago_msg_box("Connected to the Banjo Tooie Client!");
-        print("Connected!")
-        CUR_STATE = STATE_OK
+    if SEND_PACKET_FRAME == false --Send data on the 60th frame
+    then
+        SEND_PACKET_FRAME = true --Send data on the 60th frame
+    else
+        local msg = json.encode(retTable).."\n"
+        local ret, error = BT_SOCK:send(msg)
+        if ret == nil then
+            print(error)
+        elseif CUR_STATE == STATE_INITIAL_CONNECTION_MADE then
+            CUR_STATE = STATE_TENTATIVELY_CONNECTED
+        elseif CUR_STATE == STATE_TENTATIVELY_CONNECTED then
+            archipelago_msg_box("Connected to the Banjo Tooie Client!");
+            print("Connected!")
+            CUR_STATE = STATE_OK
+        end
+        SEND_PACKET_FRAME = false
     end
 end
 
@@ -4622,34 +5508,39 @@ function receive()
         -- Send the message
         SendToBTClient()
 
-        l, e = BT_SOCK:receive()
-        -- Handle incoming message
-        if e == 'closed' then
-            if CUR_STATE == STATE_OK then
-                archipelago_msg_box("Connection closed")
-                print("Connection closed")
+        if RECV_PACKET_FRAME == false
+        then
+            RECV_PACKET_FRAME = true
+        else
+            l, e = BT_SOCK:receive()
+            -- Handle incoming message
+            if e == 'closed' then
+                if CUR_STATE == STATE_OK then
+                    archipelago_msg_box("Connection closed")
+                    print("Connection closed")
+                end
+                CUR_STATE = STATE_UNINITIALIZED
+                return
+            elseif e == 'timeout' then
+                archipelago_msg_box("timeout")
+                print("timeout")
+                return
+            elseif e ~= nil then
+                print(e)
+                CUR_STATE = STATE_UNINITIALIZED
+                return
             end
-            CUR_STATE = STATE_UNINITIALIZED
-            return
-        elseif e == 'timeout' then
-            archipelago_msg_box("timeout")
-            print("timeout")
-            return
-        elseif e ~= nil then
-            print(e)
-            CUR_STATE = STATE_UNINITIALIZED
-            return
+            if DEBUGLVL3 == true
+            then
+                print("Processing Block");
+            end
+            process_block(json.decode(l))
+            if DEBUGLVL3 == true
+            then
+                print("Finish");
+            end
+            RECV_PACKET_FRAME = false
         end
-        if DEBUGLVL3 == true
-        then
-            print("Processing Block");
-        end
-        process_block(json.decode(l))
-        if DEBUGLVL3 == true
-        then
-            print("Finish");
-        end
-
         -- if DETECT_DEATH == true
         -- then
         --     DETECT_DEATH = false;
@@ -4771,7 +5662,18 @@ function DPadStats()
     if GAME_LOADED == true
     then
         local check_controls = joypad.get()
-        if check_controls ~= nil and check_controls['P1 DPad R'] == true
+        
+		if check_controls ~= nil and check_controls['P1 DPad U'] == true and SNEAK == false
+        then
+            joypad.setanalog({['P1 Y Axis'] = 18 })
+            SNEAK = true
+        elseif check_controls ~= nil and check_controls['P1 DPad U'] == false and SNEAK == true
+        then
+            joypad.setanalog({['P1 Y Axis'] = '' })
+            SNEAK = false
+        end
+		
+		if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == false
         then
             print(" ")
             print(" ")
@@ -4783,6 +5685,11 @@ function DPadStats()
                     print(values['name'])
                 end
             end
+		end
+		
+		if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == false
+        then
+            print(" ")
             print(" ")
             print("Unlocked Magic:")
             for locationId, values in pairs(NON_AGI_MAP["MAGIC"])
@@ -4793,53 +5700,91 @@ function DPadStats()
                 end
             end
         end
-        if check_controls ~= nil and check_controls['P1 DPad D'] == true
+		
+		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == false
         then
             print(" ")
             print(" ")
             print("Collected Treble Clefs:")
             for locationId, values in pairs(NON_AGI_MAP["TREBLE"])
-            do             
-                if BKNOTES[locationId] == true
-                then
+            do        
+                local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
+                if results == true then
+                    print(values['name'])
+                end
+            end
+			print(" ")
+			print("Opened Train Stations:")
+            for locationId, values in pairs(NON_AGI_MAP["STATIONS"])
+            do        
+                local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
+                if results == true then
                     print(values['name'])
                 end
             end
         end
+		
+        if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 L'] == true
+        then
+			BTCONSUMEOBJ:changeConsumable("Red Feathers")
+			BTCONSUMEOBJ:setConsumable(100)
+			BTCONSUMEOBJ:changeConsumable("Gold Feathers")
+			BTCONSUMEOBJ:setConsumable(10)
+			BTCONSUMEOBJ:changeConsumable("BLUE EGGS")
+			BTCONSUMEOBJ:setConsumable(100)
+			BTCONSUMEOBJ:changeConsumable("FIRE EGGS")
+			BTCONSUMEOBJ:setConsumable(50)
+            BTCONSUMEOBJ:changeConsumable("GRENADE EGGS")
+            BTCONSUMEOBJ:setConsumable(25)
+            BTCONSUMEOBJ:changeConsumable("ICE EGGS")
+            BTCONSUMEOBJ:setConsumable(50)
+            BTCONSUMEOBJ:changeConsumable("CWK EGGS")
+            BTCONSUMEOBJ:setConsumable(10)
+			print(" ")
+			print("Eggs and Feathers Refilled")
+        end
 
-        if check_controls ~= nil and check_controls['P1 DPad L'] == true and AIMASSIST == false
+        if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == false
+        then
+           BTRAMOBJ:setFlag(0xA2, 2, "Super Banjo")
+           SUPERBANJO = true
+           print(" ")
+           print("Super Banjo Enabled")
+        elseif check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == true
+        then
+            BTRAMOBJ:clearFlag(0xA2, 2)
+            SUPERBANJO = false
+            print(" ")
+            print("Super Banjo Disabled")
+        end
+
+        if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == false
         then
            BTRAMOBJ:setFlag(0xAF, 3, "Aim Assist")
            AIMASSIST = true
+           print(" ")
            print("Aim Assist Enabled")
-        elseif check_controls ~= nil and check_controls['P1 DPad L'] == true and AIMASSIST == true
+        elseif check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == true
         then
             BTRAMOBJ:clearFlag(0xAF, 3)
             AIMASSIST = false
+            print(" ")
             print("Aim Assist Disabled")
         end
-
-        if check_controls ~= nil and check_controls['P1 DPad U'] == true and SNEAK == false
+		
+		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == false
         then
-            joypad.setanalog({['P1 Y Axis'] = 18 })
-            SNEAK = true
-        elseif check_controls ~= nil and check_controls['P1 DPad U'] == false and SNEAK == true
+           BTRAMOBJ:setFlag(0xA1, 7, "Automatic Energy Regain")
+           REGEN = true
+           print(" ")
+           print("Automatic Energy Regain Enabled")
+        elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == true
         then
-            joypad.setanalog({['P1 Y Axis'] = '' })
-            SNEAK = false
+            BTRAMOBJ:clearFlag(0xA1, 7)
+            REGEN = false
+            print(" ")
+            print("Automatic Energy Regain Disabled")
         end
-
-        -- if check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 A'] == true
-        -- then
-        --     for location, values in pairs(WORLD_ENTRANCE_MAP)
-        --     do
-        --         local open = BTRAMOBJ:checkFlag(values["addr"], values["bit"])
-        --         if open == true
-        --         then
-        --             print(values["defaultName"] .. " is unlocked!")
-        --         end
-        --     end
-        -- end
     end
 end
 
@@ -5073,6 +6018,35 @@ function process_slot(block)
     then
         ENABLE_AP_JINJO = true
     end
+    if block['slot_worlds'] ~= nil and block['slot_worlds'] ~= "false"
+    then
+        ENABLE_AP_WORLDS = true
+    end
+    if block['slot_notes'] ~= nil and block['slot_notes'] ~= "false"
+    then
+        ENABLE_AP_NOTES = true
+    end
+    if block['slot_world_order'] ~= nil
+    then
+        for location, jiggy_amt in pairs(block['slot_world_order'])
+        do
+            if location == "Outside Grunty's Industries"
+            then
+                location = "Grunty Industries"
+            end
+            for worlds, table in pairs(WORLD_ENTRANCE_MAP)
+            do
+                if table['defaultName'] == location
+                then
+                    WORLD_ENTRANCE_MAP[worlds]["defaultCost"] = jiggy_amt
+                end
+            end
+            if DEBUGLVL3 == true
+            then
+                print(location .. " - " .. tostring(jiggy_amt))
+            end
+        end
+    end
     if SEED ~= 0
     then
         loadAGI()
@@ -5210,6 +6184,7 @@ function main()
     if not checkBizHawkVersion() then
         return
     end
+    print("Banjo-Tooie Archipelago Version " .. BT_VERSION)
     server, error = socket.bind('localhost', 21221)
     BTRAMOBJ = BTRAM:new(nil);
     BTMODELOBJ = BTModel:new(BTRAMOBJ, "Player", false);
@@ -5221,7 +6196,7 @@ function main()
             PREV_STATE = CUR_STATE
         end
         if (CUR_STATE == STATE_OK) or (CUR_STATE == STATE_INITIAL_CONNECTION_MADE) or (CUR_STATE == STATE_TENTATIVELY_CONNECTED) then
-            if (FRAME % 60 == 1) then
+            if (FRAME % 30 == 1) then
                 BTRAM:banjoPTR()
                 receive();
                 if SKIP_TOT == "true" and CURRENT_MAP == 0x15E then
