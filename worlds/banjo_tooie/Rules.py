@@ -2169,14 +2169,14 @@ class BanjoTooieRules:
             else:
                 logic = (state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state)) or \
                         ((self.has_train_access(state, "WW") and self.ww_jiggy(state)) or \
-                        self.has_train_access(state, "TDL"))
+                        (self.has_train_access(state, "TDL") and state.has(itemName.TTORP, self.player)))
         elif self.world.options.logic_type == 2: # advanced
             if fromTrain:
                 logic = (state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state))
             else:
                 logic = (state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state)) or \
                         ((self.has_train_access(state, "WW") and self.ww_jiggy(state)) or \
-                        self.has_train_access(state, "TDL"))
+                        (self.has_train_access(state, "TDL") and state.has(itemName.TTORP, self.player)))
         return logic
     
     def can_access_witchyworld(self, state: CollectionState, fromTrain: bool) -> bool:
