@@ -2,10 +2,10 @@
 - Dpad changes:
   - Dpad Left - Shows unlocked Magic
   - Dpad Down - Shows unlocked Treble Clef & Stations
-  - Dpad Up + Z - Refill Comsumables
-  - Dpad Right + Z - Super Banjo
-  - Dpad Left + Z - Aim Assist
-  - Dpad Down + Z - Health Regen
+  - Dpad Up + L - Refill Consumables
+  - Dpad Right + L - Super Banjo
+  - Dpad Left + L - Aim Assist
+  - Dpad Down + L - Health Regen
 - Notes
 - Notes Randomized
 - Handle AP Notes for Jamjars
