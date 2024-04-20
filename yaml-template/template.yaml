@@ -31,7 +31,7 @@ Banjo-Tooie:
 
   logic_type: 0                # 0: Beginner, 1: Normal, 2: Advanced
   jingaling_jiggy: 'true'      # True: Always get Jiggy from Jingaling; recommended when playing Multiworld.
-  skip_tower_of_tragedy: 1     # 0: no skip, 1: skip completely, 2: 3rd round only
+  skip_tower_of_tragedy: 1     # 0: no skip, 1: skip completely, 2: skip 3rd round only
   speed_up_minigames: 'true'   # skip to round 3 of kickball, dodgems
   skip_puzzles: 'true'
   open_hag1: 'true'
