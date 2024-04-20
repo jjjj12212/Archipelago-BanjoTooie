@@ -1,8 +1,20 @@
+---
+# From https://github.com/jjjj12212/Archipelago-BanjoTooie/blob/main/yaml-template/template.yaml
+name: Player{NUMBER}
+description: 'Created By jjjj12212'
+game: Banjo-Tooie
+
 Banjo-Tooie:
   death_link: 'false'
   randomize_moves: 'true'
   randomize_jinjos: 'true'
-  forbid_on_jinjo_family: 0 # 0 = forbid nothing,  1 = forbid moves only, 2 = forbid moves and magic, 3 = forbid magic only
+
+  # Prevent item types from being shuffled onto jinjo checks
+  #   0: forbid nothing
+  #   1: forbid moves only
+  #   2: forbid moves and magic
+  #   3: forbid magic only
+  forbid_on_jinjo_family: 0
   forbid_jinjos_on_jinjo_family: 'true'
   randomize_doubloons: 'true'
   randomize_cheato: 'true'
@@ -10,21 +22,22 @@ Banjo-Tooie:
   randomize_honeycombs: 'true'
   randomize_glowbos: 'true'
   randomize_treble: 'true'
-  randomize_stations: 'true' #Randomize Stations
-  randomize_chuffy: 'true' #Chuffy as a AP Item
+  randomize_stations: 'true'
+  randomize_chuffy: 'true'     # Chuffy as a AP Item
   randomize_notes: 'true'
-  randomize_worlds: 'true' #changes which levels are open  - Incompatible with Trackers at the moment. - Skip 
-  
-  logic_type: 0  # 0 = beginner, 1 = normal, 2 = advanced 
-  jingaling_jiggy: 'false' #True = Always get Jiggy from Jingaling #recommended when playing Multiworld.
-  skip_tower_of_tragedy: 1 #0 = no skip, #1 = skip fully, #2 = 3rd round only 
-  speed_up_minigames: 'true' #skip to round 3 of kickball, dodgems
+
+  # Changes which levels are open; incompatible with trackers at the moment -- skip
+  randomize_worlds: 'true'
+
+  logic_type: 0                # 0: Beginner, 1: Normal, 2: Advanced
+  jingaling_jiggy: 'true'      # True: Always get Jiggy from Jingaling; recommended when playing Multiworld.
+  skip_tower_of_tragedy: 1     # 0: no skip, 1: skip completely, 2: skip 3rd round only
+  speed_up_minigames: 'true'   # skip to round 3 of kickball, dodgems
   skip_puzzles: 'true'
   open_hag1: 'true'
-  start_inventory: { }  # ex: {Grip Grab: 1, Fire Eggs: 1}   # Start with these items.
-  #exclude_locations: { } # if cheato_as_filler is true, add locations you Don't want to deal with... Like Scrotty.
 
+  # Start with these items.
+  # start_inventory: {Grip Grab: 1, Fire Eggs: 1}
 
-description: 'Created By jjjj12212'
-game: Banjo-Tooie
-name: jjjj12212
+  # if cheato_as_filler is true, add locations you don't want to deal with... like Scrotty.
+  # exclude_locations: {}
