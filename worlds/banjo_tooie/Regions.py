@@ -552,9 +552,43 @@ def create_regions(self):
     multiworld.regions += [create_region(multiworld, player, active_locations, region, locations) for region, locations in
                            BANJOTOOIEREGIONS.items()]
     
-    multiworld.get_location(locationName.HAG1, player).place_locked_item(
-        multiworld.worlds[player].create_event_item(itemName.VICTORY))
-    
+    if multiworld.worlds[player].options.victory_condition == 0:
+        multiworld.get_location(locationName.HAG1, player).place_locked_item(
+        	multiworld.worlds[player].create_event_item(itemName.VICTORY))
+    elif multiworld.worlds[player].options.victory_condition == 1:
+        multiworld.get_location(locationName.JIGGYMT3, player).place_locked_item(
+			multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
+        multiworld.get_location(locationName.JIGGYGM5, player).place_locked_item(
+			multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
+        multiworld.get_location(locationName.JIGGYWW1, player).place_locked_item(
+			multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
+        multiworld.get_location(locationName.JIGGYWW2, player).place_locked_item(
+			multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
+        multiworld.get_location(locationName.JIGGYWW4, player).place_locked_item(
+			multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
+        multiworld.get_location(locationName.JIGGYWW5, player).place_locked_item(
+			multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
+        multiworld.get_location(locationName.JIGGYJR1, player).place_locked_item(
+			multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
+        multiworld.get_location(locationName.JIGGYTD6, player).place_locked_item(
+			multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
+        multiworld.get_location(locationName.JIGGYGI3, player).place_locked_item(
+			multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
+        multiworld.get_location(locationName.JIGGYGI9, player).place_locked_item(
+			multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
+        multiworld.get_location(locationName.JIGGYHP8, player).place_locked_item(
+			multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
+        multiworld.get_location(locationName.JIGGYCC3, player).place_locked_item(
+			multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
+        multiworld.get_location(locationName.JIGGYCC4, player).place_locked_item(
+			multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
+        multiworld.get_location(locationName.JIGGYCC5, player).place_locked_item(
+			multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
+        multiworld.get_location(locationName.JIGGYCC8, player).place_locked_item(
+			multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
+
+
+
     # if self.options.skip_puzzles == True:
     #     sm = multiworld.get_region(regionName.IOHWH, player)
     #     sm.add_locations({locationName.W1: None,
@@ -572,8 +606,40 @@ def create_region(multiworld, player: int, active_locations, name: str, location
     ret = Region(name, player, multiworld)
     if locations:
         loc_to_id = {loc: active_locations.get(loc, 0) for loc in locations if active_locations.get(loc, None)}
-        if locationName.HAG1 in locations:
+        if multiworld.worlds[player].options.victory_condition == 0 and locationName.HAG1 in locations:
             ret.add_locations({locationName.HAG1: None})
+            ret.add_locations({locationName.HAG1: None})
+        elif multiworld.worlds[player].options.victory_condition == 1:
+            if locationName.JIGGYMT3 in locations:
+                ret.add_locations({locationName.JIGGYMT3: None})
+            elif locationName.JIGGYGM5 in locations:
+                ret.add_locations({locationName.JIGGYGM5: None})
+            elif locationName.JIGGYWW1 in locations:
+                ret.add_locations({locationName.JIGGYWW1: None})
+            elif locationName.JIGGYWW2 in locations:
+                ret.add_locations({locationName.JIGGYWW2: None})
+            elif locationName.JIGGYWW4 in locations:
+                ret.add_locations({locationName.JIGGYWW4: None})
+            elif locationName.JIGGYWW5 in locations:
+                ret.add_locations({locationName.JIGGYWW5: None})
+            elif locationName.JIGGYJR1 in locations:
+                ret.add_locations({locationName.JIGGYJR1: None})
+            elif locationName.JIGGYTD6 in locations:
+                ret.add_locations({locationName.JIGGYTD6: None})
+            elif locationName.JIGGYGI3 in locations:
+                ret.add_locations({locationName.JIGGYGI3: None})
+            elif locationName.JIGGYGI9 in locations:
+                ret.add_locations({locationName.JIGGYGI9: None})
+            elif locationName.JIGGYHP8 in locations:
+                ret.add_locations({locationName.JIGGYHP8: None})
+            elif locationName.JIGGYCC3 in locations:
+                ret.add_locations({locationName.JIGGYCC3: None})
+            elif locationName.JIGGYCC4 in locations:
+                ret.add_locations({locationName.JIGGYCC4: None})
+            elif locationName.JIGGYCC5 in locations:
+                ret.add_locations({locationName.JIGGYCC5: None})
+            elif locationName.JIGGYCC8 in locations:
+                ret.add_locations({locationName.JIGGYCC8: None})
         else:
             ret.add_locations(loc_to_id, BanjoTooieLocation)
     return ret
