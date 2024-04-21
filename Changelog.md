@@ -2,7 +2,10 @@
 - Many notes got renamed
 - Notes fix when not randomized
 - Universal Tracker fix
-- Show level unlocked in BTClient. 
+- Show level unlocked in BTClient
+- Logic Changes
+  - JRL Toxic Pipe Honeycomb: you can jump from the roof of Jolly's and glide to it in normal and advanced logic.
+  - CCL Trash Can Jinjo: advanced logic can get it with just split up and glide.
 
 # 1.1-Beta
 - Dpad changes:
@@ -24,10 +27,10 @@
 - add YAML option to only forbid Magic behind Jinjo Families
 - Logic Changes
   - Beginner logic
-  - Power Hut Jiggy: (Detonator or Bill Drill) and Split Up
-  - Treasure Chamber Jiggy: Egg Aim and (Grip Grab or Access to Flight pad)
-  - Snake Head Cheato Page: Access to Flight Pad or (Egg Aim and Grip Grab)
-  - Talon Torpedo required from  Wasteland to Pine Grove
+    - Power Hut Jiggy: (Detonator or Bill Drill) and Split Up
+    - Treasure Chamber Jiggy: Egg Aim and (Grip Grab or Access to Flight pad)
+    - Snake Head Cheato Page: Access to Flight Pad or (Egg Aim and Grip Grab)
+  - Talon Torpedo required from Wasteland to Pine Grove
 
 # 1.0.4-Beta
 - Logic Changes:

@@ -135,7 +135,7 @@ The glitched logic will expect all the reasonable glitches to be done, as well a
 |Windy Hole|Snowball|Snowball|Snowball|Snowball|
 |Icicle Grotto|Split Up, Glide, Grenade Eggs, Glide|Split Up, ((Leg Spring and Wing Whack) or Glide)|Split Up, ((Leg Spring and Wing Whack) or Glide)|Split Up, ((Leg Spring and Wing Whack) or Glide)|
 |Mildred|Grenade Eggs or Bill Drill or Fire Eggs|Life Force or Grenade Eggs or Clockwork Eggs or Bill Drill or Fire Eggs|Life Force or Grenade Eggs or Clockwork Eggs or Bill Drill or Fire Eggs|Life Force or Grenade Eggs or Clockwork Eggs or Bill Drill or Fire Eggs|
-|Trash Can|Split Up, Shack Pack|Split Up, (Leg Spring or Shack Pack)|Split Up, (Leg Spring or Shack Pack)|Split Up, (Leg Spring or Shack Pack)|
+|Trash Can|Split Up, Shack Pack|Split Up, (Leg Spring or Shack Pack)|Split Up, (Leg Spring or Glide or Shack Pack)|Split Up, (Leg Spring or Glide or Shack Pack)|
 |Cheese Wedge|Rain Dance, Bill Drill, Split Up, Hatch, Taxi Pack, Sack Pack|<N/A>|<N/A>|<N/A>|
 |Central Cavern|Split Up|Split Up|Split Up or (Clockwork Eggs and Egg Aim)|Split Up or (Clockwork Eggs and Egg Aim)|
 |Mingy Jongo|<N/A>|<N/A>|<N/A>|<N/A>|
@@ -160,7 +160,7 @@ The glitched logic will expect all the reasonable glitches to be done, as well a
 |Crazy Castle|Grenade Eggs|Grenade Eggs or Clockwork Eggs|Grenade Eggs or Clockwork Eggs|Grenade Eggs or Clockwork Eggs
 |Seemee|Talon Torpedo, Sub-Aqua Egg Aim, Ice Eggs, Oxygenate|Talon Torpedo, Sub-Aqua Egg Aim, Ice Eggs, (Bill Drill or Oxygenate)|Talon Torpedo|Talon Torpedo
 |Atlantis|Deep JRL Access|Deep JRL Access|Deep JRL Access|Deep JRL Access
-|Waste Pipe|(Grenade Eggs or Bill Drill), Grip Grab|(Grenade Eggs or Clockwork Eggs or Bill Drill), Grip Grab<br>OR<br>(Grenade Eggs or Clockwork Eggs), Split Up, Leg Spring, (Wing Whack or Glide)|(Grenade Eggs or Clockwork Eggs or Bill Drill), Grip Grab<br>OR<br>(Grenade Eggs or Clockwork Eggs), Split Up, Leg Spring, (Wing Whack or Glide)<br>OR<br>Clockwork Eggs, Egg Aim|(Grenade Eggs or Clockwork Eggs or Bill Drill), Grip Grab<br>OR<br>(Grenade Eggs or Clockwork Eggs), Split Up, Leg Spring, (Wing Whack or Glide)<br>OR<br>Clockwork Eggs, Egg Aim
+|Waste Pipe|(Grenade Eggs or Bill Drill), Grip Grab|(Grenade Eggs or Clockwork Eggs or Bill Drill), Grip Grab<br>OR<br>(Grenade Eggs or Clockwork Eggs), Split Up, (Glide or (Leg Spring, Wing Whack))|(Grenade Eggs or Clockwork Eggs or Bill Drill), Grip Grab<br>OR<br>(Grenade Eggs or Clockwork Eggs), Split Up, (Glide or (Leg Spring, Wing Whack))<br>OR<br>Clockwork Eggs, Egg Aim|(Grenade Eggs or Clockwork Eggs or Bill Drill), Grip Grab<br>OR<br>(Grenade Eggs or Clockwork Eggs), Split Up, (Glide or (Leg Spring, Wing Whack))<br>OR<br>Clockwork Eggs, Egg Aim
 |Lakeside|<N/A>|<N/A>|<N/A>|<N/A>
 |Styracosaurus Cave|Bill Drill, Split Up|Bill Drill, Split Up|Split Up, Bill Drill or (Leg Spring, Wing Whack, Glide) or (Clockwork Eggs, Egg Aim)|Split Up, Bill Drill or (Leg Spring, Wing Whack, Glide) or (Clockwork Eggs, Egg Aim)
 |River Passage|<N/A>|<N/A>|<N/A>|<N/A>
