@@ -4266,8 +4266,6 @@ function nearSilo()
         then
             clear_AMM_MOVES_checks();
             update_BMK_MOVES_checks();
-            BMMBackupOnly("NOTES");
-            useAGIOnly("NOTES");
             LOAD_BMK_MOVES = true
         elseif SILOS_LOADED == false
         then
@@ -4936,11 +4934,16 @@ function BMMBackup()
                 end
             end
         else
+            if ENABLE_AP_NOTES == false and item_group == "NOTES"
+            then
+                goto continue_BMM_backup
+            end
             for location, values in pairs(table)
             do
                 BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
             end
         end
+        ::continue_BMM_backup::
     end
     if DEBUG == true
     then
@@ -5088,6 +5091,14 @@ end
 function useAGI()
     for item_group, table in pairs(AGI_MASTER_MAP)
     do
+        if ENABLE_AP_NOTES == false and item_group == "NOTES"
+        then
+            if DEBUG == true
+            then
+                print("Skipping Notes, not enabled.")
+            end
+            goto continue_USE_AGI
+        end
         if USE_BMM_ONLY_TBL == true
         then
             if USE_BMM_ONLY_TYP ~= item_group
@@ -5166,6 +5177,7 @@ function useAGI()
                 end
             end
         end
+        ::continue_USE_AGI::
     end
 end
 
