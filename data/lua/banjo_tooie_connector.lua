@@ -3068,10 +3068,10 @@ local NON_AGI_MAP = {
                 ['addr'] = 0x2A,
                 ['bit'] = 1
             },
-            ['Patches'] = {
-                ['addr'] = 0x2A,
-                ['bit'] = 7
-            },
+            -- ['Patches'] = {
+            --     ['addr'] = 0x2A,
+            --     ['bit'] = 7
+            -- },
             ['Woo Fak Fak'] = {
                 ['addr'] = 0x30,
                 ['bit'] = 7
