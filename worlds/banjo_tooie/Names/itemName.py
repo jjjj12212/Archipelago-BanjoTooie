@@ -73,6 +73,7 @@ TRAINSWWW  = "WW: Train Station"
 CHUFFY = "Chuffy"
 
 VICTORY = "Kick Around"
+MGVICTORY = "Mini Game Kick Around"
 #event items
 MTA = "Mayahem Temple"
 GGA = "Glitter Gulch Mine"
