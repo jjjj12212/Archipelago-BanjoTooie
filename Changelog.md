@@ -3,6 +3,7 @@
 - Notes fix when not randomized
 - Universal Tracker fix
 - Show level unlocked in BTClient
+- Fix Patches
 - Logic Changes
   - JRL Toxic Pipe Honeycomb: you can jump from the roof of Jolly's and glide to it in normal and advanced logic.
   - CCL Trash Can Jinjo: advanced logic can get it with just split up and glide.

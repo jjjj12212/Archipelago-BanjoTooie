@@ -44,6 +44,7 @@ Go to worlds/banjo_tooie/docs/setup_en.md for detailed instructions how to setup
  - @Cyb3RGER (AP Launcher)
  - @g0goTAS (g0goTBC) - help with logic fixes
  - GDO - Tester
+ - @fhnnhf (coder)
 
 # Shoutouts
 Huge thank you for the following individuals / teams. Without them, this project would not have gotten this far:
