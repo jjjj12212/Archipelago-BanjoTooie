@@ -30,6 +30,10 @@ jiggy_table = {
     itemName.JIGGY:         ItemData(1230515, 90, "progress", None),
 }
 
+token_table = {
+    itemName.MUMBOTOKEN:    ItemData(1230798, 15, "progress", None),
+}
+
 moves_table = {
     itemName.GGRAB:         ItemData(1230753, 1, "progress", locationName.GGRAB),
     itemName.BBLASTER:      ItemData(1230754, 1, "progress", locationName.BBLASTER),
@@ -130,16 +134,18 @@ all_item_table = {
     **jiggy_table,
     **stations_table,
     **rando_key_table,
+    **token_table,
 }
 
 all_group_table = {
-    'jiggy' : jiggy_table,
-    'jinjo' : jinjo_table,
-    'misc' : misc_collectable_table,
+    'jiggy': jiggy_table,
+    'jinjo': jinjo_table,
+    'misc': misc_collectable_table,
     'moves': moves_table,
-    "magic": level_progress_table,
-    "stations": stations_table,
-    "levelaccess": rando_key_table,
+    'magic': level_progress_table,
+    'stations': stations_table,
+    'levelaccess': rando_key_table,
+    'token': token_table
 }
 
 

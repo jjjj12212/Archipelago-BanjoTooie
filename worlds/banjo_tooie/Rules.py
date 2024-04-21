@@ -2687,6 +2687,6 @@ class BanjoTooieRules:
                     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
 
         if self.world.options.victory_condition == 1:
-            self.world.multiworld.completion_condition[self.player] = lambda state: state.has("Mini Game Kick Around", self.player, 15)
+            self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, 15)
         else:
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has("Kick Around", self.player)
