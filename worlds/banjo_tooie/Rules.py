@@ -242,7 +242,7 @@ class BanjoTooieRules:
                                                  state.has(itemName.CLAWBTS, self.player) and
                                                  state.has(itemName.BBLASTER, self.player),
             locationName.JIGGYGI4: lambda state: self.jiggy_skivvy(state),
-            locationName.JIGGYGI5: lambda state: state.has(itemName.SPLITUP, self.player),
+            locationName.JIGGYGI5: lambda state: self.jiggy_floor5(state),
             locationName.JIGGYGI6: lambda state: self.jiggy_qa(state),
             locationName.JIGGYGI7: lambda state: state.has(itemName.SPLITUP, self.player),
             locationName.JIGGYGI8: lambda state: self.jiggy_compactor(state),
@@ -333,10 +333,10 @@ class BanjoTooieRules:
             locationName.HONEYCTL2: lambda state: self.honeycomb_styracosaurus(state),
 
             locationName.HONEYCGI1: lambda state: self.honeycomb_floor3(state),
-            locationName.HONEYCGI2: lambda state: self.honeycomb_station(state),
+            locationName.HONEYCGI2: lambda state: self.honeycomb_gistation(state),
 
             locationName.HONEYCHP1: lambda state: self.honeycomb_volcano(state),
-            locationName.HONEYCHP2: lambda state: self.honeycomb_station(state),
+            locationName.HONEYCHP2: lambda state: self.honeycomb_hfpstation(state),
             locationName.HONEYCHP3: lambda state: self.honeycomb_lavaside(state),
 
             locationName.HONEYCCC1: lambda state: state.has(itemName.BDRILL, self.player)
@@ -421,7 +421,7 @@ class BanjoTooieRules:
             locationName.JINJOIH2: lambda state: self.jinjo_wasteland(state),
 
             locationName.JINJOMT1: lambda state: self.jinjo_jadesnakegrove(state),
-            locationName.JINJOMT2: lambda state: self.MT_flight_pad(state),
+            locationName.JINJOMT2: lambda state: self.jinjo_stadium(state),
             locationName.JINJOMT3: lambda state: state.has(itemName.BBLASTER, self.player),
 
             #TODO Needs to be refined later
@@ -445,18 +445,18 @@ class BanjoTooieRules:
             locationName.JINJOTL4: lambda state: self.check_mumbo_magic(state, itemName.MUMBOTD) and self.check_humba_magic(state, itemName.HUMBATD),
             locationName.JINJOTL5: lambda state: self.jiggy_stomping_plains(state) and state.has(itemName.SPLITUP, self.player),
 
-            locationName.JINJOGI2: lambda state: state.has(itemName.LSPRING, self.player),
+            locationName.JINJOGI2: lambda state: self.jinjo_legspring(state),
             locationName.JINJOGI3: lambda state: self.jinjo_wasteplant(state),
             locationName.JINJOGI5: lambda state: state.has(itemName.SPLITUP, self.player),
 
             locationName.JINJOHP2: lambda state: self.check_solo_moves(state, itemName.SHPACK),
-            locationName.JINJOHP3: lambda state: self.check_humba_magic(state, itemName.HUMBAHP),
+            locationName.JINJOHP3: lambda state: self.jinjo_windtunnel(state),
             locationName.JINJOHP4: lambda state: self.jinjo_icegrotto(state),
             locationName.JINJOHP5: lambda state: self.jinjo_mildred(state),
             
             locationName.JINJOCC1: lambda state: self.jinjo_trashcan(state),
             locationName.JINJOCC2: lambda state: self.jinjo_cheese(state),
-            locationName.JINJOCC3: lambda state: state.has(itemName.SPLITUP, self.player),
+            locationName.JINJOCC3: lambda state: self.jinjo_central(state),
         }
 
         self.notes_rules = {
@@ -618,7 +618,8 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.SPRINGB, self.player) or \
                     ((self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)) and \
-                     (state.has(itemName.BDRILL, self.player) or self.check_humba_magic(state, itemName.HUMBAGM)))
+                     (state.has(itemName.BDRILL, self.player) or self.check_humba_magic(state, itemName.HUMBAGM)))\
+                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
     
     def jiggy_power_hut(self, state: CollectionState) -> bool:
@@ -849,7 +850,8 @@ class BanjoTooieRules:
                      state.has(itemName.SPLITUP, self.player) and self.check_solo_moves(state, itemName.GLIDE)
         elif self.world.options.logic_type == 2: # advanced
             logic = (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)) and \
-                     state.has(itemName.SPLITUP, self.player) and self.check_solo_moves(state, itemName.GLIDE)
+                     state.has(itemName.SPLITUP, self.player) and self.check_solo_moves(state, itemName.GLIDE)\
+                     or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
     
     def jiggy_merry_maggie(self, state: CollectionState) -> bool:
@@ -1000,6 +1002,16 @@ class BanjoTooieRules:
             logic = self.check_humba_magic(state, itemName.HUMBAGI) and state.has(itemName.BDRILL, self.player)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.check_humba_magic(state, itemName.HUMBAGI) and state.has(itemName.BDRILL, self.player)
+        return logic
+    
+    def jiggy_floor5(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.SPLITUP, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.SPLITUP, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.SPLITUP, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
 
     def jiggy_qa(self, state: CollectionState) -> bool:
@@ -1311,7 +1323,7 @@ class BanjoTooieRules:
                     and state.has(itemName.GGRAB, self.player))\
                     or ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player))\
                     and (self.check_solo_moves(state, itemName.GLIDE) or (self.check_solo_moves(state, itemName.LSPRING) and \
-                    self.check_solo_moves(state, itemName.WWHACK))))
+                    self.check_solo_moves(state, itemName.WWHACK)))) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
     
     def honeycomb_styracosaurus(self, state: CollectionState) -> bool:
@@ -1322,7 +1334,8 @@ class BanjoTooieRules:
             logic = state.has(itemName.BDRILL, self.player) and state.has(itemName.SPLITUP, self.player)
         elif self.world.options.logic_type == 2: # advanced
             logic = (state.has(itemName.BDRILL, self.player) and state.has(itemName.SPLITUP, self.player)) or \
-                    (self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.GLIDE))
+                    (self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.GLIDE))\
+                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
     
     def honeycomb_floor3(self, state: CollectionState) -> bool:
@@ -1335,7 +1348,7 @@ class BanjoTooieRules:
             logic = True
         return logic
     
-    def honeycomb_station(self, state: CollectionState) -> bool:
+    def honeycomb_gistation(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.GGRAB, self.player)
@@ -1357,7 +1370,7 @@ class BanjoTooieRules:
                     state.has(itemName.SPLITUP, self.player)
         return logic
     
-    def honeycomb_station(self, state: CollectionState) -> bool:
+    def honeycomb_hfpstation(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.GGRAB, self.player)
@@ -1367,7 +1380,8 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING) or \
                     self.check_solo_moves(state, itemName.GLIDE) or (state.has(itemName.SPLITUP, self.player) and \
-                     state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, self.player))
+                     state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, self.player))\
+                     or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
     
     def honeycomb_lavaside(self, state: CollectionState) -> bool:
@@ -1388,7 +1402,8 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.MT_flight_pad(state) or (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GGRAB, self.player))
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.MT_flight_pad(state) or (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GGRAB, self.player))
+            logic = self.MT_flight_pad(state) or (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GGRAB, self.player))\
+                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
     
     def cheato_prison(self, state: CollectionState) -> bool:
@@ -1430,7 +1445,8 @@ class BanjoTooieRules:
                     (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)))
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.GGRAB, self.player) or (self.check_solo_moves(state, itemName.LSPRING) and \
-                    (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)))
+                    (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)))\
+                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
     
     def cheato_sauceperil(self, state: CollectionState) -> bool:
@@ -1601,6 +1617,16 @@ class BanjoTooieRules:
             logic = self.check_mumbo_magic(state,itemName.MUMBOMT)
         return logic
     
+    def jinjo_stadium(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.MT_flight_pad(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.MT_flight_pad(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.MT_flight_pad(state) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+        return logic
+    
     def jinjo_caveofhorror(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -1687,6 +1713,16 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.GEGGS, self.player)
         return logic
+    
+    def jinjo_legspring(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.LSPRING, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.LSPRING, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.LSPRING, self.player)or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+        return logic
 
     def jinjo_wasteplant(self, state: CollectionState) -> bool:
         logic = True
@@ -1697,6 +1733,16 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.IEGGS, self.player) and state.has(itemName.AUQAIM, self.player) and \
                     state.has(itemName.TTORP, self.player)
+        return logic
+    
+    def jinjo_windtunnel(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_humba_magic(state, itemName.HUMBAHP)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_humba_magic(state, itemName.HUMBAHP)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_humba_magic(state, itemName.HUMBAHP) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
 
     def jinjo_icegrotto(self, state: CollectionState) -> bool:
@@ -1709,7 +1755,7 @@ class BanjoTooieRules:
                     self.check_solo_moves(state, itemName.WWHACK))
         elif self.world.options.logic_type == 2: # advanced
             logic = self.check_solo_moves(state, itemName.GLIDE) or (self.check_solo_moves(state, itemName.LSPRING) and 
-                    self.check_solo_moves(state, itemName.WWHACK))
+                    self.check_solo_moves(state, itemName.WWHACK)) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
     
     def jinjo_mildred(self, state: CollectionState) -> bool:
@@ -1746,6 +1792,16 @@ class BanjoTooieRules:
             logic = True
         elif self.world.options.logic_type == 2: # advanced
             logic = True
+        return logic
+    
+    def jinjo_central(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.SPLITUP, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.SPLITUP, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.SPLITUP, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
 
 
@@ -1806,7 +1862,8 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or state.has(itemName.SPLITUP, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or state.has(itemName.SPLITUP, self.player)
+            logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or state.has(itemName.SPLITUP, self.player)\
+                  or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
     
 

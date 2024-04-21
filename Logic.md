@@ -132,7 +132,7 @@ The glitched logic will expect all the reasonable glitches to be done, as well a
 |Floor 1|Deep JRL Access, Talon Torpedo|Deep JRL Access, Talon Torpedo|JRL Access, Ice Eggs, Sub-Aqua Egg Aiming, Talon Torpedo|(JRL Access, Ice Eggs, Sub-Aqua Egg Aiming, Talon Torpedo) or (Inside GI access, Split Up, Pack Whack Taxi Pack)|
 |Lava Waterfall|<N/A>|<N/A>|<N/A>|<N/A>|
 |Hot Pool|Split Up, Shack Pack|Split Up, Shack Pack|Split Up, Shack Pack|Split Up, Shack Pack|
-|Windy Hole|Snowball|Snowball|Snowball|Snowball|
+|Windy Hole|Snowball|Snowball|Snowball or (Clockwork Eggs and Egg Aim)|Snowball or (Clockwork Eggs and Egg Aim)|
 |Icicle Grotto|Split Up, Glide, Grenade Eggs, Glide|Split Up, ((Leg Spring and Wing Whack) or Glide)|Split Up, ((Leg Spring and Wing Whack) or Glide)|Split Up, ((Leg Spring and Wing Whack) or Glide)|
 |Mildred|Grenade Eggs or Bill Drill or Fire Eggs|Life Force or Grenade Eggs or Clockwork Eggs or Bill Drill or Fire Eggs|Life Force or Grenade Eggs or Clockwork Eggs or Bill Drill or Fire Eggs|Life Force or Grenade Eggs or Clockwork Eggs or Bill Drill or Fire Eggs|
 |Trash Can|Split Up, Shack Pack|Split Up, (Leg Spring or Shack Pack)|Split Up, (Leg Spring or Glide or Shack Pack)|Split Up, (Leg Spring or Glide or Shack Pack)|

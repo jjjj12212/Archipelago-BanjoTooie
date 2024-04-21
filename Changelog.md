@@ -6,6 +6,24 @@
 - Logic Changes
   - JRL Toxic Pipe Honeycomb: you can jump from the roof of Jolly's and glide to it in normal and advanced logic.
   - CCL Trash Can Jinjo: advanced logic can get it with just split up and glide.
+  - Advanced logic: Clockwork Egg shots are now considered in logic for these items
+    - Waterfall jiggy
+    - smugglers jiggy
+    - floor 5 jiggy
+    - Stadium jinjo
+    - water storage jinjo
+    - floor 2 jinjo
+    - central cavern jinjo
+    - Icy Side Wind Tunnel jinjo
+    - Icicle Grotto Jinjo
+    - waste pipe honeycomb
+    - styrac honeycomb
+    - HFP Train Station honeycomb
+    - Snake heads cp
+    - jade snake grove cp
+    - haunted cavern cp
+    - HFP trebleclef
+  - Fixed bug with GI Train Station Honeycomb Logic (It was using HFP's train station honeycomb logic)
 
 # 1.1-Beta
 - Dpad changes:
