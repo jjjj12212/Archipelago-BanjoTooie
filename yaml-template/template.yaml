@@ -27,7 +27,7 @@ Banjo-Tooie:
   randomize_notes: 'true'
 
   # Changes which levels are open; incompatible with trackers at the moment -- skip
-  randomize_worlds: 'true'
+  randomize_worlds: 'false'
 
   logic_type: 0                # 0: Beginner, 1: Normal, 2: Advanced
   jingaling_jiggy: 'true'      # True: Always get Jiggy from Jingaling; recommended when playing Multiworld.
