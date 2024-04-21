@@ -1304,13 +1304,13 @@ class BanjoTooieRules:
             logic = ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or state.has(itemName.BDRILL, self.player))\
                     and state.has(itemName.GGRAB, self.player))\
                     or ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player))\
-                    and (self.check_solo_moves(state, itemName.LSPRING) and (self.check_solo_moves(state, itemName.GLIDE) or \
+                    and (self.check_solo_moves(state, itemName.GLIDE) or (self.check_solo_moves(state, itemName.LSPRING) and \
                     self.check_solo_moves(state, itemName.WWHACK))))
         elif self.world.options.logic_type == 2: # advanced
             logic = ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or state.has(itemName.BDRILL, self.player))\
                     and state.has(itemName.GGRAB, self.player))\
                     or ((state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player))\
-                    and (self.check_solo_moves(state, itemName.LSPRING) and (self.check_solo_moves(state, itemName.GLIDE) or \
+                    and (self.check_solo_moves(state, itemName.GLIDE) or (self.check_solo_moves(state, itemName.LSPRING) and \
                     self.check_solo_moves(state, itemName.WWHACK))))
         return logic
     
@@ -1734,7 +1734,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic =  self.check_solo_moves(state, itemName.SHPACK) or self.check_solo_moves(state, itemName.LSPRING)
         elif self.world.options.logic_type == 2: # advanced
-            logic =  self.check_solo_moves(state, itemName.SHPACK) or self.check_solo_moves(state, itemName.LSPRING)
+            logic =  self.check_solo_moves(state, itemName.SHPACK) or self.check_solo_moves(state, itemName.LSPRING) or self.check_solo_moves(state, itemName.GLIDE)
         return logic
 
     def jinjo_cheese(self, state: CollectionState) -> bool:
