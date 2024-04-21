@@ -1,3 +1,5 @@
+# 1.1.1-Beta
+-Many notes got renamed
 # 1.1-Beta
 - Dpad changes:
   - Dpad Left - Shows unlocked Magic
