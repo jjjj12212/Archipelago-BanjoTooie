@@ -1,5 +1,9 @@
 # 1.1.1-Beta
--Many notes got renamed
+- Many notes got renamed
+- Notes fix when not randomized
+- Universal Tracker fix
+- Show level unlocked in BTClient. 
+
 # 1.1-Beta
 - Dpad changes:
   - Dpad Left - Shows unlocked Magic

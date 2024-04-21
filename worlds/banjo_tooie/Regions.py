@@ -30,14 +30,14 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.IOHWH:    [
         locationName.JINJOIH1,
 
-        # locationName.MTA,
-        # locationName.GGA,
-        # locationName.WWA,
-        # locationName.JRA,
-        # locationName.TDA,
-        # locationName.GIA,
-        # locationName.HFA,
-        # locationName.CCA
+        locationName.W1,
+        locationName.W2,
+        locationName.W3,
+        locationName.W4,
+        locationName.W5,
+        locationName.W6,
+        locationName.W7,
+        locationName.W8
     ],
     regionName.MT:       [
         locationName.JINJOMT1, 
@@ -540,14 +540,14 @@ def create_regions(self):
     active_locations = self.location_name_to_id
     dellist = []
 
-    # if self.worlds_randomized == False:
-        # for location in active_locations:
-        #     if location.find("Access") != -1:
-        #         dellist.append(location)
+    if self.options.skip_puzzles == False:
+        for location in active_locations:
+            if location.find("Unlocked") != -1:
+                dellist.append(location)
 
-        # for name in dellist:
-        #     if( name in active_locations):
-        #         del active_locations[name]
+        for name in dellist:
+            if( name in active_locations):
+                del active_locations[name]
 
     multiworld.regions += [create_region(multiworld, player, active_locations, region, locations) for region, locations in
                            BANJOTOOIEREGIONS.items()]
@@ -555,38 +555,17 @@ def create_regions(self):
     multiworld.get_location(locationName.HAG1, player).place_locked_item(
         multiworld.worlds[player].create_event_item(itemName.VICTORY))
     
-    # if self.worlds_randomized == True:
+    # if self.options.skip_puzzles == True:
     #     sm = multiworld.get_region(regionName.IOHWH, player)
-    #     sm.add_locations({locationName.MTA: None,
-    #         locationName.GGA: None,
-    #         locationName.WWA: None,
-    #         locationName.JRA: None,
-    #         locationName.TDA: None,
-    #         locationName.GIA: None,
-    #         locationName.HFA: None,
-    #         locationName.CCA: None,
-    #         locationName.CKA: None,
-    #         locationName.H1A: None})
-    #     mta = multiworld.get_location(locationName.MTA, player)
-    #     mta.place_locked_item(self.create_event_item(itemName.MTA))
-    #     gga = multiworld.get_location(locationName.GGA, player)
-    #     gga.place_locked_item(self.create_event_item(itemName.GGA))
-    #     wwa = multiworld.get_location(locationName.WWA, player)
-    #     wwa.place_locked_item(self.create_event_item(itemName.WWA))
-    #     jra = multiworld.get_location(locationName.JRA, player)
-    #     jra.place_locked_item(self.create_event_item(itemName.JRA))
-    #     tda = multiworld.get_location(locationName.TDA, player)
-    #     tda.place_locked_item(self.create_event_item(itemName.TDA))
-    #     gia = multiworld.get_location(locationName.GIA, player)
-    #     gia.place_locked_item(self.create_event_item(itemName.GIA))
-    #     hfa = multiworld.get_location(locationName.HFA, player)
-    #     hfa.place_locked_item(self.create_event_item(itemName.HFA))
-    #     cca = multiworld.get_location(locationName.CCA, player)
-    #     cca.place_locked_item(self.create_event_item(itemName.CCA))
-    #     cka = multiworld.get_location(locationName.CKA, player)
-    #     cka.place_locked_item(self.create_event_item(itemName.CKA))
-    #     h1a = multiworld.get_location(locationName.H1A, player)
-    #     h1a.place_locked_item(self.create_event_item(itemName.H1A))
+    #     sm.add_locations({locationName.W1: None,
+    #         locationName.W2: None,
+    #         locationName.W3: None,
+    #         locationName.W4: None,
+    #         locationName.W5: None,
+    #         locationName.W6: None,
+    #         locationName.W7: None,
+    #         locationName.W8: None
+    #     })
 
 
 def create_region(multiworld, player: int, active_locations, name: str, locations=None):

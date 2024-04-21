@@ -29,8 +29,6 @@ local STATE_UNINITIALIZED = "Uninitialized"
 local PREV_STATE = ""
 local CUR_STATE =  STATE_UNINITIALIZED
 local FRAME = 0
-local SEND_PACKET_FRAME = false
-local RECV_PACKET_FRAME = false
 
 
 local DEBUG = false
@@ -959,6 +957,7 @@ local BKNOTES = {}; -- Notes
 local BKSTATIONS = {} -- Stations
 local BKCHUFFY = {} -- King Coal Progress Flag
 local BKJINJOFAM = {} -- Jinjo Family check 
+local UNLOCKED_WORLDS = {} -- Worlds unlocked
 
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
@@ -3616,6 +3615,7 @@ local WORLD_ENTRANCE_MAP = {
         ["bit"] = 2,
         ["puzzleFlags"] = 0x10, -- 0b00010000
         ["opened"] = false,
+        ["locationId"] = "0"
     },
     ["WORLD 2"] = {
         ["defaultName"] = "Glitter Gulch Mine",
@@ -3624,6 +3624,7 @@ local WORLD_ENTRANCE_MAP = {
         ["bit"] = 3,
         ["puzzleFlags"] = 0x20, -- 0b00100000
         ["opened"] = false,
+        ["locationId"] = "0"
     },
     ["WORLD 3"] = {
         ["defaultName"] = "Witchyworld",
@@ -3632,6 +3633,7 @@ local WORLD_ENTRANCE_MAP = {
         ["bit"] = 4,
         ["puzzleFlags"] = 0x30, -- 0b00110000
         ["opened"] = false,
+        ["locationId"] = "0"
     },
     ["WORLD 4"] = {
         ["defaultName"] = "Jolly Roger's Lagoon",
@@ -3640,6 +3642,7 @@ local WORLD_ENTRANCE_MAP = {
         ["bit"] = 5,
         ["puzzleFlags"] = 0x40, -- 0b01000000
         ["opened"] = false,
+        ["locationId"] = "0"
     },
     ["WORLD 5"] = {
         ["defaultName"] = "Terrydactyland",
@@ -3648,6 +3651,7 @@ local WORLD_ENTRANCE_MAP = {
         ["bit"] = 6,
         ["puzzleFlags"] = 0x50, -- 0b01010000
         ["opened"] = false,
+        ["locationId"] = "0"
     },
     ["WORLD 6"] = {
         ["defaultName"] = "Grunty Industries",
@@ -3656,6 +3660,7 @@ local WORLD_ENTRANCE_MAP = {
         ["bit"] = 7,
         ["puzzleFlags"] = 0x60, -- 0b01100000
         ["opened"] = false,
+        ["locationId"] = "0"
     },
     ["WORLD 7"] = {
         ["defaultName"] = "Hailfire Peaks",
@@ -3664,6 +3669,7 @@ local WORLD_ENTRANCE_MAP = {
         ["bit"] = 0,
         ["puzzleFlags"] = 0x70, -- 0b01110000
         ["opened"] = false,
+        ["locationId"] = "0"
     },
     ["WORLD 8"] = {
         ["defaultName"] = "Cloud Cuckooland",
@@ -3672,6 +3678,7 @@ local WORLD_ENTRANCE_MAP = {
         ["bit"] = 1,
         ["puzzleFlags"] = 0x80, -- 0b10000000
         ["opened"] = false,
+        ["locationId"] = "0"
     },
     ["WORLD 9"] = {
         ["defaultName"] = "Cauldron Keep",
@@ -3680,6 +3687,7 @@ local WORLD_ENTRANCE_MAP = {
         ["bit"] = 2,
         ["puzzleFlags"] = 0x90, -- 0b10010000
         ["opened"] = false,
+        ["locationId"] = "0"
     },
     ["HAG 1"] = {
         ["defaultName"] = "HAG 1",
@@ -3688,6 +3696,7 @@ local WORLD_ENTRANCE_MAP = {
         ["bit"] = 3,
         ["puzzleFlags"] = 0xA0, -- 0b10100000
         ["opened"] = false,
+        ["locationId"] = "0"
     },
 }
 
@@ -4287,44 +4296,47 @@ function nearSilo()
         end
     end
 
-    if siloPOS["Distance"] <= 410 and CURRENT_MAP ~= 0x13A -- Notes and not CCL
+    if ENABLE_AP_NOTES == true
     then
-        if LOAD_SILO_NOTES == false
+        if siloPOS["Distance"] <= 410 and CURRENT_MAP ~= 0x13A -- Notes and not CCL
         then
-            BMMBackupOnly("NOTES");
-            useAGIOnly("NOTES");
-            LOAD_SILO_NOTES = true
-        end
-    elseif siloPOS["Distance"] > 410 and CURRENT_MAP ~= 0x13A
-    then
-        if LOAD_SILO_NOTES == true
-        then
-            if DEBUG == true
+            if LOAD_SILO_NOTES == false
             then
-                print("Reseting Note Count");
+                BMMBackupOnly("NOTES");
+                useAGIOnly("NOTES");
+                LOAD_SILO_NOTES = true
             end
-            BMMRestoreOnly("NOTES");
-            LOAD_SILO_NOTES = false;
-        end
-    end
-    if siloPOS["Distance"] <= 260 and CURRENT_MAP == 0x13A -- Notes and CCL
-    then
-        if LOAD_SILO_NOTES == false
+        elseif siloPOS["Distance"] > 410 and CURRENT_MAP ~= 0x13A
         then
-            BMMBackupOnly("NOTES");
-            useAGIOnly("NOTES");
-            LOAD_SILO_NOTES = true
-        end
-    elseif siloPOS["Distance"] > 260 and CURRENT_MAP == 0x13A -- Notes and CCL
-    then
-        if LOAD_SILO_NOTES == true
-        then
-            if DEBUG == true
+            if LOAD_SILO_NOTES == true
             then
-                print("Reseting Note Count");
+                if DEBUG == true
+                then
+                    print("Reseting Note Count");
+                end
+                BMMRestoreOnly("NOTES");
+                LOAD_SILO_NOTES = false;
             end
-            BMMRestoreOnly("NOTES");
-            LOAD_SILO_NOTES = false;
+        end
+        if siloPOS["Distance"] <= 260 and CURRENT_MAP == 0x13A -- Notes and CCL
+        then
+            if LOAD_SILO_NOTES == false
+            then
+                BMMBackupOnly("NOTES");
+                useAGIOnly("NOTES");
+                LOAD_SILO_NOTES = true
+            end
+        elseif siloPOS["Distance"] > 260 and CURRENT_MAP == 0x13A -- Notes and CCL
+        then
+            if LOAD_SILO_NOTES == true
+            then
+                if DEBUG == true
+                then
+                    print("Reseting Note Count");
+                end
+                BMMRestoreOnly("NOTES");
+                LOAD_SILO_NOTES = false;
+            end
         end
     end
 end
@@ -4497,6 +4509,10 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
                     print(values["defaultName"] .. tostring(values["defaultCost"]))
                 end
                 BTRAMOBJ:setFlag(values["addr"], values["bit"])
+                if values["locationId"] ~= "0"
+                then
+                    UNLOCKED_WORLDS[values["locationId"]] = true
+                end
                 if ENABLE_AP_WORLDS == false
                 then
                     BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
@@ -5471,6 +5487,7 @@ function SendToBTClient()
     retTable['chuffy'] = BKCHUFFY;
     retTable["isDead"] = DETECT_DEATH;
     retTable["jinjofam"] = BKJINJOFAM;
+    retTable["worlds"] = UNLOCKED_WORLDS;
     if GAME_LOADED == false
     then
         retTable["sync_ready"] = "false"
@@ -5481,22 +5498,17 @@ function SendToBTClient()
     then
         print("Send Data")
     end
-    if SEND_PACKET_FRAME == false --Send data on the 60th frame
-    then
-        SEND_PACKET_FRAME = true --Send data on the 60th frame
-    else
-        local msg = json.encode(retTable).."\n"
-        local ret, error = BT_SOCK:send(msg)
-        if ret == nil then
-            print(error)
-        elseif CUR_STATE == STATE_INITIAL_CONNECTION_MADE then
-            CUR_STATE = STATE_TENTATIVELY_CONNECTED
-        elseif CUR_STATE == STATE_TENTATIVELY_CONNECTED then
-            archipelago_msg_box("Connected to the Banjo Tooie Client!");
-            print("Connected!")
-            CUR_STATE = STATE_OK
-        end
-        SEND_PACKET_FRAME = false
+
+    local msg = json.encode(retTable).."\n"
+    local ret, error = BT_SOCK:send(msg)
+    if ret == nil then
+        print(error)
+    elseif CUR_STATE == STATE_INITIAL_CONNECTION_MADE then
+        CUR_STATE = STATE_TENTATIVELY_CONNECTED
+    elseif CUR_STATE == STATE_TENTATIVELY_CONNECTED then
+        archipelago_msg_box("Connected to the Banjo Tooie Client!");
+        print("Connected!")
+        CUR_STATE = STATE_OK
     end
 end
 
@@ -5508,38 +5520,32 @@ function receive()
         -- Send the message
         SendToBTClient()
 
-        if RECV_PACKET_FRAME == false
+        l, e = BT_SOCK:receive()
+        -- Handle incoming message
+        if e == 'closed' then
+            if CUR_STATE == STATE_OK then
+                archipelago_msg_box("Connection closed")
+                print("Connection closed")
+            end
+            CUR_STATE = STATE_UNINITIALIZED
+            return
+        elseif e == 'timeout' then
+            archipelago_msg_box("timeout")
+            print("timeout")
+            return
+        elseif e ~= nil then
+            print(e)
+            CUR_STATE = STATE_UNINITIALIZED
+            return
+        end
+        if DEBUGLVL3 == true
         then
-            RECV_PACKET_FRAME = true
-        else
-            l, e = BT_SOCK:receive()
-            -- Handle incoming message
-            if e == 'closed' then
-                if CUR_STATE == STATE_OK then
-                    archipelago_msg_box("Connection closed")
-                    print("Connection closed")
-                end
-                CUR_STATE = STATE_UNINITIALIZED
-                return
-            elseif e == 'timeout' then
-                archipelago_msg_box("timeout")
-                print("timeout")
-                return
-            elseif e ~= nil then
-                print(e)
-                CUR_STATE = STATE_UNINITIALIZED
-                return
-            end
-            if DEBUGLVL3 == true
-            then
-                print("Processing Block");
-            end
-            process_block(json.decode(l))
-            if DEBUGLVL3 == true
-            then
-                print("Finish");
-            end
-            RECV_PACKET_FRAME = false
+            print("Processing Block");
+        end
+        process_block(json.decode(l))
+        if DEBUGLVL3 == true
+        then
+            print("Finish");
         end
         -- if DETECT_DEATH == true
         -- then
@@ -6028,22 +6034,36 @@ function process_slot(block)
     end
     if block['slot_world_order'] ~= nil
     then
+        local REORG_WORLDS = { }
+        local starting_location_id = 1230944
+        local locationId = starting_location_id
+        
         for location, jiggy_amt in pairs(block['slot_world_order'])
         do
+            table.insert(REORG_WORLDS, {location, tonumber(jiggy_amt)}) --Convert to table to sort based on lowest Jiggy count
+        end
+
+        table.sort(REORG_WORLDS, function(a, b)
+            return a[2] < b[2]
+        end)
+
+        for key, table in pairs(REORG_WORLDS)
+        do
+            local location = table[1]
+            local jiggy_amt = tonumber(table[2])
+
             if location == "Outside Grunty's Industries"
             then
                 location = "Grunty Industries"
             end
-            for worlds, table in pairs(WORLD_ENTRANCE_MAP)
+            for worlds, t in pairs(WORLD_ENTRANCE_MAP)
             do
-                if table['defaultName'] == location
+                if t['defaultName'] == location
                 then
                     WORLD_ENTRANCE_MAP[worlds]["defaultCost"] = jiggy_amt
+                    WORLD_ENTRANCE_MAP[worlds]["locationId"] = tostring(locationId)
+                    locationId = locationId + 1
                 end
-            end
-            if DEBUGLVL3 == true
-            then
-                print(location .. " - " .. tostring(jiggy_amt))
             end
         end
     end
@@ -6055,6 +6075,7 @@ function process_slot(block)
     end
     return true
 end
+
 
 function initializeFlags()
 	-- Use Cutscene: "2 Years Have Passed..." to check for fresh save
@@ -6196,7 +6217,7 @@ function main()
             PREV_STATE = CUR_STATE
         end
         if (CUR_STATE == STATE_OK) or (CUR_STATE == STATE_INITIAL_CONNECTION_MADE) or (CUR_STATE == STATE_TENTATIVELY_CONNECTED) then
-            if (FRAME % 30 == 1) then
+            if (FRAME % 60 == 1) then
                 BTRAM:banjoPTR()
                 receive();
                 if SKIP_TOT == "true" and CURRENT_MAP == 0x15E then
