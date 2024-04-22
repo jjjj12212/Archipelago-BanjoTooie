@@ -555,39 +555,6 @@ def create_regions(self):
     if multiworld.worlds[player].options.victory_condition == 0:
         multiworld.get_location(locationName.HAG1, player).place_locked_item(
          	multiworld.worlds[player].create_event_item(itemName.VICTORY))
-    # elif multiworld.worlds[player].options.victory_condition == 1:
-    #     multiworld.get_location(locationName.JIGGYMT3, player).place_locked_item(
-	# 		multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
-    #     multiworld.get_location(locationName.JIGGYGM5, player).place_locked_item(
-	# 		multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
-    #     multiworld.get_location(locationName.JIGGYWW1, player).place_locked_item(
-	# 		multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
-    #     multiworld.get_location(locationName.JIGGYWW2, player).place_locked_item(
-	# 		multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
-    #     multiworld.get_location(locationName.JIGGYWW4, player).place_locked_item(
-	# 		multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
-    #     multiworld.get_location(locationName.JIGGYWW5, player).place_locked_item(
-	# 		multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
-    #     multiworld.get_location(locationName.JIGGYJR1, player).place_locked_item(
-	# 		multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
-    #     multiworld.get_location(locationName.JIGGYTD6, player).place_locked_item(
-	# 		multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
-    #     multiworld.get_location(locationName.JIGGYGI3, player).place_locked_item(
-	# 		multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
-    #     multiworld.get_location(locationName.JIGGYGI9, player).place_locked_item(
-	# 		multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
-    #     multiworld.get_location(locationName.JIGGYHP8, player).place_locked_item(
-	# 		multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
-    #     multiworld.get_location(locationName.JIGGYCC3, player).place_locked_item(
-	# 		multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
-    #     multiworld.get_location(locationName.JIGGYCC4, player).place_locked_item(
-	# 		multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
-    #     multiworld.get_location(locationName.JIGGYCC5, player).place_locked_item(
-	# 		multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
-    #     multiworld.get_location(locationName.JIGGYCC8, player).place_locked_item(
-	# 		multiworld.worlds[player].create_event_item(itemName.MGVICTORY))
-
-
 
     # if self.options.skip_puzzles == True:
     #     sm = multiworld.get_region(regionName.IOHWH, player)

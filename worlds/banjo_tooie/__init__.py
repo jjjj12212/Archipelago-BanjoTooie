@@ -82,7 +82,7 @@ class BanjoTooieWorld(World):
         "Moves": all_group_table["moves"],
         "Magic": all_group_table["magic"],
         "Stations": all_group_table["stations"],
-        # "Access": all_group_table["levelaccess"]
+        "Access": all_group_table["levelaccess"]
     }
     
 
