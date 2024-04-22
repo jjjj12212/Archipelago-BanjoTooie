@@ -24,6 +24,7 @@
     - jade snake grove cp
     - haunted cavern cp
     - HFP trebleclef
+  - Central Cavern jinjo: can be gotten with bill drill and springy step shoes in normal + advanced logic
   - Fixed bug with GI Train Station Honeycomb Logic (It was using HFP's train station honeycomb logic)
 
 # 1.1-Beta

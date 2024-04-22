@@ -137,7 +137,7 @@ The glitched logic will expect all the reasonable glitches to be done, as well a
 |Mildred|Grenade Eggs or Bill Drill or Fire Eggs|Life Force or Grenade Eggs or Clockwork Eggs or Bill Drill or Fire Eggs|Life Force or Grenade Eggs or Clockwork Eggs or Bill Drill or Fire Eggs|Life Force or Grenade Eggs or Clockwork Eggs or Bill Drill or Fire Eggs|
 |Trash Can|Split Up, Shack Pack|Split Up, (Leg Spring or Shack Pack)|Split Up, (Leg Spring or Glide or Shack Pack)|Split Up, (Leg Spring or Glide or Shack Pack)|
 |Cheese Wedge|Rain Dance, Bill Drill, Split Up, Hatch, Taxi Pack, Sack Pack|<N/A>|<N/A>|<N/A>|
-|Central Cavern|Split Up|Split Up|Split Up or (Clockwork Eggs and Egg Aim)|Split Up or (Clockwork Eggs and Egg Aim)|
+|Central Cavern|Split Up|Split Up or (Bill Drill and Springy Step Shoes)|Split Up or (Clockwork Eggs and Egg Aim) or (Bill Drill and Springy Step Shoes)|Split Up or (Clockwork Eggs and Egg Aim) or (Bill Drill and Springy Step Shoes)|
 |Mingy Jongo|<N/A>|<N/A>|<N/A>|<N/A>|
 |Humba Wigwam|<N/A>|<N/A>|<N/A>|<N/A>|
 |Spiral Mountain|Talon Torpedo|Talon Torpedo|Talon Torpedo|Talon Torpedo|

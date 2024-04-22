@@ -1799,9 +1799,11 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.SPLITUP, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.SPLITUP, self.player)
+            logic = state.has(itemName.SPLITUP, self.player) or (state.has(itemName.SPRINGB, self.player) and state.has(itemName.BDRILL, self.player))
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.SPLITUP, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = state.has(itemName.SPLITUP, self.player)\
+                  or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))\
+                  or (state.has(itemName.SPRINGB, self.player) and state.has(itemName.BDRILL, self.player))
         return logic
 
 
