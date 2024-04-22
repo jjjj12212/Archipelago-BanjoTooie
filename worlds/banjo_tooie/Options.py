@@ -95,7 +95,7 @@ class SpeedUpMinigames(DefaultOnToggle):
     display_name = "Speed Up Minigames"
 
 class VictoryCondition(Choice):
-    """Choose your whether your victory condition"""
+    """Choose which victory condition you want"""
     display_name = "Victory Condition"
     option_hag1 = 0
     option_minigame_hunt = 1
