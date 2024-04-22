@@ -213,8 +213,8 @@ def get_payload(ctx: BanjoTooieContext):
     else:
         trigger_death = False
 
-    if(len(ctx.items_received) > 0) and ctx.sync_ready == True:
-        print("Recieving Item")
+    # if(len(ctx.items_received) > 0) and ctx.sync_ready == True:
+    #   print("Receiving Item")
 
     if ctx.sync_ready == True:
         ctx.startup = True
@@ -341,8 +341,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
 
     if (ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2) and not ctx.finished_game:
         mumbo_tokens = 0
-        for locationId, value in ctx.items_received:
-            if value == 1230798:
+        for networkItem in ctx.items_received:
+            if networkItem.item == 1230798:
                 mumbo_tokens += 1
                 if ((ctx.slot_data["goal_type"] == 1 and mumbo_tokens >= 14) or (ctx.slot_data["goal_type"] == 2 and mumbo_tokens >= 8)): 
                     await ctx.send_msgs([{
