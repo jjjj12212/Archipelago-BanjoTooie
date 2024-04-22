@@ -91,6 +91,7 @@ class BanjoTooieContext(CommonContext):
         self.notelist_table = {}
         self.stationlist_table = {}
         self.jinjofamlist_table = {}
+        self.worldlist_table = {}
         self.chuffy_table = {}
         self.deathlink_enabled = False
         self.deathlink_pending = False
@@ -421,7 +422,28 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             await ctx.send_msgs([{
                 "cmd": "LocationChecks",
                 "locations": fam1
-            }])     
+            }])   
+
+    if ctx.slot_data["skip_puzzles"] == "true" and ctx.sync_ready == True:
+         # Locations handling
+        worldslist = payload['worlds']
+        worlds = []
+
+        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
+        if isinstance(worldslist, list):
+            worldslist = {}
+
+        if ctx.worldlist_table != worldslist:
+            ctx.worldlist_table = worldslist
+
+            for locationId, value in worldslist.items():
+                if value == True:
+                    worlds.append(int(locationId))
+
+            await ctx.send_msgs([{
+                "cmd": "LocationChecks",
+                "locations": worlds
+            }])   
 
     #Send Aync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:
