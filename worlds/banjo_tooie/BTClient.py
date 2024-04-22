@@ -234,8 +234,8 @@ def get_payload(ctx: BanjoTooieContext):
     if len(ctx.messages) > 0:
         ctx.messages = {}
 
-    if len(ctx.items_received) > 0 and ctx.sync_ready == True:
-        ctx.items_received = []
+    # if len(ctx.items_received) > 0 and ctx.sync_ready == True:
+    #     ctx.items_received = []
 
     return payload
 
@@ -304,7 +304,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
 
                     # Game completion handling
                     if (("1230027" in BTlocation_table and BTlocation_table["1230027"] == True) 
-                    and not ctx.finished_game):
+                    and ctx.slot_data["goal_type"] == 0 and not ctx.finished_game):
                         await ctx.send_msgs([{
                             "cmd": "StatusUpdate",
                             "status": 30
@@ -338,6 +338,19 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                     "cmd": "LocationChecks",
                     "locations": chuf1
                 }])
+
+    if (ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2) and not ctx.finished_game:
+        mumbo_tokens = 0
+        for locationId, value in ctx.items_received:
+            if value == 1230798:
+                mumbo_tokens += 1
+                if ((ctx.slot_data["goal_type"] == 1 and mumbo_tokens >= 14) or (ctx.slot_data["goal_type"] == 2 and mumbo_tokens >= 8)): 
+                    await ctx.send_msgs([{
+                        "cmd": "StatusUpdate",
+                        "status": 30
+                    }])
+                    ctx.finished_game = True
+
 
     if ctx.slot_data["moves"] == "true" and ctx.sync_ready == True:
         # Locations handling
