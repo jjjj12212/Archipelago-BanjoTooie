@@ -95,10 +95,11 @@ class SpeedUpMinigames(DefaultOnToggle):
     display_name = "Speed Up Minigames"
 
 class VictoryCondition(Choice):
-    """Choose your whether your victory condition is defeating HAG 1 or completing all 14 scored Mini Games Plus CCL Canary Mary. Requires filler items."""
+    """Choose your whether your victory condition"""
     display_name = "Victory Condition"
     option_hag1 = 0
     option_minigame_hunt = 1
+    option_boss_hunt = 2
     default = 0
 
 @dataclass

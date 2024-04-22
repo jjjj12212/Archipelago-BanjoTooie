@@ -359,6 +359,17 @@ class BanjoTooieWorld(World):
             self.multiworld.get_location(locationName.JIGGYCC8, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.CHEATOCC1, self.player).place_locked_item(item)
         
+        if self.options.victory_condition == 2:
+            item = self.create_item(itemName.MUMBOTOKEN)
+            self.multiworld.get_location(locationName.JIGGYMT1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYGM1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYWW3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYJR7, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYTD4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYGI2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYHP1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYCC1, self.player).place_locked_item(item)
+            
         
         if self.options.randomize_jinjos == False:
             item = self.create_item(itemName.JIGGY)
