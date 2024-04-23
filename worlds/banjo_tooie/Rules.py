@@ -482,6 +482,16 @@ class BanjoTooieRules:
             locationName.NOTECCL4: lambda state: self.notes_ccl_silo(state),
         }
 
+        self.stopnswap_rules = {
+            locationName.IKEY:      lambda state: state.has(itemName.GGRAB, self.player),
+            locationName.PMEGG:     lambda state: (state.has(itemName.EGGAIM, self.player) or state.has(itemName.AIREAIM, self.player)) and \
+                                                  state.has(itemName.GEGGS, self.player),
+            locationName.PMEGGH:    lambda state: state.has(itemName.PMEGG, self.player),
+            locationName.BMEGG:     lambda state: state.has(itemName.GGRAB, self.player),
+            locationName.BMEGGH:    lambda state: state.has(itemName.BMEGG, self.player),
+            locationName.YMEGGH:    lambda state: state.has(itemName.BDRILL, self.player) and self.check_solo_moves(state, itemName.HATCH)
+        }
+
     def jiggy_targitzan(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -2641,6 +2651,10 @@ class BanjoTooieRules:
         for location, rules in self.notes_rules.items():
             notes = self.world.multiworld.get_location(location, self.player)
             set_rule(notes, rules)
+
+        for location, rules in self.stopnswap_rules.items():
+            stop = self.world.multiworld.get_location(location, self.player)
+            set_rule(stop, rules)
 
         if self.world.options.skip_puzzles:
             for location, rules in self.access_rules.items():

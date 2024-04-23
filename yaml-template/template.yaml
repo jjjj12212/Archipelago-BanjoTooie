@@ -25,8 +25,9 @@ Banjo-Tooie:
   randomize_stations: 'true'
   randomize_chuffy: 'true'     # Chuffy as a AP Item
   randomize_notes: 'true'
+  randomize_stop_n_swap: 'true' # Ice key + Eggs + Egg rewards are added to the item pool.
 
-  # Changes which levels are open; incompatible with trackers at the moment -- skip
+  # Changes which levels are open. recommended when playing solo.
   randomize_worlds: 'false'
 
   logic_type: 0                # 0: Beginner, 1: Normal, 2: Advanced
