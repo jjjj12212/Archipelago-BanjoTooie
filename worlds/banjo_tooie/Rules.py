@@ -484,8 +484,7 @@ class BanjoTooieRules:
 
         self.stopnswap_rules = {
             locationName.IKEY:      lambda state: state.has(itemName.GGRAB, self.player),
-            locationName.PMEGG:     lambda state: (state.has(itemName.EGGAIM, self.player) or state.has(itemName.AIREAIM, self.player)) and \
-                                                  state.has(itemName.GEGGS, self.player),
+            locationName.PMEGG:     lambda state: state.has(itemName.GEGGS, self.player),
             locationName.PMEGGH:    lambda state: state.has(itemName.PMEGG, self.player),
             locationName.BMEGG:     lambda state: state.has(itemName.GGRAB, self.player),
             locationName.BMEGGH:    lambda state: state.has(itemName.BMEGG, self.player),
