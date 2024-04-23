@@ -136,7 +136,7 @@ BTConsumable = {
         [16] = {key=0x0002, name="Beans"}, -- CCL
         [17] = {key=0x85E3, name="Fish"}, -- HFP
         [18] = {key=0x0040, name="Eggs"}, -- Stop'n'Swop
-        [19] = {key=0x8FBF, name="Ice Keys"}, -- Stop'n'Swop
+        [19] = {key=0x8FBF, name="Ice Keys"}, -- Stop'n'Swop  -- read key is 59
         [20] = {key=0x1461, name="MEGA GLOWBO",max=1}
     };
     consumeIndex = nil;
