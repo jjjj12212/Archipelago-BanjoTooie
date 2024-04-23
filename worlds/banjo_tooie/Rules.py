@@ -2065,6 +2065,14 @@ class BanjoTooieRules:
     def has_fire(self, state: CollectionState) -> bool:
         return state.has(itemName.FEGGS, self.player) or (self.check_humba_magic(state, itemName.HUMBAIH) and \
                 self.can_access_pinegrove(state, False))
+    
+    def has_explosives(self, state: CollectionState) -> bool:
+        if self.world.options.logic_type == 0: # beginner
+            return state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            return state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            return state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)
 
     def long_swim(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner

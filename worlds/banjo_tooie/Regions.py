@@ -598,14 +598,25 @@ def connect_regions(self):
                                                             (state.has(itemName.MUMBOMT, player) or state.has(itemName.BDRILL, player))})
     region_TL = multiworld.get_region(regionName.TL, player)
     region_TL.add_exits({regionName.TL_HATCH,})
-
+    region_TL.add_exits({regionName.WW,},
+                        {regionName.WW: lambda state: state.has(itemName.MUMBOTD, player) and state.has(itemName.HUMBATD, player)})
+    
     region_IOHCT = multiworld.get_region(regionName.IOHCT, player)
     region_IOHCT.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.HP, regionName.JR})
 
     region_HP = multiworld.get_region(regionName.HP, player)
     region_HP.add_exits({regionName.IOHCT_HFP_ENTRANCE,},
-                        {regionName.IOHCT_HFP_ENTRANCE: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, player) and
+                        {regionName.IOHCT_HFP_ENTRANCE: lambda state: state.has(itemName.MUMBOMT, player) and state.has(itemName.TRAINSWHP1, player) and
                                                                       (self.options.randomize_stations == 1)})
+    region_HP.add_exits({regionName.JR,},
+                        {regionName.JR: lambda state: state.has(itemName.SPLITUP, player) and rules.can_access_ccl(state)})
+    region_HP.add_exits({regionName.MT,},
+                        {regionName.MT: lambda state: state.has(itemName.MUMBOHP, player) or rules.has_explosives(state)})
+    
+    region_JR = multiworld.get_region(regionName.JR, player)
+    region_JR.add_exits({regionName.GM,},
+                         {regionName.GM: lambda state: state.has(itemName.TTORP, player) and rules.can_reach_atlantis(state)
+                          and state.has(itemName.IEGGS, player) and state.has(itemName.AUQAIM, player)})
     
     region_QM = multiworld.get_region(regionName.IOHQM, player)
     region_QM.add_exits({regionName.GIO},
@@ -629,4 +640,6 @@ def connect_regions(self):
     region_GI3ALL = multiworld.get_region(regionName.GI3ALL, player)
     region_GI3ALL.add_exits({regionName.GIO})
     region_GI3ALL.add_exits({regionName.GI2})
+
+    regionName.TL
 
