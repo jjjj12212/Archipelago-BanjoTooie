@@ -3084,6 +3084,10 @@ local NON_AGI_MAP = {
                 ['addr'] = 0x35,
                 ['bit'] = 4
             },
+            ['HAG1'] = {
+                ['addr'] = 0x03,
+                ['bit'] = 4
+            }
 		},
 		['INTRO'] = {
 			['Bovina'] = {
