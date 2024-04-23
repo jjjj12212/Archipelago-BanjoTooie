@@ -20,11 +20,12 @@
     - waste pipe honeycomb
     - styrac honeycomb
     - HFP Train Station honeycomb
-    - Snake heads cp
-    - jade snake grove cp
-    - haunted cavern cp
+    - Snake heads cheato page
+    - jade snake grove cheato page
+    - haunted cavern cheato page
     - HFP trebleclef
-  - Fixed bug with GI Train Station Honeycomb Logic (It was using HFP's train station honeycomb logic)
+  - Central Cavern jinjo: can be obtained with bill drill and springy step shoes in normal + advanced logic
+  - Fixed bug with GI Train Station Honeycomb Logic
 
 # 1.1-Beta
 - Dpad changes:
