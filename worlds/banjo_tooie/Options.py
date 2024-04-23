@@ -94,6 +94,9 @@ class SpeedUpMinigames(DefaultOnToggle):
     """Start 3-round minigames at Round 3"""
     display_name = "Speed Up Minigames"
 
+class SkipKlungo(Toggle):
+    """Make it so you can skip Klungo 1 and 2."""
+    display_name = "Skip Klungo"
 
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
@@ -118,4 +121,4 @@ class BanjoTooieOptions(PerGameCommonOptions):
     skip_tower_of_tragedy: SkipToT
     speed_up_minigames: SpeedUpMinigames
     logic_type: LogicType
-    
+    skip_klungo: SkipKlungo

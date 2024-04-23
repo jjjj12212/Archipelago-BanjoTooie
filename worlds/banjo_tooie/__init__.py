@@ -454,6 +454,7 @@ class BanjoTooieWorld(World):
         btoptions['notes']= "true" if self.options.randomize_notes == 1 else "false"
         btoptions['worlds']= "true" if self.worlds_randomized else "false"
         btoptions['world_order'] = self.randomize_worlds
+        btoptions['skip_klungo'] = "true" if self.options.skip_klungo == 1 else "false"
         return btoptions
 
     # for the universal tracker, doesn't get called in standard gen

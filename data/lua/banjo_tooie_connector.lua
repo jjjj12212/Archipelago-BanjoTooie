@@ -33,7 +33,7 @@ local FRAME = 0
 
 local DEBUG = false
 local DEBUGLVL2 = false
-local DEBUGLVL3 = false
+local DEBUGLVL3 = true
 
 local BYPASS_GAME_LOAD = false;
 
@@ -90,8 +90,11 @@ local WATCH_LOADED_TREBLE = false; -- if object is loaded or not
 local TREBLE_SPOTED = false; -- used if Collected Treble
 local TREBLE_MAP = 0x00; -- validate TREBLE_MAP
 local TREBLE_GONE_CHECK = 2;
-local SKIP_PUZZLES = false;
+
+-------------- SKIP VARS ------------
 local OPEN_HAG1 = false;
+local SKIP_PUZZLES = false;
+local SKIP_KLUNGO = false;
 
 -------------- STATION VARS -----------
 local CHECK_FOR_STATIONBTN = false;
@@ -5972,8 +5975,11 @@ end
 
 function process_slot(block)
     
+    print("HI")
     if DEBUGLVL3 == true then
+        print("slot_data")
         print(block)
+        print("EO_slot_data")
     end
 
     if block['slot_player'] ~= nil and block['slot_player'] ~= ""
@@ -6019,6 +6025,11 @@ function process_slot(block)
     if block['slot_skip_puzzles'] ~= nil and block['slot_skip_puzzles'] ~= "false"
     then
         SKIP_PUZZLES = true
+    end
+    if block['slot_skip_klungo'] ~= nil and block['slot_skip_klungo'] ~= "false"
+    then
+        print("TEST")
+        SKIP_KLUNGO = true
     end
     if block['slot_open_hag1'] ~= nil and block['slot_open_hag1'] ~= "false"
     then
@@ -6186,6 +6197,12 @@ function initializeFlags()
                 print("Setting Jinjo Pattern")
             end
             BTRAMOBJ:setMultipleFlags(0x6A, 129, 2)
+        end
+        if SKIP_KLUNGO == true then
+            --{byte=0x5E, bit=0, name="Klungo 1 Defeated", type="Progress"},
+	        --{byte=0x5E, bit=1, name="Klungo 2 Defeated", type="Progress"},
+            BTRAMOBJ:setFlag(0x5E, 0, "Klungo 1 Defeated")
+            BTRAMOBJ:setFlag(0x5E, 1, "Klungo 2 Defeated")
         end
 
         
