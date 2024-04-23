@@ -2199,9 +2199,11 @@ class BanjoTooieRules:
             if self.world.options.logic_type == 0: # beginner
                 logic = state.has(itemName.JIGGY, self.player, amt)
             elif self.world.options.logic_type == 1: # normal
-                logic = state.has(itemName.JIGGY, self.player, amt)
+                logic = state.has(itemName.JIGGY, self.player, amt) or \
+                (self.can_access_hailfire and (self.has_explosives or state.has(itemName.MUMBOHP, self.player)))
             elif self.world.options.logic_type == 2: # advanced
-                logic = state.has(itemName.JIGGY, self.player, amt)
+                logic = state.has(itemName.JIGGY, self.player, amt) or \
+                (self.can_access_hailfire and (self.has_explosives or state.has(itemName.MUMBOHP, self.player)))
             return logic
 
     def can_access_plateau(self, state: CollectionState) -> bool:
@@ -2220,10 +2222,13 @@ class BanjoTooieRules:
             logic = (state.has(itemName.GGRAB, self.player) and self.gm_jiggy(state)) or \
                     self.dilberta_free(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = (state.has(itemName.GGRAB, self.player) and self.gm_jiggy(state)) or \
-                    self.dilberta_free(state)
+            logic = (state.has(itemName.GGRAB, self.player) and self.gm_jiggy(state)) or self.dilberta_free(state) or \
+                    (self.can_access_jrl and self.can_reach_atlantis and state.has(itemName.TTORP, self.player) and \
+                    state.has(itemName.IEGGS, self.player) and state.has(itemName.AUQAIM, self.player))
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.gm_jiggy(state)
+            logic = self.gm_jiggy(state) or \
+                    (self.can_access_jrl and self.can_reach_atlantis and state.has(itemName.TTORP, self.player) and \
+                    state.has(itemName.IEGGS, self.player) and state.has(itemName.AUQAIM, self.player))
         return logic
     
     def gm_jiggy(self, state: CollectionState) -> bool: #4
@@ -2260,16 +2265,22 @@ class BanjoTooieRules:
             logic = (self.ww_jiggy(state) and self.can_access_pinegrove(state, False))
         elif self.world.options.logic_type == 1: # normal
             if fromTrain:
-                logic = self.ww_jiggy(state) and self.can_access_pinegrove(state, fromTrain)
+                logic = self.ww_jiggy(state) and self.can_access_pinegrove(state, fromTrain) or \
+                        (self.can_access_tdl(state, True) and state.has(itemName.MUMBOTD, self.player) and \
+                        state.has(itemName.HUMBATD, self.player))
             else:
                 logic = self.ww_jiggy(state) and self.can_access_pinegrove(state, fromTrain) or \
-                        self.has_train_access(state, "WW")
+                        self.has_train_access(state, "WW") or (self.can_access_tdl(state, True) and \
+                        state.has(itemName.MUMBOTD, self.player) and state.has(itemName.HUMBATD, self.player))
         elif self.world.options.logic_type == 2: # advanced
             if fromTrain:
-                logic = self.ww_jiggy(state) and self.can_access_pinegrove(state, fromTrain)
+                logic = self.ww_jiggy(state) and self.can_access_pinegrove(state, fromTrain) or \
+                        (self.can_access_tdl(state, True) and state.has(itemName.MUMBOTD, self.player) and \
+                        state.has(itemName.HUMBATD, self.player))
             else:
                 logic = self.ww_jiggy(state) and self.can_access_pinegrove(state, fromTrain) or \
-                        self.has_train_access(state, "WW")
+                        self.has_train_access(state, "WW") or (self.can_access_tdl(state, True) and \
+                        state.has(itemName.MUMBOTD, self.player) and state.has(itemName.HUMBATD, self.player))
         return logic
     
     def ww_jiggy(self, state: CollectionState) -> bool: #8
@@ -2302,9 +2313,11 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.can_access_clifftop(state, False) and self.jrl_jiggy(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.can_access_clifftop(state, False) and self.jrl_jiggy(state)
+            logic = (self.can_access_clifftop(state, False) and self.jrl_jiggy(state)) or \
+                (self.can_access_hailfire(state, False) and self.can_access_ccl(state) and state.has(itemName.SPLITUP, self.player))
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.can_access_clifftop(state, False) and self.jrl_jiggy(state)
+            logic = self.can_access_clifftop(state, False) and self.jrl_jiggy(state) or \
+                (self.can_access_hailfire(state, False) and self.can_access_ccl(state) and state.has(itemName.SPLITUP, self.player))
         return logic
     
     def jrl_jiggy(self, state: CollectionState) -> bool: #14
