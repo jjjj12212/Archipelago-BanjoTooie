@@ -101,6 +101,16 @@ misc_collectable_table = {
     itemName.NOTE:          ItemData(1230797, 144, "progress", None)
 }
 
+stop_n_swap_table = {
+    itemName.IKEY:          ItemData(1230799, 1, "progress", locationName.IKEY),
+    itemName.BBASH:         ItemData(1230800, 1, "progress", locationName.PMEGGH),
+    itemName.JNONE:         ItemData(1230801, 1, "filler", locationName.YMEGGH),
+    itemName.HOMINGEGGS:    ItemData(1230802, 1, "useful", locationName.BMEGGH),
+    itemName.BMEGG:         ItemData(1230803, 1, "progress", locationName.BMEGG),
+    itemName.PMEGG:         ItemData(1230804, 1, "progress", locationName.PMEGG)
+
+}
+
 stations_table = {
     itemName.TRAINSWIH:     ItemData(1230794,  1, "progress", locationName.TRAINSWIH),
     itemName.TRAINSWTD:     ItemData(1230791,  1, "progress", locationName.TRAINSWTD),
@@ -130,6 +140,7 @@ all_item_table = {
     **jiggy_table,
     **stations_table,
     **rando_key_table,
+    **stop_n_swap_table
 }
 
 all_group_table = {
@@ -140,6 +151,7 @@ all_group_table = {
     "magic": level_progress_table,
     "stations": stations_table,
     "levelaccess": rando_key_table,
+    "stopnswap": stop_n_swap_table,
 }
 
 

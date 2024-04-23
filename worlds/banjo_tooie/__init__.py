@@ -82,6 +82,7 @@ class BanjoTooieWorld(World):
         "Moves": all_group_table["moves"],
         "Magic": all_group_table["magic"],
         "Stations": all_group_table["stations"],
+        "StopnSwap": all_group_table["stopnswap"]
         # "Access": all_group_table["levelaccess"]
     }
     
@@ -187,6 +188,9 @@ class BanjoTooieWorld(World):
             return False
         
         if item.code in range(1230944, 1230952):
+            return False
+        
+        if item.code in range(1230799, 1230805) and self.options.randomize_stop_n_swap == False:
             return False
 
         return True
@@ -321,7 +325,11 @@ class BanjoTooieWorld(World):
             self.banjo_pre_fills(itemName.CHUFFY, "Chuffy", False)
 
         if self.options.randomize_notes == False:
-         self.banjo_pre_fills(itemName.NOTE, "Note", False)
+            self.banjo_pre_fills(itemName.NOTE, "Note", False)
+
+        if self.options.randomize_stop_n_swap == False:
+            self.banjo_pre_fills("StopnSwap", None, True)
+
 
         if self.worlds_randomized == False and self.options.skip_puzzles == True:
             self.banjo_pre_fills("Access", None, True)

@@ -14,17 +14,22 @@ GLOWBO = "Glowbo"
 JIGGY = "Jiggy"
 TREBLE = "Treble Clef"
 NOTE = "5 Notes"
+IKEY = "Ice Key"
+JNONE = "Jinjo Playable Character (Nothing)"
+PMEGG = "Pink Mystery Egg"
+BMEGG = "Blue Mystery Egg"
+
 
 GGRAB       = "Grip Grab"
 BBLASTER    = "Breegull Blaster"
 EGGAIM      = "Egg Aim"
 BDRILL      = "Bill Drill"
 BBAYONET    = "Beak Bayonet"
-AIREAIM     = "Airborne Egg Aiming" #TODO: Double Check
-SPLITUP     = "Split Up" #TODO: Double Check
-WWHACK      = "Wing Whack" #TODO: Double Check
-TTORP       = "Talon Torpedo" #TODO: Double Check
-AUQAIM      = "Sub-Aqua Egg Aiming" #TODO: Double Check
+AIREAIM     = "Airborne Egg Aiming" 
+SPLITUP     = "Split Up"
+WWHACK      = "Wing Whack"
+TTORP       = "Talon Torpedo"
+AUQAIM      = "Sub-Aqua Egg Aiming"
 SHPACK      = "Shack Pack"
 GLIDE       = "Glide"
 SNPACK      = "Snooze Pack"
@@ -40,6 +45,10 @@ GEGGS       = "Grenade Eggs"
 CEGGS       = "Clockwork Kazooie Eggs"
 IEGGS       = "Ice Eggs"
 FSWIM       = "Fast Swimming"
+MAIR        = "More Air"
+BBASH       = "Breegull Bash"
+HOMINGEGGS  = "Homing Eggs Toggle"
+
 
 # Mumbo Magics
 MUMBOMT = "Mumbo: Golden Goliath"

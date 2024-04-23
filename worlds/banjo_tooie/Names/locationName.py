@@ -435,7 +435,23 @@ FEGGS       = "IoH: Fire Eggs Silo"
 GEGGS       = "IoH: Grenade Eggs Silo"
 CEGGS       = "IoH: Clockwork Kazooie Eggs Silo"
 IEGGS       = "IoH: Ice Eggs Silo"
-FSWIM       = "Fast Swimming"
+
+#NPCS
+ROYSTEN     = "Roysten"
+CHEATOR1    = "Cheato Reward 1"  #5 pages - Feathers
+CHEATOR2    = "Cheato Reward 2"  #10 pages - Eggs
+CHEATOR3    = "Cheato Reward 3"  #15 pages - Fallproof
+CHEATOR4    = "Cheato Reward 4"  #20 pages - Honeyback
+CHEATOR5    = "Cheato Reward 5"  #25 pages - Jukebox
+
+
+#Stop N Swap
+PMEGG        = "Pink Mystery Egg"
+PMEGGH        = "Pink Mystery Egg Hatched"
+BMEGG        = "Blue Mystery Egg"
+BMEGGH        = "Blue Mystery Egg Hatched"
+YMEGGH        = "Yellow Mystery Egg Hatched"
+IKEY         = "Ice Key"
 
 #Bosses
 HAG1 = "Hag 1 Defeated"

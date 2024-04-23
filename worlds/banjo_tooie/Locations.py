@@ -7,7 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
     
 class LocationData(typing.NamedTuple):
-    #last good ID: 1230800
+    #last good ID: 1230959
     #BAD 12C780 pointer (1230720) increment
     #12C770 pointer instead (1230704)
     btid: int|None = 0
@@ -18,8 +18,11 @@ class LocationData(typing.NamedTuple):
 
 SMLoc_table = {
     locationName.CHEATOSM1: LocationData(1230752, 0x59, 3),
-     locationName.JINJOIH5: LocationData(1230595, 0x3F, 0)
-    # locationName.FSWIM:    LocationData(1230777, 0x1E, 5)
+    locationName.JINJOIH5:  LocationData(1230595, 0x3F, 0),
+    # locationName.ROYSTEN:   LocationData(1230777, 0x9E, 6), #obtained when breaking out roysten
+    # locationName.CHEATOR1:  LocationData(1230952, 0x08, 4),
+    locationName.PMEGG:     LocationData(1230956, 0x77, 5),
+    locationName.BMEGG:     LocationData(1230957, 0x77, 3),
 
 }
 
@@ -35,6 +38,8 @@ JVLoc_table = {
     locationName.JIGGYIH9:  LocationData(1230684, 0x50, 0),
     locationName.JIGGYIH10: LocationData(1230685, 0x50, 1),
     locationName.TREBLEJV:  LocationData(1230789, 0x97, 7),  #Set last ID for Clef Family. Client Reasons
+    locationName.IKEY:      LocationData(1230958, 0, 0), #Needs to be handled on client side
+
 }
 
 MTLoc_Table = {
@@ -459,6 +464,9 @@ CCLoc_table = {
 
 IHWHLoc_table = {
     locationName.JINJOIH1: LocationData(1230591, 0x3E, 4),
+    locationName.YMEGGH:   LocationData(1230953, 0x77, 7),
+    locationName.PMEGGH:   LocationData(1230954, 0x77, 6),
+    locationName.BMEGGH:   LocationData(1230955, 0x77, 4),
 
     locationName.W1:      LocationData(1230944, 0, 0),
     locationName.W2:      LocationData(1230945, 0, 0),
