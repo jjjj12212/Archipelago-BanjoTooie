@@ -98,7 +98,8 @@ misc_collectable_table = {
     itemName.DOUBLOON:      ItemData(1230514, 30, "progress", None),
     itemName.TREBLE:        ItemData(1230778,  9, "progress", None),
     itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY),
-    itemName.NOTE:          ItemData(1230797, 144, "progress", None)
+    itemName.NOTE:          ItemData(1230797, 144, "progress", None),
+    itemName.NONE:          ItemData(1230888, 0, "filler", None)
 }
 
 stations_table = {

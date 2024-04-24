@@ -337,6 +337,15 @@ class BanjoTooieWorld(World):
                 else:
                     self.multiworld.get_location("World "+ str(world_num) +" Unlocked", self.player).place_locked_item(item)
                     world_num = world_num + 1
+        else:
+            world_num = 1
+            for world, amt in self.randomize_worlds.items():
+                item = self.create_item(itemName.NONE)
+                if world_num == 10:
+                    self.multiworld.get_location("Boss Unlocked").place_locked_item(item)
+                else:
+                    self.multiworld.get_location("World "+ str(world_num) +" Unlocked", self.player).place_locked_item(item)
+                    world_num = world_num + 1
         
         if self.options.randomize_jinjos == False:
             item = self.create_item(itemName.JIGGY)

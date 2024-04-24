@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.1.0"
+local BT_VERSION = "V1.1.2"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -136,7 +136,7 @@ BTConsumable = {
         [16] = {key=0x0002, name="Beans"}, -- CCL
         [17] = {key=0x85E3, name="Fish"}, -- HFP
         [18] = {key=0x0040, name="Eggs"}, -- Stop'n'Swop
-        [19] = {key=0x8FBF, name="Ice Keys"}, -- Stop'n'Swop
+        [19] = {key=0x8FBF, name="Ice Keys"}, -- Stop'n'Swop  -- read key is 59
         [20] = {key=0x1461, name="MEGA GLOWBO",max=1}
     };
     consumeIndex = nil;
@@ -3084,6 +3084,10 @@ local NON_AGI_MAP = {
                 ['addr'] = 0x35,
                 ['bit'] = 4
             },
+            ['HAG1'] = {
+                ['addr'] = 0x03,
+                ['bit'] = 4
+            }
 		},
 		['INTRO'] = {
 			['Bovina'] = {

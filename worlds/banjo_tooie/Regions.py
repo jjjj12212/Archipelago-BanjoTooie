@@ -540,14 +540,14 @@ def create_regions(self):
     active_locations = self.location_name_to_id
     dellist = []
 
-    if self.options.skip_puzzles == False:
-        for location in active_locations:
-            if location.find("Unlocked") != -1:
-                dellist.append(location)
+    # if self.options.skip_puzzles == False:
+    #     for location in active_locations:
+    #         if location.find("Unlocked") != -1:
+    #             dellist.append(location)
 
-        for name in dellist:
-            if( name in active_locations):
-                del active_locations[name]
+    #     for name in dellist:
+    #         if( name in active_locations):
+    #             del active_locations[name]
 
     multiworld.regions += [create_region(multiworld, player, active_locations, region, locations) for region, locations in
                            BANJOTOOIEREGIONS.items()]
