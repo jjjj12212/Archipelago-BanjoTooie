@@ -70,6 +70,8 @@ TRAINSWHP1 = "HFP: Lava Side Train Station"
 TRAINSWHP2 = "HFP: Icy Side Train Station"
 TRAINSWWW  = "WW: Train Station"
 
+NONE = "Nothing"
+
 CHUFFY = "Chuffy"
 
 VICTORY = "Kick Around"
