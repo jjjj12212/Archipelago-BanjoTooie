@@ -1,3 +1,7 @@
+# 1.1.2-Beta
+- Fix uploading to Archipelago Webhost fix
+- Hag-1 skip Introductions
+
 # 1.1.1-Beta
 - Many notes got renamed
 - Notes fix when not randomized
