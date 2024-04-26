@@ -4031,6 +4031,7 @@ function set_checked_BKCHUFFY() --Only when Inside Chuffy
     if BKCHUFFY["1230796"] == false and BMM['JIGGY']["1230606"] == false
     then
         BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKCHUFFY_CHECK");
+        BTRAMOBJ:setFlag(0x0D, 5, "Levitate")
     else
         BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKCHUFFY_CHECK");
     end

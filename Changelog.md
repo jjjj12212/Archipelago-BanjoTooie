@@ -1,3 +1,9 @@
+# 1.2-Beta
+- 2 new Goals added:
+  - Minigames Goal: Complete all minigames with optional Canary Mary 4.
+  - Boss Goal: Defeat all world bosses except for HAG-1
+- Chuffy fix
+
 # 1.1.2-Beta
 - Fix uploading to Archipelago Webhost fix
 - Hag-1 skip Introductions
