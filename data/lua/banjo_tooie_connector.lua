@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.1.2"
+local BT_VERSION = "V1.2.0"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -5457,9 +5457,10 @@ function processAGIItem(item_list)
                 end
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
+            savingAGI();
         end
     end
-    savingAGI();
+
 end
 
 function process_block(block)
