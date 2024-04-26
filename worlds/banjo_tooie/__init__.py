@@ -82,7 +82,7 @@ class BanjoTooieWorld(World):
         "Moves": all_group_table["moves"],
         "Magic": all_group_table["magic"],
         "Stations": all_group_table["stations"],
-        # "Access": all_group_table["levelaccess"]
+        "Access": all_group_table["levelaccess"]
     }
     
 
@@ -93,7 +93,7 @@ class BanjoTooieWorld(World):
                 if self.jiggy_counter <= 70:
                     item_classification = ItemClassification.progression
                 else:
-                    item_classification = ItemClassification.useful
+                    item_classification = ItemClassification.filler
                 self.jiggy_counter += 1
             else:
                 item_classification = ItemClassification.progression
@@ -184,6 +184,9 @@ class BanjoTooieWorld(World):
             return False
         
         if item.code == 1230797 and self.options.randomize_notes == False: #Notes
+            return False
+        
+        if item.code == 1230798: #Mini Game Hunt
             return False
         
         if item.code in range(1230944, 1230952):
@@ -347,6 +350,36 @@ class BanjoTooieWorld(World):
                     self.multiworld.get_location("World "+ str(world_num) +" Unlocked", self.player).place_locked_item(item)
                     world_num = world_num + 1
         
+        if self.options.victory_condition == 1:
+            item = self.create_item(itemName.MUMBOTOKEN)
+            self.multiworld.get_location(locationName.JIGGYMT3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYGM5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYWW1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYWW2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYWW4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYWW5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYJR1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYTD6, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYGI3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYGI9, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYHP8, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYCC3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYCC5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYCC8, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.CHEATOCC1, self.player).place_locked_item(item)
+        
+        if self.options.victory_condition == 2:
+            item = self.create_item(itemName.MUMBOTOKEN)
+            self.multiworld.get_location(locationName.JIGGYMT1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYGM1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYWW3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYJR7, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYTD4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYGI2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYHP1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYCC1, self.player).place_locked_item(item)
+            
+        
         if self.options.randomize_jinjos == False:
             item = self.create_item(itemName.JIGGY)
             self.multiworld.get_location(locationName.JIGGYIH1, self.player).place_locked_item(item)
@@ -463,6 +496,7 @@ class BanjoTooieWorld(World):
         btoptions['notes']= "true" if self.options.randomize_notes == 1 else "false"
         btoptions['worlds']= "true" if self.worlds_randomized else "false"
         btoptions['world_order'] = self.randomize_worlds
+        btoptions['goal_type'] = self.options.victory_condition.value
         return btoptions
 
     # for the universal tracker, doesn't get called in standard gen

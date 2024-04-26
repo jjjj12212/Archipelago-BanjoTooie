@@ -552,9 +552,10 @@ def create_regions(self):
     multiworld.regions += [create_region(multiworld, player, active_locations, region, locations) for region, locations in
                            BANJOTOOIEREGIONS.items()]
     
-    multiworld.get_location(locationName.HAG1, player).place_locked_item(
-        multiworld.worlds[player].create_event_item(itemName.VICTORY))
-    
+    if multiworld.worlds[player].options.victory_condition == 0:
+        multiworld.get_location(locationName.HAG1, player).place_locked_item(
+         	multiworld.worlds[player].create_event_item(itemName.VICTORY))
+
     # if self.options.skip_puzzles == True:
     #     sm = multiworld.get_region(regionName.IOHWH, player)
     #     sm.add_locations({locationName.W1: None,
@@ -572,7 +573,7 @@ def create_region(multiworld, player: int, active_locations, name: str, location
     ret = Region(name, player, multiworld)
     if locations:
         loc_to_id = {loc: active_locations.get(loc, 0) for loc in locations if active_locations.get(loc, None)}
-        if locationName.HAG1 in locations:
+        if multiworld.worlds[player].options.victory_condition == 0 and locationName.HAG1 in locations:
             ret.add_locations({locationName.HAG1: None})
         else:
             ret.add_locations(loc_to_id, BanjoTooieLocation)
@@ -597,14 +598,20 @@ def connect_regions(self):
                                                             (state.has(itemName.MUMBOMT, player) or state.has(itemName.BDRILL, player))})
     region_TL = multiworld.get_region(regionName.TL, player)
     region_TL.add_exits({regionName.TL_HATCH,})
-
+    region_TL.add_exits({regionName.WW,})
+    
     region_IOHCT = multiworld.get_region(regionName.IOHCT, player)
     region_IOHCT.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.HP, regionName.JR})
 
     region_HP = multiworld.get_region(regionName.HP, player)
     region_HP.add_exits({regionName.IOHCT_HFP_ENTRANCE,},
-                        {regionName.IOHCT_HFP_ENTRANCE: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, player) and
+                        {regionName.IOHCT_HFP_ENTRANCE: lambda state: state.has(itemName.MUMBOMT, player) and state.has(itemName.TRAINSWHP1, player) and
                                                                       (self.options.randomize_stations == 1)})
+    region_HP.add_exits({regionName.JR,})
+    region_HP.add_exits({regionName.MT,})
+    
+    region_JR = multiworld.get_region(regionName.JR, player)
+    region_JR.add_exits({regionName.GM,})
     
     region_QM = multiworld.get_region(regionName.IOHQM, player)
     region_QM.add_exits({regionName.GIO},
@@ -628,4 +635,3 @@ def connect_regions(self):
     region_GI3ALL = multiworld.get_region(regionName.GI3ALL, player)
     region_GI3ALL.add_exits({regionName.GIO})
     region_GI3ALL.add_exits({regionName.GI2})
-
