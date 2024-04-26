@@ -49,6 +49,7 @@ BTConsumable = {
         [25] = {key=0x5E79, name="???5"},
         [26] = {key=0x5E79, name="???6"},
         [27] = {key=0x5E79, name="???7"},
+		[29] = {key=0x5E79, name="Green Idols"},
 
     };
     consumeIndex = nil;
@@ -71,7 +72,7 @@ end
 function BTConsumable:setConsumable(index, value)
     key = self.consumeTable[index]["key"]
     local addr = self.banjoRAM:dereferencePointer(self.CONSUME_PTR);
-    if index == 59
+	if index == 59
     then
         mainmemory.write_u16_be(addr + 19 * 2, value ~ key);
     else
@@ -160,9 +161,9 @@ function checkconsumableAmts(BTCONSUME)
             RAM_CONSUME[item]['amt'] = amt
         end
         -- Uncomment to set Consumables
-        -- if table['key'] == 59 or table['key'] == 18 or table['key'] == 15 then
-        --     BTCONSUME:setConsumable(table['key'], 9999)
-        -- end
+        -- if table['key'] == 18 then
+        --      BTCONSUME:setConsumable(table['key'], 1)
+        --  end
     end
 end
 

@@ -1,0 +1,142 @@
+ --todo: get fun coordinate drop points for the warp table, fill in warp table index numbers, create item
+ 
+ warpTable = {
+        [1]  = {mapId = 0x13A, worldName = "Cloud Cuckooland", xPos = , yPos = , zPos = }, -- notes: CCL cavern, by the treble clef
+		[2]  = {mapId = 0x13A, worldName = "Cloud Cuckooland", xPos = , yPos = , zPos = }, -- notes: CCL cavern
+		[3]  = {mapId = 0x13A, worldName = "Cloud Cuckooland", xPos = , yPos = , zPos = }, -- notes: CCL cavern
+		[4]  = {mapId = 0x136, worldName = "Cloud Cuckooland", xPos = , yPos = , zPos = }, -- notes: CCL entrance
+		[5]  = {mapId = 0x136, worldName = "Cloud Cuckooland", xPos = , yPos = , zPos = }, -- notes: CCL entrance
+		[6]  = {mapId = 0x136, worldName = "Cloud Cuckooland", xPos = , yPos = , zPos = }, -- notes: CCL entrance
+		[7]  = {mapId = 0x137, worldName = "Cloud Cuckooland", xPos = , yPos = , zPos = }, -- notes: CCL trashcan
+		[8]  = {mapId = 0x138, worldName = "Cloud Cuckooland", xPos = , yPos = , zPos = }, -- notes: CCL cheesewedge
+		
+		[9]  = {mapId = 0xC7, worldName = "Glitter Gulch Mine", xPos = , yPos = , zPos = }, -- notes: GGM entrance
+		[10]  = {mapId = 0xC7, worldName = "Glitter Gulch Mine", xPos = , yPos = , zPos = }, -- notes: GGM entrance
+		[11]  = {mapId = 0xC7, worldName = "Glitter Gulch Mine", xPos = , yPos = , zPos = }, -- notes: GGM entrance
+		[12]  = {mapId = 0xCC, worldName = "Glitter Gulch Mine", xPos = , yPos = , zPos = }, -- notes: GGM flooded caverns
+		[13]  = {mapId = 0xD3, worldName = "Glitter Gulch Mine", xPos = , yPos = , zPos = }, -- notes: GGM generator room
+		
+		[14]  = {mapId = 0x101, worldName = "Grunty Industries", xPos = , yPos = , zPos = }, -- notes: GI floor 1
+		[15]  = {mapId = 0x106, worldName = "Grunty Industries", xPos = , yPos = , zPos = }, -- notes: GI floor 2
+		[16]  = {mapId = 0x108, worldName = "Grunty Industries", xPos = , yPos = , zPos = }, -- notes: GI floor 3
+		[17]  = {mapId = 0x10B, worldName = "Grunty Industries", xPos = , yPos = , zPos = }, -- notes: GI floor 4
+		[18]  = {mapId = 0x100, worldName = "Grunty Industries", xPos = , yPos = , zPos = }, -- notes: GI entrance
+		[19]  = {mapId = 0x100, worldName = "Grunty Industries", xPos = , yPos = , zPos = }, -- notes: GI entrance
+		[20]  = {mapId = 0x100, worldName = "Grunty Industries", xPos = , yPos = , zPos = }, -- notes: GI entrance
+		
+		[21]  = {mapId = 0x127, worldName = "Hailfire Peaks", xPos = , yPos = , zPos = }, -- notes: HFP lava side
+		[22]  = {mapId = 0x127, worldName = "Hailfire Peaks", xPos = , yPos = , zPos = }, -- notes: HFP lava side
+		[23]  = {mapId = 0x127, worldName = "Hailfire Peaks", xPos = , yPos = , zPos = }, -- notes: HFP lava side
+		[24]  = {mapId = 0x128, worldName = "Hailfire Peaks", xPos = , yPos = , zPos = }, -- notes: HFP icy side
+		[25]  = {mapId = 0x128, worldName = "Hailfire Peaks", xPos = , yPos = , zPos = }, -- notes: HFP icy side
+		[26]  = {mapId = 0x128, worldName = "Hailfire Peaks", xPos = , yPos = , zPos = }, -- notes: HFP icy side
+		[27]  = {mapId = 0x12D, worldName = "Hailfire Peaks", xPos = , yPos = , zPos = }, -- notes: HFP colosseum
+		[28]  = {mapId = 0x132, worldName = "Hailfire Peaks", xPos = , yPos = , zPos = }, -- notes: HFP icicle grotto
+		
+		[29]  = {mapId = 0x1A7, worldName = "Jolly Roger's Lagoon", xPos = , yPos = , zPos = }, -- notes: JRL town
+		[30]  = {mapId = 0x1A7, worldName = "Jolly Roger's Lagoon", xPos = , yPos = , zPos = }, -- notes: JRL town
+		[31]  = {mapId = 0x1A8, worldName = "Jolly Roger's Lagoon", xPos = , yPos = , zPos = }, -- notes: JRL atlantis
+		[32]  = {mapId = 0x1A9, worldName = "Jolly Roger's Lagoon", xPos = , yPos = , zPos = }, -- notes: JRL seabottom
+		
+		[33]  = {mapId = 0xB8, worldName = "Mayahem Temple", xPos = , yPos = , zPos = }, -- notes: MT entrance
+		[34]  = {mapId = 0xB8, worldName = "Mayahem Temple", xPos = , yPos = , zPos = }, -- notes: MT entrance
+		[35]  = {mapId = 0xB8, worldName = "Mayahem Temple", xPos = , yPos = , zPos = }, -- notes: MT entrance
+		[36]  = {mapId = 0xB9, worldName = "Mayahem Temple", xPos = , yPos = , zPos = }, -- notes: MT prison compound
+		[37]  = {mapId = 0xB9, worldName = "Mayahem Temple", xPos = , yPos = , zPos = }, -- notes: MT prison compound
+		[38]  = {mapId = 0xC4, worldName = "Mayahem Temple", xPos = , yPos = , zPos = }, -- notes: MT jade snake grove
+		[39]  = {mapId = 0xC4, worldName = "Mayahem Temple", xPos = , yPos = , zPos = }, -- notes: MT jade snake grove
+		
+		[40]  = {mapId = 0x112, worldName = "Terrydactyland", xPos = , yPos = , zPos = }, -- notes: TDL entrance
+		[41]  = {mapId = 0x112, worldName = "Terrydactyland", xPos = , yPos = , zPos = }, -- notes: TDL entrance
+		[42]  = {mapId = 0x112, worldName = "Terrydactyland", xPos = , yPos = , zPos = }, -- notes: TDL entrance
+		[43]  = {mapId = 0x112, worldName = "Terrydactyland", xPos = , yPos = , zPos = }, -- notes: TDL entrance
+		[44]  = {mapId = 0x112, worldName = "Terrydactyland", xPos = , yPos = , zPos = }, -- notes: TDL entrance
+		[45]  = {mapId = 0x11A, worldName = "Terrydactyland", xPos = , yPos = , zPos = }, -- notes: TDL stomping plains
+		[46]  = {mapId = 0x116, worldName = "Terrydactyland", xPos = , yPos = , zPos = }, -- notes: TDL inside mountain
+		
+		[47]  = {mapId = 0xD6, worldName = "Witchyworld", xPos = , yPos = , zPos = }, -- notes: WW entrance
+		[48]  = {mapId = 0xD6, worldName = "Witchyworld", xPos = , yPos = , zPos = }, -- notes: WW entrance
+		[49]  = {mapId = 0xD6, worldName = "Witchyworld", xPos = , yPos = , zPos = }, -- notes: WW entrance
+		[50]  = {mapId = 0xD6, worldName = "Witchyworld", xPos = , yPos = , zPos = }, -- notes: WW entrance
+		[51]  = {mapId = 0xE7, worldName = "Witchyworld", xPos = , yPos = , zPos = }, -- notes: WW inferno
+		[52]  = {mapId = 0xE6, worldName = "Witchyworld", xPos = , yPos = , zPos = }, -- notes: WW star spinner
+		[53]  = {mapId = 0xE1, worldName = "Witchyworld", xPos = , yPos = , zPos = }, -- notes: WW castle stockade
+		
+		[54]  = {mapId = 0x15D, worldName = "Cauldron Keep", xPos = , yPos = , zPos = }, -- notes: CK entrance
+		[55]  = {mapId = 0x15D, worldName = "Cauldron Keep", xPos = , yPos = , zPos = }, -- notes: CK entrance
+    };
+
+local TOTAL_WARP_COUNTER = 0
+local WARP_TRAP_LOGIC = 0
+
+function process_slot(block)
+
+    if block['slot_warp_traps'] ~= nil and block['slot_slot_warp_traps'] ~= ""
+    then
+        WARP_TRAP_LOGIC = block['slot_warp_traps']
+    end
+end
+
+function ApWarp()
+    local warpItems = get warpitem count --
+	local warpLocation = nil
+	if TOTAL_WARP_COUNTER < warpItems
+    then
+		local warpIndex = math.random(1, #warpTable)
+		warpLocation = warpTable[warpIndex];
+		local POS = {
+			["Xpos"] = 0,
+			["Ypos"] = 0,
+			["Zpos"] = 0,
+		};
+		
+		POS["Xpos"] = warpLocation["xPos"];
+		POS["Ypos"] = warpLocation["yPos"];
+		POS["Zpos"] = warpLocation["zPos"];
+		
+		if warpLocation["mapId"].tostring() =="0x" .. CURRENT_MAP and (WARP_TRAP_LOGIC == 1 or WARP_TRAP_LOGIC == 2)
+		then
+			self.banjoRAM:setBanjoPos(POS["Xpos"], POS["Ypos"], POS["Zpos"]);
+			TOTAL_WARP_COUNTER = warpItems;
+		end
+		if WARP_TRAP_LOGIC == 2
+		then
+			for location, worlds in pairs(UNLOCKED_WORLDS)
+			do
+				if UNLOCKED_WORLDS[worlds["defaultName"]] == warpLocation["worldName"]
+				then
+					--set player map to warpitem mapid
+					self.banjoRAM:setBanjoPos(POS["Xpos"], POS["Ypos"], POS["Zpos"]);
+					TOTAL_WARP_COUNTER = warpItems;
+				end
+			end
+		end
+	end
+end	
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
