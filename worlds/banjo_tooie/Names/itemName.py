@@ -14,6 +14,7 @@ GLOWBO = "Glowbo"
 JIGGY = "Jiggy"
 TREBLE = "Treble Clef"
 NOTE = "5 Notes"
+MUMBOTOKEN = "Mumbo Token"
 
 GGRAB       = "Grip Grab"
 BBLASTER    = "Breegull Blaster"
@@ -75,6 +76,7 @@ NONE = "Nothing"
 CHUFFY = "Chuffy"
 
 VICTORY = "Kick Around"
+
 #event items
 MTA = "Mayahem Temple"
 GGA = "Glitter Gulch Mine"

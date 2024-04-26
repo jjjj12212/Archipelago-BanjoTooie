@@ -94,6 +94,13 @@ class SpeedUpMinigames(DefaultOnToggle):
     """Start 3-round minigames at Round 3"""
     display_name = "Speed Up Minigames"
 
+class VictoryCondition(Choice):
+    """Choose which victory condition you want"""
+    display_name = "Victory Condition"
+    option_hag1 = 0
+    option_minigame_hunt = 1
+    option_boss_hunt = 2
+    default = 0
 
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
@@ -118,4 +125,4 @@ class BanjoTooieOptions(PerGameCommonOptions):
     skip_tower_of_tragedy: SkipToT
     speed_up_minigames: SpeedUpMinigames
     logic_type: LogicType
-    
+    victory_condition: VictoryCondition

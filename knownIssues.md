@@ -8,4 +8,3 @@
     - visual bug only. The notes near Silo is close proximity to Silo, had to lower the range for checking notes in order to properly collect them.
 
 - fighting HAG-1 sometimes doesn't trigger Goal
-- HAG-1 Door doesn't open.

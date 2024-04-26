@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.1.2"
+local BT_VERSION = "V1.2.0"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -4051,6 +4051,7 @@ function set_AP_CHUFFY() -- Only run after Transistion
     if AGI_CHUFFY["1230796"] == true
     then
         BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "APCHUFFY_SET");
+        BTRAMOBJ:setFlag(0x0D, 5, "Levitate")
         return true
     else
         BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_APCHUFFY_SET");
@@ -5456,9 +5457,10 @@ function processAGIItem(item_list)
                 end
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
+            savingAGI();
         end
     end
-    savingAGI();
+
 end
 
 function process_block(block)

@@ -49,6 +49,7 @@ BTConsumable = {
         [25] = {key=0x5E79, name="???5"},
         [26] = {key=0x5E79, name="???6"},
         [27] = {key=0x5E79, name="???7"},
+		[29] = {key=0x5E79, name="Green Idols"},
 
     };
     consumeIndex = nil;
