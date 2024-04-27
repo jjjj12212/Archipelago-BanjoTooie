@@ -384,6 +384,18 @@ class BanjoTooieWorld(World):
             self.multiworld.get_location(locationName.JIGGYGI2, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYHP1, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYCC1, self.player).place_locked_item(item)
+
+        if self.options.victory_condition == 3:
+            item = self.create_item(itemName.MUMBOTOKEN)
+            self.multiworld.get_location(locationName.JIGGYIH1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH6, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH7, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH8, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH9, self.player).place_locked_item(item)
             
         
         if self.options.randomize_jinjos == False:
@@ -505,6 +517,7 @@ class BanjoTooieWorld(World):
         btoptions['goal_type'] = int(self.options.victory_condition.value)
         btoptions['minigame_hunt_length'] = int(self.options.minigame_hunt_length.value)
         btoptions['boss_hunt_length'] = int(self.options.boss_hunt_length.value)
+        btoptions['jinjo_family_rescue_length'] = int(self.options.jinjo_family_rescue_length.value)
         # btoptions['warp_traps'] = int(self.options.warp_traps.value)
         return btoptions
 

@@ -110,6 +110,7 @@ local BATH_PADS_QOL = false
 local GOAL_TYPE = nil;
 local MGH_LENGTH = nil;
 local BH_LENGTH = nil;
+local JFR_LENGTH = nil;
 
 -------------- TRAP VARS ------------
 
@@ -119,6 +120,15 @@ local BH_LENGTH = nil;
 --     [1]  = {mapId = 0xAF, worldName = "Spiral Mountain", xPos = 10000, yPos = 10320, zPos = 10231}, -- notes: CCL cavern, by the treble clef
 -- }
 
+-------------- ENCOURAGEMENT MESSAGES ------------
+local ENCOURAGEMENT = {
+         [1]  = {message = " GUH-HUH!"},
+         [2]  = {message = " BREEE!"},
+         [3]  = {message = " EKUM-BOKUM!"},
+         [4]  = {message = " YEEHAW!"},
+         [5]  = {message = " JINJOO!!"},
+         [6]  = {message = " WAHEY!!!"},
+}
 
 local receive_map = { -- [ap_id] = item_id; --  Required for Async Items
     ["NA"] = "NA"
@@ -6125,6 +6135,10 @@ function process_slot(block)
     then
         BH_LENGTH = block['slot_boss_hunt_length']
     end
+    if block['slot_jinjo_family_rescue_length'] ~= nil and block['slot_jinjo_family_rescue_length'] ~= ""
+    then
+        JFR_LENGTH = block['slot_jinjo_family_rescue_length']
+    end
     -- if block['slot_warp_traps'] ~= nil and block['slot_warp_traps'] ~= ""
     -- then
     --     WARP_TRAP_LOGIC = block['slot_warp_traps']
@@ -6301,12 +6315,23 @@ function saveGame()
 end
 
 function printGoalInfo()
-    if GOAL_TYPE == 0 then
-        print("You need to hunt down Grunty in her HAG1 and put her back in the ground!")
-    elseif GOAL_TYPE == 1 then
-        print("You are hunting for "..MGH_LENGTH.." mumbo tokens from Grunty's dastardly minigames. Good Luck!");
-    elseif GOAL_TYPE == 2 then
-        print("You are hunting for "..BH_LENGTH.." mumbo tokens from the 8 world bosses. Good Luck!");
+    local randomEncouragment = ENCOURAGEMENT[math.random(1, #ENCOURAGEMENT)]["message"]
+    if GOAL_TYPE ~= nil and MGH_LENGTH ~= nil and BH_LENGTH ~= nil and JFR_LENGTH ~= nil then
+        if GOAL_TYPE == 0 then
+            print("You need to hunt down Grunty in her HAG1 and put her back in the ground!"..randomEncouragment);
+        elseif GOAL_TYPE == 1 and MGH_LENGTH == 15 then
+            print("You are hunting down all 15 of the Mumbo Tokens found in Grunty's dastardly minigames! Good luck and"..randomEncouragment);
+        elseif GOAL_TYPE == 1 and MGH_LENGTH < 15 then
+            print("You are hunting for "..MGH_LENGTH.." Mumbo Tokens from Grunty's dastardly minigames! Good Luck and"..randomEncouragment);
+        elseif GOAL_TYPE == 2 and BH_LENGTH == 8 then
+            print("You are hunting down all 8 Mumbo Tokens from the 8 world bosses! Good Luck and"..randomEncouragment);
+        elseif GOAL_TYPE == 2 and BH_LENGTH < 8 then
+            print("You are hunting for "..BH_LENGTH.." Mumbo Tokens from the 8 world bosses! Good Luck and"..randomEncouragment);
+        elseif GOAL_TYPE == 3 and JFR_LENGTH == 9 then
+            print("You are trying to rescue all 9 Jinjo families and retrieve their Mumbo Tokens! Good Luck and"..randomEncouragment);
+        elseif GOAL_TYPE == 3 and JFR_LENGTH < 9 then
+            print("You are trying to rescue "..JFR_LENGTH.." of the 9 Jinjo families and retrieve their Mumbo Tokens! Good Luck and"..randomEncouragment);
+        end
     end
 end
 

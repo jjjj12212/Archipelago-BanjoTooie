@@ -103,6 +103,7 @@ class VictoryCondition(Choice):
     option_hag1 = 0
     option_minigame_hunt = 1
     option_boss_hunt = 2
+    option_jinjo_family_rescue = 3
     default = 0
 
 class MinigameHuntLength(Range):
@@ -120,6 +121,14 @@ class BossHuntLength(Range):
     range_start = 1
     range_end = 8
     default = 8
+
+class JinjoFamilyRescueLength(Range):
+    """How many Jinjo families' Mumbo Tokens are needed to clear the Jinjo family rescue
+    Choose a value between 1 and 9"""
+    display_name = "Jinjo Family Rescue Length"
+    range_start = 1
+    range_end = 9
+    default = 9
 
 # class WarpTraps(Choice):
 #     """Choose if you want warp traps enabled"""
@@ -155,4 +164,5 @@ class BanjoTooieOptions(PerGameCommonOptions):
     victory_condition: VictoryCondition
     minigame_hunt_length: MinigameHuntLength
     boss_hunt_length: BossHuntLength
+    jinjo_family_rescue_length: JinjoFamilyRescueLength
     # warp_traps: WarpTraps
