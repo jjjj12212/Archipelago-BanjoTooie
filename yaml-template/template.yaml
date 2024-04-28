@@ -34,9 +34,8 @@ Banjo-Tooie:
   skip_tower_of_tragedy: 1     # 0: no skip, 1: skip completely, 2: play 3rd round only
   speed_up_minigames: 'true'   # skip to round 3 of kickball, dodgems
   skip_puzzles: 'true'
-  victory_condition: 0         
+  victory_condition: 0         # 0: HAG-1, 1: Mini-Games 2: World Bosses     
   open_hag1: 'true'
-  # warp_traps: 0
 
   # Start with these items.
   # start_inventory: {Grip Grab: 1, Fire Eggs: 1}
