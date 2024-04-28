@@ -258,7 +258,11 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_jinjo": ctx.slot_data["jinjo"],
             "slot_notes": ctx.slot_data["notes"],
             "slot_worlds": ctx.slot_data["worlds"],
-            "slot_world_order": ctx.slot_data["world_order"]
+            "slot_world_order": ctx.slot_data["world_order"],
+            "slot_goal_type": ctx.slot_data["goal_type"],
+            "slot_minigame_hunt_length": ctx.slot_data["minigame_hunt_length"],
+            "slot_boss_hunt_length": ctx.slot_data["boss_hunt_length"],
+            "slot_jinjo_family_rescue_length": ctx.slot_data["jinjo_family_rescue_length"],
         })
     ctx.sendSlot = False
     return payload
@@ -341,17 +345,21 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                     "locations": chuf1
                 }])
 
-    if (ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2) and not ctx.finished_game:
+    if (ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or 
+        ctx.slot_data["goal_type"] == 3) and not ctx.finished_game:
         mumbo_tokens = 0
         for networkItem in ctx.items_received:
             if networkItem.item == 1230798:
                 mumbo_tokens += 1
-                if ((ctx.slot_data["goal_type"] == 1 and mumbo_tokens >= 14) or (ctx.slot_data["goal_type"] == 2 and mumbo_tokens >= 8)): 
+                if ((ctx.slot_data["goal_type"] == 1 and mumbo_tokens >= ctx.slot_data["minigame_hunt_length"]) or
+                    (ctx.slot_data["goal_type"] == 2 and mumbo_tokens >= ctx.slot_data["boss_hunt_length"]) or
+                    (ctx.slot_data["goal_type"] == 3 and mumbo_tokens >= ctx.slot_data["jinjo_family_rescue_length"])): 
                     await ctx.send_msgs([{
                         "cmd": "StatusUpdate",
                         "status": 30
                     }])
                     ctx.finished_game = True
+
 
 
     if ctx.slot_data["moves"] == "true" and ctx.sync_ready == True:
