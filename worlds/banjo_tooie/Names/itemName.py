@@ -15,7 +15,6 @@ JIGGY = "Jiggy"
 TREBLE = "Treble Clef"
 NOTE = "5 Notes"
 MUMBOTOKEN = "Mumbo Token"
-WARPS = "Grunty Warp Spell"
 
 GGRAB       = "Grip Grab"
 BBLASTER    = "Breegull Blaster"
