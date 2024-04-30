@@ -42,33 +42,13 @@ class BanjoTooieWorld(World):
     the game features three-dimensional worlds consisting of various platforming challenges and puzzles, with a notable
     increased focus on puzzle-solving over the worlds of Banjo-Kazooie.
     """
+    
     game: str = "Banjo-Tooie"
     web = BanjoTooieWeb()
-    options_dataclass =  BanjoTooieOptions
-    options: BanjoTooieOptions
     topology_preset = True
-    kingjingalingjiggy = False
-    jiggy_counter: int = 0
-    doubloon_counter: int = 0
-    slot_data = []
-    use_cheato_filler = False
-    randomize_worlds = {}
-    world_sphere_1 = [
-        regionName.MT,
-        regionName.GM,
-        regionName.WW,
-        regionName.JR,
-        regionName.HP,
-        regionName.TL,
-        regionName.CC,
-        regionName.GIO
-    ]
-    world_sphere_2 = [
-    ]
-    worlds_randomized = False
-
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
     item_name_to_id = {}
+
     for name, data in all_item_table.items():
         if data.btid is None:  # Skip Victory Item
             continue
@@ -84,6 +64,34 @@ class BanjoTooieWorld(World):
         "Stations": all_group_table["stations"],
         "Access": all_group_table["levelaccess"],
     }
+        
+    options_dataclass =  BanjoTooieOptions
+    options: BanjoTooieOptions
+
+    def __init__(self, world, player):
+
+        self.kingjingalingjiggy = False
+        self.jiggy_counter: int = 0
+        self.doubloon_counter: int = 0
+        self.slot_data = []
+        self.use_cheato_filler = False
+        self.randomize_worlds = {}
+        self.world_sphere_1 = [
+            regionName.MT,
+            regionName.GM,
+            regionName.WW,
+            regionName.JR,
+            regionName.HP,
+            regionName.TL,
+            regionName.CC,
+            regionName.GIO
+        ]
+        self.world_sphere_2 = [
+        ]
+        self.worlds_randomized = False
+        super(BanjoTooieWorld, self).__init__(world, player)
+
+        
     
 
     def create_item(self, itemname: str) -> Item:
@@ -381,7 +389,7 @@ class BanjoTooieWorld(World):
             self.multiworld.get_location(locationName.JIGGYWW3, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYJR7, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYTD4, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYGI2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.CHEATOGI3, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYHP1, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYCC1, self.player).place_locked_item(item)
 
@@ -396,9 +404,8 @@ class BanjoTooieWorld(World):
             self.multiworld.get_location(locationName.JIGGYIH7, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYIH8, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYIH9, self.player).place_locked_item(item)
-            
         
-        if self.options.randomize_jinjos == False:
+        elif self.options.randomize_jinjos == False:
             item = self.create_item(itemName.JIGGY)
             self.multiworld.get_location(locationName.JIGGYIH1, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYIH2, self.player).place_locked_item(item)
@@ -410,6 +417,7 @@ class BanjoTooieWorld(World):
             self.multiworld.get_location(locationName.JIGGYIH8, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYIH9, self.player).place_locked_item(item)
 
+        if self.options.randomize_jinjos == False:
             item = self.create_item(itemName.WJINJO)
             self.multiworld.get_location(locationName.JINJOJR5, self.player).place_locked_item(item)
 
