@@ -5373,11 +5373,15 @@ function processMessages()
 end
 
 function archipelago_msg_box(msg)
+        gui.use_surface("client")
         bgcolor = "#FC6600"
         brcolor = "#000000"
+        textXpos = math.floor(client.screenwidth()*.15)
+        textYpos = math.floor(client.screenheight()*.85)
+        textSize = math.floor((client.screenheight()*.04)+.5)
         if TEXT_START == false
         then
-            gui.drawText(300, 1500, msg, bgcolor, bgcolor, 40)
+            gui.drawText(textXpos, textYpos, msg, bgcolor, brcolor, textSize)
             TEXT_START = true
         end
 end
@@ -5388,7 +5392,7 @@ function clearText()
         TEXT_TIMER = TEXT_TIMER - 1
     else
         gui.clearGraphics()
-        TEXT_TIMER = 2
+        TEXT_TIMER = 3
         TEXT_START = false
     end
 end
@@ -5812,6 +5816,16 @@ function DPadStats()
                     print(values['name'])
                 end
             end
+            -- if GOAL_TYPE ~= 0
+            -- then
+            --     local token_count = 0;
+            --     for location, values in pairs(AGI["1230798"])
+            --     do
+            --         token_count = token_count + 1
+            --     end
+            --     print(" ")
+			--     print("Collected Mumbo Tokens: "..token_count)
+            -- end
         end
 		
         if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 L'] == true
