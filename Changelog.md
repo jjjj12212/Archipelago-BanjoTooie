@@ -1,3 +1,6 @@
+# 1.2.1-Beta
+ - Logic fixes
+
 # 1.2-Beta
 - 2 new Goals added:
   - Minigames Goal: Complete all minigames with optional Canary Mary 4.
