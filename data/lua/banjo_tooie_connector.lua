@@ -5423,7 +5423,6 @@ function archipelago_msg_box(msg)
         bgcolor = "#590000"
         fgcolor = "#ca0000"
         local ratio = client.screenwidth() / client.screenheight()
-        print(ratio)
         if ratio > 1.35
         then
             textXpos = math.floor(client.screenwidth()*.41)
