@@ -2621,12 +2621,10 @@ class BanjoTooieRules:
         return self.can_beat_king_coal(state) and \
             (state.has(itemName.TRAINSWTD, self.player))
 
-    #TODO Needs to handle proper world access
     def HFP_hot_water_cooled(self, state) -> bool:
-        return self.ccl_jiggy(state) and \
-               state.has(itemName.SPLITUP, self.player) and \
-               state.has(itemName.FEGGS, self.player) and \
-               state.has(itemName.TTORP, self.player)
+        return self.can_access_hailfire(state, False) and\
+               self.can_access_ccl(state) and \
+               state.has(itemName.SPLITUP, self.player)
 
     def can_use_floatus(self, state) -> bool:
         return self.check_solo_moves(state, itemName.TAXPACK) and self.check_solo_moves(state, itemName.HATCH)

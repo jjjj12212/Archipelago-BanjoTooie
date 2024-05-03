@@ -1,5 +1,7 @@
 # 1.2.1-Beta
- - Logic fixes
+ - Logic fixes with certain collectibles
+   - Inferno honeycomb and Cheato page
+   - Pig Pool jiggy
 
 # 1.2-Beta
 - 2 new Goals added:
