@@ -292,7 +292,7 @@ class BanjoTooieRules:
             locationName.CHEATOGM3: lambda state: self.cheato_waterstorage(state),
 
             locationName.CHEATOWW1: lambda state: self.cheato_hauntedcavern(state),
-            locationName.CHEATOWW2: lambda state: self.check_humba_magic(state, itemName.HUMBAWW),
+            locationName.CHEATOWW2: lambda state: self.cheato_inferno(state),
             locationName.CHEATOWW3: lambda state: self.cheato_sauceperil(state),
                                             
             locationName.CHEATOJR1: lambda state: state.has(itemName.DOUBLOON, self.player, 28),
@@ -323,7 +323,7 @@ class BanjoTooieRules:
             locationName.HONEYCGM2: lambda state: self.GM_boulders(state),
 
             locationName.HONEYCWW1: lambda state: self.honeycomb_spacezone(state),
-            locationName.HONEYCWW2: lambda state: self.check_humba_magic(state, itemName.HUMBAWW),
+            locationName.HONEYCWW2: lambda state: self.honeycomb_inferno(state),
             locationName.HONEYCWW3: lambda state: self.honeycomb_crazycastle(state),
 
             locationName.HONEYCJR1: lambda state: self.honeycomb_seemee(state),
@@ -1287,6 +1287,16 @@ class BanjoTooieRules:
             logic = state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player)
         return logic
     
+    def honeycomb_inferno(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player) and self.check_humba_magic(state, itemName.HUMBAWW)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_humba_magic(state, itemName.HUMBAWW)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_humba_magic(state, itemName.HUMBAWW)
+        return logic
+    
     def honeycomb_seemee(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -1447,6 +1457,16 @@ class BanjoTooieRules:
             logic = state.has(itemName.GGRAB, self.player) or (self.check_solo_moves(state, itemName.LSPRING) and \
                     (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)))\
                     or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+        return logic
+    
+    def cheato_inferno(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player) and self.check_humba_magic(state, itemName.HUMBAWW)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_humba_magic(state, itemName.HUMBAWW)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_humba_magic(state, itemName.HUMBAWW)
         return logic
     
     def cheato_sauceperil(self, state: CollectionState) -> bool:
@@ -2591,12 +2611,10 @@ class BanjoTooieRules:
         return self.can_beat_king_coal(state) and \
             (state.has(itemName.TRAINSWTD, self.player))
 
-    #TODO Needs to handle proper world access
     def HFP_hot_water_cooled(self, state) -> bool:
-        return self.ccl_jiggy(state) and \
-               state.has(itemName.SPLITUP, self.player) and \
-               state.has(itemName.FEGGS, self.player) and \
-               state.has(itemName.TTORP, self.player)
+        return self.can_access_hailfire(state, False) and\
+               self.can_access_ccl(state) and \
+               state.has(itemName.SPLITUP, self.player)
 
     def can_use_floatus(self, state) -> bool:
         return self.check_solo_moves(state, itemName.TAXPACK) and self.check_solo_moves(state, itemName.HATCH)
@@ -2713,7 +2731,5 @@ class BanjoTooieRules:
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, 15)
         elif self.world.options.victory_condition == 2:
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, 8)
-        elif self.world.options.victory_condition == 3:
-            self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, 9)
         else:
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has("Kick Around", self.player)
