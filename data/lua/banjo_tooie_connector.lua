@@ -5420,14 +5420,24 @@ end
 
 function archipelago_msg_box(msg)
         gui.use_surface("client")
-        bgcolor = "#FC6600"
-        brcolor = "#000000"
-        textXpos = math.floor(client.screenwidth()*.15)
-        textYpos = math.floor(client.screenheight()*.85)
-        textSize = math.floor((client.screenheight()*.04)+.5)
+        bgcolor = "#590000"
+        fgcolor = "#ca0000"
+        local ratio = client.screenwidth() / client.screenheight()
+        print(ratio)
+        if ratio > 1.35
+        then
+            textXpos = math.floor(client.screenwidth()*.41)
+            textYpos = math.floor(client.screenheight()*.70)
+            textSize = math.floor((client.screenheight()*.03)+.5)
+        else
+            textXpos = math.floor(client.screenwidth()*.41)
+            textYpos = math.floor(client.screenheight()*.65)
+            textSize = math.floor((client.screenheight()*.03)+.5)
+        end
+
         if TEXT_START == false
         then
-            gui.drawText(textXpos, textYpos, msg, bgcolor, brcolor, textSize)
+            gui.drawText(textXpos, textYpos, msg, fgcolor, bgcolor, textSize, nil, nil, "center")
             TEXT_START = true
         end
 end
@@ -6254,19 +6264,19 @@ function printGoalInfo()
     if GOAL_TYPE ~= nil and MGH_LENGTH ~= nil and BH_LENGTH ~= nil and JFR_LENGTH ~= nil then
         local message = ""
         if GOAL_TYPE == 0 then
-            message = "You need to hunt down Grunty in her HAG1 and put her back in the ground!"..randomEncouragment;
+            message = "You need to hunt down Grunty in her HAG1 \nand put her back in the ground!"..randomEncouragment;
         elseif GOAL_TYPE == 1 and MGH_LENGTH == 15 then
-            message = "You are hunting down all 15 of the Mumbo Tokens found in Grunty's dastardly minigames! Good luck and"..randomEncouragment;
+            message = "You are hunting down all 15 of the Mumbo Tokens \nfound in Grunty's dastardly minigames! Good luck and"..randomEncouragment;
         elseif GOAL_TYPE == 1 and MGH_LENGTH < 15 then
-            message = "You are hunting for "..MGH_LENGTH.." Mumbo Tokens from Grunty's dastardly minigames! Good Luck and"..randomEncouragment;
+            message = "You are hunting for "..MGH_LENGTH.." Mumbo Tokens from \nGrunty's dastardly minigames! Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 2 and BH_LENGTH == 8 then
-            message = "You are hunting down all 8 Mumbo Tokens from the 8 world bosses! Good Luck and"..randomEncouragment;
+            message = "You are hunting down all 8 Mumbo Tokens from \neach world boss! Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 2 and BH_LENGTH < 8 then
-            message = "You are hunting for "..BH_LENGTH.." Mumbo Tokens from the 8 world bosses! Good Luck and"..randomEncouragment;
+            message = "You are hunting for "..BH_LENGTH.." Mumbo Tokens from \nthe 8 world bosses! Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 3 and JFR_LENGTH == 9 then
-            message ="You are trying to rescue all 9 Jinjo families and retrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
+            message ="You are trying to rescue all 9 Jinjo families and \nretrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 3 and JFR_LENGTH < 9 then
-            message = "You are trying to rescue "..JFR_LENGTH.." of the 9 Jinjo families and retrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
+            message = "You are trying to rescue "..JFR_LENGTH.." of the 9 Jinjo families \nand retrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
         end
         print(message)
         table.insert(AP_MESSAGES, message);
