@@ -94,7 +94,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEIH4,
     ],
     regionName.GM:       [
-        locationName.JINJOGM1,
+        # locationName.JINJOGM1, moved to GMWSJT
         locationName.JINJOGM2,
         locationName.JINJOGM3,
         locationName.JINJOGM4,
@@ -135,6 +135,9 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEGGM14,
         locationName.NOTEGGM15,
         locationName.NOTEGGM16  
+    ],
+    regionName.GMWSJT: [
+        locationName.JINJOGM1,
     ],
     regionName.GMS: [
         locationName.HONEYCGM3
@@ -512,6 +515,7 @@ BANJOTOOIECONNECTIONS: typing.Dict[str, typing.Set[str]] = {
         regionName.IOHCT:              {regionName.JR, regionName.HP, regionName.IOHCT_HFP_ENTRANCE},
         regionName.IOHPG:              {regionName.WW, regionName.IOHWL},
         regionName.IOHWL:              {regionName.TL, regionName.CC, regionName.IOHQM},
+        regionName.GMWSJT:             {regionName.GM},
         regionName.TL:                 {regionName.TL_HATCH},
         # regionName.IOHQM:              {regionName.GIO, regionName.CK}, added later below
         regionName.IOHQM:              {regionName.CK},
@@ -611,7 +615,10 @@ def connect_regions(self):
     region_HP.add_exits({regionName.MT,})
     
     region_JR = multiworld.get_region(regionName.JR, player)
-    region_JR.add_exits({regionName.GM,})
+    region_JR.add_exits({regionName.GMWSJT,}, {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_JRL(state)})
+
+    region_GM = multiworld.get_region(regionName.GM, player)
+    region_GM.add_exits({regionName.GMWSJT,}, {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_GGM(state)})
     
     region_QM = multiworld.get_region(regionName.IOHQM, player)
     region_QM.add_exits({regionName.GIO},
