@@ -1,8 +1,16 @@
-# 1.2.1-Beta
+# 1.3-Beta
  - Logic fixes with certain collectibles
    - Inferno honeycomb and Cheato page
    - Pig Pool jiggy
    - Water Storage Jinjo: Now with proper logic!
+ - Customizable lengths of Boss hunt and Minigame hunt.
+   - Can also be randomized
+ - New Goal:
+   - Jinjo family rescue
+    - With customizable length or randomized
+ - Lua and Text overlay will remind you of your goal each session 
+ - jjjj12212 will no longer be the ONLY ONE having a text overlay on his screen. Everyone gets it now!
+ - Fixed randomize worlds when multiple players use it in the same AP. Now everyone wont have the same order.
 
 # 1.2-Beta
 - 2 new Goals added:

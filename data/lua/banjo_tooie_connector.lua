@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.1.2"
+local BT_VERSION = "V1.3"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -105,6 +105,31 @@ CHUFFY_STOP_WATCH = true;
 LEVI_PAD_MOVED = false;
 
 local BATH_PADS_QOL = false
+
+
+-------------- GOAL TYPE VARS ------------
+local GOAL_TYPE = nil;
+local MGH_LENGTH = nil;
+local BH_LENGTH = nil;
+local JFR_LENGTH = nil;
+
+-------------- TRAP VARS ------------
+
+-- local TOTAL_WARP_COUNTER = 0
+-- local WARP_TRAP_LOGIC = 0
+-- local WARP_TABLE = {
+--     [1]  = {mapId = 0xAF, worldName = "Spiral Mountain", xPos = 10000, yPos = 10320, zPos = 10231}, -- notes: CCL cavern, by the treble clef
+-- }
+
+-------------- ENCOURAGEMENT MESSAGES ------------
+local ENCOURAGEMENT = {
+         [1]  = {message = " GUH-HUH!"},
+         [2]  = {message = " BREEE!"},
+         [3]  = {message = " EKUM-BOKUM!"},
+         [4]  = {message = " YEEHAW!"},
+         [5]  = {message = " JINJOO!!"},
+         [6]  = {message = " WAHEY!!!"},
+}
 
 
 local receive_map = { -- [ap_id] = item_id; --  Required for Async Items
@@ -271,6 +296,38 @@ function BTRAM:getBanjoPos()
     pos["Ypos"] = mainmemory.readfloat(plptr + 0x4, true);
     pos["Zpos"] = mainmemory.readfloat(plptr + 0x8, true);
     return pos;
+end
+
+function BTRAM:setBanjoPos(Xnew, Ynew, Znew, Yvel)
+    local banjo = BTRAM:banjoPTR()
+    if banjo == nil
+    then
+        return false;
+    end
+    local plptr = BTRAM:dereferencePointer(banjo + self.player_pos_ptr);
+    if plptr == nil
+    then
+        return false;
+    end
+	if Ynew ~= nil and Yvel ~= nil
+    then
+        mainmemory.writefloat(plptr + 0x04, Ynew, true);
+        mainmemory.writefloat(plptr + 0x04 + 12, Ynew, true);
+        mainmemory.writefloat(plptr + 0x04 + 24, Ynew, true);
+        mainmemory.writefloat(plptr + 0xC8 + 0x14, Yvel, true);
+    end
+    if Xnew ~= nil
+    then
+        mainmemory.writefloat(plptr + 0x00, Xnew, true);
+        mainmemory.writefloat(plptr + 0x00 + 12, Xnew, true);
+        mainmemory.writefloat(plptr + 0x00 + 24, Xnew, true);
+    end
+    if Znew ~= nil
+    then
+        mainmemory.writefloat(plptr + 0x08, Znew, true);
+        mainmemory.writefloat(plptr + 0x08 + 12, Znew, true);
+        mainmemory.writefloat(plptr + 0x08 + 24, Znew, true);
+    end
 end
 
 function BTRAM:getBanjoTState()
@@ -951,6 +1008,10 @@ local AGI_JINJOS = {
     ["1230508"] = 0, -- purple
     ["1230509"] = 0, -- black
 };
+-- local AGI_TRAPS = {
+--     ["1230799"] = 0,
+-- };
+
 
 local BKM = {}; -- Banjo Tooie Movelist Table
 local BKNOTES = {}; -- Notes
@@ -4051,6 +4112,7 @@ function set_AP_CHUFFY() -- Only run after Transistion
     if AGI_CHUFFY["1230796"] == true
     then
         BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "APCHUFFY_SET");
+        BTRAMOBJ:setFlag(0x0D, 5, "Levitate")
         return true
     else
         BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_APCHUFFY_SET");
@@ -4490,6 +4552,48 @@ function JinjoPause()
     end
 end
 
+------------------ Warp Trap ----------------
+
+-- function ApWarp()
+--     if TOTAL_WARP_COUNTER < AGI_TRAPS["1230799"]
+--     then
+-- 		local POS = {
+-- 			["Xpos"] = 0,
+-- 			["Ypos"] = 0,
+-- 			["Zpos"] = 0,
+-- 		};
+
+--         local warpIndex = math.random(1, #WARP_TABLE)
+-- 		local warpLocation = WARP_TABLE[warpIndex];
+-- 		local mapValue = warpLocation["mapId"]
+--         POS["Xpos"] = warpLocation["xPos"];
+-- 		POS["Ypos"] = warpLocation["yPos"];
+-- 		POS["Zpos"] = warpLocation["zPos"];
+
+
+
+-- 		if (mapValue == CURRENT_MAP) -- and (WARP_TRAP_LOGIC == 1)
+-- 		then
+-- 		    print('hi dad')
+--             BTModel.banjoRAM:setBanjoPos(POS["Xpos"], POS["Ypos"], POS["Zpos"]);
+-- 		 	TOTAL_WARP_COUNTER = AGI_TRAPS["1230799"];
+-- 		end
+
+-- 		-- if WARP_TRAP_LOGIC == 2
+-- 		-- then
+-- 		-- 	for location, worlds in pairs(UNLOCKED_WORLDS)
+-- 		-- 	do
+-- 		-- 		if UNLOCKED_WORLDS[worlds["defaultName"]] == warpLocation["worldName"]
+-- 		-- 		then
+-- 		-- 			--set player map to warpitem mapid
+-- 		-- 			BTModel.banjoRAM:setBanjoPos(POS["Xpos"], POS["Ypos"], POS["Zpos"]);
+-- 		-- 			TOTAL_WARP_COUNTER = warpItems;
+-- 		-- 		end
+-- 		-- 	end
+-- 		-- end
+-- 	end
+-- end
+
 
 function check_open_level(show_message)  -- See if entrance conditions for a level have been met
     local jiggy_count = 0;
@@ -4840,6 +4944,8 @@ function BKAssetFound()
     then
         watchBtnAnimation()
     end
+ -- ApWarp();
+
 end
 
 function locationControl()
@@ -5458,11 +5564,18 @@ function processAGIItem(item_list)
                         break
                     end
                 end
+            -- elseif(memlocation == 1230799)
+            -- then
+            --     if DEBUG == true
+            --     then
+            --         print("Warp Trap Obtained")
+            --     end
+            --     AGI_TRAPS[tostring(memlocation)] = AGI_TRAPS[tostring(memlocation)] + 1
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
+            savingAGI();
         end
     end
-    savingAGI();
 end
 
 function process_block(block)
@@ -5528,6 +5641,7 @@ function SendToBTClient()
     elseif CUR_STATE == STATE_TENTATIVELY_CONNECTED then
         archipelago_msg_box("Connected to the Banjo Tooie Client!");
         print("Connected!")
+        PRINT_GOAL = true;
         CUR_STATE = STATE_OK
     end
 end
@@ -5859,6 +5973,11 @@ function savingAGI()
         print("Writing JINJOS");
     end
     f:write(json.encode(AGI_JINJOS) .. "\n");
+    -- if DEBUGLVL2 == true
+    -- then
+    --     print("Writing Traps");
+    -- end
+    -- f:write(json.encode(AGI_TRAPS) .. "\n");
     if DEBUGLVL2 == true
     then
         print("Writing Received_Map");
@@ -5899,6 +6018,7 @@ function loadAGI()
         f:write(json.encode(AGI_STATIONS) .. "\n");
         f:write(json.encode(AGI_CHUFFY) .. "\n");
         f:write(json.encode(AGI_JINJOS) .. "\n");
+     -- f:write(json.encode(AGI_TRAPS) .. "\n");
         f:write(json.encode(receive_map));
         f:close();
     else
@@ -5912,6 +6032,7 @@ function loadAGI()
         AGI_STATIONS = json.decode(f:read("l"));
         AGI_CHUFFY = json.decode(f:read("l"));
         AGI_JINJOS = json.decode(f:read("l"));
+     -- AGI_TRAPS = json.decode(f:read("l"));
         receive_map = json.decode(f:read("l"));
         f:close();
     end
@@ -6062,6 +6183,26 @@ function process_slot(block)
     then
         ENABLE_AP_NOTES = true
     end
+    if block['slot_goal_type'] ~= nil and block['slot_goal_type'] ~= ""
+    then
+        GOAL_TYPE = block['slot_goal_type']
+    end
+    if block['slot_minigame_hunt_length'] ~= nil and block['slot_minigame_hunt_length'] ~= ""
+    then
+        MGH_LENGTH = block['slot_minigame_hunt_length']
+    end
+    if block['slot_boss_hunt_length'] ~= nil and block['slot_boss_hunt_length'] ~= ""
+    then
+        BH_LENGTH = block['slot_boss_hunt_length']
+    end
+    if block['slot_jinjo_family_rescue_length'] ~= nil and block['slot_jinjo_family_rescue_length'] ~= ""
+    then
+        JFR_LENGTH = block['slot_jinjo_family_rescue_length']
+    end
+    -- if block['slot_warp_traps'] ~= nil and block['slot_warp_traps'] ~= ""
+    -- then
+    --     WARP_TRAP_LOGIC = block['slot_warp_traps']
+    -- end
     if block['slot_world_order'] ~= nil
     then
         local REORG_WORLDS = { }
@@ -6097,6 +6238,7 @@ function process_slot(block)
             end
         end
     end
+    printGoalInfo();
     if SEED ~= 0
     then
         loadAGI()
@@ -6104,6 +6246,31 @@ function process_slot(block)
         return false
     end
     return true
+end
+
+
+function printGoalInfo()
+    local randomEncouragment = ENCOURAGEMENT[math.random(1, #ENCOURAGEMENT)]["message"]
+    if GOAL_TYPE ~= nil and MGH_LENGTH ~= nil and BH_LENGTH ~= nil and JFR_LENGTH ~= nil then
+        local message = ""
+        if GOAL_TYPE == 0 then
+            message = "You need to hunt down Grunty in her HAG1 and put her back in the ground!"..randomEncouragment;
+        elseif GOAL_TYPE == 1 and MGH_LENGTH == 15 then
+            message = "You are hunting down all 15 of the Mumbo Tokens found in Grunty's dastardly minigames! Good luck and"..randomEncouragment;
+        elseif GOAL_TYPE == 1 and MGH_LENGTH < 15 then
+            message = "You are hunting for "..MGH_LENGTH.." Mumbo Tokens from Grunty's dastardly minigames! Good Luck and"..randomEncouragment;
+        elseif GOAL_TYPE == 2 and BH_LENGTH == 8 then
+            message = "You are hunting down all 8 Mumbo Tokens from the 8 world bosses! Good Luck and"..randomEncouragment;
+        elseif GOAL_TYPE == 2 and BH_LENGTH < 8 then
+            message = "You are hunting for "..BH_LENGTH.." Mumbo Tokens from the 8 world bosses! Good Luck and"..randomEncouragment;
+        elseif GOAL_TYPE == 3 and JFR_LENGTH == 9 then
+            message ="You are trying to rescue all 9 Jinjo families and retrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
+        elseif GOAL_TYPE == 3 and JFR_LENGTH < 9 then
+            message = "You are trying to rescue "..JFR_LENGTH.." of the 9 Jinjo families and retrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
+        end
+        print(message)
+        table.insert(AP_MESSAGES, message);
+    end
 end
 
 

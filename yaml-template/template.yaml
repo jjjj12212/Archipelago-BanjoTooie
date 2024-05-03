@@ -1,4 +1,3 @@
----
 # From https://github.com/jjjj12212/Archipelago-BanjoTooie/blob/main/yaml-template/template.yaml
 name: Player{NUMBER}
 description: 'Created By jjjj12212'
@@ -34,13 +33,18 @@ Banjo-Tooie:
   skip_tower_of_tragedy: 1     # 0: no skip, 1: skip completely, 2: play 3rd round only
   speed_up_minigames: 'true'   # skip to round 3 of kickball, dodgems
   skip_puzzles: 'true'
-  victory_condition: 0         # 0: HAG-1, 1: Mini-Games 2: World Bosses     
-  open_hag1: 'true'
-  # warp_traps: 0
-  victory_condition: 0            
-  minigame_hunt_length: 14        
-  boss_hunt_length: 8             
-  jinjo_family_rescue_length: 9   
+
+  # Victory Conditions
+  #   0: HAG-1
+  #   1: Mini-Games
+  #   2: World Bosses
+  #   3: Jinjo Family Hunt
+  victory_condition: 0     
+  open_hag1: 'true'             # Once Cauldron Keep is open, HAG1 is open
+  minigame_hunt_length: 14      # 1-15
+  boss_hunt_length: 8           # 1-8        
+  jinjo_family_rescue_length: 9 # 1-9  
+
   # Start with these items.
   # start_inventory: {Grip Grab: 1, Fire Eggs: 1}
 
