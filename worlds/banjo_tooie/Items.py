@@ -103,6 +103,7 @@ misc_collectable_table = {
     itemName.TREBLE:        ItemData(1230778,  9, "progress", None),
     itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY),
     itemName.NOTE:          ItemData(1230797, 144, "progress", None),
+    # itemName.WARPS: ItemData(1230799, 20, "trap", None),
     itemName.NONE:          ItemData(1230888, 0, "filler", None)
 }
 
