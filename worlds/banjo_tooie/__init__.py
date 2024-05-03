@@ -229,10 +229,10 @@ class BanjoTooieWorld(World):
             if "Banjo-Tooie" in self.multiworld.re_gen_passthrough:
                 passthrough = self.multiworld.re_gen_passthrough["Banjo-Tooie"]
                 self.randomize_worlds = passthrough['world_order']
-                self.worlds_randomized = passthrough['worlds']
+                self.worlds_randomized = bool(passthrough['worlds'] == 'true') 
         else:
             if self.options.randomize_worlds and self.options.randomize_moves == True and \
-            self.options.skip_puzzles == True:
+            self.options.skip_puzzles == True and self.options.logic_type.value > 0:
                 random.shuffle(self.world_sphere_1)
                 first_level = self.world_sphere_1[0]
                 # #temp

@@ -13,6 +13,7 @@
  - jjjj12212 will no longer be the ONLY ONE having a text overlay on his screen. Everyone gets it now!
  - Fixed randomize worlds when multiple players use it in the same AP. Now everyone wont have the same order.
  - 20 note nests are set to be filler items when randomize_notes are enabled.
+ - Fix Universal Tracker showing MT all the time.
 
 # 1.2-Beta
 - 2 new Goals added:
