@@ -2,6 +2,7 @@
  - Logic fixes with certain collectibles
    - Inferno honeycomb and Cheato page
    - Pig Pool jiggy
+   - Water Storage Jinjo: Now with proper logic!
 
 # 1.2-Beta
 - 2 new Goals added:
