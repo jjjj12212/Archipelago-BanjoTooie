@@ -2218,10 +2218,10 @@ class BanjoTooieRules:
                 logic = state.has(itemName.JIGGY, self.player, amt)
             elif self.world.options.logic_type == 1: # normal
                 logic = state.has(itemName.JIGGY, self.player, amt) or \
-                (self.can_access_hailfire and (self.has_explosives or state.has(itemName.MUMBOHP, self.player)))
+                (self.can_access_hailfire(state, False) and (self.has_explosives or state.has(itemName.MUMBOHP, self.player)))
             elif self.world.options.logic_type == 2: # advanced
                 logic = state.has(itemName.JIGGY, self.player, amt) or \
-                (self.can_access_hailfire and (self.has_explosives or state.has(itemName.MUMBOHP, self.player)))
+                (self.can_access_hailfire(state, False) and (self.has_explosives or state.has(itemName.MUMBOHP, self.player)))
             return logic
 
     def can_access_plateau(self, state: CollectionState) -> bool:
