@@ -126,3 +126,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     speed_up_minigames: SpeedUpMinigames
     logic_type: LogicType
     victory_condition: VictoryCondition
+    minigame_hunt_length: MinigameHuntLength
+    boss_hunt_length: BossHuntLength
+    jinjo_family_rescue_length: JinjoFamilyRescueLength
+    # warp_traps: WarpTraps

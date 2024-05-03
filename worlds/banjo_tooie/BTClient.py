@@ -296,6 +296,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
 
     if "DEMO" not in locations and ctx.sync_ready == True:
         if ctx.location_table != locations:
+            ctx.location_table = locations
             locs1 = []
             for item_group, BTlocation_table in locations.items():
                     if len(BTlocation_table) == 0:
@@ -318,15 +319,12 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                                     locationId == "1230682" or locationId == "1230683" or locationId == "1230684") \
                                     and ctx.slot_data["jinjo"] == "true":
                                     continue
-                                if locationId not in ctx.location_table:
-                                    locs1.append(int(locationId))
+                                locs1.append(int(locationId))
             if len(locs1) > 0:
                 await ctx.send_msgs([{
                     "cmd": "LocationChecks",
                     "locations": locs1
                 }])
-            ctx.location_table = locations
-
 
         if ctx.chuffy_table != chuffy:
             ctx.chuffy_table = chuffy
@@ -351,8 +349,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                         "cmd": "StatusUpdate",
                         "status": 30
                     }])
-                    ctx.finished_game = True
-
+                    ctx.finished_game = True    
+    
 
     if ctx.slot_data["moves"] == "true" and ctx.sync_ready == True:
         # Locations handling

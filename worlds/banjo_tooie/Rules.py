@@ -2450,16 +2450,6 @@ class BanjoTooieRules:
                     self.check_solo_moves(state, itemName.GLIDE) and (self.check_solo_moves(state, itemName.WWHACK) or \
                     state.has(itemName.EGGAIM, self.player))
         return logic
-
-    def gi_outside_to_floor_1(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == 0: # beginner
-            logic = False
-        elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.CLAWBTS, self.player)
-        elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.CLAWBTS, self.player)
-        return logic
     
     #TODO check
     def can_access_gi_fl2_2fl3all(self, state: CollectionState) -> bool:

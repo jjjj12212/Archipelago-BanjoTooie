@@ -36,7 +36,11 @@ Banjo-Tooie:
   skip_puzzles: 'true'
   victory_condition: 0         # 0: HAG-1, 1: Mini-Games 2: World Bosses     
   open_hag1: 'true'
-
+  # warp_traps: 0
+  victory_condition: 0            
+  minigame_hunt_length: 14        
+  boss_hunt_length: 8             
+  jinjo_family_rescue_length: 9   
   # Start with these items.
   # start_inventory: {Grip Grab: 1, Fire Eggs: 1}
 
