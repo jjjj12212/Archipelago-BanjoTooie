@@ -424,9 +424,7 @@ class BanjoTooieRules:
             locationName.JINJOMT2: lambda state: self.jinjo_stadium(state),
             locationName.JINJOMT3: lambda state: state.has(itemName.BBLASTER, self.player),
 
-            #TODO Needs to be refined later
-            locationName.JINJOGM1: lambda state: self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and
-                                                 self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state),
+            #Water Storage Jinjo always true because it's in the GMWSJT area
             locationName.JINJOGM2: lambda state: self.check_humba_magic(state, itemName.HUMBAGM),
             locationName.JINJOGM4: lambda state: self.GM_boulders(state),
 
@@ -2257,6 +2255,29 @@ class BanjoTooieRules:
         else:
             amt = self.world.randomize_worlds[regionName.GM]
             return state.has(itemName.JIGGY, self.player, amt)
+        
+
+    def can_access_water_storage_jinjo_from_GGM(self, state):
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = False
+        elif self.world.options.logic_type == 1 : # normal
+            logic = self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and\
+                                                 self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state) 
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and\
+                                                 self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state)
+        return logic
+    
+    def can_access_water_storage_jinjo_from_JRL(self, state):
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_reach_atlantis(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.IEGGS, self.player) and state.has(itemName.AUQAIM, self.player) and state.has(itemName.TTORP, self.player)
+        return logic
     
     def can_access_pinegrove(self, state: CollectionState, fromTrain: bool) -> bool:
         logic = True
