@@ -73,6 +73,7 @@ class BanjoTooieWorld(World):
         self.kingjingalingjiggy = False
         self.jiggy_counter: int = 0
         self.doubloon_counter: int = 0
+        self.notecounter: int = 0
         self.slot_data = []
         self.use_cheato_filler = False
         self.randomize_worlds = {}
@@ -103,6 +104,12 @@ class BanjoTooieWorld(World):
                 else:
                     item_classification = ItemClassification.filler
                 self.jiggy_counter += 1
+            elif banjoItem.btid == 1230797 and self.options.randomize_notes.value == True:
+                if self.notecounter <= 124:
+                    item_classification = ItemClassification.progression
+                else:
+                    item_classification = ItemClassification.filler
+                self.notecounter += 1
             else:
                 item_classification = ItemClassification.progression
         if banjoItem.type == 'useful':
@@ -167,7 +174,7 @@ class BanjoTooieWorld(World):
         if(item.code == 1230514 and self.options.randomize_doubloons == False) :
             return False
         
-        if(item.code == 1230513 and self.options.randomize_cheato == False) : # Added later in Prefill
+        if(item.code == 1230513 and self.options.randomize_cheato.value == False) : # Added later in Prefill
             return False
         
         if(item.code == 1230512 and self.options.randomize_honeycombs == False) : # Added later in Prefill
@@ -215,6 +222,8 @@ class BanjoTooieWorld(World):
         connect_regions(self)
 
     def generate_early(self) -> None:
+        if self.options.victory_condition == 1 or self.options.victory_condition == 2:
+            self.options.randomize_cheato.value = True
         # Universal Tracker Magic
         if hasattr(self.multiworld, "re_gen_passthrough"): 
             if "Banjo-Tooie" in self.multiworld.re_gen_passthrough:
@@ -233,22 +242,22 @@ class BanjoTooieWorld(World):
                 # #temp
                 all_good = False
                 while(all_good == False):
-                    if first_level == regionName.GIO and (self.options.randomize_cheato == False or self.options.randomize_jinjos == False or \
+                    if first_level == regionName.GIO and (self.options.randomize_cheato.value == False or self.options.randomize_jinjos == False or \
                     self.options.randomize_notes == False):
                         random.shuffle(self.world_sphere_1)
                         first_level = self.world_sphere_1[0]
                         continue
-                    elif first_level == regionName.TL and (self.options.randomize_cheato == False or self.options.randomize_jinjos == False) and \
+                    elif first_level == regionName.TL and (self.options.randomize_cheato.value == False or self.options.randomize_jinjos == False) and \
                     self.options.randomize_notes == False:
                         random.shuffle(self.world_sphere_1)
                         first_level = self.world_sphere_1[0]
                         continue
-                    elif first_level == regionName.CC and (self.options.randomize_cheato == False or self.options.randomize_jinjos == False) and \
+                    elif first_level == regionName.CC and (self.options.randomize_cheato.value == False or self.options.randomize_jinjos == False) and \
                     self.options.randomize_notes == False:
                         random.shuffle(self.world_sphere_1)
                         first_level = self.world_sphere_1[0]
                         continue
-                    elif first_level == regionName.WW and (self.options.randomize_cheato == False or self.options.randomize_jinjos == False) and \
+                    elif first_level == regionName.WW and (self.options.randomize_cheato.value == False or self.options.randomize_jinjos == False) and \
                     self.options.randomize_notes == False:
                         random.shuffle(self.world_sphere_1)
                         first_level = self.world_sphere_1[0]
@@ -318,7 +327,7 @@ class BanjoTooieWorld(World):
         if self.options.randomize_honeycombs == False:
             self.banjo_pre_fills(itemName.HONEY, "Honeycomb", False)
                     
-        if self.options.randomize_cheato == False:
+        if self.options.randomize_cheato.value == False:
             self.banjo_pre_fills(itemName.PAGES, "Page", False)
 
         if self.options.randomize_doubloons == False:
@@ -511,7 +520,7 @@ class BanjoTooieWorld(World):
         else:
             btoptions["skip_tot"] = "false"
         btoptions['honeycomb'] = "true" if self.options.randomize_honeycombs == 1 else "false"
-        btoptions['pages'] = "true" if self.options.randomize_cheato == 1 else "false"
+        btoptions['pages'] = "true" if self.options.randomize_cheato.value == True else "false"
         btoptions['moves'] = "true" if self.options.randomize_moves == 1 else "false"
         btoptions['doubloons'] = "true" if self.options.randomize_doubloons == 1 else "false"
         btoptions['minigames'] = 'skip' if self.options.speed_up_minigames == 1 else "full"

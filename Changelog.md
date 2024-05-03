@@ -5,12 +5,14 @@
    - Water Storage Jinjo: Now with proper logic!
  - Customizable lengths of Boss hunt and Minigame hunt.
    - Can also be randomized
+   - If Boss Hunt or Minigame Hunt is selected, Cheato Pages WILL BE RANDOMIZED  
  - New Goal:
    - Jinjo family rescue
     - With customizable length or randomized
  - Lua and Text overlay will remind you of your goal each session 
  - jjjj12212 will no longer be the ONLY ONE having a text overlay on his screen. Everyone gets it now!
  - Fixed randomize worlds when multiple players use it in the same AP. Now everyone wont have the same order.
+ - 20 note nests are set to be filler items when randomize_notes are enabled.
 
 # 1.2-Beta
 - 2 new Goals added:
