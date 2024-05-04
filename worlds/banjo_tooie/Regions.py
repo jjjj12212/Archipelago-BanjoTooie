@@ -626,7 +626,7 @@ def connect_regions(self):
     
     region_GIO = multiworld.get_region(regionName.GIO, player)
     region_GIO.add_exits({regionName.GI1},
-                        {regionName.GI1: lambda state: state.has(itemName.CLAWBTS, player)})
+                        {regionName.GI1: lambda state: rules.can_access_gi_fl1_from_outside(state)})
     
     region_GI1 = multiworld.get_region(regionName.GI1, player)
     region_GI1.add_exits({regionName.GIO},

@@ -232,7 +232,7 @@ class BanjoTooieWorld(World):
                 self.worlds_randomized = bool(passthrough['worlds'] == 'true') 
         else:
             if self.options.randomize_worlds and self.options.randomize_moves == True and \
-            self.options.skip_puzzles == True and self.options.logic_type.value > 0:
+            self.options.skip_puzzles == True:
                 random.shuffle(self.world_sphere_1)
                 first_level = self.world_sphere_1[0]
                 # #temp
