@@ -2223,13 +2223,13 @@ class BanjoTooieRules:
                 logic = state.has(itemName.JIGGY, self.player, amt) or \
                 (self.can_access_hailfire(state, False) and (self.has_explosives or state.has(itemName.MUMBOHP, self.player)))
             return logic
-
-    def can_access_plateau(self, state: CollectionState) -> bool:
+    
+    def WH_to_PL(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
+            logic = state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
+            logic = state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 2: # advanced
             logic = True
         return logic
@@ -2278,26 +2278,15 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.IEGGS, self.player) and state.has(itemName.AUQAIM, self.player) and state.has(itemName.TTORP, self.player)
         return logic
-    
-    def can_access_pinegrove(self, state: CollectionState, fromTrain: bool) -> bool:
+      
+    def PL_to_PG(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state) and \
-                    state.has(itemName.EGGAIM, self.player)
+            logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.EGGAIM, self.player)
         elif self.world.options.logic_type == 1 : # normal
-            if fromTrain:
-                logic = (state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state))
-            else:
-                logic = (state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state)) or \
-                        ((self.has_train_access(state, "WW") and self.ww_jiggy(state)) or \
-                        (self.has_train_access(state, "TDL") and state.has(itemName.TTORP, self.player)))
+                logic = state.has(itemName.FEGGS, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            if fromTrain:
-                logic = (state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state))
-            else:
-                logic = (state.has(itemName.FEGGS, self.player) and self.can_access_plateau(state)) or \
-                        ((self.has_train_access(state, "WW") and self.ww_jiggy(state)) or \
-                        (self.has_train_access(state, "TDL") and state.has(itemName.TTORP, self.player)))
+                logic = state.has(itemName.FEGGS, self.player)
         return logic
     
     def can_access_witchyworld(self, state: CollectionState, fromTrain: bool) -> bool:

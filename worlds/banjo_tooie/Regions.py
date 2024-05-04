@@ -142,9 +142,11 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.GMS: [
         locationName.HONEYCGM3
     ],
-    regionName.CHUFFY: [
+    regionName.CHUFFY: 
+    [
         locationName.JIGGYGM1,
         locationName.CHUFFY
+ 
     ],
     regionName.IOHPG:   [
         locationName.GEGGS,
@@ -528,7 +530,9 @@ BANJOTOOIECONNECTIONS: typing.Dict[str, typing.Set[str]] = {
         #Train Station Connections
         regionName.GM:                 {regionName.GMS},
         regionName.GMS:                {regionName.CHUFFY},
-        regionName.CHUFFY:             {regionName.IOHCTS, regionName.TLS, regionName.GIS, regionName.HPLS, regionName.WWS, regionName.HPIS},
+
+        regionName.CHUFFY: 
+                    {regionName.IOHCTS, regionName.TLS, regionName.GIS, regionName.HPLS, regionName.WWS, regionName.HPIS},
         regionName.TLS:                {regionName.TL},
         regionName.GIS:                {regionName.GI1},
         regionName.HP:                 {regionName.IOHCT_HFP_ENTRANCE},
@@ -588,18 +592,31 @@ def connect_regions(self):
     player = self.player
     rules = BanjoTooieRules(self)
 
-    for source, target in BANJOTOOIECONNECTIONS.items():
-        source_region = multiworld.get_region(source, player)
-        if any(region in (regionName.TL_HATCH, regionName.IOHCT_HFP_ENTRANCE) for region in target):
-            continue
-        # if any(region in (regionName.GIO, regionName.GI1, regionName.GI2, regionName.GI3ALL) for region in target):
-        #     continue
-        source_region.add_exits(target)
+    region_SM = multiworld.get_region(regionName.SM, player)
+    region_SM.add_exits({regionName.IOHJV})
+
+    region_JV = multiworld.get_region(regionName.IOHJV, player)
+    region_JV.add_exits({regionName.IOHWH})
+
+    region_WH = multiworld.get_region(regionName.IOHWH, player)
+    # WH -> MT done in init.py
+    region_WH.add_exits({regionName.IOHPL}, {regionName.IOHPL: lambda state: rules.WH_to_PL(state)})
 
     region_MT = multiworld.get_region(regionName.MT, player)
-    region_MT.add_exits({regionName.TL_HATCH,},
-                        {regionName.TL_HATCH: lambda state: (state.has(itemName.GGRAB, player) and state.has(itemName.EGGAIM, player)) or
-                                                            (state.has(itemName.MUMBOMT, player) or state.has(itemName.BDRILL, player))})
+    region_MT.add_exits({regionName.TL_HATCH,regionName.GM},
+                        {regionName.TL_HATCH: lambda state: rules.jiggy_treasure_chamber(state),\
+                        regionName.GM: lambda state: rules.dilberta_free(state)})
+
+    region_PL = multiworld.get_region(regionName.PL, player)
+    # PL -> GGM done in init.py
+    region_PL.add_exits({regionName.IOHPG,regionName.IOHCT},
+                        {regionName.IOHPG: lambda state: rules.PL_to_PG(state),
+                        regionName.IOHCT: lambda state: state.has(itemName.SPLITUP, player)})
+    
+    region_GM = multiworld.get_region(regionName.GM, player)
+    region_GM.add_exits({regionName.GMWSJT, regionName.PL, regionName.CHUFFY},
+    {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_GGM(state)})
+      
     region_TL = multiworld.get_region(regionName.TL, player)
     region_TL.add_exits({regionName.TL_HATCH,})
     region_TL.add_exits({regionName.WW,})
@@ -607,19 +624,14 @@ def connect_regions(self):
     region_IOHCT = multiworld.get_region(regionName.IOHCT, player)
     region_IOHCT.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.HP, regionName.JR})
 
+    region_JR = multiworld.get_region(regionName.JR, player)
+    region_JR.add_exits({regionName.GMWSJT,}, {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_JRL(state)})
+
     region_HP = multiworld.get_region(regionName.HP, player)
     region_HP.add_exits({regionName.IOHCT_HFP_ENTRANCE,},
                         {regionName.IOHCT_HFP_ENTRANCE: lambda state: state.has(itemName.MUMBOMT, player) and state.has(itemName.TRAINSWHP1, player) and
                                                                       (self.options.randomize_stations == 1)})
-    region_HP.add_exits({regionName.JR,})
-    region_HP.add_exits({regionName.MT,})
-    
-    region_JR = multiworld.get_region(regionName.JR, player)
-    region_JR.add_exits({regionName.GMWSJT,}, {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_JRL(state)})
-
-    region_GM = multiworld.get_region(regionName.GM, player)
-    region_GM.add_exits({regionName.GMWSJT,}, {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_GGM(state)})
-    
+   
     region_QM = multiworld.get_region(regionName.IOHQM, player)
     region_QM.add_exits({regionName.GIO},
                         {regionName.GIO: lambda state: rules.can_access_gruntyindustries_outside(state, False)})
@@ -642,3 +654,7 @@ def connect_regions(self):
     region_GI3ALL = multiworld.get_region(regionName.GI3ALL, player)
     region_GI3ALL.add_exits({regionName.GIO})
     region_GI3ALL.add_exits({regionName.GI2})
+
+    region_HP.add_exits({regionName.JR,})
+    region_HP.add_exits({regionName.MT,})
+ 
