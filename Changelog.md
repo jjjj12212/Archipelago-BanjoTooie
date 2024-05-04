@@ -1,3 +1,7 @@
+# 1.3.1-Beta
+ - Fix Randomize Worlds for beginners. Allow randomization
+ - Fix GI access for beginners logic 
+
 # 1.3-Beta
  - Logic fixes with certain collectibles
    - Inferno honeycomb and Cheato page

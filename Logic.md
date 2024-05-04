@@ -1,4 +1,4 @@
-# Current Logic Implementation | v1.0.0-Beta
+# Current Logic Implementation | 1.3.1-Beta
 
 We currently have 3 logics put in place. None of them require glitches.
 
