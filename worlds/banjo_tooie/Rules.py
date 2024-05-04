@@ -2458,6 +2458,16 @@ class BanjoTooieRules:
             logic = self.can_leave_GI_from_inside(state)
         return logic
     
+    def can_access_gi_fl1_from_outside(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.has_train_access(state, "GI") and state.has(itemName.CLAWBTS, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.CLAWBTS, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.CLAWBTS, self.player)
+        return logic
+    
     def can_access_gi_fl1_2fl2(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
