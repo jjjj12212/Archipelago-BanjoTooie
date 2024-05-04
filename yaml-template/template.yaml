@@ -25,7 +25,7 @@ Banjo-Tooie:
   randomize_chuffy: 'true'     # Chuffy as a AP Item
   randomize_notes: 'true'
 
-  # Changes which levels are open; incompatible with trackers at the moment -- skip
+  # Changes which levels are open; Not recommended when doing multiworld seeds.
   randomize_worlds: 'false'
 
   logic_type: 0                # 0: Beginner, 1: Normal, 2: Advanced
