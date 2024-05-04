@@ -113,6 +113,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GLOWBOMEG,
         locationName.HONEYCGM1,
         locationName.HONEYCGM2,
+        locationName.HONEYCGM3,
         locationName.CHEATOGM1,
         locationName.CHEATOGM2,
         locationName.CHEATOGM3,
@@ -138,9 +139,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     ],
     regionName.GMWSJT: [
         locationName.JINJOGM1,
-    ],
-    regionName.GMS: [
-        locationName.HONEYCGM3
     ],
     regionName.CHUFFY: 
     [
@@ -201,15 +199,12 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEWW15,
         locationName.NOTEWW16  
     ],
-    regionName.WWS: [
-    ],
     regionName.IOHCT:   [
         locationName.JINJOIH3,
         locationName.IEGGS,
         locationName.TRAINSWIH,
 
     ],
-    regionName.IOHCTS: [],
     regionName.IOHCT_HFP_ENTRANCE: [
         locationName.GLOWBOIH1,
         locationName.NOTEIH9,
@@ -350,7 +345,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.TL_HATCH: [
         locationName.HATCH,
     ],
-    regionName.TLS: [],
     regionName.IOHQM:   [],
     regionName.GIO: [
         locationName.TRAINSWGI,
@@ -360,10 +354,14 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JIGGYGI8,
         locationName.JIGGYGI10,
         locationName.CHEATOGI1,
+        locationName.HONEYCGI2,
         locationName.SNPACK,
         locationName.CLAWBTS,
         locationName.NOTEGI4,
         locationName.NOTEGI5,
+        locationName.NOTEGI1,
+        locationName.NOTEGI2,
+        locationName.NOTEGI3,
         locationName.NOTEGI13,
         locationName.NOTEGI14,
         locationName.NOTEGI11,
@@ -401,12 +399,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEGI16,
         
     ],
-    regionName.GIS: [
-        locationName.HONEYCGI2,
-        locationName.NOTEGI1,
-        locationName.NOTEGI2,
-        locationName.NOTEGI3,
-    ],
     regionName.HP: [
         locationName.JINJOHP1,
         locationName.JINJOHP2,
@@ -417,6 +409,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JIGGYHP2,
         locationName.JIGGYHP3,
         locationName.JIGGYHP4,
+        locationName.JIGGYHP5,
         locationName.JIGGYHP6,
         #locationName.JIGGYHP7, # in TDL
         locationName.JIGGYHP8,
@@ -425,6 +418,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GLOWBOHP1,
         locationName.GLOWBOHP2,
         locationName.HONEYCHP1,
+        locationName.HONEYCHP2,
         locationName.HONEYCHP3,
         locationName.CHEATOHP1,
         locationName.CHEATOHP2,
@@ -450,12 +444,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEHFP14,
         locationName.NOTEHFP15,
         locationName.NOTEHFP16
-    ],
-    regionName.HPLS: [
-        locationName.HONEYCHP2
-    ],      
-    regionName.HPIS: [
-        locationName.JIGGYHP5,
     ],
     regionName.CC:      [
         locationName.JINJOCC1,
@@ -506,41 +494,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.HAG1
     ]
 }
-
-BANJOTOOIECONNECTIONS: typing.Dict[str, typing.Set[str]] = {
-        "Menu":                        {regionName.SM},
-        regionName.SM:                 {regionName.IOHJV},
-        regionName.IOHJV:              {regionName.IOHWH},
-        regionName.IOHWH:              {regionName.MT, regionName.IOHPL},
-        regionName.MT:                 {regionName.TL_HATCH},
-        regionName.IOHPL:              {regionName.GM, regionName.IOHCT, regionName.IOHPG},
-        regionName.IOHCT:              {regionName.JR, regionName.HP, regionName.IOHCT_HFP_ENTRANCE},
-        regionName.IOHPG:              {regionName.WW, regionName.IOHWL},
-        regionName.IOHWL:              {regionName.TL, regionName.CC, regionName.IOHQM},
-        regionName.GMWSJT:             {regionName.GM},
-        regionName.TL:                 {regionName.TL_HATCH},
-        # regionName.IOHQM:              {regionName.GIO, regionName.CK}, added later below
-        regionName.IOHQM:              {regionName.CK},
-
-        regionName.CK:                 {regionName.H1},
-        #GI
-        # regionName.GIO:                {regionName.GI1},
-        # regionName.GI1:                {regionName.GI2},
-        # regionName.GI2:                {regionName.GI3ALL},
-        #Train Station Connections
-        regionName.GM:                 {regionName.GMS},
-        regionName.GMS:                {regionName.CHUFFY},
-
-        regionName.CHUFFY: 
-                    {regionName.IOHCTS, regionName.TLS, regionName.GIS, regionName.HPLS, regionName.WWS, regionName.HPIS},
-        regionName.TLS:                {regionName.TL},
-        regionName.GIS:                {regionName.GI1},
-        regionName.HP:                 {regionName.IOHCT_HFP_ENTRANCE},
-        regionName.HPLS:               {regionName.HP},
-        regionName.IOHCTS:             {regionName.IOHCT},
-        regionName.WWS:                {regionName.WW}
-
-    }
     
 def create_regions(self):
     multiworld = self.multiworld
@@ -591,6 +544,9 @@ def connect_regions(self):
     multiworld = self.multiworld
     player = self.player
     rules = BanjoTooieRules(self)
+
+    region_menu = multiworld.get_region("Menu", player)
+    region_menu.add_exits({regionName.SM})
 
     region_SM = multiworld.get_region(regionName.SM, player)
     region_SM.add_exits({regionName.IOHJV})
@@ -652,16 +608,19 @@ def connect_regions(self):
     region_TL.add_exits({regionName.TL_HATCH, regionName.WW}, {regionName.WW: lambda state: rules.oogle_boogles_open(state)})
     
     region_QM = multiworld.get_region(regionName.IOHQM, player)
-    region_QM.add_exits({regionName.GIO, regionName.IOHWL},
-                        {regionName.GIO: lambda state: rules.gi_jiggy(state), regionName.IOHWL: lambda state: rules.QM_to_WL(state)})
+    region_QM.add_exits({regionName.GIO, regionName.IOHWL, regionName.CK},
+                        {regionName.GIO: lambda state: rules.gi_jiggy(state), regionName.IOHWL: lambda state: rules.QM_to_WL(state),
+                         regionName.CK: lambda state: state.has(itemName.CLAWBTS, self.player) and rules.ck_jiggy()})
     
     region_GIO = multiworld.get_region(regionName.GIO, player)
     region_GIO.add_exits({regionName.GI3ALL, regionName.IOHQM},
                         {regionName.GI3ALL: lambda state: rules.outside_gi_to_floor3(state), regionName.IOHQM: lambda state: rules.gi_jiggy(state)})
     
     region_GI1 = multiworld.get_region(regionName.GI1, player)
-    region_GI1.add_exits({regionName.GIO, regionName.GI2},
-                        {regionName.GIO: lambda state: state.has(itemName.SPLITUP, self.player), regionName.GI2: lambda state: rules.can_access_gi_fl1_2fl2(state)})
+    region_GI1.add_exits({regionName.GIO, regionName.GI2, regionName.CHUFFY},
+                        {regionName.GIO: lambda state: state.has(itemName.SPLITUP, self.player),
+                         regionName.GI2: lambda state: rules.can_access_gi_fl1_2fl2(state),
+                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWGI, player)})
     
     region_GI2 = multiworld.get_region(regionName.GI2, player)
     region_GI2.add_exits({regionName.GIO, regionName.GI1, regionName.GI3ALL},
@@ -669,4 +628,8 @@ def connect_regions(self):
     
     region_GI3ALL = multiworld.get_region(regionName.GI3ALL, player)
     region_GI3ALL.add_exits({regionName.GIO, regionName.GI2})
+
+    region_CK = multiworld.get_region(regionName.CK, player)
+    region_CK.add_exits({regionName.H1},
+                        {regionName.H1: lambda state: rules.check_hag1_options(state)})
  

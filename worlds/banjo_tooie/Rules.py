@@ -158,16 +158,6 @@ class BanjoTooieRules:
                 locationName.W8: lambda state: state.has(itemName.JIGGY, self.player, 45),
             }
 
-        self.station_rules = {
-            regionName.IOHCTS:  lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWIH, self.player),
-            regionName.TLS:     lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWTD, self.player),
-            regionName.GIS:     lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWGI, self.player),
-            regionName.HPLS:    lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, self.player),
-            regionName.WWS:     lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWWW, self.player),
-            regionName.HPIS:    lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, self.player) and
-                                              state.has(itemName.TRAINSWHP2, self.player) and state.has(itemName.GEGGS, self.player) and
-                                              state.has(itemName.TRAINSWWW, self.player),
-        }
         self.train_rules = {
             locationName.CHUFFY: lambda state: self.can_beat_king_coal(state),
             locationName.TRAINSWIH: lambda state: state.has(itemName.GGRAB, self.player),
@@ -2406,6 +2396,12 @@ class BanjoTooieRules:
             amt = self.world.randomize_worlds[regionName.GIO]
             return state.has(itemName.JIGGY, self.player, amt)
         
+    def ck_jiggy(self, state: CollectionState) -> bool: #45
+        if self.world.worlds_randomized == True:
+            return state.has(itemName.CKA, self.player)
+        else:
+            return state.has(itemName.JIGGY, self.player, 45)
+        
     def QM_to_WL(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -2754,11 +2750,6 @@ class BanjoTooieRules:
         for location, rules in self.treble_clef_rules.items():
             treble = self.world.multiworld.get_location(location, self.player)
             set_rule(treble, rules)
-
-        for region_name, rules in self.station_rules.items():
-            station = self.world.multiworld.get_region(region_name, self.player)
-            for entrance in station.entrances:
-                entrance.access_rule = rules
 
         for location, rules in self.train_rules.items():
             train = self.world.multiworld.get_location(location, self.player)
