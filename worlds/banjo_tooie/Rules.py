@@ -2479,6 +2479,16 @@ class BanjoTooieRules:
                 or self.check_solo_moves(state, itemName.LSPRING)
         return logic
     
+    def F2_to_F3(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = (state.has(itemName.GGRAB, self.player) and state.has(itemName.CLAWBTS, self.player)) or self.check_humba_magic(state, itemName.HUMBAGI)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_humba_magic(state, itemName.HUMBAGI) or state.has(itemName.CLAWBTS, self.player) or self.check_solo_moves(state, itemName.LSPRING)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_humba_magic(state, itemName.HUMBAGI) or state.has(itemName.CLAWBTS, self.player) or self.check_solo_moves(state, itemName.LSPRING)
+        return logic
+    
     def can_access_hailfire(self, state: CollectionState, fromTrain) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
