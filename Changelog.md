@@ -1,3 +1,7 @@
+# 1.4-Beta
+ - refactor Region logic
+ - Snake Head Cheato Page is now Treasure Chamber Cheato Page 
+
 # 1.3.1-Beta
  - Fix Randomize Worlds for beginners. Allow randomization
  - Fix GI access for beginners logic 
