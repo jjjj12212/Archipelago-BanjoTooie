@@ -584,8 +584,10 @@ def connect_regions(self):
      regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWWW, player)})
 
     region_IOHCT = multiworld.get_region(regionName.IOHCT, player)
-    region_IOHCT.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.HP, regionName.JR},
-        {regionName.HP:lambda state: rules.hfp_jiggy(state), regionName.JR: lambda state: rules.jrl_jiggy(state)})
+    region_IOHCT.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.HP, regionName.JR, regionName.CHUFFY},
+        {regionName.HP:lambda state: rules.hfp_jiggy(state),
+         regionName.JR: lambda state: rules.jrl_jiggy(state),
+         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWIH, player)})
   
     region_JR = multiworld.get_region(regionName.JR, player)
     region_JR.add_exits({regionName.GMWSJT, regionName.IOHCT},
@@ -605,7 +607,10 @@ def connect_regions(self):
                          regionName.CC: lambda state: rules.ccl_jiggy(state)})
     
     region_TL = multiworld.get_region(regionName.TL, player)
-    region_TL.add_exits({regionName.TL_HATCH, regionName.WW}, {regionName.WW: lambda state: rules.oogle_boogles_open(state)})
+    region_TL.add_exits({regionName.TL_HATCH, regionName.WW, regionName.CHUFFY},
+                        {regionName.WW: lambda state: rules.oogle_boogles_open(state),
+                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWTD, player)
+                         })
     
     region_QM = multiworld.get_region(regionName.IOHQM, player)
     region_QM.add_exits({regionName.GIO, regionName.IOHWL, regionName.CK},
