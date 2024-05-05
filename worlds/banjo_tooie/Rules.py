@@ -2146,7 +2146,7 @@ class BanjoTooieRules:
                 (self.can_access_hailfire(state, False) and (self.has_explosives or state.has(itemName.MUMBOHP, self.player)))
             return logic
         
-    def HFP_to_MT(self, state):
+    def HFP_to_MT(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.GEGGS, self.player)
@@ -2171,6 +2171,16 @@ class BanjoTooieRules:
             logic = state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        return logic
+    
+    def GGM_to_PL(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.gm_jiggy(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
         elif self.world.options.logic_type == 2: # advanced
             logic = True
         return logic
