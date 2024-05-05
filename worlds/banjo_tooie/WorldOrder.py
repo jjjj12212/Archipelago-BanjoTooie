@@ -38,7 +38,7 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
                     first_level = world.world_sphere_1[0]
                     continue
                 elif first_level == regionName.TL and (world.options.randomize_cheato.value == False or world.options.randomize_jinjos == False) and \
-                world.options.randomize_notes == False:
+                (world.options.randomize_notes == False or world.options.randomize_treble == False):
                     random.shuffle(world.world_sphere_1)
                     first_level = world.world_sphere_1[0]
                     continue

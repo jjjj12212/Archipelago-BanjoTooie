@@ -128,24 +128,6 @@ class BanjoTooieRules:
             itemName.BKJINJO,
         ]
 
-        self.region_rules = {
-            regionName.MT: lambda state: self.can_access_mt(state),
-            regionName.IOHPL: lambda state: self.can_access_plateau(state),
-            regionName.GM: lambda state: self.can_access_GM(state),
-            regionName.IOHPG: lambda state: self.can_access_pinegrove(state, False),
-            regionName.WW: lambda state: self.can_access_witchyworld(state, False),
-            regionName.IOHCT: lambda state: self.can_access_clifftop(state, False),
-            regionName.JR: lambda state: self.can_access_jrl(state),
-            regionName.IOHWL: lambda state: self.can_access_wasteland(state, False),
-            regionName.TL: lambda state: self.can_access_tdl(state, False),
-            regionName.IOHQM: lambda state: self.can_access_quagmire(state, False),
-            regionName.GIO: lambda state: self.can_access_gruntyindustries_outside(state, False),
-            regionName.HP: lambda state: self.can_access_hailfire(state, False),
-            regionName.CC: lambda state: self.can_access_ccl(state),
-            regionName.CK: lambda state: self.can_access_ck(state),
-            regionName.H1: lambda state: self.check_hag1_options(state)
-        }
-
         if self.world.options.skip_puzzles == True:
             self.access_rules = {
                 locationName.W1: lambda state: state.has(itemName.JIGGY, self.player, 1),
@@ -2396,11 +2378,8 @@ class BanjoTooieRules:
             amt = self.world.randomize_worlds[regionName.GIO]
             return state.has(itemName.JIGGY, self.player, amt)
         
-    def ck_jiggy(self, state: CollectionState) -> bool: #45
-        if self.world.worlds_randomized == True:
-            return state.has(itemName.CKA, self.player)
-        else:
-            return state.has(itemName.JIGGY, self.player, 45)
+    def ck_jiggy(self, state: CollectionState) -> bool: #55
+        return state.has(itemName.JIGGY, self.player, 55)
         
     def QM_to_WL(self, state: CollectionState) -> bool:
         logic = True
@@ -2728,10 +2707,6 @@ class BanjoTooieRules:
                 state.has(itemName.CEGGS, self.player)
 
     def set_rules(self) -> None:
-        for region_name, rules in self.region_rules.items():
-            region = self.world.multiworld.get_region(region_name, self.player)
-            for entrance in region.entrances:
-                entrance.access_rule = rules
 
         for location, rules in self.jiggy_rules.items():
             jiggy = self.world.multiworld.get_location(location, self.player)

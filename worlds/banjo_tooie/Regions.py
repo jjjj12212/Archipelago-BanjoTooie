@@ -559,13 +559,14 @@ def connect_regions(self):
                         {regionName.MT: lambda state: rules.mt_jiggy(state), regionName.IOHPL: lambda state: rules.WH_to_PL(state)})
 
     region_MT = multiworld.get_region(regionName.MT, player)
-    region_MT.add_exits({regionName.TL_HATCH,regionName.GM},
+    region_MT.add_exits({regionName.TL_HATCH, regionName.GM},
                         {regionName.TL_HATCH: lambda state: rules.jiggy_treasure_chamber(state),\
                         regionName.GM: lambda state: rules.dilberta_free(state)})
 
     region_PL = multiworld.get_region(regionName.IOHPL, player)
     region_PL.add_exits({regionName.GM, regionName.IOHPG, regionName.IOHCT},
-                        {regionName.GM: lambda state: rules.gm_jiggy(state), regionName.IOHPG: lambda state: rules.PL_to_PG(state),
+                        {regionName.GM: lambda state: rules.gm_jiggy(state), 
+                         regionName.IOHPG: lambda state: rules.PL_to_PG(state),
                         regionName.IOHCT: lambda state: state.has(itemName.SPLITUP, player)})
     
     region_GM = multiworld.get_region(regionName.GM, player)
@@ -614,8 +615,9 @@ def connect_regions(self):
     
     region_QM = multiworld.get_region(regionName.IOHQM, player)
     region_QM.add_exits({regionName.GIO, regionName.IOHWL, regionName.CK},
-                        {regionName.GIO: lambda state: rules.gi_jiggy(state), regionName.IOHWL: lambda state: rules.QM_to_WL(state),
-                         regionName.CK: lambda state: state.has(itemName.CLAWBTS, self.player) and rules.ck_jiggy()})
+                        {regionName.GIO: lambda state: rules.gi_jiggy(state),
+                         regionName.IOHWL: lambda state: rules.QM_to_WL(state),
+                         regionName.CK: lambda state: state.has(itemName.CLAWBTS, self.player) and rules.ck_jiggy(state)})
     
     region_GIO = multiworld.get_region(regionName.GIO, player)
     region_GIO.add_exits({regionName.GI3ALL, regionName.IOHQM},
