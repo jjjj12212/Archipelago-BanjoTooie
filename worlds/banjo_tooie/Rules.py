@@ -3048,6 +3048,19 @@ class BanjoTooieRules:
         
     def ck_jiggy(self, state: CollectionState) -> bool: #55
         return state.has(itemName.JIGGY, self.player, 55)
+    
+    def quag_to_CK(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.CLAWBTS, self.player) and self.ck_jiggy(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.CLAWBTS, self.player) and self.ck_jiggy(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.CLAWBTS, self.player) and self.ck_jiggy(state)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = state.has(itemName.CLAWBTS, self.player) or \
+                     (state.has(itemName.GEGGS, self.player) and state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+        return logic
         
     def QM_to_WL(self, state: CollectionState) -> bool:
         logic = True
