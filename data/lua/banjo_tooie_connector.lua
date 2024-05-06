@@ -33,7 +33,7 @@ local FRAME = 0
 
 local DEBUG = false
 local DEBUGLVL2 = false
-local DEBUGLVL3 = true
+local DEBUGLVL3 = false
 
 local BYPASS_GAME_LOAD = false;
 
@@ -6122,8 +6122,6 @@ function getSlotData()
 end
 
 function process_slot(block)
-    
-    print("HI")
     if DEBUGLVL3 == true then
         print("slot_data")
         print(block)
@@ -6176,7 +6174,6 @@ function process_slot(block)
     end
     if block['slot_skip_klungo'] ~= nil and block['slot_skip_klungo'] ~= "false"
     then
-        print("TEST")
         SKIP_KLUNGO = true
     end
     if block['slot_open_hag1'] ~= nil and block['slot_open_hag1'] ~= "false"
