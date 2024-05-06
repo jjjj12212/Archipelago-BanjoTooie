@@ -2509,7 +2509,7 @@ class BanjoTooieRules:
         else:
             return False
     
-    def can_access_taxi_pack_silo(self, state:CollectionState, amount:int) -> bool:
+    def can_access_taxi_pack_silo(self, state:CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
             return state.has(itemName.SPLITUP, self.player) and (state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.SAPACK))
         elif self.world.options.logic_type == 1: # normal
