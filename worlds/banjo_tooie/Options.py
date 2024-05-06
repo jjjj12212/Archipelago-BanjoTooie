@@ -142,6 +142,10 @@ class JinjoFamilyRescueLength(Range):
 #     option_cross_level_warp_traps = 2
 #     default = 0
 
+class SkipKlungo(Toggle):
+    """Make it so you can skip Klungo 1 and 2."""
+    display_name = "Skip Klungo"
+
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
@@ -174,3 +178,4 @@ class BanjoTooieOptions(PerGameCommonOptions):
     boss_hunt_length: BossHuntLength
     jinjo_family_rescue_length: JinjoFamilyRescueLength
     # warp_traps: WarpTraps
+    skip_klungo: SkipKlungo

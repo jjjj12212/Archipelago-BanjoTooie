@@ -260,6 +260,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_mystery": ctx.slot_data["mystery"],
             "slot_worlds": ctx.slot_data["worlds"],
             "slot_world_order": ctx.slot_data["world_order"],
+            "slot_skip_klungo": ctx.slot_data["skip_klungo"],
             "slot_goal_type": ctx.slot_data["goal_type"],
             "slot_minigame_hunt_length": ctx.slot_data["minigame_hunt_length"],
             "slot_boss_hunt_length": ctx.slot_data["boss_hunt_length"],
