@@ -3071,7 +3071,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = False
         elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.MUMBOGM, self.player) and state.has(itemName.CEGGS, self.player)
+            logic = state.has(itemName.HUMBAGM, self.player) and state.has(itemName.CEGGS, self.player)
         return logic
         
     def QM_to_WL(self, state: CollectionState) -> bool:
