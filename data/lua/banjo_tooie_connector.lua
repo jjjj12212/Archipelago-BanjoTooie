@@ -47,6 +47,7 @@ local MINIGAMES = ""
 local INIT_COMPLETE = false
 local PAUSED = false;
 local TOTALS_MENU = false;
+local OBJ_TOTALS_MENU = false;
 local SAVE_GAME = false;
 local USE_BMM_TBL = false;
 local USE_BMM_ONLY_TBL = false;
@@ -98,7 +99,9 @@ local SKIP_PUZZLES = false;
 local SKIP_KLUNGO = false;
 
 -------------- MYSTERY VARS -----------
-local EGGS_CLEARED = false;
+local EGGS_CLEARED = true;
+local KEY_DROPPED = false;
+local KEY_GRABBED = false;
 
 -------------- STATION VARS -----------
 local CHECK_FOR_STATIONBTN = false;
@@ -442,7 +445,9 @@ BTModel = {
         ["Jiggy"] = 0x610,
         ["Breakable Door"] = 0x651,
         ["Sign Post"] = 0x7A2,
-        ["Jiggy Guy"] = 0x937
+        ["Jiggy Guy"] = 0x937,
+        ["Ice Key"] = 0x63B,
+        ["Cartridge"] = 0x910,
     };
     model_enemy_list = {
         ["Ugger"] = 0x671,
@@ -4000,6 +4005,8 @@ function init_BKMYSTERY(type) -- Initialize BMK
             BKMYSTERY[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
             BKMYSTERY['REMOVE'][k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
         end
+        BKMYSTERY["1230958"] = false -- Ice key
+        BKMYSTERY['REMOVE']["1230958"] = false
     else
         checks["1230799"] = false -- Icekey
         checks["1230800"] = false -- Bregull Bash
@@ -4014,12 +4021,12 @@ end
 function check_egg_mystery()
     if ASSET_MAP_CHECK["STOPNSWAP"][CURRENT_MAP] == nil --Happens when exiting map too quickly when entering a new map
     then
-        if CURRENT_MAP == 0x150 -- on Heggy map, if you have eggs, enable flags
+        if CURRENT_MAP == 0x150 or CURRENT_MAP == 0x14F -- on Heggy map / Wooded Hollow, if you have eggs, enable flags
         then
             if EGGS_CLEARED == true
             then
                 EGGS_CLEARED = false
-                print("On Heggy's Map")
+                print("On Heggy's or Wooded Hollow Map")
                 for itemId, value in pairs(AGI_MYSTERY)
                 do
                     if itemId == "1230803"
@@ -4241,6 +4248,119 @@ function check_hatched_mystery()
         end
     end
 end
+
+function check_local_icekey()
+    local keyLocId = ASSET_MAP_CHECK["ICEKEY"][CURRENT_MAP];
+    if BKMYSTERY[keyLocId] == false
+    then
+        BTCONSUMEOBJ:changeConsumable("Ice Keys")
+        local key_amt = BTCONSUMEOBJ:getConsumable()
+
+        if KEY_DROPPED == false
+        then
+            BTMODELOBJ:changeName("Player", false)
+            local player = BTMODELOBJ:checkModel();
+            if player == false
+            then
+                return
+            end
+            BTMODELOBJ:changeName("Ice Key", false);
+            local key_spawn = BTMODELOBJ:checkModel()
+            if key_spawn == true
+            then
+                if DEBUG == true
+                then
+                    print("Key Spawned")
+                end
+                KEY_DROPPED = true
+            end
+        end
+
+        if KEY_DROPPED == true and KEY_GRABBED == false
+        then
+            BTMODELOBJ:changeName("Ice Key", false);
+            local key_spawn = BTMODELOBJ:checkModel()
+            if key_spawn == false
+            then
+                if DEBUG == true
+                then
+                    print("Key grabbed")
+                end
+                KEY_GRABBED = true
+            end
+        end
+
+        if key_amt > 0 and KEY_DROPPED == true and KEY_GRABBED == true and BKMYSTERY['REMOVE'][keyLocId] == false
+        then
+            if DEBUG == true
+            then
+                print("Got a Local Ice Key")
+            end
+            if AGI_MYSTERY["1230799"] == false
+            then
+                if DEBUG == true
+                then
+                    print("Removing Key as we don't have AGI key yet")
+                end
+                BTCONSUMEOBJ:changeConsumable("Ice Keys")
+                BTCONSUMEOBJ:setConsumable(key_amt - 1)
+            end
+            BKMYSTERY['REMOVE'][keyLocId] = true
+            BKMYSTERY[keyLocId] = true
+            savingBMM()
+        end
+    end
+end
+
+function pause_show_AGI_key()
+    if AGI_MYSTERY["1230799"] == true and BKMYSTERY["1230958"] == false
+    then
+        if DEBUG == true
+        then
+            print("Setting Key")
+        end
+        BTCONSUMEOBJ:changeConsumable("Ice Keys")
+        BTCONSUMEOBJ:setConsumable(1)
+    end
+end
+
+function unpause_hide_AGI_key()
+    if AGI_MYSTERY["1230799"] == true and BKMYSTERY["1230958"] == false
+    then
+        if DEBUG == true
+        then
+            print("Unsetting Key")
+        end
+        BTCONSUMEOBJ:changeConsumable("Ice Keys")
+        BTCONSUMEOBJ:setConsumable(0)
+    end
+end
+
+function ap_icekey_glowbo_map()
+    if AGI_MYSTERY["1230799"] == true and BKMYSTERY["1230958"] == false and CURRENT_MAP == 0x128 --Icy Side
+    then
+        if DEBUG == true
+        then
+            print("Setting Key")
+        end
+        BTCONSUMEOBJ:changeConsumable("Ice Keys")
+        BTCONSUMEOBJ:setConsumable(1)
+    end
+end
+
+function clearKey()
+    if AGI_MYSTERY["1230799"] == true and BKMYSTERY["1230958"] == false and CURRENT_MAP ~= 0x128 --Icy Side
+    then
+        if DEBUG == true
+        then
+            print("Unsetting Key")
+        end
+        BTCONSUMEOBJ:changeConsumable("Ice Keys")
+        BTCONSUMEOBJ:setConsumable(0)
+    end
+end
+
+
 
 ---------------------------------- BKStation ---------------------------------
 
@@ -5153,6 +5273,10 @@ function BKLogics(mapaddr)
         then
             check_open_level(false)
         end
+        if ENABLE_AP_MYSTERY == true
+        then
+            clearKey()
+        end
     end
 end
 
@@ -5256,11 +5380,9 @@ function BKAssetFound()
     if ENABLE_AP_MYSTERY == true
     then
         check_egg_mystery()
-    end
-    if ENABLE_AP_MYSTERY == true
-    then
-        check_egg_mystery()
         check_hatched_mystery()
+        check_local_icekey()
+        ap_icekey_glowbo_map()
     end
  -- ApWarp();
 
@@ -5309,7 +5431,7 @@ function locationControl()
             local DEMO = { ['DEMO'] = true}
             return DEMO
         else
-            BKLogics(mapaddr)         
+            BKLogics(mapaddr)    
             if (mapaddr == 335 or mapaddr == 337) and TOTALS_MENU == false -- Wooded Hollow / JiggyTemple
             then
                 if CURRENT_MAP ~= 335 and CURRENT_MAP ~= 337
@@ -5898,8 +6020,8 @@ function processAGIItem(item_list)
                     print("Blue Egg Obtained")
                 end
                 AGI_MYSTERY[tostring(memlocation)] = true
-                BTCONSUMEOBJ:changeName("Eggs")
-                local amt = BTCONSUMEOBJ:getConsumable()
+                BTCONSUMEOBJ:changeConsumable("Eggs")
+                local amt = BTCONSUMEOBJ:getEggConsumable()
                 BTCONSUMEOBJ:setConsumable(amt + 1)
             elseif(memlocation == 1230804) and ENABLE_AP_MYSTERY == true
             then
@@ -5908,9 +6030,22 @@ function processAGIItem(item_list)
                     print("Pink Egg Obtained")
                 end
                 AGI_MYSTERY[tostring(memlocation)] = true
-                BTCONSUMEOBJ:changeName("Eggs")
-                local amt = BTCONSUMEOBJ:getConsumable()
+                BTCONSUMEOBJ:changeConsumable("Eggs")
+                local amt = BTCONSUMEOBJ:getEggConsumable()
                 BTCONSUMEOBJ:setConsumable(amt + 1)
+            elseif(memlocation == 1230799) and ENABLE_AP_MYSTERY == true
+            then
+                if DEBUG == true
+                then
+                    print("Ice Key Obtained")
+                end
+                AGI_MYSTERY[tostring(memlocation)] = true
+                if BKMYSTERY["1230958"] == true
+                then
+                    BTCONSUMEOBJ:changeConsumable("Ice Keys")
+                    BTCONSUMEOBJ:setConsumable(1)
+                end
+
             -- elseif(memlocation == 1230799)
             -- then
             --     if DEBUG == true
@@ -5968,6 +6103,7 @@ function SendToBTClient()
     retTable["isDead"] = DETECT_DEATH;
     retTable["jinjofam"] = BKJINJOFAM;
     retTable["worlds"] = UNLOCKED_WORLDS;
+    retTable["mystery"] = BKMYSTERY;
     if GAME_LOADED == false
     then
         retTable["sync_ready"] = "false"
@@ -6061,6 +6197,10 @@ function checkPause()
         then
             BMMRestore()
         end
+        if ENABLE_AP_MYSTERY == true
+        then
+            unpause_hide_AGI_key()
+        end
     elseif PAUSED == true and DEBUG == true
     then
         local check_controls = joypad.get()
@@ -6141,6 +6281,24 @@ function checkTotalMenu()
             TOTALS_MENU = false;
             BMMBackup();
             useAGI();
+        end
+        
+        -- Object and Items 
+        total = mainmemory.readbyte(0x123A88);
+        if total == 1 and OBJ_TOTALS_MENU == false
+        then
+            OBJ_TOTALS_MENU = true
+            if ENABLE_AP_MYSTERY == true
+            then
+                pause_show_AGI_key()
+            end
+        elseif total ~= 1 and OBJ_TOTALS_MENU == true
+        then
+            OBJ_TOTALS_MENU = false
+            if ENABLE_AP_MYSTERY == true
+            then
+                unpause_hide_AGI_key()
+            end
         end
     end
 end
@@ -6749,6 +6907,8 @@ function initializeFlags()
         if ENABLE_AP_MYSTERY == true
         then
             BTCONSUMEOBJ:changeConsumable("Eggs")
+            BTCONSUMEOBJ:setConsumable(0)
+            BTCONSUMEOBJ:changeConsumable("Ice Keys")
             BTCONSUMEOBJ:setConsumable(0)
         end
         --BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star, sun, moon
