@@ -6627,6 +6627,7 @@ function initializeFlags()
             BTCONSUMEOBJ:changeName("Eggs")
             BTCONSUMEOBJ:setConsumable(0)
         end
+        --BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star, sun, moon
 
         
 	-- Otherwise, the flags were already set, so just stop checking

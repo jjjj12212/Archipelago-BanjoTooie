@@ -75,7 +75,7 @@ class RandomizeWorlds(Toggle):
     display_name = "Randomize Worlds"
 
 class RandomizeStopnSwap(Toggle):
-    """Mystery Eggs and Ice Key are scattered across the MultiWorld."""
+    """Mystery Eggs (and rewards) and Ice Key are scattered across the MultiWorld."""
     display_name = "Randomize Stop n Swap"
 
 class SkipToT(Choice):

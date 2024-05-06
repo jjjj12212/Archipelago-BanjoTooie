@@ -94,9 +94,6 @@ class BanjoTooieWorld(World):
         self.worlds_randomized = False
         super(BanjoTooieWorld, self).__init__(world, player)
 
-        
-    
-
     def create_item(self, itemname: str) -> Item:
         banjoItem = all_item_table.get(itemname)
         if banjoItem.type == 'progress':
@@ -447,6 +444,7 @@ class BanjoTooieWorld(World):
         btoptions['notes']= "true" if self.options.randomize_notes == 1 else "false"
         btoptions['worlds']= "true" if self.worlds_randomized else "false"
         btoptions['world_order'] = self.randomize_worlds
+        btoptions['mystery'] = "true" if self.options.randomize_stop_n_swap == 1 else "false"
         btoptions['goal_type'] = int(self.options.victory_condition.value)
         btoptions['minigame_hunt_length'] = int(self.options.minigame_hunt_length.value)
         btoptions['boss_hunt_length'] = int(self.options.boss_hunt_length.value)
