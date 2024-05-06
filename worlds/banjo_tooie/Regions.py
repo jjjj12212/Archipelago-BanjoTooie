@@ -570,10 +570,11 @@ def connect_regions(self):
                         regionName.IOHCT: lambda state: state.has(itemName.SPLITUP, player)})
     
     region_GM = multiworld.get_region(regionName.GM, player)
-    region_GM.add_exits({regionName.GMWSJT, regionName.IOHPL, regionName.CHUFFY},
+    region_GM.add_exits({regionName.GMWSJT, regionName.IOHPL, regionName.CHUFFY, regionName.WW},
     {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_GGM(state),
      regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state),
-     regionName.IOHPL: lambda state: rules.GGM_to_PL(state)})
+     regionName.IOHPL: lambda state: rules.GGM_to_PL(state),
+     regionName.WW: lambda state: rules.ggm_to_ww(state)})
     
     region_PG = multiworld.get_region(regionName.IOHPG, player)
     region_PG.add_exits({regionName.WW, regionName.IOHWL},

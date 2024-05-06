@@ -3061,6 +3061,18 @@ class BanjoTooieRules:
             logic = state.has(itemName.CLAWBTS, self.player) or \
                      (state.has(itemName.GEGGS, self.player) and state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
+
+    def ggm_to_ww(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = False
+        elif self.world.options.logic_type == 1: # normal
+            logic = False
+        elif self.world.options.logic_type == 2: # advanced
+            logic = False
+        elif self.world.options.logic_type == 3: # glitched
+            logic = state.has(itemName.MUMBOGM, self.player) and state.has(itemName.CEGGS, self.player)
+        return logic
         
     def QM_to_WL(self, state: CollectionState) -> bool:
         logic = True
