@@ -3290,6 +3290,18 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 3: # glitched
             logic = True
         return logic
+
+    def TDL_to_WW(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.oogle_boogles_open(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.oogle_boogles_open(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.oogle_boogles_open(state)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.oogle_boogles_open(state) or (state.has(itemName.GEGGS, self.player) and state.has(itemName.CEGGS, self.player))
+        return logic
     
     def hfp_jiggy(self, state: CollectionState) -> bool: # 36
         if self.world.worlds_randomized == True:
