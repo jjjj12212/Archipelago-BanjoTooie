@@ -2,6 +2,7 @@
  - refactor Region logic
    - Beginner logic: it is now in logic to leave a level from the main entrance, as long as the level is open.
  - New logic: glitched logic
+ - Option to Skip Klungo 1 & 2 (until he is a required check)
  - Item renaming
    - Snake Head Cheato Page is now Treasure Chamber Cheato Page
    - Boulder Honeycomb is now Prospector Boulder Honeycomb

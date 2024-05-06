@@ -444,6 +444,7 @@ class BanjoTooieWorld(World):
         btoptions['boss_hunt_length'] = int(self.options.boss_hunt_length.value)
         btoptions['jinjo_family_rescue_length'] = int(self.options.jinjo_family_rescue_length.value)
         # btoptions['warp_traps'] = int(self.options.warp_traps.value)
+        btoptions['skip_klungo'] = "true" if self.options.skip_klungo == 1 else "false"
         return btoptions
 
     # for the universal tracker, doesn't get called in standard gen
