@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import Toggle, DeathLink, PerGameCommonOptions, Choice, DefaultOnToggle
+from Options import Toggle, DeathLink, PerGameCommonOptions, Choice, DefaultOnToggle, Range
 
 class EnableMultiWorldMoveList(DefaultOnToggle):
     """Jamjars' Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves."""
@@ -94,6 +94,50 @@ class SpeedUpMinigames(DefaultOnToggle):
     """Start 3-round minigames at Round 3"""
     display_name = "Speed Up Minigames"
 
+class VictoryCondition(Choice):
+    """Choose which victory condition you want
+    HAG1: Unlock the HAG1 fight and defeat Gruntilda
+    Minigame Hunt: Clear the 14 minigames and the final Canary Mary race in Cloud Cuckcoo Land to collect Mumbo Tokens
+    Boss Hunt: Kill the 8 world bosses and collect their Mumbo Tokens"""
+    display_name = "Victory Condition"
+    option_hag1 = 0
+    option_minigame_hunt = 1
+    option_boss_hunt = 2
+    option_jinjo_family_rescue = 3
+    default = 0
+
+class MinigameHuntLength(Range):
+    """How many Mumbo Tokens are needed to clear the Minigame Hunt
+    Choose a value between 1 and 15"""
+    display_name = "Minigame Hunt Length"
+    range_start = 1
+    range_end = 15
+    default = 14
+
+class BossHuntLength(Range):
+    """How many Mumbo Tokens are needed to clear the Boss Hunt
+    Choose a value between 1 and 8"""
+    display_name = "Boss Hunt Length"
+    range_start = 1
+    range_end = 8
+    default = 8
+
+class JinjoFamilyRescueLength(Range):
+    """How many Jinjo families' Mumbo Tokens are needed to clear the Jinjo family rescue
+    Choose a value between 1 and 9"""
+    display_name = "Jinjo Family Rescue Length"
+    range_start = 1
+    range_end = 9
+    default = 9
+
+# class WarpTraps(Choice):
+#     """Choose if you want warp traps enabled"""
+#     display_name = "Warp Traps"
+#     option_no_warp_traps = 0
+#     option_in_level_warp_traps = 1
+#     option_cross_level_warp_traps = 2
+#     default = 0
+
 class SkipKlungo(Toggle):
     """Make it so you can skip Klungo 1 and 2."""
     display_name = "Skip Klungo"
@@ -121,4 +165,12 @@ class BanjoTooieOptions(PerGameCommonOptions):
     skip_tower_of_tragedy: SkipToT
     speed_up_minigames: SpeedUpMinigames
     logic_type: LogicType
+    victory_condition: VictoryCondition
+    minigame_hunt_length: MinigameHuntLength
+    boss_hunt_length: BossHuntLength
+    jinjo_family_rescue_length: JinjoFamilyRescueLength
+    minigame_hunt_length: MinigameHuntLength
+    boss_hunt_length: BossHuntLength
+    jinjo_family_rescue_length: JinjoFamilyRescueLength
+    # warp_traps: WarpTraps
     skip_klungo: SkipKlungo

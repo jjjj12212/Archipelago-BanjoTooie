@@ -1,4 +1,4 @@
-# Current Logic Implementation | v1.0.0-Beta
+# Current Logic Implementation | 1.3.1-Beta
 
 We currently have 3 logics put in place. None of them require glitches.
 
@@ -105,7 +105,7 @@ The glitched logic will expect all the reasonable glitches to be done, as well a
 |Tagitzan Temple|Breegull Blaster|Breegull Blaster|Breegull Blaster|Breegull Blaster|
 |MT Entrance Pool|<N/A>|<N/A>|<N/A>|<N/A>|
 |MT Bridge|<N/A>|<N/A>|<N/A>|<N/A>|
-|Water Storage<br>(Currently, getting it from GGM with leg Spring, Wing Whack and Glide is the only way in the logic. Will be changed soon)|JRL Access, Oxygenate, Ice Eggs, Sub-Aqua Egg Aiming|JRL Access, (Oxygenate or Bill Drill), Ice Eggs, Sub-Aqua Egg Aiming<br>OR<br>GGM Access, (Bill Drill or Detonator) Split Up, Wing Whack, Leg Spring, Glide|JRL Access, (Oxygenate or Bill Drill), Ice Eggs, Sub-Aqua Egg Aiming<br>OR<br>GGM Access, (Bill Drill or Detonator), Split Up, Wing Whack, Leg Spring, Glide<br>OR<br>GGM Access, Clockwork Eggs, Egg Aim|JRL Access, (Oxygenate or Bill Drill), Ice Eggs, Sub-Aqua Egg Aiming<br>OR<br>GGM Access, (Bill Drill or Detonator), Split Up, Wing Whack, Leg Spring, Glide<br>OR<br>GGM Access, Clockwork Eggs, Egg Aim|
+|Water Storage|JRL Access, Oxygenate, Ice Eggs, Sub-Aqua Egg Aiming|JRL Access, (Oxygenate or Bill Drill), Ice Eggs, Sub-Aqua Egg Aiming<br>OR<br>GGM Access, (Bill Drill or Detonator) Split Up, Wing Whack, Leg Spring, Glide|JRL Access, (Oxygenate or Bill Drill), Ice Eggs, Sub-Aqua Egg Aiming<br>OR<br>GGM Access, (Bill Drill or Detonator), Split Up, Wing Whack, Leg Spring, Glide<br>OR<br>GGM Access, Clockwork Eggs, Egg Aim|JRL Access, (Oxygenate or Bill Drill), Ice Eggs, Sub-Aqua Egg Aiming<br>OR<br>GGM Access, (Bill Drill or Detonator), Split Up, Wing Whack, Leg Spring, Glide<br>OR<br>GGM Access, Clockwork Eggs, Egg Aim|
 |Jail|Detonator|Detonator|Detonator|Detonator or Clockwork Eggs|
 |Toxic Gas Cave|<N/A>|<N/A>|<N/A>|<N/A>|
 |Boulder|Bill Drill or Detonator|Bill Drill or Detonator|Bill Drill or Detonator|<N/A>

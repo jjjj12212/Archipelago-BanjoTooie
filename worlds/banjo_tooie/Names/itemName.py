@@ -14,6 +14,8 @@ GLOWBO = "Glowbo"
 JIGGY = "Jiggy"
 TREBLE = "Treble Clef"
 NOTE = "5 Notes"
+MUMBOTOKEN = "Mumbo Token"
+WARPS = "Grunty Warp Spell"
 
 GGRAB       = "Grip Grab"
 BBLASTER    = "Breegull Blaster"
@@ -70,9 +72,12 @@ TRAINSWHP1 = "HFP: Lava Side Train Station"
 TRAINSWHP2 = "HFP: Icy Side Train Station"
 TRAINSWWW  = "WW: Train Station"
 
+NONE = "Nothing"
+
 CHUFFY = "Chuffy"
 
 VICTORY = "Kick Around"
+
 #event items
 MTA = "Mayahem Temple"
 GGA = "Glitter Gulch Mine"
@@ -82,5 +87,5 @@ TDA = "Terrydactyland"
 GIA = "Grunty's Industries"
 HFA = "Hailfire Peaks"
 CCA = "Cloud Cuckooland"
-CKA = "Cauldron Keep"
-H1A = "HAG-1" 
+#CKA = "Cauldron Keep"
+#H1A = "HAG-1" 
