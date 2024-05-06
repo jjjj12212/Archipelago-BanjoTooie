@@ -565,7 +565,7 @@ def connect_regions(self):
 
     region_PL = multiworld.get_region(regionName.IOHPL, player)
     region_PL.add_exits({regionName.GM, regionName.IOHPG, regionName.IOHCT},
-                        {regionName.GM: lambda state: rules.gm_jiggy(state), 
+                        {regionName.GM: lambda state: rules.PL_to_GGM(state), 
                          regionName.IOHPG: lambda state: rules.PL_to_PG(state),
                         regionName.IOHCT: lambda state: state.has(itemName.SPLITUP, player)})
     
@@ -623,8 +623,11 @@ def connect_regions(self):
                          regionName.CK: lambda state: state.has(itemName.CLAWBTS, self.player) and rules.ck_jiggy(state)})
     
     region_GIO = multiworld.get_region(regionName.GIO, player)
-    region_GIO.add_exits({regionName.GI3ALL, regionName.IOHQM},
-                        {regionName.GI3ALL: lambda state: rules.outside_gi_to_floor3(state), regionName.IOHQM: lambda state: rules.gi_jiggy(state)})
+    region_GIO.add_exits({regionName.GI1, regionName.GI2, regionName.GI3ALL, regionName.IOHQM},
+                        {regionName.GI1: lambda state: rules.outside_gi_to_floor1(state),
+                         regionName.GI2: lambda state: rules.outside_gi_to_floor2(state),
+                         regionName.GI3ALL: lambda state: rules.outside_gi_to_floor3(state),
+                         regionName.IOHQM: lambda state: rules.gi_jiggy(state)})
     
     region_GI1 = multiworld.get_region(regionName.GI1, player)
     region_GI1.add_exits({regionName.GIO, regionName.GI2, regionName.CHUFFY},

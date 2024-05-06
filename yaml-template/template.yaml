@@ -28,7 +28,7 @@ Banjo-Tooie:
   # Changes which levels are open; Not recommended when doing multiworld seeds.
   randomize_worlds: 'false'
 
-  logic_type: 0                # 0: Beginner, 1: Normal, 2: Advanced
+  logic_type: 0                # 0: Beginner, 1: Normal, 2: Advanced, 3: glitched
   jingaling_jiggy: 'true'      # True: Always get Jiggy from Jingaling; recommended when playing Multiworld.
   skip_tower_of_tragedy: 1     # 0: no skip, 1: skip completely, 2: play 3rd round only
   speed_up_minigames: 'true'   # skip to round 3 of kickball, dodgems
