@@ -30,6 +30,10 @@ jiggy_table = {
     itemName.JIGGY:         ItemData(1230515, 90, "progress", None),
 }
 
+token_table = {
+    itemName.MUMBOTOKEN:    ItemData(1230798, 15, "progress", None),
+}
+
 moves_table = {
     itemName.GGRAB:         ItemData(1230753, 1, "progress", locationName.GGRAB),
     itemName.BBLASTER:      ItemData(1230754, 1, "progress", locationName.BBLASTER),
@@ -98,7 +102,19 @@ misc_collectable_table = {
     itemName.DOUBLOON:      ItemData(1230514, 30, "progress", None),
     itemName.TREBLE:        ItemData(1230778,  9, "progress", None),
     itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY),
-    itemName.NOTE:          ItemData(1230797, 144, "progress", None)
+    itemName.NOTE:          ItemData(1230797, 144, "progress", None),
+    # itemName.WARPS: ItemData(1230799, 20, "trap", None),
+    itemName.NONE:          ItemData(1230888, 0, "filler", None)
+}
+
+stop_n_swap_table = {
+    itemName.IKEY:          ItemData(1230799, 1, "progress", locationName.IKEY),
+    itemName.BBASH:         ItemData(1230800, 1, "progress", locationName.PMEGGH),
+    itemName.JNONE:         ItemData(1230801, 1, "filler", locationName.YMEGGH),
+    itemName.HOMINGEGGS:    ItemData(1230802, 1, "useful", locationName.BMEGGH),
+    itemName.BMEGG:         ItemData(1230803, 1, "progress", locationName.BMEGG),
+    itemName.PMEGG:         ItemData(1230804, 1, "progress", locationName.PMEGG)
+
 }
 
 stop_n_swap_table = {
@@ -140,17 +156,19 @@ all_item_table = {
     **jiggy_table,
     **stations_table,
     **rando_key_table,
+    **token_table,
     **stop_n_swap_table
 }
 
 all_group_table = {
-    'jiggy' : jiggy_table,
-    'jinjo' : jinjo_table,
-    'misc' : misc_collectable_table,
+    'jiggy': jiggy_table,
+    'jinjo': jinjo_table,
+    'misc': misc_collectable_table,
     'moves': moves_table,
-    "magic": level_progress_table,
-    "stations": stations_table,
-    "levelaccess": rando_key_table,
+    'magic': level_progress_table,
+    'stations': stations_table,
+    'levelaccess': rando_key_table,
+    'token': token_table,
     "stopnswap": stop_n_swap_table,
 }
 

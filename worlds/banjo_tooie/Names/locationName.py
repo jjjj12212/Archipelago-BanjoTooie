@@ -238,7 +238,7 @@ TRAINSWWW  = "WW: Train Switch"
 CHUFFY = "GGM: Chuffy"
 
 #Cheato Pages
-CHEATOMT1 = "MT: Snake Head Cheato Page"
+CHEATOMT1 = "MT: Treasure Chamber Cheato Page"
 CHEATOMT2 = "MT: Prison Compound Cheato Page"
 CHEATOMT3 = "MT: Jade Snake Grove Cheato Page"
 CHEATOGM1 = "GGM: Canary Mary Cheato Page"

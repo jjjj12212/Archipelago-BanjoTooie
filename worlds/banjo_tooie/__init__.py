@@ -9,6 +9,7 @@ from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
 from .Names import itemName, locationName, regionName
+from .WorldOrder import WorldRandomize
 
 #from Utils import get_options
 from BaseClasses import ItemClassification, Tutorial, Item, Region, MultiWorld
@@ -42,33 +43,13 @@ class BanjoTooieWorld(World):
     the game features three-dimensional worlds consisting of various platforming challenges and puzzles, with a notable
     increased focus on puzzle-solving over the worlds of Banjo-Kazooie.
     """
+    
     game: str = "Banjo-Tooie"
     web = BanjoTooieWeb()
-    options_dataclass =  BanjoTooieOptions
-    options: BanjoTooieOptions
     topology_preset = True
-    kingjingalingjiggy = False
-    jiggy_counter: int = 0
-    doubloon_counter: int = 0
-    slot_data = []
-    use_cheato_filler = False
-    randomize_worlds = {}
-    world_sphere_1 = [
-        regionName.MT,
-        regionName.GM,
-        regionName.WW,
-        regionName.JR,
-        regionName.HP,
-        regionName.TL,
-        regionName.CC,
-        regionName.GIO
-    ]
-    world_sphere_2 = [
-    ]
-    worlds_randomized = False
-
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
     item_name_to_id = {}
+
     for name, data in all_item_table.items():
         if data.btid is None:  # Skip Victory Item
             continue
@@ -82,9 +63,38 @@ class BanjoTooieWorld(World):
         "Moves": all_group_table["moves"],
         "Magic": all_group_table["magic"],
         "Stations": all_group_table["stations"],
-        "StopnSwap": all_group_table["stopnswap"]
-        # "Access": all_group_table["levelaccess"]
+        "StopnSwap": all_group_table["stopnswap"],
+        "Access": all_group_table["levelaccess"],
     }
+        
+    options_dataclass =  BanjoTooieOptions
+    options: BanjoTooieOptions
+
+    def __init__(self, world, player):
+
+        self.kingjingalingjiggy = False
+        self.jiggy_counter: int = 0
+        self.doubloon_counter: int = 0
+        self.notecounter: int = 0
+        self.slot_data = []
+        self.use_cheato_filler = False
+        self.randomize_worlds = {}
+        self.world_sphere_1 = [
+            regionName.MT,
+            regionName.GM,
+            regionName.WW,
+            regionName.JR,
+            regionName.HP,
+            regionName.TL,
+            regionName.CC,
+            regionName.GIO
+        ]
+        self.world_sphere_2 = [
+        ]
+        self.worlds_randomized = False
+        super(BanjoTooieWorld, self).__init__(world, player)
+
+        
     
 
     def create_item(self, itemname: str) -> Item:
@@ -94,8 +104,14 @@ class BanjoTooieWorld(World):
                 if self.jiggy_counter <= 70:
                     item_classification = ItemClassification.progression
                 else:
-                    item_classification = ItemClassification.useful
+                    item_classification = ItemClassification.filler
                 self.jiggy_counter += 1
+            elif banjoItem.btid == 1230797 and self.options.randomize_notes.value == True:
+                if self.notecounter <= 124:
+                    item_classification = ItemClassification.progression
+                else:
+                    item_classification = ItemClassification.filler
+                self.notecounter += 1
             else:
                 item_classification = ItemClassification.progression
         if banjoItem.type == 'useful':
@@ -108,6 +124,9 @@ class BanjoTooieWorld(World):
 
         if banjoItem.type == 'filler':
             item_classification = ItemClassification.filler
+        
+        if banjoItem.type == 'trap':
+            item_classification = ItemClassification.trap
 
         if banjoItem.type == "victory":
             victory_item = BanjoTooieItem("Kick Around", ItemClassification.filler, None, self.player)
@@ -157,7 +176,7 @@ class BanjoTooieWorld(World):
         if(item.code == 1230514 and self.options.randomize_doubloons == False) :
             return False
         
-        if(item.code == 1230513 and self.options.randomize_cheato == False) : # Added later in Prefill
+        if(item.code == 1230513 and self.options.randomize_cheato.value == False) : # Added later in Prefill
             return False
         
         if(item.code == 1230512 and self.options.randomize_honeycombs == False) : # Added later in Prefill
@@ -187,11 +206,19 @@ class BanjoTooieWorld(World):
         if item.code == 1230797 and self.options.randomize_notes == False: #Notes
             return False
         
+        if item.code == 1230798: #mumbo tokens for Mini Game and Boss Hunt and Jinjo Fam
+            return False
+        
+        # if item.code == 1230799 and self.options.warp_traps == 0: 
+        #     return False
+        
         if item.code in range(1230944, 1230952):
             return False
         
         if item.code in range(1230799, 1230805) and self.options.randomize_stop_n_swap == False:
             return False
+
+
 
         return True
 
@@ -200,100 +227,7 @@ class BanjoTooieWorld(World):
         connect_regions(self)
 
     def generate_early(self) -> None:
-        # Universal Tracker Magic
-        if hasattr(self.multiworld, "re_gen_passthrough"): 
-            if "Banjo-Tooie" in self.multiworld.re_gen_passthrough:
-                passthrough = self.multiworld.re_gen_passthrough["Banjo-Tooie"]
-                self.randomize_worlds = passthrough['world_order']
-                self.worlds_randomized = passthrough['worlds']
-        else:
-            if self.options.randomize_worlds and self.options.randomize_moves == True and \
-            self.options.skip_puzzles == True:
-                random.shuffle(self.world_sphere_1)
-                first_level = self.world_sphere_1[0]
-                # #temp
-                # while first_level != regionName.TL:
-                #     random.shuffle(self.world_sphere_1)
-                #     first_level = self.world_sphere_1[0]
-                # #temp
-                all_good = False
-                while(all_good == False):
-                    if first_level == regionName.GIO and (self.options.randomize_cheato == False or self.options.randomize_jinjos == False or \
-                    self.options.randomize_notes == False):
-                        random.shuffle(self.world_sphere_1)
-                        first_level = self.world_sphere_1[0]
-                        continue
-                    elif first_level == regionName.TL and (self.options.randomize_cheato == False or self.options.randomize_jinjos == False) and \
-                    self.options.randomize_notes == False:
-                        random.shuffle(self.world_sphere_1)
-                        first_level = self.world_sphere_1[0]
-                        continue
-                    elif first_level == regionName.CC and (self.options.randomize_cheato == False or self.options.randomize_jinjos == False) and \
-                    self.options.randomize_notes == False:
-                        random.shuffle(self.world_sphere_1)
-                        first_level = self.world_sphere_1[0]
-                        continue
-                    elif first_level == regionName.WW and (self.options.randomize_cheato == False or self.options.randomize_jinjos == False) and \
-                    self.options.randomize_notes == False:
-                        random.shuffle(self.world_sphere_1)
-                        first_level = self.world_sphere_1[0]
-                        continue
-                    else:
-                        all_good = True
-                i = 1
-                for world in self.world_sphere_1:
-                    if i == 1:
-                        self.randomize_worlds.update({world: 1})
-                        i = i+1
-                    else:
-                        self.world_sphere_2.append(world)
-
-                random.shuffle(self.world_sphere_2)
-                for world in self.world_sphere_2:
-                    if i == 2:
-                        self.randomize_worlds.update({world: 4})
-                    elif i == 3:
-                        self.randomize_worlds.update({world: 8})
-                    elif i == 4:
-                        self.randomize_worlds.update({world: 14})
-                    elif i == 5:
-                        self.randomize_worlds.update({world: 20})
-                    elif i == 6:
-                        self.randomize_worlds.update({world: 28})
-                    elif i == 7:
-                        self.randomize_worlds.update({world: 36})
-                    elif i == 8:
-                        self.randomize_worlds.update({world: 45})
-                    i = i+1
-                first_level = list(self.randomize_worlds.keys())[0]
-
-                if  first_level != regionName.MT and self.options.logic_type != 2:
-                    self.multiworld.early_items[self.player][itemName.GGRAB] = 1
-                if  first_level == regionName.WW:
-                    self.multiworld.early_items[self.player][itemName.FEGGS] = 1
-                if  first_level == regionName.JR or first_level == regionName.HP:
-                    self.multiworld.early_items[self.player][itemName.SPLITUP] = 1
-                if first_level == regionName.TL or first_level == regionName.CC:
-                    self.multiworld.early_items[self.player][itemName.FEGGS] = 1
-                    self.multiworld.early_items[self.player][itemName.TTORP] = 1
-                if first_level == regionName.GIO:
-                    self.multiworld.early_items[self.player][itemName.FEGGS] = 1
-                    self.multiworld.early_items[self.player][itemName.TTORP] = 1
-                    # self.multiworld.early_items[self.player][itemName.SPRINGB] = 1
-                    # self.multiworld.early_items[self.player][itemName.CLAWBTS] = 1
-                self.worlds_randomized = True
-            else:
-                self.randomize_worlds = {
-                    regionName.MT: 1,
-                    regionName.GM: 4,
-                    regionName.WW: 8,
-                    regionName.JR: 14,
-                    regionName.TL: 20,
-                    regionName.GIO: 28,
-                    regionName.HP:  36,
-                    regionName.CC:  45, 
-                }
-                self.worlds_randomized = False
+       WorldRandomize(self)
 
     def set_rules(self) -> None:
         rules = Rules.BanjoTooieRules(self)
@@ -303,7 +237,7 @@ class BanjoTooieWorld(World):
         if self.options.randomize_honeycombs == False:
             self.banjo_pre_fills(itemName.HONEY, "Honeycomb", False)
                     
-        if self.options.randomize_cheato == False:
+        if self.options.randomize_cheato.value == False:
             self.banjo_pre_fills(itemName.PAGES, "Page", False)
 
         if self.options.randomize_doubloons == False:
@@ -345,8 +279,58 @@ class BanjoTooieWorld(World):
                 else:
                     self.multiworld.get_location("World "+ str(world_num) +" Unlocked", self.player).place_locked_item(item)
                     world_num = world_num + 1
+        else:
+            world_num = 1
+            for world, amt in self.randomize_worlds.items():
+                item = self.create_item(itemName.NONE)
+                if world_num == 10:
+                    self.multiworld.get_location("Boss Unlocked").place_locked_item(item)
+                else:
+                    self.multiworld.get_location("World "+ str(world_num) +" Unlocked", self.player).place_locked_item(item)
+                    world_num = world_num + 1
         
-        if self.options.randomize_jinjos == False:
+        if self.options.victory_condition == 1:
+            item = self.create_item(itemName.MUMBOTOKEN)
+            self.multiworld.get_location(locationName.JIGGYMT3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYGM5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYWW1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYWW2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYWW4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYWW5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYJR1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYTD6, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYGI3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYGI9, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYHP8, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYCC3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYCC5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYCC8, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.CHEATOCC1, self.player).place_locked_item(item)
+        
+        if self.options.victory_condition == 2:
+            item = self.create_item(itemName.MUMBOTOKEN)
+            self.multiworld.get_location(locationName.JIGGYMT1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYGM1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYWW3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYJR7, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYTD4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.CHEATOGI3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYHP1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYCC1, self.player).place_locked_item(item)
+
+        if self.options.victory_condition == 3:
+            item = self.create_item(itemName.MUMBOTOKEN)
+            self.multiworld.get_location(locationName.JIGGYIH1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH6, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH7, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH8, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JIGGYIH9, self.player).place_locked_item(item)
+        
+        elif self.options.randomize_jinjos == False:
             item = self.create_item(itemName.JIGGY)
             self.multiworld.get_location(locationName.JIGGYIH1, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYIH2, self.player).place_locked_item(item)
@@ -358,6 +342,7 @@ class BanjoTooieWorld(World):
             self.multiworld.get_location(locationName.JIGGYIH8, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYIH9, self.player).place_locked_item(item)
 
+        if self.options.randomize_jinjos == False:
             item = self.create_item(itemName.WJINJO)
             self.multiworld.get_location(locationName.JINJOJR5, self.player).place_locked_item(item)
 
@@ -449,7 +434,7 @@ class BanjoTooieWorld(World):
         else:
             btoptions["skip_tot"] = "false"
         btoptions['honeycomb'] = "true" if self.options.randomize_honeycombs == 1 else "false"
-        btoptions['pages'] = "true" if self.options.randomize_cheato == 1 else "false"
+        btoptions['pages'] = "true" if self.options.randomize_cheato.value == True else "false"
         btoptions['moves'] = "true" if self.options.randomize_moves == 1 else "false"
         btoptions['doubloons'] = "true" if self.options.randomize_doubloons == 1 else "false"
         btoptions['minigames'] = 'skip' if self.options.speed_up_minigames == 1 else "full"
@@ -462,6 +447,11 @@ class BanjoTooieWorld(World):
         btoptions['notes']= "true" if self.options.randomize_notes == 1 else "false"
         btoptions['worlds']= "true" if self.worlds_randomized else "false"
         btoptions['world_order'] = self.randomize_worlds
+        btoptions['goal_type'] = int(self.options.victory_condition.value)
+        btoptions['minigame_hunt_length'] = int(self.options.minigame_hunt_length.value)
+        btoptions['boss_hunt_length'] = int(self.options.boss_hunt_length.value)
+        btoptions['jinjo_family_rescue_length'] = int(self.options.jinjo_family_rescue_length.value)
+        # btoptions['warp_traps'] = int(self.options.warp_traps.value)
         return btoptions
 
     # for the universal tracker, doesn't get called in standard gen

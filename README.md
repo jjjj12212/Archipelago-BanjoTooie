@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | v1.1.1-beta
+# Archipelago Banjo-Tooie (US-Only) | 1.4-Beta
 Banjo Tooie for Archipelago 
 
 # Controller Shortcuts with this implementation
@@ -30,6 +30,7 @@ Banjo Tooie for Archipelago
 - Notes are scattered throughout Archipelago games
 - Skip Jiggywiggy puzzles to open levels
 - Option for worlds to open in random order. (requires certian amount of items randomized and puzzle skip)
+- Alternate Goals (Minigames, World Bosses, Jinjo Family Hunt)
 
 
 # How to install
