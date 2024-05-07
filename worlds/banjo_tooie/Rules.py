@@ -449,12 +449,12 @@ class BanjoTooieRules:
         }
 
         self.stopnswap_rules = {
-            locationName.IKEY:      lambda state: state.has(itemName.GGRAB, self.player),
-            locationName.PMEGG:     lambda state: state.has(itemName.GEGGS, self.player),
+            locationName.IKEY:      lambda state: self.ice_key(state),
+            locationName.PMEGG:     lambda state: self.has_explosives(state),
             locationName.PMEGGH:    lambda state: state.has(itemName.PMEGG, self.player),
-            locationName.BMEGG:     lambda state: state.has(itemName.GGRAB, self.player),
+            locationName.BMEGG:     lambda state: self.blue_egg(state),
             locationName.BMEGGH:    lambda state: state.has(itemName.BMEGG, self.player),
-            locationName.YMEGGH:    lambda state: state.has(itemName.BDRILL, self.player) and self.check_solo_moves(state, itemName.HATCH)
+            locationName.YMEGGH:    lambda state: (self.has_explosives(state) or state.has(itemName.BDRILL, self.player)) and self.check_solo_moves(state, itemName.HATCH)
         }
 
     def jiggy_targitzan(self, state: CollectionState) -> bool:
@@ -1926,18 +1926,41 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 3: # glitched
             logic = True
         return logic
-    
-    # TODO: Ice Key
+
     def mega_glowbo(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.GGRAB, self.player) and state.has(itemName.TTORP, self.player)
+            logic = state.has(itemName.TTORP, self.player) and state.has(itemName.IKEY, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.GGRAB, self.player) and state.has(itemName.TTORP, self.player)
+            logic = state.has(itemName.TTORP, self.player) and state.has(itemName.IKEY, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (state.has(itemName.GGRAB, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))) and state.has(itemName.TTORP, self.player)
+            logic = state.has(itemName.TTORP, self.player) and state.has(itemName.IKEY, self.player)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (state.has(itemName.GGRAB, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))) and state.has(itemName.TTORP, self.player)
+            logic = state.has(itemName.TTORP, self.player) and state.has(itemName.IKEY, self.player)
+        return logic
+
+    def ice_key(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.GGRAB, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+        elif self.world.options.logic_type == 3: # glitched
+            logic = state.has(itemName.GGRAB, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+        return logic
+
+    def blue_egg(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GGRAB, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.GGRAB, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+        elif self.world.options.logic_type == 3: # glitched
+            logic = state.has(itemName.GGRAB, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
     
     def jinjo_plateau(self, state: CollectionState) -> bool:

@@ -1,5 +1,5 @@
 # 1.4-Beta
- - refactor Region logic
+ - Refactor Region logic
    - Beginner logic: it is now in logic to leave a level from the main entrance, as long as the level is open.
  - New logic: glitched logic
    - For the time being, selecting the "Hag 1 open" doesn't actually make Hag 1 be open from the very beginning. So you still need 55 jiggies if the end goal is Hag 1. This will be changed soon™.
