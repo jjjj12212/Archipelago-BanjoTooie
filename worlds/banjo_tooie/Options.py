@@ -74,6 +74,10 @@ class RandomizeWorlds(Toggle):
     """Worlds will open in a randomized order. Randomized Moves & Puzzle Skip Required."""
     display_name = "Randomize Worlds"
 
+class RandomizeStopnSwap(Toggle):
+    """Mystery Eggs (and rewards) and Ice Key are scattered across the MultiWorld."""
+    display_name = "Randomize Stop n Swap"
+
 class SkipToT(Choice):
     """Choose whether to play the full quiz, start at round 3, or skip it."""
     display_name = "Tower of Tragedy Quiz"
@@ -159,6 +163,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_stations: EnableMultiWorldTrainStationSwitches
     randomize_chuffy: EnableMultiWorldChuffyTrain
     randomize_notes: EnableMultiWorldNotes
+    randomize_stop_n_swap: RandomizeStopnSwap
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
     open_hag1: OpenHag1

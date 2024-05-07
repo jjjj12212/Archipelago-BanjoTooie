@@ -12,6 +12,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.SM:       [
         locationName.CHEATOSM1,
         locationName.JINJOIH5,
+        locationName.PMEGG,
+        locationName.BMEGG,
     #    locationName.FSWIM
     ],
     regionName.IOHJV:    [
@@ -25,10 +27,14 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JIGGYIH8,
         locationName.JIGGYIH9,
         locationName.JIGGYIH10,
-        locationName.TREBLEJV
+        locationName.TREBLEJV,
+        locationName.IKEY,
     ],
     regionName.IOHWH:    [
         locationName.JINJOIH1,
+        locationName.YMEGGH,
+        locationName.PMEGGH,
+        locationName.BMEGGH,
 
         locationName.W1,
         locationName.W2,

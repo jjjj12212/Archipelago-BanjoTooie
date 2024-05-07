@@ -63,6 +63,7 @@ class BanjoTooieWorld(World):
         "Moves": all_group_table["moves"],
         "Magic": all_group_table["magic"],
         "Stations": all_group_table["stations"],
+        "StopnSwap": all_group_table["stopnswap"],
         "Access": all_group_table["levelaccess"],
     }
         
@@ -92,9 +93,6 @@ class BanjoTooieWorld(World):
         ]
         self.worlds_randomized = False
         super(BanjoTooieWorld, self).__init__(world, player)
-
-        
-    
 
     def create_item(self, itemname: str) -> Item:
         banjoItem = all_item_table.get(itemname)
@@ -213,6 +211,9 @@ class BanjoTooieWorld(World):
         
         if item.code in range(1230944, 1230952):
             return False
+        
+        if item.code in range(1230799, 1230805) and self.options.randomize_stop_n_swap == False:
+            return False
 
 
 
@@ -255,7 +256,11 @@ class BanjoTooieWorld(World):
             self.banjo_pre_fills(itemName.CHUFFY, "Chuffy", False)
 
         if self.options.randomize_notes == False:
-         self.banjo_pre_fills(itemName.NOTE, "Note", False)
+            self.banjo_pre_fills(itemName.NOTE, "Note", False)
+
+        if self.options.randomize_stop_n_swap == False:
+            self.banjo_pre_fills("StopnSwap", None, True)
+
 
         if self.worlds_randomized == False and self.options.skip_puzzles == True:
             self.banjo_pre_fills("Access", None, True)
@@ -439,6 +444,7 @@ class BanjoTooieWorld(World):
         btoptions['notes']= "true" if self.options.randomize_notes == 1 else "false"
         btoptions['worlds']= "true" if self.worlds_randomized else "false"
         btoptions['world_order'] = self.randomize_worlds
+        btoptions['mystery'] = "true" if self.options.randomize_stop_n_swap == 1 else "false"
         btoptions['goal_type'] = int(self.options.victory_condition.value)
         btoptions['minigame_hunt_length'] = int(self.options.minigame_hunt_length.value)
         btoptions['boss_hunt_length'] = int(self.options.boss_hunt_length.value)

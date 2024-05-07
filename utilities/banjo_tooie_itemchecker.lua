@@ -69,6 +69,15 @@ function BTConsumable:getConsumable(index)
 	return amount;
 end
 
+function BTConsumable:getEggConsumable()
+    local addr = self.banjoRAM:dereferencePointer(self.CONSUME_PTR);
+    local amount = mainmemory.read_u16_be(addr + 18 * 2)
+    print(amount)
+    print(amount ~ 0x0040)
+    newamt = amount ~ 0x0040
+	return newamt;
+end
+
 function BTConsumable:setConsumable(index, value)
     key = self.consumeTable[index]["key"]
     local addr = self.banjoRAM:dereferencePointer(self.CONSUME_PTR);
@@ -154,11 +163,21 @@ end
 function checkconsumableAmts(BTCONSUME)
     for item, table in pairs(RAM_CONSUME)
     do
-        amt = BTCONSUME:getConsumable(table['key'])
-        if amt ~= table['amt']
+        if table['key'] == 18
         then
-            print("Picked up: " .. item .. " new count: " .. tostring(amt))
-            RAM_CONSUME[item]['amt'] = amt
+            amt = BTCONSUME:getEggConsumable()
+            if amt ~= table['amt']
+            then
+                print("Picked up: " .. item .. " new count: " .. tostring(amt))
+                RAM_CONSUME[item]['amt'] = amt
+            end
+        else
+            amt = BTCONSUME:getConsumable(table['key'])
+            if amt ~= table['amt']
+            then
+                print("Picked up: " .. item .. " new count: " .. tostring(amt))
+                RAM_CONSUME[item]['amt'] = amt
+            end
         end
         -- Uncomment to set Consumables
         -- if table['key'] == 59 or table['key'] == 18 or table['key'] == 15 then
