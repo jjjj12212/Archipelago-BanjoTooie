@@ -34,6 +34,7 @@ Banjo-Tooie:
   skip_tower_of_tragedy: 1     # 0: no skip, 1: skip completely, 2: play 3rd round only
   speed_up_minigames: 'true'   # skip to round 3 of kickball, dodgems
   skip_puzzles: 'true'
+  skip_klungo: 'true'          # Skips Klungo 1 & 2
 
   # Victory Conditions
   #   0: HAG-1
