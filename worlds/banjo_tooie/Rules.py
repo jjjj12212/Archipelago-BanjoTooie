@@ -1163,7 +1163,7 @@ class BanjoTooieRules:
             logic = self.check_solo_moves(state, itemName.SNPACK) or self.check_solo_moves(state, itemName.PACKWH)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.check_solo_moves(state, itemName.SNPACK) or self.check_solo_moves(state, itemName.PACKWH) or\
-                    (state.has(itemName.EGGAIM, self.player) and state.has(itemName.CEGGS, self.player))
+                    (state.has(itemName.EGGAIM, self.player) and state.has(itemName.CEGGS, self.player) and state.has(itemName.BBASH, self.player))
         return logic
     
     def jiggy_twinkly(self, state: CollectionState) -> bool:
@@ -2723,8 +2723,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = self.check_mumbo_magic(state, itemName.MUMBOGI) and state.has(itemName.CLAWBTS, self.player) and state.has(itemName.BBLASTER, self.player)
         elif self.world.options.logic_type == 3: # glitched
-            # TODO: replace grenades or clockworks with breegull bash
-            logic = (self.check_mumbo_magic(state, itemName.MUMBOGI) or state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player))\
+            logic = (self.check_mumbo_magic(state, itemName.MUMBOGI) or state.has(itemName.BBASH, self.player))\
                   and state.has(itemName.CLAWBTS, self.player) and state.has(itemName.BBLASTER, self.player)
         return logic
 
@@ -3194,6 +3193,18 @@ class BanjoTooieRules:
             logic = state.has(itemName.CLAWBTS, self.player) or self.check_solo_moves(state, itemName.LSPRING) and \
                     self.check_solo_moves(state, itemName.GLIDE) and (self.check_solo_moves(state, itemName.WWHACK) or \
                     state.has(itemName.EGGAIM, self.player))
+        return logic
+    
+    def F1_to_F3(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = False
+        elif self.world.options.logic_type == 1: # normal
+            logic = False
+        elif self.world.options.logic_type == 2: # advanced
+            logic = False
+        elif self.world.options.logic_type == 3: # glitched
+            logic = state.has(itemName.BBASH, self.player)
         return logic
     
     def F2_to_F1(self, state: CollectionState) -> bool:

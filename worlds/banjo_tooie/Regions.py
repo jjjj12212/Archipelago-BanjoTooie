@@ -637,9 +637,10 @@ def connect_regions(self):
                          regionName.IOHQM: lambda state: rules.gi_jiggy(state)})
     
     region_GI1 = multiworld.get_region(regionName.GI1, player)
-    region_GI1.add_exits({regionName.GIO, regionName.GI2, regionName.CHUFFY},
+    region_GI1.add_exits({regionName.GIO, regionName.GI2, regionName.GI3, regionName.CHUFFY},
                         {regionName.GIO: lambda state: state.has(itemName.SPLITUP, self.player),
                          regionName.GI2: lambda state: rules.can_access_gi_fl1_2fl2(state),
+                         regionName.GI3: lambda state: rules.F1_to_F3(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWGI, player)})
     
     region_GI2 = multiworld.get_region(regionName.GI2, player)
