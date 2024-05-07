@@ -565,15 +565,16 @@ def connect_regions(self):
 
     region_PL = multiworld.get_region(regionName.IOHPL, player)
     region_PL.add_exits({regionName.GM, regionName.IOHPG, regionName.IOHCT},
-                        {regionName.GM: lambda state: rules.gm_jiggy(state), 
+                        {regionName.GM: lambda state: rules.PL_to_GGM(state), 
                          regionName.IOHPG: lambda state: rules.PL_to_PG(state),
                         regionName.IOHCT: lambda state: state.has(itemName.SPLITUP, player)})
     
     region_GM = multiworld.get_region(regionName.GM, player)
-    region_GM.add_exits({regionName.GMWSJT, regionName.IOHPL, regionName.CHUFFY},
+    region_GM.add_exits({regionName.GMWSJT, regionName.IOHPL, regionName.CHUFFY, regionName.WW},
     {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_GGM(state),
      regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state),
-     regionName.IOHPL: lambda state: rules.GGM_to_PL(state)})
+     regionName.IOHPL: lambda state: rules.GGM_to_PL(state),
+     regionName.WW: lambda state: rules.ggm_to_ww(state)})
     
     region_PG = multiworld.get_region(regionName.IOHPG, player)
     region_PG.add_exits({regionName.WW, regionName.IOHWL},
@@ -611,7 +612,7 @@ def connect_regions(self):
     
     region_TL = multiworld.get_region(regionName.TL, player)
     region_TL.add_exits({regionName.TL_HATCH, regionName.WW, regionName.CHUFFY, regionName.IOHWL},
-                        {regionName.WW: lambda state: rules.oogle_boogles_open(state),
+                        {regionName.WW: lambda state: rules.TDL_to_WW(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWTD, player),
                          regionName.IOHWL: lambda state: rules.TDL_to_IOHWL(state),
                          })
@@ -620,11 +621,14 @@ def connect_regions(self):
     region_QM.add_exits({regionName.GIO, regionName.IOHWL, regionName.CK},
                         {regionName.GIO: lambda state: rules.gi_jiggy(state),
                          regionName.IOHWL: lambda state: rules.QM_to_WL(state),
-                         regionName.CK: lambda state: state.has(itemName.CLAWBTS, self.player) and rules.ck_jiggy(state)})
+                         regionName.CK: lambda state: rules.quag_to_CK(state)})
     
     region_GIO = multiworld.get_region(regionName.GIO, player)
-    region_GIO.add_exits({regionName.GI3ALL, regionName.IOHQM},
-                        {regionName.GI3ALL: lambda state: rules.outside_gi_to_floor3(state), regionName.IOHQM: lambda state: rules.gi_jiggy(state)})
+    region_GIO.add_exits({regionName.GI1, regionName.GI2, regionName.GI3ALL, regionName.IOHQM},
+                        {regionName.GI1: lambda state: rules.outside_gi_to_floor1(state),
+                         regionName.GI2: lambda state: rules.outside_gi_to_floor2(state),
+                         regionName.GI3ALL: lambda state: rules.outside_gi_to_floor3(state),
+                         regionName.IOHQM: lambda state: rules.gi_jiggy(state)})
     
     region_GI1 = multiworld.get_region(regionName.GI1, player)
     region_GI1.add_exits({regionName.GIO, regionName.GI2, regionName.CHUFFY},
