@@ -17,7 +17,7 @@ NOTE = "5 Notes"
 MUMBOTOKEN = "Mumbo Token"
 WARPS = "Grunty Warp Spell"
 IKEY = "Ice Key"
-JNONE = "Jinjo Playable Character (Nothing)"
+JNONE = "Jinjo Multiplayer Character (Nothing)"
 PMEGG = "Pink Mystery Egg"
 BMEGG = "Blue Mystery Egg"
 
