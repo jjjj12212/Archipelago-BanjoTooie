@@ -18,6 +18,18 @@
      - Icy Side Pillar Cheato Page: clockwork shot now in logic, from the glide silo.
      - Trash Can Jinjo: clockwork shot now in logic.
      - GI Floor 1 AC notes: clockwork shot and jump with wing whack now in logic.
+ - Stop N Swap Added to the pool as a option
+  - Items:
+    - Blue Mystery Egg
+    - Pink Mystery Egg
+    - Ice Key
+    - Breegull Blaster
+    - Jinjo Multiplayer (Nothing)
+    - Homing Egg Toggle (Aim Assist disabled until this item is obtained)
+  - check Locations:
+    - obtaining Eggs
+    - obtaining key
+    - hatching all three eggs
 
 # 1.3.1-Beta
  - Fix Randomize Worlds for beginners. Allow randomization
