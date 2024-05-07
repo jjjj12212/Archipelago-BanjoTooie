@@ -102,6 +102,7 @@ local SKIP_KLUNGO = false;
 local EGGS_CLEARED = true;
 local KEY_DROPPED = false;
 local KEY_GRABBED = false;
+local WAIT_FOR_HATCH = false;
 
 -------------- STATION VARS -----------
 local CHECK_FOR_STATIONBTN = false;
@@ -4026,7 +4027,10 @@ function check_egg_mystery()
             if EGGS_CLEARED == true
             then
                 EGGS_CLEARED = false
-                print("On Heggy's or Wooded Hollow Map")
+                if DEBUG == true
+                then
+                  print("On Heggy's or Wooded Hollow Map")
+                end
                 for itemId, value in pairs(AGI_MYSTERY)
                 do
                     if itemId == "1230803"
@@ -4165,10 +4169,6 @@ function check_egg_mystery()
         end
         return
     end
-    -- if DEBUG == true
-    -- then
-    --     print("Checking Eggs")
-    -- end
     local eggLocId = ASSET_MAP_CHECK["STOPNSWAP"][CURRENT_MAP];
     local eggTable = NON_AGI_MAP['STOPNSWAP'][eggLocId]
     local got_egg = BTRAMOBJ:checkFlag(eggTable['addr'], eggTable['bit'])
@@ -4193,59 +4193,93 @@ function check_egg_mystery()
 end
 
 function check_hatched_mystery()
-    if CURRENT_MAP == 0x150 -- on Heggy map, if you have eggs, enable flags
+    if CURRENT_MAP == 0x150  -- on Heggy map, if you have eggs, enable flags
     then
-        if AGI_MYSTERY["1230800"] == true and BKMYSTERY["1230954"] == false
+        if WAIT_FOR_HATCH == false
         then
-            if DEBUG == true then
-                print("Remove Bregull Bash")
+            if AGI_MYSTERY["1230800"] == true and BKMYSTERY["1230954"] == false -- BBASH
+            then
+                if DEBUG == true then
+                    print("Remove Bregull Bash")
+                end
+                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
+                BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
+                BTRAMOBJ:clearFlag(0x1E, 7)
             end
-            table = NON_AGI_MAP["STOPNSWAP"]["1230954"]
-            BTRAMOBJ:clearFlag(table['addr'], table['bit'])
-            BTRAMOBJ:clearFlag(0x1E, 7)
-        end
-        if AGI_MYSTERY["1230801"] == true and BKMYSTERY["1230953"] == false
-        then
-            if DEBUG == true then
-                print("Remove Yellow Jinjo")
+            if AGI_MYSTERY["1230801"] == true and BKMYSTERY["1230953"] == false -- nothing
+            then
+                if DEBUG == true then
+                    print("Remove Yellow Jinjo")
+                end
+                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
+                BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
             end
-            table = NON_AGI_MAP["STOPNSWAP"]["1230953"]
-            BTRAMOBJ:clearFlag(table['addr'], table['bit'])
-        end
-        if AGI_MYSTERY["1230802"] == true and BKMYSTERY["1230955"] == false
-        then
-            if DEBUG == true then
-                print("Remove Homing Eggs")
+            if AGI_MYSTERY["1230802"] == true and BKMYSTERY["1230955"] == false -- homing eggs
+            then
+                if DEBUG == true then
+                    print("Remove Homing Eggs")
+                end
+                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
+                BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
             end
-            table = NON_AGI_MAP["STOPNSWAP"]["1230953"]
-            BTRAMOBJ:clearFlag(table['addr'], table['bit'])
+            WAIT_FOR_HATCH = true
+        else -- Watch if Eggs are hatched
+            if BKMYSTERY["1230954"] == false
+            then
+                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
+                if BTRAMOBJ:checkFlag(tbl['addr'], tbl['bit']) == true
+                then
+                    BKMYSTERY["1230954"] = true
+                    BTRAMOBJ:clearFlag(0x1E, 7)
+                end
+            end
+            if BKMYSTERY["1230953"] == false
+            then
+                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
+                if BTRAMOBJ:checkFlag(tbl['addr'], tbl['bit']) == true
+                then
+                    BKMYSTERY["1230953"] = true
+                end
+            end
+            if BKMYSTERY["1230955"] == false
+            then
+                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
+                if BTRAMOBJ:checkFlag(tbl['addr'], tbl['bit']) == true
+                then
+                    BKMYSTERY["1230955"] = true
+                end
+            end
         end
     else
         if AGI_MYSTERY["1230800"] == true
         then
-            if DEBUG == true then
-                print("Obtained Bregull Bash")
-            end
-            table = NON_AGI_MAP["STOPNSWAP"]["1230954"]
-            BTRAMOBJ:setFlag(table['addr'], table['bit'])
-            BTRAMOBJ:setFlag(0x1E, 7)
+            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
+            BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
+        else
+            BTRAMOBJ:clearFlag(0x1E, 7)
         end
         if AGI_MYSTERY["1230801"] == true
         then
-            if DEBUG == true then
-                print("Obtained Yellow Jinjo")
-            end
-            table = NON_AGI_MAP["STOPNSWAP"]["1230953"]
-            BTRAMOBJ:setFlag(table['addr'], table['bit'])
+            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
+            BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         end
         if AGI_MYSTERY["1230802"] == true
         then
-            if DEBUG == true then
-                print("add Homing Eggs")
-            end
-            table = NON_AGI_MAP["STOPNSWAP"]["1230953"]
-            BTRAMOBJ:setFlag(table['addr'], table['bit'])
+            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
+            BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         end
+        WAIT_FOR_HATCH = false
+    end
+end
+
+function obtain_breegull_bash()
+    if AGI_MYSTERY["1230800"] == true and CURRENT_MAP ~= 0x150
+    then
+        if DEBUG == true
+        then
+            print("Setting BBASH")
+        end
+        BTRAMOBJ:setFlag(0x1E, 7)
     end
 end
 
@@ -4359,8 +4393,6 @@ function clearKey()
         BTCONSUMEOBJ:setConsumable(0)
     end
 end
-
-
 
 ---------------------------------- BKStation ---------------------------------
 
@@ -5276,6 +5308,7 @@ function BKLogics(mapaddr)
         if ENABLE_AP_MYSTERY == true
         then
             clearKey()
+            obtain_breegull_bash()
         end
     end
 end
@@ -6013,6 +6046,28 @@ function processAGIItem(item_list)
                         break
                     end
                 end
+            elseif(memlocation == 1230800) and ENABLE_AP_MYSTERY == true
+            then
+                if DEBUG == true
+                then
+                    print("Breegull Bash Obtained")
+                end
+                AGI_MYSTERY[tostring(memlocation)] = true
+                obtain_breegull_bash()
+            elseif(memlocation == 1230801) and ENABLE_AP_MYSTERY == true
+            then
+                if DEBUG == true
+                then
+                    print("Jinjo Multiplayer Obtained")
+                end
+                AGI_MYSTERY[tostring(memlocation)] = true
+            elseif(memlocation == 1230802) and ENABLE_AP_MYSTERY == true
+            then
+                if DEBUG == true
+                then
+                    print("Homing Obtained")
+                end
+                AGI_MYSTERY[tostring(memlocation)] = true
             elseif(memlocation == 1230803) and ENABLE_AP_MYSTERY == true
             then
                 if DEBUG == true
@@ -6330,6 +6385,13 @@ function DPadStats()
                     print(values['name'])
                 end
             end
+            if ENABLE_AP_MYSTERY == true
+            then
+                if AGI_MYSTERY["1230800"] == true
+                then
+                    print("Breegull Bash");
+                end
+            end
 		end
 		
 		if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == false
@@ -6415,10 +6477,23 @@ function DPadStats()
 
         if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == false
         then
-           BTRAMOBJ:setFlag(0xAF, 3, "Aim Assist")
-           AIMASSIST = true
-           print(" ")
-           print("Aim Assist Enabled")
+            if ENABLE_AP_MYSTERY == true
+            then
+                if AGI_MYSTERY["1230802"] == true
+                then
+                    BTRAMOBJ:setFlag(0xAF, 3, "Aim Assist")
+                    AIMASSIST = true
+                    print(" ")
+                    print("Aim Assist Enabled")
+                else
+                    print("Homing Eggs not found")
+                end
+            else
+                BTRAMOBJ:setFlag(0xAF, 3, "Aim Assist")
+                AIMASSIST = true
+                print(" ")
+                print("Aim Assist Enabled")
+            end
         elseif check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == true
         then
             BTRAMOBJ:clearFlag(0xAF, 3)

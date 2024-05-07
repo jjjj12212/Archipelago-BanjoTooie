@@ -117,16 +117,6 @@ stop_n_swap_table = {
 
 }
 
-stop_n_swap_table = {
-    itemName.IKEY:          ItemData(1230799, 1, "progress", locationName.IKEY),
-    itemName.BBASH:         ItemData(1230800, 1, "progress", locationName.PMEGGH),
-    itemName.JNONE:         ItemData(1230801, 1, "filler", locationName.YMEGGH),
-    itemName.HOMINGEGGS:    ItemData(1230802, 1, "useful", locationName.BMEGGH),
-    itemName.BMEGG:         ItemData(1230803, 1, "progress", locationName.BMEGG),
-    itemName.PMEGG:         ItemData(1230804, 1, "progress", locationName.PMEGG)
-
-}
-
 stations_table = {
     itemName.TRAINSWIH:     ItemData(1230794,  1, "progress", locationName.TRAINSWIH),
     itemName.TRAINSWTD:     ItemData(1230791,  1, "progress", locationName.TRAINSWTD),
