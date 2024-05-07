@@ -92,6 +92,7 @@ class LogicType(Choice):
     option_beginner = 0
     option_normal = 1
     option_advanced = 2
+    option_glitched = 3
     default = 0
 
 class SpeedUpMinigames(DefaultOnToggle):

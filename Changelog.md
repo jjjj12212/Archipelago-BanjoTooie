@@ -1,8 +1,23 @@
 # 1.4-Beta
  - refactor Region logic
    - Beginner logic: it is now in logic to leave a level from the main entrance, as long as the level is open.
- - Snake Head Cheato Page is now Treasure Chamber Cheato Page
+ - New logic: glitched logic
+   - For the time being, selecting the "Hag 1 open" doesn't actually make Hag 1 be open from the very beginning. So you still need 55 jiggies if the end goal is Hag 1. This will be changed soon™.
  - Option to Skip Klungo 1 & 2 (until he is a required check)
+ - Item renaming
+   - Snake Head Cheato Page is now Treasure Chamber Cheato Page
+   - Boulder Honeycomb is now Prospector Boulder Honeycomb
+ - Logic changes
+   - Fixed various inconsistencies with beginner logic.
+   - Advanced
+     - Floor 1 guarded jiggy: clockwork shot now in logic.
+     - Ancient Swimming Baths Cheato Page: clockwork shot now in logic.
+     - Mega-Glowbo: clockwork shot to get the ice key now in logic.
+     - Cliff Top jinjo: clockwork shot now in logic.
+     - Mrs. Boggy jiggy: the jump from the ticket stand spring pad to the Area 51 is now in logic.
+     - Icy Side Pillar Cheato Page: clockwork shot now in logic, from the glide silo.
+     - Trash Can Jinjo: clockwork shot now in logic.
+     - GI Floor 1 AC notes: clockwork shot and jump with wing whack now in logic.
 
 # 1.3.1-Beta
  - Fix Randomize Worlds for beginners. Allow randomization
