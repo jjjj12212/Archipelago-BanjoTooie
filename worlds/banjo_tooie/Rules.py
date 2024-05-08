@@ -2781,6 +2781,19 @@ class BanjoTooieRules:
             logic = state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
                     self.check_mumbo_magic(state, itemName.MUMBOHP)
         return logic
+    
+    def HFP_to_JRL(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_access_ccl(state) and state.has(itemName.SPLITUP, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_access_ccl(state) and state.has(itemName.SPLITUP, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.can_access_ccl(state) and state.has(itemName.SPLITUP, self.player)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = (self.can_access_ccl(state) and state.has(itemName.SPLITUP, self.player)) or state.has(itemName.GGRAB, self.player)
+        return logic
+
         
     def mt_jiggy(self, state: CollectionState) -> bool: #1
         if self.world.worlds_randomized == True:
@@ -2887,6 +2900,18 @@ class BanjoTooieRules:
             logic = self.gm_jiggy(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = True
+        return logic
+    
+    def hatch_to_TDL(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = False
+        elif self.world.options.logic_type == 1 : # normal
+            logic = False
+        elif self.world.options.logic_type == 2: # advanced
+            logic = False
+        elif self.world.options.logic_type == 3: # glitched
+            logic = state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player)
         return logic
     
     def can_access_witchyworld(self, state: CollectionState, fromTrain: bool) -> bool:

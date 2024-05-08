@@ -568,6 +568,10 @@ def connect_regions(self):
     region_MT.add_exits({regionName.TL_HATCH, regionName.GM},
                         {regionName.TL_HATCH: lambda state: rules.jiggy_treasure_chamber(state),\
                         regionName.GM: lambda state: rules.dilberta_free(state)})
+    
+    region_HATCH = multiworld.get_region(regionName.TL_HATCH, player)
+    region_HATCH.add_exits({regionName.TL},
+                        {regionName.TL: lambda state: rules.hatch_to_TDL(state)})
 
     region_PL = multiworld.get_region(regionName.IOHPL, player)
     region_PL.add_exits({regionName.GM, regionName.IOHPG, regionName.IOHCT},
@@ -606,7 +610,7 @@ def connect_regions(self):
     region_HP.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.MT, regionName.JR, regionName.CHUFFY},
                         {regionName.IOHCT_HFP_ENTRANCE: lambda state: rules.HFP_to_CTHFP(state),
                          regionName.MT: lambda state: rules.HFP_to_MT(state),
-                         regionName.JR: lambda state: rules.can_access_ccl(state) and state.has(itemName.SPLITUP, player),
+                         regionName.JR: lambda state: rules.HFP_to_JRL(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, player)})
     region_IOHWL = multiworld.get_region(regionName.IOHWL, player)
     region_IOHWL.add_exits({regionName.IOHPG, regionName.IOHQM, regionName.TL, regionName.CC},
