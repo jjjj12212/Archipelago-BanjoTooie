@@ -603,12 +603,11 @@ def connect_regions(self):
                         {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_JRL(state), regionName.IOHCT: lambda state: rules.JRL_to_CT(state)})
 
     region_HP = multiworld.get_region(regionName.HP, player)
-    region_HP.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.MT, regionName.JR, regionName.CHUFFY, regionName.IOHCT},
+    region_HP.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.MT, regionName.JR, regionName.CHUFFY},
                         {regionName.IOHCT_HFP_ENTRANCE: lambda state: rules.HFP_to_CTHFP(state),
                          regionName.MT: lambda state: rules.HFP_to_MT(state),
                          regionName.JR: lambda state: rules.can_access_ccl(state) and state.has(itemName.SPLITUP, player),
-                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, player),
-                         regionName.IOHCT: lambda state: rules.HFP_to_CTHFP(state)})
+                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, player)})
     region_IOHWL = multiworld.get_region(regionName.IOHWL, player)
     region_IOHWL.add_exits({regionName.IOHPG, regionName.IOHQM, regionName.TL, regionName.CC},
                         {regionName.IOHPG: lambda state: rules.WL_to_PG(state),
