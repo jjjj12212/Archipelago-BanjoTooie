@@ -4254,19 +4254,19 @@ function check_hatched_mystery()
         if AGI_MYSTERY["1230800"] == true
         then
             local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
-            BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
+            -- BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         else
             BTRAMOBJ:clearFlag(0x1E, 7)
         end
         if AGI_MYSTERY["1230801"] == true
         then
             local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
-            BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
+            -- BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         end
         if AGI_MYSTERY["1230802"] == true
         then
             local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
-            BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
+            -- BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         end
         WAIT_FOR_HATCH = false
     end
@@ -5086,8 +5086,11 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
                 if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
                     and show_message == true
                 then
-                    table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
-                    print(values["defaultName"] .. " is now unlocked!")
+                    if ENABLE_AP_WORLDS == false
+                    then
+                        table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
+                        print(values["defaultName"] .. " is now unlocked!")
+                    end
                 end
             end
         else --Make sure its open regardless but no message
