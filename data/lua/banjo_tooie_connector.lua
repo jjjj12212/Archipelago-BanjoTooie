@@ -4251,23 +4251,31 @@ function check_hatched_mystery()
             end
         end
     else
-        if AGI_MYSTERY["1230800"] == true
+        if BKMYSTERY["1230956"] == false
         then
+            if DEBUG == true then
+                print("reverse Hatch flag, Pink egg not yet obtained")
+            end
             local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
-            -- BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
-        else
+            BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
+        end
+        if AGI_MYSTERY["1230800"] == false
+        then
             BTRAMOBJ:clearFlag(0x1E, 7)
         end
-        if AGI_MYSTERY["1230801"] == true
+        if BKMYSTERY["1230957"] == false
         then
-            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
-            -- BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
+            if DEBUG == true then
+                print("reverse Hatch flag, Blue egg not yet obtained")
+            end
+            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
+            BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
         end
-        if AGI_MYSTERY["1230802"] == true
-        then
-            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
-            -- BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
-        end
+        -- if AGI_MYSTERY["1230802"] == true
+        -- then
+        --     local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
+        --     -- BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
+        -- end
         WAIT_FOR_HATCH = false
     end
 end
