@@ -5173,7 +5173,6 @@ function loadGame(current_map)
             do
                 if itemId ~= "NA"
                 then
-                    print(itemId)
                     if (1230855 <= tonumber(itemId) and tonumber(itemId) <= 1230863) or (1230174 <= tonumber(itemId) and tonumber(itemId) <= 1230182)
                     then
                         processMagicItem(itemId);
