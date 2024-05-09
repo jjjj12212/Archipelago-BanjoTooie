@@ -5124,7 +5124,7 @@ function checkConsumables(consumable_type, location_checks)
 end
 
 function loadGame(current_map)
-    if(current_map == 0x142 or current_map == 0xAF or current_map == 0x160) --Spiral Hill, Jinjo Village, Cauldron Keep (due to cutscene)
+    if(current_map == 0x142 or current_map == 0xAF or current_map == 0x160)
     then
         local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".BMM", "r") -- get #BTplayer_seed.BMM
         if f==nil then
@@ -5186,11 +5186,13 @@ function loadGame(current_map)
             then
                 check_open_level(true)
             end
-            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+--            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
                 BTRAMOBJ:setFlag(0x6E, 3);
                 table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
                 print("HAG 1 is now unlocked!")
-            elseif OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == true then
+--            elseif OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == true then
+            elseif OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == true then
                 table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
                 print("HAG 1 is now unlocked!")
             end
@@ -6958,13 +6960,14 @@ function initializeFlags()
         if SKIP_PUZZLES == true then
             check_open_level(true) -- sanity check that level open flags are still set
         end
-        if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+--        if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+        if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
             BTRAMOBJ:setFlag(0x6E, 3);
             table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
             print("HAG 1 is now unlocked!")
-        elseif OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == true then
-            table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-            print("HAG 1 is now unlocked!")
+        -- elseif OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == true then
+        --     table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+        --     print("HAG 1 is now unlocked!")
         end
         if ENABLE_AP_JINJO == true then
             -- 129 is 1000 0001
@@ -7048,7 +7051,8 @@ function main()
                 elseif TEXT_START == false then
                     processMessages()
                 end
-                if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+--                if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
                     BTRAMOBJ:setFlag(0x6E, 3);
                     table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
                     print("HAG 1 is now unlocked!")
