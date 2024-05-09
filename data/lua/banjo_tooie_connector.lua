@@ -5124,7 +5124,7 @@ function checkConsumables(consumable_type, location_checks)
 end
 
 function loadGame(current_map)
-    if(current_map == 0x142 or current_map == 0xAF)
+    if(current_map == 0x142 or current_map == 0xAF or current_map == 0x160) --Spiral Hill, Jinjo Village, Cauldron Keep (due to cutscene)
     then
         local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".BMM", "r") -- get #BTplayer_seed.BMM
         if f==nil then
