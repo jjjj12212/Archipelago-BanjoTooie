@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.4"
+local BT_VERSION = "V1.4.1"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -6999,7 +6999,7 @@ function initializeFlags()
             BTCONSUMEOBJ:changeConsumable("Ice Keys")
             BTCONSUMEOBJ:setConsumable(0)
         end
-        --BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star, sun, moon
+        BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star,moon, sun 
 
         
 	-- Otherwise, the flags were already set, so just stop checking

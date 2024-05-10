@@ -3543,7 +3543,8 @@ class BanjoTooieRules:
         return state.has(itemName.BDRILL, self.player) and self.check_mumbo_magic(state, itemName.MUMBOCC)
 
     def check_hag1_options(self, state: CollectionState) -> bool:
-        enough_jiggies = state.has(itemName.JIGGY, self.player, 55) if self.world.options.open_hag1 == 1 else state.has(itemName.JIGGY, self.player, 70)
+
+        enough_jiggies = self.world.options.open_hag1 == 1 or state.has(itemName.JIGGY, self.player, 70)
         return enough_jiggies and \
                 (self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK) or
                 self.check_solo_moves(state, itemName.SHPACK)) and \
