@@ -1,3 +1,7 @@
+# 1.4.1-Beta
+ - logic fix for HAG-1 when open option is set
+ - set Prison code: sun, moon, star, moon, sun
+ 
 # 1.4-Beta
  - Refactor Region logic
    - Beginner logic: it is now in logic to leave a level from the main entrance, as long as the level is open.
