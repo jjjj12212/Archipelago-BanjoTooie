@@ -30,6 +30,7 @@
     - obtaining Eggs
     - obtaining key
     - hatching all three eggs
+ - Open Hag-1 Option now opens Hag-1 upon creating a new save-file.
 
 # 1.3.1-Beta
  - Fix Randomize Worlds for beginners. Allow randomization
