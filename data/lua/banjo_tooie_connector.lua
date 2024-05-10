@@ -6999,7 +6999,7 @@ function initializeFlags()
             BTCONSUMEOBJ:changeConsumable("Ice Keys")
             BTCONSUMEOBJ:setConsumable(0)
         end
-        --BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star, sun, moon
+        BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star,moon, sun 
 
         
 	-- Otherwise, the flags were already set, so just stop checking
