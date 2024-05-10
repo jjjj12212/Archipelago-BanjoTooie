@@ -7059,12 +7059,12 @@ function main()
                 elseif TEXT_START == false then
                     processMessages()
                 end
---                if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-                if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-                    BTRAMOBJ:setFlag(0x6E, 3);
-                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                    print("HAG 1 is now unlocked!")
-                end
+            -- if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                -- if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                --     BTRAMOBJ:setFlag(0x6E, 3);
+                --     table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                --     print("HAG 1 is now unlocked!")
+                -- end
             elseif (FRAME % 10 == 1)
             then
                 checkPause();
