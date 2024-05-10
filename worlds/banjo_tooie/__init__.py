@@ -9,6 +9,7 @@ from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
 from .Names import itemName, locationName, regionName
+from .WorldOrder import WorldRandomize
 
 #from Utils import get_options
 from BaseClasses import ItemClassification, Tutorial, Item, Region, MultiWorld
@@ -62,6 +63,7 @@ class BanjoTooieWorld(World):
         "Moves": all_group_table["moves"],
         "Magic": all_group_table["magic"],
         "Stations": all_group_table["stations"],
+        "StopnSwap": all_group_table["stopnswap"],
         "Access": all_group_table["levelaccess"],
     }
         
@@ -91,9 +93,6 @@ class BanjoTooieWorld(World):
         ]
         self.worlds_randomized = False
         super(BanjoTooieWorld, self).__init__(world, player)
-
-        
-    
 
     def create_item(self, itemname: str) -> Item:
         banjoItem = all_item_table.get(itemname)
@@ -212,6 +211,9 @@ class BanjoTooieWorld(World):
         
         if item.code in range(1230944, 1230952):
             return False
+        
+        if item.code in range(1230799, 1230805) and self.options.randomize_stop_n_swap == False:
+            return False
 
 
 
@@ -222,102 +224,7 @@ class BanjoTooieWorld(World):
         connect_regions(self)
 
     def generate_early(self) -> None:
-        if self.options.victory_condition == 1 or self.options.victory_condition == 2:
-            self.options.randomize_cheato.value = True
-        # Universal Tracker Magic
-        if hasattr(self.multiworld, "re_gen_passthrough"): 
-            if "Banjo-Tooie" in self.multiworld.re_gen_passthrough:
-                passthrough = self.multiworld.re_gen_passthrough["Banjo-Tooie"]
-                self.randomize_worlds = passthrough['world_order']
-                self.worlds_randomized = bool(passthrough['worlds'] == 'true') 
-        else:
-            if self.options.randomize_worlds and self.options.randomize_moves == True and \
-            self.options.skip_puzzles == True:
-                random.shuffle(self.world_sphere_1)
-                first_level = self.world_sphere_1[0]
-                # #temp
-                # while first_level != regionName.TL:
-                #     random.shuffle(self.world_sphere_1)
-                #     first_level = self.world_sphere_1[0]
-                # #temp
-                all_good = False
-                while(all_good == False):
-                    if first_level == regionName.GIO and (self.options.randomize_cheato.value == False or self.options.randomize_jinjos == False or \
-                    self.options.randomize_notes == False):
-                        random.shuffle(self.world_sphere_1)
-                        first_level = self.world_sphere_1[0]
-                        continue
-                    elif first_level == regionName.TL and (self.options.randomize_cheato.value == False or self.options.randomize_jinjos == False) and \
-                    self.options.randomize_notes == False:
-                        random.shuffle(self.world_sphere_1)
-                        first_level = self.world_sphere_1[0]
-                        continue
-                    elif first_level == regionName.CC and (self.options.randomize_cheato.value == False or self.options.randomize_jinjos == False) and \
-                    self.options.randomize_notes == False:
-                        random.shuffle(self.world_sphere_1)
-                        first_level = self.world_sphere_1[0]
-                        continue
-                    elif first_level == regionName.WW and (self.options.randomize_cheato.value == False or self.options.randomize_jinjos == False) and \
-                    self.options.randomize_notes == False:
-                        random.shuffle(self.world_sphere_1)
-                        first_level = self.world_sphere_1[0]
-                        continue
-                    else:
-                        all_good = True
-                i = 1
-                for world in self.world_sphere_1:
-                    if i == 1:
-                        self.randomize_worlds.update({world: 1})
-                        i = i+1
-                    else:
-                        self.world_sphere_2.append(world)
-
-                random.shuffle(self.world_sphere_2)
-                for world in self.world_sphere_2:
-                    if i == 2:
-                        self.randomize_worlds.update({world: 4})
-                    elif i == 3:
-                        self.randomize_worlds.update({world: 8})
-                    elif i == 4:
-                        self.randomize_worlds.update({world: 14})
-                    elif i == 5:
-                        self.randomize_worlds.update({world: 20})
-                    elif i == 6:
-                        self.randomize_worlds.update({world: 28})
-                    elif i == 7:
-                        self.randomize_worlds.update({world: 36})
-                    elif i == 8:
-                        self.randomize_worlds.update({world: 45})
-                    i = i+1
-                first_level = list(self.randomize_worlds.keys())[0]
-
-                if  first_level != regionName.MT and self.options.logic_type != 2:
-                    self.multiworld.early_items[self.player][itemName.GGRAB] = 1
-                if  first_level == regionName.WW:
-                    self.multiworld.early_items[self.player][itemName.FEGGS] = 1
-                if  first_level == regionName.JR or first_level == regionName.HP:
-                    self.multiworld.early_items[self.player][itemName.SPLITUP] = 1
-                if first_level == regionName.TL or first_level == regionName.CC:
-                    self.multiworld.early_items[self.player][itemName.FEGGS] = 1
-                    self.multiworld.early_items[self.player][itemName.TTORP] = 1
-                if first_level == regionName.GIO:
-                    self.multiworld.early_items[self.player][itemName.FEGGS] = 1
-                    self.multiworld.early_items[self.player][itemName.TTORP] = 1
-                    # self.multiworld.early_items[self.player][itemName.SPRINGB] = 1
-                    # self.multiworld.early_items[self.player][itemName.CLAWBTS] = 1
-                self.worlds_randomized = True
-            else:
-                self.randomize_worlds = {
-                    regionName.MT: 1,
-                    regionName.GM: 4,
-                    regionName.WW: 8,
-                    regionName.JR: 14,
-                    regionName.TL: 20,
-                    regionName.GIO: 28,
-                    regionName.HP:  36,
-                    regionName.CC:  45, 
-                }
-                self.worlds_randomized = False
+       WorldRandomize(self)
 
     def set_rules(self) -> None:
         rules = Rules.BanjoTooieRules(self)
@@ -349,7 +256,11 @@ class BanjoTooieWorld(World):
             self.banjo_pre_fills(itemName.CHUFFY, "Chuffy", False)
 
         if self.options.randomize_notes == False:
-         self.banjo_pre_fills(itemName.NOTE, "Note", False)
+            self.banjo_pre_fills(itemName.NOTE, "Note", False)
+
+        if self.options.randomize_stop_n_swap == False:
+            self.banjo_pre_fills("StopnSwap", None, True)
+
 
         if self.worlds_randomized == False and self.options.skip_puzzles == True:
             self.banjo_pre_fills("Access", None, True)
@@ -533,11 +444,13 @@ class BanjoTooieWorld(World):
         btoptions['notes']= "true" if self.options.randomize_notes == 1 else "false"
         btoptions['worlds']= "true" if self.worlds_randomized else "false"
         btoptions['world_order'] = self.randomize_worlds
+        btoptions['mystery'] = "true" if self.options.randomize_stop_n_swap == 1 else "false"
         btoptions['goal_type'] = int(self.options.victory_condition.value)
         btoptions['minigame_hunt_length'] = int(self.options.minigame_hunt_length.value)
         btoptions['boss_hunt_length'] = int(self.options.boss_hunt_length.value)
         btoptions['jinjo_family_rescue_length'] = int(self.options.jinjo_family_rescue_length.value)
         # btoptions['warp_traps'] = int(self.options.warp_traps.value)
+        btoptions['skip_klungo'] = "true" if self.options.skip_klungo == 1 else "false"
         return btoptions
 
     # for the universal tracker, doesn't get called in standard gen

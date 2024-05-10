@@ -93,6 +93,7 @@ class BanjoTooieContext(CommonContext):
         self.jinjofamlist_table = {}
         self.worldlist_table = {}
         self.chuffy_table = {}
+        self.mystery_table = {}
         self.deathlink_enabled = False
         self.deathlink_pending = False
         self.deathlink_sent_this_death = False
@@ -257,8 +258,10 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_chuffy": ctx.slot_data["chuffy"],
             "slot_jinjo": ctx.slot_data["jinjo"],
             "slot_notes": ctx.slot_data["notes"],
+            "slot_mystery": ctx.slot_data["mystery"],
             "slot_worlds": ctx.slot_data["worlds"],
             "slot_world_order": ctx.slot_data["world_order"],
+            "slot_skip_klungo": ctx.slot_data["skip_klungo"],
             "slot_goal_type": ctx.slot_data["goal_type"],
             "slot_minigame_hunt_length": ctx.slot_data["minigame_hunt_length"],
             "slot_boss_hunt_length": ctx.slot_data["boss_hunt_length"],
@@ -465,7 +468,30 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             await ctx.send_msgs([{
                 "cmd": "LocationChecks",
                 "locations": worlds
-            }])   
+            }])
+
+        if ctx.slot_data["mystery"] == "true" and ctx.sync_ready == True:
+            # Locations handling
+            mystery = payload['mystery']
+            send_mystery = []
+
+            # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
+            if isinstance(worldslist, list):
+                mystery = {}
+
+            if ctx.mystery_table != mystery:
+                ctx.mystery_table = mystery
+
+                for locationId, value in mystery.items():
+                    if locationId == "REMOVE": #Don't need to handle this here
+                        continue
+                    if value == True:
+                        send_mystery.append(int(locationId))
+
+                await ctx.send_msgs([{
+                    "cmd": "LocationChecks",
+                    "locations": send_mystery
+                }])   
 
     #Send Aync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:

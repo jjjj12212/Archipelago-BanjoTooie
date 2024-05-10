@@ -54,7 +54,7 @@ JINJOJR5 = "JRL: Sunken Ship Jinjo"
 JINJOTL1 = "TDL: Talon Torpedo Jinjo"
 JINJOTL2 = "TDL: Entrance Jinjo"
 JINJOTL3 = "TDL: Beside Rocknut Jinjo"
-JINJOTL4 = "TDL: Big T. Rex Skip Jinjo"
+JINJOTL4 = "TDL: Big T. Rex Jinjo"
 JINJOTL5 = "TDL: Stomping Plains Jinjo"
 JINJOGI1 = "GI: Floor 5 Jinjo"
 JINJOGI2 = "GI: Leg Spring Jinjo"
@@ -194,7 +194,7 @@ HONEYCMT1  = "MT: Entrance Honeycomb"
 HONEYCMT2  = "MT: Bovina Honeycomb"
 HONEYCMT3  = "MT: Treasure Chamber Honeycomb"
 HONEYCGM1  = "GGM: Toxic Gas Cave Honeycomb"
-HONEYCGM2  = "GGM: Boulder Honeycomb"
+HONEYCGM2  = "GGM: Prospector Boulder Honeycomb"
 HONEYCGM3  = "GGM: Train Station Honeycomb"
 HONEYCWW1  = "WW: Space Zone Honeycomb"
 HONEYCWW2  = "WW: Mumbo Skull Honeycomb"
@@ -238,7 +238,7 @@ TRAINSWWW  = "WW: Train Switch"
 CHUFFY = "GGM: Chuffy"
 
 #Cheato Pages
-CHEATOMT1 = "MT: Snake Head Cheato Page"
+CHEATOMT1 = "MT: Treasure Chamber Cheato Page"
 CHEATOMT2 = "MT: Prison Compound Cheato Page"
 CHEATOMT3 = "MT: Jade Snake Grove Cheato Page"
 CHEATOGM1 = "GGM: Canary Mary Cheato Page"
@@ -435,7 +435,23 @@ FEGGS       = "IoH: Fire Eggs Silo"
 GEGGS       = "IoH: Grenade Eggs Silo"
 CEGGS       = "IoH: Clockwork Kazooie Eggs Silo"
 IEGGS       = "IoH: Ice Eggs Silo"
-FSWIM       = "Fast Swimming"
+
+#NPCS
+ROYSTEN     = "Roysten"
+CHEATOR1    = "Cheato Reward 1"  #5 pages - Feathers
+CHEATOR2    = "Cheato Reward 2"  #10 pages - Eggs
+CHEATOR3    = "Cheato Reward 3"  #15 pages - Fallproof
+CHEATOR4    = "Cheato Reward 4"  #20 pages - Honeyback
+CHEATOR5    = "Cheato Reward 5"  #25 pages - Jukebox
+
+
+#Stop N Swap
+PMEGG        = "Pink Mystery Egg"
+PMEGGH        = "Pink Mystery Egg Hatched"
+BMEGG        = "Blue Mystery Egg"
+BMEGGH        = "Blue Mystery Egg Hatched"
+YMEGGH        = "Yellow Mystery Egg Hatched"
+IKEY         = "Ice Key"
 
 #Bosses
 HAG1 = "Hag 1 Defeated"

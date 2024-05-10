@@ -74,6 +74,10 @@ class RandomizeWorlds(Toggle):
     """Worlds will open in a randomized order. Randomized Moves & Puzzle Skip Required."""
     display_name = "Randomize Worlds"
 
+class RandomizeStopnSwap(Toggle):
+    """Mystery Eggs (and rewards) and Ice Key are scattered across the MultiWorld."""
+    display_name = "Randomize Stop n Swap"
+
 class SkipToT(Choice):
     """Choose whether to play the full quiz, start at round 3, or skip it."""
     display_name = "Tower of Tragedy Quiz"
@@ -88,6 +92,7 @@ class LogicType(Choice):
     option_beginner = 0
     option_normal = 1
     option_advanced = 2
+    option_glitched = 3
     default = 0
 
 class SpeedUpMinigames(DefaultOnToggle):
@@ -138,6 +143,10 @@ class JinjoFamilyRescueLength(Range):
 #     option_cross_level_warp_traps = 2
 #     default = 0
 
+class SkipKlungo(Toggle):
+    """Make it so you can skip Klungo 1 and 2."""
+    display_name = "Skip Klungo"
+
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
@@ -154,6 +163,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_stations: EnableMultiWorldTrainStationSwitches
     randomize_chuffy: EnableMultiWorldChuffyTrain
     randomize_notes: EnableMultiWorldNotes
+    randomize_stop_n_swap: RandomizeStopnSwap
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
     open_hag1: OpenHag1
@@ -169,3 +179,4 @@ class BanjoTooieOptions(PerGameCommonOptions):
     boss_hunt_length: BossHuntLength
     jinjo_family_rescue_length: JinjoFamilyRescueLength
     # warp_traps: WarpTraps
+    skip_klungo: SkipKlungo

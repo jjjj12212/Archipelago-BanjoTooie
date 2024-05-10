@@ -12,6 +12,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.SM:       [
         locationName.CHEATOSM1,
         locationName.JINJOIH5,
+        locationName.PMEGG,
+        locationName.BMEGG,
     #    locationName.FSWIM
     ],
     regionName.IOHJV:    [
@@ -25,10 +27,14 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JIGGYIH8,
         locationName.JIGGYIH9,
         locationName.JIGGYIH10,
-        locationName.TREBLEJV
+        locationName.TREBLEJV,
+        locationName.IKEY,
     ],
     regionName.IOHWH:    [
         locationName.JINJOIH1,
+        locationName.YMEGGH,
+        locationName.PMEGGH,
+        locationName.BMEGGH,
 
         locationName.W1,
         locationName.W2,
@@ -113,6 +119,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GLOWBOMEG,
         locationName.HONEYCGM1,
         locationName.HONEYCGM2,
+        locationName.HONEYCGM3,
         locationName.CHEATOGM1,
         locationName.CHEATOGM2,
         locationName.CHEATOGM3,
@@ -139,12 +146,11 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.GMWSJT: [
         locationName.JINJOGM1,
     ],
-    regionName.GMS: [
-        locationName.HONEYCGM3
-    ],
-    regionName.CHUFFY: [
+    regionName.CHUFFY: 
+    [
         locationName.JIGGYGM1,
         locationName.CHUFFY
+ 
     ],
     regionName.IOHPG:   [
         locationName.GEGGS,
@@ -199,15 +205,12 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEWW15,
         locationName.NOTEWW16  
     ],
-    regionName.WWS: [
-    ],
     regionName.IOHCT:   [
         locationName.JINJOIH3,
         locationName.IEGGS,
         locationName.TRAINSWIH,
 
     ],
-    regionName.IOHCTS: [],
     regionName.IOHCT_HFP_ENTRANCE: [
         locationName.GLOWBOIH1,
         locationName.NOTEIH9,
@@ -348,7 +351,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.TL_HATCH: [
         locationName.HATCH,
     ],
-    regionName.TLS: [],
     regionName.IOHQM:   [],
     regionName.GIO: [
         locationName.TRAINSWGI,
@@ -358,10 +360,14 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JIGGYGI8,
         locationName.JIGGYGI10,
         locationName.CHEATOGI1,
+        locationName.HONEYCGI2,
         locationName.SNPACK,
         locationName.CLAWBTS,
         locationName.NOTEGI4,
         locationName.NOTEGI5,
+        locationName.NOTEGI1,
+        locationName.NOTEGI2,
+        locationName.NOTEGI3,
         locationName.NOTEGI13,
         locationName.NOTEGI14,
         locationName.NOTEGI11,
@@ -399,12 +405,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEGI16,
         
     ],
-    regionName.GIS: [
-        locationName.HONEYCGI2,
-        locationName.NOTEGI1,
-        locationName.NOTEGI2,
-        locationName.NOTEGI3,
-    ],
     regionName.HP: [
         locationName.JINJOHP1,
         locationName.JINJOHP2,
@@ -415,6 +415,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JIGGYHP2,
         locationName.JIGGYHP3,
         locationName.JIGGYHP4,
+        locationName.JIGGYHP5,
         locationName.JIGGYHP6,
         #locationName.JIGGYHP7, # in TDL
         locationName.JIGGYHP8,
@@ -423,6 +424,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GLOWBOHP1,
         locationName.GLOWBOHP2,
         locationName.HONEYCHP1,
+        locationName.HONEYCHP2,
         locationName.HONEYCHP3,
         locationName.CHEATOHP1,
         locationName.CHEATOHP2,
@@ -448,12 +450,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEHFP14,
         locationName.NOTEHFP15,
         locationName.NOTEHFP16
-    ],
-    regionName.HPLS: [
-        locationName.HONEYCHP2
-    ],      
-    regionName.HPIS: [
-        locationName.JIGGYHP5,
     ],
     regionName.CC:      [
         locationName.JINJOCC1,
@@ -504,39 +500,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.HAG1
     ]
 }
-
-BANJOTOOIECONNECTIONS: typing.Dict[str, typing.Set[str]] = {
-        "Menu":                        {regionName.SM},
-        regionName.SM:                 {regionName.IOHJV},
-        regionName.IOHJV:              {regionName.IOHWH},
-        regionName.IOHWH:              {regionName.MT, regionName.IOHPL},
-        regionName.MT:                 {regionName.TL_HATCH},
-        regionName.IOHPL:              {regionName.GM, regionName.IOHCT, regionName.IOHPG},
-        regionName.IOHCT:              {regionName.JR, regionName.HP, regionName.IOHCT_HFP_ENTRANCE},
-        regionName.IOHPG:              {regionName.WW, regionName.IOHWL},
-        regionName.IOHWL:              {regionName.TL, regionName.CC, regionName.IOHQM},
-        regionName.GMWSJT:             {regionName.GM},
-        regionName.TL:                 {regionName.TL_HATCH},
-        # regionName.IOHQM:              {regionName.GIO, regionName.CK}, added later below
-        regionName.IOHQM:              {regionName.CK},
-
-        regionName.CK:                 {regionName.H1},
-        #GI
-        # regionName.GIO:                {regionName.GI1},
-        # regionName.GI1:                {regionName.GI2},
-        # regionName.GI2:                {regionName.GI3ALL},
-        #Train Station Connections
-        regionName.GM:                 {regionName.GMS},
-        regionName.GMS:                {regionName.CHUFFY},
-        regionName.CHUFFY:             {regionName.IOHCTS, regionName.TLS, regionName.GIS, regionName.HPLS, regionName.WWS, regionName.HPIS},
-        regionName.TLS:                {regionName.TL},
-        regionName.GIS:                {regionName.GI1},
-        regionName.HP:                 {regionName.IOHCT_HFP_ENTRANCE},
-        regionName.HPLS:               {regionName.HP},
-        regionName.IOHCTS:             {regionName.IOHCT},
-        regionName.WWS:                {regionName.WW}
-
-    }
     
 def create_regions(self):
     multiworld = self.multiworld
@@ -588,57 +551,119 @@ def connect_regions(self):
     player = self.player
     rules = BanjoTooieRules(self)
 
-    for source, target in BANJOTOOIECONNECTIONS.items():
-        source_region = multiworld.get_region(source, player)
-        if any(region in (regionName.TL_HATCH, regionName.IOHCT_HFP_ENTRANCE) for region in target):
-            continue
-        # if any(region in (regionName.GIO, regionName.GI1, regionName.GI2, regionName.GI3ALL) for region in target):
-        #     continue
-        source_region.add_exits(target)
+    region_menu = multiworld.get_region("Menu", player)
+    region_menu.add_exits({regionName.SM})
+
+    region_SM = multiworld.get_region(regionName.SM, player)
+    region_SM.add_exits({regionName.IOHJV})
+
+    region_JV = multiworld.get_region(regionName.IOHJV, player)
+    region_JV.add_exits({regionName.IOHWH})
+
+    region_WH = multiworld.get_region(regionName.IOHWH, player)
+    region_WH.add_exits({regionName.MT, regionName.IOHPL},
+                        {regionName.MT: lambda state: rules.mt_jiggy(state), regionName.IOHPL: lambda state: rules.WH_to_PL(state)})
 
     region_MT = multiworld.get_region(regionName.MT, player)
-    region_MT.add_exits({regionName.TL_HATCH,},
-                        {regionName.TL_HATCH: lambda state: (state.has(itemName.GGRAB, player) and state.has(itemName.EGGAIM, player)) or
-                                                            (state.has(itemName.MUMBOMT, player) or state.has(itemName.BDRILL, player))})
-    region_TL = multiworld.get_region(regionName.TL, player)
-    region_TL.add_exits({regionName.TL_HATCH,})
-    region_TL.add_exits({regionName.WW,})
+    region_MT.add_exits({regionName.TL_HATCH, regionName.GM},
+                        {regionName.TL_HATCH: lambda state: rules.jiggy_treasure_chamber(state),\
+                        regionName.GM: lambda state: rules.dilberta_free(state)})
     
+    region_HATCH = multiworld.get_region(regionName.TL_HATCH, player)
+    region_HATCH.add_exits({regionName.TL},
+                        {regionName.TL: lambda state: rules.hatch_to_TDL(state)})
+
+    region_PL = multiworld.get_region(regionName.IOHPL, player)
+    region_PL.add_exits({regionName.GM, regionName.IOHPG, regionName.IOHCT},
+                        {regionName.GM: lambda state: rules.PL_to_GGM(state), 
+                         regionName.IOHPG: lambda state: rules.PL_to_PG(state),
+                        regionName.IOHCT: lambda state: state.has(itemName.SPLITUP, player)})
+    
+    region_GM = multiworld.get_region(regionName.GM, player)
+    region_GM.add_exits({regionName.GMWSJT, regionName.IOHPL, regionName.CHUFFY, regionName.WW},
+    {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_GGM(state),
+     regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state),
+     regionName.IOHPL: lambda state: rules.GGM_to_PL(state),
+     regionName.WW: lambda state: rules.ggm_to_ww(state)})
+    
+    region_PG = multiworld.get_region(regionName.IOHPG, player)
+    region_PG.add_exits({regionName.WW, regionName.IOHWL},
+    {regionName.WW: lambda state: rules.ww_jiggy(state),
+     regionName.IOHWL: lambda state: state.has(itemName.TTORP, player)})
+    
+    region_WW = multiworld.get_region(regionName.WW, player)
+    region_WW.add_exits({regionName.IOHPG, regionName.CHUFFY},
+    {regionName.IOHPG: lambda state: rules.ww_jiggy(state),
+     regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWWW, player)})
+
     region_IOHCT = multiworld.get_region(regionName.IOHCT, player)
-    region_IOHCT.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.HP, regionName.JR})
+    region_IOHCT.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.HP, regionName.JR, regionName.CHUFFY},
+        {regionName.HP:lambda state: rules.hfp_jiggy(state),
+         regionName.JR: lambda state: rules.jrl_jiggy(state),
+         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWIH, player)})
+  
+    region_JR = multiworld.get_region(regionName.JR, player)
+    region_JR.add_exits({regionName.GMWSJT, regionName.IOHCT},
+                        {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_JRL(state), regionName.IOHCT: lambda state: rules.JRL_to_CT(state)})
 
     region_HP = multiworld.get_region(regionName.HP, player)
-    region_HP.add_exits({regionName.IOHCT_HFP_ENTRANCE,},
-                        {regionName.IOHCT_HFP_ENTRANCE: lambda state: state.has(itemName.MUMBOMT, player) and state.has(itemName.TRAINSWHP1, player) and
-                                                                      (self.options.randomize_stations == 1)})
-    region_HP.add_exits({regionName.JR,})
-    region_HP.add_exits({regionName.MT,})
+    region_HP.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.MT, regionName.JR, regionName.CHUFFY},
+                        {regionName.IOHCT_HFP_ENTRANCE: lambda state: rules.HFP_to_CTHFP(state),
+                         regionName.MT: lambda state: rules.HFP_to_MT(state),
+                         regionName.JR: lambda state: rules.HFP_to_JRL(state),
+                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, player)})
+    region_IOHWL = multiworld.get_region(regionName.IOHWL, player)
+    region_IOHWL.add_exits({regionName.IOHPG, regionName.IOHQM, regionName.TL, regionName.CC},
+                        {regionName.IOHPG: lambda state: rules.WL_to_PG(state),
+                         regionName.IOHQM: lambda state: state.has(itemName.SPRINGB, player),
+                         regionName.TL: lambda state: rules.tdl_jiggy(state),
+                         regionName.CC: lambda state: rules.ccl_jiggy(state)})
     
-    region_JR = multiworld.get_region(regionName.JR, player)
-    region_JR.add_exits({regionName.GMWSJT,}, {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_JRL(state)})
-
-    region_GM = multiworld.get_region(regionName.GM, player)
-    region_GM.add_exits({regionName.GMWSJT,}, {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_GGM(state)})
+    region_TL = multiworld.get_region(regionName.TL, player)
+    region_TL.add_exits({regionName.TL_HATCH, regionName.WW, regionName.CHUFFY, regionName.IOHWL},
+                        {regionName.WW: lambda state: rules.TDL_to_WW(state),
+                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWTD, player),
+                         regionName.IOHWL: lambda state: rules.TDL_to_IOHWL(state),
+                         })
     
     region_QM = multiworld.get_region(regionName.IOHQM, player)
-    region_QM.add_exits({regionName.GIO},
-                        {regionName.GIO: lambda state: rules.can_access_gruntyindustries_outside(state, False)})
+    region_QM.add_exits({regionName.GIO, regionName.IOHWL, regionName.CK},
+                        {regionName.GIO: lambda state: rules.gi_jiggy(state),
+                         regionName.IOHWL: lambda state: rules.QM_to_WL(state),
+                         regionName.CK: lambda state: rules.quag_to_CK(state)})
     
     region_GIO = multiworld.get_region(regionName.GIO, player)
-    region_GIO.add_exits({regionName.GI1},
-                        {regionName.GI1: lambda state: rules.can_access_gi_fl1_from_outside(state)})
+    region_GIO.add_exits({regionName.GI1, regionName.GI2, regionName.GI3ALL, regionName.IOHQM},
+                        {regionName.GI1: lambda state: rules.outside_gi_to_floor1(state),
+                         regionName.GI2: lambda state: rules.outside_gi_to_floor2(state),
+                         regionName.GI3ALL: lambda state: rules.outside_gi_to_floor3(state),
+                         regionName.IOHQM: lambda state: rules.gi_jiggy(state)})
     
     region_GI1 = multiworld.get_region(regionName.GI1, player)
-    region_GI1.add_exits({regionName.GIO},
-                        {regionName.GIO: lambda state: rules.can_access_gi_outside_from_inside(state)})
-    region_GI1.add_exits({regionName.GI2},
-                        {regionName.GI2: lambda state: rules.can_access_gi_fl1_2fl2(state)})
+    region_GI1.add_exits({regionName.GIO, regionName.GI2, regionName.GI3All, regionName.CHUFFY},
+                        {regionName.GIO: lambda state: state.has(itemName.SPLITUP, self.player),
+                         regionName.GI2: lambda state: rules.can_access_gi_fl1_2fl2(state),
+                         regionName.GI3ALL: lambda state: rules.F1_to_F3(state),
+                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWGI, player)})
     
     region_GI2 = multiworld.get_region(regionName.GI2, player)
-    region_GI2.add_exits({regionName.GIO})
-    region_GI2.add_exits({regionName.GI3ALL},
-                        {regionName.GI3ALL: lambda state: rules.can_access_gi_fl2_2fl3all(state)})
+    region_GI2.add_exits({regionName.GIO, regionName.GI1, regionName.GI3ALL},
+                        {regionName.GI1: lambda state: rules.F2_to_F1(state), regionName.GI3ALL: lambda state: rules.F2_to_F3(state)})
     
     region_GI3ALL = multiworld.get_region(regionName.GI3ALL, player)
-    region_GI3ALL.add_exits({regionName.GIO})
-    region_GI3ALL.add_exits({regionName.GI2})
+    region_GI3ALL.add_exits({regionName.GIO, regionName.GI2})
+
+    region_CK = multiworld.get_region(regionName.CK, player)
+    region_CK.add_exits({regionName.H1},
+                        {regionName.H1: lambda state: rules.check_hag1_options(state)})
+    
+    region_chuffy = multiworld.get_region(regionName.CHUFFY, player)
+    region_chuffy.add_exits({regionName.GM, regionName.WW, regionName.IOHCT, regionName.TL,regionName.GI1,regionName.HP},
+                        {regionName.GM: lambda state: state.has(itemName.CHUFFY, self.player),
+                         regionName.WW: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWWW, player),
+                         regionName.IOHCT: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWIH, player),
+                         regionName.TL: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWTD, player),
+                         regionName.GI1: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWGI, player),
+                         regionName.HP: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, player)
+                         })
+ 
