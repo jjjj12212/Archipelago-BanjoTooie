@@ -31,6 +31,7 @@ Banjo Tooie for Archipelago
 - Skip Jiggywiggy puzzles to open levels
 - Option for worlds to open in random order. (requires certian amount of items randomized and puzzle skip)
 - Alternate Goals (Minigames, World Bosses, Jinjo Family Hunt)
+- Prison code is always set to: <b>Sun, Moon, Star, Moon, Sun</b>
 
 
 # How to install
