@@ -6442,16 +6442,19 @@ function DPadStats()
                     print(values['name'])
                 end
             end
-            -- if GOAL_TYPE ~= 0
-            -- then
-            --     local token_count = 0;
-            --     for location, values in pairs(AGI["1230798"])
-            --     do
-            --         token_count = token_count + 1
-            --     end
-            --     print(" ")
-			--     print("Collected Mumbo Tokens: "..token_count)
-            -- end
+            if GOAL_TYPE ~= 0
+            then
+                local token_count = 0;
+                for id, itemId in pairs(receive_map)
+                do
+                    if itemId == "1230798"
+                    then
+                        token_count = token_count + 1
+                    end
+                end
+                print(" ")
+			    print("Collected Mumbo Tokens: "..token_count)
+            end
         end
 		
         if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 L'] == true
