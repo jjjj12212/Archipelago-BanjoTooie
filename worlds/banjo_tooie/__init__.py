@@ -203,7 +203,7 @@ class BanjoTooieWorld(World):
         if item.code == 1230797 and self.options.randomize_notes == False: #Notes
             return False
         
-        if item.code == 1230798: #mumbo tokens for Mini Game and Boss Hunt and Jinjo Fam
+        if item.code == 1230798 and self.options.victory_condition != 4: #Mumbo Tokens for Mini Game and Boss Hunt and Jinjo Fam
             return False
         
         # if item.code == 1230799 and self.options.warp_traps == 0: 
@@ -449,6 +449,7 @@ class BanjoTooieWorld(World):
         btoptions['minigame_hunt_length'] = int(self.options.minigame_hunt_length.value)
         btoptions['boss_hunt_length'] = int(self.options.boss_hunt_length.value)
         btoptions['jinjo_family_rescue_length'] = int(self.options.jinjo_family_rescue_length.value)
+        btoptions['token_hunt_length'] = int(self.options.token_hunt_length.value)
         # btoptions['warp_traps'] = int(self.options.warp_traps.value)
         btoptions['skip_klungo'] = "true" if self.options.skip_klungo == 1 else "false"
         return btoptions

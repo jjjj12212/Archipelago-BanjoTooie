@@ -26,11 +26,11 @@ class EnableMultiWorldDoubloons(Toggle):
     """Jolly Roger's Doubloons are scattered across the MultiWorld."""
     display_name = "Randomize Doubloons"
 
-class EnableMultiWorldCheatoPages(Toggle):
+class EnableMultiWorldCheatoPages(DefaultOnToggle):
     """Cheato pages are scattered across the MultiWorld."""
     display_name = "Randomize Cheato Pages"
 
-class SetMultiWorldCheatoPagesFiller(Toggle):
+class SetMultiWorldCheatoPagesFiller(DefaultOnToggle):
     """If Cheato pages are scattered, set to Cheato Items as filler."""
     display_name = "Use Cheato Pages as Filler."
 
@@ -42,7 +42,7 @@ class EnableMultiWorldGlowbos(DefaultOnToggle):
     """Glowbos are scattered across the MultiWorld."""
     display_name = "Randomize Glowbos"
 
-class EnableMultiWorldTrebleClefs(Toggle):
+class EnableMultiWorldTrebleClefs(DefaultOnToggle):
     """Treble Clefs are scattered across the MultiWorld."""
     display_name = "Randomize Treble Clefs"
 
@@ -58,15 +58,15 @@ class EnableMultiWorldNotes(Toggle):
     """Note Nests are scattered across the MultiWorld."""
     display_name = "Randomize Note Nests"
 
-class KingJingalingHasJiggy(Toggle):
+class KingJingalingHasJiggy(DefaultOnToggle):
     """King Jingaling will always have a Jiggy to give you."""
     display_name = "King Jingaling Jiggy"
 
-class SkipPuzzles(Toggle):
+class SkipPuzzles(DefaultOnToggle):
     """Open world entrances without having to go to Jiggywiggy."""
     display_name = "Skip Puzzles"
 
-class OpenHag1(Toggle):
+class OpenHag1(DefaultOnToggle):
     """HAG 1 boss fight is opened when Cauldron Keep is. Only 55 jiggies are needed to win."""
     display_name = "HAG 1 Open"
 
@@ -103,12 +103,14 @@ class VictoryCondition(Choice):
     """Choose which victory condition you want
     HAG1: Unlock the HAG1 fight and defeat Gruntilda
     Minigame Hunt: Clear the 14 minigames and the final Canary Mary race in Cloud Cuckcoo Land to collect Mumbo Tokens
-    Boss Hunt: Kill the 8 world bosses and collect their Mumbo Tokens"""
+    Boss Hunt: Kill the 8 world bosses and collect their Mumbo Tokens
+    Token Hunt: Mumbo's Tokens are scattered around the world. Help him find them"""
     display_name = "Victory Condition"
     option_hag1 = 0
     option_minigame_hunt = 1
     option_boss_hunt = 2
     option_jinjo_family_rescue = 3
+    option_token_hunt = 4
     default = 0
 
 class MinigameHuntLength(Range):
@@ -134,6 +136,14 @@ class JinjoFamilyRescueLength(Range):
     range_start = 1
     range_end = 9
     default = 9
+
+class TokenHuntLength(Range):
+    """How many Mumbo Tokens of the 25 hidden throughout the world do you need to find
+    Choose a value between 1 and 25"""
+    display_name = "Token Hunt Length"
+    range_start = 1
+    range_end = 25
+    default = 15
 
 # class WarpTraps(Choice):
 #     """Choose if you want warp traps enabled"""
@@ -175,8 +185,6 @@ class BanjoTooieOptions(PerGameCommonOptions):
     minigame_hunt_length: MinigameHuntLength
     boss_hunt_length: BossHuntLength
     jinjo_family_rescue_length: JinjoFamilyRescueLength
-    minigame_hunt_length: MinigameHuntLength
-    boss_hunt_length: BossHuntLength
-    jinjo_family_rescue_length: JinjoFamilyRescueLength
+    token_hunt_length: TokenHuntLength
     # warp_traps: WarpTraps
     skip_klungo: SkipKlungo

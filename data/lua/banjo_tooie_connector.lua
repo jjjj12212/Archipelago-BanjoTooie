@@ -123,6 +123,7 @@ local GOAL_TYPE = nil;
 local MGH_LENGTH = nil;
 local BH_LENGTH = nil;
 local JFR_LENGTH = nil;
+local TH_LENGTH = nil;
 
 -------------- TRAP VARS ------------
 
@@ -6810,6 +6811,10 @@ function process_slot(block)
     then
         JFR_LENGTH = block['slot_jinjo_family_rescue_length']
     end
+    if block['slot_token_hunt_length'] ~= nil and block['slot_token_hunt_length'] ~= ""
+    then
+        TH_LENGTH = block['slot_token_hunt_length']
+    end
     -- if block['slot_warp_traps'] ~= nil and block['slot_warp_traps'] ~= ""
     -- then
     --     WARP_TRAP_LOGIC = block['slot_warp_traps']
@@ -6862,7 +6867,8 @@ end
 
 function printGoalInfo()
     local randomEncouragment = ENCOURAGEMENT[math.random(1, #ENCOURAGEMENT)]["message"]
-    if GOAL_TYPE ~= nil and MGH_LENGTH ~= nil and BH_LENGTH ~= nil and JFR_LENGTH ~= nil then
+    if GOAL_TYPE ~= nil and MGH_LENGTH ~= nil and BH_LENGTH ~= nil and 
+    JFR_LENGTH ~= nil and TH_LENGTH ~= nil then
         local message = ""
         if GOAL_TYPE == 0 then
             message = "You need to hunt down Grunty in her HAG1 \nand put her back in the ground!"..randomEncouragment;
@@ -6878,6 +6884,10 @@ function printGoalInfo()
             message ="You are trying to rescue all 9 Jinjo families and \nretrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 3 and JFR_LENGTH < 9 then
             message = "You are trying to rescue "..JFR_LENGTH.." of the 9 Jinjo families \nand retrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
+        elseif GOAL_TYPE == 4 and TH_LENGTH == 9 then
+            message ="You are trying to find all 25 of Mumbo's Tokens scattered \nthroughout the Isle of Hags! Good Luck and"..randomEncouragment;
+        elseif GOAL_TYPE == 4 and TH_LENGTH < 9 then
+            message = "You are trying to find "..TH_LENGTH.." of the 25 of Mumbo Tokens \nscattered throughout the Isle of Hags! Good Luck and"..randomEncouragment;
         end
         print(message)
         table.insert(AP_MESSAGES, message);
