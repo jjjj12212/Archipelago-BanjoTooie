@@ -376,6 +376,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.GI2: [
         locationName.GLOWBOGI1,
         locationName.LSPRING,
+        locationName.JINJOGI2,
         locationName.JIGGYGI7,
         locationName.TREBLEGI,
         locationName.NOTEGI6,
@@ -386,7 +387,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     ],
     regionName.GI3ALL: [
         locationName.JINJOGI1,
-        locationName.JINJOGI2,
         locationName.JINJOGI4,
         locationName.JINJOGI5,
         locationName.JIGGYGI1,
