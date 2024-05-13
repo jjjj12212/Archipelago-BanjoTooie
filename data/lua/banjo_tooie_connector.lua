@@ -4205,6 +4205,11 @@ function check_hatched_mystery()
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
                 BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
                 BTRAMOBJ:clearFlag(0x1E, 7)
+            elseif BKMYSTERY["1230954"] == true
+            then
+                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
+                BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
+                BTRAMOBJ:clearFlag(0x77, 5)
             end
             if AGI_MYSTERY["1230801"] == true and BKMYSTERY["1230953"] == false -- nothing
             then
@@ -4213,6 +4218,10 @@ function check_hatched_mystery()
                 end
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
                 BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
+            elseif BKMYSTERY["1230953"] == true
+            then
+                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
+                BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
             end
             if AGI_MYSTERY["1230802"] == true and BKMYSTERY["1230955"] == false -- homing eggs
             then
@@ -4221,6 +4230,11 @@ function check_hatched_mystery()
                 end
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
                 BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
+            elseif BKMYSTERY["1230955"] == true
+            then
+                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
+                BTRAMOBJ:clearFlag(0x77, 3)
+                BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
             end
             WAIT_FOR_HATCH = true
         else -- Watch if Eggs are hatched
@@ -4249,6 +4263,25 @@ function check_hatched_mystery()
                     BKMYSTERY["1230955"] = true
                 end
             end
+        end
+    elseif CURRENT_MAP == 0x14F -- Wooded Hollow
+    then
+        if BKMYSTERY["1230954"] == true
+        then
+            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
+            BTRAMOBJ:clearFlag(0x77, 5)
+            BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
+        end
+        if BKMYSTERY["1230953"] == true
+        then
+            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
+            BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
+        end
+        if BKMYSTERY["1230955"] == true
+        then
+            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
+            BTRAMOBJ:clearFlag(0x77, 3)
+            BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         end
     else
         if BKMYSTERY["1230956"] == false
