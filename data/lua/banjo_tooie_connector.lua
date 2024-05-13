@@ -5109,29 +5109,54 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
     do
         if values["opened"] == false
         then
-            if jiggy_count >= values["defaultCost"]
+            if GOAL_TYPE == 4 and location == "WORLD 9"
             then
-                if DEBUG == true
-                then
-                    print(values["defaultName"] .. tostring(values["defaultCost"]))
+                local token_count = 0;
+                for id, itemId in pairs(receive_map)
+                do
+                    if itemId == "1230798"
+                    then
+                        token_count = token_count + 1
+                    end
                 end
-                BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                if values["locationId"] ~= "0"
+                if token_count >= 32
                 then
-                    UNLOCKED_WORLDS[values["locationId"]] = true
-                end
-                if ENABLE_AP_WORLDS == false
-                then
-                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
-                end
-                values["opened"] = true
-                if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
-                    and show_message == true
-                then
+                    BTRAMOBJ:setFlag(values["addr"], values["bit"])
+                    if values["locationId"] ~= "0"
+                    then
+                        UNLOCKED_WORLDS[values["locationId"]] = true
+                    end
                     if ENABLE_AP_WORLDS == false
                     then
-                        table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
-                        print(values["defaultName"] .. " is now unlocked!")
+                        BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                    end
+                    values["opened"] = true
+                end
+            else
+                if jiggy_count >= values["defaultCost"]
+                then
+                    if DEBUG == true
+                    then
+                        print(values["defaultName"] .. tostring(values["defaultCost"]))
+                    end
+                    BTRAMOBJ:setFlag(values["addr"], values["bit"])
+                    if values["locationId"] ~= "0"
+                    then
+                        UNLOCKED_WORLDS[values["locationId"]] = true
+                    end
+                    if ENABLE_AP_WORLDS == false
+                    then
+                        BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                    end
+                    values["opened"] = true
+                    if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
+                        and show_message == true
+                    then
+                        if ENABLE_AP_WORLDS == false
+                        then
+                            table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
+                            print(values["defaultName"] .. " is now unlocked!")
+                        end
                     end
                 end
             end
@@ -6920,10 +6945,12 @@ function printGoalInfo()
             message ="You are trying to rescue all 9 Jinjo families and \nretrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 3 and JFR_LENGTH < 9 then
             message = "You are trying to rescue "..JFR_LENGTH.." of the 9 Jinjo families \nand retrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
-        elseif GOAL_TYPE == 4 and TH_LENGTH == 9 then
+        elseif GOAL_TYPE == 5 and TH_LENGTH == 9 then
             message ="You are trying to find all 25 of Mumbo's Tokens scattered \nthroughout the Isle of Hags! Good Luck and"..randomEncouragment;
-        elseif GOAL_TYPE == 4 and TH_LENGTH < 9 then
+        elseif GOAL_TYPE == 5 and TH_LENGTH < 9 then
             message = "You are trying to find "..TH_LENGTH.." of the 25 of Mumbo Tokens \nscattered throughout the Isle of Hags! Good Luck and"..randomEncouragment;
+        elseif GOAL_TYPE == 4 then
+            message ="You absolute mad lad! You're doing the Wonder Wing Challange! Good Luck and"..randomEncouragment;
         end
         print(message)
         table.insert(AP_MESSAGES, message);
