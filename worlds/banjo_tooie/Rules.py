@@ -963,7 +963,7 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = self.check_mumbo_magic(state, itemName.MUMBOJR) and state.has(itemName.TTORP, self.player) and \
-                    state.has(itemName.EGGAIM, self.player)
+                    state.has(itemName.EGGAIM, self.player) and state.has(itemName.IEGGS, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.TTORP, self.player) and state.has(itemName.EGGAIM, self.player) and \
                     state.has(itemName.IEGGS, self.player)
