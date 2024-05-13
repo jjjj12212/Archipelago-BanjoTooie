@@ -143,6 +143,78 @@ class JinjoFamilyRescueLength(Range):
 #     option_cross_level_warp_traps = 2
 #     default = 0
 
+class GameLength(Choice):
+    """Choose how quickly the worlds open between each over."""
+    display_name = "World Requirements"
+    option_quick = 0  #1,3,6,10,15,21,28,35,44 
+    option_normal = 1 #1,4,8,14,20,28,36,45,55
+    option_long = 2   #1,8,16,25,34,43,52,60,70
+    option_custom = 3 #you pick
+    default = 1
+
+class World1(Range):
+    """If you picked custom, what is the jiggy requirement for World 1."""
+    display_name = "World 1 Jiggy requirement"
+    range_start = 1
+    range_end = 3
+    default = 1
+
+class World2(Range):
+    """If you picked custom, what is the jiggy requirement for World 2."""
+    display_name = "World 2 Jiggy requirement"
+    range_start = 2
+    range_end = 10
+    default = 4
+
+class World3(Range):
+    """If you picked custom, what is the jiggy requirement for World 3."""
+    display_name = "World 3 Jiggy requirement"
+    range_start = 3
+    range_end = 20
+    default = 8
+
+class World4(Range):
+    """If you picked custom, what is the jiggy requirement for World 4."""
+    display_name = "World 4 Jiggy requirement"
+    range_start = 4
+    range_end = 30
+    default = 14
+
+class World5(Range):
+    """If you picked custom, what is the jiggy requirement for World 5."""
+    display_name = "World 5 Jiggy requirement"
+    range_start = 5
+    range_end = 40
+    default = 20
+
+class World6(Range):
+    """If you picked custom, what is the jiggy requirement for World 6."""
+    display_name = "World 6 Jiggy requirement"
+    range_start = 6
+    range_end = 50
+    default = 28
+
+class World7(Range):
+    """If you picked custom, what is the jiggy requirement for World 7."""
+    display_name = "World 7 Jiggy requirement"
+    range_start = 7
+    range_end = 60
+    default = 36
+
+class World8(Range):
+    """If you picked custom, what is the jiggy requirement for World 8."""
+    display_name = "World 8 Jiggy requirement"
+    range_start = 8
+    range_end = 70
+    default = 45
+
+class World9(Range):
+    """If you picked custom, what is the jiggy requirement for Cauldon Keep."""
+    display_name = "Cauldon Keep Jiggy requirement"
+    range_start = 9
+    range_end = 70
+    default = 55
+
 class SkipKlungo(Toggle):
     """Make it so you can skip Klungo 1 and 2."""
     display_name = "Skip Klungo"
@@ -178,5 +250,15 @@ class BanjoTooieOptions(PerGameCommonOptions):
     minigame_hunt_length: MinigameHuntLength
     boss_hunt_length: BossHuntLength
     jinjo_family_rescue_length: JinjoFamilyRescueLength
+    game_length: GameLength
+    world_1: World1
+    world_2: World2
+    world_3: World3
+    world_4: World4
+    world_5: World5
+    world_6: World6
+    world_7: World7
+    world_8: World8
+    world_9: World9
     # warp_traps: WarpTraps
     skip_klungo: SkipKlungo

@@ -3103,7 +3103,11 @@ class BanjoTooieRules:
             return state.has(itemName.JIGGY, self.player, amt)
         
     def ck_jiggy(self, state: CollectionState) -> bool: #55
-        return state.has(itemName.JIGGY, self.player, 55)
+        if self.world.worlds_randomized == True:
+            return state.has(itemName.CKA, self.player)
+        else:
+            amt = self.world.randomize_worlds[regionName.CK]
+            return state.has(itemName.JIGGY, self.player, amt)
     
     def quag_to_CK(self, state: CollectionState) -> bool:
         logic = True
@@ -3421,22 +3425,6 @@ class BanjoTooieRules:
         else:
             amt = self.world.randomize_worlds[regionName.CC]
             return state.has(itemName.JIGGY, self.player, amt)
-    
-    def can_access_ck(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False) and \
-            state.has(itemName.CLAWBTS, self.player)
-        elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False) and \
-            state.has(itemName.CLAWBTS, self.player)
-        elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False) and \
-            state.has(itemName.CLAWBTS, self.player)
-        elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False) and \
-            state.has(itemName.CLAWBTS, self.player)
-        return logic
     
     def has_train_access(self, state: CollectionState, station) -> bool:
         # sys.setrecursionlimit(1500)
