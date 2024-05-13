@@ -233,7 +233,7 @@ class BanjoTooieRules:
             #Cloud Cuckooland Jiggies
             locationName.JIGGYCC2: lambda state: self.jiggy_mr_fit(state),
             locationName.JIGGYCC3: lambda state: self.jiggy_gold_pot(state),
-            locationName.JIGGYCC4: lambda state: self.canary_mary_free(state),
+            locationName.JIGGYCC4: lambda state: self.canary_mary_free(state) and self.can_access_GM(state),
             locationName.JIGGYCC5: lambda state: self.check_humba_magic(state, itemName.HUMBACC),
             locationName.JIGGYCC6: lambda state: self.check_humba_magic(state, itemName.HUMBACC),
             locationName.JIGGYCC7: lambda state: self.jiggy_cheese(state),
@@ -280,7 +280,7 @@ class BanjoTooieRules:
             locationName.CHEATOHP2: lambda state: state.has(itemName.CEGGS, self.player) or self.check_solo_moves(state, itemName.SHPACK),
             locationName.CHEATOHP3: lambda state: self.cheato_icypillar(state),
 
-            locationName.CHEATOCC1: lambda state: self.canary_mary_free(state),
+            locationName.CHEATOCC1: lambda state: self.canary_mary_free(state) and self.can_access_GM(state),
             locationName.CHEATOCC2: lambda state: self.cheato_potgold(state),
             locationName.CHEATOCC3: lambda state: self.check_humba_magic(state, itemName.HUMBACC)
         }
@@ -963,7 +963,7 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = self.check_mumbo_magic(state, itemName.MUMBOJR) and state.has(itemName.TTORP, self.player) and \
-                    state.has(itemName.EGGAIM, self.player)
+                    state.has(itemName.EGGAIM, self.player) and state.has(itemName.IEGGS, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.TTORP, self.player) and state.has(itemName.EGGAIM, self.player) and \
                     state.has(itemName.IEGGS, self.player)
@@ -3103,7 +3103,11 @@ class BanjoTooieRules:
             return state.has(itemName.JIGGY, self.player, amt)
         
     def ck_jiggy(self, state: CollectionState) -> bool: #55
-        return state.has(itemName.JIGGY, self.player, 55)
+        if self.world.worlds_randomized == True:
+            return state.has(itemName.CKA, self.player)
+        else:
+            amt = self.world.randomize_worlds[regionName.CK]
+            return state.has(itemName.JIGGY, self.player, amt)
     
     def quag_to_CK(self, state: CollectionState) -> bool:
         logic = True
@@ -3421,22 +3425,6 @@ class BanjoTooieRules:
         else:
             amt = self.world.randomize_worlds[regionName.CC]
             return state.has(itemName.JIGGY, self.player, amt)
-    
-    def can_access_ck(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False) and \
-            state.has(itemName.CLAWBTS, self.player)
-        elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False) and \
-            state.has(itemName.CLAWBTS, self.player)
-        elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False) and \
-            state.has(itemName.CLAWBTS, self.player)
-        elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.JIGGY, self.player, 55) and self.can_access_quagmire(state, False) and \
-            state.has(itemName.CLAWBTS, self.player)
-        return logic
     
     def has_train_access(self, state: CollectionState, station) -> bool:
         # sys.setrecursionlimit(1500)
