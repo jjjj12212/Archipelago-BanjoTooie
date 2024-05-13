@@ -146,9 +146,9 @@ class JinjoFamilyRescueLength(Range):
 class GameLength(Choice):
     """Choose how quickly the worlds open between each over."""
     display_name = "World Requirements"
-    option_quick = 0  #1,3,6,10,15,21,28,35,44 
+    option_quick = 0  #1,3,6,10,15,21,28,36,44 
     option_normal = 1 #1,4,8,14,20,28,36,45,55
-    option_long = 2   #1,8,16,25,34,43,52,60,70
+    option_long = 2   #1,8,16,25,34,43,52,61,70
     option_custom = 3 #you pick
     default = 1
 
