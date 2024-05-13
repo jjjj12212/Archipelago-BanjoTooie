@@ -104,13 +104,16 @@ class VictoryCondition(Choice):
     HAG1: Unlock the HAG1 fight and defeat Gruntilda
     Minigame Hunt: Clear the 14 minigames and the final Canary Mary race in Cloud Cuckcoo Land to collect Mumbo Tokens
     Boss Hunt: Kill the 8 world bosses and collect their Mumbo Tokens
+    Wonderwing Challenge: Collect all 32 Mumbo Tokens across all boss fights, mini games and every Jinjo family
+        to gain access to HAG1 and Defeat Grunty. The Ultimate Banjo Tooie experience!
     Token Hunt: Mumbo's Tokens are scattered around the world. Help him find them"""
     display_name = "Victory Condition"
     option_hag1 = 0
     option_minigame_hunt = 1
     option_boss_hunt = 2
     option_jinjo_family_rescue = 3
-    option_token_hunt = 4
+    option_wonder_wing_challenge = 4
+    option_token_hunt = 5
     default = 0
 
 class MinigameHuntLength(Range):

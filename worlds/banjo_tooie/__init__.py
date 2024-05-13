@@ -203,7 +203,7 @@ class BanjoTooieWorld(World):
         if item.code == 1230797 and self.options.randomize_notes == False: #Notes
             return False
         
-        if item.code == 1230798 and self.options.victory_condition != 4: #Mumbo Tokens for Mini Game and Boss Hunt and Jinjo Fam
+        if item.code == 1230798 and self.options.victory_condition != 5: #Mumbo Tokens for Mini Game and Boss Hunt and Jinjo Fam
             return False
         
         # if item.code == 1230799 and self.options.warp_traps == 0: 
@@ -286,7 +286,7 @@ class BanjoTooieWorld(World):
                     self.multiworld.get_location("World "+ str(world_num) +" Unlocked", self.player).place_locked_item(item)
                     world_num = world_num + 1
         
-        if self.options.victory_condition == 1:
+        if self.options.victory_condition == 1 or self.options.victory_condition == 4:
             item = self.create_item(itemName.MUMBOTOKEN)
             self.multiworld.get_location(locationName.JIGGYMT3, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYGM5, self.player).place_locked_item(item)
@@ -304,7 +304,7 @@ class BanjoTooieWorld(World):
             self.multiworld.get_location(locationName.JIGGYCC8, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.CHEATOCC1, self.player).place_locked_item(item)
         
-        if self.options.victory_condition == 2:
+        if self.options.victory_condition == 2 or self.options.victory_condition == 4:
             item = self.create_item(itemName.MUMBOTOKEN)
             self.multiworld.get_location(locationName.JIGGYMT1, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYGM1, self.player).place_locked_item(item)
@@ -315,7 +315,7 @@ class BanjoTooieWorld(World):
             self.multiworld.get_location(locationName.JIGGYHP1, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYCC1, self.player).place_locked_item(item)
 
-        if self.options.victory_condition == 3:
+        if self.options.victory_condition == 3 or self.options.victory_condition == 4:
             item = self.create_item(itemName.MUMBOTOKEN)
             self.multiworld.get_location(locationName.JIGGYIH1, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYIH2, self.player).place_locked_item(item)
@@ -411,12 +411,16 @@ class BanjoTooieWorld(World):
                     for name in item_info:
                         item = self.create_item(name)
                         banjoItem = all_item_table.get(name)
-                        self.multiworld.get_location(banjoItem.defualt_location, self.player).place_locked_item(item)
+                        # self.multiworld.get_location(banjoItem.defualt_location, self.player).place_locked_item(item)
+                        location = self.multiworld.get_location(banjoItem.defualt_location, self.player)
+                        location.place_locked_item(item)
         else:
             for name, id in self.location_name_to_id.items():
                 item = self.create_item(itemNameOrGroup)
                 if name.find(locationFindCriteria) != -1:
-                    self.multiworld.get_location(name, self.player).place_locked_item(item)
+                    # self.multiworld.get_location(name, self.player).place_locked_item(item)
+                    location = self.multiworld.get_location(name, self.player)
+                    location.place_locked_item(item)
 
 
     def fill_slot_data(self) -> dict[str, any]:

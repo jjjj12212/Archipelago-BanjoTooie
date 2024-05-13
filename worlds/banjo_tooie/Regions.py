@@ -522,6 +522,10 @@ def create_regions(self):
     if multiworld.worlds[player].options.victory_condition == 0:
         multiworld.get_location(locationName.HAG1, player).place_locked_item(
          	multiworld.worlds[player].create_event_item(itemName.VICTORY))
+        
+    if multiworld.worlds[player].options.victory_condition == 4:
+        multiworld.get_location(locationName.HAG1, player).place_locked_item(
+         	multiworld.worlds[player].create_event_item(itemName.VICTORY))
 
     # if self.options.skip_puzzles == True:
     #     sm = multiworld.get_region(regionName.IOHWH, player)
@@ -541,6 +545,8 @@ def create_region(multiworld, player: int, active_locations, name: str, location
     if locations:
         loc_to_id = {loc: active_locations.get(loc, 0) for loc in locations if active_locations.get(loc, None)}
         if multiworld.worlds[player].options.victory_condition == 0 and locationName.HAG1 in locations:
+            ret.add_locations({locationName.HAG1: None})
+        elif multiworld.worlds[player].options.victory_condition == 4 and locationName.HAG1 in locations:
             ret.add_locations({locationName.HAG1: None})
         else:
             ret.add_locations(loc_to_id, BanjoTooieLocation)
