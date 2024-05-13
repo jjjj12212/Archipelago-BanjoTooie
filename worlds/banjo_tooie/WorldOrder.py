@@ -12,8 +12,8 @@ else:
 
 
 def WorldRandomize(world: BanjoTooieWorld) -> None:
-    if world.options.victory_condition == 1 or world.options.victory_condition == 2:
-        world.options.randomize_cheato.value = True
+    if (world.options.victory_condition.value == 1 or world.options.victory_condition.value == 2) and world.options.randomize_cheato.value == False :
+        raise Exception("In order to have Minigame or Boss hunt goals, Randomize Cheato Pages must be enabled.")
     # Universal Tracker Magic
     if hasattr(world.multiworld, "re_gen_passthrough"): 
         if "Banjo-Tooie" in world.multiworld.re_gen_passthrough:
