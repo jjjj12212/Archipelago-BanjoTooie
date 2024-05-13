@@ -125,9 +125,9 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
                     if world.options.game_length.value == 1: # Normal
                         world.randomize_worlds.update({level: 45})
                     elif world.options.game_length.value == 0: # Quick
-                        world.randomize_worlds.update({level: 35})
+                        world.randomize_worlds.update({level: 36})
                     elif world.options.game_length.value == 2: # Long
-                        world.randomize_worlds.update({level: 60})
+                        world.randomize_worlds.update({level: 61})
                     else: # Custom
                         world.randomize_worlds.update({level: world.options.world_8.value})  
                 i = i+1
