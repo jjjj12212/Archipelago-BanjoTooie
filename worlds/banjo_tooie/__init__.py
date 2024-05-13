@@ -209,7 +209,7 @@ class BanjoTooieWorld(World):
         # if item.code == 1230799 and self.options.warp_traps == 0: 
         #     return False
         
-        if item.code in range(1230944, 1230952):
+        if item.code in range(1230944, 1230953):
             return False
         
         if item.code in range(1230799, 1230805) and self.options.randomize_stop_n_swap == False:

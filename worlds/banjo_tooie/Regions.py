@@ -43,7 +43,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.W5,
         locationName.W6,
         locationName.W7,
-        locationName.W8
+        locationName.W8,
+        locationName.W9
     ],
     regionName.MT:       [
         locationName.JINJOMT1, 
