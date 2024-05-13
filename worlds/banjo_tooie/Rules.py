@@ -233,7 +233,7 @@ class BanjoTooieRules:
             #Cloud Cuckooland Jiggies
             locationName.JIGGYCC2: lambda state: self.jiggy_mr_fit(state),
             locationName.JIGGYCC3: lambda state: self.jiggy_gold_pot(state),
-            locationName.JIGGYCC4: lambda state: self.canary_mary_free(state),
+            locationName.JIGGYCC4: lambda state: self.canary_mary_free(state) and self.can_access_GM(state),
             locationName.JIGGYCC5: lambda state: self.check_humba_magic(state, itemName.HUMBACC),
             locationName.JIGGYCC6: lambda state: self.check_humba_magic(state, itemName.HUMBACC),
             locationName.JIGGYCC7: lambda state: self.jiggy_cheese(state),
@@ -280,7 +280,7 @@ class BanjoTooieRules:
             locationName.CHEATOHP2: lambda state: state.has(itemName.CEGGS, self.player) or self.check_solo_moves(state, itemName.SHPACK),
             locationName.CHEATOHP3: lambda state: self.cheato_icypillar(state),
 
-            locationName.CHEATOCC1: lambda state: self.canary_mary_free(state),
+            locationName.CHEATOCC1: lambda state: self.canary_mary_free(state) and self.can_access_GM(state),
             locationName.CHEATOCC2: lambda state: self.cheato_potgold(state),
             locationName.CHEATOCC3: lambda state: self.check_humba_magic(state, itemName.HUMBACC)
         }
