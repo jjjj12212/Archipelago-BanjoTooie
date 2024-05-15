@@ -450,7 +450,7 @@ class BanjoTooieRules:
 
         self.stopnswap_rules = {
             locationName.IKEY:      lambda state: self.ice_key(state),
-            locationName.PMEGG:     lambda state: self.has_explosives(state),
+            locationName.PMEGG:     lambda state: self.pink_egg(state),
             locationName.PMEGGH:    lambda state: state.has(itemName.PMEGG, self.player),
             locationName.BMEGG:     lambda state: self.blue_egg(state),
             locationName.BMEGGH:    lambda state: state.has(itemName.BMEGG, self.player),
@@ -1951,6 +1951,18 @@ class BanjoTooieRules:
             logic = state.has(itemName.GGRAB, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
 
+    def pink_egg(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.has_explosives(state)
+        return logic
+    
     def blue_egg(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
