@@ -1,4 +1,4 @@
-# Current Logic Implementation | 1.3.1-Beta
+# Current Logic Implementation | 1.5-Beta
 
 We currently have 3 logics put in place. None of them require glitches.
 
@@ -302,9 +302,18 @@ CCL: 10 notes near Sack Pack Silo|Split Up, Shack Pack|(Split Up, Shack Pack) or
 |3 doubloons in the dirt patches|Grenade Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|Grenade Eggs or Clockwork Eggs or Bill Drill|
 |The other 24 doubloons|<N/A>|<N/A>|<N/A>|<N/A>|
 
-# Miscellaneous stuff
+## Stop and Swap
 |Stuff|Beginner Logic|Normal Logic|Advanced Logic|Glitched Logic|
 |-|-|-|-|-|
 |Ice Key|Grip Grab|Grip Grab|Grip Grab|Grip Grab or (Egg Aim and Clockwork Eggs)
+|Pink Mystery Egg|Grenade Eggs|Grenade Eggs|Grenade Eggs|Grenade Eggs or Clockwork Eggs|
+|Blue Mystery Egg|Grip Grab|Grip Grab|Grip Grab|Grip Grab or (Egg Aim and Clockwork Eggs)|
+|Pink Egg Hatched|Pink Egg|Pink Egg|Pink Egg|Pink Egg|
+|Blue Egg Hatched|Blue Egg|Blue Egg|Blue Egg|Blue Egg|
+|Yellow Egg Hatched|(Grenade Egg or Bill Drill) and Hatch|(Grenade Egg or Clockwork Eggs or Bill Drill) and Hatch|(Grenade Egg or Clockwork Eggs or Bill Drill) and Hatch|(Grenade Egg or Clockwork Eggs or Bill Drill) and Hatch|
+
+## Miscellaneous Stuff
+|Stuff|Beginner Logic|Normal Logic|Advanced Logic|Glitched Logic|
+|-|-|-|-|-|
 |Deep JRL Access|Oxygenate, Sub-Aqua Egg Aim, Ice Eggs|(Oxygenate or Faster Swimming) Sub-Aqua Egg Aim, Ice Eggs|<N/A>|<N/A>|
 |Faster Swimming|Bill Drill|Bill Drill|Bill Drill|Bill Drill|
