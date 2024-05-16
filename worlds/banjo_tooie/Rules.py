@@ -2871,11 +2871,13 @@ class BanjoTooieRules:
             logic = self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and\
                                                  self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state) 
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and\
-                                                 self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state)
+            logic = (self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and\
+                                                 self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state))\
+                    or (self.check_solo_moves(state, itemName.CEGGS) and self.check_solo_moves(state, itemName.EGGAIM))
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and\
-                                                 self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state)
+            logic = (self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and\
+                                                 self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state))\
+                    or (self.check_solo_moves(state, itemName.CEGGS) and self.check_solo_moves(state, itemName.EGGAIM))
         return logic
     
     def can_access_water_storage_jinjo_from_JRL(self, state):
