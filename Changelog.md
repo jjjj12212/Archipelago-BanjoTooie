@@ -4,10 +4,11 @@
    - When set to Custom, you can adjust each world manually through the YAML.
  - Logic Fixes
    - GI Floor 2 Jinjo
-   - Ice Eggs are required for Beginner Logic for UFO
+   - Ice Eggs are required for Beginner Logic for UFO Jiggy
    - Canary Mary
    - Pink Egg
    - SeeMee Cheato Page
+   - Water Storage Jinjo
  - Fix Heggy Softlock when returning to the shed after hatching eggs
 
 
