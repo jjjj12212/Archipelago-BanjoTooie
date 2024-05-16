@@ -326,7 +326,7 @@ CCL: 10 notes near Sack Pack Silo|Split Up, Shack Pack|(Split Up, Shack Pack) or
 |Cliff Top -> Plateau|N/A|N/A|N/A|N/A|
 |Pine Grove -> Plateau|Fire Eggs and Egg Aim|Fire Eggs|Fire Eggs|Fire Eggs|
 |Pine Grove -> Wasteland|Talon Torpedo|Talon Torpedo|Talon Torpedo|Talon Torpedo|
-|Wasteland -> Pine Grove|Can't..|Talon Torpedo|Talon Torpedo|N/A|
+|Wasteland -> Pine Grove|Talon Torpedo|Talon Torpedo|Talon Torpedo|N/A|
 |Wasteland -> Quagmire|Spring Step Shoes|Spring Step Shoes|Spring Step Shoes|Spring Step Shoes|
 |Quagmire -> Wasteland|Grip Grab|N/A|N/A|N/A|
 

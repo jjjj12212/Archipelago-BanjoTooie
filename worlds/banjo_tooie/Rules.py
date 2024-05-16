@@ -3355,7 +3355,7 @@ class BanjoTooieRules:
     def WL_to_PG(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = False
+            logic = state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 1 : # normal
             logic = state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 2: # advanced
