@@ -386,7 +386,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "locations": mov1
             }])
 
-    if ctx.slot_data["trebleclef"] == "true" and ctx.sync_ready == True:
+    if ctx.sync_ready == True:
          # Locations handling
         notelist = payload['treble']
         not1 = []
@@ -407,7 +407,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "locations": not1
             }])
 
-    if ctx.slot_data["stations"] == "true" and ctx.sync_ready == True:
+    if ctx.sync_ready == True:
          # Locations handling
         stationlist = payload['stations']
         sta1 = []

@@ -5310,7 +5310,7 @@ function BKLogics(mapaddr)
         TREBLE_WAIT_TIMER = 0
         CHECK_FOR_TREBLE = true
     end
-    if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_STATIONS == true
+    if ((CURRENT_MAP ~= mapaddr) or player == false)
     then
         set_checked_BKSTATIONS()
         STATION_BTN_TIMER = 0
@@ -6067,7 +6067,7 @@ function processAGIItem(item_list)
             elseif memlocation == 1230778 -- Treble Clef
             then
                 obtained_AP_BKNOTE();
-            elseif(1230790 <= memlocation and memlocation <= 1230795) and ENABLE_AP_STATIONS == true -- Station Btns
+            elseif(1230790 <= memlocation and memlocation <= 1230795) -- Station Btns
             then
                 obtained_AP_STATIONS(memlocation);
             elseif memlocation == 1230796 and ENABLE_AP_CHUFFY == true
