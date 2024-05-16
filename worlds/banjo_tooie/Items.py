@@ -31,7 +31,7 @@ jiggy_table = {
 }
 
 token_table = {
-    itemName.MUMBOTOKEN:    ItemData(1230798, 15, "progress", None),
+    itemName.MUMBOTOKEN:    ItemData(1230798, 20, "progress", None),
 }
 
 moves_table = {
