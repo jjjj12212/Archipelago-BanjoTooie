@@ -751,7 +751,7 @@ function getAltar()
         for modelObjPtr, POS in pairs(modelPOS) do
             if POS ~= false
             then
-                BTMODELOBJ:moveModelObject(modelObjPtr, nil, -1000, nil)
+                BTMODELOBJ:moveModelObject(modelObjPtr, nil, -5000, nil)
             end
         end
     end
