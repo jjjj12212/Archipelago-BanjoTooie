@@ -3309,10 +3309,10 @@ local NON_AGI_MAP = {
 				['addr'] = 0x34,
 				['bit'] = 1
 			},
-			['Three-Armed Pig'] = {
-				['addr'] = 0x34,
-				['bit'] = 6
-			},
+			-- ['Three-Armed Pig'] = {
+			-- 	['addr'] = 0x34,
+			-- 	['bit'] = 6
+			-- },
 			['Oogle Boogle Guard'] = {
 				['addr'] = 0x5F,
 				['bit'] = 3
