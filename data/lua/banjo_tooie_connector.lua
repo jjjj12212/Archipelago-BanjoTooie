@@ -6948,7 +6948,7 @@ function printGoalInfo()
         elseif GOAL_TYPE == 4 then
             message ="You absolute mad lad! You're doing the Wonder Wing Challange! Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 5 and TH_LENGTH == 9 then
-            message ="You are trying to find all 25 of Mumbo's Tokens scattered \nthroughout the Isle of Hags! Good Luck and"..randomEncouragment;
+            message ="You are trying to find all 20 of Mumbo's Tokens scattered \nthroughout the Isle of Hags! Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 5 and TH_LENGTH < 9 then
             message = "You are trying to find "..TH_LENGTH.." of the 20 of Mumbo Tokens \nscattered throughout the Isle of Hags! Good Luck and"..randomEncouragment;
         end
