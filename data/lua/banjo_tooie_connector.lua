@@ -717,27 +717,42 @@ function getAltar()
         return
     end
     BTMODELOBJ:changeName("Altar", false);
-    local playerDist = BTMODELOBJ:getClosestModelDistance()
-    if playerDist == false
+    if SKIP_PUZZLES == false
     then
-        return
-    end
-    if playerDist <= 300 and (CLOSE_TO_ALTAR == false or USE_BMM_TBL == false)
-    then
-        CLOSE_TO_ALTAR = true;
-        BMMBackup();
-        useAGI();
-        if DEBUG == true
+        local playerDist = BTMODELOBJ:getClosestModelDistance()
+        if playerDist == false
         then
-            print("Altar Closeby");
+            return
         end
-    elseif playerDist >=301 and CLOSE_TO_ALTAR == true
-    then
-        BMMRestore()
-        CLOSE_TO_ALTAR = false;
-        if DEBUG == true
+        if playerDist <= 300 and (CLOSE_TO_ALTAR == false or USE_BMM_TBL == false)
         then
-            print("Altar Away");
+            CLOSE_TO_ALTAR = true;
+            BMMBackup();
+            useAGI();
+            if DEBUG == true
+            then
+                print("Altar Closeby");
+            end
+        elseif playerDist >=301 and CLOSE_TO_ALTAR == true
+        then
+            BMMRestore()
+            CLOSE_TO_ALTAR = false;
+            if DEBUG == true
+            then
+                print("Altar Away");
+            end
+        end
+    else -- Move Altar off the map 
+        local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+        if modelPOS == false
+        then
+            return
+        end
+        for modelObjPtr, POS in pairs(modelPOS) do
+            if POS ~= false
+            then
+                BTMODELOBJ:moveModelObject(modelObjPtr, nil, -1000, nil)
+            end
         end
     end
 end
