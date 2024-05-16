@@ -137,7 +137,7 @@ local TH_LENGTH = nil;
 local ENCOURAGEMENT = {
          [1]  = {message = " GUH-HUH!"},
          [2]  = {message = " BREEE!"},
-         [3]  = {message = " EKUM-BOKUM!"},
+         [3]  = {message = " EEKUM BOKUM!"},
          [4]  = {message = " YEEHAW!"},
          [5]  = {message = " JINJOO!!"},
          [6]  = {message = " WAHEY!!!"},
