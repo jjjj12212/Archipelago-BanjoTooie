@@ -312,6 +312,24 @@ CCL: 10 notes near Sack Pack Silo|Split Up, Shack Pack|(Split Up, Shack Pack) or
 |Blue Egg Hatched|Blue Egg|Blue Egg|Blue Egg|Blue Egg|
 |Yellow Egg Hatched|(Grenade Egg or Bill Drill) and Hatch|(Grenade Egg or Clockwork Eggs or Bill Drill) and Hatch|(Grenade Egg or Clockwork Eggs or Bill Drill) and Hatch|(Grenade Egg or Clockwork Eggs or Bill Drill) and Hatch|
 
+## Overworld Progression (Does not include Chuffy)
+|Stuff|Beginner Logic|Normal Logic|Advanced Logic|Glitched Logic|
+|-|-|-|-|-|
+|Spiral Mountain -> Jinjo Village|N/A|N/A|N/A|N/A|
+|Jinjo Village -> Spiral Mountain |N/A|N/A|N/A|N/A|
+|Jinjo Village -> Wooded Hollow |N/A|N/A|N/A|N/A|
+|Wooded Hollow -> Jinjo Village |N/A|N/A|N/A|N/A|
+|Wooded Hollow -> Plateau |Grip Grab|Grip Grab|N/A|N/A|
+|Plateau -> Wooded Hollow|N/A|N/A|N/A|N/A|
+|Plateau -> Pine Grove|Fire Eggs and Egg Aim|Fire Eggs|Fire Eggs|Fire Eggs|
+|Plateau -> Cliff Top|Split Up|Split Up|Split Up|Split Up|
+|Cliff Top -> Plateau|N/A|N/A|N/A|N/A|
+|Pine Grove -> Plateau|Fire Eggs and Egg Aim|Fire Eggs|Fire Eggs|Fire Eggs|
+|Pine Grove -> Wasteland|Talon Torpedo|Talon Torpedo|Talon Torpedo|Talon Torpedo|
+|Wasteland -> Pine Grove|Can't..|Talon Torpedo|Talon Torpedo|N/A|
+|Wasteland -> Quagmire|Spring Step Shoes|Spring Step Shoes|Spring Step Shoes|Spring Step Shoes|
+|Quagmire -> Wasteland|Grip Grab|N/A|N/A|N/A|
+
 ## Miscellaneous Stuff
 |Stuff|Beginner Logic|Normal Logic|Advanced Logic|Glitched Logic|
 |-|-|-|-|-|
