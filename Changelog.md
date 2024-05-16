@@ -1,3 +1,17 @@
+# 1.5-Beta
+ - You can now adjust the Jiggy requirements to open any world (YAML option)
+   - Presets for opening worlds: Quick, Normal, Long, Custom
+   - When set to Custom, you can adjust each world manually through the YAML.
+ - Logic Fixes
+   - GI Floor 2 Jinjo
+   - Ice Eggs are required for Beginner Logic for UFO Jiggy
+   - Canary Mary
+   - Pink Egg
+   - SeeMee Cheato Page
+   - Water Storage Jinjo
+ - Fix Heggy Softlock when returning to the shed after hatching eggs
+
+
 # 1.4.1-Beta
  - logic fix for HAG-1 when open option is set
  - set Prison code: sun, moon, star, moon, sun

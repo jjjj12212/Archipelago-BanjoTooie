@@ -450,7 +450,7 @@ class BanjoTooieRules:
 
         self.stopnswap_rules = {
             locationName.IKEY:      lambda state: self.ice_key(state),
-            locationName.PMEGG:     lambda state: self.has_explosives(state),
+            locationName.PMEGG:     lambda state: self.pink_egg(state),
             locationName.PMEGGH:    lambda state: state.has(itemName.PMEGG, self.player),
             locationName.BMEGG:     lambda state: self.blue_egg(state),
             locationName.BMEGGH:    lambda state: state.has(itemName.BMEGG, self.player),
@@ -1740,7 +1740,7 @@ class BanjoTooieRules:
     def cheato_seemee(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.jiggy_see_mee(state)
+            logic = state.has(itemName.TTORP, self.player) and (state.has(itemName.MUMBOJR, self.player) or self.has_explosives(state))
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 2: # advanced
@@ -1951,6 +1951,18 @@ class BanjoTooieRules:
             logic = state.has(itemName.GGRAB, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
 
+    def pink_egg(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.GEGGS, self.player)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.has_explosives(state)
+        return logic
+    
     def blue_egg(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -2859,11 +2871,13 @@ class BanjoTooieRules:
             logic = self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and\
                                                  self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state) 
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and\
-                                                 self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state)
+            logic = (self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and\
+                                                 self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state))\
+                    or (self.check_solo_moves(state, itemName.CEGGS) and self.check_solo_moves(state, itemName.EGGAIM))
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and\
-                                                 self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state)
+            logic = (self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and\
+                                                 self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state))\
+                    or (self.check_solo_moves(state, itemName.CEGGS) and self.check_solo_moves(state, itemName.EGGAIM))
         return logic
     
     def can_access_water_storage_jinjo_from_JRL(self, state):
@@ -3343,7 +3357,7 @@ class BanjoTooieRules:
     def WL_to_PG(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = False
+            logic = state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 1 : # normal
             logic = state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 2: # advanced
