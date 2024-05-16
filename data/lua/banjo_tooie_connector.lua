@@ -6950,7 +6950,7 @@ function printGoalInfo()
         elseif GOAL_TYPE == 5 and TH_LENGTH == 9 then
             message ="You are trying to find all 25 of Mumbo's Tokens scattered \nthroughout the Isle of Hags! Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 5 and TH_LENGTH < 9 then
-            message = "You are trying to find "..TH_LENGTH.." of the 25 of Mumbo Tokens \nscattered throughout the Isle of Hags! Good Luck and"..randomEncouragment;
+            message = "You are trying to find "..TH_LENGTH.." of the 20 of Mumbo Tokens \nscattered throughout the Isle of Hags! Good Luck and"..randomEncouragment;
         end
         print(message)
         table.insert(AP_MESSAGES, message);
