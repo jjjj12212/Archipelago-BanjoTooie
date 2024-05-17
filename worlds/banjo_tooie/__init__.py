@@ -224,11 +224,11 @@ class BanjoTooieWorld(World):
         connect_regions(self)
 
     def generate_early(self) -> None:
-       if (self.options.victory_condition.value == 1 or self.options.victory_condition.value == 2) and self.options.randomize_cheato.value == False :
-        raise Exception("In order to have Minigame or Boss hunt goals, Randomize Cheato Pages must be enabled.")
-       if self.options.victory_condition.value == 4 and self.options.randomize_notes == False:
-        raise Exception("In order to challenge yourself with the Wonder Wing Challenge, Randomize Notes must be enabled.")
-       WorldRandomize(self)
+        if (self.options.victory_condition.value == 1 or self.options.victory_condition.value == 2) and self.options.randomize_cheato.value == False :
+            raise Exception("In order to have Minigame or Boss hunt goals, Randomize Cheato Pages must be enabled.")
+        if self.options.victory_condition.value == 4 and (self.options.randomize_notes == False or self.options.randomize_cheato == False):
+            raise Exception("In order to challenge yourself with the Wonder Wing Challenge, Randomize Notes & Randomize Cheato must be enabled.")
+        WorldRandomize(self)
 
     def set_rules(self) -> None:
         rules = Rules.BanjoTooieRules(self)
