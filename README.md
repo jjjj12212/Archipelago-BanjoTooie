@@ -30,8 +30,16 @@ Banjo Tooie for Archipelago
 - Notes are scattered throughout Archipelago games
 - Skip Jiggywiggy puzzles to open levels
 - Option for worlds to open in random order. (requires certian amount of items randomized and puzzle skip)
-- Alternate Goals (Minigames, World Bosses, Jinjo Family Hunt)
+- Alternate Goals
 - Prison code is always set to: <b>Sun, Moon, Star, Moon, Sun</b>
+
+# Possible Win Conditions
+- Beating Hag-1 (Vanilla)
+- Mini-games (Collect the Mumbo Tokens hidden behind mini-games)
+- World Bosses (Collect the Mumbo Tokens hidden behind world bosses)
+- Family Jinjo Hunt (Collect the Mumbo Tokens hidden behind Jinjo Families)
+- <b>Wonderwing Challenge!</b> (Collect all 32 Mumbo Tokens from Jinjo families, mini-games & World bosses and beat Hag-1)
+- Mumbo Token Hunt (Token are scattered all over the world, go find them.) 
 
 
 # How to install
