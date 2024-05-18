@@ -12,6 +12,8 @@
  - Fix Heggy Softlock when returning to the shed after hatching eggs
  - Fix Stations when not randomized
  - Fix Trebles when not randomized
+ - New Goal: Mumbo Token Hunt
+ - New Goal: Wonderwing Challenge
 
 
 # 1.4.1-Beta
