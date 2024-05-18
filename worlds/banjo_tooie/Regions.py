@@ -43,7 +43,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.W5,
         locationName.W6,
         locationName.W7,
-        locationName.W8
+        locationName.W8,
+        locationName.W9
     ],
     regionName.MT:       [
         locationName.JINJOMT1, 
@@ -376,6 +377,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.GI2: [
         locationName.GLOWBOGI1,
         locationName.LSPRING,
+        locationName.JINJOGI2,
         locationName.JIGGYGI7,
         locationName.TREBLEGI,
         locationName.NOTEGI6,
@@ -386,7 +388,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     ],
     regionName.GI3ALL: [
         locationName.JINJOGI1,
-        locationName.JINJOGI2,
         locationName.JINJOGI4,
         locationName.JINJOGI5,
         locationName.JIGGYGI1,
@@ -505,16 +506,6 @@ def create_regions(self):
     multiworld = self.multiworld
     player = self.player
     active_locations = self.location_name_to_id
-    dellist = []
-
-    # if self.options.skip_puzzles == False:
-    #     for location in active_locations:
-    #         if location.find("Unlocked") != -1:
-    #             dellist.append(location)
-
-    #     for name in dellist:
-    #         if( name in active_locations):
-    #             del active_locations[name]
 
     multiworld.regions += [create_region(multiworld, player, active_locations, region, locations) for region, locations in
                            BANJOTOOIEREGIONS.items()]
@@ -522,18 +513,10 @@ def create_regions(self):
     if multiworld.worlds[player].options.victory_condition == 0:
         multiworld.get_location(locationName.HAG1, player).place_locked_item(
          	multiworld.worlds[player].create_event_item(itemName.VICTORY))
-
-    # if self.options.skip_puzzles == True:
-    #     sm = multiworld.get_region(regionName.IOHWH, player)
-    #     sm.add_locations({locationName.W1: None,
-    #         locationName.W2: None,
-    #         locationName.W3: None,
-    #         locationName.W4: None,
-    #         locationName.W5: None,
-    #         locationName.W6: None,
-    #         locationName.W7: None,
-    #         locationName.W8: None
-    #     })
+        
+    if multiworld.worlds[player].options.victory_condition == 4:
+        multiworld.get_location(locationName.HAG1, player).place_locked_item(
+         	multiworld.worlds[player].create_event_item(itemName.VICTORY))
 
 
 def create_region(multiworld, player: int, active_locations, name: str, locations=None):
@@ -541,6 +524,8 @@ def create_region(multiworld, player: int, active_locations, name: str, location
     if locations:
         loc_to_id = {loc: active_locations.get(loc, 0) for loc in locations if active_locations.get(loc, None)}
         if multiworld.worlds[player].options.victory_condition == 0 and locationName.HAG1 in locations:
+            ret.add_locations({locationName.HAG1: None})
+        elif multiworld.worlds[player].options.victory_condition == 4 and locationName.HAG1 in locations:
             ret.add_locations({locationName.HAG1: None})
         else:
             ret.add_locations(loc_to_id, BanjoTooieLocation)

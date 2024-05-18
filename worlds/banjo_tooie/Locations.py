@@ -476,8 +476,7 @@ IHWHLoc_table = {
     locationName.W6:      LocationData(1230949, 0, 0),
     locationName.W7:      LocationData(1230950, 0, 0),
     locationName.W8:      LocationData(1230951, 0, 0),
-
-
+    locationName.W9:      LocationData(1230952, 0, 0),
 }
 
 IHWLLoc_table = {

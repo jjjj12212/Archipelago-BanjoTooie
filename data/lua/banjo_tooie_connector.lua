@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.4.1"
+local BT_VERSION = "V1.5"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -123,6 +123,7 @@ local GOAL_TYPE = nil;
 local MGH_LENGTH = nil;
 local BH_LENGTH = nil;
 local JFR_LENGTH = nil;
+local TH_LENGTH = nil;
 
 -------------- TRAP VARS ------------
 
@@ -136,7 +137,7 @@ local JFR_LENGTH = nil;
 local ENCOURAGEMENT = {
          [1]  = {message = " GUH-HUH!"},
          [2]  = {message = " BREEE!"},
-         [3]  = {message = " EKUM-BOKUM!"},
+         [3]  = {message = " EEKUM BOKUM!"},
          [4]  = {message = " YEEHAW!"},
          [5]  = {message = " JINJOO!!"},
          [6]  = {message = " WAHEY!!!"},
@@ -716,27 +717,42 @@ function getAltar()
         return
     end
     BTMODELOBJ:changeName("Altar", false);
-    local playerDist = BTMODELOBJ:getClosestModelDistance()
-    if playerDist == false
+    if SKIP_PUZZLES == false
     then
-        return
-    end
-    if playerDist <= 300 and (CLOSE_TO_ALTAR == false or USE_BMM_TBL == false)
-    then
-        CLOSE_TO_ALTAR = true;
-        BMMBackup();
-        useAGI();
-        if DEBUG == true
+        local playerDist = BTMODELOBJ:getClosestModelDistance()
+        if playerDist == false
         then
-            print("Altar Closeby");
+            return
         end
-    elseif playerDist >=301 and CLOSE_TO_ALTAR == true
-    then
-        BMMRestore()
-        CLOSE_TO_ALTAR = false;
-        if DEBUG == true
+        if playerDist <= 300 and (CLOSE_TO_ALTAR == false or USE_BMM_TBL == false)
         then
-            print("Altar Away");
+            CLOSE_TO_ALTAR = true;
+            BMMBackup();
+            useAGI();
+            if DEBUG == true
+            then
+                print("Altar Closeby");
+            end
+        elseif playerDist >=301 and CLOSE_TO_ALTAR == true
+        then
+            BMMRestore()
+            CLOSE_TO_ALTAR = false;
+            if DEBUG == true
+            then
+                print("Altar Away");
+            end
+        end
+    else -- Move Altar off the map 
+        local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+        if modelPOS == false
+        then
+            return
+        end
+        for modelObjPtr, POS in pairs(modelPOS) do
+            if POS ~= false
+            then
+                BTMODELOBJ:moveModelObject(modelObjPtr, nil, -5000, nil)
+            end
         end
     end
 end
@@ -3309,10 +3325,10 @@ local NON_AGI_MAP = {
 				['addr'] = 0x34,
 				['bit'] = 1
 			},
-			['Three-Armed Pig'] = {
-				['addr'] = 0x34,
-				['bit'] = 6
-			},
+			-- ['Three-Armed Pig'] = {
+			-- 	['addr'] = 0x34,
+			-- 	['bit'] = 6
+			-- },
 			['Oogle Boogle Guard'] = {
 				['addr'] = 0x5F,
 				['bit'] = 3
@@ -4205,6 +4221,11 @@ function check_hatched_mystery()
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
                 BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
                 BTRAMOBJ:clearFlag(0x1E, 7)
+            elseif BKMYSTERY["1230954"] == true
+            then
+                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
+                BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
+                BTRAMOBJ:clearFlag(0x77, 5)
             end
             if AGI_MYSTERY["1230801"] == true and BKMYSTERY["1230953"] == false -- nothing
             then
@@ -4213,6 +4234,10 @@ function check_hatched_mystery()
                 end
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
                 BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
+            elseif BKMYSTERY["1230953"] == true
+            then
+                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
+                BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
             end
             if AGI_MYSTERY["1230802"] == true and BKMYSTERY["1230955"] == false -- homing eggs
             then
@@ -4221,6 +4246,11 @@ function check_hatched_mystery()
                 end
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
                 BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
+            elseif BKMYSTERY["1230955"] == true
+            then
+                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
+                BTRAMOBJ:clearFlag(0x77, 3)
+                BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
             end
             WAIT_FOR_HATCH = true
         else -- Watch if Eggs are hatched
@@ -4249,6 +4279,25 @@ function check_hatched_mystery()
                     BKMYSTERY["1230955"] = true
                 end
             end
+        end
+    elseif CURRENT_MAP == 0x14F -- Wooded Hollow
+    then
+        if BKMYSTERY["1230954"] == true
+        then
+            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
+            BTRAMOBJ:clearFlag(0x77, 5)
+            BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
+        end
+        if BKMYSTERY["1230953"] == true
+        then
+            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
+            BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
+        end
+        if BKMYSTERY["1230955"] == true
+        then
+            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
+            BTRAMOBJ:clearFlag(0x77, 3)
+            BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         end
     else
         if BKMYSTERY["1230956"] == false
@@ -5075,29 +5124,54 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
     do
         if values["opened"] == false
         then
-            if jiggy_count >= values["defaultCost"]
+            if GOAL_TYPE == 4 and location == "WORLD 9"
             then
-                if DEBUG == true
-                then
-                    print(values["defaultName"] .. tostring(values["defaultCost"]))
+                local token_count = 0;
+                for id, itemId in pairs(receive_map)
+                do
+                    if itemId == "1230798"
+                    then
+                        token_count = token_count + 1
+                    end
                 end
-                BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                if values["locationId"] ~= "0"
+                if token_count >= 32
                 then
-                    UNLOCKED_WORLDS[values["locationId"]] = true
-                end
-                if ENABLE_AP_WORLDS == false
-                then
-                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
-                end
-                values["opened"] = true
-                if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
-                    and show_message == true
-                then
+                    BTRAMOBJ:setFlag(values["addr"], values["bit"])
+                    if values["locationId"] ~= "0"
+                    then
+                        UNLOCKED_WORLDS[values["locationId"]] = true
+                    end
                     if ENABLE_AP_WORLDS == false
                     then
-                        table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
-                        print(values["defaultName"] .. " is now unlocked!")
+                        BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                    end
+                    values["opened"] = true
+                end
+            else
+                if jiggy_count >= values["defaultCost"]
+                then
+                    if DEBUG == true
+                    then
+                        print(values["defaultName"] .. tostring(values["defaultCost"]))
+                    end
+                    BTRAMOBJ:setFlag(values["addr"], values["bit"])
+                    if values["locationId"] ~= "0"
+                    then
+                        UNLOCKED_WORLDS[values["locationId"]] = true
+                    end
+                    if ENABLE_AP_WORLDS == false
+                    then
+                        BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                    end
+                    values["opened"] = true
+                    if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
+                        and show_message == true
+                    then
+                        if ENABLE_AP_WORLDS == false
+                        then
+                            table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
+                            print(values["defaultName"] .. " is now unlocked!")
+                        end
                     end
                 end
             end
@@ -5271,13 +5345,13 @@ function BKLogics(mapaddr)
             end
         end
     end
-    if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_TREBLE == true
+    if ((CURRENT_MAP ~= mapaddr) or player == false)
     then
         set_checked_BKNOTES();
         TREBLE_WAIT_TIMER = 0
         CHECK_FOR_TREBLE = true
     end
-    if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_STATIONS == true
+    if ((CURRENT_MAP ~= mapaddr) or player == false)
     then
         set_checked_BKSTATIONS()
         STATION_BTN_TIMER = 0
@@ -6031,10 +6105,10 @@ function processAGIItem(item_list)
                 end
                 BTCONSUMEOBJ:changeConsumable("DOUBLOON");
                 BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
-            elseif(memlocation == 1230778 and ENABLE_AP_TREBLE == true) -- Treble Clef
+            elseif memlocation == 1230778 -- Treble Clef
             then
                 obtained_AP_BKNOTE();
-            elseif(1230790 <= memlocation and memlocation <= 1230795) and ENABLE_AP_STATIONS == true -- Station Btns
+            elseif(1230790 <= memlocation and memlocation <= 1230795) -- Station Btns
             then
                 obtained_AP_STATIONS(memlocation);
             elseif memlocation == 1230796 and ENABLE_AP_CHUFFY == true
@@ -6441,16 +6515,19 @@ function DPadStats()
                     print(values['name'])
                 end
             end
-            -- if GOAL_TYPE ~= 0
-            -- then
-            --     local token_count = 0;
-            --     for location, values in pairs(AGI["1230798"])
-            --     do
-            --         token_count = token_count + 1
-            --     end
-            --     print(" ")
-			--     print("Collected Mumbo Tokens: "..token_count)
-            -- end
+            if GOAL_TYPE ~= 0
+            then
+                local token_count = 0;
+                for id, itemId in pairs(receive_map)
+                do
+                    if itemId == "1230798"
+                    then
+                        token_count = token_count + 1
+                    end
+                end
+                print(" ")
+			    print("Collected Mumbo Tokens: "..token_count)
+            end
         end
 		
         if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 L'] == true
@@ -6810,44 +6887,64 @@ function process_slot(block)
     then
         JFR_LENGTH = block['slot_jinjo_family_rescue_length']
     end
+    if block['slot_token_hunt_length'] ~= nil and block['slot_token_hunt_length'] ~= ""
+    then
+        TH_LENGTH = block['slot_token_hunt_length']
+    end
     -- if block['slot_warp_traps'] ~= nil and block['slot_warp_traps'] ~= ""
     -- then
     --     WARP_TRAP_LOGIC = block['slot_warp_traps']
     -- end
     if block['slot_world_order'] ~= nil
     then
-        local REORG_WORLDS = { }
-        local starting_location_id = 1230944
-        local locationId = starting_location_id
-        
-        for location, jiggy_amt in pairs(block['slot_world_order'])
+        for level, jiggy_amt in pairs(block['slot_world_order'])
         do
-            table.insert(REORG_WORLDS, {location, tonumber(jiggy_amt)}) --Convert to table to sort based on lowest Jiggy count
-        end
-
-        table.sort(REORG_WORLDS, function(a, b)
-            return a[2] < b[2]
-        end)
-
-        for key, table in pairs(REORG_WORLDS)
-        do
-            local location = table[1]
-            local jiggy_amt = tonumber(table[2])
-
-            if location == "Outside Grunty's Industries"
+            local locationId = block['slot_keys'][level]
+            if level == "Outside Grunty's Industries"
             then
-                location = "Grunty Industries"
+                level = "Grunty Industries"
             end
             for worlds, t in pairs(WORLD_ENTRANCE_MAP)
             do
-                if t['defaultName'] == location
+                if t['defaultName'] == level
                 then
                     WORLD_ENTRANCE_MAP[worlds]["defaultCost"] = jiggy_amt
                     WORLD_ENTRANCE_MAP[worlds]["locationId"] = tostring(locationId)
-                    locationId = locationId + 1
                 end
             end
         end
+        -- local REORG_WORLDS = { }
+        -- local starting_location_id = 1230944
+        -- local locationId = starting_location_id
+        
+        -- for location, jiggy_amt in pairs(block['slot_world_order'])
+        -- do
+        --     table.insert(REORG_WORLDS, {location, tonumber(jiggy_amt)}) --Convert to table to sort based on lowest Jiggy count
+        -- end
+
+        -- table.sort(REORG_WORLDS, function(a, b)
+        --     return a[2] < b[2]
+        -- end)
+
+        -- for key, table in pairs(REORG_WORLDS)
+        -- do
+        --     local location = table[1]
+        --     local jiggy_amt = tonumber(table[2])
+
+        --     if location == "Outside Grunty's Industries"
+        --     then
+        --         location = "Grunty Industries"
+        --     end
+        --     for worlds, t in pairs(WORLD_ENTRANCE_MAP)
+        --     do
+        --         if t['defaultName'] == location
+        --         then
+        --             WORLD_ENTRANCE_MAP[worlds]["defaultCost"] = jiggy_amt
+        --             WORLD_ENTRANCE_MAP[worlds]["locationId"] = tostring(locationId)
+        --             locationId = locationId + 1
+        --         end
+        --     end
+        -- end
     end
     printGoalInfo();
     if SEED ~= 0
@@ -6862,7 +6959,8 @@ end
 
 function printGoalInfo()
     local randomEncouragment = ENCOURAGEMENT[math.random(1, #ENCOURAGEMENT)]["message"]
-    if GOAL_TYPE ~= nil and MGH_LENGTH ~= nil and BH_LENGTH ~= nil and JFR_LENGTH ~= nil then
+    if GOAL_TYPE ~= nil and MGH_LENGTH ~= nil and BH_LENGTH ~= nil and 
+    JFR_LENGTH ~= nil and TH_LENGTH ~= nil then
         local message = ""
         if GOAL_TYPE == 0 then
             message = "You need to hunt down Grunty in her HAG1 \nand put her back in the ground!"..randomEncouragment;
@@ -6878,6 +6976,12 @@ function printGoalInfo()
             message ="You are trying to rescue all 9 Jinjo families and \nretrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 3 and JFR_LENGTH < 9 then
             message = "You are trying to rescue "..JFR_LENGTH.." of the 9 Jinjo families \nand retrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
+        elseif GOAL_TYPE == 4 then
+            message ="You absolute mad lad! You're doing the Wonder Wing Challange! Good Luck and"..randomEncouragment;
+        elseif GOAL_TYPE == 5 and TH_LENGTH == 9 then
+            message ="You are trying to find all 20 of Mumbo's Tokens scattered \nthroughout the Isle of Hags! Good Luck and"..randomEncouragment;
+        elseif GOAL_TYPE == 5 and TH_LENGTH < 9 then
+            message = "You are trying to find "..TH_LENGTH.." of the 20 of Mumbo Tokens \nscattered throughout the Isle of Hags! Good Luck and"..randomEncouragment;
         end
         print(message)
         table.insert(AP_MESSAGES, message);

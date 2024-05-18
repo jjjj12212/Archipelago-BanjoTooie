@@ -261,11 +261,13 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_mystery": ctx.slot_data["mystery"],
             "slot_worlds": ctx.slot_data["worlds"],
             "slot_world_order": ctx.slot_data["world_order"],
+            "slot_keys": ctx.slot_data['world_keys'],
             "slot_skip_klungo": ctx.slot_data["skip_klungo"],
             "slot_goal_type": ctx.slot_data["goal_type"],
             "slot_minigame_hunt_length": ctx.slot_data["minigame_hunt_length"],
             "slot_boss_hunt_length": ctx.slot_data["boss_hunt_length"],
             "slot_jinjo_family_rescue_length": ctx.slot_data["jinjo_family_rescue_length"],
+            "slot_token_hunt_length": ctx.slot_data["token_hunt_length"]
         })
     ctx.sendSlot = False
     return payload
@@ -310,7 +312,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
 
                     # Game completion handling
                     if (("1230027" in BTlocation_table and BTlocation_table["1230027"] == True) 
-                    and ctx.slot_data["goal_type"] == 0 and not ctx.finished_game):
+                    and (ctx.slot_data["goal_type"] == 0 or ctx.slot_data["goal_type"] == 4) and not ctx.finished_game):
                         await ctx.send_msgs([{
                             "cmd": "StatusUpdate",
                             "status": 30
@@ -349,14 +351,15 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 }])
 
     if (ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or 
-        ctx.slot_data["goal_type"] == 3) and not ctx.finished_game:
+        ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 5) and not ctx.finished_game:
         mumbo_tokens = 0
         for networkItem in ctx.items_received:
             if networkItem.item == 1230798:
                 mumbo_tokens += 1
                 if ((ctx.slot_data["goal_type"] == 1 and mumbo_tokens >= ctx.slot_data["minigame_hunt_length"]) or
                     (ctx.slot_data["goal_type"] == 2 and mumbo_tokens >= ctx.slot_data["boss_hunt_length"]) or
-                    (ctx.slot_data["goal_type"] == 3 and mumbo_tokens >= ctx.slot_data["jinjo_family_rescue_length"])): 
+                    (ctx.slot_data["goal_type"] == 3 and mumbo_tokens >= ctx.slot_data["jinjo_family_rescue_length"]) or
+                    (ctx.slot_data["goal_type"] == 5 and mumbo_tokens >= ctx.slot_data["token_hunt_length"])): 
                     await ctx.send_msgs([{
                         "cmd": "StatusUpdate",
                         "status": 30
@@ -386,7 +389,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "locations": mov1
             }])
 
-    if ctx.slot_data["trebleclef"] == "true" and ctx.sync_ready == True:
+    if ctx.sync_ready == True:
          # Locations handling
         notelist = payload['treble']
         not1 = []
@@ -407,7 +410,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "locations": not1
             }])
 
-    if ctx.slot_data["stations"] == "true" and ctx.sync_ready == True:
+    if ctx.sync_ready == True:
          # Locations handling
         stationlist = payload['stations']
         sta1 = []

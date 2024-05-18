@@ -31,7 +31,7 @@ jiggy_table = {
 }
 
 token_table = {
-    itemName.MUMBOTOKEN:    ItemData(1230798, 15, "progress", None),
+    itemName.MUMBOTOKEN:    ItemData(1230798, 20, "progress", None),
 }
 
 moves_table = {
@@ -135,6 +135,7 @@ rando_key_table = {
     itemName.GIA:           ItemData(1230949,   1, "progress", locationName.W6),
     itemName.HFA:           ItemData(1230950,   1, "progress", locationName.W7),
     itemName.CCA:           ItemData(1230951,   1, "progress", locationName.W8),
+    itemName.CKA:           ItemData(1230952,   1, "progress", locationName.W9),
 }
 
 

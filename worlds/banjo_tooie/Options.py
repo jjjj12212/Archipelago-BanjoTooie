@@ -26,11 +26,11 @@ class EnableMultiWorldDoubloons(Toggle):
     """Jolly Roger's Doubloons are scattered across the MultiWorld."""
     display_name = "Randomize Doubloons"
 
-class EnableMultiWorldCheatoPages(Toggle):
+class EnableMultiWorldCheatoPages(DefaultOnToggle):
     """Cheato pages are scattered across the MultiWorld."""
     display_name = "Randomize Cheato Pages"
 
-class SetMultiWorldCheatoPagesFiller(Toggle):
+class SetMultiWorldCheatoPagesFiller(DefaultOnToggle):
     """If Cheato pages are scattered, set to Cheato Items as filler."""
     display_name = "Use Cheato Pages as Filler."
 
@@ -42,7 +42,7 @@ class EnableMultiWorldGlowbos(DefaultOnToggle):
     """Glowbos are scattered across the MultiWorld."""
     display_name = "Randomize Glowbos"
 
-class EnableMultiWorldTrebleClefs(Toggle):
+class EnableMultiWorldTrebleClefs(DefaultOnToggle):
     """Treble Clefs are scattered across the MultiWorld."""
     display_name = "Randomize Treble Clefs"
 
@@ -58,15 +58,15 @@ class EnableMultiWorldNotes(Toggle):
     """Note Nests are scattered across the MultiWorld."""
     display_name = "Randomize Note Nests"
 
-class KingJingalingHasJiggy(Toggle):
+class KingJingalingHasJiggy(DefaultOnToggle):
     """King Jingaling will always have a Jiggy to give you."""
     display_name = "King Jingaling Jiggy"
 
-class SkipPuzzles(Toggle):
+class SkipPuzzles(DefaultOnToggle):
     """Open world entrances without having to go to Jiggywiggy."""
     display_name = "Skip Puzzles"
 
-class OpenHag1(Toggle):
+class OpenHag1(DefaultOnToggle):
     """HAG 1 boss fight is opened when Cauldron Keep is. Only 55 jiggies are needed to win."""
     display_name = "HAG 1 Open"
 
@@ -103,12 +103,17 @@ class VictoryCondition(Choice):
     """Choose which victory condition you want
     HAG1: Unlock the HAG1 fight and defeat Gruntilda
     Minigame Hunt: Clear the 14 minigames and the final Canary Mary race in Cloud Cuckcoo Land to collect Mumbo Tokens
-    Boss Hunt: Kill the 8 world bosses and collect their Mumbo Tokens"""
+    Boss Hunt: Kill the 8 world bosses and collect their Mumbo Tokens
+    Wonderwing Challenge: Collect all 32 Mumbo Tokens across all boss fights, mini games and every Jinjo family
+        to gain access to HAG1 and Defeat Grunty. The Ultimate Banjo Tooie experience!
+    Token Hunt: Mumbo's Tokens are scattered around the world. Help him find them"""
     display_name = "Victory Condition"
     option_hag1 = 0
     option_minigame_hunt = 1
     option_boss_hunt = 2
     option_jinjo_family_rescue = 3
+    option_wonder_wing_challenge = 4
+    option_token_hunt = 5
     default = 0
 
 class MinigameHuntLength(Range):
@@ -135,6 +140,14 @@ class JinjoFamilyRescueLength(Range):
     range_end = 9
     default = 9
 
+class TokenHuntLength(Range):
+    """How many Mumbo Tokens of the 25 hidden throughout the world do you need to find
+    Choose a value between 1 and 20"""
+    display_name = "Token Hunt Length"
+    range_start = 1
+    range_end = 20
+    default = 15
+
 # class WarpTraps(Choice):
 #     """Choose if you want warp traps enabled"""
 #     display_name = "Warp Traps"
@@ -142,6 +155,78 @@ class JinjoFamilyRescueLength(Range):
 #     option_in_level_warp_traps = 1
 #     option_cross_level_warp_traps = 2
 #     default = 0
+
+class GameLength(Choice):
+    """Choose how quickly the worlds open between each over."""
+    display_name = "World Requirements"
+    option_quick = 0  #1,3,6,10,15,21,28,36,44 
+    option_normal = 1 #1,4,8,14,20,28,36,45,55
+    option_long = 2   #1,8,16,25,34,43,52,61,70
+    option_custom = 3 #you pick
+    default = 1
+
+class World1(Range):
+    """If you picked custom, what is the jiggy requirement for World 1."""
+    display_name = "World 1 Jiggy requirement"
+    range_start = 1
+    range_end = 3
+    default = 1
+
+class World2(Range):
+    """If you picked custom, what is the jiggy requirement for World 2."""
+    display_name = "World 2 Jiggy requirement"
+    range_start = 2
+    range_end = 10
+    default = 4
+
+class World3(Range):
+    """If you picked custom, what is the jiggy requirement for World 3."""
+    display_name = "World 3 Jiggy requirement"
+    range_start = 3
+    range_end = 20
+    default = 8
+
+class World4(Range):
+    """If you picked custom, what is the jiggy requirement for World 4."""
+    display_name = "World 4 Jiggy requirement"
+    range_start = 4
+    range_end = 30
+    default = 14
+
+class World5(Range):
+    """If you picked custom, what is the jiggy requirement for World 5."""
+    display_name = "World 5 Jiggy requirement"
+    range_start = 5
+    range_end = 40
+    default = 20
+
+class World6(Range):
+    """If you picked custom, what is the jiggy requirement for World 6."""
+    display_name = "World 6 Jiggy requirement"
+    range_start = 6
+    range_end = 50
+    default = 28
+
+class World7(Range):
+    """If you picked custom, what is the jiggy requirement for World 7."""
+    display_name = "World 7 Jiggy requirement"
+    range_start = 7
+    range_end = 60
+    default = 36
+
+class World8(Range):
+    """If you picked custom, what is the jiggy requirement for World 8."""
+    display_name = "World 8 Jiggy requirement"
+    range_start = 8
+    range_end = 70
+    default = 45
+
+class World9(Range):
+    """If you picked custom, what is the jiggy requirement for Cauldon Keep."""
+    display_name = "Cauldon Keep Jiggy requirement"
+    range_start = 9
+    range_end = 70
+    default = 55
 
 class SkipKlungo(Toggle):
     """Make it so you can skip Klungo 1 and 2."""
@@ -175,8 +260,16 @@ class BanjoTooieOptions(PerGameCommonOptions):
     minigame_hunt_length: MinigameHuntLength
     boss_hunt_length: BossHuntLength
     jinjo_family_rescue_length: JinjoFamilyRescueLength
-    minigame_hunt_length: MinigameHuntLength
-    boss_hunt_length: BossHuntLength
-    jinjo_family_rescue_length: JinjoFamilyRescueLength
+    token_hunt_length: TokenHuntLength
+    game_length: GameLength
+    world_1: World1
+    world_2: World2
+    world_3: World3
+    world_4: World4
+    world_5: World5
+    world_6: World6
+    world_7: World7
+    world_8: World8
+    world_9: World9
     # warp_traps: WarpTraps
     skip_klungo: SkipKlungo
