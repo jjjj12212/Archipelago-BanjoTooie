@@ -252,7 +252,6 @@ class BanjoTooieOptions(PerGameCommonOptions):
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
     skip_klungo: SkipKlungo
-    randomize_worlds: RandomizeWorlds
     skip_tower_of_tragedy: SkipToT
     speed_up_minigames: SpeedUpMinigames
     logic_type: LogicType
@@ -261,6 +260,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     boss_hunt_length: BossHuntLength
     jinjo_family_rescue_length: JinjoFamilyRescueLength
     token_hunt_length: TokenHuntLength
+    randomize_worlds: RandomizeWorlds
     game_length: GameLength
     open_hag1: OpenHag1
     world_1: World1
