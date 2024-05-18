@@ -6897,38 +6897,54 @@ function process_slot(block)
     -- end
     if block['slot_world_order'] ~= nil
     then
-        local REORG_WORLDS = { }
-        local starting_location_id = 1230944
-        local locationId = starting_location_id
-        
-        for location, jiggy_amt in pairs(block['slot_world_order'])
+        for level, jiggy_amt in pairs(block['slot_world_order'])
         do
-            table.insert(REORG_WORLDS, {location, tonumber(jiggy_amt)}) --Convert to table to sort based on lowest Jiggy count
-        end
-
-        table.sort(REORG_WORLDS, function(a, b)
-            return a[2] < b[2]
-        end)
-
-        for key, table in pairs(REORG_WORLDS)
-        do
-            local location = table[1]
-            local jiggy_amt = tonumber(table[2])
-
-            if location == "Outside Grunty's Industries"
+            local locationId = block['slot_keys'][level]
+            if level == "Outside Grunty's Industries"
             then
-                location = "Grunty Industries"
+                level = "Grunty Industries"
             end
             for worlds, t in pairs(WORLD_ENTRANCE_MAP)
             do
-                if t['defaultName'] == location
+                if t['defaultName'] == level
                 then
                     WORLD_ENTRANCE_MAP[worlds]["defaultCost"] = jiggy_amt
                     WORLD_ENTRANCE_MAP[worlds]["locationId"] = tostring(locationId)
-                    locationId = locationId + 1
                 end
             end
         end
+        -- local REORG_WORLDS = { }
+        -- local starting_location_id = 1230944
+        -- local locationId = starting_location_id
+        
+        -- for location, jiggy_amt in pairs(block['slot_world_order'])
+        -- do
+        --     table.insert(REORG_WORLDS, {location, tonumber(jiggy_amt)}) --Convert to table to sort based on lowest Jiggy count
+        -- end
+
+        -- table.sort(REORG_WORLDS, function(a, b)
+        --     return a[2] < b[2]
+        -- end)
+
+        -- for key, table in pairs(REORG_WORLDS)
+        -- do
+        --     local location = table[1]
+        --     local jiggy_amt = tonumber(table[2])
+
+        --     if location == "Outside Grunty's Industries"
+        --     then
+        --         location = "Grunty Industries"
+        --     end
+        --     for worlds, t in pairs(WORLD_ENTRANCE_MAP)
+        --     do
+        --         if t['defaultName'] == location
+        --         then
+        --             WORLD_ENTRANCE_MAP[worlds]["defaultCost"] = jiggy_amt
+        --             WORLD_ENTRANCE_MAP[worlds]["locationId"] = tostring(locationId)
+        --             locationId = locationId + 1
+        --         end
+        --     end
+        -- end
     end
     printGoalInfo();
     if SEED ~= 0

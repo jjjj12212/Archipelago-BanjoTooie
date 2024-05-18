@@ -138,6 +138,22 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
                 world.randomize_worlds.update({regionName.CK: 70})
             else: # Custom
                 world.randomize_worlds.update({regionName.CK: world.options.world_9.value})
+
+            i = 1230944
+            for location, jiggy in world.randomize_worlds.items():
+                world.randomize_order.update({location: i})
+                i += 1
+
+            # if world.options.game_length.value == 3:
+            #     order = sorted(world.randomize_worlds.items(), key=lambda x: x[1])
+            #     world.randomize_worlds = {}
+            #     i = 1
+            #     for level, jiggy in order:
+            #         world.randomize_worlds.update({level: jiggy})
+            #         world.randomize_order.update({i: location})
+            #         i += 1
+
+
             first_level = list(world.randomize_worlds.keys())[0]
 
             if  first_level != regionName.MT and world.options.logic_type != 2:
@@ -217,6 +233,25 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
                 regionName.CC:  world8_jiggy,
                 regionName.CK:  world9_jiggy 
             }
+            world.randomize_order = {
+                regionName.MT:  1230944,
+                regionName.GM:  1230945,
+                regionName.WW:  1230946,
+                regionName.JR:  1230947,
+                regionName.TL:  1230948,
+                regionName.GIO: 1230949,
+                regionName.HP:  1230950,
+                regionName.CC:  1230951,
+                regionName.CK:  1230952 
+            }
+            # order = sorted(world.randomize_worlds.items(), key=lambda x: x[1])
+            # world.randomize_worlds = {}
+            # i = 1
+            # for location, jiggyamt in order:
+            #     world.randomize_worlds.update({location: jiggyamt})
+            #     world.randomize_order.update({i: location})
+            #     i = i + 1
+
             world.worlds_randomized = False
 
     

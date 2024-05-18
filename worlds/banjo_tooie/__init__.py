@@ -79,6 +79,7 @@ class BanjoTooieWorld(World):
         self.slot_data = []
         self.use_cheato_filler = False
         self.randomize_worlds = {}
+        self.randomize_order = {}
         self.world_sphere_1 = [
             regionName.MT,
             regionName.GM,
@@ -266,6 +267,18 @@ class BanjoTooieWorld(World):
             self.banjo_pre_fills("StopnSwap", None, True)
 
 
+        # if self.worlds_randomized == False and self.options.skip_puzzles == True:
+        #     world_num = 1
+        #     for order, world in self.randomize_order.items():
+        #         if world == regionName.GIO:
+        #             item = self.create_item(itemName.GIA)
+        #         else:
+        #             item = self.create_item(world)
+        #         if world_num == 10:
+        #             self.multiworld.get_location("Boss Unlocked").place_locked_item(item)
+        #         else:
+        #             self.multiworld.get_location("World "+ str(world_num) +" Unlocked", self.player).place_locked_item(item)
+        #             world_num = world_num + 1
         if self.worlds_randomized == False and self.options.skip_puzzles == True:
             self.banjo_pre_fills("Access", None, True)
         elif self.worlds_randomized == True:
@@ -452,6 +465,8 @@ class BanjoTooieWorld(World):
         btoptions['notes']= "true" if self.options.randomize_notes == 1 else "false"
         btoptions['worlds']= "true" if self.worlds_randomized else "false"
         btoptions['world_order'] = self.randomize_worlds
+        btoptions['world_keys'] = self.randomize_order
+
         btoptions['mystery'] = "true" if self.options.randomize_stop_n_swap == 1 else "false"
         btoptions['goal_type'] = int(self.options.victory_condition.value)
         btoptions['minigame_hunt_length'] = int(self.options.minigame_hunt_length.value)

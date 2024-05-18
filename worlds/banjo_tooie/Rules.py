@@ -129,15 +129,17 @@ class BanjoTooieRules:
         ]
 
         if self.world.options.skip_puzzles == True:
+            
             self.access_rules = {
-                locationName.W1: lambda state: state.has(itemName.JIGGY, self.player, 1),
-                locationName.W2: lambda state: state.has(itemName.JIGGY, self.player, 4),
-                locationName.W3: lambda state: state.has(itemName.JIGGY, self.player, 8),
-                locationName.W4: lambda state: state.has(itemName.JIGGY, self.player, 14),
-                locationName.W5: lambda state: state.has(itemName.JIGGY, self.player, 20),
-                locationName.W6: lambda state: state.has(itemName.JIGGY, self.player, 28),
-                locationName.W7: lambda state: state.has(itemName.JIGGY, self.player, 36),
-                locationName.W8: lambda state: state.has(itemName.JIGGY, self.player, 45),
+                locationName.W1: lambda state: self.WorldUnlocks_req(state, 1230944),
+                locationName.W2: lambda state: self.WorldUnlocks_req(state, 1230945),
+                locationName.W3: lambda state: self.WorldUnlocks_req(state, 1230946),
+                locationName.W4: lambda state: self.WorldUnlocks_req(state, 1230947),
+                locationName.W5: lambda state: self.WorldUnlocks_req(state, 1230948),
+                locationName.W6: lambda state: self.WorldUnlocks_req(state, 1230949),
+                locationName.W7: lambda state: self.WorldUnlocks_req(state, 1230950),
+                locationName.W8: lambda state: self.WorldUnlocks_req(state, 1230951),
+                locationName.W9: lambda state: self.WorldUnlocks_req(state, 1230952)
             }
 
         self.train_rules = {
@@ -2806,7 +2808,16 @@ class BanjoTooieRules:
             logic = (self.can_access_ccl(state) and state.has(itemName.SPLITUP, self.player)) or state.has(itemName.GGRAB, self.player)
         return logic
 
-        
+    def WorldUnlocks_req(self, state: CollectionState, locationId: int) -> bool: #1
+        world = ""
+        for worldLoc, locationno in self.world.randomize_order.items():
+            if locationno == locationId:
+                world = worldLoc
+                break
+        amt = self.world.randomize_worlds[world]
+        return state.has(itemName.JIGGY, self.player, amt)
+    
+
     def mt_jiggy(self, state: CollectionState) -> bool: #1
         if self.world.worlds_randomized == True:
             return state.has(itemName.MTA, self.player)
