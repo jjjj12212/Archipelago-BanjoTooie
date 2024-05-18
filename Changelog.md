@@ -10,6 +10,8 @@
    - SeeMee Cheato Page
    - Water Storage Jinjo
  - Fix Heggy Softlock when returning to the shed after hatching eggs
+ - Fix Stations when not randomized
+ - Fix Trebles when not randomized
 
 
 # 1.4.1-Beta
