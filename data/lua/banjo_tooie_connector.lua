@@ -6482,6 +6482,16 @@ function DPadStats()
                     print("Breegull Bash");
                 end
             end
+            print(" ")
+            print(" ")
+            print("Unlocked Worlds")
+            for world, table in pairs(WORLD_ENTRANCE_MAP)
+            do
+                if table["opened"] == true
+                then
+                    print(table["defaultCost"])
+                end
+            end
 		end
 		
 		if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == false
