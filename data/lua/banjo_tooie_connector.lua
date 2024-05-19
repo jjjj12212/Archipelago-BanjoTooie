@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.5"
+local BT_VERSION = "V1.5.1"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -5268,15 +5268,19 @@ function loadGame(current_map)
             then
                 check_open_level(true)
             end
---            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
             if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
                 BTRAMOBJ:setFlag(0x6E, 3);
-                table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                print("HAG 1 is now unlocked!")
---            elseif OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == true then
+                if GOAL_TYPE == 0 or GOAL_TYPE == 4
+                then
+                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                    print("HAG 1 is now unlocked!")
+                end
             elseif OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == true then
-                table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                print("HAG 1 is now unlocked!")
+                if GOAL_TYPE == 0 or GOAL_TYPE == 4
+                then
+                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                    print("HAG 1 is now unlocked!")
+                end
             end
             GAME_LOADED = true;
         end
@@ -6478,6 +6482,16 @@ function DPadStats()
                     print("Breegull Bash");
                 end
             end
+            print(" ")
+            print(" ")
+            print("Unlocked Worlds")
+            for world, table in pairs(WORLD_ENTRANCE_MAP)
+            do
+                if table["opened"] == true
+                then
+                    print(table["defaultName"])
+                end
+            end
 		end
 		
 		if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == false
@@ -7075,8 +7089,11 @@ function initializeFlags()
 --        if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
         if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
             BTRAMOBJ:setFlag(0x6E, 3);
-            table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-            print("HAG 1 is now unlocked!")
+            if GOAL_TYPE == 0 or GOAL_TYPE == 4
+            then
+                table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                print("HAG 1 is now unlocked!")
+            end
         -- elseif OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == true then
         --     table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
         --     print("HAG 1 is now unlocked!")

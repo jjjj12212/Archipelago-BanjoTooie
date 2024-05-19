@@ -17,6 +17,7 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
         if "Banjo-Tooie" in world.multiworld.re_gen_passthrough:
             passthrough = world.multiworld.re_gen_passthrough["Banjo-Tooie"]
             world.randomize_worlds = passthrough['world_order']
+            world.randomize_order = passthrough['world_keys']
             world.worlds_randomized = bool(passthrough['worlds'] == 'true') 
     else:
         if world.options.randomize_worlds and world.options.randomize_moves == True and \
