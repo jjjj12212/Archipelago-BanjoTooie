@@ -6489,7 +6489,7 @@ function DPadStats()
             do
                 if table["opened"] == true
                 then
-                    print(table["defaultCost"])
+                    print(table["defaultName"])
                 end
             end
 		end
