@@ -1,3 +1,7 @@
+# 1.5.1-Beta
+ - Logic changes:
+   - All logics: The TDL entrance jinjo can be gotten by beak bombing the switch.
+
 # 1.5-Beta
  - You can now adjust the Jiggy requirements to open any world (YAML option)
    - Presets for opening worlds: Quick, Normal, Long, Custom
@@ -12,7 +16,6 @@
  - Fix Heggy Softlock when returning to the shed after hatching eggs
  - Fix Stations when not randomized
  - Fix Trebles when not randomized
-
 
 # 1.4.1-Beta
  - logic fix for HAG-1 when open option is set

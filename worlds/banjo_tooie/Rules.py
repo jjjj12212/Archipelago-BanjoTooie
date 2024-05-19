@@ -2132,13 +2132,13 @@ class BanjoTooieRules:
     def jinjo_tdlentrance(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.can_beat_terry(state) and state.has(itemName.GEGGS, self.player)
+            logic = self.can_beat_terry(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.GEGGS, self.player)
+            logic = self.can_beat_terry(state) or state.has(itemName.GEGGS, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.GEGGS, self.player)
+            logic = self.can_beat_terry(state) or state.has(itemName.GEGGS, self.player)
         elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.GEGGS, self.player)
+            logic = self.can_beat_terry(state) or state.has(itemName.GEGGS, self.player)
         return logic
 
     def jinjo_big_t_rex(self, state: CollectionState) -> bool:
