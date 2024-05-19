@@ -121,7 +121,7 @@ The glitched logic will expect all the reasonable glitches to be done, as well a
 |Seaweed Sanctum|Deep JRL Access, Grip Grab|Deep JRL Access|Deep JRL Access|Deep JRL Access|
 |Sunken Ship|Deep JRL Access|Deep JRL Access|Deep JRL Access, (Sub or Sub-Aqua Egg Aiming or Talon Torpedo)|Deep JRL Access, (Sub or Sub-Aqua Egg Aiming or Talon Torpedo)|
 |TDL: Underwater|Talon Torpedo|Talon Torpedo|Talon Torpedo|Talon Torpedo|
-|TDL: Entrance|Grenade Eggs, Egg Aim, Springy Step Shoes|Grenade Eggs|Grenade Eggs|Grenade Eggs or (Clockwork Eggs, Egg Aim)|
+|TDL: Entrance|Egg Aim, Springy Step Shoes|Grenade Eggs or (Springy Step Shoes and Egg Aim)|Grenade Eggs or Springy Step Shoes|<N/A>|
 |Beside Rocknut|Clockwork Kazooie Eggs|Clockwork Kazooie Eggs|Clockwork Kazooie Eggs|<N/A>|
 |Big T-Rex|T-Rex, Enlarge|T-Rex, Enlarge|T-Rex, Enlarge|(T-Rex, Enlarge) or Clockwork eggs|
 |Stomping Plains (Kazooie Switch)|Springy Step Shoes, Ice Eggs, Split Up|Springy Step Shoes, (Ice Eggs or Wing Whack or Glide), Split Up|Springy Step Shoes, Split Up|<N/A>|
