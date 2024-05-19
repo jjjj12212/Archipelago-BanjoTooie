@@ -1,9 +1,9 @@
-# Archipelago Banjo-Tooie (US-Only) | 1.5-Beta
+# Archipelago Banjo-Tooie (US-Only) | 1.5.1-Beta
 Banjo Tooie for Archipelago 
 
 # Controller Shortcuts with this implementation
  - Dpad up: Banjo Tiptoes
- - Dpad right: display unlocked moves in lua console
+ - Dpad right: display unlocked moves and world unlocks in lua console 
  - Dpad down: display collected Treble Clefs
  - Dpad left: display unlocked Magic
  - Dpad up + L: Refill Consumables

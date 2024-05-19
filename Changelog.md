@@ -1,6 +1,8 @@
 # 1.5.1-Beta
  - Logic changes:
    - All logics: The TDL entrance jinjo can be gotten by beak bombing the switch.
+ - Fix for UT
+ - DPad Down also shows level unlocks
 
 # 1.5-Beta
  - You can now adjust the Jiggy requirements to open any world (YAML option)
