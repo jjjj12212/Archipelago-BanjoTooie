@@ -473,28 +473,28 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "locations": worlds
             }])
 
-        if ctx.slot_data["mystery"] == "true" and ctx.sync_ready == True:
-            # Locations handling
-            mystery = payload['mystery']
-            send_mystery = []
+    if ctx.sync_ready == True:
+        # Locations handling
+        mystery = payload['mystery']
+        send_mystery = []
 
-            # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
-            if isinstance(worldslist, list):
-                mystery = {}
+        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
+        if isinstance(worldslist, list):
+            mystery = {}
 
-            if ctx.mystery_table != mystery:
-                ctx.mystery_table = mystery
+        if ctx.mystery_table != mystery:
+            ctx.mystery_table = mystery
 
-                for locationId, value in mystery.items():
-                    if locationId == "REMOVE": #Don't need to handle this here
-                        continue
-                    if value == True:
-                        send_mystery.append(int(locationId))
+            for locationId, value in mystery.items():
+                if locationId == "REMOVE": #Don't need to handle this here
+                    continue
+                if value == True:
+                    send_mystery.append(int(locationId))
 
-                await ctx.send_msgs([{
-                    "cmd": "LocationChecks",
-                    "locations": send_mystery
-                }])   
+            await ctx.send_msgs([{
+                "cmd": "LocationChecks",
+                "locations": send_mystery
+            }])   
 
     #Send Aync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:

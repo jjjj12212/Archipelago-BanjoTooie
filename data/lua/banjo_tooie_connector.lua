@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.5.1"
+local BT_VERSION = "V1.6"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -5395,11 +5395,8 @@ function BKLogics(mapaddr)
         then
             check_open_level(false)
         end
-        if ENABLE_AP_MYSTERY == true
-        then
-            clearKey()
-            obtain_breegull_bash()
-        end
+        clearKey()
+        obtain_breegull_bash()
     end
 end
 
@@ -5500,13 +5497,10 @@ function BKAssetFound()
     then
         watchBtnAnimation()
     end
-    if ENABLE_AP_MYSTERY == true
-    then
-        check_egg_mystery()
-        check_hatched_mystery()
-        check_local_icekey()
-        ap_icekey_glowbo_map()
-    end
+    check_egg_mystery()
+    check_hatched_mystery()
+    check_local_icekey()
+    ap_icekey_glowbo_map()
  -- ApWarp();
 
 end
@@ -6136,7 +6130,7 @@ function processAGIItem(item_list)
                         break
                     end
                 end
-            elseif(memlocation == 1230800) and ENABLE_AP_MYSTERY == true
+            elseif(memlocation == 1230800)
             then
                 if DEBUG == true
                 then
@@ -6144,21 +6138,21 @@ function processAGIItem(item_list)
                 end
                 AGI_MYSTERY[tostring(memlocation)] = true
                 obtain_breegull_bash()
-            elseif(memlocation == 1230801) and ENABLE_AP_MYSTERY == true
+            elseif(memlocation == 1230801)
             then
                 if DEBUG == true
                 then
                     print("Jinjo Multiplayer Obtained")
                 end
                 AGI_MYSTERY[tostring(memlocation)] = true
-            elseif(memlocation == 1230802) and ENABLE_AP_MYSTERY == true
+            elseif(memlocation == 1230802)
             then
                 if DEBUG == true
                 then
                     print("Homing Obtained")
                 end
                 AGI_MYSTERY[tostring(memlocation)] = true
-            elseif(memlocation == 1230803) and ENABLE_AP_MYSTERY == true
+            elseif(memlocation == 1230803)
             then
                 if DEBUG == true
                 then
@@ -6168,7 +6162,7 @@ function processAGIItem(item_list)
                 BTCONSUMEOBJ:changeConsumable("Eggs")
                 local amt = BTCONSUMEOBJ:getEggConsumable()
                 BTCONSUMEOBJ:setConsumable(amt + 1)
-            elseif(memlocation == 1230804) and ENABLE_AP_MYSTERY == true
+            elseif(memlocation == 1230804)
             then
                 if DEBUG == true
                 then
@@ -6178,7 +6172,7 @@ function processAGIItem(item_list)
                 BTCONSUMEOBJ:changeConsumable("Eggs")
                 local amt = BTCONSUMEOBJ:getEggConsumable()
                 BTCONSUMEOBJ:setConsumable(amt + 1)
-            elseif(memlocation == 1230799) and ENABLE_AP_MYSTERY == true
+            elseif(memlocation == 1230799)
             then
                 if DEBUG == true
                 then
@@ -6342,10 +6336,7 @@ function checkPause()
         then
             BMMRestore()
         end
-        if ENABLE_AP_MYSTERY == true
-        then
-            unpause_hide_AGI_key()
-        end
+        unpause_hide_AGI_key()
     elseif PAUSED == true and DEBUG == true
     then
         local check_controls = joypad.get()
@@ -6433,17 +6424,11 @@ function checkTotalMenu()
         if total == 1 and OBJ_TOTALS_MENU == false
         then
             OBJ_TOTALS_MENU = true
-            if ENABLE_AP_MYSTERY == true
-            then
-                pause_show_AGI_key()
-            end
+            pause_show_AGI_key()
         elseif total ~= 1 and OBJ_TOTALS_MENU == true
         then
             OBJ_TOTALS_MENU = false
-            if ENABLE_AP_MYSTERY == true
-            then
-                unpause_hide_AGI_key()
-            end
+            unpause_hide_AGI_key()
         end
     end
 end
@@ -6475,12 +6460,9 @@ function DPadStats()
                     print(values['name'])
                 end
             end
-            if ENABLE_AP_MYSTERY == true
+            if AGI_MYSTERY["1230800"] == true
             then
-                if AGI_MYSTERY["1230800"] == true
-                then
-                    print("Breegull Bash");
-                end
+                print("Breegull Bash");
             end
             print(" ")
             print(" ")
@@ -7113,13 +7095,10 @@ function initializeFlags()
             BTRAMOBJ:setFlag(0x5E, 0, "Klungo 1 Defeated")
             BTRAMOBJ:setFlag(0x5E, 1, "Klungo 2 Defeated")
         end
-        if ENABLE_AP_MYSTERY == true
-        then
-            BTCONSUMEOBJ:changeConsumable("Eggs")
-            BTCONSUMEOBJ:setConsumable(0)
-            BTCONSUMEOBJ:changeConsumable("Ice Keys")
-            BTCONSUMEOBJ:setConsumable(0)
-        end
+        BTCONSUMEOBJ:changeConsumable("Eggs")
+        BTCONSUMEOBJ:setConsumable(0)
+        BTCONSUMEOBJ:changeConsumable("Ice Keys")
+        BTCONSUMEOBJ:setConsumable(0)
         BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star,moon, sun 
 
         

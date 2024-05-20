@@ -14,4 +14,4 @@
       or getting stuck somewhere.
     - Minor remedy: We should add the Jiggy spawn flags into the NON_AGI_MAP. Once you unpause, unset the flags for the jiggies that Hasn't spawn yet.
     - Minor remedy: Skip_Puzzle as a core feature. This will remove the "uniqueness" of Wooded Hollow and Jiggy Wiggy Temple.
-    - Minot remedy: Split out Jinjos, Notes, and Jiggies into their own tables so they have their own functions. This may help as well.
+    - Minor remedy: Split out Jinjos, Notes, and Jiggies into their own tables so they have their own functions. This may help as well.

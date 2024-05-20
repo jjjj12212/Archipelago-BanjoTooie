@@ -1,6 +1,6 @@
-# Current Logic Implementation | 1.5.1-Beta
+# Current Logic Implementation | 1.6-Beta
 
-We currently have 3 logics put in place. None of them require glitches.
+We currently have 4 logics put in place.
 
 
 The beginner logic only expects intended strategies. This logic is aimed at people that don't know the game too well.

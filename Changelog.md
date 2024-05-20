@@ -1,3 +1,6 @@
+# 1.6-Beta
+ - Stop N Swap check locations fixed when not randomized
+
 # 1.5.1-Beta
  - Logic changes:
    - All logics: The TDL entrance jinjo can be gotten by beak bombing the switch.
