@@ -232,6 +232,10 @@ class SkipKlungo(Toggle):
     """Make it so you can skip Klungo 1 and 2."""
     display_name = "Skip Klungo"
 
+class ExceedingItemsFiller(Toggle):
+    """Progressive Items that exceeds the required amounts are marked as junk"""
+    display_name = "Exceeding Progressive Items marked as junk items"
+
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
@@ -272,4 +276,5 @@ class BanjoTooieOptions(PerGameCommonOptions):
     world_7: World7
     world_8: World8
     world_9: World9
+    exceeding_items_filler: ExceedingItemsFiller
     # warp_traps: WarpTraps

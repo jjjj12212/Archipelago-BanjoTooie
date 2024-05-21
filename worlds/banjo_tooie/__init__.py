@@ -99,16 +99,16 @@ class BanjoTooieWorld(World):
         banjoItem = all_item_table.get(itemname)
         if banjoItem.type == 'progress':
             if banjoItem.btid == 1230515:
-                if self.jiggy_counter <= 70:
-                    item_classification = ItemClassification.progression
+                if self.jiggy_counter > 70 and self.options.exceeding_items_filler.value == True:
+                    item_classification = ItemClassification.filler
                 else:
-                    item_classification = ItemClassification.useful
+                    item_classification = ItemClassification.progression
                 self.jiggy_counter += 1
             elif banjoItem.btid == 1230797 and self.options.randomize_notes.value == True:
-                if self.notecounter <= 124:
-                    item_classification = ItemClassification.progression
+                if self.notecounter > 124 and self.options.exceeding_items_filler.value == True:
+                    item_classification = ItemClassification.filler
                 else:
-                    item_classification = ItemClassification.useful
+                    item_classification = ItemClassification.progression
                 self.notecounter += 1
             else:
                 item_classification = ItemClassification.progression
@@ -266,19 +266,6 @@ class BanjoTooieWorld(World):
         if self.options.randomize_stop_n_swap == False:
             self.banjo_pre_fills("StopnSwap", None, True)
 
-
-        # if self.worlds_randomized == False and self.options.skip_puzzles == True:
-        #     world_num = 1
-        #     for order, world in self.randomize_order.items():
-        #         if world == regionName.GIO:
-        #             item = self.create_item(itemName.GIA)
-        #         else:
-        #             item = self.create_item(world)
-        #         if world_num == 10:
-        #             self.multiworld.get_location("Boss Unlocked").place_locked_item(item)
-        #         else:
-        #             self.multiworld.get_location("World "+ str(world_num) +" Unlocked", self.player).place_locked_item(item)
-        #             world_num = world_num + 1
         if self.worlds_randomized == False and self.options.skip_puzzles == True:
             self.banjo_pre_fills("Access", None, True)
         elif self.worlds_randomized == True:
