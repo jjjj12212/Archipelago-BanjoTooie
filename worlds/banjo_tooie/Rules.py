@@ -822,7 +822,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = self.check_humba_magic(state, itemName.HUMBAWW)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.check_humba_magic(state, itemName.HUMBAWW) or state.has(itemName.CEGGS, self.player)
+            logic = self.glitchedInfernoAccess(state)
         return logic
     
     def jiggy_cactus(self, state: CollectionState) -> bool:
@@ -2779,7 +2779,7 @@ class BanjoTooieRules:
         return self.MT_flight_pad(state) or state.has(itemName.MUMBOMT, self.player)
     
     def glitchedInfernoAccess(self, state: CollectionState) -> bool:
-        return state.has(itemName.MUMBOWW, self.player) or state.has(itemName.CEGGS, self.player)
+        return self.check_humba_magic(state, itemName.HUMBAWW) or state.has(itemName.CEGGS, self.player)
         
     def HFP_to_MT(self, state: CollectionState) -> bool:
         logic = True
