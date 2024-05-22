@@ -1,5 +1,14 @@
 # 1.6-Beta
  - Stop N Swap check locations fixed when not randomized
+ - Some locations got their name changed
+   - All Jinjo Village checks will now start with "IoH" instead of "JV".
+   - Stop and Swap items start with the world in which they are.
+   - All 8 notes around the tent in Witchyworld are now called "Around the Tent"
+   - The 3 notes on the Split Up pads and the warp pad in CCL are now called "Central Notes"
+ - Logic fixes
+   - TDL T-Rex jinjo in glitched logic
+   - Inferno Access in glitched logic
+   - 
 
 # 1.5.1-Beta
  - Logic changes:

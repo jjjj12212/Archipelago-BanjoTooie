@@ -158,16 +158,16 @@ JIGGYCC7  = "CCL: Cheese Wedge Jiggy"
 JIGGYCC8  = "CCL: Trash Can Jiggy"
 JIGGYCC9  = "CCL: Superstash Jiggy"
 JIGGYCC10 = "CCL: Jelly Castle Jiggy"
-JIGGYIH1  = "JV: White Jinjo Family Jiggy"
-JIGGYIH2  = "JV: Orange Jinjo Family Jiggy"
-JIGGYIH3  = "JV: Yellow Jinjo Family Jiggy"
-JIGGYIH4  = "JV: Brown Jinjo Family Jiggy"
-JIGGYIH5  = "JV: Green Jinjo Family Jiggy"
-JIGGYIH6  = "JV: Red Jinjo Family Jiggy"
-JIGGYIH7  = "JV: Blue Jinjo Family Jiggy"
-JIGGYIH8  = "JV: Purple Jinjo Family Jiggy"
-JIGGYIH9  = "JV: Black Jinjo Family Jiggy"
-JIGGYIH10 = "JV: King Jingaling Jiggy"
+JIGGYIH1  = "IoH: White Jinjo Family Jiggy"
+JIGGYIH2  = "IoH: Orange Jinjo Family Jiggy"
+JIGGYIH3  = "IoH: Yellow Jinjo Family Jiggy"
+JIGGYIH4  = "IoH: Brown Jinjo Family Jiggy"
+JIGGYIH5  = "IoH: Green Jinjo Family Jiggy"
+JIGGYIH6  = "IoH: Red Jinjo Family Jiggy"
+JIGGYIH7  = "IoH: Blue Jinjo Family Jiggy"
+JIGGYIH8  = "IoH: Purple Jinjo Family Jiggy"
+JIGGYIH9  = "IoH: Black Jinjo Family Jiggy"
+JIGGYIH10 = "IoH: King Jingaling Jiggy"
 
 #Glowbos
 GLOWBOMT1 = "MT: Mumbo's Glowbo"
@@ -187,7 +187,7 @@ GLOWBOHP2 = "HFP: Icy Side Glowbo"
 GLOWBOCC1 = "CCL: Green Pool Glowbo"
 GLOWBOCC2 = "CCL: Central Cavern Glowbo"
 GLOWBOIH1 = "IoH: Cliff Top Glowbo"
-GLOWBOMEG = "Mega Glowbo"
+GLOWBOMEG = "HFP: Mega Glowbo"
 
 #Honeycombs
 HONEYCMT1  = "MT: Entrance Honeycomb"
@@ -217,7 +217,7 @@ HONEYCCC3  = "CCL: Pot O' Gold Honeycomb"
 HONEYCIH1  = "IoH: Plateau Honeycomb"
 
 #Treble Clef
-TREBLEJV   = "JV: Treble Clef"
+TREBLEJV   = "IoH: Treble Clef"
 TREBLEMT   = "MT: Treble Clef"
 TREBLEGM   = "GGM: Treble Clef"
 TREBLEWW   = "WW: Treble Clef"
@@ -262,7 +262,7 @@ CHEATOHP3 = "HFP: Icy Side Pillar Cheato Page"
 CHEATOCC1 = "CCL: Canary Mary Cheato Page"
 CHEATOCC2 = "CCL: Pot O' Gold Cheato Page"
 CHEATOCC3 = "CCL: Zubbas Cheato Page"
-CHEATOSM1 = "Spiral Mountain: Cheato Page"
+CHEATOSM1 = "SM: Cheato Page"
 
 #Notes
 NOTEMT1 = "MT: First Stairs (1) Note"
@@ -297,14 +297,14 @@ NOTEGGM13 = "GGM: Fuel Depot (1) Note"
 NOTEGGM14 = "GGM: Fuel Depot (2) Note"
 NOTEGGM15 = "GGM: Fuel Depot (3) Note"
 NOTEGGM16 = "GGM: Fuel Depot (4) Note"
-NOTEWW1 = "WW: Big Top Entrance Note"
-NOTEWW2 = "WW: Burger Stand Note"
-NOTEWW3 = "WW: In Front of Space Zone Note"
-NOTEWW4 = "WW: Madame Grunty Note"
-NOTEWW5 = "WW: Split Up Silo Note"
-NOTEWW6 = "WW: Fries Stand Note"
-NOTEWW7 = "WW: In Front of Western Zone Note"
-NOTEWW8 = "WW: Beehive Note"
+NOTEWW1 = "WW: Around the Tent (1) Note"
+NOTEWW2 = "WW: Around the Tent (2) Note"
+NOTEWW3 = "WW: Around the Tent (3) Note"
+NOTEWW4 = "WW: Around the Tent (4) Note"
+NOTEWW5 = "WW: Around the Tent (5) Note"
+NOTEWW6 = "WW: Around the Tent (6) Note"
+NOTEWW7 = "WW: Around the Tent (7) Note"
+NOTEWW8 = "WW: Around the Tent (8) Note"
 NOTEWW9 = "WW: Area 51 Gate (1) Note"
 NOTEWW10 = "WW: Area 51 Gate (2) Note"
 NOTEWW11 = "WW: Outside Dodgem Dome (1) Note"
@@ -390,9 +390,9 @@ NOTECCL10 = "CCL: Mr. Fit Sack Race Exit Note"
 NOTECCL11 = "CCL: Top Entrance Note"
 NOTECCL12 = "CCL: Top Superstash Switch Note"
 NOTECCL13 = "CCL: Glowbo Pool Note"
-NOTECCL14 = "CCL: Central Cavern Warp Pad Note"
-NOTECCL15 = "CCL: Kazooie Split Up Pad Note"
-NOTECCL16 = "CCL: Banjo Split Up Pad Note"
+NOTECCL14 = "CCL: Central (1) Note"
+NOTECCL15 = "CCL: Central (2) Note"
+NOTECCL16 = "CCL: Central (3) Note"
 NOTEIH1 = "IoH: Plateau GGM Sign (1) Note"
 NOTEIH2 = "IoH: Plateau GGM Sign (2) Note"
 NOTEIH3 = "IoH: Plateau Honey B. (1) Note"
@@ -437,21 +437,21 @@ CEGGS       = "IoH: Clockwork Kazooie Eggs Silo"
 IEGGS       = "IoH: Ice Eggs Silo"
 
 #NPCS
-ROYSTEN     = "Roysten"
-CHEATOR1    = "Cheato Reward 1"  #5 pages - Feathers
-CHEATOR2    = "Cheato Reward 2"  #10 pages - Eggs
-CHEATOR3    = "Cheato Reward 3"  #15 pages - Fallproof
-CHEATOR4    = "Cheato Reward 4"  #20 pages - Honeyback
-CHEATOR5    = "Cheato Reward 5"  #25 pages - Jukebox
+ROYSTEN     = "SM: Roysten"
+CHEATOR1    = "SM: Cheato Reward 1"  #5 pages - Feathers
+CHEATOR2    = "SM: Cheato Reward 2"  #10 pages - Eggs
+CHEATOR3    = "SM: Cheato Reward 3"  #15 pages - Fallproof
+CHEATOR4    = "SM: Cheato Reward 4"  #20 pages - Honeyback
+CHEATOR5    = "SM: Cheato Reward 5"  #25 pages - Jukebox
 
 
 #Stop N Swap
-PMEGG        = "Pink Mystery Egg"
-PMEGGH        = "Pink Mystery Egg Hatched"
-BMEGG        = "Blue Mystery Egg"
-BMEGGH        = "Blue Mystery Egg Hatched"
-YMEGGH        = "Yellow Mystery Egg Hatched"
-IKEY         = "Ice Key"
+PMEGG        = "SM: Pink Mystery Egg"
+PMEGGH        = "IoH: Pink Mystery Egg Hatched"
+BMEGG        = "SM: Blue Mystery Egg"
+BMEGGH        = "IoH: Blue Mystery Egg Hatched"
+YMEGGH        = "IoH: Yellow Mystery Egg Hatched"
+IKEY         = "IoH: Ice Key"
 
 #Bosses
 HAG1 = "Hag 1 Defeated"
