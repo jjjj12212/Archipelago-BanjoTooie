@@ -5111,29 +5111,32 @@ end
 -- end
 
 function hag1_open()
-    if GOAL_TYPE == 0
+    if GAME_LOADED == true
     then
-        if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-            BTRAMOBJ:setFlag(0x6E, 3);
-            table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-            print("HAG 1 is now unlocked!")
-        end
-    elseif GOAL_TYPE == 4
-    then
-        local token_count = 0;
-        for id, itemId in pairs(receive_map)
-        do
-            if itemId == "1230798"
-            then
-                token_count = token_count + 1
-            end
-        end
-        if token_count >= 32
+        if GOAL_TYPE == 0
         then
             if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
                 BTRAMOBJ:setFlag(0x6E, 3);
                 table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
                 print("HAG 1 is now unlocked!")
+            end
+        elseif GOAL_TYPE == 4
+        then
+            local token_count = 0;
+            for id, itemId in pairs(receive_map)
+            do
+                if itemId == "1230798"
+                then
+                    token_count = token_count + 1
+                end
+            end
+            if token_count >= 32
+            then
+                if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                    BTRAMOBJ:setFlag(0x6E, 3);
+                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                    print("HAG 1 is now unlocked!")
+                end
             end
         end
     end
