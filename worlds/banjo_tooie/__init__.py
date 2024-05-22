@@ -389,12 +389,12 @@ class BanjoTooieWorld(World):
             item = self.create_item(itemName.PJINJO)
             self.multiworld.get_location(locationName.JINJOMT1, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JINJOGM5, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JINJOGI3, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JINJOCC1, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JINJOCC3, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JINJOCC5, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JINJOIH2, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JINJOIH3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGI4, self.player).place_locked_item(item)
 
             item = self.create_item(itemName.BKJINJO)
             self.multiworld.get_location(locationName.JINJOMT4, self.player).place_locked_item(item)
@@ -405,7 +405,8 @@ class BanjoTooieWorld(World):
             self.multiworld.get_location(locationName.JINJOGI1, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JINJOGI5, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JINJOCC4, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JINJOGI4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.JINJOGI3, self.player).place_locked_item(item)
+
 
 
     def banjo_pre_fills(self, itemNameOrGroup: str, locationFindCriteria: str|None, useGroup: bool ) -> None:
