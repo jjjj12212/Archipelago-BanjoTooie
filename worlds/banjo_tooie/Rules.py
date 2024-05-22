@@ -169,8 +169,21 @@ class BanjoTooieRules:
                 locationName.MUMBOTKNBOSS3: lambda state: self.jiggy_patches(state),
                 locationName.MUMBOTKNBOSS4: lambda state: self.jiggy_lord_woo(state),
                 locationName.MUMBOTKNBOSS5: lambda state: self.can_beat_terry(state),
-                locationName.MUMBOTKNBOSS6: lambda state: self.can_beat_weldar(state)(state),
+                locationName.MUMBOTKNBOSS6: lambda state: self.can_beat_weldar(state),
                 locationName.MUMBOTKNBOSS7: lambda state: self.jiggy_dragons_bros(state),
+            }
+        
+        if self.world.options.victory_condition.value == 3 or self.world.options.victory_condition.value == 4:
+            self.jinjotoken_rules = {
+                locationName.MUMBOTKNJINJO1: lambda state: state.has(itemName.WJINJO, self.player, 1),
+                locationName.MUMBOTKNJINJO2: lambda state: state.has(itemName.OJINJO, self.player, 2),
+                locationName.MUMBOTKNJINJO3: lambda state: state.has(itemName.YJINJO, self.player, 3),
+                locationName.MUMBOTKNJINJO4: lambda state: state.has(itemName.BRJINJO, self.player, 4),
+                locationName.MUMBOTKNJINJO5: lambda state: state.has(itemName.GJINJO, self.player, 5),
+                locationName.MUMBOTKNJINJO6: lambda state: state.has(itemName.RJINJO, self.player, 6),
+                locationName.MUMBOTKNJINJO7: lambda state: state.has(itemName.BLJINJO, self.player, 7),
+                locationName.MUMBOTKNJINJO8: lambda state: state.has(itemName.PJINJO, self.player, 8),
+                locationName.MUMBOTKNJINJO9: lambda state: state.has(itemName.BKJINJO, self.player, 9),
             }
 
         self.train_rules = {
@@ -3698,12 +3711,18 @@ class BanjoTooieRules:
                 set_rule(tokens, rules)
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, 8)
         elif self.world.options.victory_condition == 3:
+            for location, rules in self.jinjotoken_rules.items():
+                tokens = self.world.multiworld.get_location(location, self.player)
+                set_rule(tokens, rules)
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, 9)
         elif self.world.options.victory_condition == 4:
             for location, rules in self.bosstoken_rules.items():
                 tokens = self.world.multiworld.get_location(location, self.player)
                 set_rule(tokens, rules)
             for location, rules in self.gametoken_rules.items():
+                tokens = self.world.multiworld.get_location(location, self.player)
+                set_rule(tokens, rules)
+            for location, rules in self.jinjotoken_rules.items():
                 tokens = self.world.multiworld.get_location(location, self.player)
                 set_rule(tokens, rules)
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, 32) \

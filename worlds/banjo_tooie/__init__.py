@@ -4,7 +4,7 @@ import settings
 import typing
 from jinja2 import Environment, FileSystemLoader
 from .Items import BanjoTooieItem, all_item_table, all_group_table
-from .Locations import BanjoTooieLocation, all_location_table, MumboTokenBoss_table, MumboTokenGames_table
+from .Locations import BanjoTooieLocation, all_location_table, MumboTokenBoss_table, MumboTokenGames_table, MumboTokenJinjo_table
 from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
@@ -231,7 +231,10 @@ class BanjoTooieWorld(World):
         if self.options.victory_condition.value == 2 or self.options.victory_condition.value == 4:
             for name, data in MumboTokenBoss_table.items():
                 self.location_name_to_id[name] = data.btid
-                
+        if self.options.victory_condition.value == 3 or self.options.victory_condition.value == 4:
+            for name, data in MumboTokenJinjo_table.items():
+                self.location_name_to_id[name] = data.btid
+
         if (self.options.victory_condition.value == 1 or self.options.victory_condition.value == 2) and self.options.randomize_cheato.value == False :
             raise Exception("In order to have Minigame or Boss hunt goals, Randomize Cheato Pages must be enabled.")
         if self.options.victory_condition.value == 4 and (self.options.randomize_notes == False or self.options.randomize_cheato == False):
@@ -328,15 +331,15 @@ class BanjoTooieWorld(World):
 
         if self.options.victory_condition == 3 or self.options.victory_condition == 4:
             item = self.create_item(itemName.MUMBOTOKEN)
-            self.multiworld.get_location(locationName.JIGGYIH1, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYIH2, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYIH3, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYIH4, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYIH5, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYIH6, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYIH7, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYIH8, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYIH9, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNJINJO1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNJINJO2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNJINJO3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNJINJO4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNJINJO5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNJINJO6, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNJINJO7, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNJINJO8, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNJINJO9, self.player).place_locked_item(item)
         
         elif self.options.randomize_jinjos == False:
             item = self.create_item(itemName.JIGGY)

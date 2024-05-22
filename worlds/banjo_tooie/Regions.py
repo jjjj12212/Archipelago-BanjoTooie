@@ -534,6 +534,17 @@ def create_regions(self):
         BANJOTOOIEREGIONS[regionName.HP].append(locationName.MUMBOTKNBOSS7)
         BANJOTOOIEREGIONS[regionName.CC].append(locationName.MUMBOTKNBOSS8)
 
+    if multiworld.worlds[player].options.victory_condition.value == 3 or multiworld.worlds[player].options.victory_condition.value == 4:
+        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO1)
+        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO2)
+        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO3)
+        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO4)
+        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO5)
+        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO6)
+        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO7)
+        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO8)
+        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO9)
+
     multiworld.regions += [create_region(multiworld, player, active_locations, region, locations) for region, locations in
                            BANJOTOOIEREGIONS.items()]
     

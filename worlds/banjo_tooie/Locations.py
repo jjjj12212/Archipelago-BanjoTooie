@@ -7,8 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
     
 class LocationData(typing.NamedTuple):
-    #last good ID: 1230959
-    #BAD 12C780 pointer (1230720) increment
+    #last good ID: 1230991
     #12C770 pointer instead (1230704)
     btid: int|None = 0
     # Save + mem addr
@@ -530,6 +529,17 @@ MumboTokenGames_table = {
     locationName.MUMBOTKNGAME13: LocationData(1230980, 0, 0),
     locationName.MUMBOTKNGAME14: LocationData(1230981, 0, 0),
     locationName.MUMBOTKNGAME15: LocationData(1230982, 0, 0),
+}
+MumboTokenJinjo_table = {
+    locationName.MUMBOTKNJINJO1: LocationData(1230983, 0, 0),
+    locationName.MUMBOTKNJINJO2: LocationData(1230984, 0, 0),
+    locationName.MUMBOTKNJINJO3: LocationData(1230985, 0, 0),
+    locationName.MUMBOTKNJINJO4: LocationData(1230986, 0, 0),
+    locationName.MUMBOTKNJINJO5: LocationData(1230987, 0, 0),
+    locationName.MUMBOTKNJINJO6: LocationData(1230988, 0, 0),
+    locationName.MUMBOTKNJINJO7: LocationData(1230989, 0, 0),
+    locationName.MUMBOTKNJINJO8: LocationData(1230990, 0, 0),
+    locationName.MUMBOTKNJINJO9: LocationData(1230991, 0, 0),
 }
 
 all_location_table = {
