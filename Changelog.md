@@ -3,6 +3,8 @@
  - Logic fix:
   - Inferno area fixed
  - HAG-1 Open backend changes
+ - Wonderwing Challenge will Open HAG-1 once all 32 tokens are collected
+ - Fix Jinjo mixup between Black and Purple.
 
 # 1.5.1-Beta
  - Logic changes:
