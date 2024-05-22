@@ -142,6 +142,17 @@ class BanjoTooieRules:
                 locationName.W9: lambda state: self.WorldUnlocks_req(state, 1230952)
             }
 
+        if self.world.options.victory_condition.value == 2 or self.world.options.victory_condition.value == 4:
+            self.bosstoken_rules = {
+                locationName.MUMBOTKNBOSS1: lambda state: self.jiggy_targitzan(state),
+                locationName.MUMBOTKNBOSS2: lambda state: self.can_beat_king_coal(state),
+                locationName.MUMBOTKNBOSS3: lambda state: self.jiggy_patches(state),
+                locationName.MUMBOTKNBOSS4: lambda state: self.jiggy_lord_woo(state),
+                locationName.MUMBOTKNBOSS5: lambda state: self.can_beat_terry(state),
+                locationName.MUMBOTKNBOSS6: lambda state: self.can_beat_weldar(state)(state),
+                locationName.MUMBOTKNBOSS7: lambda state: self.jiggy_dragons_bros(state),
+            }
+
         self.train_rules = {
             locationName.CHUFFY: lambda state: self.can_beat_king_coal(state),
             locationName.TRAINSWIH: lambda state: state.has(itemName.GGRAB, self.player),
@@ -3659,6 +3670,9 @@ class BanjoTooieRules:
         if self.world.options.victory_condition == 1:
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, 15)
         elif self.world.options.victory_condition == 2:
+            for location, rules in self.bosstoken_rules.items():
+                tokens = self.world.multiworld.get_location(location, self.player)
+                set_rule(tokens, rules)
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, 8)
         elif self.world.options.victory_condition == 3:
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, 9)

@@ -504,6 +504,16 @@ boss_table = {
     locationName.HAG1:      LocationData(None, 0x03, 3)
 }
 
+MumboTokenBoss_table = {
+    locationName.MUMBOTKNBOSS1: LocationData(1230960, 0, 0),
+    locationName.MUMBOTKNBOSS2: LocationData(1230961, 0, 0),
+    locationName.MUMBOTKNBOSS3: LocationData(1230962, 0, 0),
+    locationName.MUMBOTKNBOSS4: LocationData(1230963, 0, 0),
+    locationName.MUMBOTKNBOSS5: LocationData(1230964, 0, 0),
+    locationName.MUMBOTKNBOSS6: LocationData(1230965, 0, 0),
+    locationName.MUMBOTKNBOSS7: LocationData(1230966, 0, 0),
+    locationName.MUMBOTKNBOSS8: LocationData(1230967, 0, 0),
+}
 
 all_location_table = {
     **SMLoc_table,
@@ -522,6 +532,10 @@ all_location_table = {
     **HPLoc_table,
     **CCLoc_table,
     **boss_table
+}
+
+possible_location_table = {
+    **MumboTokenBoss_table
 }
 
 
