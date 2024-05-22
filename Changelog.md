@@ -2,6 +2,7 @@
  - Stop N Swap check locations fixed when not randomized
  - Logic fix:
   - Inferno area fixed
+ - HAG-1 Open backend changes
 
 # 1.5.1-Beta
  - Logic changes:
