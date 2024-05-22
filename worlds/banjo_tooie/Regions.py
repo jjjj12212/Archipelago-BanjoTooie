@@ -507,6 +507,23 @@ def create_regions(self):
     player = self.player
     active_locations = self.location_name_to_id
 
+    if multiworld.worlds[player].options.victory_condition.value == 1 or multiworld.worlds[player].options.victory_condition.value == 4:
+        BANJOTOOIEREGIONS[regionName.MT].append(locationName.MUMBOTKNGAME1)
+        BANJOTOOIEREGIONS[regionName.GM].append(locationName.MUMBOTKNGAME2)
+        BANJOTOOIEREGIONS[regionName.WW].append(locationName.MUMBOTKNGAME3)
+        BANJOTOOIEREGIONS[regionName.WW].append(locationName.MUMBOTKNGAME4)
+        BANJOTOOIEREGIONS[regionName.WW].append(locationName.MUMBOTKNGAME5)
+        BANJOTOOIEREGIONS[regionName.WW].append(locationName.MUMBOTKNGAME6)
+        BANJOTOOIEREGIONS[regionName.JR].append(locationName.MUMBOTKNGAME7)
+        BANJOTOOIEREGIONS[regionName.TL].append(locationName.MUMBOTKNGAME8)
+        BANJOTOOIEREGIONS[regionName.GI3ALL].append(locationName.MUMBOTKNGAME9)
+        BANJOTOOIEREGIONS[regionName.GI3ALL].append(locationName.MUMBOTKNGAME10)
+        BANJOTOOIEREGIONS[regionName.HP].append(locationName.MUMBOTKNGAME11)
+        BANJOTOOIEREGIONS[regionName.CC].append(locationName.MUMBOTKNGAME12)
+        BANJOTOOIEREGIONS[regionName.CC].append(locationName.MUMBOTKNGAME13)
+        BANJOTOOIEREGIONS[regionName.CC].append(locationName.MUMBOTKNGAME14)
+        BANJOTOOIEREGIONS[regionName.CC].append(locationName.MUMBOTKNGAME15)
+
     if multiworld.worlds[player].options.victory_condition.value == 2 or multiworld.worlds[player].options.victory_condition.value == 4:
         BANJOTOOIEREGIONS[regionName.MT].append(locationName.MUMBOTKNBOSS1)
         BANJOTOOIEREGIONS[regionName.GM].append(locationName.MUMBOTKNBOSS2)
@@ -516,7 +533,6 @@ def create_regions(self):
         BANJOTOOIEREGIONS[regionName.GI3ALL].append(locationName.MUMBOTKNBOSS6)
         BANJOTOOIEREGIONS[regionName.HP].append(locationName.MUMBOTKNBOSS7)
         BANJOTOOIEREGIONS[regionName.CC].append(locationName.MUMBOTKNBOSS8)
-
 
     multiworld.regions += [create_region(multiworld, player, active_locations, region, locations) for region, locations in
                            BANJOTOOIEREGIONS.items()]

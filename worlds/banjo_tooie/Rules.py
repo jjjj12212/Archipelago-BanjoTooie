@@ -142,6 +142,26 @@ class BanjoTooieRules:
                 locationName.W9: lambda state: self.WorldUnlocks_req(state, 1230952)
             }
 
+        if self.world.options.victory_condition.value == 1 or self.world.options.victory_condition.value == 4:
+            self.gametoken_rules = {
+                locationName.MUMBOTKNGAME1: lambda state: self.jiggy_mayhem_kickball(state),
+                locationName.MUMBOTKNGAME2: lambda state: self.jiggy_ordnance_storage(state),
+                locationName.MUMBOTKNGAME3: lambda state: self.jiggy_hoop_hurry(state),
+                locationName.MUMBOTKNGAME4: lambda state: self.jiggy_dodgem(state),
+                locationName.MUMBOTKNGAME5: lambda state: self.jiggy_peril(state),
+                locationName.MUMBOTKNGAME6: lambda state: self.jiggy_balloon_burst(state),
+                locationName.MUMBOTKNGAME7: lambda state: self.jiggy_sub_challenge(state),
+                locationName.MUMBOTKNGAME8: lambda state: state.has(itemName.BBLASTER, self.player),
+                locationName.MUMBOTKNGAME9: lambda state: self.jiggy_clinkers(state),
+                locationName.MUMBOTKNGAME10: lambda state: self.jiggy_twinkly(state),
+                locationName.MUMBOTKNGAME11: lambda state: self.jiggy_hfp_kickball(state),
+                locationName.MUMBOTKNGAME12: lambda state: self.jiggy_gold_pot(state),
+                locationName.MUMBOTKNGAME13: lambda state: self.check_humba_magic(state, itemName.HUMBACC),
+                locationName.MUMBOTKNGAME14: lambda state: self.jiggy_trash(state),
+                locationName.MUMBOTKNGAME15: lambda state: self.canary_mary_free(state) and self.can_access_GM(state),
+
+            }
+
         if self.world.options.victory_condition.value == 2 or self.world.options.victory_condition.value == 4:
             self.bosstoken_rules = {
                 locationName.MUMBOTKNBOSS1: lambda state: self.jiggy_targitzan(state),
@@ -3668,6 +3688,9 @@ class BanjoTooieRules:
                     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
 
         if self.world.options.victory_condition == 1:
+            for location, rules in self.gametoken_rules.items():
+                tokens = self.world.multiworld.get_location(location, self.player)
+                set_rule(tokens, rules)
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, 15)
         elif self.world.options.victory_condition == 2:
             for location, rules in self.bosstoken_rules.items():
@@ -3677,6 +3700,12 @@ class BanjoTooieRules:
         elif self.world.options.victory_condition == 3:
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, 9)
         elif self.world.options.victory_condition == 4:
+            for location, rules in self.bosstoken_rules.items():
+                tokens = self.world.multiworld.get_location(location, self.player)
+                set_rule(tokens, rules)
+            for location, rules in self.gametoken_rules.items():
+                tokens = self.world.multiworld.get_location(location, self.player)
+                set_rule(tokens, rules)
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, 32) \
             and self.check_hag1_options(state)
         elif self.world.options.victory_condition == 5:

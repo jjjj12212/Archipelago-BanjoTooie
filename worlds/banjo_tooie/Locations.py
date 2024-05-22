@@ -514,6 +514,23 @@ MumboTokenBoss_table = {
     locationName.MUMBOTKNBOSS7: LocationData(1230966, 0, 0),
     locationName.MUMBOTKNBOSS8: LocationData(1230967, 0, 0),
 }
+MumboTokenGames_table = {
+    locationName.MUMBOTKNGAME1:  LocationData(1230968, 0, 0),
+    locationName.MUMBOTKNGAME2:  LocationData(1230969, 0, 0),
+    locationName.MUMBOTKNGAME3:  LocationData(1230970, 0, 0),
+    locationName.MUMBOTKNGAME4:  LocationData(1230971, 0, 0),
+    locationName.MUMBOTKNGAME5:  LocationData(1230972, 0, 0),
+    locationName.MUMBOTKNGAME6:  LocationData(1230973, 0, 0),
+    locationName.MUMBOTKNGAME7:  LocationData(1230974, 0, 0),
+    locationName.MUMBOTKNGAME8:  LocationData(1230975, 0, 0),
+    locationName.MUMBOTKNGAME9:  LocationData(1230976, 0, 0),
+    locationName.MUMBOTKNGAME10: LocationData(1230977, 0, 0),
+    locationName.MUMBOTKNGAME11: LocationData(1230978, 0, 0),
+    locationName.MUMBOTKNGAME12: LocationData(1230979, 0, 0),
+    locationName.MUMBOTKNGAME13: LocationData(1230980, 0, 0),
+    locationName.MUMBOTKNGAME14: LocationData(1230981, 0, 0),
+    locationName.MUMBOTKNGAME15: LocationData(1230982, 0, 0),
+}
 
 all_location_table = {
     **SMLoc_table,

@@ -4,7 +4,7 @@ import settings
 import typing
 from jinja2 import Environment, FileSystemLoader
 from .Items import BanjoTooieItem, all_item_table, all_group_table
-from .Locations import BanjoTooieLocation, all_location_table, MumboTokenBoss_table
+from .Locations import BanjoTooieLocation, all_location_table, MumboTokenBoss_table, MumboTokenGames_table
 from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
@@ -225,10 +225,13 @@ class BanjoTooieWorld(World):
         connect_regions(self)
 
     def generate_early(self) -> None:
+        if self.options.victory_condition.value == 1 or self.options.victory_condition.value == 4:
+            for name, data in MumboTokenGames_table.items():
+                self.location_name_to_id[name] = data.btid
         if self.options.victory_condition.value == 2 or self.options.victory_condition.value == 4:
             for name, data in MumboTokenBoss_table.items():
                 self.location_name_to_id[name] = data.btid
-
+                
         if (self.options.victory_condition.value == 1 or self.options.victory_condition.value == 2) and self.options.randomize_cheato.value == False :
             raise Exception("In order to have Minigame or Boss hunt goals, Randomize Cheato Pages must be enabled.")
         if self.options.victory_condition.value == 4 and (self.options.randomize_notes == False or self.options.randomize_cheato == False):
@@ -296,21 +299,21 @@ class BanjoTooieWorld(World):
         
         if self.options.victory_condition == 1 or self.options.victory_condition == 4:
             item = self.create_item(itemName.MUMBOTOKEN)
-            self.multiworld.get_location(locationName.JIGGYMT3, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYGM5, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYWW1, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYWW2, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYWW4, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYWW5, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYJR1, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYTD6, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYGI3, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYGI9, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYHP8, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYCC3, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYCC5, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.JIGGYCC8, self.player).place_locked_item(item)
-            self.multiworld.get_location(locationName.CHEATOCC1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNGAME1, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNGAME2, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNGAME3, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNGAME4, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNGAME5, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNGAME6, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNGAME7, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNGAME8, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNGAME9, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNGAME10, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNGAME11, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNGAME12, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNGAME13, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNGAME14, self.player).place_locked_item(item)
+            self.multiworld.get_location(locationName.MUMBOTKNGAME15, self.player).place_locked_item(item)
         
         if self.options.victory_condition == 2 or self.options.victory_condition == 4:
             item = self.create_item(itemName.MUMBOTOKEN)
