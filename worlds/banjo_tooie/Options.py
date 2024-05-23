@@ -176,61 +176,65 @@ class World2(Range):
     """If you picked custom, what is the jiggy requirement for World 2."""
     display_name = "World 2 Jiggy requirement"
     range_start = 2
-    range_end = 10
+    range_end = 20
     default = 4
 
 class World3(Range):
     """If you picked custom, what is the jiggy requirement for World 3."""
     display_name = "World 3 Jiggy requirement"
     range_start = 3
-    range_end = 20
+    range_end = 30
     default = 8
 
 class World4(Range):
     """If you picked custom, what is the jiggy requirement for World 4."""
     display_name = "World 4 Jiggy requirement"
     range_start = 4
-    range_end = 30
+    range_end = 40
     default = 14
 
 class World5(Range):
     """If you picked custom, what is the jiggy requirement for World 5."""
     display_name = "World 5 Jiggy requirement"
     range_start = 5
-    range_end = 40
+    range_end = 50
     default = 20
 
 class World6(Range):
     """If you picked custom, what is the jiggy requirement for World 6."""
     display_name = "World 6 Jiggy requirement"
     range_start = 6
-    range_end = 50
+    range_end = 60
     default = 28
 
 class World7(Range):
     """If you picked custom, what is the jiggy requirement for World 7."""
     display_name = "World 7 Jiggy requirement"
     range_start = 7
-    range_end = 60
+    range_end = 70
     default = 36
 
 class World8(Range):
     """If you picked custom, what is the jiggy requirement for World 8."""
     display_name = "World 8 Jiggy requirement"
     range_start = 8
-    range_end = 70
+    range_end = 90
     default = 45
 
 class World9(Range):
     """If you picked custom, what is the jiggy requirement for Cauldon Keep."""
     display_name = "Cauldon Keep Jiggy requirement"
     range_start = 9
-    range_end = 70
+    range_end = 90
     default = 55
 
 class SkipKlungo(Toggle):
     """Make it so you can skip Klungo 1 and 2."""
     display_name = "Skip Klungo"
+
+class ExceedingItemsFiller(Toggle):
+    """Progressive Items that exceeds the required amounts are marked as junk"""
+    display_name = "Exceeding Progressive Items marked as junk items"
 
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
@@ -272,4 +276,5 @@ class BanjoTooieOptions(PerGameCommonOptions):
     world_7: World7
     world_8: World8
     world_9: World9
+    exceeding_items_filler: ExceedingItemsFiller
     # warp_traps: WarpTraps

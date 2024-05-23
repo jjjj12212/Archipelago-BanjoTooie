@@ -7,8 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
     
 class LocationData(typing.NamedTuple):
-    #last good ID: 1230959
-    #BAD 12C780 pointer (1230720) increment
+    #last good ID: 1230991
     #12C770 pointer instead (1230704)
     btid: int|None = 0
     # Save + mem addr
@@ -504,6 +503,44 @@ boss_table = {
     locationName.HAG1:      LocationData(None, 0x03, 3)
 }
 
+MumboTokenBoss_table = {
+    locationName.MUMBOTKNBOSS1: LocationData(1230960, 0, 0),
+    locationName.MUMBOTKNBOSS2: LocationData(1230961, 0, 0),
+    locationName.MUMBOTKNBOSS3: LocationData(1230962, 0, 0),
+    locationName.MUMBOTKNBOSS4: LocationData(1230963, 0, 0),
+    locationName.MUMBOTKNBOSS5: LocationData(1230964, 0, 0),
+    locationName.MUMBOTKNBOSS6: LocationData(1230965, 0, 0),
+    locationName.MUMBOTKNBOSS7: LocationData(1230966, 0, 0),
+    locationName.MUMBOTKNBOSS8: LocationData(1230967, 0, 0),
+}
+MumboTokenGames_table = {
+    locationName.MUMBOTKNGAME1:  LocationData(1230968, 0, 0),
+    locationName.MUMBOTKNGAME2:  LocationData(1230969, 0, 0),
+    locationName.MUMBOTKNGAME3:  LocationData(1230970, 0, 0),
+    locationName.MUMBOTKNGAME4:  LocationData(1230971, 0, 0),
+    locationName.MUMBOTKNGAME5:  LocationData(1230972, 0, 0),
+    locationName.MUMBOTKNGAME6:  LocationData(1230973, 0, 0),
+    locationName.MUMBOTKNGAME7:  LocationData(1230974, 0, 0),
+    locationName.MUMBOTKNGAME8:  LocationData(1230975, 0, 0),
+    locationName.MUMBOTKNGAME9:  LocationData(1230976, 0, 0),
+    locationName.MUMBOTKNGAME10: LocationData(1230977, 0, 0),
+    locationName.MUMBOTKNGAME11: LocationData(1230978, 0, 0),
+    locationName.MUMBOTKNGAME12: LocationData(1230979, 0, 0),
+    locationName.MUMBOTKNGAME13: LocationData(1230980, 0, 0),
+    locationName.MUMBOTKNGAME14: LocationData(1230981, 0, 0),
+    locationName.MUMBOTKNGAME15: LocationData(1230982, 0, 0),
+}
+MumboTokenJinjo_table = {
+    locationName.MUMBOTKNJINJO1: LocationData(1230983, 0, 0),
+    locationName.MUMBOTKNJINJO2: LocationData(1230984, 0, 0),
+    locationName.MUMBOTKNJINJO3: LocationData(1230985, 0, 0),
+    locationName.MUMBOTKNJINJO4: LocationData(1230986, 0, 0),
+    locationName.MUMBOTKNJINJO5: LocationData(1230987, 0, 0),
+    locationName.MUMBOTKNJINJO6: LocationData(1230988, 0, 0),
+    locationName.MUMBOTKNJINJO7: LocationData(1230989, 0, 0),
+    locationName.MUMBOTKNJINJO8: LocationData(1230990, 0, 0),
+    locationName.MUMBOTKNJINJO9: LocationData(1230991, 0, 0),
+}
 
 all_location_table = {
     **SMLoc_table,
@@ -521,8 +558,12 @@ all_location_table = {
     **GILoc_table,
     **HPLoc_table,
     **CCLoc_table,
-    **boss_table
+    **boss_table,
+    **MumboTokenBoss_table,
+    **MumboTokenGames_table,
+    **MumboTokenJinjo_table
 }
+
 
 
 

@@ -66,8 +66,6 @@ local ENABLE_AP_HONEYCOMB = false;
 local ENABLE_AP_PAGES = false;
 local ENABLE_AP_MOVES = false; -- Enable AP Moves Logics
 local ENABLE_AP_DOUBLOONS = false;
-local ENABLE_AP_TREBLE = false;
-local ENABLE_AP_STATIONS = false;
 local ENABLE_AP_CHUFFY = false;
 local ENABLE_AP_JINJO = false;
 local ENABLE_AP_NOTES = false;
@@ -1013,12 +1011,12 @@ local JINJO_PATTER_MAP = {
     ["1230508"] = {
         ["0"] = "1230551",
         ["1"] = "1230560",
-        ["2"] = "1230578",
-        ["3"] = "1230586",
-        ["4"] = "1230588",
-        ["5"] = "1230590",
-        ["6"] = "1230592",
-        ["7"] = "1230593",
+        ["2"] = "1230586",
+        ["3"] = "1230588",
+        ["4"] = "1230590",
+        ["5"] = "1230592",
+        ["6"] = "1230593",
+        ["7"] = "1230579",
     },
     ["1230509"] = {
         ["0"] = "1230554",
@@ -1029,7 +1027,7 @@ local JINJO_PATTER_MAP = {
         ["5"] = "1230576",
         ["6"] = "1230580",
         ["7"] = "1230589",
-        ["8"] = "1230579",
+        ["8"] = "1230578",
     },
 }
 
@@ -4302,9 +4300,9 @@ function check_hatched_mystery()
     else
         if BKMYSTERY["1230956"] == false
         then
-            if DEBUG == true then
-                print("reverse Hatch flag, Pink egg not yet obtained")
-            end
+            -- if DEBUG == true then
+            --     print("reverse Hatch flag, Pink egg not yet obtained")
+            -- end
             local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
             BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
         end
@@ -4314,9 +4312,9 @@ function check_hatched_mystery()
         end
         if BKMYSTERY["1230957"] == false
         then
-            if DEBUG == true then
-                print("reverse Hatch flag, Blue egg not yet obtained")
-            end
+            -- if DEBUG == true then
+            --     print("reverse Hatch flag, Blue egg not yet obtained")
+            -- end
             local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
             BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
         end
@@ -5110,6 +5108,38 @@ end
 -- 	end
 -- end
 
+function hag1_open()
+    if GAME_LOADED == true
+    then
+        if GOAL_TYPE == 0
+        then
+            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                BTRAMOBJ:setFlag(0x6E, 3);
+                table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                print("HAG 1 is now unlocked!")
+            end
+        elseif GOAL_TYPE == 4
+        then
+            local token_count = 0;
+            for id, itemId in pairs(receive_map)
+            do
+                if itemId == "1230798"
+                then
+                    token_count = token_count + 1
+                end
+            end
+            if token_count >= 32
+            then
+                if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                    BTRAMOBJ:setFlag(0x6E, 3);
+                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                    print("HAG 1 is now unlocked!")
+                end
+            end
+        end
+    end
+end
+
 
 function check_open_level(show_message)  -- See if entrance conditions for a level have been met
     local jiggy_count = 0;
@@ -5124,54 +5154,29 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
     do
         if values["opened"] == false
         then
-            if GOAL_TYPE == 4 and location == "WORLD 9"
+            if jiggy_count >= values["defaultCost"]
             then
-                local token_count = 0;
-                for id, itemId in pairs(receive_map)
-                do
-                    if itemId == "1230798"
-                    then
-                        token_count = token_count + 1
-                    end
-                end
-                if token_count >= 32
+                if DEBUG == true
                 then
-                    BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                    if values["locationId"] ~= "0"
-                    then
-                        UNLOCKED_WORLDS[values["locationId"]] = true
-                    end
+                    print(values["defaultName"] .. tostring(values["defaultCost"]))
+                end
+                BTRAMOBJ:setFlag(values["addr"], values["bit"])
+                if values["locationId"] ~= "0"
+                then
+                    UNLOCKED_WORLDS[values["locationId"]] = true
+                end
+                if ENABLE_AP_WORLDS == false
+                then
+                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                end
+                values["opened"] = true
+                if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
+                    and show_message == true
+                then
                     if ENABLE_AP_WORLDS == false
                     then
-                        BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
-                    end
-                    values["opened"] = true
-                end
-            else
-                if jiggy_count >= values["defaultCost"]
-                then
-                    if DEBUG == true
-                    then
-                        print(values["defaultName"] .. tostring(values["defaultCost"]))
-                    end
-                    BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                    if values["locationId"] ~= "0"
-                    then
-                        UNLOCKED_WORLDS[values["locationId"]] = true
-                    end
-                    if ENABLE_AP_WORLDS == false
-                    then
-                        BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
-                    end
-                    values["opened"] = true
-                    if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
-                        and show_message == true
-                    then
-                        if ENABLE_AP_WORLDS == false
-                        then
-                            table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
-                            print(values["defaultName"] .. " is now unlocked!")
-                        end
+                        table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
+                        print(values["defaultName"] .. " is now unlocked!")
                     end
                 end
             end
@@ -5268,20 +5273,7 @@ function loadGame(current_map)
             then
                 check_open_level(true)
             end
-            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-                BTRAMOBJ:setFlag(0x6E, 3);
-                if GOAL_TYPE == 0 or GOAL_TYPE == 4
-                then
-                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                    print("HAG 1 is now unlocked!")
-                end
-            elseif OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == true then
-                if GOAL_TYPE == 0 or GOAL_TYPE == 4
-                then
-                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                    print("HAG 1 is now unlocked!")
-                end
-            end
+            hag1_open()
             GAME_LOADED = true;
         end
     else
@@ -7068,18 +7060,8 @@ function initializeFlags()
         if SKIP_PUZZLES == true then
             check_open_level(true) -- sanity check that level open flags are still set
         end
---        if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-        if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-            BTRAMOBJ:setFlag(0x6E, 3);
-            if GOAL_TYPE == 0 or GOAL_TYPE == 4
-            then
-                table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                print("HAG 1 is now unlocked!")
-            end
-        -- elseif OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == true then
-        --     table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-        --     print("HAG 1 is now unlocked!")
-        end
+        hag1_open()
+
         if ENABLE_AP_JINJO == true then
             -- 129 is 1000 0001
             -- 2 is   0000 0010
@@ -7154,17 +7136,12 @@ function main()
                 end
                 BKCheckAssetLogic()
                 gameSaving();
+                hag1_open()
                 if TEXT_START == true then
                     clearText()
                 elseif TEXT_START == false then
                     processMessages()
                 end
-            -- if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-                -- if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-                --     BTRAMOBJ:setFlag(0x6E, 3);
-                --     table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                --     print("HAG 1 is now unlocked!")
-                -- end
             elseif (FRAME % 10 == 1)
             then
                 checkPause();

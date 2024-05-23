@@ -444,6 +444,41 @@ CHEATOR3    = "SM: Cheato Reward 3"  #15 pages - Fallproof
 CHEATOR4    = "SM: Cheato Reward 4"  #20 pages - Honeyback
 CHEATOR5    = "SM: Cheato Reward 5"  #25 pages - Jukebox
 
+#Mumbo Token Locations
+MUMBOTKNBOSS1 = "MT: Targitzan Mumbo Token"
+MUMBOTKNBOSS2 = "GGM: Old King Coal Mumbo Token"
+MUMBOTKNBOSS3 = "WW: Mr. Patch Mumbo Token"
+MUMBOTKNBOSS4 = "JRL: Woo Fak Fak Mumbo Token"
+MUMBOTKNBOSS5 = "TDL: Terry Mumbo Token"
+MUMBOTKNBOSS6 = "GI: Weldar Mumbo Token"
+MUMBOTKNBOSS7 = "HFP: Dragon Brothers Mumbo Token"
+MUMBOTKNBOSS8 = "CCL: Mingy Jongo Mumbo Token"
+
+MUMBOTKNGAME1   = "MT: Kickball Mumbo Token"
+MUMBOTKNGAME2   = "GGM: Ordnance Storage Mumbo Token"
+MUMBOTKNGAME3   = "WW: Hoop Hurry Mumbo Token"
+MUMBOTKNGAME4   = "WW: Dodgem Dome Mumbo Token"
+MUMBOTKNGAME5   = "WW: Saucer of Peril Mumbo Token"
+MUMBOTKNGAME6   = "WW: Balloon Burst Mumbo Token"
+MUMBOTKNGAME7   = "JRL: Mini-Sub Challenge Mumbo Token"
+MUMBOTKNGAME8   = "TDL: Chompas Belly Mumbo Token"
+MUMBOTKNGAME9   = "GI: Clinker's Cavern Mumbo Token"
+MUMBOTKNGAME10  = "GI: Twinkly Packing Mumbo Token"
+MUMBOTKNGAME11  = "HFP: Kickball Mumbo Token"
+MUMBOTKNGAME12  = "CCL: Pot O' Gold Mumbo Token"
+MUMBOTKNGAME13  = "CCL: Zubbas Mumbo Token"
+MUMBOTKNGAME14  = "CCL: Trash Can Mumbo Token"
+MUMBOTKNGAME15  = "CCL: Canary Mary Mumbo Token"
+
+MUMBOTKNJINJO1  = "IOH: White Jinjo Family Mumbo Token"
+MUMBOTKNJINJO2  = "IOH: Orange Jinjo Family Mumbo Token"
+MUMBOTKNJINJO3  = "IOH: Yellow Jinjo Family Mumbo Token"
+MUMBOTKNJINJO4  = "IOH: Brown Jinjo Family Mumbo Token"
+MUMBOTKNJINJO5  = "IOH: Green Jinjo Family Mumbo Token"
+MUMBOTKNJINJO6  = "IOH: Red Jinjo Family Mumbo Token"
+MUMBOTKNJINJO7  = "IOH: Blue Jinjo Family Mumbo Token"
+MUMBOTKNJINJO8  = "IOH: Purple Jinjo Family Mumbo Token"
+MUMBOTKNJINJO9  = "IOH: Black Jinjo Family Mumbo Token"
 
 #Stop N Swap
 PMEGG        = "SM: Pink Mystery Egg"
