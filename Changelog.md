@@ -5,6 +5,7 @@
  - HAG-1 Open backend changes
  - Wonderwing Challenge will Open HAG-1 once all 32 tokens are collected
  - Fix Jinjo mixup between Black and Purple.
+ - Reworked Mumbo Tokens, Rewards + Mumbo Token, No longer removal of reward.
 
 # 1.5.1-Beta
  - Logic changes:
