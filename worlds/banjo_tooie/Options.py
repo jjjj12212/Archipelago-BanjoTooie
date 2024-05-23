@@ -145,8 +145,8 @@ class TokenHuntLength(Range):
     Choose a value between 1 and 20"""
     display_name = "Token Hunt Length"
     range_start = 1
-    range_end = 20
-    default = 15
+    range_end = 10
+    default = 5
 
 # class WarpTraps(Choice):
 #     """Choose if you want warp traps enabled"""
