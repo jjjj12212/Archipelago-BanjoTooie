@@ -235,8 +235,6 @@ class BanjoTooieWorld(World):
             for name, data in MumboTokenJinjo_table.items():
                 self.location_name_to_id[name] = data.btid
 
-        if (self.options.victory_condition.value == 1 or self.options.victory_condition.value == 2) and self.options.randomize_cheato.value == False :
-            raise Exception("In order to have Minigame or Boss hunt goals, Randomize Cheato Pages must be enabled.")
         if self.options.victory_condition.value == 4 and (self.options.randomize_notes == False or self.options.randomize_cheato == False):
             raise Exception("In order to challenge yourself with the Wonder Wing Challenge, Randomize Notes & Randomize Cheato must be enabled.")
         WorldRandomize(self)
