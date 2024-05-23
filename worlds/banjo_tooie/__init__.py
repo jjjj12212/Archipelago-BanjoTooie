@@ -4,7 +4,7 @@ import settings
 import typing
 from jinja2 import Environment, FileSystemLoader
 from .Items import BanjoTooieItem, all_item_table, all_group_table
-from .Locations import BanjoTooieLocation, all_location_table, MumboTokenBoss_table, MumboTokenGames_table, MumboTokenJinjo_table
+from .Locations import BanjoTooieLocation, all_location_table
 from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
@@ -225,16 +225,6 @@ class BanjoTooieWorld(World):
         connect_regions(self)
 
     def generate_early(self) -> None:
-        if self.options.victory_condition.value == 1 or self.options.victory_condition.value == 4:
-            for name, data in MumboTokenGames_table.items():
-                self.location_name_to_id[name] = data.btid
-        if self.options.victory_condition.value == 2 or self.options.victory_condition.value == 4:
-            for name, data in MumboTokenBoss_table.items():
-                self.location_name_to_id[name] = data.btid
-        if self.options.victory_condition.value == 3 or self.options.victory_condition.value == 4:
-            for name, data in MumboTokenJinjo_table.items():
-                self.location_name_to_id[name] = data.btid
-
         if self.options.victory_condition.value == 4 and (self.options.randomize_notes == False or self.options.randomize_cheato == False):
             raise Exception("In order to challenge yourself with the Wonder Wing Challenge, Randomize Notes & Randomize Cheato must be enabled.")
         WorldRandomize(self)

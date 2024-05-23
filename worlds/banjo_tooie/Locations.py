@@ -558,12 +558,12 @@ all_location_table = {
     **GILoc_table,
     **HPLoc_table,
     **CCLoc_table,
-    **boss_table
+    **boss_table,
+    **MumboTokenBoss_table,
+    **MumboTokenGames_table,
+    **MumboTokenJinjo_table
 }
 
-possible_location_table = {
-    **MumboTokenBoss_table
-}
 
 
 
