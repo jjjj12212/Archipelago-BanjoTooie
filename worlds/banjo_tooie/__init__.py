@@ -152,11 +152,20 @@ class BanjoTooieWorld(World):
                         else:
                             itempool += [self.create_item(name)]
                 else:
-                    for i in range(id.qty):
-                        if self.options.randomize_jinjos == False and self.jiggy_counter > 81 and item.code == 1230515:
-                            break
-                        else:
+                    # Mumbo Token Hunt Item Amt
+                    if item.code == 1230798 and self.options.victory_condition.value == 5:
+                        for i in range(self.options.token_hunt_length.value):
                             itempool += [self.create_item(name)]
+                    # EO Mumbo Token Hunt Item Amt
+                    else:
+                        for i in range(id.qty):
+                            if self.options.randomize_jinjos == False and self.jiggy_counter > 81 and item.code == 1230515:
+                                break
+                            if self.options.victory_condition.value == 5 and (144 - self.notecounter) < self.options.token_hunt_length.value and \
+                                item.code == 1230797:
+                                break #sub in for Mumbo Tokens up to 10
+                            else:
+                                itempool += [self.create_item(name)]
         
         for item in itempool:
             self.multiworld.itempool.append(item)
