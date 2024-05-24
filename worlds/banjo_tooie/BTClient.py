@@ -584,9 +584,9 @@ def mumbo_tokens_loc(locs: list, locationId: int, goaltype: int) -> list:
             locs.append(1230988)
         if locationId == 1230682: #JINJOFAM
             locs.append(1230989)
-        if locationId == 1230682: #JINJOFAM
+        if locationId == 1230683: #JINJOFAM
             locs.append(1230990)
-        if locationId == 1230685: #JINJOFAM
+        if locationId == 1230684: #JINJOFAM
             locs.append(1230991)
     return locs
 
