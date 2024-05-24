@@ -2213,13 +2213,13 @@ class BanjoTooieRules:
     def jinjo_legspring(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.LSPRING, self.player)
+            logic = self.check_solo_moves(state, itemName.LSPRING)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.LSPRING, self.player)
+            logic = self.check_solo_moves(state, itemName.LSPRING)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.LSPRING, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.check_solo_moves(state, itemName.LSPRING) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.LSPRING, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.check_solo_moves(state, itemName.LSPRING) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
 
     def jinjo_floor4(self, state: CollectionState) -> bool:

@@ -149,7 +149,7 @@ class TokenHuntLength(Range):
     Choose a value between 1 and 20"""
     display_name = "Token Hunt Length"
     range_start = 1
-    range_end = 10
+    range_end = 15
     default = 5
 
 # class WarpTraps(Choice):

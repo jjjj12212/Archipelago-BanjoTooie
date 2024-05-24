@@ -4,10 +4,12 @@
   - Inferno area fixed
   - TDL T-Rex jinjo in glitched logic
   - Inferno Access in glitched logic
+  - Leg Spring Jinjo in GI fix
  - HAG-1 Open backend changes
  - Wonderwing Challenge will Open HAG-1 once all 32 tokens are collected
  - Fix Jinjo mixup between Black and Purple.
  - Reworked Mumbo Tokens, Rewards + Mumbo Token, No longer removal of reward.
+ - Mumbo Token limit decreased to 15 due to technical reasons
  - Some locations got their name changed
    - All Jinjo Village checks will now start with "IoH" instead of "JV".
    - Stop and Swap items start with the world in which they are.
