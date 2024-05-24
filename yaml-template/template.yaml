@@ -42,7 +42,7 @@ Banjo-Tooie:
   randomize_doubloons: 'true'
   randomize_cheato: 'true'
   cheato_as_filler: 'false'
-  exceeding_items_filler option: 'false' # Items over the required amount are marked as junk/filler. Otherwise, exceeding items stays the same type.
+  exceeding_items_filler: 'false' # Items over the required amount are marked as junk/filler. Otherwise, exceeding items stays the same type.
   randomize_honeycombs: 'true'
   randomize_glowbos: 'true'
   randomize_treble: 'true'
