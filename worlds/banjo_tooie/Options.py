@@ -5,6 +5,10 @@ class EnableMultiWorldMoveList(DefaultOnToggle):
     """Jamjars' Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves."""
     display_name = "Jamjars' Movelist"
 
+class DisableOverlayText(Toggle):
+    """Disables the overlay text on screen. Useful if your already streaming/viewing the BT_Client."""
+    display_name = "Disable Overlay Text"
+
 class EnableMultiWorldJinjos(DefaultOnToggle):
     """Jinjos fled to other worlds. Other players need return them home."""
     display_name = "Randomize Jinjos"
@@ -239,6 +243,7 @@ class ExceedingItemsFiller(Toggle):
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
+    disable_overlay_text:DisableOverlayText
     randomize_moves: EnableMultiWorldMoveList
     randomize_jinjos: EnableMultiWorldJinjos
     forbid_on_jinjo_family: ForbidMovesOnJinjoFamilyTreasure
@@ -246,6 +251,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_doubloons: EnableMultiWorldDoubloons
     randomize_cheato: EnableMultiWorldCheatoPages
     cheato_as_filler: SetMultiWorldCheatoPagesFiller
+    exceeding_items_filler: ExceedingItemsFiller
     randomize_honeycombs: EnableMultiWorldHoneycombs
     randomize_glowbos: EnableMultiWorldGlowbos
     randomize_treble: EnableMultiWorldTrebleClefs
@@ -276,5 +282,4 @@ class BanjoTooieOptions(PerGameCommonOptions):
     world_7: World7
     world_8: World8
     world_9: World9
-    exceeding_items_filler: ExceedingItemsFiller
     # warp_traps: WarpTraps

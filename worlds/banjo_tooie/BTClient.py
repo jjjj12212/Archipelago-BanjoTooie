@@ -245,6 +245,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_player": ctx.slot_data["player_name"],
             "slot_seed": ctx.slot_data["seed"],
             "slot_deathlink": ctx.deathlink_enabled,
+            "slot_disable_text": ctx.slot_data["disable_text"],
             "slot_skip_tot": ctx.slot_data["skip_tot"],
             "slot_honeycomb": ctx.slot_data["honeycomb"],
             "slot_pages": ctx.slot_data["pages"],

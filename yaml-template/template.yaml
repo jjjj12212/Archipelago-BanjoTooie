@@ -28,6 +28,7 @@ game: Banjo-Tooie
 
 Banjo-Tooie:
   death_link: 'false'
+  disable_overlay_text: 'false'
   randomize_moves: 'true'
   randomize_jinjos: 'true'
 
@@ -41,6 +42,7 @@ Banjo-Tooie:
   randomize_doubloons: 'true'
   randomize_cheato: 'true'
   cheato_as_filler: 'false'
+  exceeding_items_filler option: 'false' # Items over the required amount are marked as junk/filler. Otherwise, exceeding items stays the same type.
   randomize_honeycombs: 'true'
   randomize_glowbos: 'true'
   randomize_treble: 'true'

@@ -71,6 +71,7 @@ local ENABLE_AP_JINJO = false;
 local ENABLE_AP_NOTES = false;
 local ENABLE_AP_WORLDS = false;
 local ENABLE_AP_MYSTERY = false;
+local DISABLE_TEXT_OVERLAY = false;
 local AP_MESSAGES = {};
 
 local GAME_LOADED = false;
@@ -5985,7 +5986,9 @@ function archipelago_msg_box(msg)
 
         if TEXT_START == false
         then
-            gui.drawText(textXpos, textYpos, msg, fgcolor, bgcolor, textSize, nil, nil, "center")
+            if DISABLE_TEXT_OVERLAY == false then
+                gui.drawText(textXpos, textYpos, msg, fgcolor, bgcolor, textSize, nil, nil, "center")
+            end
             TEXT_START = true
         end
 end
@@ -6794,6 +6797,10 @@ function process_slot(block)
     if block['slot_deathlink'] ~= nil and block['slot_deathlink'] ~= "false"
     then
         DEATH_LINK = true
+    end
+    if block['slot_disable_text'] ~= nil and block['slot_disable_text'] ~= "false"
+    then
+        DISABLE_TEXT_OVERLAY = true
     end
     if block['slot_skip_tot'] ~= nil and block['slot_skip_tot'] ~= ""
     then

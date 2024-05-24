@@ -13,6 +13,10 @@
    - Stop and Swap items start with the world in which they are.
    - All 8 notes around the tent in Witchyworld are now called "Around the Tent"
    - The 3 notes on the Split Up pads and the warp pad in CCL are now called "Central Notes"
+ - New Options:
+  - exceeding_items_filler option - Items over the required amount are marked as junk/filler. Otherwise, exceeding items stays the same type.
+  - disable_overlay_text - Disables the overlay text on Banjo-Tooie. Useful when viewing
+  or streaming the BT_Client.
 
 # 1.5.1-Beta
  - Logic changes:
