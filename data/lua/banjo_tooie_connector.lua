@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.5.1"
+local BT_VERSION = "V1.6"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -66,13 +66,12 @@ local ENABLE_AP_HONEYCOMB = false;
 local ENABLE_AP_PAGES = false;
 local ENABLE_AP_MOVES = false; -- Enable AP Moves Logics
 local ENABLE_AP_DOUBLOONS = false;
-local ENABLE_AP_TREBLE = false;
-local ENABLE_AP_STATIONS = false;
 local ENABLE_AP_CHUFFY = false;
 local ENABLE_AP_JINJO = false;
 local ENABLE_AP_NOTES = false;
 local ENABLE_AP_WORLDS = false;
 local ENABLE_AP_MYSTERY = false;
+local DISABLE_TEXT_OVERLAY = false;
 local AP_MESSAGES = {};
 
 local GAME_LOADED = false;
@@ -1013,12 +1012,12 @@ local JINJO_PATTER_MAP = {
     ["1230508"] = {
         ["0"] = "1230551",
         ["1"] = "1230560",
-        ["2"] = "1230578",
-        ["3"] = "1230586",
-        ["4"] = "1230588",
-        ["5"] = "1230590",
-        ["6"] = "1230592",
-        ["7"] = "1230593",
+        ["2"] = "1230586",
+        ["3"] = "1230588",
+        ["4"] = "1230590",
+        ["5"] = "1230592",
+        ["6"] = "1230593",
+        ["7"] = "1230579",
     },
     ["1230509"] = {
         ["0"] = "1230554",
@@ -1029,7 +1028,7 @@ local JINJO_PATTER_MAP = {
         ["5"] = "1230576",
         ["6"] = "1230580",
         ["7"] = "1230589",
-        ["8"] = "1230579",
+        ["8"] = "1230578",
     },
 }
 
@@ -4302,9 +4301,9 @@ function check_hatched_mystery()
     else
         if BKMYSTERY["1230956"] == false
         then
-            if DEBUG == true then
-                print("reverse Hatch flag, Pink egg not yet obtained")
-            end
+            -- if DEBUG == true then
+            --     print("reverse Hatch flag, Pink egg not yet obtained")
+            -- end
             local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
             BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
         end
@@ -4314,9 +4313,9 @@ function check_hatched_mystery()
         end
         if BKMYSTERY["1230957"] == false
         then
-            if DEBUG == true then
-                print("reverse Hatch flag, Blue egg not yet obtained")
-            end
+            -- if DEBUG == true then
+            --     print("reverse Hatch flag, Blue egg not yet obtained")
+            -- end
             local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
             BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
         end
@@ -5110,6 +5109,38 @@ end
 -- 	end
 -- end
 
+function hag1_open()
+    if GAME_LOADED == true
+    then
+        if GOAL_TYPE == 0
+        then
+            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                BTRAMOBJ:setFlag(0x6E, 3);
+                table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                print("HAG 1 is now unlocked!")
+            end
+        elseif GOAL_TYPE == 4
+        then
+            local token_count = 0;
+            for id, itemId in pairs(receive_map)
+            do
+                if itemId == "1230798"
+                then
+                    token_count = token_count + 1
+                end
+            end
+            if token_count >= 32
+            then
+                if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                    BTRAMOBJ:setFlag(0x6E, 3);
+                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                    print("HAG 1 is now unlocked!")
+                end
+            end
+        end
+    end
+end
+
 
 function check_open_level(show_message)  -- See if entrance conditions for a level have been met
     local jiggy_count = 0;
@@ -5124,54 +5155,29 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
     do
         if values["opened"] == false
         then
-            if GOAL_TYPE == 4 and location == "WORLD 9"
+            if jiggy_count >= values["defaultCost"]
             then
-                local token_count = 0;
-                for id, itemId in pairs(receive_map)
-                do
-                    if itemId == "1230798"
-                    then
-                        token_count = token_count + 1
-                    end
-                end
-                if token_count >= 32
+                if DEBUG == true
                 then
-                    BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                    if values["locationId"] ~= "0"
-                    then
-                        UNLOCKED_WORLDS[values["locationId"]] = true
-                    end
+                    print(values["defaultName"] .. tostring(values["defaultCost"]))
+                end
+                BTRAMOBJ:setFlag(values["addr"], values["bit"])
+                if values["locationId"] ~= "0"
+                then
+                    UNLOCKED_WORLDS[values["locationId"]] = true
+                end
+                if ENABLE_AP_WORLDS == false
+                then
+                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                end
+                values["opened"] = true
+                if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
+                    and show_message == true
+                then
                     if ENABLE_AP_WORLDS == false
                     then
-                        BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
-                    end
-                    values["opened"] = true
-                end
-            else
-                if jiggy_count >= values["defaultCost"]
-                then
-                    if DEBUG == true
-                    then
-                        print(values["defaultName"] .. tostring(values["defaultCost"]))
-                    end
-                    BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                    if values["locationId"] ~= "0"
-                    then
-                        UNLOCKED_WORLDS[values["locationId"]] = true
-                    end
-                    if ENABLE_AP_WORLDS == false
-                    then
-                        BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
-                    end
-                    values["opened"] = true
-                    if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
-                        and show_message == true
-                    then
-                        if ENABLE_AP_WORLDS == false
-                        then
-                            table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
-                            print(values["defaultName"] .. " is now unlocked!")
-                        end
+                        table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
+                        print(values["defaultName"] .. " is now unlocked!")
                     end
                 end
             end
@@ -5268,20 +5274,7 @@ function loadGame(current_map)
             then
                 check_open_level(true)
             end
-            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-                BTRAMOBJ:setFlag(0x6E, 3);
-                if GOAL_TYPE == 0 or GOAL_TYPE == 4
-                then
-                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                    print("HAG 1 is now unlocked!")
-                end
-            elseif OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == true then
-                if GOAL_TYPE == 0 or GOAL_TYPE == 4
-                then
-                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                    print("HAG 1 is now unlocked!")
-                end
-            end
+            hag1_open()
             GAME_LOADED = true;
         end
     else
@@ -5395,11 +5388,8 @@ function BKLogics(mapaddr)
         then
             check_open_level(false)
         end
-        if ENABLE_AP_MYSTERY == true
-        then
-            clearKey()
-            obtain_breegull_bash()
-        end
+        clearKey()
+        obtain_breegull_bash()
     end
 end
 
@@ -5500,13 +5490,10 @@ function BKAssetFound()
     then
         watchBtnAnimation()
     end
-    if ENABLE_AP_MYSTERY == true
-    then
-        check_egg_mystery()
-        check_hatched_mystery()
-        check_local_icekey()
-        ap_icekey_glowbo_map()
-    end
+    check_egg_mystery()
+    check_hatched_mystery()
+    check_local_icekey()
+    ap_icekey_glowbo_map()
  -- ApWarp();
 
 end
@@ -5999,7 +5986,9 @@ function archipelago_msg_box(msg)
 
         if TEXT_START == false
         then
-            gui.drawText(textXpos, textYpos, msg, fgcolor, bgcolor, textSize, nil, nil, "center")
+            if DISABLE_TEXT_OVERLAY == false then
+                gui.drawText(textXpos, textYpos, msg, fgcolor, bgcolor, textSize, nil, nil, "center")
+            end
             TEXT_START = true
         end
 end
@@ -6136,7 +6125,7 @@ function processAGIItem(item_list)
                         break
                     end
                 end
-            elseif(memlocation == 1230800) and ENABLE_AP_MYSTERY == true
+            elseif(memlocation == 1230800)
             then
                 if DEBUG == true
                 then
@@ -6144,21 +6133,21 @@ function processAGIItem(item_list)
                 end
                 AGI_MYSTERY[tostring(memlocation)] = true
                 obtain_breegull_bash()
-            elseif(memlocation == 1230801) and ENABLE_AP_MYSTERY == true
+            elseif(memlocation == 1230801)
             then
                 if DEBUG == true
                 then
                     print("Jinjo Multiplayer Obtained")
                 end
                 AGI_MYSTERY[tostring(memlocation)] = true
-            elseif(memlocation == 1230802) and ENABLE_AP_MYSTERY == true
+            elseif(memlocation == 1230802)
             then
                 if DEBUG == true
                 then
                     print("Homing Obtained")
                 end
                 AGI_MYSTERY[tostring(memlocation)] = true
-            elseif(memlocation == 1230803) and ENABLE_AP_MYSTERY == true
+            elseif(memlocation == 1230803)
             then
                 if DEBUG == true
                 then
@@ -6168,7 +6157,7 @@ function processAGIItem(item_list)
                 BTCONSUMEOBJ:changeConsumable("Eggs")
                 local amt = BTCONSUMEOBJ:getEggConsumable()
                 BTCONSUMEOBJ:setConsumable(amt + 1)
-            elseif(memlocation == 1230804) and ENABLE_AP_MYSTERY == true
+            elseif(memlocation == 1230804)
             then
                 if DEBUG == true
                 then
@@ -6178,7 +6167,7 @@ function processAGIItem(item_list)
                 BTCONSUMEOBJ:changeConsumable("Eggs")
                 local amt = BTCONSUMEOBJ:getEggConsumable()
                 BTCONSUMEOBJ:setConsumable(amt + 1)
-            elseif(memlocation == 1230799) and ENABLE_AP_MYSTERY == true
+            elseif(memlocation == 1230799)
             then
                 if DEBUG == true
                 then
@@ -6342,10 +6331,7 @@ function checkPause()
         then
             BMMRestore()
         end
-        if ENABLE_AP_MYSTERY == true
-        then
-            unpause_hide_AGI_key()
-        end
+        unpause_hide_AGI_key()
     elseif PAUSED == true and DEBUG == true
     then
         local check_controls = joypad.get()
@@ -6433,17 +6419,11 @@ function checkTotalMenu()
         if total == 1 and OBJ_TOTALS_MENU == false
         then
             OBJ_TOTALS_MENU = true
-            if ENABLE_AP_MYSTERY == true
-            then
-                pause_show_AGI_key()
-            end
+            pause_show_AGI_key()
         elseif total ~= 1 and OBJ_TOTALS_MENU == true
         then
             OBJ_TOTALS_MENU = false
-            if ENABLE_AP_MYSTERY == true
-            then
-                unpause_hide_AGI_key()
-            end
+            unpause_hide_AGI_key()
         end
     end
 end
@@ -6475,12 +6455,9 @@ function DPadStats()
                     print(values['name'])
                 end
             end
-            if ENABLE_AP_MYSTERY == true
+            if AGI_MYSTERY["1230800"] == true
             then
-                if AGI_MYSTERY["1230800"] == true
-                then
-                    print("Breegull Bash");
-                end
+                print("Breegull Bash");
             end
             print(" ")
             print(" ")
@@ -6821,6 +6798,10 @@ function process_slot(block)
     then
         DEATH_LINK = true
     end
+    if block['slot_disable_text'] ~= nil and block['slot_disable_text'] ~= "false"
+    then
+        DISABLE_TEXT_OVERLAY = true
+    end
     if block['slot_skip_tot'] ~= nil and block['slot_skip_tot'] ~= ""
     then
         SKIP_TOT = block['slot_skip_tot']
@@ -6991,7 +6972,7 @@ function printGoalInfo()
         elseif GOAL_TYPE == 3 and JFR_LENGTH < 9 then
             message = "You are trying to rescue "..JFR_LENGTH.." of the 9 Jinjo families \nand retrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 4 then
-            message ="You absolute mad lad! You're doing the Wonder Wing Challange! Good Luck and"..randomEncouragment;
+            message ="You absolute mad lad! You're doing the Wonder Wing Challenge! Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 5 and TH_LENGTH == 9 then
             message ="You are trying to find all 20 of Mumbo's Tokens scattered \nthroughout the Isle of Hags! Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 5 and TH_LENGTH < 9 then
@@ -7086,18 +7067,8 @@ function initializeFlags()
         if SKIP_PUZZLES == true then
             check_open_level(true) -- sanity check that level open flags are still set
         end
---        if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-        if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-            BTRAMOBJ:setFlag(0x6E, 3);
-            if GOAL_TYPE == 0 or GOAL_TYPE == 4
-            then
-                table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                print("HAG 1 is now unlocked!")
-            end
-        -- elseif OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == true then
-        --     table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-        --     print("HAG 1 is now unlocked!")
-        end
+        hag1_open()
+
         if ENABLE_AP_JINJO == true then
             -- 129 is 1000 0001
             -- 2 is   0000 0010
@@ -7113,13 +7084,10 @@ function initializeFlags()
             BTRAMOBJ:setFlag(0x5E, 0, "Klungo 1 Defeated")
             BTRAMOBJ:setFlag(0x5E, 1, "Klungo 2 Defeated")
         end
-        if ENABLE_AP_MYSTERY == true
-        then
-            BTCONSUMEOBJ:changeConsumable("Eggs")
-            BTCONSUMEOBJ:setConsumable(0)
-            BTCONSUMEOBJ:changeConsumable("Ice Keys")
-            BTCONSUMEOBJ:setConsumable(0)
-        end
+        BTCONSUMEOBJ:changeConsumable("Eggs")
+        BTCONSUMEOBJ:setConsumable(0)
+        BTCONSUMEOBJ:changeConsumable("Ice Keys")
+        BTCONSUMEOBJ:setConsumable(0)
         BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star,moon, sun 
 
         
@@ -7175,17 +7143,12 @@ function main()
                 end
                 BKCheckAssetLogic()
                 gameSaving();
+                hag1_open()
                 if TEXT_START == true then
                     clearText()
                 elseif TEXT_START == false then
                     processMessages()
                 end
-            -- if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 2, "WORLD_9_OPEN") == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-                -- if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-                --     BTRAMOBJ:setFlag(0x6E, 3);
-                --     table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                --     print("HAG 1 is now unlocked!")
-                -- end
             elseif (FRAME % 10 == 1)
             then
                 checkPause();

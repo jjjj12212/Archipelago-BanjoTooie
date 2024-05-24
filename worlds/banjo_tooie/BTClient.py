@@ -245,6 +245,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_player": ctx.slot_data["player_name"],
             "slot_seed": ctx.slot_data["seed"],
             "slot_deathlink": ctx.deathlink_enabled,
+            "slot_disable_text": ctx.slot_data["disable_text"],
             "slot_skip_tot": ctx.slot_data["skip_tot"],
             "slot_honeycomb": ctx.slot_data["honeycomb"],
             "slot_pages": ctx.slot_data["pages"],
@@ -329,6 +330,9 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                                     continue
                                 if locationId not in ctx.location_table:
                                     locs1.append(int(locationId))
+                                    if ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or \
+                                    ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
+                                       locs1 = mumbo_tokens_loc(locs1, int(locationId), ctx.slot_data["goal_type"])
             if len(locs1) > 0:
                 await ctx.send_msgs([{
                     "cmd": "LocationChecks",
@@ -365,7 +369,6 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                         "status": 30
                     }])
                     ctx.finished_game = True    
-    
 
     if ctx.slot_data["moves"] == "true" and ctx.sync_ready == True:
         # Locations handling
@@ -446,6 +449,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             for locationId, value in jinjofamlist.items():
                 if value == True:
                     fam1.append(int(locationId))
+                    if ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
+                        fam1 = mumbo_tokens_loc(fam1, int(locationId), ctx.slot_data["goal_type"])
 
             await ctx.send_msgs([{
                 "cmd": "LocationChecks",
@@ -473,28 +478,31 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "locations": worlds
             }])
 
-        if ctx.slot_data["mystery"] == "true" and ctx.sync_ready == True:
-            # Locations handling
-            mystery = payload['mystery']
-            send_mystery = []
+    if ctx.sync_ready == True:
+        # Locations handling
+        mystery = payload['mystery']
+        send_mystery = []
 
-            # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
-            if isinstance(worldslist, list):
-                mystery = {}
+        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
+        if isinstance(worldslist, list):
+            mystery = {}
 
-            if ctx.mystery_table != mystery:
-                ctx.mystery_table = mystery
+        if ctx.mystery_table != mystery:
+            # logger.info("Mystery Table Changed!")
+            ctx.mystery_table = mystery
 
-                for locationId, value in mystery.items():
-                    if locationId == "REMOVE": #Don't need to handle this here
-                        continue
-                    if value == True:
-                        send_mystery.append(int(locationId))
+            for locationId, value in mystery.items():
+                if locationId == "REMOVE": #Don't need to handle this here
+                    continue
+                if value == True:
+                    send_mystery.append(int(locationId))
+                    # logger.info("Setting up Location Id")
 
-                await ctx.send_msgs([{
-                    "cmd": "LocationChecks",
-                    "locations": send_mystery
-                }])   
+            # logger.info("Sending Table to AP Server")
+            await ctx.send_msgs([{
+                "cmd": "LocationChecks",
+                "locations": send_mystery
+            }])   
 
     #Send Aync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:
@@ -512,6 +520,75 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         else: # Banjo is somehow still alive
             ctx.deathlink_sent_this_death = False
 
+def mumbo_tokens_loc(locs: list, locationId: int, goaltype: int) -> list:
+    if goaltype == 1 or goaltype == 4:
+        if locationId == 1230598: #MT
+            locs.append(1230968)
+        if locationId == 1230610: #GM
+            locs.append(1230969)
+        if locationId == 1230616: #WW
+            locs.append(1230970)
+        if locationId == 1230617: #WW
+            locs.append(1230971)
+        if locationId == 1230619: #WW
+            locs.append(1230972)
+        if locationId == 1230620: #WW
+            locs.append(1230973)
+        if locationId == 1230626: #JRL
+            locs.append(1230974)
+        if locationId == 1230641: #TDL
+            locs.append(1230975)
+        if locationId == 1230648: #GI
+            locs.append(1230976)
+        if locationId == 1230654: #GI
+            locs.append(1230977)
+        if locationId == 1230663: #HFP
+            locs.append(1230978)
+        if locationId == 1230668: #CCL
+            locs.append(1230979)
+        if locationId == 1230670: #CCL
+            locs.append(1230980)
+        if locationId == 1230673: #CCL
+            locs.append(1230981)
+        if locationId == 1230749: #CCL
+            locs.append(1230982)
+    if goaltype == 2 or goaltype == 4:
+        if locationId == 1230596: #MT
+            locs.append(1230960)
+        if locationId == 1230606: #GGM
+            locs.append(1230961)
+        if locationId == 1230618: #WW
+            locs.append(1230962)
+        if locationId == 1230632: #JRL
+            locs.append(1230963)
+        if locationId == 1230639: #TDL
+            locs.append(1230964)
+        if locationId == 1230745: #GI
+            locs.append(1230965)
+        if locationId == 1230656: #HFP
+            locs.append(1230966)
+        if locationId == 1230666: #CC
+            locs.append(1230967)
+    if goaltype == 3 or goaltype == 4:
+        if locationId == 1230676: #JINJOFAM
+            locs.append(1230983)
+        if locationId == 1230677: #JINJOFAM
+            locs.append(1230984)
+        if locationId == 1230678: #JINJOFAM
+            locs.append(1230985)
+        if locationId == 1230679: #JINJOFAM
+            locs.append(1230986)
+        if locationId == 1230680: #JINJOFAM
+            locs.append(1230987)
+        if locationId == 1230681: #JINJOFAM
+            locs.append(1230988)
+        if locationId == 1230682: #JINJOFAM
+            locs.append(1230989)
+        if locationId == 1230682: #JINJOFAM
+            locs.append(1230990)
+        if locationId == 1230685: #JINJOFAM
+            locs.append(1230991)
+    return locs
 
 async def n64_sync_task(ctx: BanjoTooieContext): 
     logger.info("Starting n64 connector. Use /n64 for status information.")

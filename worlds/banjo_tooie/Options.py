@@ -5,6 +5,10 @@ class EnableMultiWorldMoveList(DefaultOnToggle):
     """Jamjars' Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves."""
     display_name = "Jamjars' Movelist"
 
+class DisableOverlayText(Toggle):
+    """Disables the overlay text on screen. Useful if your already streaming/viewing the BT_Client."""
+    display_name = "Disable Overlay Text"
+
 class EnableMultiWorldJinjos(DefaultOnToggle):
     """Jinjos fled to other worlds. Other players need return them home."""
     display_name = "Randomize Jinjos"
@@ -145,8 +149,8 @@ class TokenHuntLength(Range):
     Choose a value between 1 and 20"""
     display_name = "Token Hunt Length"
     range_start = 1
-    range_end = 20
-    default = 15
+    range_end = 15
+    default = 5
 
 # class WarpTraps(Choice):
 #     """Choose if you want warp traps enabled"""
@@ -176,65 +180,70 @@ class World2(Range):
     """If you picked custom, what is the jiggy requirement for World 2."""
     display_name = "World 2 Jiggy requirement"
     range_start = 2
-    range_end = 10
+    range_end = 20
     default = 4
 
 class World3(Range):
     """If you picked custom, what is the jiggy requirement for World 3."""
     display_name = "World 3 Jiggy requirement"
     range_start = 3
-    range_end = 20
+    range_end = 30
     default = 8
 
 class World4(Range):
     """If you picked custom, what is the jiggy requirement for World 4."""
     display_name = "World 4 Jiggy requirement"
     range_start = 4
-    range_end = 30
+    range_end = 40
     default = 14
 
 class World5(Range):
     """If you picked custom, what is the jiggy requirement for World 5."""
     display_name = "World 5 Jiggy requirement"
     range_start = 5
-    range_end = 40
+    range_end = 50
     default = 20
 
 class World6(Range):
     """If you picked custom, what is the jiggy requirement for World 6."""
     display_name = "World 6 Jiggy requirement"
     range_start = 6
-    range_end = 50
+    range_end = 60
     default = 28
 
 class World7(Range):
     """If you picked custom, what is the jiggy requirement for World 7."""
     display_name = "World 7 Jiggy requirement"
     range_start = 7
-    range_end = 60
+    range_end = 70
     default = 36
 
 class World8(Range):
     """If you picked custom, what is the jiggy requirement for World 8."""
     display_name = "World 8 Jiggy requirement"
     range_start = 8
-    range_end = 70
+    range_end = 90
     default = 45
 
 class World9(Range):
     """If you picked custom, what is the jiggy requirement for Cauldon Keep."""
     display_name = "Cauldon Keep Jiggy requirement"
     range_start = 9
-    range_end = 70
+    range_end = 90
     default = 55
 
 class SkipKlungo(Toggle):
     """Make it so you can skip Klungo 1 and 2."""
     display_name = "Skip Klungo"
 
+class ExceedingItemsFiller(Toggle):
+    """Progressive Items that exceeds the required amounts are marked as junk"""
+    display_name = "Exceeding Progressive Items marked as junk items"
+
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
+    disable_overlay_text:DisableOverlayText
     randomize_moves: EnableMultiWorldMoveList
     randomize_jinjos: EnableMultiWorldJinjos
     forbid_on_jinjo_family: ForbidMovesOnJinjoFamilyTreasure
@@ -242,6 +251,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_doubloons: EnableMultiWorldDoubloons
     randomize_cheato: EnableMultiWorldCheatoPages
     cheato_as_filler: SetMultiWorldCheatoPagesFiller
+    exceeding_items_filler: ExceedingItemsFiller
     randomize_honeycombs: EnableMultiWorldHoneycombs
     randomize_glowbos: EnableMultiWorldGlowbos
     randomize_treble: EnableMultiWorldTrebleClefs
