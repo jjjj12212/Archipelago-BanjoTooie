@@ -1,5 +1,6 @@
 # 1.6-Beta
  - Stop N Swap check locations fixed when not randomized
+ - Fix Stop N Swap Not sending checks issue.
  - Logic fix:
   - Inferno area fixed
   - TDL T-Rex jinjo in glitched logic
