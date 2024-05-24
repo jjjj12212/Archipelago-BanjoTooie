@@ -1,3 +1,7 @@
+# 1.6.1-beta
+- fix Token Hunt Goal Reminder Message
+- fix Jinjo Tokens
+
 # 1.6-Beta
  - Stop N Swap check locations fixed when not randomized
  - Fix Stop N Swap Not sending checks issue.

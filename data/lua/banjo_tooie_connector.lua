@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.6"
+local BT_VERSION = "V1.6.1"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -6973,9 +6973,9 @@ function printGoalInfo()
             message = "You are trying to rescue "..JFR_LENGTH.." of the 9 Jinjo families \nand retrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 4 then
             message ="You absolute mad lad! You're doing the Wonder Wing Challenge! Good Luck and"..randomEncouragment;
-        elseif GOAL_TYPE == 5 and TH_LENGTH == 9 then
-            message ="You are trying to find all 20 of Mumbo's Tokens scattered \nthroughout the Isle of Hags! Good Luck and"..randomEncouragment;
-        elseif GOAL_TYPE == 5 and TH_LENGTH < 9 then
+        elseif GOAL_TYPE == 5 and TH_LENGTH == 15 then
+            message ="You are trying to find all 15 of Mumbo's Tokens scattered \nthroughout the Isle of Hags! Good Luck and"..randomEncouragment;
+        elseif GOAL_TYPE == 5 and TH_LENGTH < 15 then
             message = "You are trying to find "..TH_LENGTH.." of the 20 of Mumbo Tokens \nscattered throughout the Isle of Hags! Good Luck and"..randomEncouragment;
         end
         print(message)
