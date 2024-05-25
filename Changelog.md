@@ -1,3 +1,6 @@
+# 1.6.2-beta
+- Token Hunt will always generate 15 tokens.
+
 # 1.6.1-beta
 - fix Token Hunt Goal Reminder Message
 - fix Jinjo Tokens

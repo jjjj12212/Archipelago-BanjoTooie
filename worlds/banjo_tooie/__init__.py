@@ -154,7 +154,7 @@ class BanjoTooieWorld(World):
                 else:
                     # Mumbo Token Hunt Item Amt
                     if item.code == 1230798 and self.options.victory_condition.value == 5:
-                        for i in range(self.options.token_hunt_length.value):
+                        for i in range(15):
                             itempool += [self.create_item(name)]
                     # EO Mumbo Token Hunt Item Amt
                     else:
@@ -162,15 +162,10 @@ class BanjoTooieWorld(World):
                             if self.options.randomize_jinjos == False and self.jiggy_counter > 81 and item.code == 1230515:
                                 break
                             if self.options.victory_condition.value == 5:
-                                if self.options.token_hunt_length.value < 15:
-                                    if (144 - self.notecounter) < self.options.token_hunt_length.value and \
-                                       item.code == 1230797:
-                                        break #sub in for Mumbo Tokens up to 10
-                                else:
-                                    if (144 - self.notecounter) < 14 and item.code == 1230797:
-                                        break #sub in for Mumbo Tokens up to 10
-                                    if item.code == 1230801: #remove Jinjo Multiplayer
-                                        break
+                                if (144 - self.notecounter) < 14 and item.code == 1230797:
+                                    break #sub in for Mumbo Tokens up to 10
+                                if item.code == 1230801: #remove Jinjo Multiplayer
+                                    break
                                 itempool += [self.create_item(name)]
                             else:
                                 itempool += [self.create_item(name)]
