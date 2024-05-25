@@ -6548,6 +6548,14 @@ function DPadStats()
             then
                 print("Breegull Bash");
             end
+            if FAST_SWIM == true
+            then
+                print("Fast Swimming")
+            end
+            if DOUBLE_AIR == true
+            then
+                print("Double Air")
+            end
             print(" ")
             print(" ")
             print("Unlocked Worlds")
