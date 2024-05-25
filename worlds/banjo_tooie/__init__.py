@@ -154,7 +154,7 @@ class BanjoTooieWorld(World):
                 else:
                     # Mumbo Token Hunt Item Amt
                     if item.code == 1230798 and self.options.victory_condition.value == 5:
-                        for i in range(self.options.token_hunt_length.value):
+                        for i in range(15):
                             itempool += [self.create_item(name)]
                     # EO Mumbo Token Hunt Item Amt
                     else:

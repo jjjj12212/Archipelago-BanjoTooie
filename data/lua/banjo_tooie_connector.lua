@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.6.1"
+local BT_VERSION = "V1.6.2"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -6976,7 +6976,7 @@ function printGoalInfo()
         elseif GOAL_TYPE == 5 and TH_LENGTH == 15 then
             message ="You are trying to find all 15 of Mumbo's Tokens scattered \nthroughout the Isle of Hags! Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 5 and TH_LENGTH < 15 then
-            message = "You are trying to find "..TH_LENGTH.." of the 20 of Mumbo Tokens \nscattered throughout the Isle of Hags! Good Luck and"..randomEncouragment;
+            message = "You are trying to find "..TH_LENGTH.." of the 15 of Mumbo Tokens \nscattered throughout the Isle of Hags! Good Luck and"..randomEncouragment;
         end
         print(message)
         table.insert(AP_MESSAGES, message);
