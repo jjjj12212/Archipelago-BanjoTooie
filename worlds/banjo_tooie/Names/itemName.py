@@ -47,7 +47,7 @@ GEGGS       = "Grenade Eggs"
 CEGGS       = "Clockwork Kazooie Eggs"
 IEGGS       = "Ice Eggs"
 FSWIM       = "Fast Swimming"
-MAIR        = "More Air"
+DAIR        = "Double Air"
 BBASH       = "Breegull Bash"
 HOMINGEGGS  = "Homing Eggs Toggle"
 

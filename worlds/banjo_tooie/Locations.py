@@ -18,7 +18,9 @@ class LocationData(typing.NamedTuple):
 SMLoc_table = {
     locationName.CHEATOSM1: LocationData(1230752, 0x59, 3),
     locationName.JINJOIH5:  LocationData(1230595, 0x3F, 0),
-    # locationName.ROYSTEN:   LocationData(1230777, 0x9E, 6), #obtained when breaking out roysten
+    locationName.ROYSTEN1:   LocationData(1230777, 0x36, 2), #obtained when breaking out roysten
+    locationName.ROYSTEN2:   LocationData(1230779, 0x9E, 6), #obtained when breaking out roysten
+
     # locationName.CHEATOR1:  LocationData(1230952, 0x08, 4),
     locationName.PMEGG:     LocationData(1230956, 0x77, 5),
     locationName.BMEGG:     LocationData(1230957, 0x77, 3),

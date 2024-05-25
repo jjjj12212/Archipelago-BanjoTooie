@@ -437,7 +437,8 @@ CEGGS       = "IoH: Clockwork Kazooie Eggs Silo"
 IEGGS       = "IoH: Ice Eggs Silo"
 
 #NPCS
-ROYSTEN     = "SM: Roysten"
+ROYSTEN1    = "SM: Roysten Reward 1"
+ROYSTEN2    = "SM: Roysten Reward 2"
 CHEATOR1    = "SM: Cheato Reward 1"  #5 pages - Feathers
 CHEATOR2    = "SM: Cheato Reward 2"  #10 pages - Eggs
 CHEATOR3    = "SM: Cheato Reward 3"  #15 pages - Fallproof

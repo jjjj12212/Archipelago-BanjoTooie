@@ -390,6 +390,10 @@ class BanjoTooieRules:
         }
 
         self.silo_rules = {
+            ## Faster swimming rules are here ##
+            locationName.ROYSTEN1: lambda state: state.has(itemName.BDRILL, self.player),
+            locationName.ROYSTEN2: lambda state: state.has(itemName.BDRILL, self.player),
+
             locationName.EGGAIM: lambda state: self.check_notes(state, 25),
             locationName.BBLASTER: lambda state: self.check_notes(state, 30),
             locationName.GGRAB: lambda state: self.can_access_JSG(state) and 

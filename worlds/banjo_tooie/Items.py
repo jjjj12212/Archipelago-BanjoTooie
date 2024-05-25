@@ -71,7 +71,8 @@ moves_table = {
 
     itemName.SAPACK:        ItemData(1230776, 1, "progress", locationName.SAPACK),
 
- #   itemName.FSWIM:         ItemData(1230777, 1, "progress", locationName.FSWIM:),
+    itemName.FSWIM:         ItemData(1230777, 1, "progress", locationName.ROYSTEN1),
+    itemName.DAIR:          ItemData(1230779, 1, "progress", locationName.ROYSTEN2),
 }
 
 level_progress_table = {
