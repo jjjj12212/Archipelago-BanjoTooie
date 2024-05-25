@@ -94,6 +94,7 @@ class BanjoTooieContext(CommonContext):
         self.worldlist_table = {}
         self.chuffy_table = {}
         self.mystery_table = {}
+        self.roystenlist_table = {}
         self.deathlink_enabled = False
         self.deathlink_pending = False
         self.deathlink_sent_this_death = False
@@ -503,6 +504,27 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "cmd": "LocationChecks",
                 "locations": send_mystery
             }])   
+
+    if ctx.sync_ready == True:
+            # Locations handling
+            roystenlist = payload['roysten']
+            roy = []
+
+            # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
+            if isinstance(roystenlist, list):
+                roystenlist = {}
+
+            if ctx.roystenlist_table != roystenlist:
+                ctx.roystenlist_table = roystenlist
+
+                for locationId, value in roystenlist.items():
+                    if value == True:
+                        roy.append(int(locationId))
+
+                await ctx.send_msgs([{
+                    "cmd": "LocationChecks",
+                    "locations": roy
+                }])
 
     #Send Aync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:

@@ -1,4 +1,4 @@
-# Current Logic Implementation | 1.6.2-Beta
+# Current Logic Implementation | 1.7-Beta
 
 We currently have 4 logics put in place.
 

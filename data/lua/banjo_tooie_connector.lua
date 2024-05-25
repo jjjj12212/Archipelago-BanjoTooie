@@ -132,6 +132,10 @@ local TH_LENGTH = nil;
 --     [1]  = {mapId = 0xAF, worldName = "Spiral Mountain", xPos = 10000, yPos = 10320, zPos = 10231}, -- notes: CCL cavern, by the treble clef
 -- }
 
+--------------- ROYSTEN VARS --------------------
+local FAST_SWIM = false
+local DOUBLE_AIR = false
+
 -------------- ENCOURAGEMENT MESSAGES ------------
 local ENCOURAGEMENT = {
          [1]  = {message = " GUH-HUH!"},
@@ -1068,6 +1072,7 @@ local BKCHUFFY = {} -- King Coal Progress Flag
 local BKJINJOFAM = {} -- Jinjo Family check 
 local UNLOCKED_WORLDS = {} -- Worlds unlocked
 local BKMYSTERY = {} -- Stop n Swap 
+local ROYSTEN = {} -- Roysten flags. Because the flags are separate from moves, we don't need to save this.
 
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
@@ -3744,6 +3749,18 @@ local NON_AGI_MAP = {
             ['name'] = "Blue Egg"
         },
     },
+    ['ROYSTEN'] = {
+        ["1230777"] = {
+            ['addr'] = 0x36,
+            ['bit'] = 2,
+            ['name'] = "SM: Roysten Reward 1"
+        },
+        ["1230779"] = {
+            ['addr'] = 0x9E,
+            ['bit'] = 6,
+            ['name'] = "SM: Roysten Reward 2"
+        }
+    }
 }
 
 -- Properties of world entrances and associated puzzles
@@ -4007,6 +4024,75 @@ function nearTreble()
     TREBLE_SPOTED = true
     TREBLE_MAP = CURRENT_MAP
     return true
+end
+
+--------------------------------- Roysten --------------------------------
+
+function init_roysten()
+    for k,v in pairs(NON_AGI_MAP['ROYSTEN'])
+    do
+        ROYSTEN[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_ROYSTEN")
+    end
+end
+
+function check_freed_roysten()
+    if CURRENT_MAP == 0xAF
+    then
+        for k,v in pairs(NON_AGI_MAP['ROYSTEN'])
+        do
+            if ROYSTEN[k] == false
+            then
+                ROYSTEN[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_ROYSTEN")
+            end
+        end
+        if DOUBLE_AIR == true and ROYSTEN["1230779"] == true then
+            ROYSTEN["1230777"] = true
+        end
+        if BTRAMOBJ:checkFlag(0x1E, 5, "CHECK_SWIM") == true and FAST_SWIM == false
+        then
+            if DEBUG == true
+            then
+                print("Removing Fast Swimming")
+            end
+            BTRAMOBJ:clearFlag(0x1E, 5)
+        end
+        if BTRAMOBJ:checkFlag(0x32, 7, "CHECK_DAIR") == true and DOUBLE_AIR == false
+        then
+            if DEBUG == true
+            then
+                print("Removing Double Air")
+            end
+            BTRAMOBJ:clearFlag(0x32, 7)
+        end
+    end
+end
+
+
+function obtain_swimming()
+    if (FAST_SWIM == false or DOUBLE_AIR == false)
+    then
+        for apid, itemId in pairs(receive_map)
+        do
+            if itemId == "1230777"
+            then
+                if DEBUG == true
+                then
+                    print("Found Fast Swimming")
+                end
+                BTRAMOBJ:setFlag(0x1E, 5)
+                FAST_SWIM = true
+            end
+            if itemId == "1230779"
+            then
+                if DEBUG == true
+                then
+                    print("Found Double Air")
+                end
+                BTRAMOBJ:setFlag(0x32, 7)
+                DOUBLE_AIR = true
+            end
+        end
+    end
 end
 
 --------------------------------- Stop N Swap --------------------------------
@@ -5241,6 +5327,7 @@ function loadGame(current_map)
             set_AGI_MOVES_checks();
             set_AP_BKNOTES();
             set_AP_STATIONS();
+            init_roysten()
             if ENABLE_AP_CHUFFY == true -- Sanity Check
             then
                 if BTRAMOBJ:checkFlag(0x98, 5) == false and BTRAMOBJ:checkFlag(0x98, 6) == false and
@@ -5325,7 +5412,8 @@ end
 function BKLogics(mapaddr)
     BTMODELOBJ:changeName("Player", false)
     local player = BTMODELOBJ:checkModel();
-
+    check_freed_roysten()
+    obtain_swimming()
     if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_MOVES == true
     then
         WATCH_LOADED_SILOS = false
@@ -6238,6 +6326,7 @@ function SendToBTClient()
     retTable["jinjofam"] = BKJINJOFAM;
     retTable["worlds"] = UNLOCKED_WORLDS;
     retTable["mystery"] = BKMYSTERY;
+    retTable["roysten"] = ROYSTEN;
     if GAME_LOADED == false
     then
         retTable["sync_ready"] = "false"
@@ -6458,6 +6547,14 @@ function DPadStats()
             if AGI_MYSTERY["1230800"] == true
             then
                 print("Breegull Bash");
+            end
+            if FAST_SWIM == true
+            then
+                print("Fast Swimming")
+            end
+            if DOUBLE_AIR == true
+            then
+                print("Double Air")
             end
             print(" ")
             print(" ")
@@ -7039,6 +7136,7 @@ function initializeFlags()
         init_JinjoFam();
         init_BKMYSTERY("BKMYSTERY")
         init_AGI()
+        init_roysten()
         AGI_MOVES = init_BMK("AGI");
         AGI_NOTES = init_BKNOTES("AGI");
         AGI_MYSTERY = init_BKMYSTERY("AGI");

@@ -14,7 +14,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JINJOIH5,
         locationName.PMEGG,
         locationName.BMEGG,
-    #    locationName.FSWIM
+        locationName.ROYSTEN1,
+        locationName.ROYSTEN2
     ],
     regionName.IOHJV:    [
         locationName.JIGGYIH1,

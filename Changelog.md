@@ -1,9 +1,14 @@
+# 1.7-beta
+ - Fast Swimming is now an AP Item
+ - Double Air is now an AP Item
+ - Roysten is 2 checks
+
 # 1.6.2-beta
-- Token Hunt will always generate 15 tokens.
+ - Token Hunt will always generate 15 tokens.
 
 # 1.6.1-beta
-- fix Token Hunt Goal Reminder Message
-- fix Jinjo Tokens
+ - fix Token Hunt Goal Reminder Message
+ - fix Jinjo Tokens
 
 # 1.6-Beta
  - Stop N Swap check locations fixed when not randomized
