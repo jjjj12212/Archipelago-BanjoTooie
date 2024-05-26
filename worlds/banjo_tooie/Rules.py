@@ -558,7 +558,8 @@ class BanjoTooieRules:
     def jiggy_treasure_chamber(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.EGGAIM,  self.player) and (state.has(itemName.GGRAB, self.player) or self.MT_flight_pad(state))
+            logic = (state.has(itemName.EGGAIM,  self.player) and (state.has(itemName.GGRAB, self.player)) or (self.MT_flight_pad(state)) and \
+                     state.has(itemName.AIREAIM, self.player))
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.EGGAIM,  self.player) and state.has(itemName.GGRAB, self.player) or self.MT_flight_pad(state)
         elif self.world.options.logic_type == 2: # advanced

@@ -4,6 +4,7 @@
  - Roysten is 2 checks
  - Logic fix:
   - Golden Goliath required for freeing Dilberta to turn into Stony
+  - Treasure Chamber for beginner fix
 
 # 1.6.2-beta
  - Token Hunt will always generate 15 tokens.
