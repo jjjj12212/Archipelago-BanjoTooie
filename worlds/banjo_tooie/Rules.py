@@ -2626,8 +2626,10 @@ class BanjoTooieRules:
                                                 self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK))
 
     def has_fire(self, state: CollectionState) -> bool:
-        return state.has(itemName.FEGGS, self.player) or (self.check_humba_magic(state, itemName.HUMBAIH) and \
-                self.can_access_pinegrove(state, False))
+        return state.has(itemName.FEGGS, self.player) or self.dragon_kazooie(state)
+    
+    def dragon_kazooie(self, state: CollectionState) -> bool:
+        return (self.check_humba_magic(state, itemName.HUMBAIH) and self.can_access_pinegrove(state, False))
     
     def has_explosives(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
@@ -3622,13 +3624,20 @@ class BanjoTooieRules:
                 state.has(itemName.CEGGS, self.player)
     
     def reach_cheato(self, state: CollectionState, page_amt: int) -> bool:
-        logic = True
-        if self.world.options.randomize_bk_moves == 0:
-            logic = state.has(itemName.PAGES, self.player, page_amt)
-        else:
-            logic = state.has(itemName.PAGES, self.player, page_amt) and (state.has(itemName.FPAD, self.player) or \
-                    state.has(itemName.FFLIP, self.player))
-        return logic
+        return state.has(itemName.PAGES, self.player, page_amt) and (self.hasBKMove(itemName.FPAD) or (self.hasBKMove(itemName.FFLIP)and self.hasBKMove(itemName.CLIMB)))
+
+    def hasBKMove(self, state: CollectionState, move) -> bool:
+        if self.world.options.randomize_bk_moves == 0: # Not randomised
+            return True
+        elif move in [itemName.TTROT, itemName.TJUMP]: # McJiggy Special, not randomised.
+            return True
+        return state.has(move, self.player)
+    
+    def hasGroundAttack(self, state: CollectionState, move) -> bool:
+        BKAttack = True in list(map(lambda move: self.hasBKMove(state, move),
+                [itemName.EGGSHOOT, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.GRAT, itemName.BDRILL, itemName.BBUST]))
+        
+        return BKAttack or state.has(itemName.BBASH, self.player)
 
     def set_rules(self) -> None:
 
