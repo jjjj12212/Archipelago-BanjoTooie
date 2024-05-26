@@ -7,7 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
     
 class LocationData(typing.NamedTuple):
-    #last good ID: 1230991
+    #last good ID: 1230996
     #12C770 pointer instead (1230704)
     btid: int|None = 0
     # Save + mem addr
@@ -21,7 +21,12 @@ SMLoc_table = {
     locationName.ROYSTEN1:   LocationData(1230777, 0x36, 2), #obtained when breaking out roysten
     locationName.ROYSTEN2:   LocationData(1230779, 0x9E, 6), #obtained when breaking out roysten
 
-    # locationName.CHEATOR1:  LocationData(1230952, 0x08, 4),
+    locationName.CHEATOR1:  LocationData(1230992, 0x08, 4),
+    locationName.CHEATOR2:  LocationData(1230993, 0x08, 5),
+    locationName.CHEATOR3:  LocationData(1230994, 0x08, 6),
+    locationName.CHEATOR4:  LocationData(1230995, 0x08, 7),
+    locationName.CHEATOR5:  LocationData(1230996, 0x09, 0),
+
     locationName.PMEGG:     LocationData(1230956, 0x77, 5),
     locationName.BMEGG:     LocationData(1230957, 0x77, 3),
 

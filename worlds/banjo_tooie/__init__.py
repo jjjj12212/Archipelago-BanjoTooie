@@ -114,7 +114,10 @@ class BanjoTooieWorld(World):
                 item_classification = ItemClassification.progression
         if banjoItem.type == 'useful':
             if banjoItem.btid == 1230513 and self.use_cheato_filler == False:
-                item_classification = ItemClassification.useful
+                if self.options.cheato_rewards.value == True:
+                    item_classification = ItemClassification.progression
+                else:
+                    item_classification = ItemClassification.useful
             elif banjoItem.btid == 1230513 and self.use_cheato_filler == True:
                 item_classification = ItemClassification.filler
             else:
@@ -228,7 +231,13 @@ class BanjoTooieWorld(World):
         if item.code in range(1230799, 1230805) and self.options.randomize_stop_n_swap == False:
             return False
 
-
+        if item.code in range(1230810, 1230815) and self.options.randomize_bk_moves.value == 0:
+            return False
+        
+        if item.code == 1230888 and self.options.cheato_rewards.value == False:
+            return False
+        elif item.code == 1230888 and self.options.randomize_bk_moves.value != 0:
+            return False
 
         return True
 
@@ -239,6 +248,9 @@ class BanjoTooieWorld(World):
     def generate_early(self) -> None:
         if self.options.victory_condition.value == 4 and (self.options.randomize_notes == False or self.options.randomize_cheato == False):
             raise Exception("In order to challenge yourself with the Wonder Wing Challenge, Randomize Notes & Randomize Cheato must be enabled.")
+        if self.options.cheato_as_filler.value == True and self.options.cheato_rewards == True:
+            raise Exception("Cheato Pages cannot be marked as filler if Cheato Rewards are set.")
+
         WorldRandomize(self)
 
     def set_rules(self) -> None:
@@ -453,7 +465,9 @@ class BanjoTooieWorld(World):
             btoptions["skip_tot"] = "false"
         btoptions['honeycomb'] = "true" if self.options.randomize_honeycombs == 1 else "false"
         btoptions['pages'] = "true" if self.options.randomize_cheato.value == True else "false"
+        btoptions['cheato_rewards'] = "true" if self.options.cheato_rewards == 1 else "false"
         btoptions['moves'] = "true" if self.options.randomize_moves == 1 else "false"
+        btoptions['bk_moves'] = int(self.options.randomize_bk_moves.value)
         btoptions['doubloons'] = "true" if self.options.randomize_doubloons == 1 else "false"
         btoptions['minigames'] = 'skip' if self.options.speed_up_minigames == 1 else "full"
         btoptions['trebleclef'] = "true" if self.options.randomize_treble == 1 else "false"

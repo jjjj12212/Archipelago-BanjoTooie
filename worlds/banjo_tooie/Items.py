@@ -75,6 +75,14 @@ moves_table = {
     itemName.DAIR:          ItemData(1230779, 1, "progress", locationName.ROYSTEN2),
 }
 
+bk_moves_table = {
+    itemName.DIVE:          ItemData(1230810, 1, "progress", None),
+    itemName.FPAD:          ItemData(1230811, 1, "progress", None),
+    itemName.FFLIP:         ItemData(1230812, 1, "progress", None),
+    itemName.EGGSHOOT:      ItemData(1230813, 1, "progress", None),     
+    itemName.ROLL:          ItemData(1230814, 1, "progress", None),
+}
+
 level_progress_table = {
     itemName.MUMBOMT:        ItemData(1230855, 1, "progress", locationName.GLOWBOMT1),
     itemName.MUMBOGM:        ItemData(1230856, 1, "progress", locationName.GLOWBOGM2),
@@ -105,7 +113,7 @@ misc_collectable_table = {
     itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY),
     itemName.NOTE:          ItemData(1230797, 144, "progress", None),
     # itemName.WARPS: ItemData(1230799, 20, "trap", None),
-    itemName.NONE:          ItemData(1230888, 0, "filler", None)
+    itemName.NONE:          ItemData(1230888, 5, "filler", None)
 }
 
 stop_n_swap_table = {
@@ -149,7 +157,8 @@ all_item_table = {
     **stations_table,
     **rando_key_table,
     **token_table,
-    **stop_n_swap_table
+    **stop_n_swap_table,
+    **bk_moves_table
 }
 
 all_group_table = {

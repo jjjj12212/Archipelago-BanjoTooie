@@ -51,6 +51,24 @@ DAIR        = "Double Air"
 BBASH       = "Breegull Bash"
 HOMINGEGGS  = "Homing Eggs Toggle"
 
+DIVE        = "Dive"
+FPAD        = "Flight Pad"
+GRAT        = "Ground Rat-a-tat Rap"
+ROLL        = "Roll"
+ARAT        = "Air Rat-a-tat Rap"
+BBARGE      = "Beak Barge"
+JUMP        = "Tall jump"
+FLUTTER     = "Flutter"
+FFLIP       = "Flap Flip"
+PCLIMP      = "Pole Climb"
+BEGG        = "Blue Eggs"
+TTROT       = "Talon Trot"
+BBUST       = "Beak Buster"
+WWING       = "Wonderwing"
+SSTRIDE      = "Stilt Stride"
+TTRAIN      = "Turbo Trainers"
+BBOMB       = "Beak Bomb"
+EGGSHOOT    = "Egg Shoot"
 
 # Mumbo Magics
 MUMBOMT = "Mumbo: Golden Goliath"
@@ -81,7 +99,7 @@ TRAINSWHP1 = "HFP: Lava Side Train Station"
 TRAINSWHP2 = "HFP: Icy Side Train Station"
 TRAINSWWW  = "WW: Train Station"
 
-NONE = "Nothing"
+NONE = "Big-O Pants"
 
 CHUFFY = "Chuffy"
 

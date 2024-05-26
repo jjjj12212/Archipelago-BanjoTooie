@@ -186,6 +186,15 @@ class BanjoTooieRules:
                 locationName.MUMBOTKNJINJO9: lambda state: state.has(itemName.BKJINJO, self.player, 9),
             }
 
+        if self.world.options.cheato_rewards.value == True:
+            self.cheato_rewards_rules = {
+                locationName.CHEATOR1: lambda state: self.reach_cheato(state, 5),
+                locationName.CHEATOR2: lambda state: self.reach_cheato(state, 10),
+                locationName.CHEATOR3: lambda state: self.reach_cheato(state, 15),
+                locationName.CHEATOR4: lambda state: self.reach_cheato(state, 20),
+                locationName.CHEATOR5: lambda state: self.reach_cheato(state, 25),
+            }
+
         self.train_rules = {
             locationName.CHUFFY: lambda state: self.can_beat_king_coal(state),
             locationName.TRAINSWIH: lambda state: state.has(itemName.GGRAB, self.player),
@@ -3611,6 +3620,15 @@ class BanjoTooieRules:
                 self.check_solo_moves(state, itemName.SHPACK)) and \
                 state.has(itemName.BBLASTER, self.player) and \
                 state.has(itemName.CEGGS, self.player)
+    
+    def reach_cheato(self, state: CollectionState, page_amt: int) -> bool:
+        logic = True
+        if self.world.options.randomize_bk_moves == 0:
+            logic = state.has(itemName.PAGES, self.player, page_amt)
+        else:
+            logic = state.has(itemName.PAGES, self.player, page_amt) and (state.has(itemName.FPAD, self.player) or \
+                    state.has(itemName.FFLIP, self.player))
+        return logic
 
     def set_rules(self) -> None:
 
@@ -3703,6 +3721,11 @@ class BanjoTooieRules:
                     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH7, self.player), item, self.player)
                     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH8, self.player), item, self.player)
                     forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
+
+        if self.world.options.cheato_rewards.value == True:
+            for location, rules in self.cheato_rewards_rules.items():
+                cheato = self.world.multiworld.get_location(location, self.player)
+                set_rule(cheato, rules)
 
         if self.world.options.victory_condition == 1:
             for location, rules in self.gametoken_rules.items():

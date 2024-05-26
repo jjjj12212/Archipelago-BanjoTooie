@@ -545,6 +545,14 @@ def create_regions(self):
         BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO7)
         BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO8)
         BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO9)
+    
+    if multiworld.worlds[player].options.cheato_rewards.value == True:
+        BANJOTOOIEREGIONS[regionName.SM].append(locationName.CHEATOR1)
+        BANJOTOOIEREGIONS[regionName.SM].append(locationName.CHEATOR2)
+        BANJOTOOIEREGIONS[regionName.SM].append(locationName.CHEATOR3)
+        BANJOTOOIEREGIONS[regionName.SM].append(locationName.CHEATOR4)
+        BANJOTOOIEREGIONS[regionName.SM].append(locationName.CHEATOR5)
+
 
     multiworld.regions += [create_region(multiworld, player, active_locations, region, locations) for region, locations in
                            BANJOTOOIEREGIONS.items()]
