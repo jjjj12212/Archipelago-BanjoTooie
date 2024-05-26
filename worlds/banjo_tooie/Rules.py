@@ -2668,7 +2668,7 @@ class BanjoTooieRules:
     def dilberta_free(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
             return self.prison_compound_open(state) and state.has(itemName.BDRILL, self.player) and \
-                    self.check_humba_magic(state, itemName.HUMBAMT)
+                    self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT)
         
         elif self.world.options.logic_type == 1: # normal
             return self.prison_compound_open(state) and state.has(itemName.BDRILL, self.player)
