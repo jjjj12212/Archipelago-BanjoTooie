@@ -5,6 +5,7 @@
  - Logic fix:
   - Golden Goliath required for freeing Dilberta to turn into Stony
   - Treasure Chamber for beginner fix
+  - Seemee Cheato page
 
 # 1.6.2-beta
  - Token Hunt will always generate 15 tokens.

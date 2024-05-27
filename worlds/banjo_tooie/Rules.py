@@ -1791,7 +1791,8 @@ class BanjoTooieRules:
     def cheato_seemee(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.TTORP, self.player) and (state.has(itemName.MUMBOJR, self.player) or self.has_explosives(state))
+            logic = state.has(itemName.TTORP, self.player) and (state.has(itemName.MUMBOJR, self.player) or self.has_explosives(state) or \
+                    state.has(itemName.CEGGS, self.player))
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 2: # advanced
@@ -2486,7 +2487,7 @@ class BanjoTooieRules:
     def doubloon_dirtpatch(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.BDRILL, self.player) or state.has(itemName.GEGGS, self.player)
+            logic = state.has(itemName.BDRILL, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.BDRILL, self.player) or state.has(itemName.GEGGS, self.player) or \
                     state.has(itemName.CEGGS, self.player)
