@@ -2650,22 +2650,22 @@ class BanjoTooieRules:
 
     def prison_compound_open(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
-            return self.can_access_mt(state) and \
-                (state.has(itemName.GEGGS, self.player) or self.check_mumbo_magic(state, itemName.MUMBOMT))
+            return (state.has(itemName.GEGGS, self.player) or self.check_mumbo_magic(state, itemName.MUMBOMT)) and \
+                    (self.mt_jiggy(state) or (self.can_access_hailfire(state, False) and self.HFP_to_MT(state)))
         
         elif self.world.options.logic_type == 1: # normal
-            return self.can_access_mt(state) and \
-                (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
-                 self.check_mumbo_magic(state, itemName.MUMBOMT))
+            return  (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
+                 self.check_mumbo_magic(state, itemName.MUMBOMT)) and \
+                 (self.mt_jiggy(state) or (self.can_access_hailfire(state, False) and self.HFP_to_MT(state)))
         
         elif self.world.options.logic_type == 2: # advanced
-            return self.can_access_mt(state) and \
-                (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
-                 self.check_mumbo_magic(state, itemName.MUMBOMT))
+            return (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
+                 self.check_mumbo_magic(state, itemName.MUMBOMT)) and \
+                    (self.mt_jiggy(state) or (self.can_access_hailfire(state, False) and self.HFP_to_MT(state)))
         elif self.world.options.logic_type == 3: # glitched
-            return self.can_access_mt(state) and \
-                (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
-                 self.check_mumbo_magic(state, itemName.MUMBOMT))
+            return (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
+                 self.check_mumbo_magic(state, itemName.MUMBOMT)) and \
+                    (self.mt_jiggy(state) or (self.can_access_hailfire(state, False) and self.HFP_to_MT(state)))
         
     def dilberta_free(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
@@ -2793,25 +2793,6 @@ class BanjoTooieRules:
 
     def can_use_battery(self, state: CollectionState) -> bool:
         return self.check_solo_moves(state, itemName.PACKWH) and self.check_solo_moves(state, itemName.TAXPACK)
-
-    def can_access_mt(self, state: CollectionState) -> bool: #1
-        if self.world.worlds_randomized == True:
-            return state.has(itemName.MTA, self.player)
-        else:
-            amt = self.world.randomize_worlds[regionName.MT]
-            logic = True
-            if self.world.options.logic_type == 0: # beginner
-                logic = state.has(itemName.JIGGY, self.player, amt)
-            elif self.world.options.logic_type == 1: # normal
-                logic = state.has(itemName.JIGGY, self.player, amt) or \
-                (self.can_access_hailfire(state, False) and (self.has_explosives(state) or state.has(itemName.MUMBOHP, self.player)))
-            elif self.world.options.logic_type == 2: # advanced
-                logic = state.has(itemName.JIGGY, self.player, amt) or \
-                (self.can_access_hailfire(state, False) and (self.has_explosives(state) or state.has(itemName.MUMBOHP, self.player)))
-            elif self.world.options.logic_type == 3: # glitched
-                logic = state.has(itemName.JIGGY, self.player, amt) or \
-                (self.can_access_hailfire(state, False) and (self.has_explosives(state) or state.has(itemName.MUMBOHP, self.player)))
-            return logic
     
     def can_access_JSG(self, state: CollectionState) -> bool:
         logic = True
