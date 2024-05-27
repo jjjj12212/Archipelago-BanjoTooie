@@ -67,6 +67,14 @@ class BanjoTooieRules:
             itemName.GLIDE
         ]
 
+        self.bk_mcjiggies_moves = [   # Do not include Talon Trot and Tall Jump in this list
+            itemName.DIVE,
+            itemName.FPAD,
+            itemName.FFLIP,
+            itemName.EGGSHOOT,     
+            itemName.ROLL,
+        ]
+
         self.moves_forbid = [
             itemName.GGRAB,
             itemName.BBLASTER,
@@ -3624,20 +3632,20 @@ class BanjoTooieRules:
                 state.has(itemName.CEGGS, self.player)
     
     def reach_cheato(self, state: CollectionState, page_amt: int) -> bool:
-        return state.has(itemName.PAGES, self.player, page_amt) and (self.hasBKMove(itemName.FPAD) or (self.hasBKMove(itemName.FFLIP)and self.hasBKMove(itemName.CLIMB)))
+        return state.has(itemName.PAGES, self.player, page_amt) and (self.hasBKMove(state, itemName.FPAD) or (self.hasBKMove(state, itemName.FFLIP) and \
+               self.hasBKMove(state, itemName.CLIMB)))
 
-    def hasBKMove(self, state: CollectionState, move) -> bool:
-        if self.world.options.randomize_bk_moves == 0: # Not randomised
+    def hasBKMove(self, state: CollectionState, move: str) -> bool:
+        if self.world.options.randomize_bk_moves == 0: # Not randomized
             return True
-        elif move in [itemName.TTROT, itemName.TJUMP]: # McJiggy Special, not randomised.
+        elif self.world.options.randomize_bk_moves == 1 and move not in self.bk_mcjiggies_moves: # McJiggy Special, not randomized.
             return True
         return state.has(move, self.player)
     
     def hasGroundAttack(self, state: CollectionState, move) -> bool:
         BKAttack = True in list(map(lambda move: self.hasBKMove(state, move),
-                [itemName.EGGSHOOT, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.GRAT, itemName.BDRILL, itemName.BBUST]))
-        
-        return BKAttack or state.has(itemName.BBASH, self.player)
+                [itemName.EGGSHOOT, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.GRAT, itemName.BBUST]))
+        return BKAttack
 
     def set_rules(self) -> None:
 
