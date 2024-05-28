@@ -660,13 +660,13 @@ class BanjoTooieRules:
     def jiggy_crushing_shed(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.check_mumbo_magic(state, itemName.MUMBOGM)
+            logic = self.mumboGGM(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.check_mumbo_magic(state, itemName.MUMBOGM)
+            logic = self.mumboGGM(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.check_mumbo_magic(state, itemName.MUMBOGM)
+            logic = self.mumboGGM(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.check_mumbo_magic(state, itemName.MUMBOGM)
+            logic = self.mumboGGM(state)
         return logic
     
     def jiggy_waterfall(self, state: CollectionState) -> bool:
@@ -2691,9 +2691,9 @@ class BanjoTooieRules:
     # TODO: make logic for entering the train that makes sense, based on the world.
     def can_beat_king_coal(self, state) -> bool:
         if self.world.options.randomize_chuffy == False:
-            return self.check_mumbo_magic(state, itemName.MUMBOGM) and self.can_access_GM(state)
+            return self.mumboGGM(state) and self.can_access_GM(state) and self.canDoSmallElevation(state) and self.hasBKMove(state, itemName.CLIMB)
         else:
-            return state.has(itemName.CHUFFY, self.player)
+            return state.has(itemName.CHUFFY, self.player) and self.canDoSmallElevation(state) and self.hasBKMove(state, itemName.CLIMB)
 
 
     #deprecated but might be useful for ticket randomization
@@ -2840,13 +2840,16 @@ class BanjoTooieRules:
     def HFP_to_JRL(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.can_access_ccl(state) and state.has(itemName.SPLITUP, self.player)
+            logic = self.can_access_ccl(state) and state.has(itemName.SPLITUP, self.player)\
+                     and self.hasGroundAttack(state) and self.hasBKMove(state, itemName.DIVE)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.can_access_ccl(state) and state.has(itemName.SPLITUP, self.player)
+            logic = self.can_access_ccl(state) and state.has(itemName.SPLITUP, self.player)\
+                     and self.hasGroundAttack(state) and self.hasBKMove(state, itemName.DIVE)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.can_access_ccl(state) and state.has(itemName.SPLITUP, self.player)
+            logic = self.can_access_ccl(state) and state.has(itemName.SPLITUP, self.player)\
+                     and self.hasGroundAttack(state) and self.hasBKMove(state, itemName.DIVE)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (self.can_access_ccl(state) and state.has(itemName.SPLITUP, self.player)) or state.has(itemName.GGRAB, self.player)
+            logic = (self.can_access_ccl(state) and state.has(itemName.SPLITUP, self.player) and self.hasGroundAttack(state) and self.hasBKMove(state, itemName.DIVE)) or state.has(itemName.GGRAB, self.player)
         return logic
 
     def WorldUnlocks_req(self, state: CollectionState, locationId: int) -> bool: #1
@@ -2939,9 +2942,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.IEGGS, self.player) and state.has(itemName.AUQAIM, self.player) and state.has(itemName.TTORP, self.player)
+            logic = self.can_reach_atlantis(state) and state.has(itemName.IEGGS, self.player) and state.has(itemName.AUQAIM, self.player) and state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.IEGGS, self.player) and state.has(itemName.AUQAIM, self.player) and state.has(itemName.TTORP, self.player)
+            logic = self.can_reach_atlantis(state) and state.has(itemName.IEGGS, self.player) and state.has(itemName.AUQAIM, self.player) and state.has(itemName.TTORP, self.player)
         return logic
       
     def PL_to_PG(self, state: CollectionState) -> bool:
@@ -3408,8 +3411,9 @@ class BanjoTooieRules:
     
     def WL_to_PG(self, state: CollectionState) -> bool:
         logic = True
+        # Going through the loading zone gives you dive for free, which is a thing beginners would not know.
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.TTORP, self.player)
+            logic = state.has(itemName.TTORP, self.player) and self.hasBKMove(state, itemName.DIVE)
         elif self.world.options.logic_type == 1 : # normal
             logic = state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 2: # advanced
@@ -3656,6 +3660,9 @@ class BanjoTooieRules:
 
     def humbaGGM(self, state: CollectionState) -> bool:
         return self.hasBKMove(state, itemName.TTROT) and state.has(itemName.HUMBAGM, self.player)
+    
+    def mumboGGM(self, state: CollectionState) -> bool:
+        return self.canDoSmallElevation(state) and state.has(itemName.MUMBOGM, self.player)
 
     def set_rules(self) -> None:
 

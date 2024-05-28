@@ -623,7 +623,7 @@ def connect_regions(self):
     region_PG = multiworld.get_region(regionName.IOHPG, player)
     region_PG.add_exits({regionName.WW, regionName.IOHWL},
     {regionName.WW: lambda state: rules.ww_jiggy(state),
-     regionName.IOHWL: lambda state: state.has(itemName.TTORP, player)})
+     regionName.IOHWL: lambda state: rules.hasBKMove(state, itemName.DIVE) and state.has(itemName.TTORP, player)})
     
     region_WW = multiworld.get_region(regionName.WW, player)
     region_WW.add_exits({regionName.IOHPG, regionName.CHUFFY},
@@ -638,7 +638,8 @@ def connect_regions(self):
   
     region_JR = multiworld.get_region(regionName.JR, player)
     region_JR.add_exits({regionName.GMWSJT, regionName.IOHCT},
-                        {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_JRL(state), regionName.IOHCT: lambda state: rules.JRL_to_CT(state)})
+                        {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_JRL(state), 
+                         regionName.IOHCT: lambda state: rules.JRL_to_CT(state)})
 
     region_HP = multiworld.get_region(regionName.HP, player)
     region_HP.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.MT, regionName.JR, regionName.CHUFFY},
