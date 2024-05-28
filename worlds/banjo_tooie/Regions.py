@@ -587,14 +587,16 @@ def connect_regions(self):
     region_menu.add_exits({regionName.SM})
 
     region_SM = multiworld.get_region(regionName.SM, player)
-    region_SM.add_exits({regionName.IOHJV})
+    region_SM.add_exits({regionName.IOHJV},
+                        {regionName.IOHWH: lambda state: rules.canGetPassedKlungo(state)})
 
     region_JV = multiworld.get_region(regionName.IOHJV, player)
     region_JV.add_exits({regionName.IOHWH})
 
     region_WH = multiworld.get_region(regionName.IOHWH, player)
     region_WH.add_exits({regionName.MT, regionName.IOHPL},
-                        {regionName.MT: lambda state: rules.mt_jiggy(state), regionName.IOHPL: lambda state: rules.WH_to_PL(state)})
+                        {regionName.MT: lambda state: rules.mt_jiggy(state), 
+                         regionName.IOHPL: lambda state: rules.WH_to_PL(state)})
 
     region_MT = multiworld.get_region(regionName.MT, player)
     region_MT.add_exits({regionName.TL_HATCH, regionName.GM},
