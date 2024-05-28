@@ -5,6 +5,7 @@
  - Logic fixes:
    - Ledge Doubloons (Advanced and Glitched)
    - Oogle Boogle Jiggy (Glitched)
+   - Pot o' Gold (Beginner and Normal)
 
 # 1.6.2-beta
  - Token Hunt will always generate 15 tokens.
