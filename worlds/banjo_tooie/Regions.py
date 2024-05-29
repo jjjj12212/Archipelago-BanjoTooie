@@ -683,10 +683,12 @@ def connect_regions(self):
     
     region_GI2 = multiworld.get_region(regionName.GI2, player)
     region_GI2.add_exits({regionName.GIO, regionName.GI1, regionName.GI3ALL},
-                        {regionName.GI1: lambda state: rules.F2_to_F1(state), regionName.GI3ALL: lambda state: rules.F2_to_F3(state)})
+                        {regionName.GI1: lambda state: rules.F2_to_F1(state),
+                         regionName.GI3ALL: lambda state: rules.F2_to_F3(state)})
     
     region_GI3ALL = multiworld.get_region(regionName.GI3ALL, player)
-    region_GI3ALL.add_exits({regionName.GIO, regionName.GI2})
+    region_GI3ALL.add_exits({regionName.GIO, regionName.GI2}, {
+                            regionName.GI2: lambda state: rules.F3_to_F2(state)})
 
     region_CK = multiworld.get_region(regionName.CK, player)
     region_CK.add_exits({regionName.H1},
