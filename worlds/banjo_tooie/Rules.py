@@ -151,7 +151,7 @@ class BanjoTooieRules:
                 locationName.MUMBOTKNGAME5: lambda state: self.jiggy_peril(state),
                 locationName.MUMBOTKNGAME6: lambda state: self.jiggy_balloon_burst(state),
                 locationName.MUMBOTKNGAME7: lambda state: self.jiggy_sub_challenge(state),
-                locationName.MUMBOTKNGAME8: lambda state: state.has(itemName.BBLASTER, self.player),
+                locationName.MUMBOTKNGAME8: lambda state: self.jiggy_chompa(state),
                 locationName.MUMBOTKNGAME9: lambda state: self.jiggy_clinkers(state),
                 locationName.MUMBOTKNGAME10: lambda state: self.jiggy_twinkly(state),
                 locationName.MUMBOTKNGAME11: lambda state: self.jiggy_hfp_kickball(state),
@@ -256,7 +256,7 @@ class BanjoTooieRules:
             locationName.JIGGYTD3:  lambda state: self.jiggy_scrotty(state),
             locationName.JIGGYTD4:  lambda state: self.can_beat_terry(state),
             locationName.JIGGYTD5:  lambda state: self.jiggy_oogle_boogle(state),
-            locationName.JIGGYTD6:  lambda state: state.has(itemName.BBLASTER, self.player),
+            locationName.JIGGYTD6:  lambda state: self.jiggy_chompa(state),
             locationName.JIGGYTD7:  lambda state: self.jiggy_terry_kids(state),
             locationName.JIGGYTD8:  lambda state: self.jiggy_stomping_plains(state),
             locationName.JIGGYTD9:  lambda state: self.jiggy_rocknuts(state),
@@ -1094,6 +1094,33 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 3: # glitched
             logic = (self.oogle_boogles_open(state) or self.clockworkWarp(state))\
                     and self.has_fire(state) and state.has(itemName.GGRAB, self.player) and state.has(itemName.BDRILL, self.player)
+        return logic
+
+    def jiggy_chompa(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.BBLASTER, self.player) and (
+                ((self.hasBKMove(state, itemName.TJUMP) or state.has(itemName.GGRAB, self.player)) and self.hasBKMove(state, itemName.FPAD)
+                 or (state.has(itemName.EGGAIM, self.player) and self.has_explosives(state)))
+            )
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.BBLASTER, self.player) and (
+                ((self.hasBKMove(state, itemName.TJUMP) or state.has(itemName.GGRAB, self.player)) and self.hasBKMove(state, itemName.FPAD)
+                 or (state.has(itemName.EGGAIM, self.player) and self.has_explosives(state) and state.has(itemName.SPRINGB, self.player))
+                 or (state.has(itemName.SPRINGB, self.player) and self.veryLongJump(state)))
+            )
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.BBLASTER, self.player) and (
+                ((self.hasBKMove(state, itemName.TJUMP) or state.has(itemName.GGRAB, self.player)) and self.hasBKMove(state, itemName.FPAD)
+                 or (state.has(itemName.EGGAIM, self.player) and self.has_explosives(state) and state.has(itemName.SPRINGB, self.player))
+                 or (state.has(itemName.SPRINGB, self.player) and self.veryLongJump(state)))
+            )
+        elif self.world.options.logic_type == 3: # glitched
+            logic = state.has(itemName.BBLASTER, self.player) and (
+                ((self.hasBKMove(state, itemName.TJUMP) or state.has(itemName.GGRAB, self.player)) and self.hasBKMove(state, itemName.FPAD)
+                 or (state.has(itemName.EGGAIM, self.player) and self.has_explosives(state) and state.has(itemName.SPRINGB, self.player))
+                 or (state.has(itemName.SPRINGB, self.player) and self.veryLongJump(state)))
+            )
         return logic
 
     def jiggy_terry_kids(self, state: CollectionState) -> bool:
