@@ -473,6 +473,7 @@ class BanjoTooieWorld(World):
         btoptions['boss_hunt_length'] = int(self.options.boss_hunt_length.value)
         btoptions['jinjo_family_rescue_length'] = int(self.options.jinjo_family_rescue_length.value)
         btoptions['token_hunt_length'] = int(self.options.token_hunt_length.value)
+        btoptions['logic_type'] = int(self.options.logic_type.value)
         # btoptions['warp_traps'] = int(self.options.warp_traps.value)
         btoptions['skip_klungo'] = "true" if self.options.skip_klungo == 1 else "false"
         return btoptions
