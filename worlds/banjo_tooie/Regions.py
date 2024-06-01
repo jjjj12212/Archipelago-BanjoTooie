@@ -158,6 +158,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GEGGS,
         locationName.NOTEIH5,
         locationName.NOTEIH6,
+    ],
+    regionName.IOHPGU:   [
         locationName.NOTEIH7,
         locationName.NOTEIH8,
     ],
@@ -621,9 +623,14 @@ def connect_regions(self):
      regionName.WW: lambda state: rules.ggm_to_ww(state)})
     
     region_PG = multiworld.get_region(regionName.IOHPG, player)
-    region_PG.add_exits({regionName.WW, regionName.IOHWL},
+    region_PG.add_exits({regionName.WW, regionName.IOHPGU},
     {regionName.WW: lambda state: rules.ww_jiggy(state),
-     regionName.IOHWL: lambda state: rules.hasBKMove(state, itemName.DIVE) and state.has(itemName.TTORP, player)})
+     regionName.IOHPGU: lambda state: rules.hasBKMove(state, itemName.DIVE)})
+    
+    region_PGU = multiworld.get_region(regionName.IOHPGU, player)
+    region_PGU.add_exits({regionName.IOHWL, regionName.IOHPG},
+    {regionName.IOHPG: lambda state: rules.hasBKMove(state, itemName.TJUMP),
+     regionName.IOHWL: lambda state: state.has(itemName.TTORP, player)})
     
     region_WW = multiworld.get_region(regionName.WW, player)
     region_WW.add_exits({regionName.IOHPG, regionName.CHUFFY},
@@ -648,8 +655,8 @@ def connect_regions(self):
                          regionName.JR: lambda state: rules.HFP_to_JRL(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, player)})
     region_IOHWL = multiworld.get_region(regionName.IOHWL, player)
-    region_IOHWL.add_exits({regionName.IOHPG, regionName.IOHQM, regionName.TL, regionName.CC},
-                        {regionName.IOHPG: lambda state: rules.WL_to_PG(state),
+    region_IOHWL.add_exits({regionName.IOHPGU, regionName.IOHQM, regionName.TL, regionName.CC},
+                        {regionName.IOHPGU: lambda state: rules.WL_to_PGU(state),
                          regionName.IOHQM: lambda state: state.has(itemName.SPRINGB, player),
                          regionName.TL: lambda state: rules.tdl_jiggy(state),
                          regionName.CC: lambda state: rules.ccl_jiggy(state)})
