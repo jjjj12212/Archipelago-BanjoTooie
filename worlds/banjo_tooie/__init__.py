@@ -5,7 +5,7 @@ import typing
 from jinja2 import Environment, FileSystemLoader
 from .Items import BanjoTooieItem, all_item_table, all_group_table
 from .Locations import BanjoTooieLocation, all_location_table
-from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
+from .Regions import create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
 from .Names import itemName, locationName, regionName
