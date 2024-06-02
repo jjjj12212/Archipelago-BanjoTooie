@@ -2651,21 +2651,21 @@ class BanjoTooieRules:
     def prison_compound_open(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
             return (state.has(itemName.GEGGS, self.player) or self.check_mumbo_magic(state, itemName.MUMBOMT)) and \
-                    (self.mt_jiggy(state) or (self.can_access_hailfire(state, False) and self.HFP_to_MT(state)))
+                    (self.mt_jiggy(state) or (self.can_access_hailfire(state, True) and self.HFP_to_MT(state)))
         
         elif self.world.options.logic_type == 1: # normal
             return  (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
                  self.check_mumbo_magic(state, itemName.MUMBOMT)) and \
-                 (self.mt_jiggy(state) or (self.can_access_hailfire(state, False) and self.HFP_to_MT(state)))
+                 (self.mt_jiggy(state) or (self.can_access_hailfire(state, True) and self.HFP_to_MT(state)))
         
         elif self.world.options.logic_type == 2: # advanced
             return (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
                  self.check_mumbo_magic(state, itemName.MUMBOMT)) and \
-                    (self.mt_jiggy(state) or (self.can_access_hailfire(state, False) and self.HFP_to_MT(state)))
+                    (self.mt_jiggy(state) or (self.can_access_hailfire(state, True) and self.HFP_to_MT(state)))
         elif self.world.options.logic_type == 3: # glitched
             return (state.has(itemName.GEGGS, self.player) or state.has(itemName.CEGGS, self.player) or \
                  self.check_mumbo_magic(state, itemName.MUMBOMT)) and \
-                    (self.mt_jiggy(state) or (self.can_access_hailfire(state, False) and self.HFP_to_MT(state)))
+                    (self.mt_jiggy(state) or (self.can_access_hailfire(state, True) and self.HFP_to_MT(state)))
         
     def dilberta_free(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
