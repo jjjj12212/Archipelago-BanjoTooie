@@ -5,7 +5,7 @@ import typing
 from jinja2 import Environment, FileSystemLoader
 from .Items import BanjoTooieItem, all_item_table, all_group_table
 from .Locations import BanjoTooieLocation, all_location_table
-from .Regions import BANJOTOOIEREGIONS, create_regions, connect_regions
+from .Regions import create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
 from .Names import itemName, locationName, regionName
@@ -487,6 +487,7 @@ class BanjoTooieWorld(World):
         btoptions['boss_hunt_length'] = int(self.options.boss_hunt_length.value)
         btoptions['jinjo_family_rescue_length'] = int(self.options.jinjo_family_rescue_length.value)
         btoptions['token_hunt_length'] = int(self.options.token_hunt_length.value)
+        btoptions['logic_type'] = int(self.options.logic_type.value)
         # btoptions['warp_traps'] = int(self.options.warp_traps.value)
         btoptions['skip_klungo'] = "true" if self.options.skip_klungo == 1 else "false"
         return btoptions

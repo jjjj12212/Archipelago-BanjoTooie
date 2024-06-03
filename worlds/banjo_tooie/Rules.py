@@ -1931,7 +1931,8 @@ class BanjoTooieRules:
     def cheato_seemee(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.TTORP, self.player) and (state.has(itemName.MUMBOJR, self.player) or self.has_explosives(state))
+            logic = state.has(itemName.TTORP, self.player) and (state.has(itemName.MUMBOJR, self.player) or self.has_explosives(state) or \
+                    state.has(itemName.CEGGS, self.player))
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 2: # advanced
@@ -2944,26 +2945,29 @@ class BanjoTooieRules:
     def prison_compound_open(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
             return self.can_access_mt(state) and \
-                (self.has_explosives(state) or self.check_mumbo_magic(state, itemName.MUMBOMT))
+                (state.has(itemName.GEGGS, self.player) or self.check_mumbo_magic(state, itemName.MUMBOMT))
         
         elif self.world.options.logic_type == 1: # normal
             return self.can_access_mt(state) and \
                 (self.has_explosives(state) or \
-                 self.check_mumbo_magic(state, itemName.MUMBOMT))
+                 self.check_mumbo_magic(state, itemName.MUMBOMT)) and \
+                 (self.mt_jiggy(state) or (self.can_access_hailfire(state, True) and self.HFP_to_MT(state)))
         
         elif self.world.options.logic_type == 2: # advanced
             return self.can_access_mt(state) and \
                 (self.has_explosives(state) or \
-                 self.check_mumbo_magic(state, itemName.MUMBOMT))
+                 self.check_mumbo_magic(state, itemName.MUMBOMT)) and \
+                 (self.mt_jiggy(state) or (self.can_access_hailfire(state, True) and self.HFP_to_MT(state)))
         elif self.world.options.logic_type == 3: # glitched
             return self.can_access_mt(state) and \
                 (self.has_explosives(state) or \
-                 self.check_mumbo_magic(state, itemName.MUMBOMT))
+                 self.check_mumbo_magic(state, itemName.MUMBOMT)) and \
+                 (self.mt_jiggy(state) or (self.can_access_hailfire(state, True) and self.HFP_to_MT(state)))
         
     def dilberta_free(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
             return self.prison_compound_open(state) and state.has(itemName.BDRILL, self.player) and \
-                    self.check_humba_magic(state, itemName.HUMBAMT)
+                    self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT)
         
         elif self.world.options.logic_type == 1: # normal
             return self.prison_compound_open(state) and state.has(itemName.BDRILL, self.player)
@@ -3092,25 +3096,6 @@ class BanjoTooieRules:
 
     def can_use_battery(self, state: CollectionState) -> bool:
         return self.check_solo_moves(state, itemName.PACKWH) and self.check_solo_moves(state, itemName.TAXPACK)
-
-    def can_access_mt(self, state: CollectionState) -> bool: #1
-        if self.world.worlds_randomized == True:
-            return state.has(itemName.MTA, self.player)
-        else:
-            amt = self.world.randomize_worlds[regionName.MT]
-            logic = True
-            if self.world.options.logic_type == 0: # beginner
-                logic = state.has(itemName.JIGGY, self.player, amt)
-            elif self.world.options.logic_type == 1: # normal
-                logic = state.has(itemName.JIGGY, self.player, amt) or \
-                (self.can_access_hailfire(state, False) and (self.has_explosives(state) or state.has(itemName.MUMBOHP, self.player)))
-            elif self.world.options.logic_type == 2: # advanced
-                logic = state.has(itemName.JIGGY, self.player, amt) or \
-                (self.can_access_hailfire(state, False) and (self.has_explosives(state) or state.has(itemName.MUMBOHP, self.player)))
-            elif self.world.options.logic_type == 3: # glitched
-                logic = state.has(itemName.JIGGY, self.player, amt) or \
-                (self.can_access_hailfire(state, False) and (self.has_explosives(state) or state.has(itemName.MUMBOHP, self.player)))
-            return logic
     
     def can_access_JSG(self, state: CollectionState) -> bool:
         logic = True
