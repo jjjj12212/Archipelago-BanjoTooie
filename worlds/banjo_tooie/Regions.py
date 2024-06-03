@@ -1,3 +1,4 @@
+import copy
 import typing
 from BaseClasses import Region
 
@@ -509,55 +510,54 @@ def create_regions(self):
     multiworld = self.multiworld
     player = self.player
     active_locations = self.location_name_to_id
+    region_map = copy.deepcopy(BANJOTOOIEREGIONS)
 
     if multiworld.worlds[player].options.victory_condition.value == 1 or multiworld.worlds[player].options.victory_condition.value == 4:
-        BANJOTOOIEREGIONS[regionName.MT].append(locationName.MUMBOTKNGAME1)
-        BANJOTOOIEREGIONS[regionName.GM].append(locationName.MUMBOTKNGAME2)
-        BANJOTOOIEREGIONS[regionName.WW].append(locationName.MUMBOTKNGAME3)
-        BANJOTOOIEREGIONS[regionName.WW].append(locationName.MUMBOTKNGAME4)
-        BANJOTOOIEREGIONS[regionName.WW].append(locationName.MUMBOTKNGAME5)
-        BANJOTOOIEREGIONS[regionName.WW].append(locationName.MUMBOTKNGAME6)
-        BANJOTOOIEREGIONS[regionName.JR].append(locationName.MUMBOTKNGAME7)
-        BANJOTOOIEREGIONS[regionName.TL].append(locationName.MUMBOTKNGAME8)
-        BANJOTOOIEREGIONS[regionName.GI3ALL].append(locationName.MUMBOTKNGAME9)
-        BANJOTOOIEREGIONS[regionName.GI3ALL].append(locationName.MUMBOTKNGAME10)
-        BANJOTOOIEREGIONS[regionName.HP].append(locationName.MUMBOTKNGAME11)
-        BANJOTOOIEREGIONS[regionName.CC].append(locationName.MUMBOTKNGAME12)
-        BANJOTOOIEREGIONS[regionName.CC].append(locationName.MUMBOTKNGAME13)
-        BANJOTOOIEREGIONS[regionName.CC].append(locationName.MUMBOTKNGAME14)
-        BANJOTOOIEREGIONS[regionName.CC].append(locationName.MUMBOTKNGAME15)
+        region_map[regionName.MT].append(locationName.MUMBOTKNGAME1)
+        region_map[regionName.GM].append(locationName.MUMBOTKNGAME2)
+        region_map[regionName.WW].append(locationName.MUMBOTKNGAME3)
+        region_map[regionName.WW].append(locationName.MUMBOTKNGAME4)
+        region_map[regionName.WW].append(locationName.MUMBOTKNGAME5)
+        region_map[regionName.WW].append(locationName.MUMBOTKNGAME6)
+        region_map[regionName.JR].append(locationName.MUMBOTKNGAME7)
+        region_map[regionName.TL].append(locationName.MUMBOTKNGAME8)
+        region_map[regionName.GI3ALL].append(locationName.MUMBOTKNGAME9)
+        region_map[regionName.GI3ALL].append(locationName.MUMBOTKNGAME10)
+        region_map[regionName.HP].append(locationName.MUMBOTKNGAME11)
+        region_map[regionName.CC].append(locationName.MUMBOTKNGAME12)
+        region_map[regionName.CC].append(locationName.MUMBOTKNGAME13)
+        region_map[regionName.CC].append(locationName.MUMBOTKNGAME14)
+        region_map[regionName.CC].append(locationName.MUMBOTKNGAME15)
 
     if multiworld.worlds[player].options.victory_condition.value == 2 or multiworld.worlds[player].options.victory_condition.value == 4:
-        BANJOTOOIEREGIONS[regionName.MT].append(locationName.MUMBOTKNBOSS1)
-        BANJOTOOIEREGIONS[regionName.GM].append(locationName.MUMBOTKNBOSS2)
-        BANJOTOOIEREGIONS[regionName.WW].append(locationName.MUMBOTKNBOSS3)
-        BANJOTOOIEREGIONS[regionName.JR].append(locationName.MUMBOTKNBOSS4)
-        BANJOTOOIEREGIONS[regionName.TL].append(locationName.MUMBOTKNBOSS5)
-        BANJOTOOIEREGIONS[regionName.GI3ALL].append(locationName.MUMBOTKNBOSS6)
-        BANJOTOOIEREGIONS[regionName.HP].append(locationName.MUMBOTKNBOSS7)
-        BANJOTOOIEREGIONS[regionName.CC].append(locationName.MUMBOTKNBOSS8)
+        region_map[regionName.MT].append(locationName.MUMBOTKNBOSS1)
+        region_map[regionName.GM].append(locationName.MUMBOTKNBOSS2)
+        region_map[regionName.WW].append(locationName.MUMBOTKNBOSS3)
+        region_map[regionName.JR].append(locationName.MUMBOTKNBOSS4)
+        region_map[regionName.TL].append(locationName.MUMBOTKNBOSS5)
+        region_map[regionName.GI3ALL].append(locationName.MUMBOTKNBOSS6)
+        region_map[regionName.HP].append(locationName.MUMBOTKNBOSS7)
+        region_map[regionName.CC].append(locationName.MUMBOTKNBOSS8)
 
     if multiworld.worlds[player].options.victory_condition.value == 3 or multiworld.worlds[player].options.victory_condition.value == 4:
-        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO1)
-        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO2)
-        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO3)
-        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO4)
-        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO5)
-        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO6)
-        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO7)
-        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO8)
-        BANJOTOOIEREGIONS[regionName.IOHJV].append(locationName.MUMBOTKNJINJO9)
-    
+        region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO1)
+        region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO2)
+        region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO3)
+        region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO4)
+        region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO5)
+        region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO6)
+        region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO7)
+        region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO8)
+        region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO9)
+
     if multiworld.worlds[player].options.cheato_rewards.value == True:
-        BANJOTOOIEREGIONS[regionName.SM].append(locationName.CHEATOR1)
-        BANJOTOOIEREGIONS[regionName.SM].append(locationName.CHEATOR2)
-        BANJOTOOIEREGIONS[regionName.SM].append(locationName.CHEATOR3)
-        BANJOTOOIEREGIONS[regionName.SM].append(locationName.CHEATOR4)
-        BANJOTOOIEREGIONS[regionName.SM].append(locationName.CHEATOR5)
-
-
+        region_map[regionName.SM].append(locationName.CHEATOR1)
+        region_map[regionName.SM].append(locationName.CHEATOR2)
+        region_map[regionName.SM].append(locationName.CHEATOR3)
+        region_map[regionName.SM].append(locationName.CHEATOR4)
+        region_map[regionName.SM].append(locationName.CHEATOR5)
     multiworld.regions += [create_region(multiworld, player, active_locations, region, locations) for region, locations in
-                           BANJOTOOIEREGIONS.items()]
+                           region_map.items()]
     
     if multiworld.worlds[player].options.victory_condition == 0:
         multiworld.get_location(locationName.HAG1, player).place_locked_item(
