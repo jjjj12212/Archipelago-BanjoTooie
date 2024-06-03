@@ -1,7 +1,7 @@
 from BaseClasses import CollectionState
 from typing import TYPE_CHECKING
 from .Names import regionName, itemName, locationName
-from .Items import BanjoTooieItem, all_item_table, jiggy_table, all_group_table
+from .Items import BanjoTooieItem, bk_moves_table
 from worlds.generic.Rules import add_rule, set_rule, forbid_item, add_item_rule
 
 # I don't know what is going on here, but it works.
@@ -127,7 +127,7 @@ class BanjoTooieRules:
             itemName.PJINJO,
             itemName.BKJINJO,
         ]
-        
+    
 
         if self.world.options.skip_puzzles == True:
             
@@ -3929,6 +3929,8 @@ class BanjoTooieRules:
         if self.world.options.randomize_bk_moves == 0: # Not randomised
             return True
         elif self.world.options.randomize_bk_moves == 1 and move not in [itemName.DIVE, itemName.FPAD, itemName.FFLIP, itemName.EGGSHOOT, itemName.ROLL]: # McJiggy Special, not randomised.
+            return True
+        elif self.world.options.randomize_bk_moves == 2 and move not in bk_moves_table.keys():
             return True
         return state.has(move, self.player)
     
