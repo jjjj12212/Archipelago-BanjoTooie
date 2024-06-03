@@ -127,7 +127,7 @@ class BanjoTooieRules:
             itemName.PJINJO,
             itemName.BKJINJO,
         ]
-    
+        
 
         if self.world.options.skip_puzzles == True:
             
@@ -738,12 +738,12 @@ class BanjoTooieRules:
             logic = state.has(itemName.SPRINGB, self.player) or \
                     ((self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)) and \
                      self.GM_boulders(state))\
-                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = state.has(itemName.SPRINGB, self.player) or \
                     ((self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)) and \
                      self.GM_boulders(state))\
-                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    or self.clockwork_shot(state)
         return logic
     
     def jiggy_power_hut(self, state: CollectionState) -> bool:
@@ -1024,11 +1024,11 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = self.has_explosives(state) and \
                      state.has(itemName.SPLITUP, self.player) and self.check_solo_moves(state, itemName.GLIDE)\
-                     or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                     or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.has_explosives(state) and \
                      state.has(itemName.SPLITUP, self.player) and self.check_solo_moves(state, itemName.GLIDE)\
-                     or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                     or self.clockwork_shot(state)
         return logic
     
     def jiggy_merry_maggie(self, state: CollectionState) -> bool:
@@ -1257,9 +1257,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.SPLITUP, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.SPLITUP, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = state.has(itemName.SPLITUP, self.player) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.SPLITUP, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = state.has(itemName.SPLITUP, self.player) or self.clockwork_shot(state)
         return logic
 
     def jiggy_qa(self, state: CollectionState) -> bool:
@@ -1287,9 +1287,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.SPLITUP, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.SPLITUP, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = state.has(itemName.SPLITUP, self.player) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.SPLITUP, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = state.has(itemName.SPLITUP, self.player) or self.clockwork_shot(state)
         return logic
     
     def jiggy_compactor(self, state: CollectionState) -> bool:
@@ -1393,7 +1393,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 3: # glitched
             logic = self.can_beat_king_coal(state) and state.has(itemName.GEGGS, self.player) and \
                     state.has(itemName.TRAINSWHP1, self.player) and state.has(itemName.TRAINSWHP2, self.player) and self.can_access_witchyworld(state, False)\
-                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    or self.clockwork_shot(state)
         return logic
 
     def jiggy_oil_drill(self, state: CollectionState) -> bool:
@@ -1695,13 +1695,13 @@ class BanjoTooieRules:
                     and state.has(itemName.GGRAB, self.player))\
                     or ((self.has_explosives(state))\
                     and (self.check_solo_moves(state, itemName.GLIDE) or (self.check_solo_moves(state, itemName.LSPRING) and \
-                    self.check_solo_moves(state, itemName.WWHACK)))) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    self.check_solo_moves(state, itemName.WWHACK)))) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = ((self.has_explosives(state) or state.has(itemName.BDRILL, self.player))\
                     and state.has(itemName.GGRAB, self.player))\
                     or ((self.has_explosives(state))\
                     and (self.check_solo_moves(state, itemName.GLIDE) or (self.check_solo_moves(state, itemName.LSPRING) and \
-                    self.check_solo_moves(state, itemName.WWHACK)))) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    self.check_solo_moves(state, itemName.WWHACK)))) or self.clockwork_shot(state)
         return logic
     
     def honeycomb_styracosaurus(self, state: CollectionState) -> bool:
@@ -1713,11 +1713,11 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = (state.has(itemName.BDRILL, self.player) and state.has(itemName.SPLITUP, self.player)) or \
                     (self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.GLIDE))\
-                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = (state.has(itemName.BDRILL, self.player) and state.has(itemName.SPLITUP, self.player)) or \
                     (self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.GLIDE))\
-                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    or self.clockwork_shot(state)
         return logic
     
     def honeycomb_floor3(self, state: CollectionState) -> bool:
@@ -1770,12 +1770,12 @@ class BanjoTooieRules:
             logic = state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING) or \
                     self.check_solo_moves(state, itemName.GLIDE) or (state.has(itemName.SPLITUP, self.player) and \
                      state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, self.player))\
-                     or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                     or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING) or \
                     self.check_solo_moves(state, itemName.GLIDE) or (state.has(itemName.SPLITUP, self.player) and \
                      state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, self.player))\
-                     or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                     or self.clockwork_shot(state)
         return logic
     
     def honeycomb_lavaside(self, state: CollectionState) -> bool:
@@ -1798,10 +1798,10 @@ class BanjoTooieRules:
             logic = self.hasBKMove(state, itemName.TTROT) or state.has(itemName.SPLITUP, self.player)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.hasBKMove(state, itemName.TTROT) or state.has(itemName.SPLITUP, self.player)\
-                  or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                  or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.hasBKMove(state, itemName.TTROT) or state.has(itemName.SPLITUP, self.player)\
-                  or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                  or self.clockwork_shot(state)
         return logic
     
     def cheato_snakehead(self, state: CollectionState) -> bool:
@@ -1898,11 +1898,11 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.GGRAB, self.player) or (self.check_solo_moves(state, itemName.LSPRING) and \
                     (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)))\
-                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = state.has(itemName.GGRAB, self.player) or (self.check_solo_moves(state, itemName.LSPRING) and \
                     (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)))\
-                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    or self.clockwork_shot(state)
         return logic
     
     def cheato_inferno(self, state: CollectionState) -> bool:
@@ -2067,10 +2067,10 @@ class BanjoTooieRules:
             logic = self.BKSpringPad(state) or self.hasBKMove(state, itemName.FPAD)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.BKSpringPad(state) or self.hasBKMove(state, itemName.FPAD) or\
-                (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.BKSpringPad(state) or self.hasBKMove(state, itemName.FPAD) or\
-                (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                self.clockwork_shot(state)
         return logic
     
     def glowbo_JSG(self, state: CollectionState) -> bool:
@@ -2140,9 +2140,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.hasBKMove(state, itemName.CLIMB)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.hasBKMove(state, itemName.CLIMB) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.hasBKMove(state, itemName.CLIMB) or (self.clockwork_shot(state) and self.can_access_clifftop(state, False))
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.hasBKMove(state, itemName.CLIMB) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.hasBKMove(state, itemName.CLIMB) or (self.clockwork_shot(state) and self.can_access_clifftop(state, False))
         return logic
 
     def mega_glowbo(self, state: CollectionState) -> bool:
@@ -2156,11 +2156,11 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.TTORP, self.player) and state.has(itemName.IKEY, self.player)\
                     and self.hasBKMove(state, itemName.DIVE) and\
-                    (self.hasBKMove(state, itemName.TJUMP) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player)))
+                    (self.hasBKMove(state, itemName.TJUMP) or self.clockwork_shot(state))
         elif self.world.options.logic_type == 3: # glitched
             logic = state.has(itemName.TTORP, self.player) and state.has(itemName.IKEY, self.player)\
                     and self.hasBKMove(state, itemName.DIVE) and\
-                    (self.hasBKMove(state, itemName.TJUMP) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player)))
+                    (self.hasBKMove(state, itemName.TJUMP) or self.clockwork_shot(state))
         return logic
 
     def ice_key(self, state: CollectionState) -> bool:
@@ -2170,9 +2170,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or self.clockwork_shot(state)
         return logic
 
     def pink_egg(self, state: CollectionState) -> bool:
@@ -2194,9 +2194,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or self.clockwork_shot(state)
         return logic
     
     def jinjo_plateau(self, state: CollectionState) -> bool:
@@ -2218,9 +2218,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.CLAWBTS, self.player) and self.hasBKMove(state, itemName.CLIMB)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (state.has(itemName.CLAWBTS, self.player) and self.hasBKMove(state, itemName.CLIMB)) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = (state.has(itemName.CLAWBTS, self.player) and self.hasBKMove(state, itemName.CLIMB)) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (state.has(itemName.CLAWBTS, self.player) and self.hasBKMove(state, itemName.CLIMB)) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = (state.has(itemName.CLAWBTS, self.player) and self.hasBKMove(state, itemName.CLIMB)) or self.clockwork_shot(state)
         return logic
 
     def jinjo_wasteland(self, state: CollectionState) -> bool:
@@ -2231,10 +2231,10 @@ class BanjoTooieRules:
             logic = (state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST)) and self.hasBKMove(state, itemName.FFLIP)
         elif self.world.options.logic_type == 2: # advanced
             logic = ((state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST)) and self.hasBKMove(state, itemName.FFLIP))\
-                        or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                        or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = ((state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST)) and self.hasBKMove(state, itemName.FFLIP))\
-                        or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                        or self.clockwork_shot(state)
         return logic
     
     def jinjo_jadesnakegrove(self, state: CollectionState) -> bool:
@@ -2247,11 +2247,11 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = self.check_mumbo_magic(state,itemName.MUMBOMT) and (
                     (self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.BBUST) or state.has(itemName.GGRAB, self.player)) or\
-                    (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player)))
+                    self.clockwork_shot(state))
         elif self.world.options.logic_type == 3: # glitched
             logic = self.glitchedJSGAccess(state) and (
                     (self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.BBUST) or state.has(itemName.GGRAB, self.player)) or\
-                    (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player)))
+                    self.clockwork_shot(state))
         return logic
     
     def jinjo_stadium(self, state: CollectionState) -> bool:
@@ -2261,9 +2261,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.MT_flight_pad(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.MT_flight_pad(state) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.MT_flight_pad(state) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.MT_flight_pad(state) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.MT_flight_pad(state) or self.clockwork_shot(state)
         return logic
     
     def jinjo_pool(self, state: CollectionState) -> bool:
@@ -2413,9 +2413,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.check_solo_moves(state, itemName.LSPRING)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.check_solo_moves(state, itemName.LSPRING) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.check_solo_moves(state, itemName.LSPRING) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.check_solo_moves(state, itemName.LSPRING) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.check_solo_moves(state, itemName.LSPRING) or self.clockwork_shot(state)
         return logic
 
     def jinjo_floor4(self, state: CollectionState) -> bool:
@@ -2463,9 +2463,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.check_humba_magic(state, itemName.HUMBAHP)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.check_humba_magic(state, itemName.HUMBAHP) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.check_humba_magic(state, itemName.HUMBAHP) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.check_humba_magic(state, itemName.HUMBAHP) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.check_humba_magic(state, itemName.HUMBAHP) or self.clockwork_shot(state)
         return logic
 
     def jinjo_icegrotto(self, state: CollectionState) -> bool:
@@ -2478,10 +2478,10 @@ class BanjoTooieRules:
                     self.check_solo_moves(state, itemName.WWHACK))
         elif self.world.options.logic_type == 2: # advanced
             logic = self.check_solo_moves(state, itemName.GLIDE) or (self.check_solo_moves(state, itemName.LSPRING) and 
-                    self.check_solo_moves(state, itemName.WWHACK)) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    self.check_solo_moves(state, itemName.WWHACK)) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.check_solo_moves(state, itemName.GLIDE) or (self.check_solo_moves(state, itemName.LSPRING) and 
-                    self.check_solo_moves(state, itemName.WWHACK)) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    self.check_solo_moves(state, itemName.WWHACK)) or self.clockwork_shot(state)
         return logic
     
     def jinjo_mildred(self, state: CollectionState) -> bool:
@@ -2535,11 +2535,11 @@ class BanjoTooieRules:
             logic = state.has(itemName.SPLITUP, self.player) or (state.has(itemName.SPRINGB, self.player) and state.has(itemName.BDRILL, self.player))
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.SPLITUP, self.player)\
-                  or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))\
+                  or self.clockwork_shot(state)\
                   or (state.has(itemName.SPRINGB, self.player) and state.has(itemName.BDRILL, self.player))
         elif self.world.options.logic_type == 3: # glitched
             logic = state.has(itemName.SPLITUP, self.player)\
-                  or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))\
+                  or self.clockwork_shot(state)\
                   or (state.has(itemName.SPRINGB, self.player) and state.has(itemName.BDRILL, self.player))
         return logic
 
@@ -2552,10 +2552,10 @@ class BanjoTooieRules:
             logic = state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)
         elif self.world.options.logic_type == 2: # advanced
             logic = ((state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST)) and self.hasBKMove(state, itemName.FFLIP))\
-                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = ((state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST)) and self.hasBKMove(state, itemName.FFLIP))\
-                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    or self.clockwork_shot(state)
         return logic
     
     def treble_gm(self, state: CollectionState) -> bool:
@@ -2626,10 +2626,10 @@ class BanjoTooieRules:
             logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or state.has(itemName.SPLITUP, self.player)
         elif self.world.options.logic_type == 2: # advanced
             logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or state.has(itemName.SPLITUP, self.player)\
-                  or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                  or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = (state.has(itemName.GEGGS, self.player) and state.has(itemName.EGGAIM, self.player)) or state.has(itemName.SPLITUP, self.player)\
-                  or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                  or self.clockwork_shot(state)
         return logic
     
 
@@ -2677,9 +2677,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.SPLITUP, self.player) and self.has_explosives(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (state.has(itemName.SPLITUP, self.player) and self.has_explosives(state)) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = (state.has(itemName.SPLITUP, self.player) and self.has_explosives(state)) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (state.has(itemName.SPLITUP, self.player) and self.has_explosives(state)) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = (state.has(itemName.SPLITUP, self.player) and self.has_explosives(state)) or self.clockwork_shot(state)
         return logic
     
     def doubloon_dirtpatch(self, state: CollectionState) -> bool:
@@ -2702,10 +2702,10 @@ class BanjoTooieRules:
             logic = (state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST)) and self.hasBKMove(state, itemName.FFLIP)
         elif self.world.options.logic_type == 2: # advanced
             logic = ((state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST)) and self.hasBKMove(state, itemName.FFLIP))\
-                        or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                        or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = ((state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST)) and self.hasBKMove(state, itemName.FFLIP))\
-                        or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                        or self.clockwork_shot(state)
         return logic
     
     def notes_ww_area51(self, state: CollectionState) -> bool:
@@ -2748,12 +2748,12 @@ class BanjoTooieRules:
             logic = (self.hasBKMove(state, itemName.FFLIP) or \
                     (self.hasBKMove(state, itemName.TJUMP) or (self.hasBKMove(state, itemName.TTROT) and self.hasBKMove(state, itemName.FLUTTER)))\
                         and (state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST)))\
-                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = (self.hasBKMove(state, itemName.FFLIP) or \
                         (self.hasBKMove(state, itemName.TJUMP) or (self.hasBKMove(state, itemName.TTROT) and self.hasBKMove(state, itemName.FLUTTER)))\
                         and (state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST)))\
-                        or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                        or self.clockwork_shot(state)
         return logic
     
     def notes_green_pile(self, state: CollectionState) -> bool:
@@ -2763,9 +2763,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.GGMSlope(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.GGMSlope(state) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.GGMSlope(state) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.GGMSlope(state) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.GGMSlope(state) or self.clockwork_shot(state)
         return logic
     
     # TODO: make something that is proper to every note
@@ -2776,9 +2776,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.GGMSlope(state) or self.hasBKMove(state, itemName.FFLIP)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.GGMSlope(state) or self.hasBKMove(state, itemName.FFLIP) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.GGMSlope(state) or self.hasBKMove(state, itemName.FFLIP) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.GGMSlope(state) or self.hasBKMove(state, itemName.FFLIP) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.GGMSlope(state) or self.hasBKMove(state, itemName.FFLIP) or self.clockwork_shot(state)
         return logic
     
     def notes_gm_mumbo(self, state: CollectionState) -> bool:
@@ -2788,9 +2788,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.canDoSmallElevation(state) or state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.canDoSmallElevation(state) or state.has(itemName.GGRAB, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.canDoSmallElevation(state) or state.has(itemName.GGRAB, self.player) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.canDoSmallElevation(state) or state.has(itemName.GGRAB, self.player) or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+            logic = self.canDoSmallElevation(state) or state.has(itemName.GGRAB, self.player) or self.clockwork_shot(state)
         return logic
 
     def placeholder_fuel_depot(self, state: CollectionState) -> bool:
@@ -2832,12 +2832,12 @@ class BanjoTooieRules:
             logic = self.can_access_gi_fl1_2fl2(state) or state.has(itemName.GGRAB, self.player) or \
                     self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.LSPRING)\
                     or self.check_solo_moves(state, itemName.LSPRING)\
-                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.can_access_gi_fl1_2fl2(state) or state.has(itemName.GGRAB, self.player) or \
                     self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.LSPRING)\
                     or self.check_solo_moves(state, itemName.LSPRING)\
-                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    or self.clockwork_shot(state)
         return logic
     
     def notes_ccl_silo(self, state: CollectionState) -> bool:
@@ -3220,11 +3220,11 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = (self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and\
                                                  self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state))\
-                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = (self.check_solo_moves(state, itemName.WWHACK) and self.check_solo_moves(state, itemName.LSPRING) and\
                                                  self.check_solo_moves(state, itemName.GLIDE) and self.GM_boulders(state))\
-                    or (state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
+                    or self.clockwork_shot(state)
         return logic
     
     def can_access_water_storage_jinjo_from_JRL(self, state):
