@@ -2647,13 +2647,13 @@ class BanjoTooieRules:
     def tswitch_ww(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.GGRAB, self.player)
+            logic = state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING)
+            logic = (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or self.check_solo_moves(state, itemName.LSPRING)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING)
+            logic = (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or self.check_solo_moves(state, itemName.LSPRING)
         elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.LSPRING)
+            logic = (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or self.check_solo_moves(state, itemName.LSPRING)
         return logic
     
     def tswitch_lavaside(self, state: CollectionState) -> bool:
@@ -3940,7 +3940,7 @@ class BanjoTooieRules:
         return state.has(itemName.PAGES, self.player, page_amt) and (self.hasBKMove(state, itemName.FPAD) or (self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.CLIMB)))
 
     def hasBKMove(self, state: CollectionState, move) -> bool:
-        if move not in [itemName.DIVE,itemName.FPAD,itemName.GRAT,itemName.ROLL,itemName.ARAT,itemName.BBARGE,itemName.TJUMP,itemName.FLUTTER,itemName.FFLIP,itemName.CLIMB,itemName.BEGG,itemName.TTROT,itemName.BBUST,itemName.WWING,itemName.SSTRIDE,itemName.TTRAIN,itemName.BBOMB,itemName.EGGAIM]:
+        if move not in [itemName.DIVE,itemName.FPAD,itemName.GRAT,itemName.ROLL,itemName.ARAT,itemName.BBARGE,itemName.TJUMP,itemName.FLUTTER,itemName.FFLIP,itemName.CLIMB,itemName.BEGG,itemName.TTROT,itemName.BBUST,itemName.WWING,itemName.SSTRIDE,itemName.TTRAIN,itemName.BBOMB,itemName.EGGAIM, itemName.EGGSHOOT]:
             raise Exception("Not a BK move! {}".format(move))
         if self.world.options.randomize_bk_moves == 0: # Not randomised
             return True
@@ -3960,7 +3960,7 @@ class BanjoTooieRules:
     
     def hasGroundAttack(self, state: CollectionState) -> bool:
         BKAttack = True in list(map(lambda move: self.hasBKMove(state, move),
-                [itemName.EGGSHOOT, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.GRAT, itemName.BDRILL, itemName.BBUST]))
+                [itemName.EGGSHOOT, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.GRAT, itemName.BBUST]))
         
         return BKAttack or state.has(itemName.BBASH, self.player)
     
@@ -4009,7 +4009,8 @@ class BanjoTooieRules:
         return logic
 
     def veryLongJump(self, state: CollectionState) -> bool:
-        return self.hasBKMove(state, itemName.TTROT) and (self.hasBKMove(state, itemName.FLUTTER) or self.hasBKMove(state, itemName.ARAT))
+        return self.hasBKMove(state, itemName.TTROT) and (self.hasBKMove(state, itemName.FLUTTER) or self.hasBKMove(state, itemName.ARAT)) or\
+                (self.hasBKMove(state, itemName.TJUMP) and self.hasBKMove(state, itemName.ROLL) and self.hasBKMove(state, itemName.FLUTTER))
     
     def extremelyLongJump(self, state: CollectionState) -> bool:
         logic = True
@@ -4027,6 +4028,30 @@ class BanjoTooieRules:
         return self.hasBKMove(state, itemName.TTROT) and state.has(itemName.HUMBAGM, self.player)
     
     def mumboGGM(self, state: CollectionState) -> bool:
+        return self.canDoSmallElevation(state) and state.has(itemName.MUMBOGM, self.player)
+    
+    def humbaWW(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = state.has(itemName.HUMBAWW) and self.hasBKMove(state, itemName.FFLIP) and state.has(itemName.GGRAB)
+        elif self.world.options.logic_type == 1: # normal
+            logic = state.has(itemName.HUMBAWW) and \
+                ((self.hasBKMove(state, itemName.FFLIP) and state.has(itemName.GGRAB)) \
+                 or (self.hasBKMove(state, itemName.CLIMB) and self.veryLongJump(state)))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = state.has(itemName.HUMBAWW) and \
+                ((self.hasBKMove(state, itemName.FFLIP) and state.has(itemName.GGRAB)) \
+                 or (self.hasBKMove(state, itemName.CLIMB) and self.veryLongJump(state) and self.hasBKMove(state, itemName.FFLIP))\
+                or (self.clockwork_shot(state) and self.hasBKMove(state, itemName.CLIMB)))
+        elif self.world.options.logic_type == 3: # glitched
+            # TODO: check if can shoot through van door
+            logic = state.has(itemName.HUMBAWW) and \
+                ((self.hasBKMove(state, itemName.FFLIP) and state.has(itemName.GGRAB)) \
+                 or (self.hasBKMove(state, itemName.CLIMB) and self.veryLongJump(state) and self.hasBKMove(state, itemName.FFLIP))\
+                or (self.clockwork_shot(state) and self.hasBKMove(state, itemName.CLIMB)))
+        return logic
+    
+    def mumboWW(self, state: CollectionState) -> bool:
         return self.canDoSmallElevation(state) and state.has(itemName.MUMBOGM, self.player)
     
     def mumboTDL(self, state: CollectionState) -> bool:
@@ -4060,6 +4085,9 @@ class BanjoTooieRules:
     def GGMSlope(self, state: CollectionState) -> bool:
         return self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TTRAIN)\
               or (self.GM_boulders(state) and self.hasBKMove(state, itemName.SPLITUP))
+    
+    def clockwork_shot(self, state: CollectionState) -> bool:
+        return state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player)
 
     def set_rules(self) -> None:
 
