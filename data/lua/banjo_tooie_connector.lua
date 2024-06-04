@@ -4230,7 +4230,7 @@ end
 function init_HONEYB_REWARDS()
     for k,v in pairs(NON_AGI_MAP['HONEYB'])
     do
-        HONEY_REWARDS[k] = false
+        HONEYB_REWARDS[k] = false
     end
 end
 
@@ -4259,7 +4259,7 @@ function watchHoneyB()
         local final_res = bit1 + bit2 + bit3
 
         for i = 1230997, final_res + base_location_id, 1 do
-            HONEY_REWARDS[tostring(i)] = true
+            HONEYB_REWARDS[tostring(i)] = true
         end
         --TODO: Loop through base_location_id UNTIL the end number
         -- if final_res >= 1
@@ -7417,7 +7417,7 @@ function initializeFlags()
                 BTRAMOBJ:clearFlag(0x19, 7) -- Full Jump
             end
             BTRAMOBJ:clearFlag(0x19, 2) -- Climb
-            BTRAMOBJ:clearFlag(0x19, 5) -- Feather Flap
+            BTRAMOBJ:clearFlag(0x19, 4) -- Feather Flap
             BTRAMOBJ:clearFlag(0x1A, 7) -- Full Jump
         end
         if ENABLE_AP_CHEATO_REWARDS == true then
