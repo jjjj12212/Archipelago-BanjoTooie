@@ -39,9 +39,13 @@ MTJSG = "Mayahem Temple - Jade Snake Grove"
 GM = "Glitter Gulch Mine"
 GMS = "Glitter Gulch Mine Station"
 GMWSJT = "Glitter Gulch Mine - Water Storage Jinjo Tank"
+
 WW = "Witchyworld"
 WWS = "Witchyworld Station"
-JR = "Jolly Roger's Lagoon"
+
+JR = "Jolly Roger's Lagoon - Town Center"
+JRU = "Jolly Roger's Lagoon - Underwater"
+JRU2 = "Jolly Roger's Lagoon - Underwater, Past the Octopus"
 
 TL = "Terrydactyland"
 TLS = "Terrydactyland Station"

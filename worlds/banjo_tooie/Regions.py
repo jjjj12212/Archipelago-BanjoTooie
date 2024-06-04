@@ -256,39 +256,18 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JRLDB30,
         locationName.JINJOJR1,
         locationName.JINJOJR2,
-        locationName.JINJOJR3,
-        locationName.JINJOJR4,
-        locationName.JINJOJR5,
-        locationName.JINJOGI3,
-        locationName.JIGGYJR1,
         locationName.JIGGYJR2,
-        locationName.JIGGYJR3,
         locationName.JIGGYJR4,
         locationName.JIGGYJR5,
-        locationName.JIGGYJR6,
-        locationName.JIGGYJR7,
-        locationName.JIGGYJR8,
         locationName.JIGGYJR9,
-        locationName.JIGGYJR10,
         locationName.GLOWBOJR1,
-        locationName.GLOWBOJR2,
-        locationName.HONEYCJR1,
-        locationName.HONEYCJR2,
         locationName.HONEYCJR3,
         locationName.CHEATOJR1,
-        locationName.CHEATOJR2,
-        locationName.CHEATOJR3,
         locationName.WWHACK,
-        locationName.TTORP,
         locationName.AUQAIM,
-        locationName.TREBLEJR,
         locationName.NOTEJRL1,
         locationName.NOTEJRL2,
         locationName.NOTEJRL3,
-        locationName.NOTEJRL4,
-        locationName.NOTEJRL5,
-        locationName.NOTEJRL6,
-        locationName.NOTEJRL7,
         locationName.NOTEJRL8,
         locationName.NOTEJRL9,
         locationName.NOTEJRL10,
@@ -298,6 +277,31 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEJRL14,
         locationName.NOTEJRL15,
         locationName.NOTEJRL16 
+    ],
+    regionName.JRU: [
+        locationName.JINJOGI3,     
+        locationName.JIGGYJR10,
+        locationName.CHEATOJR2,
+        locationName.NOTEJRL4,
+        locationName.NOTEJRL5,
+    ],
+    regionName.JRU2: [
+        locationName.JINJOJR3,
+        locationName.JINJOJR4,
+        locationName.JINJOJR5,
+        locationName.JIGGYJR1,
+        locationName.JIGGYJR3,
+        locationName.JIGGYJR6,
+        locationName.JIGGYJR7,
+        locationName.JIGGYJR8,
+        locationName.GLOWBOJR2,
+        locationName.HONEYCJR1,
+        locationName.HONEYCJR2,
+        locationName.CHEATOJR3,
+        locationName.TTORP,
+        locationName.TREBLEJR,
+        locationName.NOTEJRL6,
+        locationName.NOTEJRL7,
     ],
     regionName.IOHWL:   [
         locationName.JINJOIH2,
@@ -519,7 +523,7 @@ def create_regions(self):
         region_map[regionName.WW].append(locationName.MUMBOTKNGAME4)
         region_map[regionName.WW].append(locationName.MUMBOTKNGAME5)
         region_map[regionName.WW].append(locationName.MUMBOTKNGAME6)
-        region_map[regionName.JR].append(locationName.MUMBOTKNGAME7)
+        region_map[regionName.JRU2].append(locationName.MUMBOTKNGAME7)
         region_map[regionName.TL].append(locationName.MUMBOTKNGAME8)
         region_map[regionName.GI3ALL].append(locationName.MUMBOTKNGAME9)
         region_map[regionName.GI3ALL].append(locationName.MUMBOTKNGAME10)
@@ -533,7 +537,7 @@ def create_regions(self):
         region_map[regionName.MT].append(locationName.MUMBOTKNBOSS1)
         region_map[regionName.GM].append(locationName.MUMBOTKNBOSS2)
         region_map[regionName.WW].append(locationName.MUMBOTKNBOSS3)
-        region_map[regionName.JR].append(locationName.MUMBOTKNBOSS4)
+        region_map[regionName.JRU2].append(locationName.MUMBOTKNBOSS4)
         region_map[regionName.TL].append(locationName.MUMBOTKNBOSS5)
         region_map[regionName.GI3ALL].append(locationName.MUMBOTKNBOSS6)
         region_map[regionName.HP].append(locationName.MUMBOTKNBOSS7)
@@ -644,9 +648,17 @@ def connect_regions(self):
          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWIH, player)})
   
     region_JR = multiworld.get_region(regionName.JR, player)
-    region_JR.add_exits({regionName.GMWSJT, regionName.IOHCT},
-                        {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_JRL(state), 
+    region_JR.add_exits({regionName.JRU, regionName.IOHCT},
+                        {regionName.JRU: lambda state: rules.can_dive_in_JRL(state), 
                          regionName.IOHCT: lambda state: rules.JRL_to_CT(state)})
+    
+    region_JRU = multiworld.get_region(regionName.JRU, player)
+    region_JRU.add_exits({regionName.JRU2},
+                        {regionName.JRU2: lambda state: rules.can_reach_atlantis(state)})
+    
+    region_JRU2 = multiworld.get_region(regionName.JRU2, player)
+    region_JRU2.add_exits({regionName.GMWSJT},
+                        {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_JRL(state)})
 
     region_HP = multiworld.get_region(regionName.HP, player)
     region_HP.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.MT, regionName.JR, regionName.CHUFFY},

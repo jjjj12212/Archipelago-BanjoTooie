@@ -963,9 +963,9 @@ class BanjoTooieRules:
     def jiggy_sub_challenge(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.check_humba_magic(state, itemName.HUMBAJR) and self.can_reach_atlantis(state)
+            logic = self.check_humba_magic(state, itemName.HUMBAJR)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.check_humba_magic(state, itemName.HUMBAJR) and self.can_reach_atlantis(state)
+            logic = self.check_humba_magic(state, itemName.HUMBAJR)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.check_humba_magic(state, itemName.HUMBAJR)
         elif self.world.options.logic_type == 3: # glitched
@@ -2975,7 +2975,7 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             return self.check_mumbo_magic(state, itemName.MUMBOJR) and self.hasBKMove(state, itemName.DIVE)
         elif self.world.options.logic_type == 1: # normal
-            return (state.has(itemName.BDRILL, self.player) or self.check_mumbo_magic(state, itemName.MUMBOJR)) and self.hasBKMove(state, itemName.DIVE)
+            return (state.has(itemName.DAIR, self.player) or self.check_mumbo_magic(state, itemName.MUMBOJR)) and self.hasBKMove(state, itemName.DIVE)
         elif self.world.options.logic_type == 2: # advanced
             return self.hasBKMove(state, itemName.DIVE)
         elif self.world.options.logic_type == 3: # glitched
@@ -3289,9 +3289,9 @@ class BanjoTooieRules:
     def can_access_water_storage_jinjo_from_JRL(self, state):
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player)
+            logic = state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.can_reach_atlantis(state) and state.has(itemName.TTORP, self.player)
+            logic = state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.can_reach_atlantis(state) and state.has(itemName.IEGGS, self.player) and state.has(itemName.AUQAIM, self.player) and state.has(itemName.TTORP, self.player)
         elif self.world.options.logic_type == 3: # glitched
@@ -3792,6 +3792,18 @@ class BanjoTooieRules:
             logic = True
         return logic
     
+    def can_dive_in_jrl(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.long_swim(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.hasBKMove(state, itemName.DIVE)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.hasBKMove(state, itemName.DIVE)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.hasBKMove(state, itemName.DIVE)
+        return logic
+    
     def JRL_to_CT(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -4142,6 +4154,18 @@ class BanjoTooieRules:
     
     def clockwork_shot(self, state: CollectionState) -> bool:
         return state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player)
+
+    def can_dive_in_JRL(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.hasBKMove(state, itemName.DIVE) and state.has(itemName.MUMBOJR, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.hasBKMove(state, itemName.DIVE)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.hasBKMove(state, itemName.DIVE)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.hasBKMove(state, itemName.DIVE)
+        return logic
 
     def set_rules(self) -> None:
 
