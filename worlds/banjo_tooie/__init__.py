@@ -113,13 +113,15 @@ class BanjoTooieWorld(World):
             else:
                 item_classification = ItemClassification.progression
         if banjoItem.type == 'useful':
-            if banjoItem.btid == 1230513 and self.use_cheato_filler == False:
+            if banjoItem.btid == 1230513 and self.use_cheato_filler == False: #pages
                 if self.options.cheato_rewards.value == True:
                     item_classification = ItemClassification.progression
                 else:
                     item_classification = ItemClassification.useful
-            elif banjoItem.btid == 1230513 and self.use_cheato_filler == True:
+            elif banjoItem.btid == 1230513 and self.use_cheato_filler == True: #pages
                 item_classification = ItemClassification.filler
+            elif banjoItem.btid == 1230512 and self.options.honeyb_rewards.value == True: #Honeycombs
+                item_classification = ItemClassification.progression
             else:
                 item_classification = ItemClassification.useful
 
@@ -160,6 +162,20 @@ class BanjoTooieWorld(World):
                         for i in range(15):
                             itempool += [self.create_item(name)]
                     # EO Mumbo Token Hunt Item Amt
+
+                    #if none in pool
+                    elif item.code == 1230888:
+                        if self.options.cheato_rewards.value == True and self.options.randomize_bk_moves.value == 0:
+                            for i in range(5):
+                                itempool += [self.create_item(name)]
+                        if self.options.honeyb_rewards.value == True and self.options.randomize_bk_moves.value == 0: #10 if both options are on
+                            for i in range(5):
+                                itempool += [self.create_item(name)]
+                        if self.options.randomize_bk_moves.value == 1: # 2 moves won't be added to the pool
+                            for i in range(2):
+                                itempool += [self.create_item(name)]
+                    #end of none qty logic
+
                     else:
                         for i in range(id.qty):
                             if self.options.randomize_jinjos == False and self.jiggy_counter > 81 and item.code == 1230515:
@@ -231,12 +247,14 @@ class BanjoTooieWorld(World):
         if item.code in range(1230799, 1230805) and self.options.randomize_stop_n_swap == False:
             return False
 
-        if item.code in range(1230810, 1230815) and self.options.randomize_bk_moves.value == 0:
+        if item.code in range(1230810, 1230820) and self.options.randomize_bk_moves.value == 0:
+            return False
+        elif (item.code == 1230815 or item.code == 1230816) and self.options.randomize_bk_moves.value == 1: # talon trot and tall jump not in pool
             return False
         
-        if item.code == 1230888 and self.options.cheato_rewards.value == False:
+        if item.code == 1230888 and self.options.cheato_rewards.value == False and self.options.honeyb_rewards.value == False:
             return False
-        elif item.code == 1230888 and self.options.randomize_bk_moves.value != 0:
+        elif item.code == 1230888 and self.options.randomize_bk_moves.value == 2:
             return False
 
         return True
@@ -464,11 +482,13 @@ class BanjoTooieWorld(World):
         else:
             btoptions["skip_tot"] = "false"
         btoptions['honeycomb'] = "true" if self.options.randomize_honeycombs == 1 else "false"
+        btoptions['honeyb_rewards'] = "true" if self.options.honeyb_rewards == 1 else "false"
         btoptions['pages'] = "true" if self.options.randomize_cheato.value == True else "false"
         btoptions['cheato_rewards'] = "true" if self.options.cheato_rewards == 1 else "false"
         btoptions['moves'] = "true" if self.options.randomize_moves == 1 else "false"
         btoptions['bk_moves'] = int(self.options.randomize_bk_moves.value)
         btoptions['doubloons'] = "true" if self.options.randomize_doubloons == 1 else "false"
+        btoptions['magic'] = "true" if self.options.randomize_glowbos == 1 else "false"
         btoptions['minigames'] = 'skip' if self.options.speed_up_minigames == 1 else "full"
         btoptions['trebleclef'] = "true" if self.options.randomize_treble == 1 else "false"
         btoptions['skip_puzzles'] = "true" if self.options.skip_puzzles == 1 else "false"

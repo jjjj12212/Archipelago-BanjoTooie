@@ -196,6 +196,17 @@ class BanjoTooieRules:
                 locationName.CHEATOR5: lambda state: self.reach_cheato(state, 25),
             }
 
+        if self.world.options.honeyb_rewards.value == True:
+            self.honeyb_rewards_rules = {
+                locationName.HONEYBR1: lambda state: state.has(itemName.HONEY, self.player, 1),
+                locationName.HONEYBR2: lambda state: state.has(itemName.HONEY, self.player, 4),
+                locationName.HONEYBR3: lambda state: state.has(itemName.HONEY, self.player, 9),
+                locationName.HONEYBR4: lambda state: state.has(itemName.HONEY, self.player, 16),
+                locationName.HONEYBR5: lambda state: state.has(itemName.HONEY, self.player, 25),
+            }
+
+            
+
         self.train_rules = {
             locationName.CHUFFY: lambda state: self.can_beat_king_coal(state),
             locationName.TRAINSWIH: lambda state: state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP),
@@ -2106,7 +2117,7 @@ class BanjoTooieRules:
     def glowbo_wigwam(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.hasBKMove(state, itemName.FFLIP) and state.has(itemName.GGRAB)
+            logic = self.hasBKMove(state, itemName.FFLIP) and state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = ((self.hasBKMove(state, itemName.FFLIP) and state.has(itemName.GGRAB, self.player)) \
                     or (self.hasBKMove(state, itemName.CLIMB) and self.veryLongJump(state)))
@@ -2765,7 +2776,7 @@ class BanjoTooieRules:
     def notes_dive_of_death(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = ((state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or self.hasBKMove(state, itemName.CLIMB)) and self.hasBKMove(state, itemName.dive)
+            logic = ((state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or self.hasBKMove(state, itemName.CLIMB)) and self.hasBKMove(state, itemName.DIVE)
         elif self.world.options.logic_type == 1: # normal
             logic = ((state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or self.hasBKMove(state, itemName.CLIMB))
         elif self.world.options.logic_type == 2: # advanced
@@ -3494,13 +3505,13 @@ class BanjoTooieRules:
                 logic = state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, fromTrain)
             else:
                 logic = (state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, fromTrain)) or \
-                        (self.can_leave_GI_from_inside(state) and state.has(itemName.JIGGY, self.player, 28))
+                        (self.can_leave_GI_from_inside(state) and self.gi_jiggy(state))
         elif self.world.options.logic_type == 3: # glitched
             if fromTrain:
                 logic = state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, fromTrain)
             else:
                 logic = (state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, fromTrain)) or \
-                        (self.can_leave_GI_from_inside(state) and state.has(itemName.JIGGY, self.player, 28))
+                        (self.can_leave_GI_from_inside(state) and self.gi_jiggy(state))
         return logic
     
     def can_access_gruntyindustries_outside(self, state: CollectionState, fromTrain: bool) -> bool:
@@ -3910,7 +3921,7 @@ class BanjoTooieRules:
             if (self.can_beat_king_coal(state) and self.can_access_GM(state)) and self.TDL_train_station(state):
                 return True
             if (self.can_access_gruntyindustries_outside(state, True) and self.GI_train_station(state)) and \
-                (state.has(itemName.CLAWBTS, self.player)) and self.WW_train_station(state):
+                (state.has(itemName.CLAWBTS, self.player)) and self.TDL_train_station(state):
                 return True
         if station == "HFP":
             if(self.WW_train_station(state) and self.can_access_witchyworld(state, True)) and self.HFPF_train_station(state):
@@ -4090,7 +4101,7 @@ class BanjoTooieRules:
     def humbaWW(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.HUMBAWW, self.player) and self.hasBKMove(state, itemName.FFLIP) and state.has(itemName.GGRAB)
+            logic = state.has(itemName.HUMBAWW, self.player) and self.hasBKMove(state, itemName.FFLIP) and state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.HUMBAWW, self.player) and \
                 ((self.hasBKMove(state, itemName.FFLIP) and state.has(itemName.GGRAB, self.player)) \
@@ -4263,6 +4274,11 @@ class BanjoTooieRules:
             for location, rules in self.cheato_rewards_rules.items():
                 cheato = self.world.multiworld.get_location(location, self.player)
                 set_rule(cheato, rules)
+        
+        if self.world.options.honeyb_rewards.value == True:
+            for location, rules in self.honeyb_rewards_rules.items():
+                honeyb = self.world.multiworld.get_location(location, self.player)
+                set_rule(honeyb, rules)
 
         if self.world.options.victory_condition == 1:
             for location, rules in self.gametoken_rules.items():

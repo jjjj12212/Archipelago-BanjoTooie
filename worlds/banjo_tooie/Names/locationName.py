@@ -75,7 +75,7 @@ JINJOIH1 = "IoH: Wooded Hollow Jinjo"
 JINJOIH2 = "IoH: Wasteland Jinjo"
 JINJOIH3 = "IoH: Cliff Top Jinjo"
 JINJOIH4 = "IoH: Plateau Jinjo"
-JINJOIH5 = "Spiral Mountain: Jinjo"
+JINJOIH5 = "SM: Jinjo"
 
 #Jiggies
 JIGGYMT1  = "MT: Targitzan Jiggy"
@@ -444,6 +444,13 @@ CHEATOR2    = "SM: Cheato Reward 2"  #10 pages - Eggs
 CHEATOR3    = "SM: Cheato Reward 3"  #15 pages - Fallproof
 CHEATOR4    = "SM: Cheato Reward 4"  #20 pages - Honeyback
 CHEATOR5    = "SM: Cheato Reward 5"  #25 pages - Jukebox
+HONEYBR1    = "IoH: Honey B's Reward 1" # 1
+HONEYBR2    = "IoH: Honey B's Reward 2" # 3
+HONEYBR3    = "IoH: Honey B's Reward 3" # 5
+HONEYBR4    = "IoH: Honey B's Reward 4" # 7
+HONEYBR5    = "IoH: Honey B's Reward 5" # 9
+
+
 
 #Mumbo Token Locations
 MUMBOTKNBOSS1 = "MT: Targitzan Mumbo Token"

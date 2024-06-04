@@ -103,6 +103,11 @@ IHPLLoc_table = {
     locationName.NOTEIH3:   LocationData(1230930, 0x96, 1),
     locationName.NOTEIH4:   LocationData(1230931, 0x96, 2),
 
+    locationName.HONEYBR1:  LocationData(1230997, 0x98, 2),
+    locationName.HONEYBR2:  LocationData(1230998, 0x98, 3),
+    locationName.HONEYBR3:  LocationData(1230999, 0x98, None), #binary. bit 2 and 3 is set
+    locationName.HONEYBR4:  LocationData(1231000, 0x98, 4),
+    locationName.HONEYBR5:  LocationData(1231001, 0x98, None), #binary. bit 2 and 4 is set
 }
 
 GMLoc_table = {
