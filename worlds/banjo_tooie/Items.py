@@ -118,7 +118,7 @@ misc_collectable_table = {
     itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY),
     itemName.NOTE:          ItemData(1230797, 144, "progress", None),
     # itemName.WARPS: ItemData(1230799, 20, "trap", None),
-    itemName.NONE:          ItemData(1230888, 10, "filler", None) #qty is adjusted on generation
+    itemName.NONE:          ItemData(1230888, 0, "filler", None)
 }
 
 stop_n_swap_table = {

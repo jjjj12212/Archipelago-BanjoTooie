@@ -89,6 +89,7 @@ class BanjoTooieContext(CommonContext):
         self.location_table = {}
         self.movelist_table = {}
         self.cheatorewardslist_table = {}
+        self.honeybrewardslist_table = {}
         self.notelist_table = {}
         self.stationlist_table = {}
         self.jinjofamlist_table = {}
@@ -254,6 +255,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_moves": ctx.slot_data["moves"],
             "slot_bkmoves": ctx.slot_data["bk_moves"],
             "slot_cheatorewards": ctx.slot_data["cheato_rewards"],
+            "slot_honeybrewards": ctx.slot_data["honeyb_rewards"],
             "slot_doubloon": ctx.slot_data["doubloons"],
             "slot_minigames": ctx.slot_data["minigames"],
             "slot_treble": ctx.slot_data["trebleclef"],
@@ -480,6 +482,27 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             await ctx.send_msgs([{
                 "cmd": "LocationChecks",
                 "locations": cheatorewards
+            }])   
+
+    if ctx.slot_data["honeyb_rewards"] == "true" and ctx.sync_ready == True:
+         # Locations handling
+        honeybrewardslist = payload['honeyb_rewards']
+        honeybrewards = []
+
+        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
+        if isinstance(honeybrewardslist, list):
+            honeybrewardslist = {}
+
+        if ctx.honeybrewardslist_table != honeybrewardslist:
+            ctx.honeybrewardslist_table = honeybrewardslist
+
+            for locationId, value in honeybrewardslist.items():
+                if value == True:
+                    honeybrewards.append(int(locationId))
+
+            await ctx.send_msgs([{
+                "cmd": "LocationChecks",
+                "locations": honeybrewards
             }])   
 
     if ctx.slot_data["skip_puzzles"] == "true" and ctx.sync_ready == True:

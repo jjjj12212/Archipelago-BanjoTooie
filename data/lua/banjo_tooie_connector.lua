@@ -67,6 +67,7 @@ local ENABLE_AP_PAGES = false;
 local ENABLE_AP_MOVES = false; -- Enable AP Moves Logics
 local ENABLE_AP_BK_MOVES = 0; -- 0: disable 1: Talon Trot + Full Jump 2: ALL REMOVED
 local ENABLE_AP_CHEATO_REWARDS = false;
+local ENABLE_AP_HONEYB_REWARDS = false;
 local ENABLE_AP_DOUBLOONS = false;
 local ENABLE_AP_CHUFFY = false;
 local ENABLE_AP_JINJO = false;
@@ -1075,7 +1076,9 @@ local BKJINJOFAM = {} -- Jinjo Family check
 local UNLOCKED_WORLDS = {} -- Worlds unlocked
 local BKMYSTERY = {} -- Stop n Swap 
 local ROYSTEN = {} -- Roysten flags. Because the flags are separate from moves, we don't need to save this.
-local CHEATO_REWARDS = {} -- Original BK Moves Locations
+local CHEATO_REWARDS = {} -- Cheato Check Locations
+local HONEYB_REWARDS = {} -- Honey B Check Locations
+
 
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
@@ -3817,7 +3820,32 @@ local NON_AGI_MAP = {
             ['bit'] = 1,
             ['name'] = "Roll"
         },
-    }
+    },
+    ["HONEYB"] = {
+        ["1230997"] = {
+            ['addr'] = 0x98,
+            ['bit'] = 2,
+            ['name'] = "IoH: Honey B's Reward 1"
+        },
+        ["1230998"] = {
+            ['addr'] = 0x98,
+            ['bit'] = 3,
+            ['name'] = "IoH: Honey B's Reward 2"
+        },
+        ["1230999"] = {
+            ['addr'] = 0x98,
+            ['name'] = "IoH: Honey B's Reward 3"
+        },
+        ["1231000"] = {
+            ['addr'] = 0x98,
+            ['bit'] = 4,
+            ['name'] = "IoH: Honey B's Reward 4"
+        },
+        ["1231001"] = {
+            ['addr'] = 0x98,
+            ['name'] = "IoH: Honey B's Reward 5"
+        },
+    },
 }
 
 -- Properties of world entrances and associated puzzles
@@ -4171,6 +4199,51 @@ function watchCheato()
         end
     end
 end
+
+--------------------------------- HONEY B REWARDS -----------------------------------
+
+function init_HONEYB_REWARDS()
+    for k,v in pairs(NON_AGI_MAP['HONEYB'])
+    do
+        HONEY_REWARDS[k] = false
+    end
+end
+
+function watchHoneyB()
+    if CURRENT_MAP == 0x153 then
+        local base_location_id = 1230996
+        local bit1 = 0
+        local bit2 = 0
+        local bit3 = 0
+        local result = BTRAMOBJ:checkFlag(0x98, 2, "CHECK_HONEYB1")
+        if result == true
+        then
+            bit1 = 1
+        end
+        local result = BTRAMOBJ:checkFlag(0x98, 3, "CHECK_HONEYB2")
+        if result == true
+        then
+            bit2 = 2
+        end
+        local result = BTRAMOBJ:checkFlag(0x98, 4, "CHECK_HONEYB3")
+        if result == true
+        then
+            bit3 = 4
+        end
+        
+        local final_res = bit1 + bit2 + bit3
+
+        for i = 1230997, final_res + base_location_id, 1 do
+            HONEY_REWARDS[tostring(i)] = true
+        end
+        --TODO: Loop through base_location_id UNTIL the end number
+        -- if final_res >= 1
+        -- then
+        --     HONEY_REWARDS[]
+        -- end
+    end
+end
+
 
 --------------------------------- BK MOVES ----------------------------------------------
 function obtain_bkmove()
@@ -5521,6 +5594,10 @@ function BKLogics(mapaddr)
     then
         watchCheato()
     end
+    if ENABLE_AP_HONEYB_REWARDS == true
+    then
+        watchHoneyB()
+    end
     if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_MOVES == true
     then
         WATCH_LOADED_SILOS = false
@@ -6435,6 +6512,7 @@ function SendToBTClient()
     retTable["mystery"] = BKMYSTERY;
     retTable["roysten"] = ROYSTEN;
     retTable["cheato_rewards"] = CHEATO_REWARDS;
+    retTable["honeyb_rewards"] = HONEYB_REWARDS;
     if GAME_LOADED == false
     then
         retTable["sync_ready"] = "false"
@@ -7031,6 +7109,10 @@ function process_slot(block)
     then
         ENABLE_AP_CHEATO_REWARDS = true
     end
+    if block['slot_honeybrewards'] ~= nil and block['slot_honeybrewards'] ~= "false"
+    then
+        ENABLE_AP_HONEYB_REWARDS = true
+    end
     if block['slot_doubloon'] ~= nil and block['slot_doubloon'] ~= "false"
     then
         ENABLE_AP_DOUBLOONS = true
@@ -7310,6 +7392,9 @@ function initializeFlags()
         end
         if ENABLE_AP_CHEATO_REWARDS == true then
             init_CHEATO_REWARDS()
+        end
+        if ENABLE_AP_HONEYB_REWARDS == true then
+            init_HONEYB_REWARDS()
         end
         BTCONSUMEOBJ:changeConsumable("Eggs")
         BTCONSUMEOBJ:setConsumable(0)
