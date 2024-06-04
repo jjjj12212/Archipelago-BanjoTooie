@@ -81,6 +81,11 @@ bk_moves_table = {
     itemName.FFLIP:         ItemData(1230812, 1, "progress", None),
     itemName.EGGSHOOT:      ItemData(1230813, 1, "progress", None),     
     itemName.ROLL:          ItemData(1230814, 1, "progress", None),
+    itemName.TTROT:         ItemData(1230815, 1, "progress", None),
+    itemName.TJUMP:         ItemData(1230816, 1, "progress", None),
+    itemName.CLIMB:         ItemData(1230817, 1, "progress", None),
+    itemName.FLUTTER:       ItemData(1230818, 1, "progress", None),
+    itemName.WWING:         ItemData(1230819, 1, "progress", None),
 }
 
 level_progress_table = {
@@ -113,7 +118,7 @@ misc_collectable_table = {
     itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY),
     itemName.NOTE:          ItemData(1230797, 144, "progress", None),
     # itemName.WARPS: ItemData(1230799, 20, "trap", None),
-    itemName.NONE:          ItemData(1230888, 5, "filler", None)
+    itemName.NONE:          ItemData(1230888, 10, "filler", None) #qty is adjusted on generation
 }
 
 stop_n_swap_table = {

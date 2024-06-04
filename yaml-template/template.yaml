@@ -30,6 +30,7 @@ Banjo-Tooie:
   death_link: 'false'
   disable_overlay_text: 'false'
   randomize_moves: 'true'
+  randomize_bk_moves: 'false'
   randomize_jinjos: 'true'
 
   # Prevent item types from being shuffled onto jinjo checks
@@ -41,9 +42,11 @@ Banjo-Tooie:
   forbid_jinjos_on_jinjo_family: 'true'
   randomize_doubloons: 'true'
   randomize_cheato: 'true'
+  cheato_rewards: 'true'
   cheato_as_filler: 'false'
   exceeding_items_filler: 'false' # Items over the required amount are marked as junk/filler. Otherwise, exceeding items stays the same type.
   randomize_honeycombs: 'true'
+  honeyb_rewards: 'true'
   randomize_glowbos: 'true'
   randomize_treble: 'true'
   randomize_stations: 'true'

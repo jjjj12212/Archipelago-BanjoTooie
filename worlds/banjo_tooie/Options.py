@@ -14,7 +14,7 @@ class EnableMultiWorldBKMoveList(Choice):
     default = 0
 
 class EnableCheatoRewards(DefaultOnToggle):
-    """Cheato rewards are now randomized"""
+    """Cheato rewards you a cheat + an additional randomized reward. Use Cheato Pages as Filler cannot be set if this is enabled."""
     display_name = "Cheato Rewards"
 
 class DisableOverlayText(Toggle):
@@ -53,6 +53,10 @@ class SetMultiWorldCheatoPagesFiller(Toggle):
 class EnableMultiWorldHoneycombs(DefaultOnToggle):
     """Honeycombs are scattered across the MultiWorld."""
     display_name = "Randomize Honeycombs"
+
+class EnableHoneyBRewards(DefaultOnToggle):
+    """Honey B gives you health + a additiona randomized reward"""
+    display_name = "Honey B Rewards"
 
 class EnableMultiWorldGlowbos(DefaultOnToggle):
     """Glowbos are scattered across the MultiWorld."""
@@ -120,6 +124,7 @@ class VictoryCondition(Choice):
     HAG1: Unlock the HAG1 fight and defeat Gruntilda
     Minigame Hunt: Clear the 14 minigames and the final Canary Mary race in Cloud Cuckcoo Land to collect Mumbo Tokens
     Boss Hunt: Kill the 8 world bosses and collect their Mumbo Tokens
+    Jinjo Family Rescue: Rescue Jinjo Families to collect their prized Mumbo Tokens
     Wonderwing Challenge: Collect all 32 Mumbo Tokens across all boss fights, mini games and every Jinjo family
         to gain access to HAG1 and Defeat Grunty. The Ultimate Banjo Tooie experience!
     Token Hunt: Mumbo's Tokens are scattered around the world. Help him find them"""
@@ -267,6 +272,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     cheato_as_filler: SetMultiWorldCheatoPagesFiller
     exceeding_items_filler: ExceedingItemsFiller
     randomize_honeycombs: EnableMultiWorldHoneycombs
+    honeyb_rewards: EnableMultiWorldHoneycombs
     randomize_glowbos: EnableMultiWorldGlowbos
     randomize_treble: EnableMultiWorldTrebleClefs
     randomize_stations: EnableMultiWorldTrainStationSwitches
