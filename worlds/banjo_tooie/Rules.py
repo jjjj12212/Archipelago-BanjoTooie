@@ -3505,13 +3505,13 @@ class BanjoTooieRules:
                 logic = state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, fromTrain)
             else:
                 logic = (state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, fromTrain)) or \
-                        (self.can_leave_GI_from_inside(state) and state.has(itemName.JIGGY, self.player, 28))
+                        (self.can_leave_GI_from_inside(state) and self.gi_jiggy(state))
         elif self.world.options.logic_type == 3: # glitched
             if fromTrain:
                 logic = state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, fromTrain)
             else:
                 logic = (state.has(itemName.SPRINGB, self.player) and self.can_access_wasteland(state, fromTrain)) or \
-                        (self.can_leave_GI_from_inside(state) and state.has(itemName.JIGGY, self.player, 28))
+                        (self.can_leave_GI_from_inside(state) and self.gi_jiggy(state))
         return logic
     
     def can_access_gruntyindustries_outside(self, state: CollectionState, fromTrain: bool) -> bool:
