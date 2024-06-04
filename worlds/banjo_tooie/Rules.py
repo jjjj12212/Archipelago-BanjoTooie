@@ -3909,7 +3909,7 @@ class BanjoTooieRules:
             if (self.can_beat_king_coal(state) and self.can_access_GM(state)) and self.TDL_train_station(state):
                 return True
             if (self.can_access_gruntyindustries_outside(state, True) and self.GI_train_station(state)) and \
-                (state.has(itemName.CLAWBTS, self.player)) and self.WW_train_station(state):
+                (state.has(itemName.CLAWBTS, self.player)) and self.TDL_train_station(state):
                 return True
         if station == "HFP":
             if(self.WW_train_station(state) and self.can_access_witchyworld(state, True)) and self.HFPF_train_station(state):
