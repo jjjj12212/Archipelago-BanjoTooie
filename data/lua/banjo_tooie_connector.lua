@@ -3820,6 +3820,31 @@ local NON_AGI_MAP = {
             ['bit'] = 1,
             ['name'] = "Roll"
         },
+        ["1230815"] = {
+            ['addr'] = 0x1A,
+            ['bit'] = 5,
+            ['name'] = "Talon Trot"
+        },
+        ["1230816"] = {
+            ['addr'] = 0x19,
+            ['bit'] = 7,
+            ['name'] = "Tall Jump"
+        },
+        ["1230817"] = {
+            ['addr'] = 0x19,
+            ['bit'] = 2,
+            ['name'] = "Climb"
+        },
+        ["1230818"] = {
+            ['addr'] = 0x19,
+            ['bit'] = 4,
+            ['name'] = "Flutter"
+        },
+        ["1230819"] = {
+            ['addr'] = 0x1A,
+            ['bit'] = 7,
+            ['name'] = "Wonderwing"
+        },
     },
     ["HONEYB"] = {
         ["1230997"] = {
@@ -7380,15 +7405,20 @@ function initializeFlags()
             BTRAMOBJ:setFlag(0x5E, 0, "Klungo 1 Defeated")
             BTRAMOBJ:setFlag(0x5E, 1, "Klungo 2 Defeated")
         end
-        if ENABLE_AP_BK_MOVES ~= 0 then 
+        if ENABLE_AP_BK_MOVES ~= 0 then
             BTRAMOBJ:clearFlag(0x1A, 4) -- Dive
             BTRAMOBJ:clearFlag(0x19, 6) -- Fly pad
             BTRAMOBJ:clearFlag(0x19, 5) -- Flap Flip
             BTRAMOBJ:clearFlag(0x19, 3) -- Can't Shoot or Poop Eggs
             -- BTRAMOBJ:clearFlag(0x1E, 6) -- Blue Eggs - CRASH IF THERE IS NO DEFAULT EGG
-
-            -- or 0x1E, 6
             BTRAMOBJ:clearFlag(0x1A, 1) -- Roll
+            if ENABLE_AP_BK_MOVES == 2 then
+                BTRAMOBJ:clearFlag(0x1A, 5) -- Talon Trot
+                BTRAMOBJ:clearFlag(0x19, 7) -- Full Jump
+            end
+            BTRAMOBJ:clearFlag(0x19, 2) -- Climb
+            BTRAMOBJ:clearFlag(0x19, 5) -- Feather Flap
+            BTRAMOBJ:clearFlag(0x1A, 7) -- Full Jump
         end
         if ENABLE_AP_CHEATO_REWARDS == true then
             init_CHEATO_REWARDS()
