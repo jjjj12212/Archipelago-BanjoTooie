@@ -686,6 +686,7 @@ def connect_regions(self):
                         {regionName.WW: lambda state: rules.TDL_to_WW(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWTD, player),
                          regionName.IOHWL: lambda state: rules.TDL_to_IOHWL(state),
+                         regionName.TL_HATCH: lambda state: rules.longJump(state),
                          })
     
     region_QM = multiworld.get_region(regionName.IOHQM, player)
