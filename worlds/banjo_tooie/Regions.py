@@ -562,11 +562,11 @@ def create_regions(self):
         region_map[regionName.SM].append(locationName.CHEATOR5)
 
     if multiworld.worlds[player].options.honeyb_rewards.value == True:
-        region_map[regionName.SM].append(locationName.HONEYBR1)
-        region_map[regionName.SM].append(locationName.HONEYBR2)
-        region_map[regionName.SM].append(locationName.HONEYBR3)
-        region_map[regionName.SM].append(locationName.HONEYBR4)
-        region_map[regionName.SM].append(locationName.HONEYBR5)
+        region_map[regionName.IOHPL].append(locationName.HONEYBR1)
+        region_map[regionName.IOHPL].append(locationName.HONEYBR2)
+        region_map[regionName.IOHPL].append(locationName.HONEYBR3)
+        region_map[regionName.IOHPL].append(locationName.HONEYBR4)
+        region_map[regionName.IOHPL].append(locationName.HONEYBR5)
 
     multiworld.regions += [create_region(multiworld, player, active_locations, region, locations) for region, locations in
                            region_map.items()]
