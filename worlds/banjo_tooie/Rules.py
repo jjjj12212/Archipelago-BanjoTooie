@@ -227,6 +227,7 @@ class BanjoTooieRules:
             locationName.JIGGYMT6:  lambda state: self.jiggy_golden_goliath(state),
             locationName.JIGGYMT7:  lambda state: self.jiggy_prison_quicksand(state),
             locationName.JIGGYMT8:  lambda state: self.jiggy_pillars(state),
+            locationName.JIGGYMT9:  lambda state: self.jiggy_top(state),
             locationName.JIGGYMT10: lambda state: self.jiggy_ssslumber(state),
 
             #Glitter Gulch Mine Jiggies
@@ -772,6 +773,18 @@ class BanjoTooieRules:
             logic = self.prison_compound_open(state) and \
                 ((self.billDrill(state) and self.canDoSmallElevation(state)) or self.extremelyLongJump(state))\
                     and (self.hasBKMove(state, itemName.DIVE) or self.canReachSlightlyElevatedLedge(state))
+        return logic
+    
+    def jiggy_pillars(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.MT_flight_pad(state) or self.hasBKMove(state, itemName.TTROT)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.MT_flight_pad(state) or self.hasBKMove(state, itemName.TTROT)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.MT_flight_pad(state) or self.hasBKMove(state, itemName.TTROT)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.MT_flight_pad(state) or self.hasBKMove(state, itemName.TTROT)
         return logic
     
     def jiggy_ssslumber(self, state: CollectionState) -> bool:
