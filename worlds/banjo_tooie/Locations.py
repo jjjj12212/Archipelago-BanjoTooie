@@ -7,7 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
     
 class LocationData(typing.NamedTuple):
-    #last good ID: 1230991
+    #last good ID: 1230996
     #12C770 pointer instead (1230704)
     btid: int|None = 0
     # Save + mem addr
@@ -18,8 +18,15 @@ class LocationData(typing.NamedTuple):
 SMLoc_table = {
     locationName.CHEATOSM1: LocationData(1230752, 0x59, 3),
     locationName.JINJOIH5:  LocationData(1230595, 0x3F, 0),
-    # locationName.ROYSTEN:   LocationData(1230777, 0x9E, 6), #obtained when breaking out roysten
-    # locationName.CHEATOR1:  LocationData(1230952, 0x08, 4),
+    locationName.ROYSTEN1:   LocationData(1230777, 0x36, 2), #obtained when breaking out roysten
+    locationName.ROYSTEN2:   LocationData(1230779, 0x9E, 6), #obtained when breaking out roysten
+
+    locationName.CHEATOR1:  LocationData(1230992, 0x08, 4),
+    locationName.CHEATOR2:  LocationData(1230993, 0x08, 5),
+    locationName.CHEATOR3:  LocationData(1230994, 0x08, 6),
+    locationName.CHEATOR4:  LocationData(1230995, 0x08, 7),
+    locationName.CHEATOR5:  LocationData(1230996, 0x09, 0),
+
     locationName.PMEGG:     LocationData(1230956, 0x77, 5),
     locationName.BMEGG:     LocationData(1230957, 0x77, 3),
 
@@ -96,6 +103,11 @@ IHPLLoc_table = {
     locationName.NOTEIH3:   LocationData(1230930, 0x96, 1),
     locationName.NOTEIH4:   LocationData(1230931, 0x96, 2),
 
+    locationName.HONEYBR1:  LocationData(1230997, 0x98, 2),
+    locationName.HONEYBR2:  LocationData(1230998, 0x98, 3),
+    locationName.HONEYBR3:  LocationData(1230999, 0x98, None), #binary. bit 2 and 3 is set
+    locationName.HONEYBR4:  LocationData(1231000, 0x98, 4),
+    locationName.HONEYBR5:  LocationData(1231001, 0x98, None), #binary. bit 2 and 4 is set
 }
 
 GMLoc_table = {

@@ -88,12 +88,15 @@ class BanjoTooieContext(CommonContext):
         self.awaiting_rom = False
         self.location_table = {}
         self.movelist_table = {}
+        self.cheatorewardslist_table = {}
+        self.honeybrewardslist_table = {}
         self.notelist_table = {}
         self.stationlist_table = {}
         self.jinjofamlist_table = {}
         self.worldlist_table = {}
         self.chuffy_table = {}
         self.mystery_table = {}
+        self.roystenlist_table = {}
         self.deathlink_enabled = False
         self.deathlink_pending = False
         self.deathlink_sent_this_death = False
@@ -250,6 +253,9 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_honeycomb": ctx.slot_data["honeycomb"],
             "slot_pages": ctx.slot_data["pages"],
             "slot_moves": ctx.slot_data["moves"],
+            "slot_bkmoves": ctx.slot_data["bk_moves"],
+            "slot_cheatorewards": ctx.slot_data["cheato_rewards"],
+            "slot_honeybrewards": ctx.slot_data["honeyb_rewards"],
             "slot_doubloon": ctx.slot_data["doubloons"],
             "slot_minigames": ctx.slot_data["minigames"],
             "slot_treble": ctx.slot_data["trebleclef"],
@@ -457,6 +463,48 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "locations": fam1
             }])   
 
+    if ctx.slot_data["cheato_rewards"] == "true" and ctx.sync_ready == True:
+         # Locations handling
+        cheatorewardslist = payload['cheato_rewards']
+        cheatorewards = []
+
+        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
+        if isinstance(cheatorewardslist, list):
+            cheatorewardslist = {}
+
+        if ctx.cheatorewardslist_table != cheatorewardslist:
+            ctx.cheatorewardslist_table = cheatorewardslist
+
+            for locationId, value in cheatorewardslist.items():
+                if value == True:
+                    cheatorewards.append(int(locationId))
+
+            await ctx.send_msgs([{
+                "cmd": "LocationChecks",
+                "locations": cheatorewards
+            }])   
+
+    if ctx.slot_data["honeyb_rewards"] == "true" and ctx.sync_ready == True:
+         # Locations handling
+        honeybrewardslist = payload['honeyb_rewards']
+        honeybrewards = []
+
+        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
+        if isinstance(honeybrewardslist, list):
+            honeybrewardslist = {}
+
+        if ctx.honeybrewardslist_table != honeybrewardslist:
+            ctx.honeybrewardslist_table = honeybrewardslist
+
+            for locationId, value in honeybrewardslist.items():
+                if value == True:
+                    honeybrewards.append(int(locationId))
+
+            await ctx.send_msgs([{
+                "cmd": "LocationChecks",
+                "locations": honeybrewards
+            }])   
+
     if ctx.slot_data["skip_puzzles"] == "true" and ctx.sync_ready == True:
          # Locations handling
         worldslist = payload['worlds']
@@ -503,6 +551,27 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "cmd": "LocationChecks",
                 "locations": send_mystery
             }])   
+
+    if ctx.sync_ready == True:
+            # Locations handling
+            roystenlist = payload['roysten']
+            roy = []
+
+            # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
+            if isinstance(roystenlist, list):
+                roystenlist = {}
+
+            if ctx.roystenlist_table != roystenlist:
+                ctx.roystenlist_table = roystenlist
+
+                for locationId, value in roystenlist.items():
+                    if value == True:
+                        roy.append(int(locationId))
+
+                await ctx.send_msgs([{
+                    "cmd": "LocationChecks",
+                    "locations": roy
+                }])
 
     #Send Aync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:

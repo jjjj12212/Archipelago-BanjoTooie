@@ -5,6 +5,19 @@ class EnableMultiWorldMoveList(DefaultOnToggle):
     """Jamjars' Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves."""
     display_name = "Jamjars' Movelist"
 
+class EnableMultiWorldBKMoveList(Choice):
+    """Banjo-Kazooie Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves.
+    Mcjiggy Special - No Talon Trot and Tall Jump in the Pool """
+    display_name = "BK Original Movelist"
+    option_none = 0
+    option_mcjiggy_special = 1
+    option_all = 2
+    default = 0
+
+class EnableCheatoRewards(DefaultOnToggle):
+    """Cheato rewards you a cheat + an additional randomized reward. Use Cheato Pages as Filler cannot be set if this is enabled."""
+    display_name = "Cheato Rewards"
+
 class DisableOverlayText(Toggle):
     """Disables the overlay text on screen. Useful if your already streaming/viewing the BT_Client."""
     display_name = "Disable Overlay Text"
@@ -34,13 +47,17 @@ class EnableMultiWorldCheatoPages(DefaultOnToggle):
     """Cheato pages are scattered across the MultiWorld."""
     display_name = "Randomize Cheato Pages"
 
-class SetMultiWorldCheatoPagesFiller(DefaultOnToggle):
+class SetMultiWorldCheatoPagesFiller(Toggle):
     """If Cheato pages are scattered, set to Cheato Items as filler."""
     display_name = "Use Cheato Pages as Filler."
 
 class EnableMultiWorldHoneycombs(DefaultOnToggle):
     """Honeycombs are scattered across the MultiWorld."""
     display_name = "Randomize Honeycombs"
+
+class EnableHoneyBRewards(DefaultOnToggle):
+    """Honey B gives you health + a additiona randomized reward"""
+    display_name = "Honey B Rewards"
 
 class EnableMultiWorldGlowbos(DefaultOnToggle):
     """Glowbos are scattered across the MultiWorld."""
@@ -108,6 +125,7 @@ class VictoryCondition(Choice):
     HAG1: Unlock the HAG1 fight and defeat Gruntilda
     Minigame Hunt: Clear the 14 minigames and the final Canary Mary race in Cloud Cuckcoo Land to collect Mumbo Tokens
     Boss Hunt: Kill the 8 world bosses and collect their Mumbo Tokens
+    Jinjo Family Rescue: Rescue Jinjo Families to collect their prized Mumbo Tokens
     Wonderwing Challenge: Collect all 32 Mumbo Tokens across all boss fights, mini games and every Jinjo family
         to gain access to HAG1 and Defeat Grunty. The Ultimate Banjo Tooie experience!
     Token Hunt: Mumbo's Tokens are scattered around the world. Help him find them"""
@@ -245,14 +263,17 @@ class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
     disable_overlay_text:DisableOverlayText
     randomize_moves: EnableMultiWorldMoveList
+    randomize_bk_moves: EnableMultiWorldBKMoveList
     randomize_jinjos: EnableMultiWorldJinjos
     forbid_on_jinjo_family: ForbidMovesOnJinjoFamilyTreasure
     forbid_jinjos_on_jinjo_family: ForbidJinjosOnJinjoFamilyTreasure
     randomize_doubloons: EnableMultiWorldDoubloons
     randomize_cheato: EnableMultiWorldCheatoPages
+    cheato_rewards: EnableCheatoRewards
     cheato_as_filler: SetMultiWorldCheatoPagesFiller
     exceeding_items_filler: ExceedingItemsFiller
     randomize_honeycombs: EnableMultiWorldHoneycombs
+    honeyb_rewards: EnableMultiWorldHoneycombs
     randomize_glowbos: EnableMultiWorldGlowbos
     randomize_treble: EnableMultiWorldTrebleClefs
     randomize_stations: EnableMultiWorldTrainStationSwitches
