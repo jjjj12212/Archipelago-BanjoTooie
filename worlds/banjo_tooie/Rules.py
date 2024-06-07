@@ -464,7 +464,7 @@ class BanjoTooieRules:
             locationName.PACKWH: lambda state: state.has(itemName.SPLITUP, self.player) and self.check_notes(state, 170),
 
             locationName.AUQAIM: lambda state: (self.has_explosives(state) or state.has(itemName.DOUBLOON, self.player, 28)) and
-                                               self.check_notes(state, 275),
+                                               self.check_notes(state, 285),
             locationName.TTORP: lambda state:  self.can_reach_atlantis(state) and state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.TJUMP) and
                                                self.check_notes(state, 290),
             locationName.WWHACK: lambda state: (self.has_explosives(state)) and state.has(itemName.SPLITUP, self.player) and
@@ -475,7 +475,7 @@ class BanjoTooieRules:
             locationName.HATCH: lambda state:   state.has(itemName.SPLITUP, self.player) and self.check_notes(state, 420),
 
             locationName.SNPACK: lambda state:  self.silo_snooze(state),
-            locationName.LSPRING: lambda state: self.check_notes(state, 545),
+            locationName.LSPRING: lambda state: self.check_notes(state, 545) and state.has(itemName.SPLITUP, self.player),
             locationName.CLAWBTS: lambda state: self.check_notes(state, 505),
 
             locationName.SHPACK: lambda state: state.has(itemName.SPLITUP, self.player) and self.check_notes(state, 640),

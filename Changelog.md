@@ -10,6 +10,8 @@
   - Treasure Chamber for beginner fix
   - Seemee Cheato page
   - Prison Compound touch-up
+  - fix SubAqua Aim Note count
+  - fix Leg Spring Silo logic
   
 # 1.6.2-beta
  - Token Hunt will always generate 15 tokens.
