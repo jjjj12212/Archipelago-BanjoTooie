@@ -12,7 +12,7 @@ class EnableMultiWorldBKMoveList(Choice):
     option_none = 0
     option_mcjiggy_special = 1
     option_all = 2
-    default = 2
+    default = 0
 
 class EnableCheatoRewards(DefaultOnToggle):
     """Cheato rewards you a cheat + an additional randomized reward. Use Cheato Pages as Filler cannot be set if this is enabled."""
