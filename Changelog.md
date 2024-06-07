@@ -2,11 +2,35 @@
  - Fast Swimming is now an AP Item
  - Double Air is now an AP Item
  - Roysten is 2 checks
- - Logic fix:
+ - Logic fixes:
+  - Ledge Doubloons (Advanced and Glitched)
+  - Oogle Boogle Jiggy (Glitched)
+  - Pot o' Gold (Beginner and Normal)
   - Golden Goliath required for freeing Dilberta to turn into Stony
   - Treasure Chamber for beginner fix
   - Seemee Cheato page
   - Prison Compound touch-up
+  - fix SubAqua Aim Note count
+  - fix Leg Spring Silo logic
+ - Cheato Rewards Option - Cheato gives you a cheat + a additional AP item
+  - Pages cannot be set as filler with this option enabled
+ - Honey B Rewards Option - Honey B gives you health + a additiona AP item
+  - Empty Honeycombs are set as progressive items if this is enabled
+ - Randomize BK Moves
+  - Cheato Rewards + Honey B Rewards must be enabled
+  - Randomize_Worlds is not supported for this for now.
+  - 10 randomized moves so far:
+   - Dive
+   - Flight Pad
+   - Flap Flip
+   - Egg Shoot
+   - Roll
+   - Talon Trot (if set to ALL)
+   - Tall Jimp (if set to ALL)
+   - Climb
+   - Flutter
+   - Wonderwing
+   
 # 1.6.2-beta
  - Token Hunt will always generate 15 tokens.
 

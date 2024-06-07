@@ -159,6 +159,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GEGGS,
         locationName.NOTEIH5,
         locationName.NOTEIH6,
+    ],
+    regionName.IOHPGU:   [
         locationName.NOTEIH7,
         locationName.NOTEIH8,
     ],
@@ -254,39 +256,18 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JRLDB30,
         locationName.JINJOJR1,
         locationName.JINJOJR2,
-        locationName.JINJOJR3,
-        locationName.JINJOJR4,
-        locationName.JINJOJR5,
-        locationName.JINJOGI3,
-        locationName.JIGGYJR1,
         locationName.JIGGYJR2,
-        locationName.JIGGYJR3,
         locationName.JIGGYJR4,
         locationName.JIGGYJR5,
-        locationName.JIGGYJR6,
-        locationName.JIGGYJR7,
-        locationName.JIGGYJR8,
         locationName.JIGGYJR9,
-        locationName.JIGGYJR10,
         locationName.GLOWBOJR1,
-        locationName.GLOWBOJR2,
-        locationName.HONEYCJR1,
-        locationName.HONEYCJR2,
         locationName.HONEYCJR3,
         locationName.CHEATOJR1,
-        locationName.CHEATOJR2,
-        locationName.CHEATOJR3,
         locationName.WWHACK,
-        locationName.TTORP,
         locationName.AUQAIM,
-        locationName.TREBLEJR,
         locationName.NOTEJRL1,
         locationName.NOTEJRL2,
         locationName.NOTEJRL3,
-        locationName.NOTEJRL4,
-        locationName.NOTEJRL5,
-        locationName.NOTEJRL6,
-        locationName.NOTEJRL7,
         locationName.NOTEJRL8,
         locationName.NOTEJRL9,
         locationName.NOTEJRL10,
@@ -296,6 +277,31 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEJRL14,
         locationName.NOTEJRL15,
         locationName.NOTEJRL16 
+    ],
+    regionName.JRU: [
+        locationName.JINJOGI3,     
+        locationName.JIGGYJR10,
+        locationName.CHEATOJR2,
+        locationName.NOTEJRL4,
+        locationName.NOTEJRL5,
+    ],
+    regionName.JRU2: [
+        locationName.JINJOJR3,
+        locationName.JINJOJR4,
+        locationName.JINJOJR5,
+        locationName.JIGGYJR1,
+        locationName.JIGGYJR3,
+        locationName.JIGGYJR6,
+        locationName.JIGGYJR7,
+        locationName.JIGGYJR8,
+        locationName.GLOWBOJR2,
+        locationName.HONEYCJR1,
+        locationName.HONEYCJR2,
+        locationName.CHEATOJR3,
+        locationName.TTORP,
+        locationName.TREBLEJR,
+        locationName.NOTEJRL6,
+        locationName.NOTEJRL7,
     ],
     regionName.IOHWL:   [
         locationName.JINJOIH2,
@@ -517,7 +523,7 @@ def create_regions(self):
         region_map[regionName.WW].append(locationName.MUMBOTKNGAME4)
         region_map[regionName.WW].append(locationName.MUMBOTKNGAME5)
         region_map[regionName.WW].append(locationName.MUMBOTKNGAME6)
-        region_map[regionName.JR].append(locationName.MUMBOTKNGAME7)
+        region_map[regionName.JRU2].append(locationName.MUMBOTKNGAME7)
         region_map[regionName.TL].append(locationName.MUMBOTKNGAME8)
         region_map[regionName.GI3ALL].append(locationName.MUMBOTKNGAME9)
         region_map[regionName.GI3ALL].append(locationName.MUMBOTKNGAME10)
@@ -531,7 +537,7 @@ def create_regions(self):
         region_map[regionName.MT].append(locationName.MUMBOTKNBOSS1)
         region_map[regionName.GM].append(locationName.MUMBOTKNBOSS2)
         region_map[regionName.WW].append(locationName.MUMBOTKNBOSS3)
-        region_map[regionName.JR].append(locationName.MUMBOTKNBOSS4)
+        region_map[regionName.JRU2].append(locationName.MUMBOTKNBOSS4)
         region_map[regionName.TL].append(locationName.MUMBOTKNBOSS5)
         region_map[regionName.GI3ALL].append(locationName.MUMBOTKNBOSS6)
         region_map[regionName.HP].append(locationName.MUMBOTKNBOSS7)
@@ -547,6 +553,20 @@ def create_regions(self):
         region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO7)
         region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO8)
         region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO9)
+
+    if multiworld.worlds[player].options.cheato_rewards.value == True:
+        region_map[regionName.SM].append(locationName.CHEATOR1)
+        region_map[regionName.SM].append(locationName.CHEATOR2)
+        region_map[regionName.SM].append(locationName.CHEATOR3)
+        region_map[regionName.SM].append(locationName.CHEATOR4)
+        region_map[regionName.SM].append(locationName.CHEATOR5)
+
+    if multiworld.worlds[player].options.honeyb_rewards.value == True:
+        region_map[regionName.IOHPL].append(locationName.HONEYBR1)
+        region_map[regionName.IOHPL].append(locationName.HONEYBR2)
+        region_map[regionName.IOHPL].append(locationName.HONEYBR3)
+        region_map[regionName.IOHPL].append(locationName.HONEYBR4)
+        region_map[regionName.IOHPL].append(locationName.HONEYBR5)
 
     multiworld.regions += [create_region(multiworld, player, active_locations, region, locations) for region, locations in
                            region_map.items()]
@@ -581,14 +601,16 @@ def connect_regions(self):
     region_menu.add_exits({regionName.SM})
 
     region_SM = multiworld.get_region(regionName.SM, player)
-    region_SM.add_exits({regionName.IOHJV})
+    region_SM.add_exits({regionName.IOHJV},
+                        {regionName.IOHWH: lambda state: rules.canGetPassedKlungo(state)})
 
     region_JV = multiworld.get_region(regionName.IOHJV, player)
     region_JV.add_exits({regionName.IOHWH})
 
     region_WH = multiworld.get_region(regionName.IOHWH, player)
     region_WH.add_exits({regionName.MT, regionName.IOHPL},
-                        {regionName.MT: lambda state: rules.mt_jiggy(state), regionName.IOHPL: lambda state: rules.WH_to_PL(state)})
+                        {regionName.MT: lambda state: rules.mt_jiggy(state), 
+                         regionName.IOHPL: lambda state: rules.WH_to_PL(state)})
 
     region_MT = multiworld.get_region(regionName.MT, player)
     region_MT.add_exits({regionName.TL_HATCH, regionName.GM},
@@ -613,8 +635,13 @@ def connect_regions(self):
      regionName.WW: lambda state: rules.ggm_to_ww(state)})
     
     region_PG = multiworld.get_region(regionName.IOHPG, player)
-    region_PG.add_exits({regionName.WW, regionName.IOHWL},
+    region_PG.add_exits({regionName.WW, regionName.IOHPGU},
     {regionName.WW: lambda state: rules.ww_jiggy(state),
+     regionName.IOHPGU: lambda state: rules.hasBKMove(state, itemName.DIVE)})
+    
+    region_PGU = multiworld.get_region(regionName.IOHPGU, player)
+    region_PGU.add_exits({regionName.IOHWL, regionName.IOHPG},
+    {regionName.IOHPG: lambda state: rules.hasBKMove(state, itemName.TJUMP),
      regionName.IOHWL: lambda state: state.has(itemName.TTORP, player)})
     
     region_WW = multiworld.get_region(regionName.WW, player)
@@ -629,8 +656,17 @@ def connect_regions(self):
          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWIH, player)})
   
     region_JR = multiworld.get_region(regionName.JR, player)
-    region_JR.add_exits({regionName.GMWSJT, regionName.IOHCT},
-                        {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_JRL(state), regionName.IOHCT: lambda state: rules.JRL_to_CT(state)})
+    region_JR.add_exits({regionName.JRU, regionName.IOHCT},
+                        {regionName.JRU: lambda state: rules.can_dive_in_JRL(state), 
+                         regionName.IOHCT: lambda state: rules.JRL_to_CT(state)})
+    
+    region_JRU = multiworld.get_region(regionName.JRU, player)
+    region_JRU.add_exits({regionName.JRU2},
+                        {regionName.JRU2: lambda state: rules.can_reach_atlantis(state)})
+    
+    region_JRU2 = multiworld.get_region(regionName.JRU2, player)
+    region_JRU2.add_exits({regionName.GMWSJT},
+                        {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_JRL(state)})
 
     region_HP = multiworld.get_region(regionName.HP, player)
     region_HP.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.MT, regionName.JR, regionName.CHUFFY},
@@ -639,8 +675,8 @@ def connect_regions(self):
                          regionName.JR: lambda state: rules.HFP_to_JRL(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, player)})
     region_IOHWL = multiworld.get_region(regionName.IOHWL, player)
-    region_IOHWL.add_exits({regionName.IOHPG, regionName.IOHQM, regionName.TL, regionName.CC},
-                        {regionName.IOHPG: lambda state: rules.WL_to_PG(state),
+    region_IOHWL.add_exits({regionName.IOHPGU, regionName.IOHQM, regionName.TL, regionName.CC},
+                        {regionName.IOHPGU: lambda state: rules.WL_to_PGU(state),
                          regionName.IOHQM: lambda state: state.has(itemName.SPRINGB, player),
                          regionName.TL: lambda state: rules.tdl_jiggy(state),
                          regionName.CC: lambda state: rules.ccl_jiggy(state)})
@@ -650,6 +686,7 @@ def connect_regions(self):
                         {regionName.WW: lambda state: rules.TDL_to_WW(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWTD, player),
                          regionName.IOHWL: lambda state: rules.TDL_to_IOHWL(state),
+                         regionName.TL_HATCH: lambda state: rules.longJump(state),
                          })
     
     region_QM = multiworld.get_region(regionName.IOHQM, player)
@@ -674,10 +711,12 @@ def connect_regions(self):
     
     region_GI2 = multiworld.get_region(regionName.GI2, player)
     region_GI2.add_exits({regionName.GIO, regionName.GI1, regionName.GI3ALL},
-                        {regionName.GI1: lambda state: rules.F2_to_F1(state), regionName.GI3ALL: lambda state: rules.F2_to_F3(state)})
+                        {regionName.GI1: lambda state: rules.F2_to_F1(state),
+                         regionName.GI3ALL: lambda state: rules.F2_to_F3(state)})
     
     region_GI3ALL = multiworld.get_region(regionName.GI3ALL, player)
-    region_GI3ALL.add_exits({regionName.GIO, regionName.GI2})
+    region_GI3ALL.add_exits({regionName.GIO, regionName.GI2}, {
+                            regionName.GI2: lambda state: rules.F3_to_F2(state)})
 
     region_CK = multiworld.get_region(regionName.CK, player)
     region_CK.add_exits({regionName.H1},
