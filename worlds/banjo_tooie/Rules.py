@@ -787,6 +787,18 @@ class BanjoTooieRules:
             logic = self.MT_flight_pad(state) or self.hasBKMove(state, itemName.TTROT)
         return logic
     
+    def jiggy_top(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.hasBKMove(state, itemName.TTROT) or self.MT_flight_pad(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.hasBKMove(state, itemName.TTROT) or self.MT_flight_pad(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.hasBKMove(state, itemName.TTROT) or self.MT_flight_pad(state)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.hasBKMove(state, itemName.TTROT) or self.MT_flight_pad(state)
+        return logic
+    
     def jiggy_ssslumber(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
