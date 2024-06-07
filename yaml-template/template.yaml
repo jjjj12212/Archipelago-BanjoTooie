@@ -30,7 +30,11 @@ Banjo-Tooie:
   death_link: 'false'
   disable_overlay_text: 'false'
   randomize_moves: 'true'
-  randomize_bk_moves: 'false'
+  # Randomize Banjo-Kazooie Moves in Banjo-Tooie
+  # 0: Don't randomize 
+  # 1: Mcjiggy Special - No Talon Trot or Tall Jump in the Pool
+  # 2: All - Everything
+  randomize_bk_moves: 0
   randomize_jinjos: 'true'
 
   # Prevent item types from being shuffled onto jinjo checks

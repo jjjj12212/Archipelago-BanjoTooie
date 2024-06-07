@@ -6,7 +6,8 @@ class EnableMultiWorldMoveList(DefaultOnToggle):
     display_name = "Jamjars' Movelist"
 
 class EnableMultiWorldBKMoveList(Choice):
-    """Banjo-Kazooie Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves. """
+    """Banjo-Kazooie Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves.
+    Mcjiggy Special - No Talon Trot or Tall Jump in the Pool """
     display_name = "BK Original Movelist"
     option_none = 0
     option_mcjiggy_special = 1
