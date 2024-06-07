@@ -12,6 +12,13 @@
   - Prison Compound touch-up
   - fix SubAqua Aim Note count
   - fix Leg Spring Silo logic
+ - Cheato Rewards Option - Cheato gives you a cheat + a additional AP item
+  - Pages cannot be set as filler with this option enabled
+ - Honey B Rewards Option - Honey B gives you health + a additiona AP item
+  - Empty Honeycombs are set as progressive items if this is enabled
+ - Randomize BK Moves
+  - Cheato Rewards + Honey B Rewards must be enabled
+  - Randomize_Worlds is not supported for this for now.
   
 # 1.6.2-beta
  - Token Hunt will always generate 15 tokens.
