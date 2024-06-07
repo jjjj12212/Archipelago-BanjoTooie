@@ -19,7 +19,18 @@
  - Randomize BK Moves
   - Cheato Rewards + Honey B Rewards must be enabled
   - Randomize_Worlds is not supported for this for now.
-  
+  - 10 randomized moves so far:
+   - Dive
+   - Flight Pad
+   - Flap Flip
+   - Egg Shoot
+   - Roll
+   - Talon Trot (if set to ALL)
+   - Tall Jimp (if set to ALL)
+   - Climb
+   - Flutter
+   - Wonderwing
+   
 # 1.6.2-beta
  - Token Hunt will always generate 15 tokens.
 
