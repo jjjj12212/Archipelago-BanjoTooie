@@ -2378,25 +2378,31 @@ class BanjoTooieRules:
     def pink_egg(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.canShootEggs(state, itemName.GEGGS) or (state.has(itemName.AIREAIM, self.player) and state.has(itemName.GEGGS, self.player))
+            logic = (self.canShootEggs(state, itemName.GEGGS) or (state.has(itemName.AIREAIM, self.player) and state.has(itemName.GEGGS, self.player))) \
+                    and self.hasBKMove(state, itemName.FPAD)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.canShootEggs(state, itemName.GEGGS) or (state.has(itemName.AIREAIM, self.player) and state.has(itemName.GEGGS, self.player))
+            logic = (self.canShootEggs(state, itemName.GEGGS) or (state.has(itemName.AIREAIM, self.player) and state.has(itemName.GEGGS, self.player))) \
+                    and self.hasBKMove(state, itemName.FPAD)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.canShootEggs(state, itemName.GEGGS) or (state.has(itemName.AIREAIM, self.player) and state.has(itemName.GEGGS, self.player))
+            logic = (self.canShootEggs(state, itemName.GEGGS) or (state.has(itemName.AIREAIM, self.player) and state.has(itemName.GEGGS, self.player))) \
+                    and self.hasBKMove(state, itemName.FPAD)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.has_explosives(state) or (state.has(itemName.AIREAIM, self.player) and state.has(itemName.GEGGS, self.player))
+            logic = (self.has_explosives(state) or (state.has(itemName.AIREAIM, self.player) and state.has(itemName.GEGGS, self.player))) \
+                    and self.hasBKMove(state, itemName.FPAD)
         return logic
     
     def blue_egg(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)
+            logic = state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.FPAD)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)
+            logic = state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.FPAD)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or self.clockwork_shot(state)
+            logic = (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or self.clockwork_shot(state) \
+                    and self.hasBKMove(state, itemName.FPAD)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or self.clockwork_shot(state)
+            logic = (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)) or self.clockwork_shot(state) \
+                    and self.hasBKMove(state, itemName.FPAD)
         return logic
     
     def jinjo_plateau(self, state: CollectionState) -> bool:
