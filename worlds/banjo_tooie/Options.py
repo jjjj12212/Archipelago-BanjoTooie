@@ -7,12 +7,12 @@ class EnableMultiWorldMoveList(DefaultOnToggle):
 
 class EnableMultiWorldBKMoveList(Choice):
     """Banjo-Kazooie Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves.
-    Mcjiggy Special - No Talon Trot or Tall Jump in the Pool """
+    Mcjiggy Special - No Talon Trot and Tall Jump in the Pool """
     display_name = "BK Original Movelist"
     option_none = 0
     option_mcjiggy_special = 1
     option_all = 2
-    default = 0
+    default = 2
 
 class EnableCheatoRewards(DefaultOnToggle):
     """Cheato rewards you a cheat + an additional randomized reward. Use Cheato Pages as Filler cannot be set if this is enabled."""

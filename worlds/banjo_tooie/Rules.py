@@ -3252,15 +3252,15 @@ class BanjoTooieRules:
     
     def can_access_taxi_pack_silo(self, state:CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
-            return state.has(itemName.SPLITUP, self.player) and (self.hasbkmove(state, itemName.TJUMP) and (state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.SAPACK)))
+            return state.has(itemName.SPLITUP, self.player) and (self.hasBKMove(state, itemName.TJUMP) and (state.has(itemName.GGRAB, self.player) or self.check_solo_moves(state, itemName.SAPACK)))
         elif self.world.options.logic_type == 1: # normal
-            return state.has(itemName.SPLITUP, self.player) and (self.hasbkmove(state, itemName.TJUMP) and (state.has(itemName.GGRAB, self.player) or
+            return state.has(itemName.SPLITUP, self.player) and (self.hasBKMove(state, itemName.TJUMP) and (state.has(itemName.GGRAB, self.player) or
                                                 self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK)))
         elif self.world.options.logic_type == 2: # advanced
-            return state.has(itemName.SPLITUP, self.player) and (self.hasbkmove(state, itemName.TJUMP) and (state.has(itemName.GGRAB, self.player) or
+            return state.has(itemName.SPLITUP, self.player) and (self.hasBKMove(state, itemName.TJUMP) and (state.has(itemName.GGRAB, self.player) or
                                                 self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK)))
         elif self.world.options.logic_type == 3: # glitched
-            return state.has(itemName.SPLITUP, self.player) and (self.hasbkmove(state, itemName.TJUMP) and (state.has(itemName.GGRAB, self.player) or
+            return state.has(itemName.SPLITUP, self.player) and (self.hasBKMove(state, itemName.TJUMP) and (state.has(itemName.GGRAB, self.player) or
                                                 self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK)))
 
     def has_fire(self, state: CollectionState) -> bool:
