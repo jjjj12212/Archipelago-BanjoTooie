@@ -4307,7 +4307,7 @@ class BanjoTooieRules:
             raise Exception("Not a BK move! {}".format(move))
         if self.world.options.randomize_bk_moves == 0: # Not randomised
             return True
-        elif self.world.options.randomize_bk_moves == 1 and move not in [itemName.DIVE, itemName.FPAD, itemName.FFLIP, itemName.EGGSHOOT, itemName.ROLL]: # McJiggy Special, not randomised.
+        elif self.world.options.randomize_bk_moves == 1 and move in [itemName.TTROT, itemName.TJUMP]: # McJiggy Special, not randomised.
             return True
         elif self.world.options.randomize_bk_moves == 2 and move not in bk_moves_table.keys():
             return True
