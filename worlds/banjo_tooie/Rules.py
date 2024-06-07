@@ -1652,10 +1652,10 @@ class BanjoTooieRules:
                      and self.billDrill(state) and self.mumboCCL(state)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.cclStarterPack(state) and self.hasBKMove(state, itemName.BEGG) and self.canShootEggs(state, itemName.FEGGS) and self.canShootEggs(state, itemName.GEGGS) and self.canShootEggs(state, itemName.IEGGS)\
-                        and ((state.has(itemName.BDRILL) and self.mumboCCL(state)) or state.has(itemName.SPLITUP, self.player))
+                        and ((state.has(itemName.BDRILL, self.player) and self.mumboCCL(state)) or state.has(itemName.SPLITUP, self.player))
         elif self.world.options.logic_type == 3: # glitched
             logic = self.cclStarterPack(state) and self.hasBKMove(state, itemName.BEGG) and self.canShootEggs(state, itemName.FEGGS) and self.canShootEggs(state, itemName.GEGGS) and self.canShootEggs(state, itemName.IEGGS)\
-                        and ((state.has(itemName.BDRILL) and self.mumboCCL(state)) or state.has(itemName.SPLITUP, self.player))
+                        and ((state.has(itemName.BDRILL, self.player) and self.mumboCCL(state)) or state.has(itemName.SPLITUP, self.player))
         return logic
     
     # TODO: I'm sure there's more to this.
