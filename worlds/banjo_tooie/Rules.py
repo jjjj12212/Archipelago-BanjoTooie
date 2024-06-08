@@ -199,11 +199,11 @@ class BanjoTooieRules:
 
         if self.world.options.honeyb_rewards.value == True:
             self.honeyb_rewards_rules = {
-                locationName.HONEYBR1: lambda state: state.has(itemName.HONEY, self.player, 1),
-                locationName.HONEYBR2: lambda state: state.has(itemName.HONEY, self.player, 4),
-                locationName.HONEYBR3: lambda state: state.has(itemName.HONEY, self.player, 9),
-                locationName.HONEYBR4: lambda state: state.has(itemName.HONEY, self.player, 16),
-                locationName.HONEYBR5: lambda state: state.has(itemName.HONEY, self.player, 25),
+                locationName.HONEYBR1: lambda state: state.has(itemName.HONEY, self.player, 1) and self.hasBKMove(state, itemName.TTROT),
+                locationName.HONEYBR2: lambda state: state.has(itemName.HONEY, self.player, 4) and self.hasBKMove(state, itemName.TTROT),
+                locationName.HONEYBR3: lambda state: state.has(itemName.HONEY, self.player, 9) and self.hasBKMove(state, itemName.TTROT),
+                locationName.HONEYBR4: lambda state: state.has(itemName.HONEY, self.player, 16) and self.hasBKMove(state, itemName.TTROT),
+                locationName.HONEYBR5: lambda state: state.has(itemName.HONEY, self.player, 25) and self.hasBKMove(state, itemName.TTROT),
             }
 
             
@@ -505,7 +505,7 @@ class BanjoTooieRules:
 
             #Water Storage Jinjo always true because it's in the GMWSJT area
             locationName.JINJOGM2: lambda state: self.humbaGGM(state),
-            locationName.JINJOGM4: lambda state: self.humbaGGM(state) or (self.hasBKMove(state, itemName.TTROT) and self.billDrill(state)),
+            locationName.JINJOGM4: lambda state: self.humbaGGM(state) or (self.ggm_trot(state) and self.billDrill(state)),
 
             locationName.JINJOWW1: lambda state: self.jinjo_tent(state),
             locationName.JINJOWW2: lambda state: self.jinjo_caveofhorror(state),
@@ -698,15 +698,18 @@ class BanjoTooieRules:
     def jiggy_bovina(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-          logic = state.has(itemName.EGGAIM, self.player)
+          logic = state.has(itemName.EGGAIM, self.player) and (self.canShootEggs(state, itemName.BEGG) or self.canShootEggs(state, itemName.FEGGS) or self.canShootEggs(state, itemName.GEGGS))
         elif self.world.options.logic_type == 1: # normal
-          logic = state.has(itemName.EGGAIM, self.player) or (self.MT_flight_pad(state) and state.has(itemName.AIREAIM, self.player))
+          logic = (self.canShootEggs(state, itemName.BEGG) or self.canShootEggs(state, itemName.FEGGS) or self.canShootEggs(state, itemName.GEGGS) or self.canShootEggs(state, itemName.CEGGS))\
+                and (state.has(itemName.EGGAIM, self.player) or (self.MT_flight_pad(state) and state.has(itemName.AIREAIM, self.player)))
         elif self.world.options.logic_type == 2: # advanced
-            logic = (self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.BBUST)) or self.hasBKMove(state, itemName.EGGSHOOT)\
-                        or state.has(itemName.EGGAIM, self.player) or (self.MT_flight_pad(state) and state.has(itemName.AIREAIM, self.player))
+            logic = (self.canShootEggs(state, itemName.BEGG) or self.canShootEggs(state, itemName.FEGGS) or self.canShootEggs(state, itemName.GEGGS) or self.canShootEggs(state, itemName.CEGGS))\
+                and ((self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.BBUST))\
+                        or state.has(itemName.EGGAIM, self.player) or (self.MT_flight_pad(state) and state.has(itemName.AIREAIM, self.player)))
         elif self.world.options.logic_type == 3: # glitched
-            logic = (self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.BBUST)) or self.hasBKMove(state, itemName.EGGSHOOT)\
-                        or state.has(itemName.EGGAIM, self.player) or (self.MT_flight_pad(state) and state.has(itemName.AIREAIM, self.player))
+            logic = (self.canShootEggs(state, itemName.BEGG) or self.canShootEggs(state, itemName.FEGGS) or self.canShootEggs(state, itemName.GEGGS) or self.canShootEggs(state, itemName.CEGGS))\
+                and ((self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.BBUST))\
+                        or state.has(itemName.EGGAIM, self.player) or (self.MT_flight_pad(state) and state.has(itemName.AIREAIM, self.player)))
         return logic
     
     def jiggy_treasure_chamber(self, state: CollectionState) -> bool:
@@ -773,18 +776,6 @@ class BanjoTooieRules:
             logic = self.prison_compound_open(state) and \
                 ((self.billDrill(state) and self.canDoSmallElevation(state)) or self.extremelyLongJump(state))\
                     and (self.hasBKMove(state, itemName.DIVE) or self.canReachSlightlyElevatedLedge(state))
-        return logic
-    
-    def jiggy_pillars(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == 0: # beginner
-            logic = self.MT_flight_pad(state) or self.hasBKMove(state, itemName.TTROT)
-        elif self.world.options.logic_type == 1: # normal
-            logic = self.MT_flight_pad(state) or self.hasBKMove(state, itemName.TTROT)
-        elif self.world.options.logic_type == 2: # advanced
-            logic = self.MT_flight_pad(state) or self.hasBKMove(state, itemName.TTROT)
-        elif self.world.options.logic_type == 3: # glitched
-            logic = self.MT_flight_pad(state) or self.hasBKMove(state, itemName.TTROT)
         return logic
     
     def jiggy_top(self, state: CollectionState) -> bool:
@@ -1748,41 +1739,44 @@ class BanjoTooieRules:
     def honeycomb_bovina(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.GGRAB, self.player)
+            logic = state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FFLIP)
         elif self.world.options.logic_type == 1: # normal
-            logic = True
+            logic = (self.hasBKMove(state, itemName.FFLIP) and (state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST)))\
+                    or self.MT_flight_pad(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = True
+            logic = (self.hasBKMove(state, itemName.FFLIP) and (state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST)))\
+                    or self.MT_flight_pad(state) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = True
+            logic = (self.hasBKMove(state, itemName.FFLIP) and (state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST)))\
+                    or self.MT_flight_pad(state) or self.clockwork_shot(state)
         return logic
     
     def honeycomb_tchamber(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.EGGAIM, self.player)
+            logic = self.canShootLinearEgg(state) and state.has(itemName.EGGAIM, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.MT_flight_pad(state) or state.has(itemName.EGGAIM, self.player)
+            logic = (self.MT_flight_pad(state) and self.canShootEggs(state)) or (self.canShootEggs(state) and state.has(itemName.EGGAIM, self.player))
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.MT_flight_pad(state) or state.has(itemName.EGGAIM, self.player)
+            logic = (self.MT_flight_pad(state) and self.canShootEggs(state)) or (self.canShootEggs(state) and state.has(itemName.EGGAIM, self.player))
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.MT_flight_pad(state) or state.has(itemName.EGGAIM, self.player)
+            logic = (self.MT_flight_pad(state) and self.canShootEggs(state)) or (self.canShootEggs(state) and state.has(itemName.EGGAIM, self.player))
         return logic
     
 
     def honeycomb_prospector(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = (self.hasBKMove(state, itemName.FFLIP) or self.GGMSlope(state) or self.canReachSlightlyElevatedLedge(state)) and self.billDrill(state)\
+            logic = (self.hasBKMove(state, itemName.FFLIP) or self.ggm_trot(state) or self.canReachSlightlyElevatedLedge(state)) and self.billDrill(state)\
                      or self.humbaGGM(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = (self.hasBKMove(state, itemName.FFLIP) or self.GGMSlope(state) or self.canReachSlightlyElevatedLedge(state)) and self.billDrill(state)\
+            logic = (self.hasBKMove(state, itemName.FFLIP) or self.ggm_trot(state) or self.canReachSlightlyElevatedLedge(state)) and self.billDrill(state)\
                      or self.humbaGGM(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (self.hasBKMove(state, itemName.FFLIP) or self.GGMSlope(state) or self.canReachSlightlyElevatedLedge(state)) and self.billDrill(state)\
+            logic = (self.hasBKMove(state, itemName.FFLIP) or self.ggm_trot(state) or self.canReachSlightlyElevatedLedge(state)) and self.billDrill(state)\
                      or self.humbaGGM(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (self.hasBKMove(state, itemName.FFLIP) or self.GGMSlope(state) or self.canReachSlightlyElevatedLedge(state) and self.billDrill(state)) or \
+            logic = (self.hasBKMove(state, itemName.FFLIP) or self.ggm_trot(state) or self.canReachSlightlyElevatedLedge(state) and self.billDrill(state)) or \
                 self.humbaGGM(state) or self.egg_barge(self)
         return logic
     
@@ -1863,22 +1857,22 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = (self.has_explosives(state) or  self.billDrill(state)) and \
-                    state.has(itemName.GGRAB, self.player) and self.springPad(state)
+                    state.has(itemName.GGRAB, self.player) and self.springPad(state) and self.hasBKMove(state, itemName.TTROT)
         elif self.world.options.logic_type == 1: # normal
             logic = ((self.has_explosives(state) or self.billDrill(state))\
-                    and state.has(itemName.GGRAB, self.player) and self.springPad(state))\
+                    and state.has(itemName.GGRAB, self.player) and self.springPad(state) and self.hasBKMove(state, itemName.TTROT))\
                     or (self.has_explosives(state) and self.springPad(state)\
                     and (self.check_solo_moves(state, itemName.GLIDE) or (self.check_solo_moves(state, itemName.LSPRING) and \
                     self.check_solo_moves(state, itemName.WWHACK))))
         elif self.world.options.logic_type == 2: # advanced
             logic = ((self.has_explosives(state) or self.billDrill(state))\
-                    and state.has(itemName.GGRAB, self.player) and self.springPad(state))\
+                    and state.has(itemName.GGRAB, self.player) and self.springPad(state) and self.hasBKMove(state, itemName.TTROT))\
                     or (self.has_explosives(state) and self.springPad(state)\
                     and (self.check_solo_moves(state, itemName.GLIDE) or (self.check_solo_moves(state, itemName.LSPRING) and \
                     self.check_solo_moves(state, itemName.WWHACK))))
         elif self.world.options.logic_type == 3: # glitched
             logic = ((self.has_explosives(state) or self.billDrill(state))\
-                    and state.has(itemName.GGRAB, self.player) and self.springPad(state))\
+                    and state.has(itemName.GGRAB, self.player) and self.springPad(state) and self.hasBKMove(state, itemName.TTROT))\
                     or (self.has_explosives(state) and self.springPad(state)\
                     and (self.check_solo_moves(state, itemName.GLIDE) or (self.check_solo_moves(state, itemName.LSPRING) and \
                     self.check_solo_moves(state, itemName.WWHACK))))
@@ -2610,17 +2604,17 @@ class BanjoTooieRules:
     def jinjo_alcove(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.DOUBLOON, self.player, 28)
+            logic = state.has(itemName.DOUBLOON, self.player, 28) and self.hasBKMove(state, itemName.TTRAIN)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.DOUBLOON, self.player, 28) or (self.has_explosives(state) and (self.check_solo_moves(state, itemName.PACKWH) or \
+            logic = (state.has(itemName.DOUBLOON, self.player, 28) and self.hasBKMove(state, itemName.TTRAIN)) or (self.has_explosives(state) and (self.check_solo_moves(state, itemName.PACKWH) or \
                     self.check_solo_moves(state, itemName.SAPACK) or (self.check_solo_moves(state, itemName.LSPRING) and \
                     self.check_solo_moves(state, itemName.GLIDE))))
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.DOUBLOON, self.player, 28) or (self.has_explosives(state) and (self.check_solo_moves(state, itemName.PACKWH) or \
+            logic = (state.has(itemName.DOUBLOON, self.player, 28) and self.hasBKMove(state, itemName.TTRAIN)) or (self.has_explosives(state) and (self.check_solo_moves(state, itemName.PACKWH) or \
                     self.check_solo_moves(state, itemName.SAPACK) or (self.check_solo_moves(state, itemName.LSPRING) and \
                     self.check_solo_moves(state, itemName.GLIDE)))) or self.hasBKMove(state, itemName.TJUMP) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.DOUBLOON, self.player, 28) or (self.has_explosives(state) and (self.check_solo_moves(state, itemName.PACKWH) or \
+            logic = (state.has(itemName.DOUBLOON, self.player, 28) and self.hasBKMove(state, itemName.TTRAIN)) or (self.has_explosives(state) and (self.check_solo_moves(state, itemName.PACKWH) or \
                     self.check_solo_moves(state, itemName.SAPACK) or (self.check_solo_moves(state, itemName.LSPRING) and \
                     self.check_solo_moves(state, itemName.GLIDE)))) or self.hasBKMove(state, itemName.TJUMP) or self.clockwork_shot(state)
         return logic
@@ -3165,7 +3159,7 @@ class BanjoTooieRules:
         return logic
 
     def placeholder_fuel_depot(self, state: CollectionState) -> bool:
-        return self.canDoSmallElevation(state)
+        return self.canDoSmallElevation(state) or self.GGMSlope(state)
 
     
     def notes_jrl_blubs(self, state: CollectionState) -> bool:
@@ -4545,10 +4539,22 @@ class BanjoTooieRules:
         return logic
 
     def humbaGGM(self, state: CollectionState) -> bool:
-        return self.hasBKMove(state, itemName.TTROT) and state.has(itemName.HUMBAGM, self.player)
+        return self.ggm_trot(state) and state.has(itemName.HUMBAGM, self.player)
     
     def mumboGGM(self, state: CollectionState) -> bool:
         return self.canDoSmallElevation(state) and state.has(itemName.MUMBOGM, self.player)
+    
+    def ggm_trot(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.hasBKMove(state, itemName.TTROT)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TTRAIN)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TTRAIN)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TTRAIN)
+        return logic
     
     def humbaWW(self, state: CollectionState) -> bool:
         logic = True
@@ -4643,8 +4649,16 @@ class BanjoTooieRules:
         return logic
     
     def GGMSlope(self, state: CollectionState) -> bool:
-        return self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TTRAIN)\
-              or (self.GM_boulders(state) and state.has(itemName.SPLITUP, self.player))
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.ggm_trot(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.ggm_trot(state) or (self.GM_boulders(state) and state.has(itemName.SPLITUP, self.player))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.ggm_trot(state) or (self.GM_boulders(state) and state.has(itemName.SPLITUP, self.player))
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.ggm_trot(state) or (self.GM_boulders(state) and state.has(itemName.SPLITUP, self.player))
+        return logic
     
     def clockwork_shot(self, state: CollectionState) -> bool:
         return state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player)

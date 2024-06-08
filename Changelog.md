@@ -1,3 +1,14 @@
+# 1.7.1-beta
+ - Logic Fixes:
+   - Honey B Hives: requires talon trot.
+   - Pillars jiggy: logic was using the wrong function.
+   - Bovina jiggy: requires eggs.
+   - Bovina honeycomb: has actual logic.
+   - Treasure chamber jiggy and honeycomb: requires eggs.
+   - Anything on slopes in GGM: requires talon trot in beginner logic; talon trot, turbo trainers or using solo Kazooie (if possible) in the others.
+   - Alcove jinjo: requires turbo trainers if paying Blubber is in logic.
+   - JRL pipe honeycomb: requires talon trot if going on the roof as BK.
+
 # 1.7-beta
  - Fast Swimming is now an AP Item
  - Double Air is now an AP Item
