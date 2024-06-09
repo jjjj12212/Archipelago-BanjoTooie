@@ -1,14 +1,29 @@
 # 1.7.1-beta
+ - Location renaming:
+   - Capt Blackeye Doubloon -> Captain Blackeye Doubloon
+   - Near Jinjo Doubloon -> Near Alcove Jinjo Doubloon
+   - TDL: Near Train Station (1)/(2)/(3) Note -> TDL: Train Station Right/Middle/Left Note
+   - GGM: Near Prospector's Hut (1)/(2)/(3)/(4)/(5) Note -> Near Prospector's Hut Bottom-Left/Top-Left/Top-Right/Middle-Right/Bottom-Right Note
+   - GGM: Fuel Depot (1)/(2)/(3)/(4) Note -> GGM: Fuel Depot Front-Left/Back-Left/Back-Right/Front-Right Note
  - Logic Fixes:
-   - Honey B Hives: requires talon trot.
+   - Blue Mystery Egg: needs tall jump or beak buster to make it out of the water.
+   - Honey B Hive: requires talon trot.
+   - Top of Temple jiggy: advanced and glitched logics don't need anything to get it. Normal logic can get it with flap flip.
    - Pillars jiggy: the logic was using the wrong function.
    - Bovina jiggy: requires eggs.
    - Bovina honeycomb: has actual logic.
    - Treasure chamber jiggy and honeycomb: requires eggs.
+   - GGM entrance honeycomb: doesn't require flutter and air ratatat rap at the same time when jumping off the rope.
+   - waterfall cavern jiggy: requires turbo trainers and (grip grab or some jump upgrade) in beginner logic.
+   - crushing shed jiggy: added Beak Barge.
    - Anything on slopes in GGM: requires talon trot in beginner logic; talon trot, turbo trainers or using solo Kazooie (if possible) in the others.
+   - Big Top Jinjo: Can be gotten with Split-Up.
    - Alcove jinjo: requires turbo trainers if paying Blubber is in logic.
    - JRL pipe honeycomb: requires talon trot if going on the roof as BK.
-
+   - Jolly Notes: can be gotten with Flap Flip or (Tall Jump and Grip Grab) in beginner logic.
+   - Getting everything underwater before the octopus is now in logic without oxygenate, in beginner logic.
+   - Dragon Brothers jiggy: Pack Whack only required if the moves for the damage boost is in logic, for advanced and glitched logic.
+  
 # 1.7-beta
  - Fast Swimming is now an AP Item
  - Double Air is now an AP Item
