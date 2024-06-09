@@ -1,7 +1,7 @@
 # 1.7.1-beta
  - Logic Fixes:
    - Honey B Hives: requires talon trot.
-   - Pillars jiggy: logic was using the wrong function.
+   - Pillars jiggy: the logic was using the wrong function.
    - Bovina jiggy: requires eggs.
    - Bovina honeycomb: has actual logic.
    - Treasure chamber jiggy and honeycomb: requires eggs.
