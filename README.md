@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | 1.7-Beta
+# Archipelago Banjo-Tooie (US-Only) | 1.7.1-Beta
 Banjo Tooie for Archipelago 
 
 # Controller Shortcuts with this implementation
@@ -32,6 +32,21 @@ Banjo Tooie for Archipelago
 - Option for worlds to open in random order. (requires certian amount of items randomized and puzzle skip)
 - Alternate Goals
 - Prison code is always set to: <b>Sun, Moon, Star, Moon, Sun</b>
+- Cheato Rewards as an option (awards an additional randomized item)
+- Honey B Rewards as an option (awards an additional randomized item)
+- Randomize Original Banjo-Kazooie Moves
+
+# Implemented Banjo-Kazooie Moves in Archipelago
+- Dive
+- Flight Pad
+- Flap Flip
+- Egg Shoot
+- Roll
+- Talon Trot (if set to ALL)
+- Tall Jimp (if set to ALL)
+- Climb
+- Flutter
+- Wonderwing
 
 # Possible Win Conditions
 - Beating Hag-1 (Vanilla)
