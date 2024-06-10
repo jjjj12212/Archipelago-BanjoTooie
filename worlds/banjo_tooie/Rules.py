@@ -3041,13 +3041,19 @@ class BanjoTooieRules:
     def doubloon_ledge(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.SPLITUP, self.player) and self.has_explosives(state)
+            logic = state.has(itemName.SPLITUP, self.player) and self.has_explosives(state)\
+                    and self.springPad(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.SPLITUP, self.player) and self.has_explosives(state)
+            logic = state.has(itemName.SPLITUP, self.player) and self.has_explosives(state)\
+                    and (self.springPad(state) or state.has(itemName.LSPRING, self.player))
         elif self.world.options.logic_type == 2: # advanced
-            logic = (state.has(itemName.SPLITUP, self.player) and self.has_explosives(state)) or self.clockwork_shot(state)
+            logic = (state.has(itemName.SPLITUP, self.player) and self.has_explosives(state)\
+                        and (self.springPad(state) or state.has(itemName.LSPRING, self.player)))\
+                    or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (state.has(itemName.SPLITUP, self.player) and self.has_explosives(state)) or self.clockwork_shot(state)
+            logic = (state.has(itemName.SPLITUP, self.player) and self.has_explosives(state)\
+                        and (self.springPad(state) or state.has(itemName.LSPRING, self.player)))\
+                    or self.clockwork_shot(state)
         return logic
     
     def doubloon_dirtpatch(self, state: CollectionState) -> bool:

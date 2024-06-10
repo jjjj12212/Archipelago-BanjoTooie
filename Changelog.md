@@ -1,3 +1,7 @@
+# 1.7.2-beta
+ - Logic fixes:
+   - Ledge Doubloons: now requires tall jumps. Normal logic and above can also use Leg Spring.
+
 # 1.7.1-beta
  - Location renaming:
    - Capt Blackeye Doubloon -> Captain Blackeye Doubloon
