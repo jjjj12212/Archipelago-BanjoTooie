@@ -273,7 +273,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     cheato_as_filler: SetMultiWorldCheatoPagesFiller
     exceeding_items_filler: ExceedingItemsFiller
     randomize_honeycombs: EnableMultiWorldHoneycombs
-    honeyb_rewards: EnableMultiWorldHoneycombs
+    honeyb_rewards: EnableHoneyBRewards
     randomize_glowbos: EnableMultiWorldGlowbos
     randomize_treble: EnableMultiWorldTrebleClefs
     randomize_stations: EnableMultiWorldTrainStationSwitches
