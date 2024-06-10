@@ -809,13 +809,20 @@ class BanjoTooieRules:
     def jiggy_generator_cavern(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-          logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.EGGAIM, self.player) and self.canDoSmallElevation(state)
+          logic = state.has(itemName.FEGGS, self.player) and state.has(itemName.EGGAIM, self.player)\
+                     and self.longJump(state) and self.hasBKMove(state, itemName.FFLIP)
         elif self.world.options.logic_type == 1: # normal
-          logic = self.canDoSmallElevation(state)
+          logic = (self.longJump(state) and self.hasBKMove(state, itemName.FFLIP) and\
+                    (state.has(itemName.SPLITUP, self.player) or self.has_fire(state) or self.billDrill(state)))\
+                or (self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.BBUST) and self.hasBKMove(state, itemName.CLIMB)) 
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.canDoSmallElevation(state)
+            logic = (self.longJump(state) and self.hasBKMove(state, itemName.FFLIP))\
+                or (self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.BBUST) and self.hasBKMove(state, itemName.CLIMB))\
+                or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.canDoSmallElevation(state)
+            logic = (self.longJump(state) and self.hasBKMove(state, itemName.FFLIP))\
+                or (self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.BBUST) and self.hasBKMove(state, itemName.CLIMB))\
+                or self.clockwork_shot(state)
         return logic
     
     def jiggy_waterfall_cavern(self, state: CollectionState) -> bool:
@@ -886,7 +893,8 @@ class BanjoTooieRules:
             logic = self.GM_boulders(state) and state.has(itemName.SPLITUP, self.player)
 
         elif self.world.options.logic_type == 1: # normal
-            logic = self.GM_boulders(state)
+            logic = self.GM_boulders(state) and\
+                    (state.has(itemName.SPLITUP, self.player) or self.has_fire(state) or self.billDrill(state))
             
         elif self.world.options.logic_type == 2: # advanced
             logic = self.GM_boulders(state)
@@ -4431,7 +4439,28 @@ class BanjoTooieRules:
 
     def check_hag1_options(self, state: CollectionState) -> bool:
         enough_jiggies = self.world.options.open_hag1 == 1 or state.has(itemName.JIGGY, self.player, 70)
-        return enough_jiggies and \
+        if self.world.options.logic_type == 0: # beginner
+            return enough_jiggies and \
+                (self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK) or
+                self.check_solo_moves(state, itemName.SHPACK)) and \
+                state.has(itemName.BBLASTER, self.player) and \
+                state.has(itemName.CEGGS, self.player)\
+                and (self.hasBKMove(state, itemName.TTROT) and self.hasBKMove(state, itemName.TJUMP))
+        elif self.world.options.logic_type == 1: # normal
+            return enough_jiggies and \
+                (self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK) or
+                self.check_solo_moves(state, itemName.SHPACK)) and \
+                state.has(itemName.BBLASTER, self.player) and \
+                state.has(itemName.CEGGS, self.player)\
+                and (self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TJUMP))
+        elif self.world.options.logic_type == 2: # advanced
+            return enough_jiggies and \
+                (self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK) or
+                self.check_solo_moves(state, itemName.SHPACK)) and \
+                state.has(itemName.BBLASTER, self.player) and \
+                state.has(itemName.CEGGS, self.player)
+        elif self.world.options.logic_type == 3: # glitched
+            return enough_jiggies and \
                 (self.check_solo_moves(state, itemName.PACKWH) or self.check_solo_moves(state, itemName.SAPACK) or
                 self.check_solo_moves(state, itemName.SHPACK)) and \
                 state.has(itemName.BBLASTER, self.player) and \

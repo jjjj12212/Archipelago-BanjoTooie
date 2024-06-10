@@ -16,6 +16,8 @@
    - GGM entrance honeycomb: doesn't require flutter and air ratatat rap at the same time when jumping off the rope.
    - waterfall cavern jiggy: requires turbo trainers and (grip grab or some jump upgrade) in beginner logic.
    - crushing shed jiggy: added Beak Barge.
+   - Generator Cavern jiggy: added light source to beginner and normal logic. Added flap flip to required moves. Added move requirements to cross decent gaps.
+   - Power Hut jiggy: added a light source to normal logic.
    - Anything on slopes in GGM: requires talon trot in beginner logic; talon trot, turbo trainers or using solo Kazooie (if possible) in the others.
    - Big Top Jinjo: Can be gotten with Split-Up.
    - Alcove jinjo: requires turbo trainers if paying Blubber is in logic.
@@ -23,7 +25,7 @@
    - Jolly Notes: can be gotten with Flap Flip or (Tall Jump and Grip Grab) in beginner logic.
    - Getting everything underwater before the octopus is now in logic without oxygenate, in beginner logic.
    - Dragon Brothers jiggy: Pack Whack only required if the moves for the damage boost is in logic, for advanced and glitched logic.
-  
+   - Hag 1: added moves to make the fight not too hard. Talon trot and Tall jump for beginner logic, either tall jump or talon trot for normal logic.
 # 1.7-beta
  - Fast Swimming is now an AP Item
  - Double Air is now an AP Item
