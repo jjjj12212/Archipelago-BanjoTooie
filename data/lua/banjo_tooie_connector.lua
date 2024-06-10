@@ -6748,11 +6748,14 @@ function DPadStats()
             print(" ")
             print(" ")
             print("Unlocked Moves:")
-            for locationId, table in pairs(NON_AGI_MAP["BKMOVES"])
-            do
-                if BTRAMOBJ:checkFlag(table['addr'], table['bit']) == true
-                then
-                    print(table['name'])
+            if ENABLE_AP_BK_MOVES ~= 0 
+            then
+                for locationId, table in pairs(NON_AGI_MAP["BKMOVES"])
+                do
+                    if BTRAMOBJ:checkFlag(table['addr'], table['bit']) == true
+                    then
+                        print(table['name'])
+                    end
                 end
             end
             for locationId, values in pairs(NON_AGI_MAP["MOVES"])
