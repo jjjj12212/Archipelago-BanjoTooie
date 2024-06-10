@@ -1,6 +1,10 @@
 # 1.7.2-beta
+ - BK moves and world randomisation can now be turned on at the same time. The overworld silo near your first level will already be activated.
  - Logic fixes:
    - Ledge Doubloons: now requires tall jumps. Normal logic and above can also use Leg Spring.
+   - Icy side Pillar Cheato Page: remade the logic.
+   - Glide silo: remade the logic.
+   - Volcano honeycomb: remade the logic for all logics. May now require to get it from the volcano in beginner logic.
 
 # 1.7.1-beta
  - Location renaming:
