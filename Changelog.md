@@ -30,6 +30,7 @@
    - Getting everything underwater before the octopus is now in logic without oxygenate, in beginner logic.
    - Dragon Brothers jiggy: Pack Whack only required if the moves for the damage boost is in logic, for advanced and glitched logic.
    - Hag 1: added moves to make the fight not too hard. Talon trot and Tall jump for beginner logic, either tall jump or talon trot for normal logic.
+ - Moves Dpad shows Unlocked BK Moves.
 # 1.7-beta
  - Fast Swimming is now an AP Item
  - Double Air is now an AP Item
