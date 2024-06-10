@@ -1,8 +1,11 @@
 # 1.8-beta
- - Logic fixes:
-   - Ledge Doubloons: now requires tall jumps. Normal logic and above can also use Leg Spring.
  - Make Randomize Worlds Compatible with BK Moves (Using Warp Silos)
  - King Jingaling Intro can now be skipped (as an option)
+ - Logic fixes:
+   - Ledge Doubloons: now requires tall jumps. Normal logic and above can also use Leg Spring.
+   - Icy side Pillar Cheato Page: remade the logic.
+   - Glide silo: remade the logic.
+   - Volcano honeycomb: remade the logic for all logics. May now require to get it from the volcano in beginner logic.
 
 # 1.7.1-beta
  - Location renaming:
