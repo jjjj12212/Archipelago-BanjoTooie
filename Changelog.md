@@ -1,6 +1,8 @@
-# 1.7.2-beta
+# 1.8-beta
  - Logic fixes:
    - Ledge Doubloons: now requires tall jumps. Normal logic and above can also use Leg Spring.
+ - Make Randomize Worlds Compatible with BK Moves (Using Warp Silos)
+ - King Jingaling Intro can now be skipped (as an option)
 
 # 1.7.1-beta
  - Location renaming:

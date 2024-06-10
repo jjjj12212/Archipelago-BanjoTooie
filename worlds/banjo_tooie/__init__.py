@@ -119,7 +119,10 @@ class BanjoTooieWorld(World):
                 else:
                     item_classification = ItemClassification.useful
             elif banjoItem.btid == 1230513 and self.use_cheato_filler == True: #pages
-                item_classification = ItemClassification.filler
+                if self.options.cheato_rewards.value == True:
+                    item_classification = ItemClassification.progression
+                else:
+                    item_classification = ItemClassification.filler
             elif banjoItem.btid == 1230512 and self.options.honeyb_rewards.value == True: #Honeycombs
                 item_classification = ItemClassification.progression
             else:
@@ -502,6 +505,7 @@ class BanjoTooieWorld(World):
         btoptions['chuffy']= "true" if self.options.randomize_chuffy == 1 else "false"
         btoptions['jinjo']= "true" if self.options.randomize_jinjos == 1 else "false"
         btoptions['notes']= "true" if self.options.randomize_notes == 1 else "false"
+        btoptions['skip_king']= "true" if self.options.skip_jingaling == 1 else "false"
         btoptions['worlds']= "true" if self.worlds_randomized else "false"
         btoptions['world_order'] = self.randomize_worlds
         btoptions['world_keys'] = self.randomize_order

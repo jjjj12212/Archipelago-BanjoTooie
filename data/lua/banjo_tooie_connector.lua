@@ -99,6 +99,7 @@ local TREBLE_GONE_CHECK = 2;
 local OPEN_HAG1 = false;
 local SKIP_PUZZLES = false;
 local SKIP_KLUNGO = false;
+local SKIP_KING = false;
 
 -------------- MYSTERY VARS -----------
 local EGGS_CLEARED = true;
@@ -4136,6 +4137,34 @@ function nearTreble()
     return true
 end
 
+--------------- Randomize Worlds with BK Moves ---------------------------
+
+function init_world_silos()
+    for worlds, tbl in pairs(WORLD_ENTRANCE_MAP)
+    do
+        if tbl["locationId"] == "1230944"
+        then
+            if tbl["defaultName"] == "Glitter Gulch Mine"
+            then
+                BTRAMOBJ:setFlag(0x60, 7)
+            end
+            if tbl["defaultName"] == "Witchyworld"
+            then
+                BTRAMOBJ:setFlag(0x61, 0)
+            end
+            if tbl["defaultName"] == "Cloud Cuckooland" or tbl["defaultName"] == "Terrydactyland"
+            then
+                BTRAMOBJ:setFlag(0x61, 2)
+            end
+            if tbl["defaultName"] == "Jolly Roger's Lagoon" or tbl["defaultName"] == "Hailfire Peaks" or tbl["defaultName"] == "Grunty Industries"
+            then
+                BTRAMOBJ:setFlag(0x61, 1)
+            end
+        end
+    end
+    archipelago_msg_box("Warp Silo to your first world is now open")
+end
+
 --------------------------------- Roysten --------------------------------
 
 function init_roysten()
@@ -7168,6 +7197,10 @@ function process_slot(block)
     then
         SKIP_KLUNGO = true
     end
+    if block['slot_skip_king'] ~= nil and block['slot_skip_king'] ~= "false"
+    then
+        SKIP_KING = true
+    end
     if block['slot_open_hag1'] ~= nil and block['slot_open_hag1'] ~= "false"
     then
         OPEN_HAG1 = true
@@ -7228,6 +7261,9 @@ function process_slot(block)
             if level == "Outside Grunty's Industries"
             then
                 level = "Grunty Industries"
+            elseif  level == "Jolly Roger's Lagoon - Town Center"
+            then
+                level = "Jolly Roger's Lagoon"
             end
             for worlds, t in pairs(WORLD_ENTRANCE_MAP)
             do
@@ -7238,38 +7274,6 @@ function process_slot(block)
                 end
             end
         end
-        -- local REORG_WORLDS = { }
-        -- local starting_location_id = 1230944
-        -- local locationId = starting_location_id
-        
-        -- for location, jiggy_amt in pairs(block['slot_world_order'])
-        -- do
-        --     table.insert(REORG_WORLDS, {location, tonumber(jiggy_amt)}) --Convert to table to sort based on lowest Jiggy count
-        -- end
-
-        -- table.sort(REORG_WORLDS, function(a, b)
-        --     return a[2] < b[2]
-        -- end)
-
-        -- for key, table in pairs(REORG_WORLDS)
-        -- do
-        --     local location = table[1]
-        --     local jiggy_amt = tonumber(table[2])
-
-        --     if location == "Outside Grunty's Industries"
-        --     then
-        --         location = "Grunty Industries"
-        --     end
-        --     for worlds, t in pairs(WORLD_ENTRANCE_MAP)
-        --     do
-        --         if t['defaultName'] == location
-        --         then
-        --             WORLD_ENTRANCE_MAP[worlds]["defaultCost"] = jiggy_amt
-        --             WORLD_ENTRANCE_MAP[worlds]["locationId"] = tostring(locationId)
-        --             locationId = locationId + 1
-        --         end
-        --     end
-        -- end
     end
     printGoalInfo();
     if SEED ~= 0
@@ -7429,6 +7433,9 @@ function initializeFlags()
             BTRAMOBJ:clearFlag(0x19, 2) -- Climb
             BTRAMOBJ:clearFlag(0x19, 4) -- Feather Flap
             BTRAMOBJ:clearFlag(0x1A, 7) -- Full Jump
+            if ENABLE_AP_WORLDS == true then -- Randomize Worlds - SILOS!!!
+                init_world_silos()
+            end
         end
         if ENABLE_AP_CHEATO_REWARDS == true then
             init_CHEATO_REWARDS()
@@ -7441,6 +7448,14 @@ function initializeFlags()
         BTCONSUMEOBJ:changeConsumable("Ice Keys")
         BTCONSUMEOBJ:setConsumable(0)
         BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star,moon, sun 
+
+        if SKIP_KING == true
+        then
+    --        BTRAMOBJ:setFlag(0xA7, 1)
+            BTRAMOBJ:setFlag(0x2F, 5)
+            BTRAMOBJ:setFlag(0x53, 6)
+            BTRAMOBJ:setFlag(0x50, 1)
+        end
 
         
 	-- Otherwise, the flags were already set, so just stop checking

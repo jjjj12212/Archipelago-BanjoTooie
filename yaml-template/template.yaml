@@ -67,6 +67,7 @@ Banjo-Tooie:
   speed_up_minigames: 'true'   # skip to round 3 of kickball, dodgems
   skip_puzzles: 'true'
   skip_klungo: 'true'          # Skips Klungo 1 & 2
+  skip_jingaling: 'true'
 
   # Victory Conditions
   #   0: HAG-1
