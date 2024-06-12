@@ -1,3 +1,18 @@
+# 1.8.1-beta
+ - Logic Fixes:
+   - Prospector notes: now takes entering from MT into account.
+   - TDL Train Station notes: only the right one needs moves.
+   - GI region access: getting from outside the building to floor 2 or 3 requires climb or moves to make it to the back of the building from the Pipe.
+   - Quality Control jiggy: added Tall Jump if using Mumbo.
+   - Clinker's Cavern Jiggy: added Tall Jump if using Mumbo. Glitched logic requires Climb if doing the jiggy with Breegull Bash.
+   - Sabreman Jiggy: requires Tall Jump.
+   - Mr. Fit Jiggy:
+     - The high jump event can be won with flight for logics other than beginner.
+     - requires Tall Jump for the sack race.
+     - The sprint race can be won with either the bee or turbo trainers for logics other than beginner. Beginner logic needs turbo trainers. Glitched logic can also do it with a clockwork egg.
+   - Pot o' Gold jiggy: requires tall jump if using Mumbo is in logic.
+   - Cheese Wedge jiggy: requires tall jump if using Mumbo is in logic.
+   - Train logic: entering the train requires Flap Flip or Climb. The train is at the ground level in the GI station, so you don't need these moves here.
 # 1.8-beta
  - Make Randomize Worlds Compatible with BK Moves (Using Warp Silos)
  - King Jingaling Intro can now be skipped (as an option)
