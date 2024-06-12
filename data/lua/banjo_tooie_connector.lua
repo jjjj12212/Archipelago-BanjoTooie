@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.8"
+local BT_VERSION = "V1.8.1"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -4021,6 +4021,16 @@ function init_AGI()
     end
 end
 
+function hag1_phase_skips()
+    local tmp_flg_pointer = 0x12C774
+    local beginning_phase_offset = 0x09
+    local ending_phase_offset = 0x0A
+
+    local pointer_addr = BTRAMOBJ:dereferencePointer(tmp_flg_pointer)
+    mainmemory.writebyte(pointer_addr + beginning_phase_offset, 255); -- Skips part 1
+    mainmemory.writebyte(pointer_addr + ending_phase_offset, 31); -- Skips Part 2
+end
+
 ---------------------------------- BKNOTES ---------------------------------
 
 function init_BKNOTES(type) -- Initialize BMK
@@ -4254,6 +4264,42 @@ function watchCheato()
     end
 end
 
+function cheato_math_check()
+    BTCONSUMEOBJ:changeConsumable("CHEATO");
+    local spent_counter = 0
+    local res = BTRAMOBJ:checkFlag(0x08, 4, "Cheato1")
+    if res == true then
+        spent_counter = spent_counter + 1
+    end
+    local res = BTRAMOBJ:checkFlag(0x08, 5, "Cheato2")
+    if res == true then
+        spent_counter = spent_counter + 1
+    end
+    local res = BTRAMOBJ:checkFlag(0x08, 6, "Cheato3")
+    if res == true then
+        spent_counter = spent_counter + 1
+    end
+    local res = BTRAMOBJ:checkFlag(0x08, 7, "Cheato4")
+    if res == true then
+        spent_counter = spent_counter + 1
+    end
+    local res = BTRAMOBJ:checkFlag(0x09, 0, "Cheato5")
+    if res == true then
+        spent_counter = spent_counter + 1
+    end
+    local spent_pages = 5 * spent_counter
+    local recv_pages = 0
+
+    for ap_id, memlocation in pairs(receive_map)
+    do
+        if memlocation == "1230513" then
+            recv_pages = recv_pages + 1
+        end
+    end
+    recv_pages = recv_pages - spent_pages
+    BTCONSUMEOBJ:setConsumable(recv_pages);
+end
+
 --------------------------------- HONEY B REWARDS -----------------------------------
 
 function init_HONEYB_REWARDS()
@@ -4296,6 +4342,54 @@ function watchHoneyB()
         --     HONEY_REWARDS[]
         -- end
     end
+end
+
+function honeycomb_math_check()
+    BTCONSUMEOBJ:changeConsumable("HONEYCOMB");
+    local bit1 = 0
+    local bit2 = 0
+    local bit3 = 0
+    local result = BTRAMOBJ:checkFlag(0x98, 2, "CHECK_HONEYB1")
+    if result == true
+    then
+        bit1 = 1
+    end
+    local result = BTRAMOBJ:checkFlag(0x98, 3, "CHECK_HONEYB2")
+    if result == true
+    then
+        bit2 = 2
+    end
+    local result = BTRAMOBJ:checkFlag(0x98, 4, "CHECK_HONEYB3")
+    if result == true
+    then
+        bit3 = 4
+    end
+    local final_res = bit1 + bit2 + bit3
+
+    local honeycount = 0
+
+    for ap_id, memlocation in pairs(receive_map)
+    do
+        if memlocation == "1230512" then
+            honeycount = honeycount + 1
+        end
+    end
+    if final_res >= 1 then
+        honeycount = honeycount - 1
+    end
+    if final_res >= 2 then
+        honeycount = honeycount - 3
+    end
+    if final_res >= 3 then
+        honeycount = honeycount - 5
+    end
+    if final_res >= 4 then
+        honeycount = honeycount - 7
+    end
+    if final_res == 5 then
+        honeycount = honeycount - 9
+    end
+    BTCONSUMEOBJ:setConsumable(honeycount);
 end
 
 
@@ -5588,6 +5682,7 @@ function loadGame(current_map)
                 check_open_level(true)
             end
             hag1_open()
+            hag1_phase_skips()
             GAME_LOADED = true;
         end
     else
@@ -5673,12 +5768,11 @@ function BKLogics(mapaddr)
         set_checked_BKNOTES();
         TREBLE_WAIT_TIMER = 0
         CHECK_FOR_TREBLE = true
-    end
-    if ((CURRENT_MAP ~= mapaddr) or player == false)
-    then
         set_checked_BKSTATIONS()
         STATION_BTN_TIMER = 0
         CHECK_FOR_STATIONBTN = true
+        honeycomb_math_check()
+        cheato_math_check()
     end
     if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_CHUFFY == true
     then
@@ -7451,12 +7545,14 @@ function initializeFlags()
 
         if SKIP_KING == true
         then
-    --        BTRAMOBJ:setFlag(0xA7, 1)
+            BTRAMOBJ:setFlag(0xA7, 1)
             BTRAMOBJ:setFlag(0x2F, 5)
             BTRAMOBJ:setFlag(0x53, 6)
             BTRAMOBJ:setFlag(0x50, 1)
-        end
+            BTRAMOBJ:setFlag(0x67, 0)
 
+        end
+        hag1_phase_skips()
         
 	-- Otherwise, the flags were already set, so just stop checking
 	elseif (current_map == 0xAF or current_map == 0x142) then
@@ -7486,6 +7582,7 @@ function main()
     if not checkBizHawkVersion() then
         return
     end
+    mainmemory.writebyte(0x12C78D, 64); -- Skips Intro waiting
     print("Banjo-Tooie Archipelago Version " .. BT_VERSION)
     server, error = socket.bind('localhost', 21221)
     BTRAMOBJ = BTRAM:new(nil);
