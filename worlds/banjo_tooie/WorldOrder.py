@@ -89,11 +89,11 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
                 second_level = random.choice(second_level_selection)
                 i = i+1
                 if world.options.game_length.value == 1: # Normal
-                    world.randomize_worlds.update({second_level: 8})
+                    world.randomize_worlds.update({second_level: 4})
                 elif world.options.game_length.value == 0: # Quick
-                    world.randomize_worlds.update({second_level: 6})
+                    world.randomize_worlds.update({second_level: 3})
                 elif world.options.game_length.value == 2: # Long
-                    world.randomize_worlds.update({second_level: 16})
+                    world.randomize_worlds.update({second_level: 8})
                 else: # Custom
                     world.randomize_worlds.update({second_level: world.options.world_2.value})
                 world.world_sphere_2.remove(second_level)

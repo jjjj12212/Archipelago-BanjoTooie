@@ -10,7 +10,7 @@ config file.
 Randomize Items, skip certain cutscenes and dialogs, Skippable Tower of Tragedy, Shorten Long mini-games,
 Pause Menu will display total items collected in your game + Multi-world, and Pause Menu -> Totals acts like a in-game Tracker for check locations.
 
-## What items and locations get shuffled?
+## What items and locations can get shuffled?
 
 - Jiggies
 - Treble Clefs
@@ -20,6 +20,11 @@ Pause Menu will display total items collected in your game + Multi-world, and Pa
 - Glowbos
 - Mega Glowbo
 - Doubloons
+- Ice Key
+- Mystery Eggs
+- Banjo Kazooie Moves
+- Notes
+- Double Air + Fast Swimming
 
 ## When the player receives an item, what happens?
 

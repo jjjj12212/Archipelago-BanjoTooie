@@ -1,3 +1,10 @@
+# 1.8.1-beta
+ - Randomize Worlds World 2 was looking at World 3 jiggy requirements. Fixed so its back to World 2 requirements.
+ - Added Cheato + Honeycomb Calculations to make sure your pages and honeycombs are in sync
+ - King Jingaling is now dead when Skip Jingaling is set (Thanks @Austin)
+ - Load lua on Title screen to skip intro by pressing start (Thanks @Austin)
+ - Hag-1 Phase cutscenes are now skipped (Thanks @Austin)
+
 # 1.8-beta
  - Make Randomize Worlds Compatible with BK Moves (Using Warp Silos)
  - King Jingaling Intro can now be skipped (as an option)
