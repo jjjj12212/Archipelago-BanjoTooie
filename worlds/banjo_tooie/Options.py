@@ -83,6 +83,10 @@ class KingJingalingHasJiggy(DefaultOnToggle):
     """King Jingaling will always have a Jiggy to give you."""
     display_name = "King Jingaling Jiggy"
 
+class KingJingalingSkip(DefaultOnToggle):
+    """Give King Jingaling's reward early and take a shortcut to Wooded Hollow"""
+    display_name = "King Jingaling Jiggy"
+
 class SkipPuzzles(DefaultOnToggle):
     """Open world entrances without having to go to Jiggywiggy."""
     display_name = "Skip Puzzles"
@@ -273,7 +277,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     cheato_as_filler: SetMultiWorldCheatoPagesFiller
     exceeding_items_filler: ExceedingItemsFiller
     randomize_honeycombs: EnableMultiWorldHoneycombs
-    honeyb_rewards: EnableMultiWorldHoneycombs
+    honeyb_rewards: EnableHoneyBRewards
     randomize_glowbos: EnableMultiWorldGlowbos
     randomize_treble: EnableMultiWorldTrebleClefs
     randomize_stations: EnableMultiWorldTrainStationSwitches
@@ -281,6 +285,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_notes: EnableMultiWorldNotes
     randomize_stop_n_swap: RandomizeStopnSwap
     jingaling_jiggy: KingJingalingHasJiggy
+    skip_jingaling:KingJingalingSkip
     skip_puzzles: SkipPuzzles
     skip_klungo: SkipKlungo
     skip_tower_of_tragedy: SkipToT

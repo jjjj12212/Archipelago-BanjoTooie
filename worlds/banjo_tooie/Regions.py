@@ -731,4 +731,23 @@ def connect_regions(self):
                          regionName.GI1: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWGI, player),
                          regionName.HP: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, player)
                          })
- 
+    # Randomize Worlds + BK Moves handling
+    if self.worlds_randomized == True and multiworld.worlds[player].options.randomize_bk_moves.value != 0:
+        first_level = list(self.randomize_worlds.keys())[0]
+        jinjo_village_silo = multiworld.get_region(regionName.IOHJV, player)
+        if first_level == regionName.GM:
+            jinjo_village_silo.add_exits({regionName.IOHPL})
+            plateau = multiworld.get_region(regionName.IOHPL, player)
+            plateau.add_exits({regionName.IOHJV})
+        if first_level == regionName.WW:
+            jinjo_village_silo.add_exits({regionName.IOHPG})
+            pine_grove = multiworld.get_region(regionName.IOHPG, player)
+            pine_grove.add_exits({regionName.IOHJV, regionName.IOHPL})
+        if first_level == regionName.JR or first_level == regionName.HP or first_level == regionName.GIO:
+            jinjo_village_silo.add_exits({regionName.IOHCT})
+            cliff_top = multiworld.get_region(regionName.IOHCT, player)
+            cliff_top.add_exits({regionName.IOHJV, regionName.IOHPL})
+        if first_level == regionName.TL or first_level == regionName.CC:
+            jinjo_village_silo.add_exits({regionName.IOHWL})
+            wasteland = multiworld.get_region(regionName.IOHWL, player)
+            wasteland.add_exits({regionName.IOHJV})

@@ -119,7 +119,10 @@ class BanjoTooieWorld(World):
                 else:
                     item_classification = ItemClassification.useful
             elif banjoItem.btid == 1230513 and self.use_cheato_filler == True: #pages
-                item_classification = ItemClassification.filler
+                if self.options.cheato_rewards.value == True:
+                    item_classification = ItemClassification.progression
+                else:
+                    item_classification = ItemClassification.filler
             elif banjoItem.btid == 1230512 and self.options.honeyb_rewards.value == True: #Honeycombs
                 item_classification = ItemClassification.progression
             else:
@@ -268,9 +271,10 @@ class BanjoTooieWorld(World):
             raise Exception("In order to challenge yourself with the Wonder Wing Challenge, Randomize Notes & Randomize Cheato must be enabled.")
         if self.options.cheato_as_filler.value == True and self.options.cheato_rewards == True:
             raise Exception("Cheato Pages cannot be marked as filler if Cheato Rewards are set.")
-        if self.options.randomize_worlds.value == True and self.options.randomize_bk_moves.value != 0:
-            raise Exception("Randomize Worlds and Randomize BK Moves is currently unsupported. Blame Humba.")
-
+        if self.options.randomize_worlds.value == True and self.options.randomize_bk_moves.value != 0 and self.options.logic_type == 0:
+            raise Exception("Randomize Worlds and Randomize BK Moves is not compatible with Beginner Logic.")
+        if self.options.randomize_notes == False and self.options.randomize_worlds.value == True and self.options.randomize_bk_moves.value != 0:
+            raise Exception("Randomize Notes is required for Randomize BK Moves and Randomize Worlds enabled.")
         WorldRandomize(self)
 
     def set_rules(self) -> None:
@@ -315,6 +319,8 @@ class BanjoTooieWorld(World):
             for world, amt in self.randomize_worlds.items():
                 if world == regionName.GIO:
                     item = self.create_item(itemName.GIA)
+                elif world == regionName.JR:
+                    item = self.create_item(itemName.JRA)
                 else:
                     item = self.create_item(world)
                 if world_num == 10:
@@ -499,6 +505,7 @@ class BanjoTooieWorld(World):
         btoptions['chuffy']= "true" if self.options.randomize_chuffy == 1 else "false"
         btoptions['jinjo']= "true" if self.options.randomize_jinjos == 1 else "false"
         btoptions['notes']= "true" if self.options.randomize_notes == 1 else "false"
+        btoptions['skip_king']= "true" if self.options.skip_jingaling == 1 else "false"
         btoptions['worlds']= "true" if self.worlds_randomized else "false"
         btoptions['world_order'] = self.randomize_worlds
         btoptions['world_keys'] = self.randomize_order
