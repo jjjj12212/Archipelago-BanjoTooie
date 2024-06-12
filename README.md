@@ -70,12 +70,12 @@ Go to worlds/banjo_tooie/docs/setup_en.md for detailed instructions how to setup
  - @g0goTAS (g0goTBC) - help with logic fixes
  - GDO - Tester
  - @fhnnhf (coder)
+ - @Auztin (HAG-1 Flags and Misc)
 
 # Shoutouts
 Huge thank you for the following individuals / teams. Without them, this project would not have gotten this far:
  -  OktoRose
  - <a href='https://github.com/Isotarge/ScriptHawk'>ScriptHawk</a>
- - <a href="https://github.com/kaptainkohl/BTRandoLUA">Kaptainkohl - Banjo Tooie Randomizer</a>
  - @Icebound777
  - **Of course, the people who brought Banjo Kazooie to the world**
     - Rareware
