@@ -63,11 +63,12 @@ Banjo-Tooie:
 
   logic_type: 0                # 0: Beginner, 1: Normal, 2: Advanced, 3: glitched
   jingaling_jiggy: 'true'      # True: Always get Jiggy from Jingaling; recommended when playing Multiworld.
+  skip_jingaling: 'true'       # Get Jingaling's reward early and head straight to Bottle's home.
   skip_tower_of_tragedy: 1     # 0: no skip, 1: skip completely, 2: play 3rd round only
   speed_up_minigames: 'true'   # skip to round 3 of kickball, dodgems
   skip_puzzles: 'true'
   skip_klungo: 'true'          # Skips Klungo 1 & 2
-  skip_jingaling: 'true'
+
 
   # Victory Conditions
   #   0: HAG-1
