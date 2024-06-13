@@ -3162,16 +3162,16 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.hasBKMove(state, itemName.FFLIP) or \
                     (self.hasBKMove(state, itemName.TJUMP) or (self.hasBKMove(state, itemName.TTROT) and self.hasBKMove(state, itemName.FLUTTER)))\
-                        and (state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST))
+                        and state.has(itemName.GGRAB, self.player)
         elif self.world.options.logic_type == 2: # advanced
             logic = (self.hasBKMove(state, itemName.FFLIP) or \
                     (self.hasBKMove(state, itemName.TJUMP) or (self.hasBKMove(state, itemName.TTROT) and self.hasBKMove(state, itemName.FLUTTER)))\
-                        and (state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST)))\
+                        and state.has(itemName.GGRAB, self.player))\
                     or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = (self.hasBKMove(state, itemName.FFLIP) or \
                         (self.hasBKMove(state, itemName.TJUMP) or (self.hasBKMove(state, itemName.TTROT) and self.hasBKMove(state, itemName.FLUTTER)))\
-                        and (state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST)))\
+                        and state.has(itemName.GGRAB, self.player))\
                         or self.clockwork_shot(state)
         return logic
     

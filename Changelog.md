@@ -1,3 +1,7 @@
+# 1.8.2-beta
+ - Location Renaming: Clockwork Silo (1)/(2) Note -> Clockwork Silo Bottom/Top Note
+ - Logic Fixes:
+   - Top Clockwork Silo Note logic fix.
 # 1.8.1-beta
  - Randomize Worlds World 2 was looking at World 3 jiggy requirements. Fixed so its back to World 2 requirements.
  - Added Cheato + Honeycomb Calculations to make sure your pages and honeycombs are in sync
