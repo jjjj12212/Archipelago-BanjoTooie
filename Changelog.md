@@ -1,3 +1,21 @@
+# 1.8.2-beta
+ - Location Renaming:
+   - Clockwork Silo (1)/(2) Note -> Clockwork Silo Bottom/Top Note
+ - Logic Fixes:
+   - GGM Access code fix for collectibles outside GGM. (Canary Mary in CCL, most notably)
+   - GGM access: GGM early can now be done with talon trot, in glitched logic.
+   - Waterfall jiggy: reworked the logic for the solo Kazooie jumps.
+   - Crazy Castle jiggies: added vertical mobility to reach the pump room and the jiggies.
+   - Tent Jinjo: In glitched logic, can be gotten with speed shoes.
+   - Space Zone Honeycomb: Can be gotten without grip grab
+   - Top Clockwork Silo Note logic fix.
+   - Stomping Plains jiggies/jinjo: requires tall jump for solo characters, talon trot or tall jump for Banjo-Kazooie combined.
+   - Styracosaurus cave honeycomb: requires tall jump if using the spring pad.
+   - GI Train Switch: Requires Climb. Advanced and glitch get to use talon trot + (flutter or ratatat rap) + beak buster.
+   - Colosseum Jiggy: reworked the logic with climb.
+   - CCL Notes: can be gotten as the bee.
+  - Change Blue Egg to Egg Shoot in Moves List.
+
 # 1.8.1-beta
  - Randomize Worlds World 2 was looking at World 3 jiggy requirements. Fixed so its back to World 2 requirements.
  - Added Cheato + Honeycomb Calculations to make sure your pages and honeycombs are in sync

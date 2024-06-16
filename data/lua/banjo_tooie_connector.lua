@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.8.1"
+local BT_VERSION = "V1.8.2"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -3814,7 +3814,7 @@ local NON_AGI_MAP = {
         ["1230813"] = {
             ['addr'] = 0x19,
             ['bit'] = 3,
-            ['name'] = "Blue Eggs"
+            ['name'] = "Egg Shoot"
         },
         ["1230814"] = {
             ['addr'] = 0x1A,
