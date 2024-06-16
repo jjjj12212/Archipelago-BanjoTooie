@@ -1594,7 +1594,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = self.jinjo_stomping_plains(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.jiggy_stomping_plains(state) and (state.has(itemName.SPLITUP, self.player) or self.egg_barge(state))\
+            logic = self.jiggy_stomping_plains(state) and state.has(itemName.SPLITUP, self.player) and self.hasBKMove(state,itemName.TJUMP)\
                     or (self.can_access_hailfire(state, False) and state.has(itemName.CEGGS, self.player) and state.has(itemName.EGGAIM, self.player))
         return logic
     
@@ -2741,13 +2741,13 @@ class BanjoTooieRules:
     def jinjo_stomping_plains(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.jiggy_stomping_plains(state) and state.has(itemName.SPLITUP, self.player)
+            logic = self.jiggy_stomping_plains(state) and state.has(itemName.SPLITUP, self.player) and self.hasBKMove(state,itemName.TJUMP)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.jiggy_stomping_plains(state) and state.has(itemName.SPLITUP, self.player)
+            logic = self.jiggy_stomping_plains(state) and state.has(itemName.SPLITUP, self.player) and self.hasBKMove(state,itemName.TJUMP)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.jiggy_stomping_plains(state) and state.has(itemName.SPLITUP, self.player)
+            logic = self.jiggy_stomping_plains(state) and state.has(itemName.SPLITUP, self.player) and self.hasBKMove(state,itemName.TJUMP)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.jiggy_stomping_plains(state) and (state.has(itemName.SPLITUP, self.player) or self.egg_barge(state))
+            logic = self.jiggy_stomping_plains(state) and (state.has(itemName.SPLITUP, self.player) and self.hasBKMove(state,itemName.TJUMP) or self.egg_barge(state))
         return logic
     
     def jinjo_legspring(self, state: CollectionState) -> bool:
