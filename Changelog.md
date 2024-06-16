@@ -14,6 +14,7 @@
    - GI Train Switch: Requires Climb. Advanced and glitch get to use talon trot + (flutter or ratatat rap) + beak buster.
    - Colosseum Jiggy: reworked the logic with climb.
    - CCL Notes: can be gotten as the bee.
+  - Change Blue Egg to Egg Shoot in Moves List.
 
 # 1.8.1-beta
  - Randomize Worlds World 2 was looking at World 3 jiggy requirements. Fixed so its back to World 2 requirements.
