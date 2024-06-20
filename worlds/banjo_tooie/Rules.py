@@ -1069,14 +1069,13 @@ class BanjoTooieRules:
     def jiggy_inferno(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.humbaWW(state) and \
-                    state.has(itemName.SPLITUP, self.player)
+            logic = self.humbaWW(state) and state.has(itemName.SPLITUP, self.player) and self.hasBKMove(state, itemName.TJUMP)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.humbaWW(state) and (state.has(itemName.SPLITUP, self.player) or self.hasBKMove(state, itemName.FFLIP) and (self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TTRAIN)))
+            logic = self.humbaWW(state) and (state.has(itemName.SPLITUP, self.player) and (self.hasBKMove(state, itemName.TJUMP) or state.has(itemName.LSPRING, self.player)) or self.hasBKMove(state, itemName.FFLIP) and (self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TTRAIN)))
         elif self.world.options.logic_type == 2: # advanced
             logic = self.humbaWW(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.humbaWW(state) or (self.glitchedInfernoAccess(state) and (state.has(itemName.SPLITUP, self.player) or self.hasBKMove(state, itemName.FFLIP) and (self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TTRAIN))))
+            logic = self.humbaWW(state) or (self.glitchedInfernoAccess(state) and (state.has(itemName.SPLITUP, self.player) and (self.hasBKMove(state, itemName.TJUMP) or state.has(itemName.LSPRING, self.player)) or self.hasBKMove(state, itemName.FFLIP) and (self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TTRAIN))))
         return logic
     
     def jiggy_cactus(self, state: CollectionState) -> bool:

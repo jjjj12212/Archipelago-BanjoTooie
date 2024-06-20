@@ -3,7 +3,8 @@
  - Logic Fixes:
    - Pillars Jiggy: can dive underwater with beak buster, if not on beginner logic.
    - Bovina jiggy: reworked the logic.
-   - Area 51 notes: can be gotten with leg spring
+   - Area 51 notes: can be gotten with leg spring.
+   - Inferno jiggy: solo Kazooie needs tall jump (all logics) or leg spring (all except beginner).
    - Jolly notes: can be done with a jump from the tables.
    - TDL Entrance jinjo: requires flight to reach the alcove, in beginner logic.
    - The following checks can use leg spring + glide to reach the top of TDL in advanced and glitched logic:
