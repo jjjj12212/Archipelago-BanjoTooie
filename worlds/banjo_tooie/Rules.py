@@ -2037,7 +2037,7 @@ class BanjoTooieRules:
                     or self.hfpTop(state) and self.clockwork_shot(state)
         return logic
     
-    def honeycomb_pot(self, state: CollectionState) -> bool:
+    def honeycomb_trash(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = self.hasBKMove(state, itemName.FPAD)
