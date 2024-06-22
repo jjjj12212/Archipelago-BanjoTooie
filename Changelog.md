@@ -1,3 +1,45 @@
+# 1.8.3-beta
+ - Upon generating with wrong settings, a ValueError is thrown, instead of a generic Exception.
+ - Logic Fixes:
+   - Pillars Jiggy: can dive underwater with beak buster, if not on beginner logic.
+   - Bovina jiggy: reworked the logic.
+   - Area 51 notes: can be gotten with leg spring.
+   - Inferno jiggy: solo Kazooie needs tall jump (all logics) or leg spring (all except beginner).
+   - Jolly notes: can be done with a jump from the tables.
+   - TDL Entrance jinjo: requires flight to reach the alcove, in beginner logic.
+   - The following checks can use leg spring + glide to reach the top of TDL in advanced and glitched logic:
+     - Any check where defeating Terry is required.
+     - Any check where the flight pad can be useful.
+     - Stomping Plains checks.
+   - Under Terry's Nest Jiggy: for advanced and glitched logic, can be gotten without defeating Terry, with a clockwork shot.
+   - Stomping Plains Jiggy TDL, for normal and beginner logic, requires talon trot.
+   - Waste Disposal notes: removed duplicate logic that was wrong.
+   - Stomping Plains Jiggy HFP, for normal and beginner logic, requires both talon trot and tall jump.
+   - Humba access in TDL: Beginner logic only gets to do it with a jump upgrade. The other logics can get to Wumba without moves via the tunnel.
+   - Roar cage notes: can be gotten with the T-rex.
+   - GI Floor 2 to Floor 3: requires climb if doing it as BK.
+   - Right train station note: can be gotten with the T-rex.
+   - HFP Lava Side Honeycomb: Can be gotten as solo Kazooie, if not on beginner logic.
+   - HFP Volcano honeycomb: reworked the solo Kazooie logic for normal logic and above.
+   - HFP trebleclef: requires moves for Kazooie to break the ice cube. Reworked the solo Kazooie logic. Advanced and glitched logic can shoot a clockwork from the bottom.
+   - Mildred Jinjo: requires some jump upgrade as BK, Leg Spring or Tall Jump if using solo Kazooie, Tall Jump if using Mumbo. Can be gotten with a clockwork shot in Advanced and Glitched logic.
+   - Glide Silo: can be reached with Leg Spring.
+   - Icicle Grotto Jinjo: reworked logic.
+   - HFP Train Station Honeycomb: reworked logic.
+   - Volcano jiggy: now has logic.
+   - Lava Side Train Station: updated with BK moves (oops)
+   - Mumbo notes in HFP: doesn't need anything.
+   - Boggy fish jiggy: glitched logic needs talon trot or flap flip to do the superslide.
+   - Dragon Brothers Jiggy: requires talon trot or Flap Flip if doing the skip, in advanced or glitched logic.
+   - Almost all the CCL checks no longer require (tall jump or talon trot or flight pad or grip grab) to accessed (we thought you'd need one of these to move around in central cavern, but it's not the case.)
+   - CCL Humba Jinjo: can be gotten as the bee.
+   - Pot o' Gold honeycomb: can be gotten with wing whack or glide, if not on beginner logic.
+   - Trash Can honeycomb: can be gotten with glide, if not on beginner logic.
+   - Central Cavern jinjo: requires Tall Jump if using the spring pad.
+   - Mingy Jongo jiggy: beginner logic gets talon trot to dodge the attacks.
+   - Plateau Sign notes: can be gotten with leg spring.
+   - In advanced and glitched logic, any check where using (talon trot + flutter + beak buster) can now be done with (talon trot + air rat-a-tat rap + beak buster)
+  
 # 1.8.2-beta
  - Location Renaming:
    - Clockwork Silo (1)/(2) Note -> Clockwork Silo Bottom/Top Note

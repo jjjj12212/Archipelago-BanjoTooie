@@ -268,13 +268,13 @@ class BanjoTooieWorld(World):
 
     def generate_early(self) -> None:
         if self.options.victory_condition.value == 4 and (self.options.randomize_notes == False or self.options.randomize_cheato == False):
-            raise Exception("In order to challenge yourself with the Wonder Wing Challenge, Randomize Notes & Randomize Cheato must be enabled.")
+            raise ValueError("In order to challenge yourself with the Wonder Wing Challenge, Randomize Notes & Randomize Cheato must be enabled.")
         if self.options.cheato_as_filler.value == True and self.options.cheato_rewards == True:
-            raise Exception("Cheato Pages cannot be marked as filler if Cheato Rewards are set.")
+            raise ValueError("Cheato Pages cannot be marked as filler if Cheato Rewards are set.")
         if self.options.randomize_worlds.value == True and self.options.randomize_bk_moves.value != 0 and self.options.logic_type == 0:
-            raise Exception("Randomize Worlds and Randomize BK Moves is not compatible with Beginner Logic.")
+            raise ValueError("Randomize Worlds and Randomize BK Moves is not compatible with Beginner Logic.")
         if self.options.randomize_notes == False and self.options.randomize_worlds.value == True and self.options.randomize_bk_moves.value != 0:
-            raise Exception("Randomize Notes is required for Randomize BK Moves and Randomize Worlds enabled.")
+            raise ValueError("Randomize Notes is required for Randomize BK Moves and Randomize Worlds enabled.")
         WorldRandomize(self)
 
     def set_rules(self) -> None:
