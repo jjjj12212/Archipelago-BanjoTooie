@@ -1,3 +1,17 @@
+# 1.8.4-beta
+ - Treasure Chamber Cheato Page: can be gotten with a clockwork shot in advanced and glitched logic.
+ - GGM Boulder Jinjo: can be gotten with an egg barge in glitched logic.
+ - HFP to JRL: Needs Tall jump if doing the glitch.
+ - TDL River Passage Notes: can be gotten with the T-rex when not on beginner logic.
+-  TDL River Passage Honeycomb: can be gotten with the T-rex in advanced and glitched logic.
+ - GI Treble Clef: Reworked logic and changed region.
+ - GI Leg Spring Notes: can be gotten with claw clamber boots and a very long jump, in advanced and glitched logic.
+ - GI Checks that require Weldar: needs climb.
+ - GI Access:
+   - reworked floor 1 to floor 3 transition for glitched logic.
+   - Floor 2 to floor 3: Added pokemongenius' grenade wizardry to glitched logic.
+ - CCL Glowbo Pool: the note and the glowbo can be gotten without dive in advanced and glitched logic.
+
 # 1.8.3-beta
  - Upon generating with wrong settings, a ValueError is thrown, instead of a generic Exception.
  - Logic Fixes:
