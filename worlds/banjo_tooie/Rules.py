@@ -2165,7 +2165,8 @@ class BanjoTooieRules:
                     and self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.DIVE) and self.hasBKMove(state, itemName.CLIMB)
         elif self.world.options.logic_type == 3: # glitched
             logic = (state.has(itemName.GGRAB, self.player) or self.hasBKMove(state, itemName.BBUST))\
-                    and self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.DIVE) and self.hasBKMove(state, itemName.CLIMB)
+                    and self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.DIVE) and self.hasBKMove(state, itemName.CLIMB)\
+                    or self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.GLIDE)
         return logic
     
     def cheato_hauntedcavern(self, state: CollectionState) -> bool:
@@ -3786,11 +3787,11 @@ class BanjoTooieRules:
             logic = self.can_beat_weldar(state) and self.check_solo_moves(state, itemName.SHPACK)
         elif self.world.options.logic_type == 3: # glitched
             # Getting the jiggy from waste disposal through the wall.
-            logic = (self.can_beat_weldar(state) and self.check_solo_moves(state, itemName.SHPACK))\
+            logic = (self.can_beat_weldar(state) and (self.check_solo_moves(state, itemName.SHPACK) or self.check_solo_moves(state, itemName.LSPRING)))\
                     or self.can_use_battery(state) and (
                         (self.hasBKMove(state, itemName.CLIMB) and self.hasBKMove(state, itemName.FFLIP) and state.has(itemName.TTORP, self.player)\
                          and self.hasBKMove(state, itemName.DIVE) and self.hasBKMove(state, itemName.WWING))
-                         or (self.check_solo_moves(state, itemName.SHPACK) and (self.hasBKMove(state, itemName.CLIMB) or self.hasBKMove(state, itemName.TJUMP))))
+                         or (self.check_solo_moves(state, itemName.SHPACK) and self.hasBKMove(state, itemName.CLIMB) and state.has(itemName.GGRAB, self.player)))
         return logic
     
     def jiggy_clinkers(self, state: CollectionState) -> bool:

@@ -2,6 +2,7 @@
  - Treasure Chamber Cheato Page: can be gotten with a clockwork shot in advanced and glitched logic.
  - GGM Boulder Jinjo: can be gotten with an egg barge in glitched logic.
  - Power Hut Jiggy: requires climb if using split up to do the jiggy, in beginner and normal logic.
+ - Water Storage Cheato page: can be gotten with a leg spring dive in glitched logic.
  - Cactus of Strength Jiggy: The jiggy can be reached with Leg Spring + Glide, if not on beginner logic.
  - Space Zone Honeycomb: Can be reached with Leg Spring + Glide, if not on beginner logic.
  - Underwater doubloons: if not on beginner logic, can be gotten with shack pack.
@@ -15,6 +16,7 @@
  - GI Treble Clef: Reworked logic and changed region.
  - Leg Spring Notes: can be gotten with claw clamber boots and a very long jump, in advanced and glitched logic.
  - GI Checks that require Weldar: needs climb.
+ - Underwater Waste Disposal Jiggy: fixed the logic for the swim glitch.
  - GI Access:
    - reworked floor 1 to floor 3 transition for glitched logic.
    - Floor 2 to floor 3: Added pokemongenius' grenade wizardry to glitched logic.
