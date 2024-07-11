@@ -1,3 +1,4 @@
+# Warning: this logic is very outdated. This doc will be updated (or deleted) at some point.
 # Current Logic Implementation | 1.7-Beta
 
 We currently have 4 logics put in place.
