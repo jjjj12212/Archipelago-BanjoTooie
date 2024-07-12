@@ -167,8 +167,8 @@ class JinjoFamilyRescueLength(Range):
     default = 9
 
 class TokenHuntLength(Range):
-    """How many Mumbo Tokens of the 25 hidden throughout the world do you need to find
-    Choose a value between 1 and 20"""
+    """How many Mumbo Tokens of the 15 hidden throughout the world do you need to find
+    Choose a value between 1 and 15"""
     display_name = "Token Hunt Length"
     range_start = 1
     range_end = 15
