@@ -1,4 +1,4 @@
-# 1.8.4-beta
+# 1.9-beta
  - Treasure Chamber Cheato Page: can be gotten with a clockwork shot in advanced and glitched logic.
  - GGM Boulder Jinjo: can be gotten with an egg barge in glitched logic.
  - Power Hut Jiggy: requires climb if using split up to do the jiggy, in beginner and normal logic.
