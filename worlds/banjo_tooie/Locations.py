@@ -9,7 +9,7 @@ class BanjoTooieLocation(Location):
 class LocationData(typing.NamedTuple):
     #last good ID: 1230996
     #12C770 pointer instead (1230704)
-    btid: int|None = 0
+    btid: int = 0
     # Save + mem addr
     memaddr: int = 0
     # some items have bitmasks. if bitmask>0 bitor to give item else
@@ -105,9 +105,9 @@ IHPLLoc_table = {
 
     locationName.HONEYBR1:  LocationData(1230997, 0x98, 2),
     locationName.HONEYBR2:  LocationData(1230998, 0x98, 3),
-    locationName.HONEYBR3:  LocationData(1230999, 0x98, None), #binary. bit 2 and 3 is set
+    locationName.HONEYBR3:  LocationData(1230999, 0x98, 0), #binary. bit 2 and 3 is set
     locationName.HONEYBR4:  LocationData(1231000, 0x98, 4),
-    locationName.HONEYBR5:  LocationData(1231001, 0x98, None), #binary. bit 2 and 4 is set
+    locationName.HONEYBR5:  LocationData(1231001, 0x98, 0), #binary. bit 2 and 4 is set
 }
 
 GMLoc_table = {

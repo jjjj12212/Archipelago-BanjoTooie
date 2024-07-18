@@ -2,7 +2,6 @@ import copy
 import typing
 from BaseClasses import Region
 
-import worlds.banjo_tooie
 from .Names import regionName, locationName, itemName
 from .Locations import BanjoTooieLocation
 from .Rules import BanjoTooieRules
@@ -734,7 +733,7 @@ def connect_regions(self):
                          regionName.HP: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, player)
                          })
     # Randomize Worlds + BK Moves handling
-    if self.worlds_randomized == True and multiworld.worlds[player].options.randomize_bk_moves.value != 0:
+    if self.worlds_randomized == True and self.options.randomize_bk_moves.value:
         first_level = list(self.randomize_worlds.keys())[0]
         jinjo_village_silo = multiworld.get_region(regionName.IOHJV, player)
         if first_level == regionName.GM:

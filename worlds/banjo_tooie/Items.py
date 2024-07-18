@@ -10,7 +10,7 @@ class ItemData(typing.NamedTuple):
     btid: int = 0
     qty: int = 0
     type: str = ""
-    defualt_location: None | str = "" 
+    default_location: str = "" 
 
 
 
@@ -27,11 +27,11 @@ jinjo_table = {
 }
 
 jiggy_table = {
-    itemName.JIGGY:         ItemData(1230515, 90, "progress", None),
+    itemName.JIGGY:         ItemData(1230515, 90, "progress", ""),
 }
 
 token_table = {
-    itemName.MUMBOTOKEN:    ItemData(1230798, 20, "progress", None),
+    itemName.MUMBOTOKEN:    ItemData(1230798, 20, "progress", ""),
 }
 
 moves_table = {
@@ -76,16 +76,16 @@ moves_table = {
 }
 
 bk_moves_table = {
-    itemName.DIVE:          ItemData(1230810, 1, "progress", None),
-    itemName.FPAD:          ItemData(1230811, 1, "progress", None),
-    itemName.FFLIP:         ItemData(1230812, 1, "progress", None),
-    itemName.EGGSHOOT:      ItemData(1230813, 1, "progress", None),     
-    itemName.ROLL:          ItemData(1230814, 1, "progress", None),
-    itemName.TTROT:         ItemData(1230815, 1, "progress", None),
-    itemName.TJUMP:         ItemData(1230816, 1, "progress", None),
-    itemName.CLIMB:         ItemData(1230817, 1, "progress", None),
-    itemName.FLUTTER:       ItemData(1230818, 1, "progress", None),
-    itemName.WWING:         ItemData(1230819, 1, "progress", None),
+    itemName.DIVE:          ItemData(1230810, 1, "progress", ""),
+    itemName.FPAD:          ItemData(1230811, 1, "progress", ""),
+    itemName.FFLIP:         ItemData(1230812, 1, "progress", ""),
+    itemName.EGGSHOOT:      ItemData(1230813, 1, "progress", ""),     
+    itemName.ROLL:          ItemData(1230814, 1, "progress", ""),
+    itemName.TTROT:         ItemData(1230815, 1, "progress", ""),
+    itemName.TJUMP:         ItemData(1230816, 1, "progress", ""),
+    itemName.CLIMB:         ItemData(1230817, 1, "progress", ""),
+    itemName.FLUTTER:       ItemData(1230818, 1, "progress", ""),
+    itemName.WWING:         ItemData(1230819, 1, "progress", ""),
 }
 
 level_progress_table = {
@@ -111,14 +111,14 @@ level_progress_table = {
 }
 
 misc_collectable_table = {
-    itemName.HONEY:         ItemData(1230512, 25, "useful", None),
-    itemName.PAGES:         ItemData(1230513, 25, "useful", None),
-    itemName.DOUBLOON:      ItemData(1230514, 30, "progress", None),
-    itemName.TREBLE:        ItemData(1230778,  9, "progress", None),
+    itemName.HONEY:         ItemData(1230512, 25, "useful", ""),
+    itemName.PAGES:         ItemData(1230513, 25, "useful", ""),
+    itemName.DOUBLOON:      ItemData(1230514, 30, "progress", ""),
+    itemName.TREBLE:        ItemData(1230778,  9, "progress", ""),
     itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY),
-    itemName.NOTE:          ItemData(1230797, 144, "progress", None),
+    itemName.NOTE:          ItemData(1230797, 144, "progress", ""),
     # itemName.WARPS: ItemData(1230799, 20, "trap", None),
-    itemName.NONE:          ItemData(1230888, 0, "filler", None)
+    itemName.NONE:          ItemData(1230888, 0, "filler", "")
 }
 
 stop_n_swap_table = {
