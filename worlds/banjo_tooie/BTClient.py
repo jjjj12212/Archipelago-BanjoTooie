@@ -4,6 +4,7 @@ import os
 import multiprocessing
 import copy
 import subprocess
+from typing import Union
 import zipfile
 from asyncio import StreamReader, StreamWriter
 
@@ -118,7 +119,7 @@ class BanjoTooieContext(CommonContext):
             return
         return
 
-    def _set_message(self, msg: str, msg_id: int|None):
+    def _set_message(self, msg: str, msg_id: Union[int, None]):
         if msg_id == None:
             self.messages.update({len(self.messages)+1: msg })
         else:

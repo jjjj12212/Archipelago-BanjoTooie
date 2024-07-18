@@ -1,3 +1,6 @@
+# 1.9.1-beta
+ - Backward Compatibility for Python 3.8
+
 # 1.9-beta
  - Treasure Chamber Cheato Page: can be gotten with a clockwork shot in advanced and glitched logic.
  - GGM Boulder Jinjo: can be gotten with an egg barge in glitched logic.
