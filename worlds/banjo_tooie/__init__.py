@@ -3,6 +3,7 @@ from multiprocessing import Process
 import settings
 import typing
 from jinja2 import Environment, FileSystemLoader
+from typing import Dict, Any
 from .Items import BanjoTooieItem, all_item_table, all_group_table
 from .Locations import BanjoTooieLocation, all_location_table
 from .Regions import create_regions, connect_regions
@@ -14,8 +15,8 @@ from .WorldOrder import WorldRandomize
 #from Utils import get_options
 from BaseClasses import ItemClassification, Tutorial, Item, Region, MultiWorld
 #from Fill import fill_restrictive
-from ..AutoWorld import World, WebWorld
-from ..LauncherComponents import Component, components, Type
+from worlds.AutoWorld import World, WebWorld
+from worlds.LauncherComponents import Component, components, Type
 
 
 def run_client():
@@ -25,6 +26,7 @@ def run_client():
 
 components.append(Component("Banjo-Tooie Client", func=run_client, component_type=Type.CLIENT))
 
+#NOTE! For Backward Compatability, don't use type str|None. multi types not allowed on older Pythons
 class BanjoTooieWeb(WebWorld):
     setup = Tutorial("Setup Banjo-Tooie",
         """A guide to setting up Archipelago Banjo-Tooie on your computer.""",
@@ -457,7 +459,7 @@ class BanjoTooieWorld(World):
 
 
 
-    def banjo_pre_fills(self, itemNameOrGroup: str, locationFindCriteria: str|None, useGroup: bool ) -> None:
+    def banjo_pre_fills(self, itemNameOrGroup: str, locationFindCriteria: str, useGroup: bool ) -> None:
         if useGroup:
             for group_name, item_info in self.item_name_groups.items():
                 if group_name == itemNameOrGroup:
@@ -465,7 +467,7 @@ class BanjoTooieWorld(World):
                         item = self.create_item(name)
                         banjoItem = all_item_table.get(name)
                         # self.multiworld.get_location(banjoItem.defualt_location, self.player).place_locked_item(item)
-                        location = self.multiworld.get_location(banjoItem.defualt_location, self.player)
+                        location = self.multiworld.get_location(banjoItem.default_location, self.player)
                         location.place_locked_item(item)
         else:
             for name, id in self.location_name_to_id.items():
@@ -476,8 +478,8 @@ class BanjoTooieWorld(World):
                     location.place_locked_item(item)
 
 
-    def fill_slot_data(self) -> dict[str, any]:
-        btoptions = dict[str, any]()
+    def fill_slot_data(self) -> Dict[str, Any]:
+        btoptions = {}
         btoptions["player_name"] = self.multiworld.player_name[self.player]
         btoptions["seed"] = random.randint(12212, 69996)
         btoptions["deathlink"] = "true" if self.options.death_link.value == 1 else "false"
@@ -501,12 +503,12 @@ class BanjoTooieWorld(World):
         btoptions['trebleclef'] = "true" if self.options.randomize_treble == 1 else "false"
         btoptions['skip_puzzles'] = "true" if self.options.skip_puzzles == 1 else "false"
         btoptions['open_hag1'] = "true" if self.options.open_hag1 == 1 else "false"
-        btoptions['stations']= "true" if self.options.randomize_stations == 1 else "false"
-        btoptions['chuffy']= "true" if self.options.randomize_chuffy == 1 else "false"
-        btoptions['jinjo']= "true" if self.options.randomize_jinjos == 1 else "false"
-        btoptions['notes']= "true" if self.options.randomize_notes == 1 else "false"
-        btoptions['skip_king']= "true" if self.options.skip_jingaling == 1 else "false"
-        btoptions['worlds']= "true" if self.worlds_randomized else "false"
+        btoptions['stations'] = "true" if self.options.randomize_stations == 1 else "false"
+        btoptions['chuffy'] = "true" if self.options.randomize_chuffy == 1 else "false"
+        btoptions['jinjo'] = "true" if self.options.randomize_jinjos == 1 else "false"
+        btoptions['notes'] = "true" if self.options.randomize_notes == 1 else "false"
+        btoptions['skip_king'] = "true" if self.options.skip_jingaling == 1 else "false"
+        btoptions['worlds'] = "true" if self.worlds_randomized else "false"
         btoptions['world_order'] = self.randomize_worlds
         btoptions['world_keys'] = self.randomize_order
 

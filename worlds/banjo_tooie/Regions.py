@@ -2,7 +2,6 @@ import copy
 import typing
 from BaseClasses import Region
 
-import worlds.banjo_tooie
 from .Names import regionName, locationName, itemName
 from .Locations import BanjoTooieLocation
 from .Rules import BanjoTooieRules
@@ -635,9 +634,10 @@ def connect_regions(self):
      regionName.WW: lambda state: rules.ggm_to_ww(state)})
     
     region_PG = multiworld.get_region(regionName.IOHPG, player)
-    region_PG.add_exits({regionName.WW, regionName.IOHPGU},
+    region_PG.add_exits({regionName.WW, regionName.IOHPGU, regionName.IOHPL},
     {regionName.WW: lambda state: rules.ww_jiggy(state),
-     regionName.IOHPGU: lambda state: rules.hasBKMove(state, itemName.DIVE)})
+     regionName.IOHPGU: lambda state: rules.hasBKMove(state, itemName.DIVE),
+     regionName.IOHPL: lambda state: rules.PG_to_PL(state)})
     
     region_PGU = multiworld.get_region(regionName.IOHPGU, player)
     region_PGU.add_exits({regionName.IOHWL, regionName.IOHPG},
@@ -650,10 +650,11 @@ def connect_regions(self):
      regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWWW, player) and (rules.hasBKMove(state, itemName.FFLIP) or rules.hasBKMove(state, itemName.CLIMB))})
 
     region_IOHCT = multiworld.get_region(regionName.IOHCT, player)
-    region_IOHCT.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.HP, regionName.JR, regionName.CHUFFY},
+    region_IOHCT.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.HP, regionName.JR, regionName.CHUFFY, regionName.IOHPL},
         {regionName.HP:lambda state: rules.hfp_jiggy(state),
          regionName.JR: lambda state: rules.jrl_jiggy(state),
-         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWIH, player) and (rules.hasBKMove(state, itemName.FFLIP) or rules.hasBKMove(state, itemName.CLIMB))})
+         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWIH, player) and (rules.hasBKMove(state, itemName.FFLIP) or rules.hasBKMove(state, itemName.CLIMB)),
+         regionName.IOHPL: lambda state: rules.PG_to_PL(state)})
   
     region_JR = multiworld.get_region(regionName.JR, player)
     region_JR.add_exits({regionName.JRU, regionName.IOHCT},
@@ -732,22 +733,14 @@ def connect_regions(self):
                          regionName.HP: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, player)
                          })
     # Randomize Worlds + BK Moves handling
-    if self.worlds_randomized == True and multiworld.worlds[player].options.randomize_bk_moves.value != 0:
+    if self.worlds_randomized == True and self.options.randomize_bk_moves.value:
         first_level = list(self.randomize_worlds.keys())[0]
         jinjo_village_silo = multiworld.get_region(regionName.IOHJV, player)
         if first_level == regionName.GM:
             jinjo_village_silo.add_exits({regionName.IOHPL})
-            plateau = multiworld.get_region(regionName.IOHPL, player)
-            plateau.add_exits({regionName.IOHJV})
         if first_level == regionName.WW:
             jinjo_village_silo.add_exits({regionName.IOHPG})
-            pine_grove = multiworld.get_region(regionName.IOHPG, player)
-            pine_grove.add_exits({regionName.IOHJV, regionName.IOHPL})
         if first_level == regionName.JR or first_level == regionName.HP or first_level == regionName.GIO:
             jinjo_village_silo.add_exits({regionName.IOHCT})
-            cliff_top = multiworld.get_region(regionName.IOHCT, player)
-            cliff_top.add_exits({regionName.IOHJV, regionName.IOHPL})
         if first_level == regionName.TL or first_level == regionName.CC:
             jinjo_village_silo.add_exits({regionName.IOHWL})
-            wasteland = multiworld.get_region(regionName.IOHWL, player)
-            wasteland.add_exits({regionName.IOHJV})

@@ -508,7 +508,7 @@ class BanjoTooieRules:
 
             #Water Storage Jinjo always true because it's in the GMWSJT area
             locationName.JINJOGM2: lambda state: self.humbaGGM(state),
-            locationName.JINJOGM4: lambda state: self.humbaGGM(state) or (self.ggm_trot(state) and self.billDrill(state)),
+            locationName.JINJOGM4: lambda state: self.jinjo_boulder(state),
 
             locationName.JINJOWW1: lambda state: self.jinjo_tent(state),
             locationName.JINJOWW2: lambda state: self.jinjo_caveofhorror(state),
@@ -558,12 +558,11 @@ class BanjoTooieRules:
             locationName.NOTEGGM2:  lambda state: self.notes_green_pile(state),
             locationName.NOTEGGM3:  lambda state: self.notes_green_pile(state),
             locationName.NOTEGGM4:  lambda state: self.notes_green_pile(state),
-            # TODO: needs testing and take into consideration top access
-            locationName.NOTEGGM5: lambda state: self.placeholder_prospector_note(state),
-            locationName.NOTEGGM6: lambda state: self.placeholder_prospector_note(state),
-            locationName.NOTEGGM7: lambda state: self.placeholder_prospector_note(state),
-            locationName.NOTEGGM8: lambda state: self.placeholder_prospector_note(state),
-            locationName.NOTEGGM9: lambda state: self.placeholder_prospector_note(state),
+            locationName.NOTEGGM5: lambda state: self.notes_prospector(state),
+            locationName.NOTEGGM6: lambda state: self.notes_prospector(state),
+            locationName.NOTEGGM7: lambda state: self.notes_prospector(state),
+            locationName.NOTEGGM8: lambda state: self.notes_prospector(state),
+            locationName.NOTEGGM9: lambda state: self.notes_prospector(state),
             locationName.NOTEGGM10: lambda state: self.notes_gm_mumbo(state),
             locationName.NOTEGGM11: lambda state: self.notes_gm_mumbo(state),
             locationName.NOTEGGM12: lambda state: self.notes_gm_mumbo(state),
@@ -599,14 +598,15 @@ class BanjoTooieRules:
             locationName.NOTETDL15:  lambda state: self.notes_river_passage(state),
             locationName.NOTETDL16:  lambda state: self.notes_river_passage(state),
 
-            locationName.NOTEGI1:  lambda state: self.canDoSmallElevation(state),
-            locationName.NOTEGI2:  lambda state: self.canDoSmallElevation(state),
-            locationName.NOTEGI3:  lambda state: self.canDoSmallElevation(state),
-            locationName.NOTEGI4:  lambda state: self.notes_gi_floor1(state),
-            locationName.NOTEGI5:  lambda state: self.notes_gi_floor1(state),
-            locationName.NOTEGI6:  lambda state: self.notes_leg_spring(state),
-            locationName.NOTEGI7:  lambda state: self.notes_leg_spring(state),
-            locationName.NOTEGI8:  lambda state: self.notes_leg_spring(state),
+            locationName.NOTEGI1:   lambda state: self.canDoSmallElevation(state),
+            locationName.NOTEGI2:   lambda state: self.canDoSmallElevation(state),
+            locationName.NOTEGI3:   lambda state: self.canDoSmallElevation(state),
+            locationName.NOTEGI4:   lambda state: self.notes_gi_floor1(state),
+            locationName.NOTEGI5:   lambda state: self.notes_gi_floor1(state),
+            locationName.NOTEGI6:   lambda state: self.notes_leg_spring(state),
+            locationName.NOTEGI7:   lambda state: self.notes_leg_spring(state),
+            locationName.NOTEGI8:   lambda state: self.notes_leg_spring(state),
+            locationName.NOTEGI9:   lambda state: self.notes_short_stack(state),
             locationName.NOTEGI11:  lambda state: self.notes_waste_disposal(state),
             locationName.NOTEGI12:  lambda state: self.notes_waste_disposal(state),
             locationName.NOTEGI15:  lambda state: self.notes_floor_3(state),
@@ -1701,8 +1701,7 @@ class BanjoTooieRules:
             logic = self.hasBKMove(state, itemName.BEGG) and self.canShootEggs(state, itemName.FEGGS) and self.canShootEggs(state, itemName.GEGGS) and self.canShootEggs(state, itemName.IEGGS)\
                         and ((self.billDrill(state) and self.mumboCCL(state)) or state.has(itemName.SPLITUP, self.player))
         return logic
-    
-    # TODO: I'm sure there's more to this.
+
     def jiggy_cheese(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -2210,8 +2209,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 3: # glitched
             logic = self.jiggy_peril(state)
         return logic
-    
-    # TODO: test lateral movement
+
     def cheato_pawno(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -3207,11 +3205,11 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.hasBKMove(state, itemName.DIVE)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.hasBKMove(state, itemName.DIVE) or state.has(itemName.SHPACK, self.player)
+            logic = self.hasBKMove(state, itemName.DIVE) or self.check_solo_moves(state, itemName.SHPACK) and self.has_explosives(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.hasBKMove(state, itemName.DIVE) or state.has(itemName.SHPACK, self.player)
+            logic = self.hasBKMove(state, itemName.DIVE) or self.check_solo_moves(state, itemName.SHPACK) and self.has_explosives(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.hasBKMove(state, itemName.DIVE) or state.has(itemName.SHPACK, self.player)
+            logic = self.hasBKMove(state, itemName.DIVE) or self.check_solo_moves(state, itemName.SHPACK) and self.has_explosives(state)
         return logic
 
     def notes_plateau_sign(self, state: CollectionState) -> bool:
@@ -3305,9 +3303,8 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 3: # glitched
             logic = self.GGMSlope(state) or self.clockwork_shot(state)
         return logic
-    
-    # TODO: make something that is proper to every note
-    def placeholder_prospector_note(self, state: CollectionState) -> bool:
+
+    def notes_prospector(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = self.GGMSlope(state) or self.hasBKMove(state, itemName.FFLIP) or (self.mt_jiggy(state) and self.dilberta_free(state))
@@ -3324,11 +3321,11 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.canDoSmallElevation(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.canDoSmallElevation(state) or state.has(itemName.GGRAB, self.player)
+            logic = self.canDoSmallElevation(state) or state.has(itemName.GGRAB, self.player) or self.GGMSlope(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.canDoSmallElevation(state) or state.has(itemName.GGRAB, self.player) or self.clockwork_shot(state)
+            logic = self.canDoSmallElevation(state) or state.has(itemName.GGRAB, self.player) or self.clockwork_shot(state) or self.GGMSlope(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.canDoSmallElevation(state) or state.has(itemName.GGRAB, self.player) or self.clockwork_shot(state)
+            logic = self.canDoSmallElevation(state) or state.has(itemName.GGRAB, self.player) or self.clockwork_shot(state) or self.GGMSlope(state)
         return logic
 
     def placeholder_fuel_depot(self, state: CollectionState) -> bool:
@@ -3377,11 +3374,11 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.hasBKMove(state, itemName.DIVE)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.hasBKMove(state, itemName.DIVE) or self.humbaTDL(state)
+            logic = self.hasBKMove(state, itemName.DIVE) or self.humbaTDL(state) or self.check_solo_moves(state, itemName.SHPACK)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.hasBKMove(state, itemName.DIVE) or self.humbaTDL(state)
+            logic = self.hasBKMove(state, itemName.DIVE) or self.humbaTDL(state) or self.check_solo_moves(state, itemName.SHPACK)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.hasBKMove(state, itemName.DIVE) or self.humbaTDL(state)
+            logic = self.hasBKMove(state, itemName.DIVE) or self.humbaTDL(state) or self.check_solo_moves(state, itemName.SHPACK)
         return logic
     
     def notes_gi_floor1(self, state: CollectionState) -> bool:
@@ -3419,6 +3416,18 @@ class BanjoTooieRules:
             logic = (self.hasBKMove(state, itemName.CLIMB) or (self.has_explosives(state) and self.canDoSmallElevation(state)))\
                     or self.clockwork_shot(state)\
                     or state.has(itemName.CLAWBTS, self.player) and self.extremelyLongJump(state)
+        return logic
+    
+    def notes_short_stack(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.canDoSmallElevation(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = True
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        elif self.world.options.logic_type == 3: # glitched
+            logic = True
         return logic
         
     def notes_waste_disposal(self, state: CollectionState) -> bool:
@@ -3708,7 +3717,7 @@ class BanjoTooieRules:
                   and (self.has_explosives(state) or self.hasBKMove(state,itemName.BBARGE))
         elif self.world.options.logic_type == 1: # normal
             return (self.longJumpToGripGrab(state) and self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.CLIMB) and (self.has_explosives(state) or self.hasBKMove(state, itemName.BBARGE)))\
-                or (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GEGGS, self.player))\
+                or (state.has(itemName.EGGAIM, self.player) and state.has(itemName.GEGGS, self.player) and self.hasBKMove(state, itemName.CLIMB))\
                 or (self.has_explosives(state) and self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.GLIDE))
         elif self.world.options.logic_type == 2: # advanced
             return (self.longJumpToGripGrab(state) and self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.CLIMB) and (self.has_explosives(state) or self.hasBKMove(state, itemName.BBARGE)))\
@@ -3897,6 +3906,30 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 3: # glitched
             logic = self.hasBKMove(state, itemName.CLIMB)
         return logic
+
+    def PG_to_PL(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = True
+        elif self.world.options.logic_type == 1: # normal
+            logic = False
+        elif self.world.options.logic_type == 2: # advanced
+            logic = False
+        elif self.world.options.logic_type == 3: # glitched
+            logic = False
+        return logic
+    
+    def CT_to_PL(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = True
+        elif self.world.options.logic_type == 1: # normal
+            logic = False
+        elif self.world.options.logic_type == 2: # advanced
+            logic = False
+        elif self.world.options.logic_type == 3: # glitched
+            logic = False
+        return logic
     
     def gm_jiggy(self, state: CollectionState) -> bool: #4
         if self.world.worlds_randomized == True:
@@ -4075,12 +4108,12 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = False
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.CLAWBTS, self.player) and self.veryLongJump(state) and self.hasBKMove(state, itemName.CLIMB)
+            logic = state.has(itemName.CLAWBTS, self.player) and (self.hasBKMove(state, itemName.FLUTTER) or self.hasBKMove(state, itemName.ARAT)) and self.hasBKMove(state, itemName.CLIMB)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.CLAWBTS, self.player) and self.veryLongJump(state) and\
+            logic = state.has(itemName.CLAWBTS, self.player) and (self.hasBKMove(state, itemName.FLUTTER) or self.hasBKMove(state, itemName.ARAT)) and\
                     (self.hasBKMove(state, itemName.CLIMB) or self.extremelyLongJump(state))
         elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.CLAWBTS, self.player) and self.veryLongJump(state) and\
+            logic = state.has(itemName.CLAWBTS, self.player) and (self.hasBKMove(state, itemName.FLUTTER) or self.hasBKMove(state, itemName.ARAT)) and\
                     (self.hasBKMove(state, itemName.CLIMB) or self.extremelyLongJump(state))
         return logic
     
@@ -4174,18 +4207,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 3: # glitched
             logic = self.hasBKMove(state, itemName.CLIMB) or (self.hasBKMove(state, itemName.FFLIP) and self.longJump(state))
         return logic
-    
-    def can_access_plateau(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
-        elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.GGRAB, self.player) or self.dilberta_free(state)
-        elif self.world.options.logic_type == 2: # advanced
-            logic = True
-        elif self.world.options.logic_type == 3: # glitched
-            logic = True
-        return logic
+
     
     def WL_to_PGU(self, state: CollectionState) -> bool:
         logic = True
@@ -4368,7 +4390,6 @@ class BanjoTooieRules:
     def hasGroundAttack(self, state: CollectionState) -> bool:
         BKAttack = True in list(map(lambda move: self.hasBKMove(state, move),
                 [itemName.EGGSHOOT, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.GRAT, itemName.BBUST]))
-        
         return BKAttack or self.breegullBash(state)
     
     def hasMobileAttack(self, state: CollectionState) -> bool:
@@ -4473,11 +4494,11 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.hasBKMove(state, itemName.TTROT)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TTRAIN)
+            logic = self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TTRAIN) or state.has(itemName.SPRINGB, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TTRAIN)
+            logic = self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TTRAIN) or state.has(itemName.SPRINGB, self.player)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TTRAIN)
+            logic = self.hasBKMove(state, itemName.TTROT) or self.hasBKMove(state, itemName.TTRAIN) or state.has(itemName.SPRINGB, self.player)
         return logic
     
     def humbaWW(self, state: CollectionState) -> bool:
@@ -4604,17 +4625,20 @@ class BanjoTooieRules:
             logic = self.hasBKMove(state, itemName.DIVE)
         return logic
     
-    # TODO: Check if HFP is entered from the train station. I don't know how to do that.
     def hfpTop(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.canDoSmallElevation(state) or state.has(itemName.SPLITUP, self.player) or self.hasBKMove(state, itemName.FPAD)
+            logic = self.canDoSmallElevation(state) or state.has(itemName.SPLITUP, self.player) or self.hasBKMove(state, itemName.FPAD) or\
+                    (state.can_reach_region(regionName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, self.player))
         elif self.world.options.logic_type == 1: # normal
-            logic = self.canDoSmallElevation(state) or state.has(itemName.SPLITUP, self.player) or self.hasBKMove(state, itemName.FPAD)
+            logic = self.canDoSmallElevation(state) or state.has(itemName.SPLITUP, self.player) or self.hasBKMove(state, itemName.FPAD) or\
+                    (state.can_reach_region(regionName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, self.player))
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.canDoSmallElevation(state) or state.has(itemName.SPLITUP, self.player) or self.hasBKMove(state, itemName.FPAD)
+            logic = self.canDoSmallElevation(state) or state.has(itemName.SPLITUP, self.player) or self.hasBKMove(state, itemName.FPAD) or\
+                    (state.can_reach_region(regionName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, self.player))
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.canDoSmallElevation(state) or state.has(itemName.SPLITUP, self.player) or self.hasBKMove(state, itemName.FPAD)
+            logic = self.canDoSmallElevation(state) or state.has(itemName.SPLITUP, self.player) or self.hasBKMove(state, itemName.FPAD) or\
+                    (state.can_reach_region(regionName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, self.player))
         return logic
     
     def notes_boggy(self, state: CollectionState) -> bool:

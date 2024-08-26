@@ -1,33 +1,51 @@
+# 1.9.1-beta
+ - Renamings:
+   - GI: Floor 2: Box Room (1)/(2) Note -> GI: Floor 2: Box Room Taller Stack/Shorter Stack Note
+ - Any check in GGM that requires talon trot: Springy Step Shoes can be used to get talon trot, if not on beginner logic.
+ - Saucer of peril: normal logic will now require climb to be able to see the red button if sniping the red button with grenades.
+ - JRL Underwater doubloons: require explosives to have access to the split up pads if using shack pack.
+ - River Passage notes: can be gotten with shack pack, if not on beginner logic.
+ - Floor 2: Box Room Shorter Stack Note: needs a jump upgrade to get the note, in beginner logic.
+ - HFP collectibles: considers entering the level from the train to reach the top half of lava side.
+ - Region access:
+   - The following transitions are now always in logic if not playing on beginner logic:
+     - Pine Grove to Plateau
+     - Cliff Top to Plateau
+   - GI outside to floor 3: condition relaxed for the fact that Claw Clamber Boots give a free talon trot.
+ - Backward Compatibility for Python 3.8
+ - Potential fix for Cheato Rewards
+
 # 1.9-beta
- - Treasure Chamber Cheato Page: can be gotten with a clockwork shot in advanced and glitched logic.
- - GGM Boulder Jinjo: can be gotten with an egg barge in glitched logic.
- - Power Hut Jiggy: requires climb if using split up to do the jiggy, in beginner and normal logic.
- - Water Storage Cheato page: can be gotten with a leg spring dive in glitched logic.
- - Cactus of Strength Jiggy: The jiggy can be reached with Leg Spring + Glide, if not on beginner logic.
- - Space Zone Honeycomb: Can be reached with Leg Spring + Glide, if not on beginner logic.
- - Underwater doubloons: if not on beginner logic, can be gotten with shack pack.
- - Blubbul notes: can be gotten as the sub.
- - Rocknuts Jiggy: requires Tall Jump in beginner logic.
- - Taxi Pack Silo: Reworked logic.
- - River Passage Notes: can be gotten with the T-rex when not on beginner logic.
- - River Passage Honeycomb: can be gotten with the T-rex in advanced and glitched logic.
- - Scrotty Jiggy: Requires Tall Jump in beginner logic.
- - Chompa Jiggy: needs spring shoes if jumping up the pillar on beginner logic.
- - GI Treble Clef: Reworked logic and changed region.
- - Leg Spring Notes: can be gotten with claw clamber boots and a very long jump, in advanced and glitched logic.
- - GI Checks that require Weldar: needs climb.
- - Underwater Waste Disposal Jiggy: fixed the logic for the swim glitch.
- - GI Access:
-   - reworked floor 1 to floor 3 transition for glitched logic.
-   - Floor 2 to floor 3: Added pokemongenius' grenade wizardry to glitched logic.
- - Icicle Grotto Cheato Page: Reworked logic.
- - Central Cavern Jinjo: if not on beginner logic, can be gotten with leg spring.
- - Trash Can Jiggy: if not on beginner logic, can be gotten without a flight pad.
- - CCL Glowbo Pool: the note and the glowbo can be gotten without dive in advanced and glitched logic.
- - Cliff Top Jinjo: You don't need climb to get it.
- - Mega Glowbo: Can be reached with beak busters if not on beginner logic.
- - HFP to JRL: Needs Tall jump if doing the glitch.
- - All the checks that are dependant on multiple levels: reworked logic for region access. We now let Archipelago tell us if a region is in logic or not, which should greatly improve the generation time.
+ - Logic fixes:
+   - Treasure Chamber Cheato Page: can be gotten with a clockwork shot in advanced and glitched logic.
+   - GGM Boulder Jinjo: can be gotten with an egg barge in glitched logic.
+   - Power Hut Jiggy: requires climb if using split up to do the jiggy, in beginner and normal logic.
+   - Water Storage Cheato page: can be gotten with a leg spring dive in glitched logic.
+   - Cactus of Strength Jiggy: The jiggy can be reached with Leg Spring + Glide, if not on beginner logic.
+   - Space Zone Honeycomb: Can be reached with Leg Spring + Glide, if not on beginner logic.
+   - Underwater doubloons: if not on beginner logic, can be gotten with shack pack.
+   - Blubbul notes: can be gotten as the sub.
+   - Rocknuts Jiggy: requires Tall Jump in beginner logic.
+   - Taxi Pack Silo: Reworked logic.
+   - River Passage Notes: can be gotten with the T-rex when not on beginner logic.
+   - River Passage Honeycomb: can be gotten with the T-rex in advanced and glitched logic.
+   - Scrotty Jiggy: Requires Tall Jump in beginner logic.
+   - Chompa Jiggy: needs spring shoes if jumping up the pillar on beginner logic.
+   - GI Treble Clef: Reworked logic and changed region.
+   - Leg Spring Notes: can be gotten with claw clamber boots and a very long jump, in advanced and glitched logic.
+   - GI Checks that require Weldar: needs climb.
+   - Underwater Waste Disposal Jiggy: fixed the logic for the swim glitch.
+   - GI Access:
+     - reworked floor 1 to floor 3 transition for glitched logic.
+     - Floor 2 to floor 3: Added pokemongenius' grenade wizardry to glitched logic.
+   - Icicle Grotto Cheato Page: Reworked logic.
+   - Central Cavern Jinjo: if not on beginner logic, can be gotten with leg spring.
+   - Trash Can Jiggy: if not on beginner logic, can be gotten without a flight pad.
+   - CCL Glowbo Pool: the note and the glowbo can be gotten without dive in advanced and glitched logic.
+   - Cliff Top Jinjo: You don't need climb to get it.
+   - Mega Glowbo: Can be reached with beak busters if not on beginner logic.
+   - HFP to JRL: Needs Tall jump if doing the glitch.
+   - All the checks that are dependant on multiple levels: reworked logic for region access. We now let Archipelago tell us if a region is in logic or not, which should greatly improve the generation time.
 
 # 1.8.3-beta
  - Upon generating with wrong settings, a ValueError is thrown, instead of a generic Exception.
