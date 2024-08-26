@@ -1,17 +1,36 @@
+# 1.9.2
+ - Logic fixes:
+   - GGM Mumbo notes: can be gotten with beak buster, if not in beginner logic.
+   - Generator Cavern Jiggy: the last jump to the jiggy can be done with talon trot.
+   - Quality Control jiggy: Requires climb in beginner and normal logic. Requires egg aim if doing the clockwork warp, in glitched logic.  Glitched logic no longer needs tall jump or flap flip if you're doing the clockwork warp.
+   - Floor 1 Guarded jiggy: requires eggs to get the jiggy the intended way. Beginner logic is forced to use egg aim. The clockwork shot now requires Leg Spring or Tall Jump.
+   - Waste Disposal Box Jiggy: fixed the logic for advanced and glitched logic.
+   - Humba in Witchyworld: can be reached with Leg Spring, if not on beginner logic.
+   - Remade logic for entering Chuffy from every world.
+   - Pine Grove Access: jumping out of the water can now be done with more moves.
+   - Plateau access: fixed blunder where only beginner logic could access it from Pine Grove and Cliff Top.
+
 # 1.9.1-beta
  - Renamings:
    - GI: Floor 2: Box Room (1)/(2) Note -> GI: Floor 2: Box Room Taller Stack/Shorter Stack Note
- - Any check in GGM that requires talon trot: Springy Step Shoes can be used to get talon trot, if not on beginner logic.
- - Saucer of peril: normal logic will now require climb to be able to see the red button if sniping the red button with grenades.
- - JRL Underwater doubloons: require explosives to have access to the split up pads if using shack pack.
- - River Passage notes: can be gotten with shack pack, if not on beginner logic.
- - Floor 2: Box Room Shorter Stack Note: needs a jump upgrade to get the note, in beginner logic.
- - HFP collectibles: considers entering the level from the train to reach the top half of lava side.
- - Region access:
-   - The following transitions are now always in logic if not playing on beginner logic:
-     - Pine Grove to Plateau
-     - Cliff Top to Plateau
-   - GI outside to floor 3: condition relaxed for the fact that Claw Clamber Boots give a free talon trot.
+ - Logic fixes:
+   - Jade Snake Grove Jinjo: fixed impossible jumps by adding parentheses.
+   - Any check in GGM that requires talon trot: Springy Step Shoes can be used to get talon trot, if not on beginner logic.
+   - Chuffy Mumbo Token: moved from the GGM region to the Chuffy region.
+   - Saucer of peril: normal logic will now require climb to be able to see the red button if sniping the red button with grenades.
+   - WW train station: solo Banjo can get it with tall jump, grip grab and pack whack, if not on beginner logic.
+   - JRL Underwater doubloons: require explosives to have access to the split up pads if using shack pack.
+   - JRL big fish collectables: the big fish's teeth can be shot from the surface with egg aim, in the advanced and the glitched logic.
+   - River Passage notes: can be gotten with shack pack, if not on beginner logic.
+   - TDL Boulder Cheato Page: removed impossible jumps.
+   - Floor 2: Box Room Shorter Stack Note: needs a jump upgrade to get the note, in beginner logic.
+   - Defeating Weldar: refactored the logic for climbing the ladder. Jumping to the rotating pipe can be done for advanced and glitched logic.
+   - HFP collectibles: considers entering the level from the train to reach the top half of lava side.
+   - Region access:
+     - The following transitions are now always in logic if not playing on beginner logic:
+       - Pine Grove to Plateau
+       - Cliff Top to Plateau
+     - GI outside to floor 3: condition relaxed for the fact that Claw Clamber Boots give a free talon trot.
  - Backward Compatibility for Python 3.8
 
 # 1.9-beta

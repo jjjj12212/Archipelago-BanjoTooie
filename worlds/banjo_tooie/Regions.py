@@ -534,7 +534,7 @@ def create_regions(self):
 
     if multiworld.worlds[player].options.victory_condition.value == 2 or multiworld.worlds[player].options.victory_condition.value == 4:
         region_map[regionName.MT].append(locationName.MUMBOTKNBOSS1)
-        region_map[regionName.GM].append(locationName.MUMBOTKNBOSS2)
+        region_map[regionName.CHUFFY].append(locationName.MUMBOTKNBOSS2)
         region_map[regionName.WW].append(locationName.MUMBOTKNBOSS3)
         region_map[regionName.JRU2].append(locationName.MUMBOTKNBOSS4)
         region_map[regionName.TL].append(locationName.MUMBOTKNBOSS5)
@@ -629,7 +629,7 @@ def connect_regions(self):
     region_GM = multiworld.get_region(regionName.GM, player)
     region_GM.add_exits({regionName.GMWSJT, regionName.IOHPL, regionName.CHUFFY, regionName.WW},
     {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_GGM(state),
-     regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and (rules.hasBKMove(state, itemName.FFLIP) or rules.hasBKMove(state, itemName.CLIMB)),
+     regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ggm_to_chuffy(state),
      regionName.IOHPL: lambda state: rules.GGM_to_PL(state),
      regionName.WW: lambda state: rules.ggm_to_ww(state)})
     
@@ -641,19 +641,19 @@ def connect_regions(self):
     
     region_PGU = multiworld.get_region(regionName.IOHPGU, player)
     region_PGU.add_exits({regionName.IOHWL, regionName.IOHPG},
-    {regionName.IOHPG: lambda state: rules.hasBKMove(state, itemName.TJUMP),
+    {regionName.IOHPG: lambda state: rules.PGU_to_PG(state),
      regionName.IOHWL: lambda state: state.has(itemName.TTORP, player)})
     
     region_WW = multiworld.get_region(regionName.WW, player)
     region_WW.add_exits({regionName.IOHPG, regionName.CHUFFY},
     {regionName.IOHPG: lambda state: rules.ww_jiggy(state),
-     regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWWW, player) and (rules.hasBKMove(state, itemName.FFLIP) or rules.hasBKMove(state, itemName.CLIMB))})
+     regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ww_to_chuffy(state)})
 
     region_IOHCT = multiworld.get_region(regionName.IOHCT, player)
     region_IOHCT.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.HP, regionName.JR, regionName.CHUFFY, regionName.IOHPL},
         {regionName.HP:lambda state: rules.hfp_jiggy(state),
          regionName.JR: lambda state: rules.jrl_jiggy(state),
-         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWIH, player) and (rules.hasBKMove(state, itemName.FFLIP) or rules.hasBKMove(state, itemName.CLIMB)),
+         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ioh_to_chuffy(state),
          regionName.IOHPL: lambda state: rules.PG_to_PL(state)})
   
     region_JR = multiworld.get_region(regionName.JR, player)
@@ -674,7 +674,7 @@ def connect_regions(self):
                         {regionName.IOHCT_HFP_ENTRANCE: lambda state: rules.HFP_to_CTHFP(state),
                          regionName.MT: lambda state: rules.HFP_to_MT(state),
                          regionName.JR: lambda state: rules.HFP_to_JRL(state),
-                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWHP1, player) and (rules.hasBKMove(state, itemName.FFLIP) or rules.hasBKMove(state, itemName.CLIMB))})
+                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.hfp_to_chuffy(state)})
     region_IOHWL = multiworld.get_region(regionName.IOHWL, player)
     region_IOHWL.add_exits({regionName.IOHPGU, regionName.IOHQM, regionName.TL, regionName.CC},
                         {regionName.IOHPGU: lambda state: rules.WL_to_PGU(state),
@@ -685,7 +685,7 @@ def connect_regions(self):
     region_TL = multiworld.get_region(regionName.TL, player)
     region_TL.add_exits({regionName.TL_HATCH, regionName.WW, regionName.CHUFFY, regionName.IOHWL},
                         {regionName.WW: lambda state: rules.TDL_to_WW(state),
-                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWTD, player) and (rules.hasBKMove(state, itemName.FFLIP) or rules.hasBKMove(state, itemName.CLIMB)),
+                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.tdl_to_chuffy(state),
                          regionName.IOHWL: lambda state: rules.TDL_to_IOHWL(state),
                          regionName.TL_HATCH: lambda state: rules.longJump(state),
                          })
@@ -708,7 +708,7 @@ def connect_regions(self):
                         {regionName.GIO: lambda state: state.has(itemName.SPLITUP, self.player),
                          regionName.GI2: lambda state: rules.can_access_gi_fl1_2fl2(state),
                          regionName.GI3ALL: lambda state: rules.F1_to_F3(state),
-                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and state.has(itemName.TRAINSWGI, player)}) # For this one, the train loading zone is at the ground level.
+                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.gi_to_chuffy(state)})
     
     region_GI2 = multiworld.get_region(regionName.GI2, player)
     region_GI2.add_exits({regionName.GIO, regionName.GI1, regionName.GI3ALL},
