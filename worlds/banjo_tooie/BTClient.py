@@ -307,14 +307,40 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     # Locations handling
     locations = payload['locations']
     chuffy = payload['chuffy']
+    notelist = payload['treble']
+    stationlist = payload['stations']
+    mystery = payload['mystery']
+    roystenlist = payload['roysten']
+    jinjofamlist = payload['jinjofam']
+    cheatorewardslist = payload['cheato_rewards']
+    honeybrewardslist = payload['honeyb_rewards']
+    worldslist = payload['worlds']
 
     # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
     if isinstance(locations, list):
         locations = {}
+    if isinstance(chuffy, list):
+        chuffy = {}
+    if isinstance(notelist, list):
+        notelist = {}
+    if isinstance(stationlist, list):
+        stationlist = {}
+    if isinstance(mystery, list):
+        mystery = {}
+    if isinstance(roystenlist, list):
+        roystenlist = {}
+    if isinstance(jinjofamlist, list):
+        jinjofamlist = {}
+    if isinstance(cheatorewardslist, list):
+        cheatorewardslist = {}
+    if isinstance(honeybrewardslist, list):
+        honeybrewardslist = {}
+    if isinstance(worldslist, list):
+        worldslist = {}
 
     if "DEMO" not in locations and ctx.sync_ready == True:
-        if ctx.location_table != locations:
-            locs1 = []
+        locs1 = []
+        if ctx.location_table != locations: 
             for item_group, BTlocation_table in locations.items():
                     if len(BTlocation_table) == 0:
                         continue
@@ -341,239 +367,96 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                                     if ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or \
                                     ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
                                        locs1 = mumbo_tokens_loc(locs1, int(locationId), ctx.slot_data["goal_type"])
-            if len(locs1) > 0:
-                await ctx.send_msgs([{
-                    "cmd": "LocationChecks",
-                    "locations": locs1
-                }])
-            ctx.location_table = locations
-
-
+            ctx.location_table = locations       
         if ctx.chuffy_table != chuffy:
             ctx.chuffy_table = chuffy
-            chuf1 = []
             for locationId, value in chuffy.items():
                 if value == True:
-                    chuf1.append(int(locationId))
-
-            if len(chuf1) > 0:
-                await ctx.send_msgs([{
-                    "cmd": "LocationChecks",
-                    "locations": chuf1
-                }])
-
-    if (ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or 
-        ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 5) and not ctx.finished_game:
-        mumbo_tokens = 0
-        for networkItem in ctx.items_received:
-            if networkItem.item == 1230798:
-                mumbo_tokens += 1
-                if ((ctx.slot_data["goal_type"] == 1 and mumbo_tokens >= ctx.slot_data["minigame_hunt_length"]) or
-                    (ctx.slot_data["goal_type"] == 2 and mumbo_tokens >= ctx.slot_data["boss_hunt_length"]) or
-                    (ctx.slot_data["goal_type"] == 3 and mumbo_tokens >= ctx.slot_data["jinjo_family_rescue_length"]) or
-                    (ctx.slot_data["goal_type"] == 5 and mumbo_tokens >= ctx.slot_data["token_hunt_length"])): 
-                    await ctx.send_msgs([{
-                        "cmd": "StatusUpdate",
-                        "status": 30
-                    }])
-                    ctx.finished_game = True    
-
-    if ctx.slot_data["moves"] == "true" and ctx.sync_ready == True:
-        # Locations handling
-        movelist = payload['unlocked_moves']
-        mov1 = []
-
-        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
-        if isinstance(movelist, list):
-            movelist = {}
-
-        if ctx.movelist_table != movelist:
-            ctx.movelist_table = movelist
-
-            for locationId, value in movelist.items():
-                if value == True:
-                    mov1.append(int(locationId))
-
-            # mov1 = [loc for loc, b in ctx.movelist_table.items() if b]
-            await ctx.send_msgs([{
-                "cmd": "LocationChecks",
-                "locations": mov1
-            }])
-
-    if ctx.sync_ready == True:
-         # Locations handling
-        notelist = payload['treble']
-        not1 = []
-
-        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
-        if isinstance(notelist, list):
-            notelist = {}
-
+                    locs1.append(int(locationId))
         if ctx.notelist_table != notelist:
             ctx.notelist_table = notelist
-
             for locationId, value in notelist.items():
                 if value == True:
-                    not1.append(int(locationId))
-
-            await ctx.send_msgs([{
-                "cmd": "LocationChecks",
-                "locations": not1
-            }])
-
-    if ctx.sync_ready == True:
-         # Locations handling
-        stationlist = payload['stations']
-        sta1 = []
-
-        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
-        if isinstance(stationlist, list):
-            stationlist = {}
-
+                    locs1.append(int(locationId))
         if ctx.stationlist_table != stationlist:
             ctx.stationlist_table = stationlist
-
             for locationId, value in stationlist.items():
                 if value == True:
-                    sta1.append(int(locationId))
-
-            await ctx.send_msgs([{
-                "cmd": "LocationChecks",
-                "locations": sta1
-            }])   
-
-    if ctx.slot_data["jinjo"] == "true" and ctx.sync_ready == True:
-         # Locations handling
-        jinjofamlist = payload['jinjofam']
-        fam1 = []
-
-        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
-        if isinstance(jinjofamlist, list):
-            jinjofamlist = {}
-
-        if ctx.jinjofamlist_table != jinjofamlist:
-            ctx.jinjofamlist_table = jinjofamlist
-
-            for locationId, value in jinjofamlist.items():
-                if value == True:
-                    fam1.append(int(locationId))
-                    if ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
-                        fam1 = mumbo_tokens_loc(fam1, int(locationId), ctx.slot_data["goal_type"])
-
-            await ctx.send_msgs([{
-                "cmd": "LocationChecks",
-                "locations": fam1
-            }])   
-
-    if ctx.slot_data["cheato_rewards"] == "true" and ctx.sync_ready == True:
-         # Locations handling
-        cheatorewardslist = payload['cheato_rewards']
-        cheatorewards = []
-
-        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
-        if isinstance(cheatorewardslist, list):
-            cheatorewardslist = {}
-
-        if ctx.cheatorewardslist_table != cheatorewardslist:
-            ctx.cheatorewardslist_table = cheatorewardslist
-
-            for locationId, value in cheatorewardslist.items():
-                if value == True:
-                    cheatorewards.append(int(locationId))
-
-            await ctx.send_msgs([{
-                "cmd": "LocationChecks",
-                "locations": cheatorewards
-            }])   
-
-    if ctx.slot_data["honeyb_rewards"] == "true" and ctx.sync_ready == True:
-         # Locations handling
-        honeybrewardslist = payload['honeyb_rewards']
-        honeybrewards = []
-
-        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
-        if isinstance(honeybrewardslist, list):
-            honeybrewardslist = {}
-
-        if ctx.honeybrewardslist_table != honeybrewardslist:
-            ctx.honeybrewardslist_table = honeybrewardslist
-
-            for locationId, value in honeybrewardslist.items():
-                if value == True:
-                    honeybrewards.append(int(locationId))
-
-            await ctx.send_msgs([{
-                "cmd": "LocationChecks",
-                "locations": honeybrewards
-            }])   
-
-    if ctx.slot_data["skip_puzzles"] == "true" and ctx.sync_ready == True:
-         # Locations handling
-        worldslist = payload['worlds']
-        worlds = []
-
-        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
-        if isinstance(worldslist, list):
-            worldslist = {}
-
-        if ctx.worldlist_table != worldslist:
-            ctx.worldlist_table = worldslist
-
-            for locationId, value in worldslist.items():
-                if value == True:
-                    worlds.append(int(locationId))
-
-            await ctx.send_msgs([{
-                "cmd": "LocationChecks",
-                "locations": worlds
-            }])
-
-    if ctx.sync_ready == True:
-        # Locations handling
-        mystery = payload['mystery']
-        send_mystery = []
-
-        # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
-        if isinstance(worldslist, list):
-            mystery = {}
-
+                    locs1.append(int(locationId))
         if ctx.mystery_table != mystery:
-            # logger.info("Mystery Table Changed!")
             ctx.mystery_table = mystery
-
             for locationId, value in mystery.items():
                 if locationId == "REMOVE": #Don't need to handle this here
                     continue
                 if value == True:
-                    send_mystery.append(int(locationId))
-                    # logger.info("Setting up Location Id")
+                    locs1.append(int(locationId))
+        if ctx.roystenlist_table != roystenlist:
+            ctx.roystenlist_table = roystenlist
+            for locationId, value in roystenlist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        
+        if ctx.slot_data["moves"] == "true":
+            # Locations handling
+            movelist = payload['unlocked_moves']
+            # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
+            if isinstance(movelist, list):
+                movelist = {}
 
-            # logger.info("Sending Table to AP Server")
+            if ctx.movelist_table != movelist:
+                ctx.movelist_table = movelist
+
+                for locationId, value in movelist.items():
+                    if value == True:
+                        locs1.append(int(locationId))
+        if ctx.slot_data["jinjo"] == "true":
+            if ctx.jinjofamlist_table != jinjofamlist:
+                ctx.jinjofamlist_table = jinjofamlist
+                for locationId, value in jinjofamlist.items():
+                    if value == True:
+                        locs1.append(int(locationId))
+                        if ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
+                            locs1 = mumbo_tokens_loc(locs1, int(locationId), ctx.slot_data["goal_type"])
+        if ctx.slot_data["cheato_rewards"] == "true":
+            if ctx.cheatorewardslist_table != cheatorewardslist:
+                ctx.cheatorewardslist_table = cheatorewardslist
+                for locationId, value in cheatorewardslist.items():
+                    if value == True:
+                        locs1.append(int(locationId))
+        if ctx.slot_data["honeyb_rewards"] == "true":
+            if ctx.honeybrewardslist_table != honeybrewardslist:
+                ctx.honeybrewardslist_table = honeybrewardslist
+                for locationId, value in honeybrewardslist.items():
+                    if value == True:
+                        locs1.append(int(locationId))
+        if ctx.slot_data["skip_puzzles"] == "true":
+            if ctx.worldlist_table != worldslist:
+                ctx.worldlist_table = worldslist
+                for locationId, value in worldslist.items():
+                    if value == True:
+                        locs1.append(int(locationId))
+        if len(locs1) > 0:
             await ctx.send_msgs([{
                 "cmd": "LocationChecks",
-                "locations": send_mystery
-            }])   
-
-    if ctx.sync_ready == True:
-            # Locations handling
-            roystenlist = payload['roysten']
-            roy = []
-
-            # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
-            if isinstance(roystenlist, list):
-                roystenlist = {}
-
-            if ctx.roystenlist_table != roystenlist:
-                ctx.roystenlist_table = roystenlist
-
-                for locationId, value in roystenlist.items():
-                    if value == True:
-                        roy.append(int(locationId))
-
-                await ctx.send_msgs([{
-                    "cmd": "LocationChecks",
-                    "locations": roy
-                }])
+                "locations": locs1
+            }])
+            
+        #GAME VICTORY
+        if (ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or 
+            ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 5) and not ctx.finished_game:
+            mumbo_tokens = 0
+            for networkItem in ctx.items_received:
+                if networkItem.item == 1230798:
+                    mumbo_tokens += 1
+                    if ((ctx.slot_data["goal_type"] == 1 and mumbo_tokens >= ctx.slot_data["minigame_hunt_length"]) or
+                        (ctx.slot_data["goal_type"] == 2 and mumbo_tokens >= ctx.slot_data["boss_hunt_length"]) or
+                        (ctx.slot_data["goal_type"] == 3 and mumbo_tokens >= ctx.slot_data["jinjo_family_rescue_length"]) or
+                        (ctx.slot_data["goal_type"] == 5 and mumbo_tokens >= ctx.slot_data["token_hunt_length"])): 
+                        await ctx.send_msgs([{
+                            "cmd": "StatusUpdate",
+                            "status": 30
+                        }])
+                        ctx.finished_game = True
 
     #Send Aync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:
