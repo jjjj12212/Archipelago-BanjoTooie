@@ -13,6 +13,7 @@
      - Cliff Top to Plateau
    - GI outside to floor 3: condition relaxed for the fact that Claw Clamber Boots give a free talon trot.
  - Backward Compatibility for Python 3.8
+ - Potential fix for Cheato Rewards
 
 # 1.9-beta
  - Logic fixes:
