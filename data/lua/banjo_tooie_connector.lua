@@ -1,7 +1,7 @@
 -- Banjo Tooie Connector Lua
 -- Created by Mike Jackson (jjjj12212) 
 -- with the help of Rose (Oktorose), the OOT Archipelago team, ScriptHawk BT.lua & kaptainkohl for BTrando.lua 
--- modifications from Unalive & HemiJackson 
+-- modifications from Unalive, HemiJackson & fhnnhf 
 
 -- local RDRAMBase = 0x80000000;
 -- local RDRAMSize = 0x800000;
@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.9.1"
+local BT_VERSION = "V1.9.2"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -4248,7 +4248,7 @@ end
 function init_CHEATO_REWARDS()
     for k,v in pairs(NON_AGI_MAP['CHEATO'])
     do
-        CHEATO_REWARDS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_ROYSTEN")
+        CHEATO_REWARDS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_CHEATO")
     end
 end
 
@@ -5680,6 +5680,9 @@ function loadGame(current_map)
             if SKIP_PUZZLES == true
             then
                 check_open_level(true)
+            end
+            if ENABLE_AP_CHEATO_REWARDS == true then
+                init_CHEATO_REWARDS()
             end
             hag1_open()
             hag1_phase_skips()
