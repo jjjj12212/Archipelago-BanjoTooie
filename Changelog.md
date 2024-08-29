@@ -1,4 +1,4 @@
-# 1.9.2
+# 1.9.2-beta
  - Logic fixes:
    - GGM Mumbo notes: can be gotten with beak buster, if not in beginner logic.
    - Generator Cavern Jiggy: the last jump to the jiggy can be done with talon trot.
@@ -9,6 +9,7 @@
    - Remade logic for entering Chuffy from every world.
    - Pine Grove Access: jumping out of the water can now be done with more moves.
    - Plateau access: fixed blunder where only beginner logic could access it from Pine Grove and Cliff Top.
+ - Cheato Rewards fixed
 
 # 1.9.1-beta
  - Renamings:
