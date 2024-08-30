@@ -218,6 +218,12 @@ class BanjoTooieRules:
             locationName.TRAINSWGI: lambda state: self.tswitch_gi(state),
         }
 
+        self.jiggy_chunks_rules = {
+            locationName.CHUNK1: lambda state: self.jiggy_crushing_shed(state),
+            locationName.CHUNK2: lambda state: self.jiggy_crushing_shed(state),
+            locationName.CHUNK3: lambda state: self.jiggy_crushing_shed(state),
+        }
+
         self.jiggy_rules = {
             #Mayahem Temple Jiggies
             locationName.JIGGYMT1:  lambda state: self.jiggy_targitzan(state),
@@ -4840,6 +4846,10 @@ class BanjoTooieRules:
         for location, rules in self.train_rules.items():
             train = self.world.multiworld.get_location(location, self.player)
             set_rule(train, rules)
+
+        for location, rules in self.jiggy_chunks_rules.items():
+            jiggy_chunks = self.world.multiworld.get_location(location, self.player)
+            set_rule(jiggy_chunks, rules)
 
         for location, rules in self.jinjo_rules.items():
             jinjo = self.world.multiworld.get_location(location, self.player)

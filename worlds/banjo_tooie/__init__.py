@@ -179,6 +179,9 @@ class BanjoTooieWorld(World):
                         if self.options.randomize_bk_moves.value == 1: # 2 moves won't be added to the pool
                             for i in range(2):
                                 itempool += [self.create_item(name)]
+                        if self.options.randomize_bk_moves.value == 0: # No moves added, fills for the Jiggy Chunks
+                            for i in range(3):
+                                itempool += [self.create_item(name)]
                     #end of none qty logic
 
                     else:
@@ -252,7 +255,7 @@ class BanjoTooieWorld(World):
         if item.code in range(1230799, 1230805) and self.options.randomize_stop_n_swap == False:
             return False
 
-        if item.code in range(1230810, 1230820) and self.options.randomize_bk_moves.value == 0:
+        if item.code in range(1230810, 1230823) and self.options.randomize_bk_moves.value == 0:
             return False
         elif (item.code == 1230815 or item.code == 1230816) and self.options.randomize_bk_moves.value == 1: # talon trot and tall jump not in pool
             return False

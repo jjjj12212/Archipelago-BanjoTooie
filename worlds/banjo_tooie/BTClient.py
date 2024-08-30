@@ -98,6 +98,7 @@ class BanjoTooieContext(CommonContext):
         self.chuffy_table = {}
         self.mystery_table = {}
         self.roystenlist_table = {}
+        self.jiggychunks_table = {}
         self.deathlink_enabled = False
         self.deathlink_pending = False
         self.deathlink_sent_this_death = False
@@ -314,6 +315,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     jinjofamlist = payload['jinjofam']
     cheatorewardslist = payload['cheato_rewards']
     honeybrewardslist = payload['honeyb_rewards']
+    jiggychunklist = payload['jiggy_chunks']
+
     worldslist = payload['worlds']
 
     # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
@@ -335,6 +338,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         cheatorewardslist = {}
     if isinstance(honeybrewardslist, list):
         honeybrewardslist = {}
+    if isinstance(jiggychunklist, list):
+        jiggychunklist = {}
     if isinstance(worldslist, list):
         worldslist = {}
 
@@ -393,6 +398,11 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         if ctx.roystenlist_table != roystenlist:
             ctx.roystenlist_table = roystenlist
             for locationId, value in roystenlist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.jiggychunks_table != jiggychunklist:
+            ctx.jiggychunks_table = jiggychunklist
+            for locationId, value in jiggychunklist.items():
                 if value == True:
                     locs1.append(int(locationId))
         

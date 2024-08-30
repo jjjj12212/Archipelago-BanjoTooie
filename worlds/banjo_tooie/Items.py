@@ -86,6 +86,9 @@ bk_moves_table = {
     itemName.CLIMB:         ItemData(1230817, 1, "progress", ""),
     itemName.FLUTTER:       ItemData(1230818, 1, "progress", ""),
     itemName.WWING:         ItemData(1230819, 1, "progress", ""),
+    itemName.BBUST:         ItemData(1230820, 1, "progress", ""),
+    itemName.TTRAIN:        ItemData(1230821, 1, "progress", ""),
+    itemName.ARAT:          ItemData(1230822, 1, "progress", "")
 }
 
 level_progress_table = {

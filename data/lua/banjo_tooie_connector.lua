@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.9.2"
+local BT_VERSION = "V2.0"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -1079,6 +1079,7 @@ local BKMYSTERY = {} -- Stop n Swap
 local ROYSTEN = {} -- Roysten flags. Because the flags are separate from moves, we don't need to save this.
 local CHEATO_REWARDS = {} -- Cheato Check Locations
 local HONEYB_REWARDS = {} -- Honey B Check Locations
+local JIGGY_CHUNKS = {} -- Jiggy Chunky Check Locations
 
 
 -- Mapping required for AGI Table
@@ -3846,6 +3847,21 @@ local NON_AGI_MAP = {
             ['bit'] = 7,
             ['name'] = "Wonderwing"
         },
+        ["1230820"] = {
+            ['addr'] = 0x18,
+            ['bit'] = 7,
+            ['name'] = "Beak Buster"
+        },
+        ["1230821"] = {
+            ['addr'] = 0x1A,
+            ['bit'] = 6,
+            ['name'] = "Turbo Trainers"
+        },
+        ["1230822"] = {
+            ['addr'] = 0x1A,
+            ['bit'] = 0,
+            ['name'] = "Air Rat-a-tat Rap"
+        },
     },
     ["HONEYB"] = {
         ["1230997"] = {
@@ -3871,6 +3887,23 @@ local NON_AGI_MAP = {
             ['addr'] = 0x98,
             ['name'] = "IoH: Honey B's Reward 5"
         },
+    },
+    ["JCHUNKS"] = {
+        ["1231002"] = {
+            ['addr'] = 0x7D,
+            ['bit'] = 0,
+            ['name'] = "GGM: Crushing Shed Jiggy Chunk 1"
+        },
+        ["1231003"] = {
+            ['addr'] = 0x7D,
+            ['bit'] = 1,
+            ['name'] = "GGM: Crushing Shed Jiggy Chunk 2"
+        },
+        ["1231004"] = {
+            ['addr'] = 0x7D,
+            ['bit'] = 2,
+            ['name'] = "GGM: Crushing Shed Jiggy Chunk 3"
+        }
     },
 }
 
@@ -4392,6 +4425,25 @@ function honeycomb_math_check()
     BTCONSUMEOBJ:setConsumable(honeycount);
 end
 
+--------------------------------- JIGGY CHUNKS ----------------------------------
+function init_JIGGY_CHUNK()
+    for k,v in pairs(NON_AGI_MAP['JCHUNKS'])
+    do
+        JIGGY_CHUNKS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_JCHUNKS")
+    end
+end
+
+function watchJChunk()
+    if CURRENT_MAP == 0xC7 then
+        for k,v in pairs(NON_AGI_MAP['JCHUNKS'])
+        do
+            if JIGGY_CHUNKS[k] == false
+            then
+                JIGGY_CHUNKS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_JCHUNKS")
+            end
+        end
+    end
+end
 
 --------------------------------- BK MOVES ----------------------------------------------
 function obtain_bkmove()
@@ -5084,7 +5136,7 @@ function moveLevitatePad()
     return true
 end
 
----------------------------------- BKMOVES -----------------------------------
+---------------------------------- JamJars MOVES -----------------------------------
 
 function init_BMK(type) -- Initialize BMK
     local checks = {}
@@ -5684,6 +5736,7 @@ function loadGame(current_map)
             if ENABLE_AP_CHEATO_REWARDS == true then
                 init_CHEATO_REWARDS()
             end
+            init_JIGGY_CHUNK()
             hag1_open()
             hag1_phase_skips()
             GAME_LOADED = true;
@@ -5750,6 +5803,7 @@ function BKLogics(mapaddr)
     then
         watchHoneyB()
     end
+    watchJChunk()
     if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_MOVES == true
     then
         WATCH_LOADED_SILOS = false
@@ -6664,6 +6718,7 @@ function SendToBTClient()
     retTable["roysten"] = ROYSTEN;
     retTable["cheato_rewards"] = CHEATO_REWARDS;
     retTable["honeyb_rewards"] = HONEYB_REWARDS;
+    retTable["jiggy_chunks"] = JIGGY_CHUNKS;
     if GAME_LOADED == false
     then
         retTable["sync_ready"] = "false"
@@ -7523,6 +7578,10 @@ function initializeFlags()
             BTRAMOBJ:clearFlag(0x19, 3) -- Can't Shoot or Poop Eggs
             -- BTRAMOBJ:clearFlag(0x1E, 6) -- Blue Eggs - CRASH IF THERE IS NO DEFAULT EGG
             BTRAMOBJ:clearFlag(0x1A, 1) -- Roll
+
+            BTRAMOBJ:clearFlag(0x1A, 0) -- Air Rat-atat-rap
+            BTRAMOBJ:clearFlag(0x1A, 6) -- Turbo Trainers
+            BTRAMOBJ:clearFlag(0x18, 7) -- Beak Buster
             if ENABLE_AP_BK_MOVES == 2 then
                 BTRAMOBJ:clearFlag(0x1A, 5) -- Talon Trot
                 BTRAMOBJ:clearFlag(0x19, 7) -- Full Jump
@@ -7540,6 +7599,7 @@ function initializeFlags()
         if ENABLE_AP_HONEYB_REWARDS == true then
             init_HONEYB_REWARDS()
         end
+        init_JIGGY_CHUNK()
         BTCONSUMEOBJ:changeConsumable("Eggs")
         BTCONSUMEOBJ:setConsumable(0)
         BTCONSUMEOBJ:changeConsumable("Ice Keys")

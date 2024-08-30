@@ -143,7 +143,10 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEGGM13,
         locationName.NOTEGGM14,
         locationName.NOTEGGM15,
-        locationName.NOTEGGM16  
+        locationName.NOTEGGM16,
+        locationName.CHUNK1,
+        locationName.CHUNK2,
+        locationName.CHUNK3,
     ],
     regionName.GMWSJT: [
         locationName.JINJOGM1,

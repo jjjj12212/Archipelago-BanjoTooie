@@ -1,3 +1,10 @@
+# 2.0-beta
+ - 3 Additional BK Moves to the pool:
+  - Beak Buster
+  - Turbo Trainers
+  - Air Rat-a-tat Rap
+ - 3 additional check locations: GGM Crushing Shed Jiggy Chunks
+
 # 1.9.2-beta
  - Logic fixes:
    - Jade Snake Grove Jinjo: fixed impossible jumps by adding parentheses.

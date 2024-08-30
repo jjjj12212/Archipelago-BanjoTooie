@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | 1.9.2-Beta
+# Archipelago Banjo-Tooie (US-Only) | 2.0-Beta
 Banjo Tooie for Archipelago 
 
 # Controller Shortcuts with this implementation
@@ -47,6 +47,9 @@ Banjo Tooie for Archipelago
 - Climb
 - Flutter
 - Wonderwing
+- Air Rat-a-tat Rap
+- Beak Buster
+- Turbo Trainers
 
 # Possible Win Conditions
 - Beating Hag-1 (Vanilla)
