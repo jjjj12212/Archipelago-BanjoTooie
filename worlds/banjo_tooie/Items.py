@@ -91,6 +91,10 @@ bk_moves_table = {
     itemName.ARAT:          ItemData(1230822, 1, "progress", "")
 }
 
+progressive_ability_table = {
+    itemName.PBBUST:        ItemData(12380823, 2, "progress", "")
+}
+
 level_progress_table = {
     itemName.MUMBOMT:        ItemData(1230855, 1, "progress", locationName.GLOWBOMT1),
     itemName.MUMBOGM:        ItemData(1230856, 1, "progress", locationName.GLOWBOGM2),
@@ -166,7 +170,8 @@ all_item_table = {
     **rando_key_table,
     **token_table,
     **stop_n_swap_table,
-    **bk_moves_table
+    **bk_moves_table,
+    **progressive_ability_table
 }
 
 all_group_table = {

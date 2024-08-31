@@ -70,6 +70,8 @@ TTRAIN      = "Turbo Trainers"
 BBOMB       = "Beak Bomb" #NOT IMPLEMENTED YET
 EGGSHOOT    = "Egg Shoot"
 
+PBBUST       = "Progressive Beak Buster"
+
 # Mumbo Magics
 MUMBOMT = "Mumbo: Golden Goliath"
 MUMBOGM = "Mumbo: Levitate"
