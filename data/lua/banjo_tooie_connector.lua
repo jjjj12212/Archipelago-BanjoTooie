@@ -6656,7 +6656,24 @@ function processAGIItem(item_list)
                     BTCONSUMEOBJ:changeConsumable("Ice Keys")
                     BTCONSUMEOBJ:setConsumable(1)
                 end
-
+            elseif(memlocation == 12380823)
+            then
+                local progressive_count = 0
+                for ap_id, memloc in pairs(receive_map)
+                do
+                    if memloc == "12380823"
+                    then
+                        progressive_count = progressive_count + 1
+                    end
+                end
+                if progressive_count == 0 then
+                    BTRAMOBJ:setFlag(0x18, 7, "Beak Buster")
+                end
+                if progressive_count == 1 then
+                    local location = "1230757"
+                    AGI_MOVES[location] = true
+                    set_AGI_MOVES_checks()
+                end
             -- elseif(memlocation == 1230799)
             -- then
             --     if DEBUG == true
