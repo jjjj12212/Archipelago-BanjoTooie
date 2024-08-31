@@ -101,7 +101,9 @@ class BanjoTooieWorld(World):
         banjoItem = all_item_table.get(itemname)
         if banjoItem.type == 'progress':
             if banjoItem.btid == 1230515:
-                if self.jiggy_counter > 70 and self.options.exceeding_items_filler.value == True:
+                #print(type(self.randomize_worlds), self.randomize_worlds)
+                #print(max(self.randomize_worlds.values()))
+                if self.jiggy_counter > max(self.randomize_worlds.values()) and self.options.exceeding_items_filler.value == True:
                     item_classification = ItemClassification.filler
                 else:
                     item_classification = ItemClassification.progression

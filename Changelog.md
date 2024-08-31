@@ -4,6 +4,7 @@
   - Turbo Trainers
   - Air Rat-a-tat Rap
  - 3 additional check locations: GGM Crushing Shed Jiggy Chunks
+ - Generation no longer fails when a world cost is set at over 70 jiggies.
 
 # 1.9.2-beta
  - Logic fixes:
