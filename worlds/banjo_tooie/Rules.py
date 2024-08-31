@@ -4538,6 +4538,29 @@ class BanjoTooieRules:
             return self.hasBKMove(state, itemName.BEGG)
         return state.has(egg, self.player)
     
+    def canShootAnyEgg(self, state: CollectionState) -> bool:
+        return state.has(itemName.EGGAIM, self.player) or self.hasBKMove(state, itemName.EGGSHOOT)
+
+    def blueEggs(self, state: CollectionState) -> bool:
+        raise Exception("Code this, jj")
+        return #self.canShootAnyEgg(state) and ...
+    
+    def fireEggs(self, state: CollectionState) -> bool:
+        raise Exception("Code this, jj")
+        return #self.canShootAnyEgg(state) and ...
+    
+    def grenadeEggs(self, state: CollectionState) -> bool:
+        raise Exception("Code this, jj")
+        return #self.canShootAnyEgg(state) and ...
+    
+    def iceEggs(self, state: CollectionState) -> bool:
+        raise Exception("Code this, jj")
+        return #self.canShootAnyEgg(state) and ...
+    
+    def clockworkEggs(self, state: CollectionState) -> bool:
+        raise Exception("Code this, jj")
+        return #self.canShootAnyEgg(state) and ...
+    
     def canShootLinearEgg(self, state: CollectionState) -> bool:
         return self.hasLinearEgg(state) and (state.has(itemName.EGGAIM, self.player) or self.hasBKMove(state, itemName.EGGSHOOT))
     
