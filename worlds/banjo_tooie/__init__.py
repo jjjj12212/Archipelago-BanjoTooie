@@ -546,6 +546,8 @@ class BanjoTooieWorld(World):
         btoptions['logic_type'] = int(self.options.logic_type.value)
         # btoptions['warp_traps'] = int(self.options.warp_traps.value)
         btoptions['skip_klungo'] = "true" if self.options.skip_klungo == 1 else "false"
+        btoptions['progressive_beak_buster'] = "true" if self.options.randomize_honeycombs == 1 else "false"
+
         return btoptions
 
     # for the universal tracker, doesn't get called in standard gen
