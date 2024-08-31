@@ -71,6 +71,7 @@ BBOMB       = "Beak Bomb" #NOT IMPLEMENTED YET
 EGGSHOOT    = "Egg Shoot"
 
 PBBUST       = "Progressive Beak Buster"
+PBEGGS       = "Progressive Eggs"
 
 # Mumbo Magics
 MUMBOMT = "Mumbo: Golden Goliath"

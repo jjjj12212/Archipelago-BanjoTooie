@@ -267,7 +267,15 @@ class BanjoTooieWorld(World):
         
         if self.options.progressive_beak_buster.value == True and (item.code == 1230820 or item.code == 1230757):
             return False
-        if item.code in range(12380823, 12380824) and self.options.progressive_beak_buster.value == False:
+        if item.code == 12380824 and self.options.progressive_beak_buster.value == False:
+            return False
+        
+        if self.options.egg_behaviour.value != 1 and item.code == 1230823: #remove blue eggs in pool
+            return False
+        if self.options.egg_behaviour.value == 2 and (item.code == 1230756 or item.code == 1230759 or item.code == 1230763 \
+            or item.code == 1230767):
+            return False
+        if item.code == 12380825 and self.options.egg_behaviour.value != 2:
             return False
 
         return True
@@ -288,6 +296,11 @@ class BanjoTooieWorld(World):
                 raise ValueError("Randomize Notes is required for Randomize BK Moves and Randomize Worlds enabled.")
         if self.options.progressive_beak_buster.value == True and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive Beak Buster without randomizing moves and randomizing BK moves")
+        if self.options.egg_behaviour.value == 1 and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
+            raise ValueError("You cannot have Randomize Starting Egg without randomizing moves and randomizing BK moves")
+        elif self.options.egg_behaviour.value == 2 and (self.options.randomize_moves == False):
+            raise ValueError("You cannot have progressive Eggs without randomizing moves")
+
 
         WorldRandomize(self)
 

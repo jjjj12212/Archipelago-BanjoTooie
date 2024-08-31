@@ -18,6 +18,14 @@ class ProgressiveBeakBuster(Toggle):
     """Beak Buster Progress to Bill Drill. Randomize Moves and Randomize BK Moves is required."""
     display_name = "Progressive Beak Buster"
 
+class EggsBehaviour(Choice):
+    """Change the way how Eggs work in Banjo-Tooie. Randomize Moves and Randomize BK Moves is required."""
+    display_name = "Banjo-Tooie Eggs"
+    option_start_with_blue_eggs = 0
+    option_random_starting_egg = 1
+    option_progressive_eggs = 2
+    default = 0
+
 class EnableCheatoRewards(DefaultOnToggle):
     """Cheato rewards you a cheat + an additional randomized reward. Use Cheato Pages as Filler cannot be set if this is enabled."""
     display_name = "Cheato Rewards"
@@ -273,6 +281,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_moves: EnableMultiWorldMoveList
     randomize_bk_moves: EnableMultiWorldBKMoveList
     progressive_beak_buster: ProgressiveBeakBuster
+    egg_behaviour:EggsBehaviour
     randomize_jinjos: EnableMultiWorldJinjos
     forbid_on_jinjo_family: ForbidMovesOnJinjoFamilyTreasure
     forbid_jinjos_on_jinjo_family: ForbidJinjosOnJinjoFamilyTreasure
