@@ -14,10 +14,9 @@ class EnableMultiWorldBKMoveList(Choice):
     option_all = 2
     default = 0
 
-class ProgressiveAbilities(Toggle):
-    """If Banjo-Kazooie and Banjo-Tooie Moves are in the Pool, obtained certian moves are progressive.
-    ("Beak Buster -> Bill Drill)"""
-    display_name = "Progressive Abilities"
+class ProgressiveBeakBuster(Toggle):
+    """Beak Buster Progress to Bill Drill. Randomize Moves and Randomize BK Moves is required."""
+    display_name = "Progressive Beak Buster"
 
 class EnableCheatoRewards(DefaultOnToggle):
     """Cheato rewards you a cheat + an additional randomized reward. Use Cheato Pages as Filler cannot be set if this is enabled."""
@@ -273,7 +272,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     disable_overlay_text:DisableOverlayText
     randomize_moves: EnableMultiWorldMoveList
     randomize_bk_moves: EnableMultiWorldBKMoveList
-    progressive_abilities: ProgressiveAbilities
+    progressive_beak_buster: ProgressiveBeakBuster
     randomize_jinjos: EnableMultiWorldJinjos
     forbid_on_jinjo_family: ForbidMovesOnJinjoFamilyTreasure
     forbid_jinjos_on_jinjo_family: ForbidJinjosOnJinjoFamilyTreasure
