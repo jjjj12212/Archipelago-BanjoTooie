@@ -279,7 +279,8 @@ class BanjoTooieWorld(World):
         if self.options.randomize_worlds.value == True and self.options.randomize_bk_moves.value != 0 and self.options.logic_type == 0:
             raise ValueError("Randomize Worlds and Randomize BK Moves is not compatible with Beginner Logic.")
         if self.options.randomize_notes == False and self.options.randomize_worlds.value == True and self.options.randomize_bk_moves.value != 0:
-            raise ValueError("Randomize Notes is required for Randomize BK Moves and Randomize Worlds enabled.")
+            if self.multiworld.players == 1:
+                raise ValueError("Randomize Notes is required for Randomize BK Moves and Randomize Worlds enabled.")
         WorldRandomize(self)
 
     def set_rules(self) -> None:
