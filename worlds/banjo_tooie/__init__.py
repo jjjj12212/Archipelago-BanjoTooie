@@ -268,7 +268,7 @@ class BanjoTooieWorld(World):
         
         if self.options.progressive_beak_buster.value == True and (item.code == 1230820 or item.code == 1230757):
             return False
-        if item.code == 12380824 and self.options.progressive_beak_buster.value == False:
+        if item.code == 1230824 and self.options.progressive_beak_buster.value == False:
             return False
         
         if self.options.egg_behaviour.value != 1 and item.code == 1230823: #remove blue eggs in pool
@@ -276,7 +276,7 @@ class BanjoTooieWorld(World):
         if self.options.egg_behaviour.value == 2 and (item.code == 1230756 or item.code == 1230759 or item.code == 1230763 \
             or item.code == 1230767):
             return False
-        if item.code == 12380825 and self.options.egg_behaviour.value != 2:
+        if item.code == 1230825 and self.options.egg_behaviour.value != 2:
             return False
         if self.options.egg_behaviour.value == 1 and item.code == self.starting_egg: #Already has this egg in inventory
             return False

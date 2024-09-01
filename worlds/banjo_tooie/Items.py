@@ -89,14 +89,12 @@ bk_moves_table = {
     itemName.BBUST:         ItemData(1230820, 1, "progress", ""),
     itemName.TTRAIN:        ItemData(1230821, 1, "progress", ""),
     itemName.ARAT:          ItemData(1230822, 1, "progress", ""),
-    #TODO: Early gen, take egg out of pool and start with that egg in-game
-    #TODO: Client Side to handle Progressive Eggs and Random starting egg
     itemName.BEGG:          ItemData(1230823, 1, "progress", ""),
 }
 
 progressive_ability_table = {
-    itemName.PBBUST:        ItemData(12380824, 2, "progress", ""),
-    itemName.PBEGGS:        ItemData(12380825, 4, "progress", "")
+    itemName.PBBUST:        ItemData(1230824, 2, "progress", ""),
+    itemName.PBEGGS:        ItemData(1230825, 4, "progress", "")
 }
 
 level_progress_table = {
