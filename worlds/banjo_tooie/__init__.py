@@ -51,6 +51,7 @@ class BanjoTooieWorld(World):
     topology_preset = True
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
     item_name_to_id = {}
+    starting_egg: int
 
     for name, data in all_item_table.items():
         if data.btid is None:  # Skip Victory Item
@@ -277,6 +278,8 @@ class BanjoTooieWorld(World):
             return False
         if item.code == 12380825 and self.options.egg_behaviour.value != 2:
             return False
+        if self.options.egg_behaviour.value == 1 and item.code == self.starting_egg: #Already has this egg in inventory
+            return False
 
         return True
 
@@ -301,7 +304,18 @@ class BanjoTooieWorld(World):
         elif self.options.egg_behaviour.value == 2 and (self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive Eggs without randomizing moves")
 
-
+        if self.options.egg_behaviour.value == 1:
+            eggs = list([itemName.BEGG, itemName.FEGGS, itemName.GEGGS, itemName.IEGGS, itemName.CEGGS])
+            random.shuffle(eggs)
+            starting_egg = self.create_item(eggs[0])
+            self.multiworld.push_precollected(starting_egg)
+            banjoItem = all_item_table.get(eggs[0])
+            self.starting_egg = banjoItem.btid
+        if self.options.egg_behaviour.value == 0 or self.options.egg_behaviour.value == 2:
+            starting_egg = self.create_item(itemName.BEGG)
+            self.multiworld.push_precollected(starting_egg)
+            banjoItem = all_item_table.get(itemName.BEGG)
+            self.starting_egg = banjoItem.btid
         WorldRandomize(self)
 
     def set_rules(self) -> None:
@@ -547,6 +561,8 @@ class BanjoTooieWorld(World):
         # btoptions['warp_traps'] = int(self.options.warp_traps.value)
         btoptions['skip_klungo'] = "true" if self.options.skip_klungo == 1 else "false"
         btoptions['progressive_beak_buster'] = "true" if self.options.randomize_honeycombs == 1 else "false"
+        btoptions['egg_behaviour'] = int(self.options.egg_behaviour.value)
+        btoptions['starting_egg'] = int(self.starting_egg)
 
         return btoptions
 

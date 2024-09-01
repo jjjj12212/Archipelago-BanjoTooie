@@ -4535,35 +4535,35 @@ class BanjoTooieRules:
     def blueEggs(self, state: CollectionState) -> bool:
         if not self.canShootAnyEgg(state):
             return False
-        if self.world.options.progressive_eggs == 1: #Fully random order
+        if self.world.options.egg_behaviour == 1: #Fully random order
             return state.has(itemName.BEGG, self.player)
         return True
     
     def fireEggs(self, state: CollectionState) -> bool:
         if not self.canShootAnyEgg(state):
             return False
-        if self.world.options.progressive_eggs == 2: #progressive
+        if self.world.options.egg_behaviour == 2: #progressive
             return state.has(itemName.PBEGGS, self.player, 1)
         return state.has(itemName.FEGGS, self.player)
     
     def grenadeEggs(self, state: CollectionState) -> bool:
         if not self.canShootAnyEgg(state):
             return False
-        if self.world.options.progressive_eggs == 2: #progressive
+        if self.world.options.egg_behaviour == 2: #progressive
             return state.has(itemName.PBEGGS, self.player, 2)
         return state.has(itemName.GEGGS, self.player)
     
     def iceEggs(self, state: CollectionState) -> bool:
         if not self.canShootAnyEgg(state):
             return False
-        if self.world.options.progressive_eggs == 2: #progressive
+        if self.world.options.egg_behaviour == 2: #progressive
             return state.has(itemName.PBEGGS, self.player, 3)
         return state.has(itemName.IEGGS, self.player)
     
     def clockworkEggs(self, state: CollectionState) -> bool:
         if not self.canShootAnyEgg(state):
             return False
-        if self.world.options.progressive_eggs == 2: #progressive
+        if self.world.options.egg_behaviour == 2: #progressive
             return state.has(itemName.PBEGGS, self.player, 4)
         return state.has(itemName.CEGGS, self.player)
     
