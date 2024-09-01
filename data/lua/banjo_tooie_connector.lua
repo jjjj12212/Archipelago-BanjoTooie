@@ -6656,12 +6656,17 @@ function processAGIItem(item_list)
                     BTCONSUMEOBJ:changeConsumable("Ice Keys")
                     BTCONSUMEOBJ:setConsumable(1)
                 end
-            elseif(memlocation == 12380823)
+            elseif(memlocation == 1230823)
+            then
+                BTRAMOBJ:setFlag(0x1E, 6, "Blue Eggs")
+                BTCONSUMEOBJ:changeConsumable("BLUE EGGS")
+                BTCONSUMEOBJ:setConsumable(100)
+            elseif(memlocation == 1230824)
             then
                 local progressive_count = 0
                 for ap_id, memloc in pairs(receive_map)
                 do
-                    if memloc == "12380823"
+                    if memloc == "1230824"
                     then
                         progressive_count = progressive_count + 1
                     end
@@ -6674,13 +6679,44 @@ function processAGIItem(item_list)
                     AGI_MOVES[location] = true
                     set_AGI_MOVES_checks()
                 end
-            -- elseif(memlocation == 1230799)
-            -- then
-            --     if DEBUG == true
-            --     then
-            --         print("Warp Trap Obtained")
-            --     end
-            --     AGI_TRAPS[tostring(memlocation)] = AGI_TRAPS[tostring(memlocation)] + 1
+            elseif(memlocation == 1230825)
+            then
+                local progressive_count = 0
+                for ap_id, memloc in pairs(receive_map)
+                do
+                    if memloc == "1230825"
+                    then
+                        progressive_count = progressive_count + 1
+                    end
+                end
+                if progressive_count == 0 then
+                    local location = "1230756"
+                    AGI_MOVES[location] = true
+                    set_AGI_MOVES_checks()
+                    BTCONSUMEOBJ:changeConsumable("FIRE EGGS")
+                    BTCONSUMEOBJ:setConsumable(50)
+                end
+                if progressive_count == 1 then
+                    local location = "1230759"
+                    AGI_MOVES[location] = true
+                    set_AGI_MOVES_checks()
+                    BTCONSUMEOBJ:changeConsumable("GRENADE EGGS")
+                    BTCONSUMEOBJ:setConsumable(25)
+                end
+                if progressive_count == 2 then
+                    local location = "1230763"
+                    AGI_MOVES[location] = true
+                    set_AGI_MOVES_checks()
+                    BTCONSUMEOBJ:changeConsumable("ICE EGGS")
+                    BTCONSUMEOBJ:setConsumable(50)
+                end
+                if progressive_count == 3 then
+                    local location = "1230767"
+                    AGI_MOVES[location] = true
+                    set_AGI_MOVES_checks()
+                    BTCONSUMEOBJ:changeConsumable("CWK EGGS")
+                    BTCONSUMEOBJ:setConsumable(10)
+                end
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
             savingAGI();
@@ -7606,6 +7642,7 @@ function initializeFlags()
             BTRAMOBJ:clearFlag(0x19, 2) -- Climb
             BTRAMOBJ:clearFlag(0x19, 4) -- Feather Flap
             BTRAMOBJ:clearFlag(0x1A, 7) -- Full Jump
+            BTRAMOBJ:clearFlag(0x1E, 6)
             if ENABLE_AP_WORLDS == true then -- Randomize Worlds - SILOS!!!
                 init_world_silos()
             end
