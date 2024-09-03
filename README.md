@@ -13,7 +13,7 @@ Banjo Tooie for Archipelago
 
 
 # Current implementation
-- Death Link **(Still ongoing progress)** **(Disabled for the time being)**
+- Death Link
 - Jiggies are scattered throughout Archipelago games
 - Empty Honeycombs are scattered throughout Archipelago games (YAML Option) 
 - Skippable Tower of Tragedy
@@ -35,6 +35,7 @@ Banjo Tooie for Archipelago
 - Cheato Rewards as an option (awards an additional randomized item)
 - Honey B Rewards as an option (awards an additional randomized item)
 - Randomize Original Banjo-Kazooie Moves
+- Change how Eggs works
 
 # Implemented Banjo-Kazooie Moves in Archipelago
 - Dive

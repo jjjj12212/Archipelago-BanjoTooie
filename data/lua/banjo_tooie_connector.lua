@@ -376,6 +376,10 @@ function BTRAM:getBanjoMovementState()
     if player ~= nil
     then
         local movestate = BTRAM:dereferencePointer(player + self.movement_ptr)
+        if movestate == nil
+        then
+            return nil
+        end
         return mainmemory.read_u32_be(movestate + self.current_state)
     end
     return nil
@@ -5599,7 +5603,7 @@ function setCurrentHealth(value)
 		value = math.max(0x00, value);
 		value = math.min(0xFF, value);
 		mainmemory.write_u8(0x11B644, value);
-        return true
+        return currentTransformation
 	end
     return false
 end
@@ -5612,15 +5616,22 @@ function killBT()
         then
             return
         end
-        if minigameMaps() == false and cutsceneMaps == false and GAME_LOADED == true
+        if minigameMaps() == false and cutsceneMaps() == false and GAME_LOADED == true
         then 
-            setCurrentHealth(0)
-            mainmemory.write_u16_be(0x12b062, 0x0100)--max air and suffocation flag?
-            mainmemory.write_u16_be(0x12b068, 0x800C)--max air and suffocation flag?
-            mainmemory.write_u16_be(0x12b06A, 0xF734)--max air and suffocation flag?
-            mainmemory.write_u8(0x12b161, 0x01)--max air and suffocation flag?
-            KILL_BANJO = false
-            CHECK_DEATH = true
+            tranformation = setCurrentHealth(0)
+            if type(tranformation) == 'number' then
+                mainmemory.write_u16_be(0x12b062, 0x0100)--max air and suffocation flag?
+                mainmemory.write_u16_be(0x12b068, 0x800C)--max air and suffocation flag?
+                mainmemory.write_u16_be(0x12b06A, 0xF734)--max air and suffocation flag?
+                local kill_animation = 0x01 -- funny drowning death
+                if tranformation ~= 0x01
+                then
+                    kill_animation = 0x02 -- Explode 
+                end 
+                mainmemory.write_u8(0x12b161, kill_animation)--max air and suffocation flag?
+                KILL_BANJO = false
+                CHECK_DEATH = true
+            end
         end
     end
 end
@@ -5632,11 +5643,14 @@ function getBanjoDeathAnimation()
         local check = BTMODELOBJ:checkModel();
         if check == false
         then
+            if CHECK_DEATH == true
+            then
+                CHECK_DEATH = false
+            end
             return
         end
         local animation = BTRAMOBJ:getBanjoMovementState()
-        print(animation)
-        if CHECK_DEATH == true and animation == 0x00 -- Don't be in a death link loop
+        if CHECK_DEATH == true and animation == 0x01 -- Don't be in a death link loop
         then
             CHECK_DEATH = false
         end
@@ -7860,6 +7874,7 @@ function main()
                     processMessages()
                 end
                 getBanjoDeathAnimation()
+                killBT()
             elseif (FRAME % 10 == 1)
             then
                 checkPause();

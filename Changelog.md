@@ -3,8 +3,15 @@
   - Beak Buster
   - Turbo Trainers
   - Air Rat-a-tat Rap
+  - Blue Eggs (sort of.. read below)
  - 3 additional check locations: GGM Crushing Shed Jiggy Chunks
  - Generation no longer fails when a world cost is set at over 70 jiggies.
+ - Deathlink is Functional. Requires full playthrough testing (possible softlocks)
+ - Optional Progressive Beak Buster -> Bill Drill
+ - New option for Eggs:
+  - Start with Blue Eggs (what we are used to)
+  - Randomized Starting Egg
+  - Progressive Eggs (Blue -> Fire -> Grenade -> Ice -> Clockwork)
 
 # 1.9.2-beta
  - Logic fixes:
