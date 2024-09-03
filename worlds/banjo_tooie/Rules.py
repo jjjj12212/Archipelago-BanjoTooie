@@ -1843,11 +1843,13 @@ class BanjoTooieRules:
                     or (self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.GLIDE))
         elif self.world.options.logic_type == 2: # advanced
             logic = (state.has(itemName.GGRAB, self.player) or self.beakBuster(state)) and self.hasBKMove(state, itemName.CLIMB) and self.hasBKMove(state, itemName.FFLIP)\
-                    or (self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.GLIDE))
+                    or (self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.GLIDE))\
+                    or (self.clockwork_shot(state) and (self.hasBKMove(state, itemName.TTROT) or state.has(itemName.SPLITUP, self.player)))
         elif self.world.options.logic_type == 3: # glitched
             logic = ((state.has(itemName.GGRAB, self.player) or self.beakBuster(state)) and self.hasBKMove(state, itemName.CLIMB) and self.hasBKMove(state, itemName.FFLIP))\
                     or (self.clockwork_shot(state) and state.can_reach_region(regionName.GM, self.player) and self.ggm_to_ww(state))\
-                    or (self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.GLIDE))
+                    or (self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.GLIDE))\
+                    or (self.clockwork_shot(state) and (self.hasBKMove(state, itemName.TTROT) or state.has(itemName.SPLITUP, self.player)))
         return logic
     
     def honeycomb_crazycastle(self, state: CollectionState) -> bool:
@@ -1859,7 +1861,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = (self.has_explosives(state) and (self.canDoSmallElevation(state) or state.has(itemName.SPLITUP, self.player))) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (self.has_explosives(state) and (self.canDoSmallElevation(state) or state.has(itemName.SPLITUP, self.player))) or self.clockwork_shot(state)
+            logic = (self.has_explosives(state) and (self.canDoSmallElevation(state) or state.has(itemName.SPLITUP, self.player)))\
+                    or self.clockwork_shot(state)\
+                    or self.check_solo_moves(state, itemName.PACKWH)
         return logic
     
     def honeycomb_inferno(self, state: CollectionState) -> bool:
@@ -1929,13 +1933,16 @@ class BanjoTooieRules:
             logic = self.hasBKMove(state, itemName.TTRAIN)
         elif self.world.options.logic_type == 1: # normal
             logic = self.hasBKMove(state, itemName.TTRAIN) or self.TDLFlightPad(state)\
-                or (self.hasBKMove(state, itemName.TJUMP) and self.veryLongJump(state) and state.has(itemName.GGRAB, self.player))
+                or (self.hasBKMove(state, itemName.TJUMP) and self.veryLongJump(state) and state.has(itemName.GGRAB, self.player))\
+                or state.has(itemName.SPLITUP, self.player)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.hasBKMove(state, itemName.TTRAIN) or self.TDLFlightPad(state) or self.clockwork_shot(state)\
-                or (self.hasBKMove(state, itemName.TJUMP) and self.veryLongJump(state) and state.has(itemName.GGRAB, self.player))
+                or (self.hasBKMove(state, itemName.TJUMP) and self.veryLongJump(state) and state.has(itemName.GGRAB, self.player))\
+                or state.has(itemName.SPLITUP, self.player)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.hasBKMove(state, itemName.TTRAIN) or self.TDLFlightPad(state) or self.clockwork_shot(state)\
-                or (self.hasBKMove(state, itemName.TJUMP) and self.veryLongJump(state) and state.has(itemName.GGRAB, self.player))
+                or (self.hasBKMove(state, itemName.TJUMP) and self.veryLongJump(state) and state.has(itemName.GGRAB, self.player))\
+                or state.has(itemName.SPLITUP, self.player)
         return logic
     
     def honeycomb_styracosaurus(self, state: CollectionState) -> bool:
@@ -2150,17 +2157,22 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = state.has(itemName.SPRINGB, self.player) or \
                     (self.hasBKMove(state, itemName.CLIMB) and (self.hasBKMove(state, itemName.FLUTTER) or self.hasBKMove(state, itemName.ARAT)))\
-                    or (self.GM_boulders(state) and self.check_solo_moves(state, itemName.LSPRING))
+                    or (self.GM_boulders(state) and self.check_solo_moves(state, itemName.LSPRING))\
+                    or (self.GM_boulders(state) and self.check_solo_moves(state, itemName.GLIDE) and self.hasBKMove(state, itemName.TJUMP))
         elif self.world.options.logic_type == 2: # advanced
             logic = state.has(itemName.SPRINGB, self.player) or \
                     (self.hasBKMove(state, itemName.CLIMB) and (self.hasBKMove(state, itemName.FLUTTER) or self.hasBKMove(state, itemName.ARAT)))\
                     or (state.has(itemName.EGGAIM, self.player) and self.clockworkEggs(state))\
-                    or (self.GM_boulders(state) and self.check_solo_moves(state, itemName.LSPRING))
+                    or (self.GM_boulders(state) and self.check_solo_moves(state, itemName.LSPRING))\
+                    or (self.GM_boulders(state) and self.check_solo_moves(state, itemName.GLIDE) and self.hasBKMove(state, itemName.TJUMP))\
+                    or (self.GM_boulders(state) and self.hasBKMove(state, itemName.TJUMP) and self.hasBKMove(state, itemName.TTRAIN) and (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)))
         elif self.world.options.logic_type == 3: # glitched
             logic = state.has(itemName.SPRINGB, self.player) or \
                     (self.hasBKMove(state, itemName.CLIMB) and (self.hasBKMove(state, itemName.FLUTTER) or self.hasBKMove(state, itemName.ARAT)))\
                     or (state.has(itemName.EGGAIM, self.player) and self.clockworkEggs(state))\
-                    or (self.GM_boulders(state) and self.check_solo_moves(state, itemName.LSPRING))
+                    or (self.GM_boulders(state) and self.check_solo_moves(state, itemName.LSPRING))\
+                    or (self.GM_boulders(state) and self.check_solo_moves(state, itemName.GLIDE) and self.hasBKMove(state, itemName.TJUMP))\
+                    or (self.GM_boulders(state) and self.hasBKMove(state, itemName.TJUMP) and self.hasBKMove(state, itemName.TTRAIN) and (self.check_solo_moves(state, itemName.WWHACK) or self.check_solo_moves(state, itemName.GLIDE)))
         return logic
     
     def cheato_waterstorage(self, state: CollectionState) -> bool:

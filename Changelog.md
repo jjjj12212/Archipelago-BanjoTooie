@@ -1,17 +1,22 @@
 # 2.0-beta
  - 3 Additional BK Moves to the pool:
-  - Beak Buster
-  - Turbo Trainers
-  - Air Rat-a-tat Rap
-  - Blue Eggs (sort of.. read below)
+    - Beak Buster
+    - Turbo Trainers
+    - Air Rat-a-tat Rap
+    - Blue Eggs (sort of.. read below)
  - 3 additional check locations: GGM Crushing Shed Jiggy Chunks
  - Generation no longer fails when a world cost is set at over 70 jiggies.
  - Deathlink is Functional. Requires full playthrough testing (possible softlocks)
  - Optional Progressive Beak Buster -> Bill Drill
  - New option for Eggs:
-  - Start with Blue Eggs (what we are used to)
-  - Randomized Starting Egg
-  - Progressive Eggs (Blue -> Fire -> Grenade -> Ice -> Clockwork)
+   - Start with Blue Eggs (what we are used to)
+   - Randomized Starting Egg
+   - Progressive Eggs (Blue -> Fire -> Grenade -> Ice -> Clockwork)
+ - Logic fixes:
+   - GGM entrance Cheato page: can be gotten with glide and tall jump if not on beginner logic. Advanced and glitched logic get to do it with speed shoes, tall jump, and wing whack or glide. Advanced and glitched logic get to do it with the detonator.
+   - Crazy Castle Honeycomb: can be gotten with pack whack, in glitched logic.
+   - Spaze Zone honeycomb: can be gotten with a clockwork shot from the tent, if on advanced or glitched logic.
+   - Lakeside honeycomb: can be gotten with just split up, if not on beginner logic.
 
 # 1.9.2-beta
  - Logic fixes:
