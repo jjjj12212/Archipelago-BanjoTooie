@@ -5636,28 +5636,18 @@ function killBT()
     end
 end
 
-function getBanjoDeathAnimation()
+function getBanjoDeath()
     if DEATH_LINK == true and KILL_BANJO == false
     then
+        local death_flg = mainmemory.read_u8(0x1354F9)
         BTMODELOBJ:changeName("Player", false)
         local check = BTMODELOBJ:checkModel();
-        if check == false
-        then
-            if CHECK_DEATH == true
-            then
-                CHECK_DEATH = false
-            end
-            return
-        end
-        local animation = BTRAMOBJ:getBanjoMovementState()
-        if CHECK_DEATH == true and animation == 0x01 -- Don't be in a death link loop
+        if death_flg  == 0 and CHECK_DEATH == true
         then
             CHECK_DEATH = false
+            return
         end
-        if CHECK_DEATH == false and (animation == 0x41 or animation == 0x43 or animation == 0x8A or animation == 0xAB
-        or animation == 0xDB or animation == 0xEB or animation == 0x101 or animation == 0x102 
-        or animation == 0x103 or animation == 0x104 or animation == 0x120 or animation == 0x12E
-        or animation == 0x13C or animation == 0x182)
+        if CHECK_DEATH == false and death_flg == 1
         then
             DETECT_DEATH = true
         end
@@ -7873,7 +7863,7 @@ function main()
                 elseif TEXT_START == false then
                     processMessages()
                 end
-                getBanjoDeathAnimation()
+                getBanjoDeath()
                 killBT()
             elseif (FRAME % 10 == 1)
             then
