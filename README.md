@@ -51,6 +51,7 @@ Banjo Tooie for Archipelago
 - Air Rat-a-tat Rap
 - Beak Buster
 - Turbo Trainers
+- Blue Eggs
 
 # Possible Win Conditions
 - Beating Hag-1 (Vanilla)

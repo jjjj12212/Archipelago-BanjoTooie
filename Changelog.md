@@ -6,7 +6,7 @@
     - Blue Eggs (sort of.. read below)
  - 3 additional check locations: GGM Crushing Shed Jiggy Chunks
  - Generation no longer fails when a world cost is set at over 70 jiggies.
- - Deathlink is Functional. Requires full playthrough testing (possible softlocks)
+ - Deathlink is now implemented.
  - Optional Progressive Beak Buster -> Bill Drill
  - New option for Eggs:
    - Start with Blue Eggs (what we are used to)
