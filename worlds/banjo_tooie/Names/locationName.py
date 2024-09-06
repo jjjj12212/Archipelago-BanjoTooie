@@ -450,7 +450,10 @@ HONEYBR3    = "IoH: Honey B's Reward 3" # 5
 HONEYBR4    = "IoH: Honey B's Reward 4" # 7
 HONEYBR5    = "IoH: Honey B's Reward 5" # 9
 
-
+#Jiggy Chunks
+CHUNK1      = "GGM: Crushing Shed Jiggy Chunk 1"
+CHUNK2      = "GGM: Crushing Shed Jiggy Chunk 2"
+CHUNK3      = "GGM: Crushing Shed Jiggy Chunk 3"
 
 #Mumbo Token Locations
 MUMBOTKNBOSS1 = "MT: Targitzan Mumbo Token"

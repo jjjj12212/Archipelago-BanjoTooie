@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V1.9.2"
+local BT_VERSION = "V2.0"
 local PLAYER = ""
 local SEED = 0
 local DEATH_LINK = false
@@ -54,7 +54,6 @@ local USE_BMM_ONLY_TBL = false;
 local USE_BMM_ONLY_TYP = "";
 
 local CLOSE_TO_ALTAR = false;
-local DETECT_DEATH = false;
 local SNEAK = false;
 local AIMASSIST = false;
 local SUPERBANJO = false;
@@ -139,6 +138,13 @@ local TH_LENGTH = nil;
 --------------- ROYSTEN VARS --------------------
 local FAST_SWIM = false
 local DOUBLE_AIR = false
+
+--------------- DEATH LINK ----------------------
+local KILL_BANJO = false
+local DEATH_LINK = false
+local DETECT_DEATH = false;
+local CHECK_DEATH = false;
+
 
 -------------- ENCOURAGEMENT MESSAGES ------------
 local ENCOURAGEMENT = {
@@ -370,6 +376,10 @@ function BTRAM:getBanjoMovementState()
     if player ~= nil
     then
         local movestate = BTRAM:dereferencePointer(player + self.movement_ptr)
+        if movestate == nil
+        then
+            return nil
+        end
         return mainmemory.read_u32_be(movestate + self.current_state)
     end
     return nil
@@ -1079,6 +1089,7 @@ local BKMYSTERY = {} -- Stop n Swap
 local ROYSTEN = {} -- Roysten flags. Because the flags are separate from moves, we don't need to save this.
 local CHEATO_REWARDS = {} -- Cheato Check Locations
 local HONEYB_REWARDS = {} -- Honey B Check Locations
+local JIGGY_CHUNKS = {} -- Jiggy Chunky Check Locations
 
 
 -- Mapping required for AGI Table
@@ -3846,6 +3857,21 @@ local NON_AGI_MAP = {
             ['bit'] = 7,
             ['name'] = "Wonderwing"
         },
+        ["1230820"] = {
+            ['addr'] = 0x18,
+            ['bit'] = 7,
+            ['name'] = "Beak Buster"
+        },
+        ["1230821"] = {
+            ['addr'] = 0x1A,
+            ['bit'] = 6,
+            ['name'] = "Turbo Trainers"
+        },
+        ["1230822"] = {
+            ['addr'] = 0x1A,
+            ['bit'] = 0,
+            ['name'] = "Air Rat-a-tat Rap"
+        },
     },
     ["HONEYB"] = {
         ["1230997"] = {
@@ -3872,6 +3898,23 @@ local NON_AGI_MAP = {
             ['name'] = "IoH: Honey B's Reward 5"
         },
     },
+    ["JCHUNKS"] = {
+        ["1231002"] = {
+            ['addr'] = 0x7D,
+            ['bit'] = 0,
+            ['name'] = "GGM: Crushing Shed Jiggy Chunk 1"
+        },
+        ["1231003"] = {
+            ['addr'] = 0x7D,
+            ['bit'] = 1,
+            ['name'] = "GGM: Crushing Shed Jiggy Chunk 2"
+        },
+        ["1231004"] = {
+            ['addr'] = 0x7D,
+            ['bit'] = 2,
+            ['name'] = "GGM: Crushing Shed Jiggy Chunk 3"
+        }
+    }
 }
 
 -- Properties of world entrances and associated puzzles
@@ -4392,6 +4435,25 @@ function honeycomb_math_check()
     BTCONSUMEOBJ:setConsumable(honeycount);
 end
 
+--------------------------------- JIGGY CHUNKS ----------------------------------
+function init_JIGGY_CHUNK()
+    for k,v in pairs(NON_AGI_MAP['JCHUNKS'])
+    do
+        JIGGY_CHUNKS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_JCHUNKS")
+    end
+end
+
+function watchJChunk()
+    if CURRENT_MAP == 0xC7 then
+        for k,v in pairs(NON_AGI_MAP['JCHUNKS'])
+        do
+            if JIGGY_CHUNKS[k] == false
+            then
+                JIGGY_CHUNKS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_JCHUNKS")
+            end
+        end
+    end
+end
 
 --------------------------------- BK MOVES ----------------------------------------------
 function obtain_bkmove()
@@ -5084,7 +5146,7 @@ function moveLevitatePad()
     return true
 end
 
----------------------------------- BKMOVES -----------------------------------
+---------------------------------- JamJars MOVES -----------------------------------
 
 function init_BMK(type) -- Initialize BMK
     local checks = {}
@@ -5473,6 +5535,125 @@ function JinjoPause()
     end
 end
 
+------------------ DEATH LINK ---------------
+
+function minigameMaps()
+    if CURRENT_MAP == 0xC6 or CURRENT_MAP == 0xC8 or CURRENT_MAP == 0xC9  -- MT Kickballs
+    then
+        return true
+    elseif CURRENT_MAP == 0x16F or CURRENT_MAP == 0x170 --Canary GGM Race
+    then
+        return true
+    -- elseif CURRENT_MAP == 0xE4 or CURRENT_MAP == 0xE5 --Crazy Castle Minigames
+    -- then
+    --     return true
+    elseif CURRENT_MAP == 0xDE or CURRENT_MAP == 0xDF or CURRENT_MAP == 0xE0 -- Dodgems
+    then
+        return true
+    elseif CURRENT_MAP == 0x124 or CURRENT_MAP == 0x141 or CURRENT_MAP == 0x13C -- Saucer of Peril
+    then
+        return true
+    -- elseif CURRENT_MAP == 0x17D -- GI Packing Game
+    -- then
+    --     return true
+    elseif CURRENT_MAP == 0x12E or CURRENT_MAP == 0x12F or CURRENT_MAP == 0x130  -- HFP Kickballs
+    then
+        return true
+    elseif CURRENT_MAP == 0x161 -- Canary CC Race
+    then
+        return true
+    elseif CURRENT_MAP == 0x15F -- ToT
+    then
+        return true
+    end
+    return false
+end
+
+function cutsceneMaps()
+    if CURRENT_MAP == 0x197 or CURRENT_MAP == 0x199 or CURRENT_MAP == 0xA3 or CURRENT_MAP == 0x18F 
+    or CURRENT_MAP == 0x195 or CURRENT_MAP == 0x195 or CURRENT_MAP == 0xAC or CURRENT_MAP == 0x192
+    or CURRENT_MAP == 0x193 or CURRENT_MAP == 0x19D or CURRENT_MAP == 0xA9 or CURRENT_MAP == 0xA5
+    or CURRENT_MAP == 0xA2 or CURRENT_MAP == 0xA6 or CURRENT_MAP == 0x18C or CURRENT_MAP == 0x190
+    or CURRENT_MAP == 0x198 or CURRENT_MAP == 0x18D or CURRENT_MAP == 0x196 or CURRENT_MAP == 0x18E
+    or CURRENT_MAP == 0xAA or CURRENT_MAP == 0xAB or CURRENT_MAP == 0x159 or CURRENT_MAP == 0xA8
+    or CURRENT_MAP == 0xA4 or CURRENT_MAP == 0x19C or CURRENT_MAP == 0x191 or CURRENT_MAP == 0xA1
+    or CURRENT_MAP == 0x17E or CURRENT_MAP == 0x158
+    then
+        return true
+    end
+    return false
+end
+
+function setCurrentHealth(value)
+	local currentTransformation = mainmemory.readbyte(0x11B065);
+    local health_table = {
+        [0x01] = 0x11B644, -- Main
+        [0x10] = 0x11B65F, -- Banjo (Solo)
+        [0x11] = 0x11B668, -- Mumbo
+        [0x2E] = 0x11B66E, -- Detonator
+        [0x2F] = 0x11B665, -- Submarine
+        [0x30] = 0x11B677, -- T. Rex
+        [0x31] = 0x11B653, -- Bee
+        [0x32] = 0x11B647, -- Snowball
+        [0x36] = 0x11B656, -- Washing Machine
+        [0x5F] = 0x11B662, -- Kazooie (Solo)
+    }
+	if type(health_table[currentTransformation]) == 'number' then
+		value = value or 0;
+		value = math.max(0x00, value);
+		value = math.min(0xFF, value);
+		mainmemory.write_u8(0x11B644, value);
+        return currentTransformation
+	end
+    return false
+end
+
+function killBT()
+    if KILL_BANJO == true then
+        BTMODELOBJ:changeName("Player", false)
+        local player = BTMODELOBJ:checkModel();
+        if player == false
+        then
+            return
+        end
+        if minigameMaps() == false and cutsceneMaps() == false and GAME_LOADED == true
+        then 
+            tranformation = setCurrentHealth(0)
+            if type(tranformation) == 'number' then
+                mainmemory.write_u16_be(0x12b062, 0x0100)--max air and suffocation flag?
+                mainmemory.write_u16_be(0x12b068, 0x800C)--max air and suffocation flag?
+                mainmemory.write_u16_be(0x12b06A, 0xF734)--max air and suffocation flag?
+                local kill_animation = 0x01 -- funny drowning death
+                if tranformation ~= 0x01
+                then
+                    kill_animation = 0x02 -- Explode 
+                end 
+                mainmemory.write_u8(0x12b161, kill_animation)--max air and suffocation flag?
+                KILL_BANJO = false
+                CHECK_DEATH = true
+            end
+        end
+    end
+end
+
+function getBanjoDeath()
+    if DEATH_LINK == true and KILL_BANJO == false
+    then
+        local death_flg = mainmemory.read_u8(0x1354F9)
+        BTMODELOBJ:changeName("Player", false)
+        local check = BTMODELOBJ:checkModel();
+        if death_flg  == 0 and CHECK_DEATH == true
+        then
+            CHECK_DEATH = false
+            return
+        end
+        if CHECK_DEATH == false and death_flg == 1
+        then
+            DETECT_DEATH = true
+        end
+    end
+end
+
 ------------------ Warp Trap ----------------
 
 -- function ApWarp()
@@ -5684,6 +5865,7 @@ function loadGame(current_map)
             if ENABLE_AP_CHEATO_REWARDS == true then
                 init_CHEATO_REWARDS()
             end
+            init_JIGGY_CHUNK()
             hag1_open()
             hag1_phase_skips()
             GAME_LOADED = true;
@@ -5750,6 +5932,7 @@ function BKLogics(mapaddr)
     then
         watchHoneyB()
     end
+    watchJChunk()
     if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_MOVES == true
     then
         WATCH_LOADED_SILOS = false
@@ -6602,14 +6785,67 @@ function processAGIItem(item_list)
                     BTCONSUMEOBJ:changeConsumable("Ice Keys")
                     BTCONSUMEOBJ:setConsumable(1)
                 end
-
-            -- elseif(memlocation == 1230799)
-            -- then
-            --     if DEBUG == true
-            --     then
-            --         print("Warp Trap Obtained")
-            --     end
-            --     AGI_TRAPS[tostring(memlocation)] = AGI_TRAPS[tostring(memlocation)] + 1
+            elseif(memlocation == 1230823)
+            then
+                BTRAMOBJ:setFlag(0x1E, 6, "Blue Eggs")
+                BTCONSUMEOBJ:changeConsumable("BLUE EGGS")
+                BTCONSUMEOBJ:setConsumable(100)
+            elseif(memlocation == 1230824)
+            then
+                local progressive_count = 0
+                for ap_id, memloc in pairs(receive_map)
+                do
+                    if memloc == "1230824"
+                    then
+                        progressive_count = progressive_count + 1
+                    end
+                end
+                if progressive_count == 0 then
+                    BTRAMOBJ:setFlag(0x18, 7, "Beak Buster")
+                end
+                if progressive_count == 1 then
+                    local location = "1230757"
+                    AGI_MOVES[location] = true
+                    set_AGI_MOVES_checks()
+                end
+            elseif(memlocation == 1230825)
+            then
+                local progressive_count = 0
+                for ap_id, memloc in pairs(receive_map)
+                do
+                    if memloc == "1230825"
+                    then
+                        progressive_count = progressive_count + 1
+                    end
+                end
+                if progressive_count == 0 then
+                    local location = "1230756"
+                    AGI_MOVES[location] = true
+                    set_AGI_MOVES_checks()
+                    BTCONSUMEOBJ:changeConsumable("FIRE EGGS")
+                    BTCONSUMEOBJ:setConsumable(50)
+                end
+                if progressive_count == 1 then
+                    local location = "1230759"
+                    AGI_MOVES[location] = true
+                    set_AGI_MOVES_checks()
+                    BTCONSUMEOBJ:changeConsumable("GRENADE EGGS")
+                    BTCONSUMEOBJ:setConsumable(25)
+                end
+                if progressive_count == 2 then
+                    local location = "1230763"
+                    AGI_MOVES[location] = true
+                    set_AGI_MOVES_checks()
+                    BTCONSUMEOBJ:changeConsumable("ICE EGGS")
+                    BTCONSUMEOBJ:setConsumable(50)
+                end
+                if progressive_count == 3 then
+                    local location = "1230767"
+                    AGI_MOVES[location] = true
+                    set_AGI_MOVES_checks()
+                    BTCONSUMEOBJ:changeConsumable("CWK EGGS")
+                    BTCONSUMEOBJ:setConsumable(10)
+                end
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
             savingAGI();
@@ -6637,10 +6873,10 @@ function process_block(block)
             table.insert(AP_MESSAGES, message)
         end
     end
---     if block['triggerDeath'] == true
---     then
---         KILL_BANJO = true;
---     end
+    if block['triggerDeath'] == true
+    then
+        KILL_BANJO = true;
+    end
 
     if DEBUGLVL3 == true then
         print(block)
@@ -6664,6 +6900,7 @@ function SendToBTClient()
     retTable["roysten"] = ROYSTEN;
     retTable["cheato_rewards"] = CHEATO_REWARDS;
     retTable["honeyb_rewards"] = HONEYB_REWARDS;
+    retTable["jiggy_chunks"] = JIGGY_CHUNKS;
     if GAME_LOADED == false
     then
         retTable["sync_ready"] = "false"
@@ -6686,6 +6923,10 @@ function SendToBTClient()
         print("Connected!")
         PRINT_GOAL = true;
         CUR_STATE = STATE_OK
+    end
+    if DETECT_DEATH == true
+    then
+        DETECT_DEATH = false
     end
 end
 
@@ -7523,6 +7764,10 @@ function initializeFlags()
             BTRAMOBJ:clearFlag(0x19, 3) -- Can't Shoot or Poop Eggs
             -- BTRAMOBJ:clearFlag(0x1E, 6) -- Blue Eggs - CRASH IF THERE IS NO DEFAULT EGG
             BTRAMOBJ:clearFlag(0x1A, 1) -- Roll
+
+            BTRAMOBJ:clearFlag(0x1A, 0) -- Air Rat-atat-rap
+            BTRAMOBJ:clearFlag(0x1A, 6) -- Turbo Trainers
+            BTRAMOBJ:clearFlag(0x18, 7) -- Beak Buster
             if ENABLE_AP_BK_MOVES == 2 then
                 BTRAMOBJ:clearFlag(0x1A, 5) -- Talon Trot
                 BTRAMOBJ:clearFlag(0x19, 7) -- Full Jump
@@ -7530,6 +7775,7 @@ function initializeFlags()
             BTRAMOBJ:clearFlag(0x19, 2) -- Climb
             BTRAMOBJ:clearFlag(0x19, 4) -- Feather Flap
             BTRAMOBJ:clearFlag(0x1A, 7) -- Full Jump
+            BTRAMOBJ:clearFlag(0x1E, 6)
             if ENABLE_AP_WORLDS == true then -- Randomize Worlds - SILOS!!!
                 init_world_silos()
             end
@@ -7540,6 +7786,7 @@ function initializeFlags()
         if ENABLE_AP_HONEYB_REWARDS == true then
             init_HONEYB_REWARDS()
         end
+        init_JIGGY_CHUNK()
         BTCONSUMEOBJ:changeConsumable("Eggs")
         BTCONSUMEOBJ:setConsumable(0)
         BTCONSUMEOBJ:changeConsumable("Ice Keys")
@@ -7616,6 +7863,8 @@ function main()
                 elseif TEXT_START == false then
                     processMessages()
                 end
+                getBanjoDeath()
+                killBT()
             elseif (FRAME % 10 == 1)
             then
                 checkPause();
@@ -7651,39 +7900,7 @@ main()
 --Unused Functions (Function Graveyard)
 
 
--- function getBanjoDeathAnimation(check)
---     local banjo = banjoPTR()
---     if banjo == nil
---     then
---         return false;
---     end
 
---     local ptr = dereferencePointer(banjo + ANIMATION_PTR);
---     local animation = mainmemory.read_u16_be(ptr + 0x34);
-
---     if check == true
---     then
---         return animation
---     end
-
---     if animation == 216 and CHECK_DEATH == false
---     then
---         DETECT_DEATH = true;
---         CHECK_DEATH = true;
---         KILL_BANJO = false;
---         if DEBUG == true
---         then
---             print("Banjo is Dead");
---         end
---     elseif CHECK_DEATH == true and animation ~= 216
---     then
---         CHECK_DEATH = false;
---         if DEBUG == true
---         then
---             print("Deathlink Reset");
---         end
---     end
--- end
 
 -- function setCurrentHealth(value)
 -- 	local currentTransformation = mainmemory.readbyte(0x11B065);

@@ -53,22 +53,25 @@ HOMINGEGGS  = "Homing Eggs Toggle"
 
 DIVE        = "Dive"
 FPAD        = "Flight Pad"
-GRAT        = "Ground Rat-a-tat Rap"
+GRAT        = "Ground Rat-a-tat Rap" #NOT IMPLEMENTED YET
 ROLL        = "Roll"
 ARAT        = "Air Rat-a-tat Rap"
-BBARGE      = "Beak Barge"
+BBARGE      = "Beak Barge" #NOT IMPLEMENTED YET
 TJUMP        = "Tall jump"
 FLUTTER     = "Flutter"
 FFLIP       = "Flap Flip"
 CLIMB      = "Climb"
-BEGG        = "Blue Eggs"
+BEGG        = "Blue Eggs" #NOT IMPLEMENTED YET
 TTROT       = "Talon Trot"
 BBUST       = "Beak Buster"
 WWING       = "Wonderwing"
-SSTRIDE      = "Stilt Stride"
+SSTRIDE      = "Stilt Stride" #NOT IMPLEMENTED YET
 TTRAIN      = "Turbo Trainers"
-BBOMB       = "Beak Bomb"
+BBOMB       = "Beak Bomb" #NOT IMPLEMENTED YET
 EGGSHOOT    = "Egg Shoot"
+
+PBBUST       = "Progressive Beak Buster"
+PBEGGS       = "Progressive Eggs"
 
 # Mumbo Magics
 MUMBOMT = "Mumbo: Golden Goliath"

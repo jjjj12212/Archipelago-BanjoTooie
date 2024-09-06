@@ -7,7 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
     
 class LocationData(typing.NamedTuple):
-    #last good ID: 1230996
+    #last good ID: 1231004
     #12C770 pointer instead (1230704)
     btid: int = 0
     # Save + mem addr
@@ -154,7 +154,12 @@ GMLoc_table = {
     locationName.NOTEGGM13:  LocationData(1230828, 0x88, 4),
     locationName.NOTEGGM14:  LocationData(1230829, 0x88, 5),
     locationName.NOTEGGM15:  LocationData(1230830, 0x88, 6),
-    locationName.NOTEGGM16:  LocationData(1230831, 0x88, 7)
+    locationName.NOTEGGM16:  LocationData(1230831, 0x88, 7),
+    locationName.CHUNK1:    LocationData(1231002, 0x7D, 0),
+    locationName.CHUNK2:    LocationData(1231003, 0x7D, 1),
+    locationName.CHUNK3:    LocationData(1231004, 0x7D, 2),
+
+
 }
 
 PGLov_table = {

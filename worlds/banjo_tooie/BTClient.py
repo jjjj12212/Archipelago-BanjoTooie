@@ -43,7 +43,7 @@ Payload: client -> lua
 }
 
 Deathlink logic:
-"Dead" is true <-> Link is at 0 hp.
+"Dead" is true <-> Banjo is at 0 hp.
 
 deathlink_pending: we need to kill the player
 deathlink_sent_this_death: we interacted with the multiworld on this death, waiting to reset with living link
@@ -98,6 +98,7 @@ class BanjoTooieContext(CommonContext):
         self.chuffy_table = {}
         self.mystery_table = {}
         self.roystenlist_table = {}
+        self.jiggychunks_table = {}
         self.deathlink_enabled = False
         self.deathlink_pending = False
         self.deathlink_sent_this_death = False
@@ -215,6 +216,7 @@ def get_payload(ctx: BanjoTooieContext):
     if ctx.deathlink_enabled and ctx.deathlink_pending:
         trigger_death = True
         ctx.deathlink_sent_this_death = True
+        ctx.deathlink_pending = False
     else:
         trigger_death = False
 
@@ -300,7 +302,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         return
 
     # Turn on deathlink if it is on, and if the client hasn't overriden it
-    if payload['deathlinkActive'] and not ctx.deathlink_enabled and not ctx.deathlink_client_override:
+    if payload['deathlinkActive'] and ctx.deathlink_enabled and not ctx.deathlink_client_override:
         await ctx.update_death_link(True)
         ctx.deathlink_enabled = True
 
@@ -314,6 +316,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     jinjofamlist = payload['jinjofam']
     cheatorewardslist = payload['cheato_rewards']
     honeybrewardslist = payload['honeyb_rewards']
+    jiggychunklist = payload['jiggy_chunks']
+
     worldslist = payload['worlds']
 
     # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
@@ -335,6 +339,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         cheatorewardslist = {}
     if isinstance(honeybrewardslist, list):
         honeybrewardslist = {}
+    if isinstance(jiggychunklist, list):
+        jiggychunklist = {}
     if isinstance(worldslist, list):
         worldslist = {}
 
@@ -393,6 +399,11 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         if ctx.roystenlist_table != roystenlist:
             ctx.roystenlist_table = roystenlist
             for locationId, value in roystenlist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.jiggychunks_table != jiggychunklist:
+            ctx.jiggychunks_table = jiggychunklist
+            for locationId, value in jiggychunklist.items():
                 if value == True:
                     locs1.append(int(locationId))
         

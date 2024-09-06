@@ -35,6 +35,16 @@ Banjo-Tooie:
   # 1: Mcjiggy Special - No Talon Trot or Tall Jump in the Pool
   # 2: All - Everything
   randomize_bk_moves: 0
+
+  # Beak Buster -> Bill Drill Progression
+  progressive_beak_buster: 'true'
+
+  # Change how Eggs behave in Banjo-Tooie
+  # 0: Default (Start with Blue Eggs, get other eggs randomly in AP)
+  # 1: Randomize Starting Eggs (you will start with a random egg)
+  # 2: Progressive Eggs (Blue -> Fire -> Grenade -> Ice -> Clockwork)
+  egg_behaviour: 0
+
   randomize_jinjos: 'true'
 
   # Prevent item types from being shuffled onto jinjo checks
