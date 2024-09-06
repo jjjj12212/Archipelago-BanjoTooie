@@ -1,3 +1,20 @@
+# 2.1-beta
+ - 3 Additional BK Moves to the pool:
+    - Beak Buster
+    - Turbo Trainers
+    - Air Rat-a-tat Rap
+    - Blue Eggs (sort of.. read below)
+ - 3 additional check locations: GGM Crushing Shed Jiggy Chunks
+ - Generation no longer fails when a world cost is set at over 70 jiggies.
+ - Deathlink is now implemented.
+ - Optional Progressive Beak Buster -> Bill Drill
+ - New option for Eggs:
+   - Start with Blue Eggs (what we are used to)
+   - Randomized Starting Egg
+   - Progressive Eggs (Blue -> Fire -> Grenade -> Ice -> Clockwork)
+ - Logic fixes:
+   - Fix Prospector Boulder
+
 # 2.0-beta
  - 3 Additional BK Moves to the pool:
     - Beak Buster

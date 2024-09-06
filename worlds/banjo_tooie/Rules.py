@@ -1818,7 +1818,7 @@ class BanjoTooieRules:
             logic = (self.hasBKMove(state, itemName.FFLIP) or self.ggm_trot(state) or self.canReachSlightlyElevatedLedge(state)) and self.billDrill(state)\
                      or self.humbaGGM(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (self.hasBKMove(state, itemName.FFLIP) or self.ggm_trot(state) or self.canReachSlightlyElevatedLedge(state) and self.billDrill(state)) or \
+            logic = ((self.hasBKMove(state, itemName.FFLIP) or self.ggm_trot(state) or self.canReachSlightlyElevatedLedge(state)) and self.billDrill(state)) or \
                 self.humbaGGM(state) or self.egg_barge(state)
         return logic
     
