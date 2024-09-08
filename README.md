@@ -52,6 +52,10 @@ Banjo Tooie for Archipelago
 - Beak Buster
 - Turbo Trainers
 - Blue Eggs
+- Ground Rat-a-tat Rap
+- Stilt Stride
+- Beak Barge
+- Beak Bomb
 
 # Possible Win Conditions
 - Beating Hag-1 (Vanilla)

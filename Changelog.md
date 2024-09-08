@@ -1,17 +1,19 @@
 # 2.1-beta
- - 3 Additional BK Moves to the pool:
-    - Beak Buster
-    - Turbo Trainers
+ - The Last 4 BK Moves are in the pool:
+    - Ground Rat-a-tat Rap
+    - Stilt Stride
+    - Beak Barge
+    - Beak Bomb
+ - 3 additional check locations:
+    - Goggles (Amaze-O-Gaze)
+    - Big Al (Burger Stall)
+    - Salty Joe (Fries Stall)
+ - When you start a seed with BK Moves randomized, you start with 1 random move:
+    - Egg Shoot
+    - Beak Barge
+    - Roll
+    - Ground Rat-a-tat Rap
     - Air Rat-a-tat Rap
-    - Blue Eggs (sort of.. read below)
- - 3 additional check locations: GGM Crushing Shed Jiggy Chunks
- - Generation no longer fails when a world cost is set at over 70 jiggies.
- - Deathlink is now implemented.
- - Optional Progressive Beak Buster -> Bill Drill
- - New option for Eggs:
-   - Start with Blue Eggs (what we are used to)
-   - Randomized Starting Egg
-   - Progressive Eggs (Blue -> Fire -> Grenade -> Ice -> Clockwork)
  - Logic fixes:
    - Fix Prospector Boulder
 
