@@ -60,6 +60,7 @@ local SUPERBANJO = false;
 local REGEN = false;
 local TEXT_TIMER = 2;
 local TEXT_START = false;
+local FPS = false
 
 local ENABLE_AP_HONEYCOMB = false;
 local ENABLE_AP_PAGES = false;
@@ -7279,6 +7280,26 @@ function DPadStats()
             REGEN = false
             print(" ")
             print("Automatic Energy Regain Disabled")
+        end
+
+        if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == true and FPS == false
+        then
+            mainmemory.write_u8(0x07913F, 1)
+        elseif check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == true and FPS == true
+        then
+            mainmemory.write_u8(0x07913F, 2)
+        end
+
+        if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == true and FPS == false
+        then
+            mainmemory.write_u8(0x07913F, 1)
+            print("Smooth Banjo Enabled")
+            FPS = true
+        elseif check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == true and FPS == true
+        then
+            mainmemory.write_u8(0x07913F, 2)
+            print("Smooth Banjo Disabled")
+            FPS = false
         end
     end
 end
