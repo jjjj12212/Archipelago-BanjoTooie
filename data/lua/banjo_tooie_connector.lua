@@ -5602,7 +5602,7 @@ function setCurrentHealth(value)
 		value = value or 0;
 		value = math.max(0x00, value);
 		value = math.min(0xFF, value);
-		mainmemory.write_u8(0x11B644, value);
+		mainmemory.write_u8(health_table[currentTransformation], value);
         return currentTransformation
 	end
     return false
