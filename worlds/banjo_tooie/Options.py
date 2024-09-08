@@ -26,6 +26,10 @@ class EggsBehaviour(Choice):
     option_progressive_eggs = 2
     default = 0
 
+class ProgressiveShoes(Toggle):
+    """Stilt Stride to Turbo Trainers to Spring Boots to Claw Climber Boots. Randomize Moves and Randomize BK Moves is required."""
+    display_name = "Progressive Kazooie Shoes"
+
 class EnableCheatoRewards(DefaultOnToggle):
     """Cheato rewards you a cheat + an additional randomized reward. Use Cheato Pages as Filler cannot be set if this is enabled."""
     display_name = "Cheato Rewards"
@@ -282,6 +286,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_bk_moves: EnableMultiWorldBKMoveList
     progressive_beak_buster: ProgressiveBeakBuster
     egg_behaviour:EggsBehaviour
+    progressive_shoes: ProgressiveShoes
     randomize_jinjos: EnableMultiWorldJinjos
     forbid_on_jinjo_family: ForbidMovesOnJinjoFamilyTreasure
     forbid_jinjos_on_jinjo_family: ForbidJinjosOnJinjoFamilyTreasure

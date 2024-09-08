@@ -281,6 +281,13 @@ class BanjoTooieWorld(World):
             return False
         if self.options.egg_behaviour.value == 1 and item.code == self.starting_egg: #Already has this egg in inventory
             return False
+        
+        if self.options.progressive_shoes.value == True and (item.code == 1230826 or item.code == 1230821 \
+            or item.code == 1230768 or item.code == 1230773):
+            return False
+        if item.code == 1230830 and self.options.progressive_shoes.value == False:
+            return False
+
         if self.options.randomize_bk_moves.value != 0 and item.code == self.starting_attack: #Already has this attack in inventory
             return False
 
@@ -306,7 +313,8 @@ class BanjoTooieWorld(World):
             raise ValueError("You cannot have Randomize Starting Egg without randomizing moves and randomizing BK moves")
         elif self.options.egg_behaviour.value == 2 and (self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive Eggs without randomizing moves")
-
+        if self.options.progressive_shoes.value == True and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
+            raise ValueError("You cannot have progressive Shoes without randomizing moves and randomizing BK moves")
         if self.options.egg_behaviour.value == 1:
             eggs = list([itemName.BEGG, itemName.FEGGS, itemName.GEGGS, itemName.IEGGS, itemName.CEGGS])
             random.shuffle(eggs)

@@ -72,6 +72,7 @@ EGGSHOOT    = "Egg Shoot"
 
 PBBUST       = "Progressive Beak Buster"
 PBEGGS       = "Progressive Eggs"
+PSHOES       = "Progressive Shoes"
 
 # Mumbo Magics
 MUMBOMT = "Mumbo: Golden Goliath"

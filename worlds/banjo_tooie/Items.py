@@ -71,7 +71,7 @@ moves_table = {
 
     itemName.SAPACK:        ItemData(1230776, 1, "progress", locationName.SAPACK),
 
-    itemName.FSWIM:         ItemData(1230777, 1, "progress", locationName.ROYSTEN1),
+    itemName.FSWIM:         ItemData(1230777, 1, "useful", locationName.ROYSTEN1),
     itemName.DAIR:          ItemData(1230779, 1, "progress", locationName.ROYSTEN2),
 }
 
@@ -98,7 +98,8 @@ bk_moves_table = {
 
 progressive_ability_table = {
     itemName.PBBUST:        ItemData(1230828, 2, "progress", ""),
-    itemName.PBEGGS:        ItemData(1230829, 4, "progress", "")
+    itemName.PBEGGS:        ItemData(1230829, 4, "progress", ""),
+    itemName.PSHOES:        ItemData(1230830, 4, "progress", "")
 }
 
 level_progress_table = {
