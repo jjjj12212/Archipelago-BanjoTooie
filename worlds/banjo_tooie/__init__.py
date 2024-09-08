@@ -52,6 +52,7 @@ class BanjoTooieWorld(World):
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
     item_name_to_id = {}
     starting_egg: int
+    starting_attack: int
 
     for name, data in all_item_table.items():
         if data.btid is None:  # Skip Victory Item
@@ -256,7 +257,7 @@ class BanjoTooieWorld(World):
         if item.code in range(1230799, 1230805) and self.options.randomize_stop_n_swap == False:
             return False
 
-        if item.code in range(1230810, 1230823) and self.options.randomize_bk_moves.value == 0:
+        if item.code in range(1230810, 1230828) and self.options.randomize_bk_moves.value == 0:
             return False
         elif (item.code == 1230815 or item.code == 1230816) and self.options.randomize_bk_moves.value == 1: # talon trot and tall jump not in pool
             return False
@@ -268,7 +269,7 @@ class BanjoTooieWorld(World):
         
         if self.options.progressive_beak_buster.value == True and (item.code == 1230820 or item.code == 1230757):
             return False
-        if item.code == 1230824 and self.options.progressive_beak_buster.value == False:
+        if item.code == 1230828 and self.options.progressive_beak_buster.value == False:
             return False
         
         if self.options.egg_behaviour.value != 1 and item.code == 1230823: #remove blue eggs in pool
@@ -276,9 +277,11 @@ class BanjoTooieWorld(World):
         if self.options.egg_behaviour.value == 2 and (item.code == 1230756 or item.code == 1230759 or item.code == 1230763 \
             or item.code == 1230767):
             return False
-        if item.code == 1230825 and self.options.egg_behaviour.value != 2:
+        if item.code == 1230829 and self.options.egg_behaviour.value != 2:
             return False
         if self.options.egg_behaviour.value == 1 and item.code == self.starting_egg: #Already has this egg in inventory
+            return False
+        if self.options.randomize_bk_moves.value != 0 and item.code == self.starting_attack: #Already has this attack in inventory
             return False
 
         return True
@@ -316,6 +319,13 @@ class BanjoTooieWorld(World):
             self.multiworld.push_precollected(starting_egg)
             banjoItem = all_item_table.get(itemName.BEGG)
             self.starting_egg = banjoItem.btid
+        if self.options.randomize_bk_moves.value != 0:
+            base_attacks = list([itemName.BBARGE, itemName.ARAT, itemName.GRAT, itemName.ROLL, itemName.EGGSHOOT])
+            random.shuffle(base_attacks)
+            starting_attack = self.create_item(base_attacks[0])
+            self.multiworld.push_precollected(starting_attack)
+            banjoItem = all_item_table.get(base_attacks[0])
+            self.starting_attack = banjoItem.btid
         WorldRandomize(self)
 
     def set_rules(self) -> None:
@@ -563,6 +573,7 @@ class BanjoTooieWorld(World):
         btoptions['progressive_beak_buster'] = "true" if self.options.randomize_honeycombs == 1 else "false"
         btoptions['egg_behaviour'] = int(self.options.egg_behaviour.value)
         btoptions['starting_egg'] = int(self.starting_egg)
+        btoptions['starting_attack'] = int(self.starting_attack)
 
         return btoptions
 

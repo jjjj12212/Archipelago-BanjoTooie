@@ -90,11 +90,15 @@ bk_moves_table = {
     itemName.TTRAIN:        ItemData(1230821, 1, "progress", ""),
     itemName.ARAT:          ItemData(1230822, 1, "progress", ""),
     itemName.BEGG:          ItemData(1230823, 1, "progress", ""),
+    itemName.GRAT:          ItemData(1230824, 1, "progress", ""),
+    itemName.BBARGE:        ItemData(1230825, 1, "progress", ""),
+    itemName.SSTRIDE:       ItemData(1230826, 1, "progress", ""),
+    itemName.BBOMB:         ItemData(1230827, 1, "progress", "")
 }
 
 progressive_ability_table = {
-    itemName.PBBUST:        ItemData(1230824, 2, "progress", ""),
-    itemName.PBEGGS:        ItemData(1230825, 4, "progress", "")
+    itemName.PBBUST:        ItemData(1230828, 2, "progress", ""),
+    itemName.PBEGGS:        ItemData(1230829, 4, "progress", "")
 }
 
 level_progress_table = {

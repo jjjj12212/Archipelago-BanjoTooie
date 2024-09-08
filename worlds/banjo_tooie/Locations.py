@@ -7,7 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
     
 class LocationData(typing.NamedTuple):
-    #last good ID: 1231004
+    #last good ID: 1231007
     #12C770 pointer instead (1230704)
     btid: int = 0
     # Save + mem addr
@@ -45,7 +45,7 @@ JVLoc_table = {
     locationName.JIGGYIH10: LocationData(1230685, 0x50, 1),
     locationName.TREBLEJV:  LocationData(1230789, 0x97, 7),  #Set last ID for Clef Family. Client Reasons
     locationName.IKEY:      LocationData(1230958, 0, 0), #Needs to be handled on client side
-
+    locationName.BOTTLEKID: LocationData(1231005, 0x1E, 0)
 }
 
 MTLoc_Table = {
@@ -214,7 +214,9 @@ WWLoc_table = {
     locationName.NOTEWW13:  LocationData(1230844, 0x8A, 5),
     locationName.NOTEWW14:  LocationData(1230845, 0x8A, 6),
     locationName.NOTEWW15:  LocationData(1230846, 0x8A, 7),
-    locationName.NOTEWW16:  LocationData(1230847, 0x8B, 0)
+    locationName.NOTEWW16:  LocationData(1230847, 0x8B, 0),
+    locationName.BIGAL:     LocationData(1231006, 0, 0), #Implement on Client Side
+    locationName.SALTYJOE:  LocationData(1231007, 0, 0) #Implement on Client Side
 }
 
 JRLoc_table = {

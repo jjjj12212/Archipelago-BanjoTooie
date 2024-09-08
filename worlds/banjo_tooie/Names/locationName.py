@@ -449,6 +449,9 @@ HONEYBR2    = "IoH: Honey B's Reward 2" # 3
 HONEYBR3    = "IoH: Honey B's Reward 3" # 5
 HONEYBR4    = "IoH: Honey B's Reward 4" # 7
 HONEYBR5    = "IoH: Honey B's Reward 5" # 9
+BOTTLEKID   = "BH: Goggles Amaze-O-Gaze"
+BIGAL       = "WW: Big Al's Burgers"
+SALTYJOE    = "WW: Salty Joe's Fries"
 
 #Jiggy Chunks
 CHUNK1      = "GGM: Crushing Shed Jiggy Chunk 1"

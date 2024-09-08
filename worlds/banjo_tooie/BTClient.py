@@ -99,6 +99,8 @@ class BanjoTooieContext(CommonContext):
         self.mystery_table = {}
         self.roystenlist_table = {}
         self.jiggychunks_table = {}
+        self.goggles_table = False
+        self.foodstall_table = {}
         self.deathlink_enabled = False
         self.deathlink_pending = False
         self.deathlink_sent_this_death = False
@@ -317,6 +319,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     cheatorewardslist = payload['cheato_rewards']
     honeybrewardslist = payload['honeyb_rewards']
     jiggychunklist = payload['jiggy_chunks']
+    goggles = payload['goggles']
+    food_stalls = payload['food_stalls']
 
     worldslist = payload['worlds']
 
@@ -343,6 +347,10 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         jiggychunklist = {}
     if isinstance(worldslist, list):
         worldslist = {}
+    if isinstance(food_stalls, list):
+        food_stalls = {}
+    if isinstance(goggles, bool) == False:
+        goggles = False
 
     if "DEMO" not in locations and ctx.sync_ready == True:
         locs1 = []
@@ -373,6 +381,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                                     if ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or \
                                     ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
                                        locs1 = mumbo_tokens_loc(locs1, int(locationId), ctx.slot_data["goal_type"])
+                                   
             ctx.location_table = locations       
         if ctx.chuffy_table != chuffy:
             ctx.chuffy_table = chuffy
@@ -406,7 +415,16 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             for locationId, value in jiggychunklist.items():
                 if value == True:
                     locs1.append(int(locationId))
-        
+        if ctx.goggles_table != goggles:
+            ctx.goggles_table = goggles
+            if goggles == True:
+                locs1.append(1231005)
+        if ctx.foodstall_table != food_stalls:
+            ctx.foodstall_table = food_stalls
+            for locationId, value in food_stalls.items():
+                if value == True:
+                    locs1.append(int(locationId))
+
         if ctx.slot_data["moves"] == "true":
             # Locations handling
             movelist = payload['unlocked_moves']

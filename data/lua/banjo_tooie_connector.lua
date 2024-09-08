@@ -146,6 +146,9 @@ local DEATH_LINK = false
 local DETECT_DEATH = false;
 local CHECK_DEATH = false;
 
+---------------- AMAZE-O-GAZE VARS ---------------
+local GOGGLES = false;
+
 
 -------------- ENCOURAGEMENT MESSAGES ------------
 local ENCOURAGEMENT = {
@@ -1091,6 +1094,7 @@ local ROYSTEN = {} -- Roysten flags. Because the flags are separate from moves, 
 local CHEATO_REWARDS = {} -- Cheato Check Locations
 local HONEYB_REWARDS = {} -- Honey B Check Locations
 local JIGGY_CHUNKS = {} -- Jiggy Chunky Check Locations
+local FOOD_STALLS = {} -- Big Al and Salty Joe
 
 
 -- Mapping required for AGI Table
@@ -3010,11 +3014,6 @@ local NON_AGI_MAP = {
             ['bit'] = 7,
             ['name'] = 'Sack Pack'
         },
-        --['Fast Swimming'] = {
-        --    ['addr'] = 0x1E,
-        --    ['bit'] = 5,
-        --    ['locationId'] = 1230777
-        --},
 	},
     ["MAGIC"] = {
         ["1230855"] = {
@@ -3873,6 +3872,27 @@ local NON_AGI_MAP = {
             ['bit'] = 0,
             ['name'] = "Air Rat-a-tat Rap"
         },
+        ["1230824"] = {
+            ['addr'] = 0x19,
+            ['bit'] = 1,
+            ['name'] = "Ground Rat-a-tat Rap"
+        },
+        ["1230825"] = {
+            ['addr'] = 0x18,
+            ['bit'] = 5,
+            ['name'] = "Beak Barge"
+        },
+        ["1230826"] = {
+            ['addr'] = 0x1A,
+            ['bit'] = 3,
+            ['name'] = "Stilt Stride"
+        },
+        ["1230827"] = {
+            ['addr'] = 0x18,
+            ['bit'] = 6,
+            ['name'] = "Beak Bomb"
+        },
+
     },
     ["HONEYB"] = {
         ["1230997"] = {
@@ -4288,6 +4308,19 @@ function obtain_swimming()
     end
 end
 
+--------------------------------- AMAZE-O-GAZE ------------------------------------
+function check_goggles()
+    if CURRENT_MAP == 0x143 and GOGGLES == false
+    then
+        print("checking goggles")
+        local gogglesflg = BTRAMOBJ:checkFlag(0x1E, 0, "CHECK_GOOGLES")
+        if gogglesflg == true then
+            print("Got!")
+            GOGGLES = true
+        end
+    end
+end
+
 --------------------------------- CHEATO REWARDS ----------------------------------
 function init_CHEATO_REWARDS()
     for k,v in pairs(NON_AGI_MAP['CHEATO'])
@@ -4452,6 +4485,27 @@ function watchJChunk()
             then
                 JIGGY_CHUNKS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_JCHUNKS")
             end
+        end
+    end
+end
+
+--------------------------------- FOOD STALLS -------------------------------------------
+function init_FOOD_STALLS()
+    FOOD_STALLS["1231006"] = false
+    FOOD_STALLS["1231007"] = false
+end
+
+function watchFoodInventory()
+    if CURRENT_MAP == 0xD6 then
+        BTCONSUMEOBJ:changeConsumable("Burgers")
+        local amt = BTCONSUMEOBJ:getConsumable()
+        if amt > 0 then
+            FOOD_STALLS["1231006"] = true
+        end
+        BTCONSUMEOBJ:changeConsumable("Fries")
+        local fries_amt = BTCONSUMEOBJ:getConsumable()
+        if fries_amt > 0 then
+            FOOD_STALLS["1231007"] = true
         end
     end
 end
@@ -5867,6 +5921,7 @@ function loadGame(current_map)
                 init_CHEATO_REWARDS()
             end
             init_JIGGY_CHUNK()
+            init_FOOD_STALLS()
             hag1_open()
             hag1_phase_skips()
             GAME_LOADED = true;
@@ -5934,6 +5989,8 @@ function BKLogics(mapaddr)
         watchHoneyB()
     end
     watchJChunk()
+    check_goggles()
+    watchFoodInventory()
     if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_MOVES == true
     then
         WATCH_LOADED_SILOS = false
@@ -6791,12 +6848,12 @@ function processAGIItem(item_list)
                 BTRAMOBJ:setFlag(0x1E, 6, "Blue Eggs")
                 BTCONSUMEOBJ:changeConsumable("BLUE EGGS")
                 BTCONSUMEOBJ:setConsumable(100)
-            elseif(memlocation == 1230824)
+            elseif(memlocation == 1230828) -- Progressive Beak Bust
             then
                 local progressive_count = 0
                 for ap_id, memloc in pairs(receive_map)
                 do
-                    if memloc == "1230824"
+                    if memloc == "1230828"
                     then
                         progressive_count = progressive_count + 1
                     end
@@ -6809,12 +6866,12 @@ function processAGIItem(item_list)
                     AGI_MOVES[location] = true
                     set_AGI_MOVES_checks()
                 end
-            elseif(memlocation == 1230825)
+            elseif(memlocation == 1230829) -- Progressive Eggs
             then
                 local progressive_count = 0
                 for ap_id, memloc in pairs(receive_map)
                 do
-                    if memloc == "1230825"
+                    if memloc == "1230829"
                     then
                         progressive_count = progressive_count + 1
                     end
@@ -6902,6 +6959,8 @@ function SendToBTClient()
     retTable["cheato_rewards"] = CHEATO_REWARDS;
     retTable["honeyb_rewards"] = HONEYB_REWARDS;
     retTable["jiggy_chunks"] = JIGGY_CHUNKS;
+    retTable["goggles"] = GOGGLES;
+    retTable["food_stalls"] = FOOD_STALLS;
     if GAME_LOADED == false
     then
         retTable["sync_ready"] = "false"
@@ -7285,17 +7344,9 @@ function DPadStats()
         if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == true and FPS == false
         then
             mainmemory.write_u8(0x07913F, 1)
-        elseif check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == true and FPS == true
-        then
-            mainmemory.write_u8(0x07913F, 2)
-        end
-
-        if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == true and FPS == false
-        then
-            mainmemory.write_u8(0x07913F, 1)
             print("Smooth Banjo Enabled")
             FPS = true
-        elseif check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == true and FPS == true
+        elseif check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == true
         then
             mainmemory.write_u8(0x07913F, 2)
             print("Smooth Banjo Disabled")
@@ -7733,6 +7784,7 @@ function initializeFlags()
         init_BKMYSTERY("BKMYSTERY")
         init_AGI()
         init_roysten()
+        init_FOOD_STALLS()
         AGI_MOVES = init_BMK("AGI");
         AGI_NOTES = init_BKNOTES("AGI");
         AGI_MYSTERY = init_BKMYSTERY("AGI");
@@ -7783,7 +7835,6 @@ function initializeFlags()
             BTRAMOBJ:clearFlag(0x19, 6) -- Fly pad
             BTRAMOBJ:clearFlag(0x19, 5) -- Flap Flip
             BTRAMOBJ:clearFlag(0x19, 3) -- Can't Shoot or Poop Eggs
-            -- BTRAMOBJ:clearFlag(0x1E, 6) -- Blue Eggs - CRASH IF THERE IS NO DEFAULT EGG
             BTRAMOBJ:clearFlag(0x1A, 1) -- Roll
 
             BTRAMOBJ:clearFlag(0x1A, 0) -- Air Rat-atat-rap
@@ -7796,7 +7847,12 @@ function initializeFlags()
             BTRAMOBJ:clearFlag(0x19, 2) -- Climb
             BTRAMOBJ:clearFlag(0x19, 4) -- Feather Flap
             BTRAMOBJ:clearFlag(0x1A, 7) -- Full Jump
-            BTRAMOBJ:clearFlag(0x1E, 6)
+            BTRAMOBJ:clearFlag(0x1E, 6) -- Blue Eggs
+            BTRAMOBJ:clearFlag(0x19, 1) -- Ground Rat-a-tat rap
+            BTRAMOBJ:clearFlag(0x18, 5) -- Beak Barge
+            BTRAMOBJ:clearFlag(0x1A, 3) -- Stilt Stride
+            BTRAMOBJ:clearFlag(0x18, 6) -- Beak Bomb
+
             if ENABLE_AP_WORLDS == true then -- Randomize Worlds - SILOS!!!
                 init_world_silos()
             end
