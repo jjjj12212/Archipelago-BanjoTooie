@@ -45,6 +45,15 @@ Banjo-Tooie:
   # 2: Progressive Eggs (Blue -> Fire -> Grenade -> Ice -> Clockwork)
   egg_behaviour: 0
 
+  # Stilt Stride -> Turbo Trainers -> Spring Boots -> Claw Climbers
+  progressive_shoes: 'false'
+
+  # Dive -> Double Air -> Fast Swimming
+  progressive_water_training: 'true'
+
+  # Ground Rat-a-tat Rap -> Breegull Bash
+  progressive_bash_attack: 'true'
+
   randomize_jinjos: 'true'
 
   # Prevent item types from being shuffled onto jinjo checks
