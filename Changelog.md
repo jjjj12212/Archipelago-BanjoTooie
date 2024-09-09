@@ -14,6 +14,11 @@
     - Roll
     - Ground Rat-a-tat Rap
     - Air Rat-a-tat Rap
+ - New Options:
+   - Progressive Shoes (Stilt Stride -> Turbo Trainers -> Spring Boots -> Claw Climbers)
+   - Progressive Water Training (Dive -> Double Air -> Faster Swimming)
+   - Progressive Bash Attack (Ground Rat-a-tat Rap -> Breegull Bash)
+ - 60 FPS Toggle - Hit L + Start in-game to increase the in-game clock to run 60 FPS instead of 30 (may affect CPU performance)
  - Logic fixes:
    - Fix Prospector Boulder
 
