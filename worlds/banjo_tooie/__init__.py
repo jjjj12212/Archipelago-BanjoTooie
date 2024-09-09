@@ -599,8 +599,12 @@ class BanjoTooieWorld(World):
         btoptions['logic_type'] = int(self.options.logic_type.value)
         # btoptions['warp_traps'] = int(self.options.warp_traps.value)
         btoptions['skip_klungo'] = "true" if self.options.skip_klungo == 1 else "false"
-        btoptions['progressive_beak_buster'] = "true" if self.options.randomize_honeycombs == 1 else "false"
+        btoptions['progressive_beak_buster'] = "true" if self.options.progressive_beak_buster == 1 else "false"
         btoptions['egg_behaviour'] = int(self.options.egg_behaviour.value)
+        btoptions['progressive_shoes'] = "true" if self.options.progressive_shoes == 1 else "false"
+        btoptions['progressive_water_training'] = "true" if self.options.progressive_water_training == 1 else "false"
+        btoptions['progressive_bash_attack'] = "true" if self.options.progressive_bash_attack == 1 else "false"
+
         btoptions['starting_egg'] = int(self.starting_egg)
         btoptions['starting_attack'] = int(self.starting_attack)
 
