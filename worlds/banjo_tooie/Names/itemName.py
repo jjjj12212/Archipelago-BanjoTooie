@@ -73,6 +73,8 @@ EGGSHOOT    = "Egg Shoot"
 PBBUST       = "Progressive Beak Buster"
 PBEGGS       = "Progressive Eggs"
 PSHOES       = "Progressive Shoes"
+PSWIM       = "Progressive Water Training"
+PBASH       = "Progressive Bash Attack"
 
 # Mumbo Magics
 MUMBOMT = "Mumbo: Golden Goliath"

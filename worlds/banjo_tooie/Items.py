@@ -99,7 +99,9 @@ bk_moves_table = {
 progressive_ability_table = {
     itemName.PBBUST:        ItemData(1230828, 2, "progress", ""),
     itemName.PBEGGS:        ItemData(1230829, 4, "progress", ""),
-    itemName.PSHOES:        ItemData(1230830, 4, "progress", "")
+    itemName.PSHOES:        ItemData(1230830, 4, "progress", ""),
+    itemName.PSWIM:         ItemData(1230831, 3, "progress", ""),
+    itemName.PBASH:         ItemData(1230832, 2, "progress", "")
 }
 
 level_progress_table = {

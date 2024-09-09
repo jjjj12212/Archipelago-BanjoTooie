@@ -30,6 +30,14 @@ class ProgressiveShoes(Toggle):
     """Stilt Stride to Turbo Trainers to Spring Boots to Claw Climber Boots. Randomize Moves and Randomize BK Moves is required."""
     display_name = "Progressive Kazooie Shoes"
 
+class ProgressiveSwimming(Toggle):
+    """Dive to Double Air to Faster Swimming. Randomize Moves and Randomize BK Moves is required."""
+    display_name = "Progressive Water Training"
+
+class ProgressiveBashAttack(Toggle):
+    """Ground Rat-a-tat Rap to Breegull Bash. Randomize Stop N Swap and Randomize BK Moves is required"""
+    display_name = "Progressive Bash Attack"
+
 class EnableCheatoRewards(DefaultOnToggle):
     """Cheato rewards you a cheat + an additional randomized reward. Use Cheato Pages as Filler cannot be set if this is enabled."""
     display_name = "Cheato Rewards"
@@ -287,6 +295,8 @@ class BanjoTooieOptions(PerGameCommonOptions):
     progressive_beak_buster: ProgressiveBeakBuster
     egg_behaviour:EggsBehaviour
     progressive_shoes: ProgressiveShoes
+    progressive_water_training: ProgressiveSwimming
+    progressive_bash_attack: ProgressiveBashAttack
     randomize_jinjos: EnableMultiWorldJinjos
     forbid_on_jinjo_family: ForbidMovesOnJinjoFamilyTreasure
     forbid_jinjos_on_jinjo_family: ForbidJinjosOnJinjoFamilyTreasure

@@ -19,6 +19,8 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
             world.randomize_worlds = passthrough['world_order']
             world.randomize_order = passthrough['world_keys']
             world.worlds_randomized = bool(passthrough['worlds'] == 'true') 
+            world.starting_egg = passthrough['starting_egg']
+            world.starting_attack = passthrough['starting_attack']
     else:
         if world.options.randomize_worlds and world.options.randomize_moves == True and \
         world.options.skip_puzzles == True:

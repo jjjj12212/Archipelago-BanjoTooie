@@ -18,7 +18,6 @@ local SCRIPT_VERSION = 4
 local BT_VERSION = "V2.1"
 local PLAYER = ""
 local SEED = 0
-local DEATH_LINK = false
 
 local BT_SOCK = nil
 
@@ -6930,6 +6929,44 @@ function processAGIItem(item_list)
                     AGI_MOVES[location] = true
                     set_AGI_MOVES_checks()
                 end
+            elseif(memlocation == 1230831) -- Progressive Water Training
+            then
+                local progressive_count = 0
+                for ap_id, memloc in pairs(receive_map)
+                do
+                    if memloc == "1230831"
+                    then
+                        progressive_count = progressive_count + 1
+                    end
+                end
+                if progressive_count == 0 then
+                    BTRAMOBJ:setFlag(0x1A, 4, "Dive")
+                end
+                if progressive_count == 1 then
+                    BTRAMOBJ:setFlag(0x32, 7, "Double Air")
+                    DOUBLE_AIR = true
+                end
+                if progressive_count == 2 then
+                    BTRAMOBJ:setFlag(0x1E, 5, "Fast Swimming")
+                    FAST_SWIM = true
+                end
+            elseif(memlocation == 1230832) -- Progressive Bash Attack
+            then
+                local progressive_count = 0
+                for ap_id, memloc in pairs(receive_map)
+                do
+                    if memloc == "1230832"
+                    then
+                        progressive_count = progressive_count + 1
+                    end
+                end
+                if progressive_count == 0 then
+                    BTRAMOBJ:setFlag(0x19, 1, "GRAT")
+                end
+                if progressive_count == 1 then
+                    AGI_MYSTERY["1230800"] = true
+                    obtain_breegull_bash()
+                end
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
             savingAGI();
@@ -7354,12 +7391,14 @@ function DPadStats()
         end
 		
 		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == false
+        and DEATH_LINK == false
         then
            BTRAMOBJ:setFlag(0xA1, 7, "Automatic Energy Regain")
            REGEN = true
            print(" ")
            print("Automatic Energy Regain Enabled")
         elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == true
+        and DEATH_LINK == false
         then
             BTRAMOBJ:clearFlag(0xA1, 7)
             REGEN = false
