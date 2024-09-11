@@ -224,6 +224,10 @@ class BanjoTooieRules:
             locationName.CHUNK3: lambda state: self.jiggy_crushing_shed(state),
         }
 
+        self.food_stall_rules = {
+            locationName.BIGAL: lambda state: self.big_al_burgers(state)
+        }
+
         self.jiggy_rules = {
             #Mayahem Temple Jiggies
             locationName.JIGGYMT1:  lambda state: self.jiggy_targitzan(state),
@@ -4876,6 +4880,18 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 3: # glitched
             logic = self.hasBKMove(state, itemName.FPAD) and (self.hasBKMove(state, itemName.CLIMB) or self.check_solo_moves(state, itemName.LSPRING))
         return logic
+    
+    def big_al_burgers(self, state:CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.hasBKMove(state, itemName.TJUMP)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.hasBKMove(state, itemName.TJUMP) or self.check_solo_moves(state, itemName.LSPRING) or self.check_solo_moves(state, itemName.GLIDE)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.hasBKMove(state, itemName.TJUMP) or self.check_solo_moves(state, itemName.LSPRING) or self.check_solo_moves(state, itemName.GLIDE)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.hasBKMove(state, itemName.TJUMP) or self.check_solo_moves(state, itemName.LSPRING) or self.check_solo_moves(state, itemName.GLIDE)
+        return logic
 
     def set_rules(self) -> None:
 
@@ -4982,6 +4998,10 @@ class BanjoTooieRules:
             for location, rules in self.honeyb_rewards_rules.items():
                 honeyb = self.world.multiworld.get_location(location, self.player)
                 set_rule(honeyb, rules)
+        
+        for location, rules in self.food_stall_rules.items():
+                food = self.world.multiworld.get_location(location, self.player)
+                set_rule(food, rules)
 
         if self.world.options.victory_condition == 1:
             for location, rules in self.gametoken_rules.items():
