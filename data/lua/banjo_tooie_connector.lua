@@ -5664,6 +5664,7 @@ end
 
 function killBT()
     if KILL_BANJO == true then
+        CHECK_DEATH = true -- Avoid Death loops
         BTMODELOBJ:changeName("Player", false)
         local player = BTMODELOBJ:checkModel();
         if player == false
@@ -5683,8 +5684,11 @@ function killBT()
                     kill_animation = 0x02 -- Explode 
                 end 
                 mainmemory.write_u8(0x12b161, kill_animation)--max air and suffocation flag?
-                KILL_BANJO = false
-                CHECK_DEATH = true
+                local death_flg = mainmemory.read_u8(0x1354F9)
+                if death_flg == 1
+                then
+                    KILL_BANJO = false
+                end
             end
         end
     end
