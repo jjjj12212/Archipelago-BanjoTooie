@@ -494,7 +494,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             ctx.current_map = banjo_map
             await ctx.send_msgs([{
                 "cmd": "Set",
-                "key": "Banjo-Tooie_map",
+                "key": f"Banjo_Tooie_{ctx.team}_{ctx.slot}_map",
                 "default": hex(0),
                 "want_reply": False,
                 "operations": [{"operation": "replace",
