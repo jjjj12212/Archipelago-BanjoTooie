@@ -101,6 +101,7 @@ class BanjoTooieContext(CommonContext):
         self.jiggychunks_table = {}
         self.goggles_table = False
         self.foodstall_table = {}
+        self.current_map = 0
         self.deathlink_enabled = False
         self.deathlink_pending = False
         self.deathlink_sent_this_death = False
@@ -321,8 +322,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     jiggychunklist = payload['jiggy_chunks']
     goggles = payload['goggles']
     food_stalls = payload['food_stalls']
-
     worldslist = payload['worlds']
+    banjo_map = payload['banjo_map']
 
     # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
     if isinstance(locations, list):
@@ -351,6 +352,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         food_stalls = {}
     if isinstance(goggles, bool) == False:
         goggles = False
+    if isinstance(banjo_map, int) == False:
+        banjo_map = 0
 
     if "DEMO" not in locations and ctx.sync_ready == True:
         locs1 = []
@@ -487,6 +490,16 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                         }])
                         ctx.finished_game = True
 
+        if ctx.current_map != banjo_map:
+            ctx.current_map = banjo_map
+            await ctx.send_msgs([{
+                "cmd": "Set",
+                "key": "Banjo-Tooie_map",
+                "default": hex(0),
+                "want_reply": False,
+                "operations": [{"operation": "replace",
+                    "value": hex(banjo_map)}]
+            }])
     #Send Aync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:
         # ctx.items_handling = 0b101

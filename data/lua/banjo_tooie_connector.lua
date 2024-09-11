@@ -6987,7 +6987,7 @@ function process_block(block)
     then
         return
     end
-    if next(block['items']) ~= nil
+    if next(block['items']) ~= nil and INIT_COMPLETE
     then
         processAGIItem(block['items'])
     end
@@ -7028,6 +7028,7 @@ function SendToBTClient()
     retTable["jiggy_chunks"] = JIGGY_CHUNKS;
     retTable["goggles"] = GOGGLES;
     retTable["food_stalls"] = FOOD_STALLS;
+    retTable["banjo_map"] = CURRENT_MAP;
     if GAME_LOADED == false
     then
         retTable["sync_ready"] = "false"
