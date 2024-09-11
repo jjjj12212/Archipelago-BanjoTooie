@@ -7028,7 +7028,12 @@ function SendToBTClient()
     retTable["jiggy_chunks"] = JIGGY_CHUNKS;
     retTable["goggles"] = GOGGLES;
     retTable["food_stalls"] = FOOD_STALLS;
-    retTable["banjo_map"] = CURRENT_MAP;
+    if CURRENT_MAP == nil
+    then
+        retTable["banjo_map"] = 0x0;
+    else
+        retTable["banjo_map"] = CURRENT_MAP;
+    end 
     if GAME_LOADED == false
     then
         retTable["sync_ready"] = "false"
