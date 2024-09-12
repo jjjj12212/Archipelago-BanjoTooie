@@ -3291,7 +3291,7 @@ class BanjoTooieRules:
             logic = (((state.has(itemName.GGRAB, self.player) or self.beakBuster(state)) and self.hasBKMove(state, itemName.FFLIP)) or self.hasBKMove(state, itemName.CLIMB))
         elif self.world.options.logic_type == 3: # glitched
             logic = (((state.has(itemName.GGRAB, self.player) or self.beakBuster(state)) and self.hasBKMove(state, itemName.FFLIP)) or self.hasBKMove(state, itemName.CLIMB))\
-                  or self.hasBKMove(state, itemName.GRAT) or self.hasBKMove(state, itemName.BBARGE)
+                  or self.groundRatATatRap(state) or self.hasBKMove(state, itemName.BBARGE)
         return logic
     
     def notes_bottom_clockwork(self, state: CollectionState) -> bool:
@@ -3648,7 +3648,7 @@ class BanjoTooieRules:
         return self.fireEggs(state) or self.dragon_kazooie(state)
     
     def dragon_kazooie(self, state: CollectionState) -> bool:
-        return self.check_humba_magic(state, itemName.HUMBAIH) and state.can_reach_region(regionName.IOHPG, self.player) and self.hasBKMove(state, itemName.GRAT)
+        return self.check_humba_magic(state, itemName.HUMBAIH) and state.can_reach_region(regionName.IOHPG, self.player) and self.groundRatATatRap(state)
     
     def has_explosives(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
@@ -3921,7 +3921,7 @@ class BanjoTooieRules:
             logic = self.HFP_hot_water_cooled(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.HFP_hot_water_cooled(state) or \
-                (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FLUTTER) and self.hasBKMove(state, itemName.GRAT) and self.hasBKMove(state, itemName.TJUMP))
+                (state.has(itemName.GGRAB, self.player) and self.hasBKMove(state, itemName.FLUTTER) and self.groundRatATatRap(state) and self.hasBKMove(state, itemName.TJUMP))
         return logic
 
     def WorldUnlocks_req(self, state: CollectionState, locationId: int) -> bool: #1
@@ -4538,12 +4538,12 @@ class BanjoTooieRules:
     
     def hasGroundAttack(self, state: CollectionState) -> bool:
         BKAttack = True in list(map(lambda move: self.hasBKMove(state, move),
-                [itemName.EGGSHOOT, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.GRAT, itemName.BBUST]))
+                [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.GRAT, itemName.BBUST]))
         return BKAttack or self.breegullBash(state)
     
     def hasMobileAttack(self, state: CollectionState) -> bool:
         return True in list(map(lambda move: self.hasBKMove(state, move),
-                [itemName.EGGSHOOT, itemName.BBARGE, itemName.ROLL, itemName.ARAT]))
+                [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]))
     
     def canShootAnyEgg(self, state: CollectionState) -> bool:
         return state.has(itemName.EGGAIM, self.player) or self.hasBKMove(state, itemName.EGGSHOOT)
@@ -4650,6 +4650,10 @@ class BanjoTooieRules:
             or state.has(itemName.PBBUST, self.player, 2)
     
     #You cannot use breegull blaster without the ground ratatat rat, pressing B does nothing.
+
+    def groundRatATatRap(self, state: CollectionState) -> bool:
+        return self.hasBKMove(state, itemName.GRAT) or state.has(itemName.PBASH, self.player)
+    
     def breegullBash(self, state: CollectionState) -> bool:
         return (self.hasBKMove(state, itemName.GRAT) and state.has(itemName.BBASH, self.player))\
             or state.has(itemName.PBASH, self.player, 2)
