@@ -4812,7 +4812,7 @@ class BanjoTooieRules:
         return self.clockworkEggs(state) and state.has(itemName.EGGAIM, self.player)
     
     def egg_barge(self, state: CollectionState) -> bool:
-        return self.hasLinearEgg(state) and self.hasBKMove(state, itemName.EGGSHOOT) and self.hasBKMove(state, itemName.BBARGE)
+        return (self.blueEggs(state) or self.fireEggs(state) or self.iceEggs(state)) and self.hasBKMove(state, itemName.EGGSHOOT) and self.hasBKMove(state, itemName.BBARGE)
 
     def can_dive_in_JRL(self, state: CollectionState) -> bool:
         logic = True
