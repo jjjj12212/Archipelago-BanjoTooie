@@ -8,12 +8,14 @@
     - Goggles (Amaze-O-Gaze)
     - Big Al (Burger Stall)
     - Salty Joe (Fries Stall)
- - When you start a seed with BK Moves randomized, you start with 1 random move:
+ - When you start a seed with BK Moves randomized, you start with a random attack to be able to defeat Klungo:
     - Egg Shoot
+    - Egg aim
     - Beak Barge
     - Roll
-    - Ground Rat-a-tat Rap
     - Air Rat-a-tat Rap
+    - Ground Rat-a-tat Rap (only in advanced and glitched logic)
+    - Beak Buster (only in advanced and glitched logic)
  - New Options:
    - Progressive Shoes (Stilt Stride -> Turbo Trainers -> Spring Boots -> Claw Climbers)
    - Progressive Water Training (Dive -> Double Air -> Faster Swimming)
