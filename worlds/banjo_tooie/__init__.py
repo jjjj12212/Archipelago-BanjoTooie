@@ -346,15 +346,16 @@ class BanjoTooieWorld(World):
             self.starting_egg = banjoItem.btid
         if self.options.randomize_bk_moves.value != 0:
             base_attacks: list
-            if self.options.progressive_bash_attack.value == 0:
-                base_attacks = list([itemName.BBARGE, itemName.ARAT, itemName.GRAT, itemName.ROLL, itemName.EGGSHOOT])
+            if self.options.logic_type in [0, 1]:
+                base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
             else:
-                base_attacks = list([itemName.BBARGE, itemName.ARAT, itemName.PBASH, itemName.ROLL, itemName.EGGSHOOT])
-            random.shuffle(base_attacks)
-            # base_attacks = list([itemName.PBASH])
-            starting_attack = self.create_item(base_attacks[0])
+                base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
+                base_attacks.append(itemName.PBASH if self.options.progressive_bash_attack.value == 1 else itemName.GRAT)
+                base_attacks.append(itemName.PBBUST if self.options.progressive_beak_buster.value == True else itemName.BBUST)
+            chosen_attack = random.choice(base_attacks)
+            starting_attack = self.create_item(chosen_attack)
             self.multiworld.push_precollected(starting_attack)
-            banjoItem = all_item_table.get(base_attacks[0])
+            banjoItem = all_item_table.get(chosen_attack)
             self.starting_attack = banjoItem.btid
         WorldRandomize(self)
 
