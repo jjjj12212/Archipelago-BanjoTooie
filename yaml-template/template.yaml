@@ -37,7 +37,7 @@ Banjo-Tooie:
   randomize_bk_moves: 0
 
   # Beak Buster -> Bill Drill Progression
-  progressive_beak_buster: 'true'
+  progressive_beak_buster: 'false'
 
   # Change how Eggs behave in Banjo-Tooie
   # 0: Default (Start with Blue Eggs, get other eggs randomly in AP)
