@@ -517,7 +517,7 @@ class BanjoTooieRules:
             locationName.JINJOMT4: lambda state: self.jinjo_pool(state),
 
             #Water Storage Jinjo always true because it's in the GMWSJT area
-            locationName.JINJOGM2: lambda state: self.humbaGGM(state),
+            locationName.JINJOGM2: lambda state: self.jinjo_jail(state),
             locationName.JINJOGM4: lambda state: self.jinjo_boulder(state),
 
             locationName.JINJOWW1: lambda state: self.jinjo_tent(state),
@@ -2675,6 +2675,18 @@ class BanjoTooieRules:
             logic = True
         return logic
     
+    def jinjo_jail(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.humbaGGM(state) 
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.humbaGGM(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.humbaGGM(state)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.humbaGGM(state) or (self.billDrill(state) and self.clockwork_shot(state))
+        return logic
+    
     def jinjo_boulder(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -4682,7 +4694,16 @@ class BanjoTooieRules:
         return logic
 
     def humbaGGM(self, state: CollectionState) -> bool:
-        return self.ggm_trot(state) and state.has(itemName.HUMBAGM, self.player)
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.ggm_trot(state) and state.has(itemName.HUMBAGM, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.ggm_trot(state) and state.has(itemName.HUMBAGM, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = (self.ggm_trot(state) or self.clockwork_shot(state)) and state.has(itemName.HUMBAGM, self.player)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = (self.ggm_trot(state) or self.clockwork_shot(state)) and state.has(itemName.HUMBAGM, self.player)
+        return logic
     
     def mumboGGM(self, state: CollectionState) -> bool:
         return self.canDoSmallElevation(state) and state.has(itemName.MUMBOGM, self.player)

@@ -25,6 +25,8 @@
    - Pillars Jiggy: the clockwork shot is now in the advanced and glitched logic.
    - Jade Snake Grove Access: requires beak bomb if going over the door, in glitched logic.
    - Fix Prospector Boulder
+   - Detonator access: you can tag the Humba warp pad using a clockwork, in advanced and glitched logic.
+   - GGM Jail Jinjo: Shooting a clockwork through the wall is now part of glitched logic.
    - Scrotty Jiggy: The 3 kids have been separated into their own logic, which may have some slight side-effects.
    - Egg barges (glitch): can now be only done with blue, fire and ice eggs.
 
