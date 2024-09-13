@@ -3906,7 +3906,7 @@ class BanjoTooieRules:
         return logic
         
     def glitchedJSGAccess(self, state: CollectionState) -> bool:
-        return self.MT_flight_pad(state) or state.has(itemName.MUMBOMT, self.player)
+        return self.MT_flight_pad(state) and self.hasBKMove(state, itemName.BBOMB) or state.has(itemName.MUMBOMT, self.player)
     
     def glitchedInfernoAccess(self, state: CollectionState) -> bool:
         return self.humbaWW(state) or self.clockworkEggs(state)
