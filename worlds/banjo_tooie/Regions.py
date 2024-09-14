@@ -30,7 +30,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.JIGGYIH10,
         locationName.TREBLEJV,
         locationName.IKEY,
-        locationName.BOTTLEKID
+        locationName.GOGGLES
     ],
     regionName.IOHWH:    [
         locationName.JINJOIH1,
@@ -211,9 +211,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEWW13,
         locationName.NOTEWW14,
         locationName.NOTEWW15,
-        locationName.NOTEWW16,
-        locationName.BIGAL,
-        locationName.SALTYJOE
+        locationName.NOTEWW16
     ],
     regionName.IOHCT:   [
         locationName.JINJOIH3,
@@ -360,7 +358,10 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTETDL13,
         locationName.NOTETDL14,
         locationName.NOTETDL15,
-        locationName.NOTETDL16
+        locationName.NOTETDL16,
+        locationName.SCRUT,
+        locationName.SCRAT,
+        locationName.SCRIT
     ],
     regionName.TL_HATCH: [
         locationName.HATCH,

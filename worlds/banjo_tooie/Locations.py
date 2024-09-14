@@ -7,7 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
     
 class LocationData(typing.NamedTuple):
-    #last good ID: 1231007
+    #last good ID: 1231008
     #12C770 pointer instead (1230704)
     btid: int = 0
     # Save + mem addr
@@ -45,7 +45,7 @@ JVLoc_table = {
     locationName.JIGGYIH10: LocationData(1230685, 0x50, 1),
     locationName.TREBLEJV:  LocationData(1230789, 0x97, 7),  #Set last ID for Clef Family. Client Reasons
     locationName.IKEY:      LocationData(1230958, 0, 0), #Needs to be handled on client side
-    locationName.BOTTLEKID: LocationData(1231005, 0x1E, 0)
+    locationName.GOGGLES: LocationData(1231005, 0x1E, 0) #actually watching 0x30, bit 1
 }
 
 MTLoc_Table = {
@@ -215,8 +215,6 @@ WWLoc_table = {
     locationName.NOTEWW14:  LocationData(1230845, 0x8A, 6),
     locationName.NOTEWW15:  LocationData(1230846, 0x8A, 7),
     locationName.NOTEWW16:  LocationData(1230847, 0x8B, 0),
-    locationName.BIGAL:     LocationData(1231006, 0, 0), #Implement on Client Side
-    locationName.SALTYJOE:  LocationData(1231007, 0, 0) #Implement on Client Side
 }
 
 JRLoc_table = {
@@ -339,7 +337,10 @@ TLLoc_table = {
     locationName.NOTETDL13:  LocationData(1230876, 0x8E, 7),
     locationName.NOTETDL14:  LocationData(1230877, 0x8F, 0),
     locationName.NOTETDL15:  LocationData(1230878, 0x8F, 1),
-    locationName.NOTETDL16:  LocationData(1230879, 0x8F, 2)
+    locationName.NOTETDL16:  LocationData(1230879, 0x8F, 2),
+    locationName.SCRUT:      LocationData(1231006, 0, 0), #Implement on Client Side
+    locationName.SCRAT:      LocationData(1231007, 0, 0), #Implement on Client Side
+    locationName.SCRIT:      LocationData(1231008, 0, 0), #Implement on Client Side
 }
 
 GILoc_table = {

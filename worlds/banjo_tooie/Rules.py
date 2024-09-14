@@ -224,8 +224,10 @@ class BanjoTooieRules:
             locationName.CHUNK3: lambda state: self.jiggy_crushing_shed(state),
         }
 
-        self.food_stall_rules = {
-            locationName.BIGAL: lambda state: self.big_al_burgers(state)
+        self.scrit_scrat_scrut_rules = {
+            locationName.SCRUT: lambda state: self.scrut(state),
+            locationName.SCRAT: lambda state: self.scrat(state),
+            locationName.SCRIT: lambda state: self.scrit(state)
         }
 
         self.jiggy_rules = {
@@ -3780,15 +3782,15 @@ class BanjoTooieRules:
                   and (self.has_explosives(state) or self.hasBKMove(state,itemName.BBARGE))
         elif self.world.options.logic_type == 1: # normal
             return (self.longJumpToGripGrab(state) and self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.CLIMB) and (self.has_explosives(state) or self.hasBKMove(state, itemName.BBARGE)))\
-                or (state.has(itemName.EGGAIM, self.player) and self.grenadeEggs(state) and self.hasBKMove(state, itemName.CLIMB))\
+                or (state.has(itemName.EGGAIM, self.player) and self.grenadeEggs(state) and state.has(itemName.AMAZEOGAZE, self.player) and self.hasBKMove(state, itemName.CLIMB))\
                 or (self.has_explosives(state) and self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.GLIDE))
         elif self.world.options.logic_type == 2: # advanced
             return (self.longJumpToGripGrab(state) and self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.CLIMB) and (self.has_explosives(state) or self.hasBKMove(state, itemName.BBARGE)))\
-                or (state.has(itemName.EGGAIM, self.player) and self.grenadeEggs(state))\
+                or (state.has(itemName.EGGAIM, self.player) and self.grenadeEggs(state) and state.has(itemName.AMAZEOGAZE, self.player))\
                 or (self.has_explosives(state) and self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.GLIDE))
         elif self.world.options.logic_type == 3: # glitched
             return (self.longJumpToGripGrab(state) and self.hasBKMove(state, itemName.FFLIP) and self.hasBKMove(state, itemName.CLIMB) and (self.has_explosives(state) or self.hasBKMove(state, itemName.BBARGE)))\
-                or (state.has(itemName.EGGAIM, self.player) and self.grenadeEggs(state))\
+                or (state.has(itemName.EGGAIM, self.player) and self.grenadeEggs(state) and state.has(itemName.AMAZEOGAZE, self.player))\
                 or (self.has_explosives(state) and self.check_solo_moves(state, itemName.LSPRING) and self.check_solo_moves(state, itemName.GLIDE))\
                 or (state.can_reach_region(regionName.GM, self.player) and self.humbaGGM(state) and self.canDoSmallElevation(state) and self.clockworkEggs(state)) # You can shoot a clockwork through the door from GGM.
 
@@ -5019,9 +5021,9 @@ class BanjoTooieRules:
                 honeyb = self.world.multiworld.get_location(location, self.player)
                 set_rule(honeyb, rules)
         
-        for location, rules in self.food_stall_rules.items():
-                food = self.world.multiworld.get_location(location, self.player)
-                set_rule(food, rules)
+        for location, rules in self.scrit_scrat_scrut_rules.items():
+                dinos = self.world.multiworld.get_location(location, self.player)
+                set_rule(dinos, rules)
 
         if self.world.options.victory_condition == 1:
             for location, rules in self.gametoken_rules.items():

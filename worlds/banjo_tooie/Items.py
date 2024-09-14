@@ -38,41 +38,30 @@ moves_table = {
     itemName.GGRAB:         ItemData(1230753, 1, "progress", locationName.GGRAB),
     itemName.BBLASTER:      ItemData(1230754, 1, "progress", locationName.BBLASTER),
     itemName.EGGAIM:        ItemData(1230755, 1, "progress", locationName.EGGAIM),
-
     itemName.FEGGS:         ItemData(1230756, 1, "progress", locationName.FEGGS),
-
     itemName.BDRILL:        ItemData(1230757, 1, "progress", locationName.BDRILL),
     itemName.BBAYONET:      ItemData(1230758, 1, "progress", locationName.BBAYONET),
-
     itemName.GEGGS:         ItemData(1230759, 1, "progress", locationName.GEGGS),
-
     itemName.AIREAIM:       ItemData(1230760, 1, "progress", locationName.AIREAIM),
     itemName.SPLITUP:       ItemData(1230761, 1, "progress", locationName.SPLITUP),
     itemName.PACKWH:        ItemData(1230762, 1, "progress", locationName.PACKWH),
-    
     itemName.IEGGS:         ItemData(1230763, 1, "progress", locationName.IEGGS),
-
     itemName.WWHACK:        ItemData(1230764, 1, "progress", locationName.WWHACK),
     itemName.TTORP:         ItemData(1230765, 1, "progress", locationName.TTORP),
     itemName.AUQAIM:        ItemData(1230766, 1, "progress", locationName.AUQAIM),
-
     itemName.CEGGS:         ItemData(1230767, 1, "progress", locationName.CEGGS),
-
     itemName.SPRINGB:       ItemData(1230768, 1, "progress", locationName.SPRINGB),
     itemName.TAXPACK:       ItemData(1230769, 1, "progress", locationName.TAXPACK),
     itemName.HATCH:         ItemData(1230770, 1, "progress", locationName.HATCH),
-
     itemName.SNPACK:        ItemData(1230771, 1, "progress", locationName.SNPACK),
     itemName.LSPRING:       ItemData(1230772, 1, "progress", locationName.LSPRING),
     itemName.CLAWBTS:       ItemData(1230773, 1, "progress", locationName.CLAWBTS),
-
     itemName.SHPACK:        ItemData(1230774, 1, "progress", locationName.SHPACK),
     itemName.GLIDE:         ItemData(1230775, 1, "progress", locationName.GLIDE),
-
     itemName.SAPACK:        ItemData(1230776, 1, "progress", locationName.SAPACK),
-
     itemName.FSWIM:         ItemData(1230777, 1, "useful", locationName.ROYSTEN1),
     itemName.DAIR:          ItemData(1230779, 1, "progress", locationName.ROYSTEN2),
+    itemName.AMAZEOGAZE:    ItemData(1230780, 1, "progress", locationName.GOGGLES)
 }
 
 bk_moves_table = {

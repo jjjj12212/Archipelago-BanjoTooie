@@ -182,7 +182,7 @@ class BanjoTooieWorld(World):
                         if self.options.randomize_bk_moves.value == 1: # 2 moves won't be added to the pool
                             for i in range(2):
                                 itempool += [self.create_item(name)]
-                        if self.options.randomize_bk_moves.value == 0: # No moves added, fills for the Jiggy Chunks, goggles, & food stalls
+                        if self.options.randomize_bk_moves.value == 0: # No moves added, fills for the Jiggy Chunks, Dino Kids
                             for i in range(6):
                                 itempool += [self.create_item(name)]
                     #end of none qty logic

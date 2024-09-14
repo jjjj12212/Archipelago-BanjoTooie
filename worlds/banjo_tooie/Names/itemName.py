@@ -50,6 +50,7 @@ FSWIM       = "Fast Swimming"
 DAIR        = "Double Air"
 BBASH       = "Breegull Bash"
 HOMINGEGGS  = "Homing Eggs Toggle"
+AMAZEOGAZE  = "Amaze-O-Gaze"
 
 DIVE        = "Dive"
 FPAD        = "Flight Pad"

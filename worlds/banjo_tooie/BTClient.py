@@ -100,7 +100,7 @@ class BanjoTooieContext(CommonContext):
         self.roystenlist_table = {}
         self.jiggychunks_table = {}
         self.goggles_table = False
-        self.foodstall_table = {}
+        self.dino_kids_table = {}
         self.current_map = 0
         self.deathlink_enabled = False
         self.deathlink_pending = False
@@ -321,7 +321,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     honeybrewardslist = payload['honeyb_rewards']
     jiggychunklist = payload['jiggy_chunks']
     goggles = payload['goggles']
-    food_stalls = payload['food_stalls']
+    dino_kids = payload['dino_kids']
     worldslist = payload['worlds']
     banjo_map = payload['banjo_map']
 
@@ -348,8 +348,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         jiggychunklist = {}
     if isinstance(worldslist, list):
         worldslist = {}
-    if isinstance(food_stalls, list):
-        food_stalls = {}
+    if isinstance(dino_kids, list):
+        dino_kids = {}
     if isinstance(goggles, bool) == False:
         goggles = False
     if isinstance(banjo_map, int) == False:
@@ -422,9 +422,9 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             ctx.goggles_table = goggles
             if goggles == True:
                 locs1.append(1231005)
-        if ctx.foodstall_table != food_stalls:
-            ctx.foodstall_table = food_stalls
-            for locationId, value in food_stalls.items():
+        if ctx.dino_kids_table != dino_kids:
+            ctx.dino_kids_table = dino_kids
+            for locationId, value in dino_kids.items():
                 if value == True:
                     locs1.append(int(locationId))
 
