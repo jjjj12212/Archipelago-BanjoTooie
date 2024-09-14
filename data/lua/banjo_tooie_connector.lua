@@ -4531,6 +4531,94 @@ function obtain_bkmove()
     end
 end
 
+function check_progressive()
+    local beak_bust = 0
+    local eggs = 0
+    local shoes = 0
+    local swim = 0
+    local location = ""
+    for ap_id, memloc in pairs(receive_map)
+    do
+        if memloc == "1230828"
+        then
+            beak_bust = beak_bust + 1
+        end
+        if memloc == "1230829"
+        then
+            eggs = eggs + 1
+        end
+        if memloc == "1230830"
+        then
+                shoes = shoes + 1
+        end
+        if memloc == "1230831"
+        then
+            swim = swim + 1
+        end
+    end
+
+    if beak_bust == 1 then
+        BTRAMOBJ:setFlag(0x18, 7, "Beak Buster")
+    elseif beak_bust == 2 then
+        BTRAMOBJ:setFlag(0x18, 7, "Beak Buster")
+        location = "1230757"
+        AGI_MOVES[location] = true
+        set_AGI_MOVES_checks()
+    end
+
+    if eggs == 1 then
+        AGI_MOVES["1230756"] = true
+        set_AGI_MOVES_checks()
+    elseif eggs == 2 then
+        AGI_MOVES["1230756"] = true
+        AGI_MOVES["1230759"] = true
+        set_AGI_MOVES_checks()
+    elseif eggs == 3 then
+        AGI_MOVES["1230756"] = true
+        AGI_MOVES["1230759"] = true
+        AGI_MOVES["1230763"] = true
+        set_AGI_MOVES_checks()
+    elseif eggs == 4 then
+        AGI_MOVES["1230756"] = true
+        AGI_MOVES["1230759"] = true
+        AGI_MOVES["1230763"] = true
+        AGI_MOVES["1230767"] = true
+        set_AGI_MOVES_checks()
+    end
+
+    if shoes == 1 then
+        BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
+    elseif shoes == 2 then
+        BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
+        BTRAMOBJ:setFlag(0x1A, 6, "Turbo Trainers")
+    elseif shoes == 3 then
+        BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
+        BTRAMOBJ:setFlag(0x1A, 6, "Turbo Trainers")
+        AGI_MOVES["1230768"] = true
+        set_AGI_MOVES_checks()
+    elseif shoes == 4 then
+        BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
+        BTRAMOBJ:setFlag(0x1A, 6, "Turbo Trainers")
+        AGI_MOVES["1230768"] = true
+        AGI_MOVES["1230773"] = true
+        set_AGI_MOVES_checks()
+    end
+
+    if swim == 1 then
+        BTRAMOBJ:setFlag(0x1A, 4, "Dive")
+    elseif swim == 2 then
+        BTRAMOBJ:setFlag(0x1A, 4, "Dive")
+        BTRAMOBJ:setFlag(0x32, 7, "Double Air")
+        DOUBLE_AIR = true
+    elseif swim == 3 then
+        BTRAMOBJ:setFlag(0x1A, 4, "Dive")
+        BTRAMOBJ:setFlag(0x32, 7, "Double Air")
+        BTRAMOBJ:setFlag(0x1E, 5, "Fast Swimming")
+        FAST_SWIM = true
+        DOUBLE_AIR = true
+    end
+end
+
 --------------------------------- Stop N Swap --------------------------------
 
 function init_BKMYSTERY(type) -- Initialize BMK
@@ -6056,6 +6144,7 @@ function BKLogics(mapaddr)
             check_open_level(false)
         end
         clearKey()
+        check_progressive()
         obtain_breegull_bash()
     end
 end
