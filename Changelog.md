@@ -6,9 +6,11 @@
     - Beak Bomb
  - 3 additional check locations:
     - Goggles (Amaze-O-Gaze)
-    - Big Al (Burger Stall)
-    - Salty Joe (Fries Stall)
- - When you start a seed with BK Moves randomized, you start with a random attack to be able to defeat Klungo:
+    - Scrut (Scrotty's Kid)
+    - Scrat (Scrotty's Kid)
+    - Scrit (Scrotty's Kid)
+ - New item in the Pool: Amaze-O-Gaze
+ - When you start a seed with BK Moves randomized, you start with 1 random attack:
     - Egg Shoot
     - Egg aim
     - Beak Barge
@@ -29,6 +31,7 @@
    - GGM Jail Jinjo: Shooting a clockwork through the wall is now part of glitched logic.
    - Scrotty Jiggy: The 3 kids have been separated into their own logic, which may have some slight side-effects.
    - Egg barges (glitch): can now be only done with blue, fire and ice eggs.
+   - Saucer of Perl logic modified to also require Amaze-O-Gaze for certain tricks
 
 # 2.0-beta
  - 3 Additional BK Moves to the pool:
