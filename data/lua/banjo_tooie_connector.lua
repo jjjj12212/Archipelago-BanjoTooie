@@ -1093,7 +1093,7 @@ local ROYSTEN = {} -- Roysten flags. Because the flags are separate from moves, 
 local CHEATO_REWARDS = {} -- Cheato Check Locations
 local HONEYB_REWARDS = {} -- Honey B Check Locations
 local JIGGY_CHUNKS = {} -- Jiggy Chunky Check Locations
-local FOOD_STALLS = {} -- Big Al and Salty Joe
+local DINO_KIDS = {} -- the 3 Dino Kids
 
 
 -- Mapping required for AGI Table
@@ -4309,13 +4309,38 @@ end
 
 --------------------------------- AMAZE-O-GAZE ------------------------------------
 function check_goggles()
-    if CURRENT_MAP == 0x143 and GOGGLES == false
+    if CURRENT_MAP == 0x143
     then
-        print("checking goggles")
-        local gogglesflg = BTRAMOBJ:checkFlag(0x1E, 0, "CHECK_GOOGLES")
+        local gogglesflg = BTRAMOBJ:checkFlag(0x30, 1, "CHECK_GOOGLES")
+        local goggles_found = false
         if gogglesflg == true then
-            print("Got!")
             GOGGLES = true
+            for apid, item in pairs(receive_map)
+            do
+                if "1230780" == item
+                then
+                    goggles_found = true
+                    break
+                end
+            end
+            if goggles_found == false
+            then
+                BTRAMOBJ:clearFlag(0x1E, 0, "CHECK_GOOGLES")
+            end
+        end
+    end
+end
+
+function check_real_goggles()
+    if BTRAMOBJ:checkFlag(0x1E, 0) == false
+    then
+        for apid, item in pairs(receive_map)
+        do
+            if "1230780" == item
+            then
+                BTRAMOBJ:setFlag(0x1E, 0, "CHECK_GOOGLES")
+                break
+            end
         end
     end
 end
@@ -4488,23 +4513,34 @@ function watchJChunk()
     end
 end
 
---------------------------------- FOOD STALLS -------------------------------------------
-function init_FOOD_STALLS()
-    FOOD_STALLS["1231006"] = false
-    FOOD_STALLS["1231007"] = false
+--------------------------------- Dino Kids -------------------------------------------
+function init_DINO_KIDS()
+    DINO_KIDS["1231006"] = false
+    DINO_KIDS["1231007"] = false
+    DINO_KIDS["1231008"] = false
+
 end
 
-function watchFoodInventory()
-    if CURRENT_MAP == 0xD6 then
-        BTCONSUMEOBJ:changeConsumable("Burgers")
-        local amt = BTCONSUMEOBJ:getConsumable()
-        if amt > 0 then
-            FOOD_STALLS["1231006"] = true
+function watchDinoFlags()
+    if CURRENT_MAP == 0x118 then
+        local scrut = BTRAMOBJ:checkFlag(0x0C, 2)
+
+        local scrat_healed = BTRAMOBJ:checkFlag(0x26, 6)
+        local scrat_train = BTRAMOBJ:checkFlag(0x2C, 1)
+
+        local scrit_grow = BTRAMOBJ:checkFlag(0x26, 7)
+
+        if scrut == true
+        then
+            DINO_KIDS["1231006"] = true
         end
-        BTCONSUMEOBJ:changeConsumable("Fries")
-        local fries_amt = BTCONSUMEOBJ:getConsumable()
-        if fries_amt > 0 then
-            FOOD_STALLS["1231007"] = true
+        if scrat_healed == true and scrat_train == false
+        then
+            DINO_KIDS["1231007"] = true
+        end
+        if scrit_grow == true
+        then
+            DINO_KIDS["1231008"] = true
         end
     end
 end
@@ -6012,7 +6048,7 @@ function loadGame(current_map)
                 init_CHEATO_REWARDS()
             end
             init_JIGGY_CHUNK()
-            init_FOOD_STALLS()
+            init_DINO_KIDS()
             hag1_open()
             hag1_phase_skips()
             GAME_LOADED = true;
@@ -6081,7 +6117,7 @@ function BKLogics(mapaddr)
     end
     watchJChunk()
     check_goggles()
-    watchFoodInventory()
+    watchDinoFlags()
     if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_MOVES == true
     then
         WATCH_LOADED_SILOS = false
@@ -6146,6 +6182,7 @@ function BKLogics(mapaddr)
         clearKey()
         check_progressive()
         obtain_breegull_bash()
+        check_real_goggles()
     end
 end
 
@@ -7060,6 +7097,9 @@ function processAGIItem(item_list)
                     AGI_MYSTERY["1230800"] = true
                     obtain_breegull_bash()
                 end
+            elseif(memlocation == 1230780) --amaze-o-gaze
+            then
+                BTRAMOBJ:setFlag(0x1E, 0, "AMAZE-O-GAZE")
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
             savingAGI();
@@ -7116,7 +7156,7 @@ function SendToBTClient()
     retTable["honeyb_rewards"] = HONEYB_REWARDS;
     retTable["jiggy_chunks"] = JIGGY_CHUNKS;
     retTable["goggles"] = GOGGLES;
-    retTable["food_stalls"] = FOOD_STALLS;
+    retTable["dino_kids"] = DINO_KIDS;
     if CURRENT_MAP == nil
     then
         retTable["banjo_map"] = 0x0;
@@ -7505,7 +7545,7 @@ function DPadStats()
             print("Automatic Energy Regain Disabled")
         end
 
-        if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == true and FPS == false
+        if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == false
         then
             mainmemory.write_u8(0x07913F, 1)
             print("Smooth Banjo Enabled")
@@ -7948,7 +7988,7 @@ function initializeFlags()
         init_BKMYSTERY("BKMYSTERY")
         init_AGI()
         init_roysten()
-        init_FOOD_STALLS()
+        init_DINO_KIDS()
         AGI_MOVES = init_BMK("AGI");
         AGI_NOTES = init_BKNOTES("AGI");
         AGI_MYSTERY = init_BKMYSTERY("AGI");
