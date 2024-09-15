@@ -4,7 +4,7 @@
     - Stilt Stride
     - Beak Barge
     - Beak Bomb
- - 3 additional check locations:
+ - 4 additional check locations:
     - Goggles (Amaze-O-Gaze)
     - Scrut (Scrotty's Kid)
     - Scrat (Scrotty's Kid)
