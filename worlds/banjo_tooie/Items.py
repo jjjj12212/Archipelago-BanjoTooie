@@ -182,6 +182,7 @@ all_group_table = {
     'levelaccess': rando_key_table,
     'token': token_table,
     "stopnswap": stop_n_swap_table,
+    "bk_moves": bk_moves_table
 }
 
 
