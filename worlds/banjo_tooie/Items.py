@@ -60,8 +60,8 @@ moves_table = {
     itemName.GLIDE:         ItemData(1230775, 1, "progress", locationName.GLIDE),
     itemName.SAPACK:        ItemData(1230776, 1, "progress", locationName.SAPACK),
     itemName.FSWIM:         ItemData(1230777, 1, "useful", locationName.ROYSTEN1),
-    itemName.DAIR:          ItemData(1230779, 1, "progress", locationName.ROYSTEN2),
-    itemName.AMAZEOGAZE:    ItemData(1230780, 1, "progress", locationName.GOGGLES)
+    itemName.DAIR:          ItemData(1230778, 1, "progress", locationName.ROYSTEN2),
+    itemName.AMAZEOGAZE:    ItemData(1230779, 1, "progress", locationName.GOGGLES)
 }
 
 bk_moves_table = {
@@ -119,7 +119,7 @@ misc_collectable_table = {
     itemName.HONEY:         ItemData(1230512, 25, "useful", ""),
     itemName.PAGES:         ItemData(1230513, 25, "useful", ""),
     itemName.DOUBLOON:      ItemData(1230514, 30, "progress", ""),
-    itemName.TREBLE:        ItemData(1230778,  9, "progress", ""),
+    itemName.TREBLE:        ItemData(1230516,  9, "progress", ""),
     itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY),
     itemName.NOTE:          ItemData(1230797, 144, "progress", ""),
     # itemName.WARPS: ItemData(1230799, 20, "trap", None),
