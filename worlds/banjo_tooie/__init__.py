@@ -223,7 +223,7 @@ class BanjoTooieWorld(World):
         if(item.code == 1230512 and self.options.randomize_honeycombs == False) : # Added later in Prefill
             return False
         
-        if(item.code in range(1230753, 1230778) and self.options.randomize_moves == False) : #range you need to add +1 to the end. 
+        if(item.code in range(1230753, 1230781) and self.options.randomize_moves == False) : #range you need to add +1 to the end. 
             return False
         
         if(item.code in range(1230174, 1230183) and self.options.randomize_glowbos == False) : #range you need to add +1 to the end.
