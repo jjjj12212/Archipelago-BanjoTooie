@@ -18,8 +18,8 @@
     - Beak Barge
     - Roll
     - Air Rat-a-tat Rap
-    - Ground Rat-a-tat Rap (only in advanced and glitched logic)
-    - Beak Buster (only in advanced and glitched logic)
+    - Ground Rat-a-tat Rap (only in advanced and glitched logic) (Not Implemented)
+    - Beak Buster (only in advanced and glitched logic) (Not Implemented)
  - New Options:
    - Progressive Shoes (Stilt Stride -> Turbo Trainers -> Spring Boots -> Claw Climbers)
    - Progressive Water Training (Dive -> Double Air -> Faster Swimming)
