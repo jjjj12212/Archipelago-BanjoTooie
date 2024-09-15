@@ -10,6 +10,8 @@
     - Scrat (Scrotty's Kid)
     - Scrit (Scrotty's Kid)
  - New item in the Pool: Amaze-O-Gaze
+ - Progressive Item Fixes
+ - Deathlink Loop fix
  - When you start a seed with BK Moves randomized, you start with 1 random attack:
     - Egg Shoot
     - Egg aim
