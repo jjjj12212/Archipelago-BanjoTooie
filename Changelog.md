@@ -1,3 +1,6 @@
+# 2.2-beta
+ - remove Wonderwing's Randomized Notes and Cheato requirement 
+
 # 2.1-beta
  - The Last 4 BK Moves are in the pool:
     - Ground Rat-a-tat Rap
