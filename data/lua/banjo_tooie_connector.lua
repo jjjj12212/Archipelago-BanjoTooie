@@ -15,10 +15,9 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V2.0"
+local BT_VERSION = "V2.1"
 local PLAYER = ""
 local SEED = 0
-local DEATH_LINK = false
 
 local BT_SOCK = nil
 
@@ -60,6 +59,7 @@ local SUPERBANJO = false;
 local REGEN = false;
 local TEXT_TIMER = 2;
 local TEXT_START = false;
+local FPS = false
 
 local ENABLE_AP_HONEYCOMB = false;
 local ENABLE_AP_PAGES = false;
@@ -144,6 +144,9 @@ local KILL_BANJO = false
 local DEATH_LINK = false
 local DETECT_DEATH = false;
 local CHECK_DEATH = false;
+
+---------------- AMAZE-O-GAZE VARS ---------------
+local GOGGLES = false;
 
 
 -------------- ENCOURAGEMENT MESSAGES ------------
@@ -1090,6 +1093,7 @@ local ROYSTEN = {} -- Roysten flags. Because the flags are separate from moves, 
 local CHEATO_REWARDS = {} -- Cheato Check Locations
 local HONEYB_REWARDS = {} -- Honey B Check Locations
 local JIGGY_CHUNKS = {} -- Jiggy Chunky Check Locations
+local DINO_KIDS = {} -- the 3 Dino Kids
 
 
 -- Mapping required for AGI Table
@@ -3009,11 +3013,6 @@ local NON_AGI_MAP = {
             ['bit'] = 7,
             ['name'] = 'Sack Pack'
         },
-        --['Fast Swimming'] = {
-        --    ['addr'] = 0x1E,
-        --    ['bit'] = 5,
-        --    ['locationId'] = 1230777
-        --},
 	},
     ["MAGIC"] = {
         ["1230855"] = {
@@ -3872,6 +3871,27 @@ local NON_AGI_MAP = {
             ['bit'] = 0,
             ['name'] = "Air Rat-a-tat Rap"
         },
+        ["1230824"] = {
+            ['addr'] = 0x19,
+            ['bit'] = 1,
+            ['name'] = "Ground Rat-a-tat Rap"
+        },
+        ["1230825"] = {
+            ['addr'] = 0x18,
+            ['bit'] = 5,
+            ['name'] = "Beak Barge"
+        },
+        ["1230826"] = {
+            ['addr'] = 0x1A,
+            ['bit'] = 3,
+            ['name'] = "Stilt Stride"
+        },
+        ["1230827"] = {
+            ['addr'] = 0x18,
+            ['bit'] = 6,
+            ['name'] = "Beak Bomb"
+        },
+
     },
     ["HONEYB"] = {
         ["1230997"] = {
@@ -4287,6 +4307,44 @@ function obtain_swimming()
     end
 end
 
+--------------------------------- AMAZE-O-GAZE ------------------------------------
+function check_goggles()
+    if CURRENT_MAP == 0x143
+    then
+        local gogglesflg = BTRAMOBJ:checkFlag(0x30, 1, "CHECK_GOOGLES")
+        local goggles_found = false
+        if gogglesflg == true then
+            GOGGLES = true
+            for apid, item in pairs(receive_map)
+            do
+                if "1230780" == item
+                then
+                    goggles_found = true
+                    break
+                end
+            end
+            if goggles_found == false
+            then
+                BTRAMOBJ:clearFlag(0x1E, 0, "CHECK_GOOGLES")
+            end
+        end
+    end
+end
+
+function check_real_goggles()
+    if BTRAMOBJ:checkFlag(0x1E, 0) == false
+    then
+        for apid, item in pairs(receive_map)
+        do
+            if "1230780" == item
+            then
+                BTRAMOBJ:setFlag(0x1E, 0, "CHECK_GOOGLES")
+                break
+            end
+        end
+    end
+end
+
 --------------------------------- CHEATO REWARDS ----------------------------------
 function init_CHEATO_REWARDS()
     for k,v in pairs(NON_AGI_MAP['CHEATO'])
@@ -4455,6 +4513,38 @@ function watchJChunk()
     end
 end
 
+--------------------------------- Dino Kids -------------------------------------------
+function init_DINO_KIDS()
+    DINO_KIDS["1231006"] = false
+    DINO_KIDS["1231007"] = false
+    DINO_KIDS["1231008"] = false
+
+end
+
+function watchDinoFlags()
+    if CURRENT_MAP == 0x118 then
+        local scrut = BTRAMOBJ:checkFlag(0x0C, 2)
+
+        local scrat_healed = BTRAMOBJ:checkFlag(0x26, 6)
+        local scrat_train = BTRAMOBJ:checkFlag(0x2C, 1)
+
+        local scrit_grow = BTRAMOBJ:checkFlag(0x26, 7)
+
+        if scrut == true
+        then
+            DINO_KIDS["1231006"] = true
+        end
+        if scrat_healed == true and scrat_train == false
+        then
+            DINO_KIDS["1231007"] = true
+        end
+        if scrit_grow == true
+        then
+            DINO_KIDS["1231008"] = true
+        end
+    end
+end
+
 --------------------------------- BK MOVES ----------------------------------------------
 function obtain_bkmove()
     for itemId, data in pairs(NON_AGI_MAP["BKMOVES"])
@@ -4474,6 +4564,94 @@ function obtain_bkmove()
                 end
             end
         end
+    end
+end
+
+function check_progressive()
+    local beak_bust = 0
+    local eggs = 0
+    local shoes = 0
+    local swim = 0
+    local location = ""
+    for ap_id, memloc in pairs(receive_map)
+    do
+        if memloc == "1230828"
+        then
+            beak_bust = beak_bust + 1
+        end
+        if memloc == "1230829"
+        then
+            eggs = eggs + 1
+        end
+        if memloc == "1230830"
+        then
+                shoes = shoes + 1
+        end
+        if memloc == "1230831"
+        then
+            swim = swim + 1
+        end
+    end
+
+    if beak_bust == 1 then
+        BTRAMOBJ:setFlag(0x18, 7, "Beak Buster")
+    elseif beak_bust == 2 then
+        BTRAMOBJ:setFlag(0x18, 7, "Beak Buster")
+        location = "1230757"
+        AGI_MOVES[location] = true
+        set_AGI_MOVES_checks()
+    end
+
+    if eggs == 1 then
+        AGI_MOVES["1230756"] = true
+        set_AGI_MOVES_checks()
+    elseif eggs == 2 then
+        AGI_MOVES["1230756"] = true
+        AGI_MOVES["1230759"] = true
+        set_AGI_MOVES_checks()
+    elseif eggs == 3 then
+        AGI_MOVES["1230756"] = true
+        AGI_MOVES["1230759"] = true
+        AGI_MOVES["1230763"] = true
+        set_AGI_MOVES_checks()
+    elseif eggs == 4 then
+        AGI_MOVES["1230756"] = true
+        AGI_MOVES["1230759"] = true
+        AGI_MOVES["1230763"] = true
+        AGI_MOVES["1230767"] = true
+        set_AGI_MOVES_checks()
+    end
+
+    if shoes == 1 then
+        BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
+    elseif shoes == 2 then
+        BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
+        BTRAMOBJ:setFlag(0x1A, 6, "Turbo Trainers")
+    elseif shoes == 3 then
+        BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
+        BTRAMOBJ:setFlag(0x1A, 6, "Turbo Trainers")
+        AGI_MOVES["1230768"] = true
+        set_AGI_MOVES_checks()
+    elseif shoes == 4 then
+        BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
+        BTRAMOBJ:setFlag(0x1A, 6, "Turbo Trainers")
+        AGI_MOVES["1230768"] = true
+        AGI_MOVES["1230773"] = true
+        set_AGI_MOVES_checks()
+    end
+
+    if swim == 1 then
+        BTRAMOBJ:setFlag(0x1A, 4, "Dive")
+    elseif swim == 2 then
+        BTRAMOBJ:setFlag(0x1A, 4, "Dive")
+        BTRAMOBJ:setFlag(0x32, 7, "Double Air")
+        DOUBLE_AIR = true
+    elseif swim == 3 then
+        BTRAMOBJ:setFlag(0x1A, 4, "Dive")
+        BTRAMOBJ:setFlag(0x32, 7, "Double Air")
+        BTRAMOBJ:setFlag(0x1E, 5, "Fast Swimming")
+        FAST_SWIM = true
+        DOUBLE_AIR = true
     end
 end
 
@@ -5602,7 +5780,7 @@ function setCurrentHealth(value)
 		value = value or 0;
 		value = math.max(0x00, value);
 		value = math.min(0xFF, value);
-		mainmemory.write_u8(0x11B644, value);
+		mainmemory.write_u8(health_table[currentTransformation], value);
         return currentTransformation
 	end
     return false
@@ -5610,6 +5788,7 @@ end
 
 function killBT()
     if KILL_BANJO == true then
+        CHECK_DEATH = true -- Avoid Death loops
         BTMODELOBJ:changeName("Player", false)
         local player = BTMODELOBJ:checkModel();
         if player == false
@@ -5629,8 +5808,11 @@ function killBT()
                     kill_animation = 0x02 -- Explode 
                 end 
                 mainmemory.write_u8(0x12b161, kill_animation)--max air and suffocation flag?
-                KILL_BANJO = false
-                CHECK_DEATH = true
+                local death_flg = mainmemory.read_u8(0x1354F9)
+                if death_flg == 1
+                then
+                    KILL_BANJO = false
+                end
             end
         end
     end
@@ -5866,6 +6048,7 @@ function loadGame(current_map)
                 init_CHEATO_REWARDS()
             end
             init_JIGGY_CHUNK()
+            init_DINO_KIDS()
             hag1_open()
             hag1_phase_skips()
             GAME_LOADED = true;
@@ -5933,6 +6116,8 @@ function BKLogics(mapaddr)
         watchHoneyB()
     end
     watchJChunk()
+    check_goggles()
+    watchDinoFlags()
     if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_MOVES == true
     then
         WATCH_LOADED_SILOS = false
@@ -5995,7 +6180,9 @@ function BKLogics(mapaddr)
             check_open_level(false)
         end
         clearKey()
+        check_progressive()
         obtain_breegull_bash()
+        check_real_goggles()
     end
 end
 
@@ -6790,12 +6977,12 @@ function processAGIItem(item_list)
                 BTRAMOBJ:setFlag(0x1E, 6, "Blue Eggs")
                 BTCONSUMEOBJ:changeConsumable("BLUE EGGS")
                 BTCONSUMEOBJ:setConsumable(100)
-            elseif(memlocation == 1230824)
+            elseif(memlocation == 1230828) -- Progressive Beak Bust
             then
                 local progressive_count = 0
                 for ap_id, memloc in pairs(receive_map)
                 do
-                    if memloc == "1230824"
+                    if memloc == "1230828"
                     then
                         progressive_count = progressive_count + 1
                     end
@@ -6808,12 +6995,12 @@ function processAGIItem(item_list)
                     AGI_MOVES[location] = true
                     set_AGI_MOVES_checks()
                 end
-            elseif(memlocation == 1230825)
+            elseif(memlocation == 1230829) -- Progressive Eggs
             then
                 local progressive_count = 0
                 for ap_id, memloc in pairs(receive_map)
                 do
-                    if memloc == "1230825"
+                    if memloc == "1230829"
                     then
                         progressive_count = progressive_count + 1
                     end
@@ -6846,6 +7033,73 @@ function processAGIItem(item_list)
                     BTCONSUMEOBJ:changeConsumable("CWK EGGS")
                     BTCONSUMEOBJ:setConsumable(10)
                 end
+            elseif(memlocation == 1230830) -- Progressive Shoes
+            then
+                local progressive_count = 0
+                for ap_id, memloc in pairs(receive_map)
+                do
+                    if memloc == "1230830"
+                    then
+                        progressive_count = progressive_count + 1
+                    end
+                end
+                if progressive_count == 0 then
+                    BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
+                end
+                if progressive_count == 1 then
+                    BTRAMOBJ:setFlag(0x1A, 6, "Turbo Trainers")
+                end
+                if progressive_count == 2 then
+                    local location = "1230768"
+                    AGI_MOVES[location] = true
+                    set_AGI_MOVES_checks()
+                end
+                if progressive_count == 3 then
+                    local location = "1230773"
+                    AGI_MOVES[location] = true
+                    set_AGI_MOVES_checks()
+                end
+            elseif(memlocation == 1230831) -- Progressive Water Training
+            then
+                local progressive_count = 0
+                for ap_id, memloc in pairs(receive_map)
+                do
+                    if memloc == "1230831"
+                    then
+                        progressive_count = progressive_count + 1
+                    end
+                end
+                if progressive_count == 0 then
+                    BTRAMOBJ:setFlag(0x1A, 4, "Dive")
+                end
+                if progressive_count == 1 then
+                    BTRAMOBJ:setFlag(0x32, 7, "Double Air")
+                    DOUBLE_AIR = true
+                end
+                if progressive_count == 2 then
+                    BTRAMOBJ:setFlag(0x1E, 5, "Fast Swimming")
+                    FAST_SWIM = true
+                end
+            elseif(memlocation == 1230832) -- Progressive Bash Attack
+            then
+                local progressive_count = 0
+                for ap_id, memloc in pairs(receive_map)
+                do
+                    if memloc == "1230832"
+                    then
+                        progressive_count = progressive_count + 1
+                    end
+                end
+                if progressive_count == 0 then
+                    BTRAMOBJ:setFlag(0x19, 1, "GRAT")
+                end
+                if progressive_count == 1 then
+                    AGI_MYSTERY["1230800"] = true
+                    obtain_breegull_bash()
+                end
+            elseif(memlocation == 1230780) --amaze-o-gaze
+            then
+                BTRAMOBJ:setFlag(0x1E, 0, "AMAZE-O-GAZE")
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
             savingAGI();
@@ -6862,7 +7116,7 @@ function process_block(block)
     then
         return
     end
-    if next(block['items']) ~= nil
+    if next(block['items']) ~= nil and INIT_COMPLETE
     then
         processAGIItem(block['items'])
     end
@@ -6901,6 +7155,14 @@ function SendToBTClient()
     retTable["cheato_rewards"] = CHEATO_REWARDS;
     retTable["honeyb_rewards"] = HONEYB_REWARDS;
     retTable["jiggy_chunks"] = JIGGY_CHUNKS;
+    retTable["goggles"] = GOGGLES;
+    retTable["dino_kids"] = DINO_KIDS;
+    if CURRENT_MAP == nil
+    then
+        retTable["banjo_map"] = 0x0;
+    else
+        retTable["banjo_map"] = CURRENT_MAP;
+    end 
     if GAME_LOADED == false
     then
         retTable["sync_ready"] = "false"
@@ -7268,17 +7530,31 @@ function DPadStats()
         end
 		
 		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == false
+        and DEATH_LINK == false
         then
            BTRAMOBJ:setFlag(0xA1, 7, "Automatic Energy Regain")
            REGEN = true
            print(" ")
            print("Automatic Energy Regain Enabled")
         elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == true
+        and DEATH_LINK == false
         then
             BTRAMOBJ:clearFlag(0xA1, 7)
             REGEN = false
             print(" ")
             print("Automatic Energy Regain Disabled")
+        end
+
+        if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == false
+        then
+            mainmemory.write_u8(0x07913F, 1)
+            print("Smooth Banjo Enabled")
+            FPS = true
+        elseif check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == true
+        then
+            mainmemory.write_u8(0x07913F, 2)
+            print("Smooth Banjo Disabled")
+            FPS = false
         end
     end
 end
@@ -7712,6 +7988,7 @@ function initializeFlags()
         init_BKMYSTERY("BKMYSTERY")
         init_AGI()
         init_roysten()
+        init_DINO_KIDS()
         AGI_MOVES = init_BMK("AGI");
         AGI_NOTES = init_BKNOTES("AGI");
         AGI_MYSTERY = init_BKMYSTERY("AGI");
@@ -7762,7 +8039,6 @@ function initializeFlags()
             BTRAMOBJ:clearFlag(0x19, 6) -- Fly pad
             BTRAMOBJ:clearFlag(0x19, 5) -- Flap Flip
             BTRAMOBJ:clearFlag(0x19, 3) -- Can't Shoot or Poop Eggs
-            -- BTRAMOBJ:clearFlag(0x1E, 6) -- Blue Eggs - CRASH IF THERE IS NO DEFAULT EGG
             BTRAMOBJ:clearFlag(0x1A, 1) -- Roll
 
             BTRAMOBJ:clearFlag(0x1A, 0) -- Air Rat-atat-rap
@@ -7775,7 +8051,12 @@ function initializeFlags()
             BTRAMOBJ:clearFlag(0x19, 2) -- Climb
             BTRAMOBJ:clearFlag(0x19, 4) -- Feather Flap
             BTRAMOBJ:clearFlag(0x1A, 7) -- Full Jump
-            BTRAMOBJ:clearFlag(0x1E, 6)
+            BTRAMOBJ:clearFlag(0x1E, 6) -- Blue Eggs
+            BTRAMOBJ:clearFlag(0x19, 1) -- Ground Rat-a-tat rap
+            BTRAMOBJ:clearFlag(0x18, 5) -- Beak Barge
+            BTRAMOBJ:clearFlag(0x1A, 3) -- Stilt Stride
+            BTRAMOBJ:clearFlag(0x18, 6) -- Beak Bomb
+
             if ENABLE_AP_WORLDS == true then -- Randomize Worlds - SILOS!!!
                 init_world_silos()
             end

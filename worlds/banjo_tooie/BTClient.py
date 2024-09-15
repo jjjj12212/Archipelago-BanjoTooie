@@ -99,6 +99,9 @@ class BanjoTooieContext(CommonContext):
         self.mystery_table = {}
         self.roystenlist_table = {}
         self.jiggychunks_table = {}
+        self.goggles_table = False
+        self.dino_kids_table = {}
+        self.current_map = 0
         self.deathlink_enabled = False
         self.deathlink_pending = False
         self.deathlink_sent_this_death = False
@@ -317,8 +320,10 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     cheatorewardslist = payload['cheato_rewards']
     honeybrewardslist = payload['honeyb_rewards']
     jiggychunklist = payload['jiggy_chunks']
-
+    goggles = payload['goggles']
+    dino_kids = payload['dino_kids']
     worldslist = payload['worlds']
+    banjo_map = payload['banjo_map']
 
     # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
     if isinstance(locations, list):
@@ -343,6 +348,12 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         jiggychunklist = {}
     if isinstance(worldslist, list):
         worldslist = {}
+    if isinstance(dino_kids, list):
+        dino_kids = {}
+    if isinstance(goggles, bool) == False:
+        goggles = False
+    if isinstance(banjo_map, int) == False:
+        banjo_map = 0
 
     if "DEMO" not in locations and ctx.sync_ready == True:
         locs1 = []
@@ -373,6 +384,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                                     if ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or \
                                     ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
                                        locs1 = mumbo_tokens_loc(locs1, int(locationId), ctx.slot_data["goal_type"])
+                                   
             ctx.location_table = locations       
         if ctx.chuffy_table != chuffy:
             ctx.chuffy_table = chuffy
@@ -406,7 +418,16 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             for locationId, value in jiggychunklist.items():
                 if value == True:
                     locs1.append(int(locationId))
-        
+        if ctx.goggles_table != goggles:
+            ctx.goggles_table = goggles
+            if goggles == True:
+                locs1.append(1231005)
+        if ctx.dino_kids_table != dino_kids:
+            ctx.dino_kids_table = dino_kids
+            for locationId, value in dino_kids.items():
+                if value == True:
+                    locs1.append(int(locationId))
+
         if ctx.slot_data["moves"] == "true":
             # Locations handling
             movelist = payload['unlocked_moves']
@@ -469,6 +490,16 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                         }])
                         ctx.finished_game = True
 
+        if ctx.current_map != banjo_map:
+            ctx.current_map = banjo_map
+            await ctx.send_msgs([{
+                "cmd": "Set",
+                "key": f"Banjo_Tooie_{ctx.team}_{ctx.slot}_map",
+                "default": hex(0),
+                "want_reply": False,
+                "operations": [{"operation": "replace",
+                    "value": hex(banjo_map)}]
+            }])
     #Send Aync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:
         # ctx.items_handling = 0b101

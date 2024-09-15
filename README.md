@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | 2.0-Beta
+# Archipelago Banjo-Tooie (US-Only) | 2.1-Beta
 Banjo Tooie for Archipelago 
 
 # Controller Shortcuts with this implementation
@@ -14,28 +14,28 @@ Banjo Tooie for Archipelago
 
 # Current implementation
 - Death Link
-- Jiggies are scattered throughout Archipelago games
-- Empty Honeycombs are scattered throughout Archipelago games (YAML Option) 
+- Jiggies
+- Empty Honeycombs (YAML Option) 
 - Skippable Tower of Tragedy
-- Victory condition when you defeat HAG1
-- Cheato Pages are scattered throughout Archipelago games
-- Glowbos are scattered throughout Archipelago games and activates magic automatically
-- Banjo Advanced Jamjar Moves are scattered throughout Archipelago games
+- Cheato Pages (YAML Option)
+- Glowbos activates magic automatically (YAML Option)
+- Banjo Advanced Jamjar Moves (YAML Option)
 - Auto skip certian dialogs and cutscenes
-- Doubloons are scattered throughout Archipelago games
-- Treble Clef are scattered throughout Archipelago games
-- Train Station are scattered throughout Archipelago games
-- Chuffy as an optional AP Item
-- Jinjos are scattered throughout Archipelago games 
-- Notes are scattered throughout Archipelago games
+- Doubloons (YAML Option)
+- Treble Clef (YAML Option)
+- Train Station (YAML Option)
+- Chuffy as an AP Item (YAML Option) 
+- Jinjos (YAML Option)
+- Notes (YAML Option)
 - Skip Jiggywiggy puzzles to open levels
 - Option for worlds to open in random order. (requires certian amount of items randomized and puzzle skip)
 - Alternate Goals
 - Prison code is always set to: <b>Sun, Moon, Star, Moon, Sun</b>
 - Cheato Rewards as an option (awards an additional randomized item)
 - Honey B Rewards as an option (awards an additional randomized item)
-- Randomize Original Banjo-Kazooie Moves
-- Change how Eggs works
+- Randomize Original Banjo-Kazooie Moves (YAML Option)
+- Change how Eggs works (YAML Option)
+- Progressive Ability Upgrades
 
 # Implemented Banjo-Kazooie Moves in Archipelago
 - Dive
@@ -52,6 +52,10 @@ Banjo Tooie for Archipelago
 - Beak Buster
 - Turbo Trainers
 - Blue Eggs
+- Ground Rat-a-tat Rap
+- Stilt Stride
+- Beak Barge
+- Beak Bomb
 
 # Possible Win Conditions
 - Beating Hag-1 (Vanilla)

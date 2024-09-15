@@ -449,6 +449,10 @@ HONEYBR2    = "IoH: Honey B's Reward 2" # 3
 HONEYBR3    = "IoH: Honey B's Reward 3" # 5
 HONEYBR4    = "IoH: Honey B's Reward 4" # 7
 HONEYBR5    = "IoH: Honey B's Reward 5" # 9
+GOGGLES     = "BH: Goggles Amaze-O-Gaze"
+SCRUT       = "TDL: Scrut"
+SCRAT       = "TDL: Scrat"
+SCRIT       = "TDL: Scrit"
 
 #Jiggy Chunks
 CHUNK1      = "GGM: Crushing Shed Jiggy Chunk 1"

@@ -51,7 +51,6 @@ class BanjoTooieWorld(World):
     topology_preset = True
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
     item_name_to_id = {}
-    starting_egg: int
 
     for name, data in all_item_table.items():
         if data.btid is None:  # Skip Victory Item
@@ -76,6 +75,8 @@ class BanjoTooieWorld(World):
     def __init__(self, world, player):
 
         self.kingjingalingjiggy = False
+        self.starting_egg: int = 0
+        self.starting_attack: int = 0
         self.jiggy_counter: int = 0
         self.doubloon_counter: int = 0
         self.notecounter: int = 0
@@ -102,7 +103,8 @@ class BanjoTooieWorld(World):
         banjoItem = all_item_table.get(itemname)
         if banjoItem.type == 'progress':
             if banjoItem.btid == 1230515:
-                if self.jiggy_counter > max(self.randomize_worlds.values()) and self.options.exceeding_items_filler.value == True:
+                maxJiggy = max(self.randomize_worlds.values()) if self.randomize_worlds else 70
+                if self.jiggy_counter > maxJiggy and self.options.exceeding_items_filler.value == True:
                     item_classification = ItemClassification.filler
                 else:
                     item_classification = ItemClassification.progression
@@ -180,8 +182,8 @@ class BanjoTooieWorld(World):
                         if self.options.randomize_bk_moves.value == 1: # 2 moves won't be added to the pool
                             for i in range(2):
                                 itempool += [self.create_item(name)]
-                        if self.options.randomize_bk_moves.value == 0: # No moves added, fills for the Jiggy Chunks
-                            for i in range(3):
+                        if self.options.randomize_bk_moves.value == 0: # No moves added, fills for the Jiggy Chunks, Dino Kids
+                            for i in range(6):
                                 itempool += [self.create_item(name)]
                     #end of none qty logic
 
@@ -197,7 +199,8 @@ class BanjoTooieWorld(World):
                                 itempool += [self.create_item(name)]
                             else:
                                 itempool += [self.create_item(name)]
-        
+            elif item.code == 1230832 and item.code == self.starting_attack and self.options.progressive_bash_attack.value == 1: #we only need 1 more Progressive Bash Attack
+                itempool += [self.create_item(name)] #only creates 1 progressive bash attack
         for item in itempool:
             self.multiworld.itempool.append(item)
 
@@ -256,7 +259,7 @@ class BanjoTooieWorld(World):
         if item.code in range(1230799, 1230805) and self.options.randomize_stop_n_swap == False:
             return False
 
-        if item.code in range(1230810, 1230823) and self.options.randomize_bk_moves.value == 0:
+        if item.code in range(1230810, 1230828) and self.options.randomize_bk_moves.value == 0:
             return False
         elif (item.code == 1230815 or item.code == 1230816) and self.options.randomize_bk_moves.value == 1: # talon trot and tall jump not in pool
             return False
@@ -268,7 +271,7 @@ class BanjoTooieWorld(World):
         
         if self.options.progressive_beak_buster.value == True and (item.code == 1230820 or item.code == 1230757):
             return False
-        if item.code == 1230824 and self.options.progressive_beak_buster.value == False:
+        if item.code == 1230828 and self.options.progressive_beak_buster.value == False:
             return False
         
         if self.options.egg_behaviour.value != 1 and item.code == 1230823: #remove blue eggs in pool
@@ -276,9 +279,29 @@ class BanjoTooieWorld(World):
         if self.options.egg_behaviour.value == 2 and (item.code == 1230756 or item.code == 1230759 or item.code == 1230763 \
             or item.code == 1230767):
             return False
-        if item.code == 1230825 and self.options.egg_behaviour.value != 2:
+        if item.code == 1230829 and self.options.egg_behaviour.value != 2:
             return False
         if self.options.egg_behaviour.value == 1 and item.code == self.starting_egg: #Already has this egg in inventory
+            return False
+        
+        if self.options.progressive_shoes.value == True and (item.code == 1230826 or item.code == 1230821 \
+            or item.code == 1230768 or item.code == 1230773):
+            return False
+        if item.code == 1230830 and self.options.progressive_shoes.value == False:
+            return False
+        
+        if self.options.progressive_water_training.value == True and (item.code == 1230810 or item.code == 1230779 \
+            or item.code == 1230777):
+            return False
+        if item.code == 1230831 and self.options.progressive_water_training.value == False:
+            return False
+        
+        if self.options.progressive_bash_attack.value == True and (item.code == 1230800 or item.code == 1230824):
+            return False
+        if item.code == 1230832 and self.options.progressive_bash_attack.value == False:
+            return False
+
+        if self.options.randomize_bk_moves.value != 0 and item.code == self.starting_attack: #Already has this attack in inventory
             return False
 
         return True
@@ -303,7 +326,12 @@ class BanjoTooieWorld(World):
             raise ValueError("You cannot have Randomize Starting Egg without randomizing moves and randomizing BK moves")
         elif self.options.egg_behaviour.value == 2 and (self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive Eggs without randomizing moves")
-
+        if self.options.progressive_shoes.value == True and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
+            raise ValueError("You cannot have progressive Shoes without randomizing moves and randomizing BK moves")
+        if self.options.progressive_water_training.value == True and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
+            raise ValueError("You cannot have progressive Water Training without randomizing moves and randomizing BK moves")
+        if self.options.progressive_bash_attack.value == True and (self.options.randomize_stop_n_swap.value == False or self.options.randomize_moves == False):
+            raise ValueError("You cannot have progressive bash attack without randomizing Stop N Swap and randomizing BK moves")
         if self.options.egg_behaviour.value == 1:
             eggs = list([itemName.BEGG, itemName.FEGGS, itemName.GEGGS, itemName.IEGGS, itemName.CEGGS])
             random.shuffle(eggs)
@@ -316,6 +344,19 @@ class BanjoTooieWorld(World):
             self.multiworld.push_precollected(starting_egg)
             banjoItem = all_item_table.get(itemName.BEGG)
             self.starting_egg = banjoItem.btid
+        if self.options.randomize_bk_moves.value != 0:
+            base_attacks: list
+            if self.options.logic_type in [0, 1]:
+                base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
+            else:
+                base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
+                base_attacks.append(itemName.PBASH if self.options.progressive_bash_attack.value == 1 else itemName.GRAT)
+                base_attacks.append(itemName.PBBUST if self.options.progressive_beak_buster.value == True else itemName.BBUST)
+            chosen_attack = random.choice(base_attacks)
+            starting_attack = self.create_item(chosen_attack)
+            self.multiworld.push_precollected(starting_attack)
+            banjoItem = all_item_table.get(chosen_attack)
+            self.starting_attack = banjoItem.btid
         WorldRandomize(self)
 
     def set_rules(self) -> None:
@@ -560,9 +601,14 @@ class BanjoTooieWorld(World):
         btoptions['logic_type'] = int(self.options.logic_type.value)
         # btoptions['warp_traps'] = int(self.options.warp_traps.value)
         btoptions['skip_klungo'] = "true" if self.options.skip_klungo == 1 else "false"
-        btoptions['progressive_beak_buster'] = "true" if self.options.randomize_honeycombs == 1 else "false"
+        btoptions['progressive_beak_buster'] = "true" if self.options.progressive_beak_buster == 1 else "false"
         btoptions['egg_behaviour'] = int(self.options.egg_behaviour.value)
+        btoptions['progressive_shoes'] = "true" if self.options.progressive_shoes == 1 else "false"
+        btoptions['progressive_water_training'] = "true" if self.options.progressive_water_training == 1 else "false"
+        btoptions['progressive_bash_attack'] = "true" if self.options.progressive_bash_attack == 1 else "false"
+
         btoptions['starting_egg'] = int(self.starting_egg)
+        btoptions['starting_attack'] = int(self.starting_attack)
 
         return btoptions
 
