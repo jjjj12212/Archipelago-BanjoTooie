@@ -1,3 +1,7 @@
+# 2.1.2-beta
+ - Logic fixes:
+   - Pot of gold: fixed logic for new BK moves.
+
 # 2.1.1-beta
  - remove Wonderwing's Randomized Notes and Cheato requirement 
  - Fix Issue with duplicate items if randomize_moves disabled
