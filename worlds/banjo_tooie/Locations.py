@@ -19,7 +19,7 @@ SMLoc_table = {
     locationName.CHEATOSM1: LocationData(1230752, 0x59, 3),
     locationName.JINJOIH5:  LocationData(1230595, 0x3F, 0),
     locationName.ROYSTEN1:   LocationData(1230777, 0x36, 2), #obtained when breaking out roysten
-    locationName.ROYSTEN2:   LocationData(1230779, 0x9E, 6), #obtained when breaking out roysten
+    locationName.ROYSTEN2:   LocationData(1230778, 0x9E, 6), #obtained when breaking out roysten
 
     locationName.CHEATOR1:  LocationData(1230992, 0x08, 4),
     locationName.CHEATOR2:  LocationData(1230993, 0x08, 5),

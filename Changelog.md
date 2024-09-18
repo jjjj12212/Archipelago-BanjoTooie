@@ -1,3 +1,8 @@
+# 2.1.1-beta
+ - remove Wonderwing's Randomized Notes and Cheato requirement 
+ - Fix Issue with duplicate items if randomize_moves disabled
+ - Fix Issue with Treble Clefs if randomize_moves disabled
+
 # 2.1-beta
  - The Last 4 BK Moves are in the pool:
     - Ground Rat-a-tat Rap

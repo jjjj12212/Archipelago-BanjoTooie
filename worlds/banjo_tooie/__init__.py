@@ -223,7 +223,7 @@ class BanjoTooieWorld(World):
         if(item.code == 1230512 and self.options.randomize_honeycombs == False) : # Added later in Prefill
             return False
         
-        if(item.code in range(1230753, 1230778) and self.options.randomize_moves == False) : #range you need to add +1 to the end. 
+        if(item.code in range(1230753, 1230780) and self.options.randomize_moves == False) : #range you need to add +1 to the end. 
             return False
         
         if(item.code in range(1230174, 1230183) and self.options.randomize_glowbos == False) : #range you need to add +1 to the end.
@@ -235,7 +235,7 @@ class BanjoTooieWorld(World):
         if(item.code in range(1230501, 1230510) and self.options.randomize_jinjos == False) :#range you need to add +1 to the end.
             return False
         
-        if(item.code == 1230778 and self.options.randomize_treble == False):
+        if(item.code == 1230516 and self.options.randomize_treble.value == False):
             return False
         
         if item.code == 1230796 and self.options.randomize_chuffy == False:
@@ -290,7 +290,7 @@ class BanjoTooieWorld(World):
         if item.code == 1230830 and self.options.progressive_shoes.value == False:
             return False
         
-        if self.options.progressive_water_training.value == True and (item.code == 1230810 or item.code == 1230779 \
+        if self.options.progressive_water_training.value == True and (item.code == 1230810 or item.code == 1230778 \
             or item.code == 1230777):
             return False
         if item.code == 1230831 and self.options.progressive_water_training.value == False:
@@ -311,8 +311,6 @@ class BanjoTooieWorld(World):
         connect_regions(self)
 
     def generate_early(self) -> None:
-        if self.options.victory_condition.value == 4 and (self.options.randomize_notes == False or self.options.randomize_cheato == False):
-            raise ValueError("In order to challenge yourself with the Wonder Wing Challenge, Randomize Notes & Randomize Cheato must be enabled.")
         if self.options.cheato_as_filler.value == True and self.options.cheato_rewards == True:
             raise ValueError("Cheato Pages cannot be marked as filler if Cheato Rewards are set.")
         if self.options.randomize_worlds.value == True and self.options.randomize_bk_moves.value != 0 and self.options.logic_type == 0:
@@ -364,37 +362,37 @@ class BanjoTooieWorld(World):
         return rules.set_rules()
     
     def pre_fill(self) -> None:
-        if self.options.randomize_honeycombs == False:
+        if self.options.randomize_honeycombs.value == False:
             self.banjo_pre_fills(itemName.HONEY, "Honeycomb", False)
                     
         if self.options.randomize_cheato.value == False:
             self.banjo_pre_fills(itemName.PAGES, "Page", False)
 
-        if self.options.randomize_doubloons == False:
+        if self.options.randomize_doubloons.value == False:
             self.banjo_pre_fills(itemName.DOUBLOON, "Doubloon", False)
 
-        if self.options.randomize_moves == False:
+        if self.options.randomize_moves.value == False:
             self.banjo_pre_fills("Moves", None, True)
 
-        if self.options.randomize_glowbos == False:
+        if self.options.randomize_glowbos.value == False:
             self.banjo_pre_fills("Magic", None, True)
 
-        if self.options.randomize_treble == False:
+        if self.options.randomize_treble.value == False:
             self.banjo_pre_fills(itemName.TREBLE, "Treble Clef", False)
         
-        if self.options.randomize_stations == False:
+        if self.options.randomize_stations.value == False:
             self.banjo_pre_fills("Stations", None, True)
 
-        if self.options.randomize_chuffy == False:
+        if self.options.randomize_chuffy.value == False:
             self.banjo_pre_fills(itemName.CHUFFY, "Chuffy", False)
 
-        if self.options.randomize_notes == False:
+        if self.options.randomize_notes.value == False:
             self.banjo_pre_fills(itemName.NOTE, "Note", False)
 
-        if self.options.randomize_stop_n_swap == False:
+        if self.options.randomize_stop_n_swap.value == False:
             self.banjo_pre_fills("StopnSwap", None, True)
 
-        if self.worlds_randomized == False and self.options.skip_puzzles == True:
+        if self.worlds_randomized == False and self.options.skip_puzzles.value == True:
             self.banjo_pre_fills("Access", None, True)
         elif self.worlds_randomized == True:
             world_num = 1
@@ -420,7 +418,7 @@ class BanjoTooieWorld(World):
                     self.multiworld.get_location("World "+ str(world_num) +" Unlocked", self.player).place_locked_item(item)
                     world_num = world_num + 1
         
-        if self.options.victory_condition == 1 or self.options.victory_condition == 4:
+        if self.options.victory_condition.value == 1 or self.options.victory_condition.value == 4:
             item = self.create_item(itemName.MUMBOTOKEN)
             self.multiworld.get_location(locationName.MUMBOTKNGAME1, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.MUMBOTKNGAME2, self.player).place_locked_item(item)
@@ -438,7 +436,7 @@ class BanjoTooieWorld(World):
             self.multiworld.get_location(locationName.MUMBOTKNGAME14, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.MUMBOTKNGAME15, self.player).place_locked_item(item)
         
-        if self.options.victory_condition == 2 or self.options.victory_condition == 4:
+        if self.options.victory_condition.value == 2 or self.options.victory_condition.value == 4:
             item = self.create_item(itemName.MUMBOTOKEN)
             self.multiworld.get_location(locationName.MUMBOTKNBOSS1, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.MUMBOTKNBOSS2, self.player).place_locked_item(item)
@@ -449,7 +447,7 @@ class BanjoTooieWorld(World):
             self.multiworld.get_location(locationName.MUMBOTKNBOSS7, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.MUMBOTKNBOSS8, self.player).place_locked_item(item)
 
-        if self.options.victory_condition == 3 or self.options.victory_condition == 4:
+        if self.options.victory_condition.value == 3 or self.options.victory_condition.value == 4:
             item = self.create_item(itemName.MUMBOTOKEN)
             self.multiworld.get_location(locationName.MUMBOTKNJINJO1, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.MUMBOTKNJINJO2, self.player).place_locked_item(item)
@@ -461,7 +459,7 @@ class BanjoTooieWorld(World):
             self.multiworld.get_location(locationName.MUMBOTKNJINJO8, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.MUMBOTKNJINJO9, self.player).place_locked_item(item)
         
-        elif self.options.randomize_jinjos == False:
+        elif self.options.randomize_jinjos.value == False:
             item = self.create_item(itemName.JIGGY)
             self.multiworld.get_location(locationName.JIGGYIH1, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYIH2, self.player).place_locked_item(item)
@@ -473,7 +471,7 @@ class BanjoTooieWorld(World):
             self.multiworld.get_location(locationName.JIGGYIH8, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JIGGYIH9, self.player).place_locked_item(item)
 
-        if self.options.randomize_jinjos == False:
+        if self.options.randomize_jinjos.value == False:
             item = self.create_item(itemName.WJINJO)
             self.multiworld.get_location(locationName.JINJOJR5, self.player).place_locked_item(item)
 

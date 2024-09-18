@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V2.1"
+local BT_VERSION = "V2.1.1"
 local PLAYER = ""
 local SEED = 0
 
@@ -3772,7 +3772,7 @@ local NON_AGI_MAP = {
             ['bit'] = 2,
             ['name'] = "SM: Roysten Reward 1"
         },
-        ["1230779"] = {
+        ["1230778"] = {
             ['addr'] = 0x9E,
             ['bit'] = 6,
             ['name'] = "SM: Roysten Reward 2"
@@ -4257,7 +4257,7 @@ function check_freed_roysten()
                 ROYSTEN[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_ROYSTEN")
             end
         end
-        if DOUBLE_AIR == true and ROYSTEN["1230779"] == true then
+        if DOUBLE_AIR == true and ROYSTEN["1230778"] == true then
             ROYSTEN["1230777"] = true
         end
         if BTRAMOBJ:checkFlag(0x1E, 5, "CHECK_SWIM") == true and FAST_SWIM == false
@@ -4294,7 +4294,7 @@ function obtain_swimming()
                 BTRAMOBJ:setFlag(0x1E, 5)
                 FAST_SWIM = true
             end
-            if itemId == "1230779"
+            if itemId == "1230778"
             then
                 if DEBUG == true
                 then
@@ -4317,7 +4317,7 @@ function check_goggles()
             GOGGLES = true
             for apid, item in pairs(receive_map)
             do
-                if "1230780" == item
+                if "1230779" == item
                 then
                     goggles_found = true
                     break
@@ -4336,7 +4336,7 @@ function check_real_goggles()
     then
         for apid, item in pairs(receive_map)
         do
-            if "1230780" == item
+            if "1230779" == item
             then
                 BTRAMOBJ:setFlag(0x1E, 0, "CHECK_GOOGLES")
                 break
@@ -6891,7 +6891,7 @@ function processAGIItem(item_list)
                 end
                 BTCONSUMEOBJ:changeConsumable("DOUBLOON");
                 BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
-            elseif memlocation == 1230778 -- Treble Clef
+            elseif memlocation == 1230516 -- Treble Clef
             then
                 obtained_AP_BKNOTE();
             elseif(1230790 <= memlocation and memlocation <= 1230795) -- Station Btns
@@ -7097,7 +7097,7 @@ function processAGIItem(item_list)
                     AGI_MYSTERY["1230800"] = true
                     obtain_breegull_bash()
                 end
-            elseif(memlocation == 1230780) --amaze-o-gaze
+            elseif(memlocation == 1230779) --amaze-o-gaze
             then
                 BTRAMOBJ:setFlag(0x1E, 0, "AMAZE-O-GAZE")
             end
