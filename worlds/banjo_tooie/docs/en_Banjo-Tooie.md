@@ -9,12 +9,13 @@ config file.
 
 Randomize Items, skip certain cutscenes and dialogs, Skippable Tower of Tragedy, Shorten Long mini-games,
 Pause Menu will display total items collected in your game + Multi-world, and Pause Menu -> Totals acts like a in-game Tracker for check locations.
+Use the Dpad to display unlocked elements that the Pause Menu doesn't display (Moves, Magic, etc.)
 
 ## What items and locations can get shuffled?
 
 - Jiggies
 - Treble Clefs
-- Jamjar Moves
+- Jamjar Moves + Amaze-O-Gaze
 - Empty Honeycombs
 - Cheato Pages
 - Glowbos
