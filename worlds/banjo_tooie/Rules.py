@@ -1729,11 +1729,11 @@ class BanjoTooieRules:
                   and (self.hasBKMove(state, itemName.FFLIP) or self.check_solo_moves(state, itemName.LSPRING) or self.hasBKMove(itemName.FPAD))
         elif self.world.options.logic_type == 2: # advanced
             logic = self.blueEggs(state) and self.fireEggs(state) and self.grenadeEggs(state) and self.iceEggs(state)\
-                and (self.mumboCCL(state) and (self.hasBKMove(state, itemName.FFLIP) or self.check_solo_moves(state, itemName.LSPRING) or self.hasBKMove(itemName.FPAD))\
+                and (self.mumboCCL(state) and (self.hasBKMove(state, itemName.FFLIP) or self.check_solo_moves(state, itemName.LSPRING) or self.hasBKMove(state, itemName.FPAD))\
                      or (self.check_solo_moves(state, itemName.LSPRING) or (state.has(itemName.SPLITUP, self.player) and self.hasBKMove(state, itemName.TJUMP))) and self.hasBKMove(state, itemName.FPAD) and self.hasBKMove(state, itemName.BBOMB))
         elif self.world.options.logic_type == 3: # glitched
             logic = self.blueEggs(state) and self.fireEggs(state) and self.grenadeEggs(state) and self.iceEggs(state)\
-                and (self.mumboCCL(state) and (self.hasBKMove(state, itemName.FFLIP) or self.check_solo_moves(state, itemName.LSPRING) or self.hasBKMove(itemName.FPAD))\
+                and (self.mumboCCL(state) and (self.hasBKMove(state, itemName.FFLIP) or self.check_solo_moves(state, itemName.LSPRING) or self.hasBKMove(state, itemName.FPAD))\
                      or (self.check_solo_moves(state, itemName.LSPRING) or (state.has(itemName.SPLITUP, self.player) and self.hasBKMove(state, itemName.TJUMP))) and self.hasBKMove(state, itemName.FPAD) and self.hasBKMove(state, itemName.BBOMB))
         return logic
 
