@@ -1,6 +1,8 @@
 # 2.1.2-beta
  - Logic fixes:
    - Pot of gold: fixed logic for new BK moves.
+ - Fixed missing states Glitch Logic for Pot of Gold
+ - Banjo-Tooie AP will now check Generated, BTClient and Lua Versions. If any mismatch, it will let you know and no longer run.
 
 # 2.1.1-beta
  - remove Wonderwing's Randomized Notes and Cheato requirement 
