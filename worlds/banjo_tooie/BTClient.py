@@ -497,6 +497,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                             "status": 30
                         }])
                         ctx.finished_game = True
+                        ctx._set_message("You have completed your goal", None)
 
         if ctx.current_map != banjo_map:
             ctx.current_map = banjo_map
