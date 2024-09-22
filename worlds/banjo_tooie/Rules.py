@@ -1726,7 +1726,7 @@ class BanjoTooieRules:
                     and self.mumboCCL(state) and (self.hasBKMove(state, itemName.FFLIP) or self.check_solo_moves(state, itemName.LSPRING))
         elif self.world.options.logic_type == 1: # normal
             logic = self.blueEggs(state) and self.fireEggs(state) and self.grenadeEggs(state) and self.iceEggs(state) and self.mumboCCL(state)\
-                  and (self.hasBKMove(state, itemName.FFLIP) or self.check_solo_moves(state, itemName.LSPRING) or self.hasBKMove(itemName.FPAD))
+                  and (self.hasBKMove(state, itemName.FFLIP) or self.check_solo_moves(state, itemName.LSPRING) or self.hasBKMove(state, itemName.FPAD))
         elif self.world.options.logic_type == 2: # advanced
             logic = self.blueEggs(state) and self.fireEggs(state) and self.grenadeEggs(state) and self.iceEggs(state)\
                 and (self.mumboCCL(state) and (self.hasBKMove(state, itemName.FFLIP) or self.check_solo_moves(state, itemName.LSPRING) or self.hasBKMove(state, itemName.FPAD))\
