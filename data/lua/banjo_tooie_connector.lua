@@ -36,8 +36,6 @@ local DEBUG = false
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
-local BYPASS_GAME_LOAD = false;
-
 local BTMODELOBJ = nil;
 local BTRAMOBJ = nil;
 local BTCONSUMEOBJ = nil;
@@ -53,8 +51,10 @@ local SAVE_GAME = false;
 local USE_BMM_TBL = false;
 local USE_BMM_ONLY_TBL = false;
 local USE_BMM_ONLY_TYP = "";
-
+local PREVIOUS_MAP = nil;
+local MAP_TRANSITION = false;
 local CLOSE_TO_ALTAR = false;
+
 local SNEAK = false;
 local AIMASSIST = false;
 local SUPERBANJO = false;
@@ -79,6 +79,7 @@ local DISABLE_TEXT_OVERLAY = false;
 local AP_MESSAGES = {};
 
 local GAME_LOADED = false;
+
 -------------- SILO VARS ------------
 local CHECK_FOR_SILO = false; --  If True, you are Transistioning maps
 local WATCH_LOADED_SILOS = false; -- Silo found on Map, Need to Monitor Distance
@@ -734,10 +735,6 @@ function BTModel:changeRotation(modelObjPtr, Yrot, Zrot)
 end
 
 function getAltar()
-    if CURRENT_MAP == 335 or CURRENT_MAP == 337 -- No need to modify RAM when already in WH
-    then
-        return
-    end
     BTMODELOBJ:changeName("Altar", false);
     if SKIP_PUZZLES == false
     then
@@ -985,6 +982,238 @@ local ASSET_MAP_CHECK = {
     },
     ["ICEKEY"] = {
         [0x142] = "1230958"
+    },
+    ["AGI_ASSETS"] = {
+        ["ALL"] = {
+            ["JIGGIES"] = { --Jinjo Jiggies
+                "1230676",
+                "1230677",
+                "1230678",
+                "1230679",
+                "1230680",
+                "1230681",
+                "1230682",
+                "1230683",
+                "1230684",
+                "1230685"
+            }
+        },
+        --SPIRAL MOUNTAIN
+        ["0xAF"]  = { --SM - Spiral Mountain
+            ["STOPNSWAP"] = {
+                "1230956"
+            }
+        },
+        ["0xAE"]  =	{ --SM - Behind the waterfall
+            ["STOPNSWAP"] = {
+                "1230957"
+            }
+        },	
+        ["0xAD"]  =	{ --SM - Grunty's Lair
+            -- Cheato Rewards should be here
+        },	
+
+        --JINJO VILLAGE
+        ["0x143"] =	{ --JV - Bottles' House
+            --Amaze-O-Gaze should be here
+        },     
+
+        --ISLE O' HAGS
+        ["0x155"] =	{"Isle O' Hags", "Cliff Top"},          --IoH - Cliff Top
+        ["0x150"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Heggy's Egg Shed
+        ["0x15b"] =	{"Isle O' Hags", "Pine Grove"},         --IoH - Inside another digger tunnel
+        ["0x151"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Jiggywiggy's Temple
+        ["0x154"] =	{"Isle O' Hags", "Pine Grove"},         --IoH - Pine Grove
+        ["0x157"] =	{"Isle O' Hags", "Pine Grove"},         --IoH - Pine Grove - Wumba's Wigwam
+        ["0x152"] =	{"Isle O' Hags", "Plateau"},            --IoH - Plateau
+        ["0x153"] =	{"Isle O' Hags", "Plateau"},            --IoH - Plateau - Honey B's Hive
+        ["0x15c"] =	{"Isle O' Hags", "Quagmire"},           --IoH - Quagmire
+        ["0x15a"] =	{"Isle O' Hags", "Wasteland"},          --IoH - Wasteland
+        ["0x14f"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Wooded Hollow
+
+        --MAYAHEM TEMPLE
+        ["0xB8"] = { --MT
+            ["JIGGIES"] = {
+                "1230599",
+                "1230604"
+            }
+        },
+        ["0xC4"] = { --MT - Jade Snake Grove
+            ["JIGGIES"] = {
+                "1230601", -- Golden Goliath
+                "1230605"  -- Ssslumber
+            }
+        },
+        ["0xBB"] = { --MT - Mayan Kickball Stadium (Lobby)
+            ["JIGGIES"] = {
+                "1230598", -- Kickball
+            }
+        },
+        ["0xB7"] = { --MT - Mumbo's Skull
+            --glowbo
+        },
+        ["0xB9"] = { --MT - Prison Compound
+            ["JIGGIES"] = {
+                "1230602", --quicksand
+                "1230603", --pillars
+            }
+        },
+        ["0x17a"] =	{"Mayahem Temple", "Main Area"},            --MT - Targitzan's Really Sacred Chamber
+        ["0x177"] =	{"Mayahem Temple", "Main Area"},            --MT - Targitzan's Slightly Sacred Chamber
+        ["0x179"] =	{"Mayahem Temple", "Main Area"},            --MT - Targitzan's Temple Lobby
+        ["0XC5"] =	{"Mayahem Temple", "Main Area"},            --MT - Treasure Chamber
+        ["0XB6"] =	{"Mayahem Temple", "Jade Snake Grove"},     --MT - Wumba's Wigwam
+
+        --GLITTER GULCH MINE
+        ["0XC7"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM
+        ["0XDB"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Canary Cave
+        ["0x16f"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Canary Mary Race (1)
+        ["0x170"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Canary Mary Race (2)
+        --["0XD0"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Chuffy's Cab
+        ["0XCB"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Crushing Shed
+        ["0XCC"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Flooded Caves
+        ["0XCA"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Fuel Depot
+        ["0XD3"] =	{"Glitter Gulch Mine", "Gloomy Caverns"},   --GGM - Generator Cavern
+        ["0XD2"] =	{"Glitter Gulch Mine", "Gloomy Caverns"},   --GGM - Gloomy Caverns
+        --["0XD1"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Inside Chuffy's Boiler
+        --["0x121"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Inside Chuffy's Wagon
+        ["0XD9"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Mumbo's Skull
+        ["0XDC"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Ordnance Storage
+        ["0x163"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Ordnance Storage Entrance
+        ["0XD4"] =	{"Glitter Gulch Mine", "Gloomy Caverns"},   --GGM - Power Hut
+        ["0XCF"] =	{"Glitter Gulch Mine", "Gloomy Caverns"},   --GGM - Power Hut Basement
+        ["0XD8"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Prospector's Hut
+        ["0XDA"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Toxic Gas Cave
+        ["0XD7"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Train Station
+        ["0XCD"] =	{"Glitter Gulch Mine", "Water Storage"},    --GGM - Water Storage
+        ["0x126"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Water Supply Pipe
+        ["0XCE"] =	{"Glitter Gulch Mine", "Waterfall Cavern"}, --GGM - Waterfall Cavern
+        ["0XE9"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Wumba Wigwam
+
+        --WITCHYWORLD
+        ["0XD6"] =	{"Witchyworld", "Main Area"},               --WW
+        ["0XE4"] =	{"Witchyworld", "Crazy Castle Stockade"},   --WW - Balloon Burst Game
+        ["0XEA"] =	{"Witchyworld", "The Haunted Cavern"},      --WW - Cave of Horrors
+        ["0XE2"] =	{"Witchyworld", "Crazy Castle Stockade"},   --WW - Crazy Castle Lobby
+        ["0XE3"] =	{"Witchyworld", "Crazy Castle Stockade"},   --WW - Crazy Castle Pump Room
+        ["0XE1"] =	{"Witchyworld", "Crazy Castle Stockade "},  --WW - Crazy Castle Stockade
+        ["0x13b"] =	{"Witchyworld", "Crazy Castle Stockade "},  --WW - Crazy Castle Stockade (Saucer)
+        ["0XDE"] =	{"Witchyworld", "Main Area"},               --WW - Dodgem Challenge 1 vs 1
+        ["0XDF"] =	{"Witchyworld", "Main Area"},               --WW - Dodgem Challenge 2 vs 1
+        ["0XE0"] =	{"Witchyworld", "Main Area"},               --WW - Dodgem Challenge 3 vs 1
+        ["0XDD"] =	{"Witchyworld", "Main Area"},               --WW - Dodgem Dome Lobby
+        ["0x186"] =	{"Witchyworld", "Main Area"},               --WW - Dodgems
+        ["0XEB"] =	{"Witchyworld", "The Haunted Cavern"},      --WW - Haunted Cavern
+        ["0XE5"] =	{"Witchyworld", "Crazy Castle Stockade"},   --WW - Hoop Hurry
+        ["0XF9"] =	{"Witchyworld", "Main Area"},               --WW - Mr. Patch
+        ["0x176"] =	{"Witchyworld", "The Inferno"},             --WW - Mumbo's Skull
+        ["0x124"] =	{"Witchyworld", "Main Area"},               --WW - Saucer of Peril
+        ["0xe6"] =	{"Witchyworld", "Main Area"},               --WW - Star Spinner
+        ["0x13c"] =	{"Witchyworld", "Main Area"},               --WW - Star Spinner (Saucer)
+        ["0XE7"] =	{"Witchyworld", "The Inferno"},             --WW - The Inferno
+        ["0XEC"] =	{"Witchyworld", "Main Area"},               --WW - Train Station
+        ["0xd5"] =	{"Witchyworld", "Main Area"},               --WW - Wumba's Wigwam
+
+        --JOLLY ROGER'S LAGOON
+        ["0x1a7"] =	{"Jolly Roger's Lagoon", "Main Area"},      --JRL
+        ["0xf4"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Ancient Swimming Baths
+        ["0x1a8"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Atlantis
+        ["0XFF"] =	{"Jolly Roger's Lagoon", "Main Area"},      --JRL - Blubber's Wave Race Hire
+        ["0XF6"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Electric Eel's lair
+        ["0XF8"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Inside the Big Fish
+        ["0XF1"] =	{"Jolly Roger's Lagoon", "Main Area"},      --JRL - Inside the UFO
+        ["0XED"] =	{"Jolly Roger's Lagoon", "Main Area"},      --JRL - Jolly's
+        ["0XFC"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Lord Woo Fak Fak
+        ["0XEF"] =	{"Jolly Roger's Lagoon", "Main Area"},      --JRL - Mumbo's Skull
+        ["0XEE"] =	{"Jolly Roger's Lagoon", "Main Area"},      --JRL - Pawno's Emporium
+        ["0x1a9"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Sea Bottom
+        ["0x181"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Sea Botom Cavern
+        ["0XF7"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Seaweed Sanctum
+        ["0x1a6"] =	{"Jolly Roger's Lagoon", "Main Area"},      --JRL - Smuggler's cavern
+        ["0XFA"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Temple of the Fishes
+        ["0x120"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Wumba's Wigwam
+
+        --TERRYDACTYLAND
+        ["0x112"] =	{"Terrydactyland", "Main Area"},                --TDL
+        ["0x11b"] =	{"Terrydactyland", "Main Area"},                --TDL - Bonfire Cavern
+        ["0x123"] =	{"Terrydactyland", "Inside the Mountain"},      --TDL - Inside Chompa's Belly
+        ["0x116"] =	{"Terrydactyland", "Inside the Mountain"},      --TDL - Inside the Mountain
+        ["0x171"] =	{"Terrydactyland", "Main Area"},                --TDL - Mumbo's Skull
+        ["0x115"] =	{"Terrydactyland", "Main Area"},                --TDL - Oogle Boogles' Cave
+        ["0x117"] =	{"Terrydactyland", "River Passage"},            --TDL - River Passage
+        ["0x11a"] =	{"Terrydactyland", "Stomping Plains"},          --TDL - Stomping Plains
+        ["0x118"] =	{"Terrydactyland", "Main Area"},                --TDL - Styracosaurus Family Cave
+        ["0x113"] =	{"Terrydactyland", "Terry's Nest"},             --TDL - Terry's Nest
+        ["0x114"] =	{"Terrydactyland", "Main Area"},                --TDL - Train Station
+        ["0x119"] =	{"Terrydactyland", "Unga Bungas' Cave"},        --TDL - Unga Bunga's Cave
+        ["0x122"] =	{"Terrydactyland", "Main Area"},                --TDL - Wumba's Wigwam (Big)
+        ["0x11e"] =	{"Terrydactyland", "Main Area"},                --TDL - Wumba's Wigwam (Small)
+
+        --GRUNTY'S INDUSTRIES
+        ["0x100"] =	{"Grunty's Industries", "Outside"},                 --GI
+        ["0x10f"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Basement
+        ["0x110"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Basement (Repair Depot)
+        ["0x111"] =	{"Grunty's Industries", "Waste Disposal Plant"},    --GI - Basement (Waste Disposal)
+        --["0x105"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Elevator shaft
+        ["0x101"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Floor 1
+        ["0x106"] =	{"Grunty's Industries", "Floor 2"},                 --GI - Floor 2
+        ["0x107"] =	{"Grunty's Industries", "Floor 2"},                 --GI - Floor 2 (Electromagnet Chamber)
+        ["0x108"] =	{"Grunty's Industries", "Floor 3"},                 --GI - Floor 3
+        ["0x109"] =	{"Grunty's Industries", "Floor 3"},                 --GI - Floor 3 (Boiler Plant)
+        ["0x10a"] =	{"Grunty's Industries", "Floor 3"},                 --GI - Floor 3 (Packing Room)
+        ["0x10b"] =	{"Grunty's Industries", "Floor 4"},                 --GI - Floor 4
+        ["0x10c"] =	{"Grunty's Industries", "Floor 4"},                 --GI - Floor 4 (Cable Room)
+        ["0x162"] =	{"Grunty's Industries", "Floor 4"},                 --GI - Floor 4 (Clinker's Cavern)
+        ["0x10d"] =	{"Grunty's Industries", "Floor 4"},                 --GI - Floor 4 (Quality Control)
+        ["0x10e"] =	{"Grunty's Industries", "Floor 5"},                 --GI - Floor 5
+        ["0x172"] =	{"Grunty's Industries", "Floor 3"},                 --GI - Mumbo's Skull
+        ["0x17d"] =	{"Grunty's Industries", "Floor 3"},                 --GI - Packing Game
+        ["0x187"] =	{"Grunty's Industries", "Floor 4"},                 --GI - Sewer Entrance
+        ["0x102"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Train Station
+        ["0x104"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Trash Compactor
+        ["0x125"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Water Supply Pipe
+        ["0x103"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Workers' Quarters
+        ["0x11f"] =	{"Grunty's Industries", "Floor 2"},                 --GI - Wumba's Wigwam
+
+        --HAILFIRE PEAKS
+        ["0x131"] =	{"Hailfire Peaks", "Icy Side"},                     --HFP - Boggy's Igloo
+        ["0x12B"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Chilli Billi
+        ["0x12C"] =	{"Hailfire Peaks", "Icy Side"},                     --HFP - Chilly Willy
+        ["0x12a"] =	{"Hailfire Peaks", "Icy Side"},                     --HFP - Ice Train Station
+        ["0x132"] =	{"Hailfire Peaks", "Icy Side"},                     --HFP - Icicle Grotto
+        ["0x128"] =	{"Hailfire Peaks", "Icy Side"},                     --HFP - Icy Side
+        ["0x133"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Inside the Volcano
+        ["0x180"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Kickball Arena
+        ["0x12e"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Kickball Stadium 1
+        ["0x12f"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Kickball Stadium 2
+        ["0x130"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Kickball Stadium 3
+        ["0x12d"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Kickball Stadium lobby
+        ["0x127"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Lava Side
+        ["0x129"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Lava Train Station
+        ["0x134"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Mumbo's Skull
+        ["0x135"] =	{"Hailfire Peaks", "Icy Side"},                     --HFP - Wumba's Wigwam
+
+        --CLOUD CUCKOOLAND
+        ["0x136"] =	{"Cloud Cuckooland", "Outside"},                    --CCL
+        ["0x161"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Canary Mary Race
+        ["0x13a"] =	{"Cloud Cuckooland", "Central Cave"},               --CCL - Central Cavern
+        ["0x138"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Inside the Cheese Wedge
+        ["0x13d"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Inside the Pot o' Gold
+        ["0x137"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Inside the Trash Can
+        ["0x13f"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Mingy Jongo's Skull
+        ["0x13e"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Mumbo's Skull
+        ["0x185"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Trash Can Mini
+        ["0x140"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Wumba's Wigwam
+        ["0x139"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Zubbas' Nest
+
+        --CAULDRON KEEP
+        ["0x15d"] =	{"Isle O' Hags", "Quagmire"},                      --CK
+        ["0x160"] =	{"Isle O' Hags", "Quagmire"},                      --CK - Gun Chamber
+        ["0x19a"] =	{"Isle O' Hags", "Quagmire"},                      --CK - HAG 1
+        ["0x18a"] =	{"Isle O' Hags", "Quagmire"},                      --CK - Inside HAG 1
+        ["0x15e"] =	{"Isle O' Hags", "Quagmire"},                      --CK - The Gatehouse
+        ["0x15f"] =	{"Isle O' Hags", "Quagmire"},                      --CK - Tower of Tragedy
+
     }
 }
 
@@ -1063,6 +1292,7 @@ local AMM = {};
 
 -- AGI - Archipelago given items
 local AGI = {};
+local AGI_JIGGIES = {};
 local AGI_MOVES = {};
 local AGI_NOTES = {};
 local AGI_STATIONS = {};
@@ -1083,7 +1313,7 @@ local AGI_JINJOS = {
 --     ["1230799"] = 0,
 -- };
 
-
+local JIGGIES = {};
 local BKM = {}; -- Banjo Tooie Movelist Table
 local BKNOTES = {}; -- Notes
 local BKSTATIONS = {} -- Stations
@@ -3936,6 +4166,459 @@ local NON_AGI_MAP = {
             ['bit'] = 2,
             ['name'] = "GGM: Crushing Shed Jiggy Chunk 3"
         }
+    },
+    ["JIGGIES"] = {
+        ["1230676"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 0,
+            ['name'] = 'JV: White Jinjo Family Jiggy'
+        },
+        ["1230677"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 1,
+            ['name'] = 'Jinjo Village: Orange Jinjo Family Jiggy'
+        },
+        ["1230678"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 2,
+            ['name'] = 'JV: Yellow Jinjo Family Jiggy'
+        },
+        ["1230679"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 3,
+            ['name'] = 'JV: Brown Jinjo Family Jiggy'
+
+        },
+        ["1230680"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 4,
+            ['name'] = 'JV: Green Jinjo Family Jiggy'
+        },
+        ["1230681"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 5,
+            ['name'] = 'JV: Red Jinjo Family Jiggy'
+        },
+        ["1230682"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 6,
+            ['name'] = 'JV: Blue Jinjo Family Jiggy'
+        },
+        ["1230683"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 7,
+            ['name'] = 'JV: Purple Jinjo Family Jiggy'
+        },
+        ["1230684"] = {
+            ['addr'] = 0x50,
+            ['bit'] = 0,
+            ['name'] = 'JV: Black Jinjo Family Jiggy'
+        },
+        ["1230685"] = {
+            ['addr'] = 0x50,
+            ['bit'] = 1,
+            ['name'] = 'JV: King Jingaling Jiggy'
+        },
+        ["1230596"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 0,
+            ['name'] = 'MT: Targitzan Jiggy'
+        },
+        ["1230597"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 1,
+            ['name'] = 'MT: Slightly Sacred Chamber Jiggy'
+        },
+        ["1230598"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 2,
+            ['name'] = 'MT: Kickball Jiggy'
+        },
+        ["1230599"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 3,
+            ['name'] = 'MT: Bovina Jiggy'
+        },
+        ["1230600"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 4,
+            ['name'] = 'MT: Treasure Chamber Jiggy'
+        },
+        ["1230601"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 5,
+            ['name'] = 'MT: Golden Goliath Jiggy'
+        },
+        ["1230602"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 6,
+            ['name'] = 'MT: Prison Compound Quicksand Jiggy'
+        },
+        ["1230603"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 7,
+            ['name'] = 'MT: Pillars Jiggy'
+        },
+        ["1230604"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 0,
+            ['name'] = 'MT: Top of Temple Jiggy'
+        },
+        ["1230605"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 1,
+            ['name'] = 'MT: Ssslumber Jiggy'
+        },
+        ["1230606"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 2,
+            ['name'] = 'GGM: Old King Coal Jiggy'
+        },
+        ["1230607"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 3,
+            ['name'] = 'GGM: Canary Mary Jiggy'
+        },
+        ["1230608"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 4,
+            ['name'] = 'GGM: Generator Cavern Jiggy'
+        },
+        ["1230609"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 5,
+            ['name'] = 'GGM: Waterfall Cavern Jiggy'
+        },
+        ["1230610"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 6,
+            ['name'] = 'GGM: Ordinance Storage Jiggy'
+        },
+        ["1230611"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 7,
+            ['name'] = 'GGM: Dilberta Jiggy'
+        },
+        ["1230612"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 0,
+            ['name'] = 'GGM: Crushing Shed Jiggy'
+        },
+        ["1230613"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 1,
+            ['name'] = 'GGM: Waterfall Jiggy'
+        },
+        ["1230614"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 2,
+            ['name'] = 'GGM: Power Hut Basement Jiggy'
+        },
+        ["1230615"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 3,
+            ['name'] = 'GGM: Flooded Caves Jiggy'
+        },
+        ["1230616"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 4,
+            ['name'] = 'WW: Hoop Hurry Jiggy'
+        },
+        ["1230617"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 5,
+            ['name'] = 'WW: Dodgems Jiggy'
+        },
+        ["1230618"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 6,
+            ['name'] = 'WW: Mr. Patch Jiggy'
+        },
+        ["1230619"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 7,
+            ['name'] = 'WW: Saucer of Peril Jiggy'
+        },
+        ["1230620"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 0,
+            ['name'] = 'WW: Balloon Burst Jiggy'
+        },
+        ["1230621"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 1,
+            ['name'] = 'WW: Dive of Death Jiggy'
+        },
+        ["1230622"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 2,
+            ['name'] = 'WW: Mrs. Boggy Jiggy'
+        },
+        ["1230623"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 3,
+            ['name'] = 'WW: Star Spinner Jiggy'
+        },
+        ["1230624"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 4,
+            ['name'] = 'WW: The Inferno Jiggy'
+        },
+        ["1230625"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 5,
+            ['name'] = 'WW: Cactus of Strength Jiggy'
+        },
+        ["1230626"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Mini-Sub Challenge Jiggy'
+        },
+        ["1230627"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Tiptup Jiggy'
+        },
+        ["1230628"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 0,
+            ['name'] = 'JRL: Chris P. Bacon Jiggy'
+        },
+        ["1230629"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 1,
+            ['name'] = 'JRL: Pig Pool Jiggy'
+        },
+        ["1230630"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 2,
+            ['name'] = "JRL: Smuggler's Cavern Jiggy"
+        },
+        ["1230631"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Merry Maggie Jiggy'
+        },
+        ["1230632"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Woo Fak Fak Jiggy'
+        },
+        ["1230633"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Seemee Jiggy'
+        },
+        ["1230634"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Pawno Jiggy'
+        },
+        ["1230635"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 7,
+            ['name'] = 'JRL: UFO Jiggy'
+        },
+        ["1230636"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 0,
+            ['name'] = "TDL: Under Terry's Nest Jiggy"
+        },
+        ["1230637"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 1,
+            ['name'] = 'TDL: Dippy Jiggy'
+        },
+        ["1230638"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 2,
+            ['name'] = 'TDL: Scrotty Jiggy'
+        },
+        ["1230639"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 3,
+            ['name'] = 'TDL: Terry Jiggy'
+        },
+        ["1230640"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 4,
+            ['name'] = 'TDL: Oogle Boogle Tribe Jiggy'
+        },
+        ["1230641"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 5,
+            ['name'] = 'TDL: Chompas Belly Jiggy'
+        },
+        ["1230642"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 6,
+            ['name'] = "TDL: Terry's Kids Jiggy"
+        },
+        ["1230643"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 7,
+            ['name'] = 'TDL: Stomping Plains Jiggy'
+        },
+        ["1230644"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 0,
+            ['name'] = 'TDL: Rocknut Tribe Jiggy'
+        },
+        ["1230645"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 1,
+            ['name'] = 'TDL: Code of the Dinosaurs Jiggy'
+        },
+        ["1230646"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 2,
+            ['name'] = 'GI: Underwater Waste Disposal Plant Jiggy'
+        },
+        ["1230647"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 3,
+            ['name'] = 'GI: Weldar Jiggy'
+        },
+        ["1230648"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 4,
+            ['name'] = "GI: Clinker's Cavern Jiggy"
+        },
+        ["1230649"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 5,
+            ['name'] = 'GI: Skivvies Jiggy'
+        },
+        ["1230650"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 6,
+            ['name'] = 'GI: Floor 5 Jiggy'
+        },
+        ["1230651"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 7,
+            ['name'] = 'GI: Quality Control Jiggy'
+        },
+        ["1230652"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 0,
+            ['name'] = 'GI: Floor 1 Guarded Jiggy'
+        },
+        ["1230653"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 1,
+            ['name'] = 'GI: Trash Compactor Jiggy'
+        },
+        ["1230654"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 2,
+            ['name'] = 'GI: Twinkly Packing Jiggy'
+        },
+        ["1230655"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 3,
+            ['name'] = 'GI: Waste Disposal Plant Box Jiggy'
+        },
+        ["1230656"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 4,
+            ['name'] = 'HFP: Dragon Brothers Jiggy'
+        },
+        ["1230657"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 5,
+            ['name'] = 'HFP: Inside the Volcano Jiggy'
+        },
+        ["1230658"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 6,
+            ['name'] = 'HFP: Sabreman Jiggy'
+        },
+        ["1230659"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 7,
+            ['name'] = 'HFP: Boggy Jiggy'
+        },
+        ["1230660"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 0,
+            ['name'] = 'HFP: Icy Side Station Jiggy'
+        },
+        ["1230661"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 1,
+            ['name'] = 'HFP: Oil Drill Jiggy'
+        },
+        ["1230662"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 2,
+            ['name'] = 'HFP: Stomping Plains Jiggy'
+        },
+        ["1230663"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 3,
+            ['name'] = 'HFP: Kickball Jiggy'
+        },
+        ["1230664"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 4,
+            ['name'] = 'HFP: Aliens Jiggy'
+        },
+        ["1230665"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 5,
+            ['name'] = 'HFP: Lava Waterfall Jiggy'
+        },
+        ["1230666"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 6,
+            ['name'] = 'CCL: Mingy Jongo Jiggy'
+        },
+        ["1230667"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 7,
+            ['name'] = 'CCL: Mr Fit Jiggy'
+        },
+        ["1230668"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 0,
+            ['name'] = "CCL: Pot O' Gold Jiggy"
+        },
+        ["1230669"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 1,
+            ['name'] = 'CCL: Canary Mary Jiggy'
+        },
+        ["1230670"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 2,
+            ['name'] = 'CCL: Zubbas Jiggy'
+        },
+        ["1230671"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 3,
+            ['name'] = 'CCL: Jiggium Plant Jiggy'
+        },
+        ["1230672"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 4,
+            ['name'] = 'CCL: Cheese Wedge Jiggy'
+        },
+        ["1230673"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 5,
+            ['name'] = 'CCL: Trash Can Jiggy'
+        },
+        ["1230674"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 6,
+            ['name'] = 'CCL: Superstash Jiggy'
+        },
+        ["1230675"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 7,
+            ['name'] = 'CCL: Jelly Castle Jiggy'
+        }
     }
 }
 
@@ -6055,12 +6738,6 @@ function loadGame(current_map)
             hag1_phase_skips()
             GAME_LOADED = true;
         end
-    else
-        if BYPASS_GAME_LOAD == true
-        then
-            GAME_LOADED = true;
-        end
-        return false;
     end
 end
 
@@ -6306,29 +6983,21 @@ function locationControl()
         return DEMO
     end
 
-    if USE_BMM_TBL == true --Only used If Maps are AROUND or IN Wooded Hollow or JWTemple
+    if USE_BMM_TBL == true --Only used If Pausing
     then
-        if BTRAMOBJ:checkFlag(0x1F, 0, "LocControl1")== true -- DEMO FILE
+        if BTRAMOBJ:checkFlag(0x1F, 0, "LocControl1") == true -- DEMO FILE
         then
             local DEMO = { ['DEMO'] = true}
             return DEMO
         end
         BKLogics(mapaddr)
-        if ((CURRENT_MAP == 335 or CURRENT_MAP == 337) and (mapaddr ~= 335 and mapaddr ~= 337)) -- Wooded Hollow
+        getAltar()
+        if ENABLE_AP_WORLDS == true
         then
-            BMMRestore()
-            CURRENT_MAP = mapaddr
-            return all_location_checks("AMM")
-        else
-            getAltar()
-            nearWHJinjo()
-            if ENABLE_AP_WORLDS == true
-            then
-                nearDisiple()
-            end
-            CURRENT_MAP = mapaddr
-            return all_location_checks("BMM");
+            nearDisiple()
         end
+        CURRENT_MAP = mapaddr
+        return all_location_checks("BMM");
     else
         if GAME_LOADED == false
         then
@@ -7145,6 +7814,7 @@ function SendToBTClient()
     retTable["playerName"] = PLAYER;
     retTable["deathlinkActive"] = DEATH_LINK;
     retTable['locations'] = locationControl()
+    retTable['jiggies'] = JIGGIES;
     retTable['unlocked_moves'] = BKM;
     retTable['treble'] = BKNOTES;
     retTable['stations'] = BKSTATIONS;
@@ -8137,7 +8807,7 @@ function main()
             PREV_STATE = CUR_STATE
         end
         if (CUR_STATE == STATE_OK) or (CUR_STATE == STATE_INITIAL_CONNECTION_MADE) or (CUR_STATE == STATE_TENTATIVELY_CONNECTED) then
-            if (FRAME % 60 == 1) then
+            if (FRAME % 30 == 1) then
                 BTRAM:banjoPTR()
                 receive();
                 if VERROR == true
@@ -8164,7 +8834,7 @@ function main()
                 end
                 getBanjoDeath()
                 killBT()
-            elseif (FRAME % 10 == 1)
+            elseif (FRAME % 5 == 1)
             then
                 checkPause();
                 checkTotalMenu();
