@@ -361,7 +361,7 @@ class BanjoTooieRules:
             locationName.CHEATOTL3: lambda state: self.cheato_tdlboulder(state),
 
             locationName.CHEATOGI1: lambda state: self.cheato_loggo(state),
-            locationName.CHEATOGI2: lambda state: self.roof_access(state),
+            locationName.CHEATOGI2: lambda state: self.cheato_window(state),
             locationName.CHEATOGI3: lambda state: self.can_beat_weldar(state),
 
             locationName.CHEATOHP1: lambda state: self.cheato_colosseum(state),
@@ -2356,6 +2356,22 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 3: # glitched
             logic = self.grenadeEggs(state) or (self.clockworkEggs(state) and \
                      self.billDrill(state))
+        return logic
+    
+    def cheato_window(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.roof_access(state) and (state.has(itemName.EGGAIM, self.player) or state.has(itemName.AIREAIM, self.player) or self.hasBKMove(state, itemName.BBOMB))
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.roof_access(state) and (state.has(itemName.EGGAIM, self.player) or state.has(itemName.AIREAIM, self.player) or self.hasBKMove(state, itemName.BBOMB))\
+                    or state.can_reach_region(regionName.GI1, self.player) and self.check_solo_moves(state, itemName.LSPRING) and self.clawClamberBoots(state) and (state.has(itemName.EGGAIM, self.player) or self.check_solo_moves(state, itemName.WWHACK))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.roof_access(state) and (state.has(itemName.EGGAIM, self.player) or state.has(itemName.AIREAIM, self.player) or self.hasBKMove(state, itemName.BBOMB))\
+                    or state.can_reach_region(regionName.GI1, self.player) and self.check_solo_moves(state, itemName.LSPRING) and self.clawClamberBoots(state) and (state.has(itemName.EGGAIM, self.player) or self.check_solo_moves(state, itemName.WWHACK))
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.roof_access(state) and (state.has(itemName.EGGAIM, self.player) or state.has(itemName.AIREAIM, self.player) or self.hasBKMove(state, itemName.BBOMB))\
+                    or state.can_reach_region(regionName.GI1, self.player) and self.check_solo_moves(state, itemName.LSPRING) and self.clawClamberBoots(state) and (state.has(itemName.EGGAIM, self.player) or self.check_solo_moves(state, itemName.WWHACK))\
+                    or state.can_reach_region(regionName.GI2, self.player) and self.longJump(state) and self.clockwork_shot(state)
         return logic
     
     def cheato_colosseum(self, state: CollectionState) -> bool:
@@ -4386,11 +4402,12 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = False
         elif self.world.options.logic_type == 2: # advanced
-            logic = False
+            logic = state.has(itemName.SPLITUP, self.player) and self.clawClamberBoots(state) and self.check_solo_moves(state, itemName.LSPRING) and (self.check_solo_moves(state, itemName.WWHACK) or state.has(itemName.EGGAIM, self.player)) and self.hasBKMove(state, itemName.FPAD)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.breegullBash(state) and self.hasBKMove(state, itemName.CLIMB)\
                     or self.hasBKMove(state, itemName.CLIMB) and self.has_explosives(state) and state.has(itemName.EGGAIM, self.player) and\
-                        (self.springBoots(state) or self.hasBKMove(state, itemName.FFLIP) and state.has(itemName.GGRAB, self.player) or state.has(itemName.SPLITUP, self.player) and self.roof_access(state))
+                        (self.springBoots(state) or self.hasBKMove(state, itemName.FFLIP) and state.has(itemName.GGRAB, self.player) or state.has(itemName.SPLITUP, self.player) and self.roof_access(state))\
+                    or state.has(itemName.SPLITUP, self.player) and self.clawClamberBoots(state) and self.check_solo_moves(state, itemName.LSPRING) and (self.check_solo_moves(state, itemName.WWHACK) or state.has(itemName.EGGAIM, self.player)) and self.hasBKMove(state, itemName.FPAD)
         return logic
     
     def F2_to_F1(self, state: CollectionState) -> bool:

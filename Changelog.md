@@ -3,10 +3,12 @@
    - Fuel Depot notes: Now have actual logic.
    - Prospector notes: can be gotten with no moves, if not on beginner logic.
    - JRL Alcove Jinjo: if doing the slope abuse, it now requires flutter or air rat-a-tat rap.
+   - GI Floor 2 Cheato page: Added logic to account for BK moves and glitched logic.
    - GI Floor 4 Jinjo: requires wing whack or the ability to shoot eggs if you do not have access to the roof. It also takes reaching the back of the building by leaving floor 2.
    - Volcano Jiggy: now requires a way to cross the gaps in the volcano.
    - Lava Side Train Switch: removed impossible jumps from the logic.
    - GI Outside to GI Floor 3: now considers leaving floor 2 to reach the back of the building.
+   - Floor 1 to Floor 3: The Leg Spring from the treble clef to the window with the flight pad is now in advanced and glitched logics.
 
 # 2.1.2-beta
  - Logic fixes:
