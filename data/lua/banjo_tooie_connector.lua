@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V2.1.1"
+local BT_VERSION = "V2.1.2"
 local PLAYER = ""
 local SEED = 0
 
@@ -28,6 +28,8 @@ local STATE_UNINITIALIZED = "Uninitialized"
 local PREV_STATE = ""
 local CUR_STATE =  STATE_UNINITIALIZED
 local FRAME = 0
+local VERROR = false
+local CLIENT_VERSION = 0
 
 
 local DEBUG = false
@@ -7889,6 +7891,15 @@ function process_slot(block)
             end
         end
     end
+    if block['slot_version'] ~= nil and block['slot_version'] ~= ""
+    then
+        CLIENT_VERSION = block['slot_version']
+        if CLIENT_VERSION ~= BT_VERSION
+        then
+            VERROR = true
+            return false
+        end
+    end
     printGoalInfo();
     if SEED ~= 0
     then
@@ -8129,6 +8140,13 @@ function main()
             if (FRAME % 60 == 1) then
                 BTRAM:banjoPTR()
                 receive();
+                if VERROR == true
+                then
+                    print("ERROR: Banjo_Tooie_connector Mismatch. Please obtain the correct version")
+                    print("Connector Version: " .. BT_VERSION)
+                    print("Client Version: " .. CLIENT_VERSION)
+                    return
+                end
                 if SKIP_TOT == "true" and CURRENT_MAP == 0x15E then
 					setToTComplete();
 				end
@@ -8176,48 +8194,3 @@ function main()
 end
 
 main()
-
-
---Unused Functions (Function Graveyard)
-
-
-
-
--- function setCurrentHealth(value)
--- 	local currentTransformation = mainmemory.readbyte(0x11B065);
--- 	if type(0x11B644) == 'number' then
--- 		value = value or 0;
--- 		value = math.max(0x00, value);
--- 		value = math.min(0xFF, value);
--- 		return mainmemory.write_u8(0x11B644, value);
--- 	end
--- end
-
--- function killBT()
---     if KILL_BANJO == true then
---         setCurrentHealth(0)
---         moveEnemytoBK()
---     end
--- end
-
--- function moveEnemytoBK()
---     local enemy = checkModel("enemy");
---     if enemy == false
---     then
---         return
---     end
-
---     pos = getBanjoPos();
---     if pos == false
---     then
---         return
---     end
-
--- 	mainmemory.writefloat(enemy + 0x04, pos["Xpos"], true);
---     mainmemory.writefloat(enemy + 0x08, pos["Ypos"], true);
---     mainmemory.writefloat(enemy + 0x0C, pos["Zpos"], true);
-
---     KILL_BANJO = false --TODO - TEST
---     -- print("Object Distance:")
---     -- print(playerDist)
--- end

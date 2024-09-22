@@ -54,6 +54,7 @@ bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 
 script_version: int = 4
+version: str = "V2.1.2"
 
 def get_item_value(ap_id):
     return ap_id
@@ -148,6 +149,12 @@ class BanjoTooieContext(CommonContext):
     def on_package(self, cmd, args):
         if cmd == 'Connected':
             self.slot_data = args.get('slot_data', None)
+            if version != self.slot_data["version"]:
+                logger.error("Your Banjo-Tooie AP does not match with the generated world.")
+                logger.error("Your version: "+version+" | Generated version: "+self.slot_data["version"])
+                # self.event_invalid_game()
+                raise Exception("Your Banjo-Tooie AP does not match with the generated world.\n" +
+                                "Your version: "+version+" | Generated version: "+self.slot_data["version"])
             self.deathlink_enabled = self.slot_data["deathlink"]
             logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
@@ -281,7 +288,8 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_minigame_hunt_length": ctx.slot_data["minigame_hunt_length"],
             "slot_boss_hunt_length": ctx.slot_data["boss_hunt_length"],
             "slot_jinjo_family_rescue_length": ctx.slot_data["jinjo_family_rescue_length"],
-            "slot_token_hunt_length": ctx.slot_data["token_hunt_length"]
+            "slot_token_hunt_length": ctx.slot_data["token_hunt_length"],
+            "slot_version": version
         })
     ctx.sendSlot = False
     return payload

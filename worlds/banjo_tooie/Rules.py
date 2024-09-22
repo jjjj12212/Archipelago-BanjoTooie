@@ -644,7 +644,7 @@ class BanjoTooieRules:
             locationName.NOTECCL4: lambda state: self.notes_ccl_silo(state),
             locationName.NOTECCL5: lambda state: self.notes_ccl_high(state),
             locationName.NOTECCL6: lambda state: self.notes_ccl_low(state),
-            locationName.NOTECCL7: lambda state: self.dive(state),
+            locationName.NOTECCL7: lambda state: self.notes_dippy(state),
             locationName.NOTECCL8: lambda state: self.notes_ccl_low(state),
             locationName.NOTECCL9: lambda state: self.notes_ccl_low(state),
             locationName.NOTECCL10: lambda state: self.notes_ccl_high(state),
@@ -668,13 +668,13 @@ class BanjoTooieRules:
     def jiggy_targitzan(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-          logic = state.has(itemName.BBLASTER, self.player)
+          logic = self.jiggy_sschamber(state) and (state.has(itemName.BEGG, self.player) or state.has(itemName.FEGGS, self.player) or state.has(itemName.GEGGS, self.player))
         elif self.world.options.logic_type == 1: # normal
-          logic = state.has(itemName.BBLASTER, self.player)
+          logic = self.jiggy_sschamber(state) and (state.has(itemName.BEGG, self.player) or state.has(itemName.FEGGS, self.player) or state.has(itemName.GEGGS, self.player))
         elif self.world.options.logic_type == 2: # advanced
-          logic = state.has(itemName.BBLASTER, self.player)
+          logic = self.jiggy_sschamber(state)
         elif self.world.options.logic_type == 3: # glitched
-          logic = state.has(itemName.BBLASTER, self.player)
+          logic = self.jiggy_sschamber(state)
         return logic
 
     def jiggy_sschamber(self, state: CollectionState) -> bool:
@@ -1723,16 +1723,18 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = self.blueEggs(state) and self.fireEggs(state) and self.grenadeEggs(state) and self.iceEggs(state)\
-                     and self.billDrill(state) and self.mumboCCL(state)
+                    and self.mumboCCL(state) and (self.hasBKMove(state, itemName.FFLIP) or self.check_solo_moves(state, itemName.LSPRING))
         elif self.world.options.logic_type == 1: # normal
-            logic = self.blueEggs(state) and self.fireEggs(state) and self.grenadeEggs(state) and self.iceEggs(state)\
-                     and self.billDrill(state) and self.mumboCCL(state)
+            logic = self.blueEggs(state) and self.fireEggs(state) and self.grenadeEggs(state) and self.iceEggs(state) and self.mumboCCL(state)\
+                  and (self.hasBKMove(state, itemName.FFLIP) or self.check_solo_moves(state, itemName.LSPRING) or self.hasBKMove(state, itemName.FPAD))
         elif self.world.options.logic_type == 2: # advanced
             logic = self.blueEggs(state) and self.fireEggs(state) and self.grenadeEggs(state) and self.iceEggs(state)\
-                        and ((self.billDrill(state) and self.mumboCCL(state)) or state.has(itemName.SPLITUP, self.player))
+                and (self.mumboCCL(state) and (self.hasBKMove(state, itemName.FFLIP) or self.check_solo_moves(state, itemName.LSPRING) or self.hasBKMove(state, itemName.FPAD))\
+                     or (self.check_solo_moves(state, itemName.LSPRING) or (state.has(itemName.SPLITUP, self.player) and self.hasBKMove(state, itemName.TJUMP))) and self.hasBKMove(state, itemName.FPAD) and self.hasBKMove(state, itemName.BBOMB))
         elif self.world.options.logic_type == 3: # glitched
             logic = self.blueEggs(state) and self.fireEggs(state) and self.grenadeEggs(state) and self.iceEggs(state)\
-                        and ((self.billDrill(state) and self.mumboCCL(state)) or state.has(itemName.SPLITUP, self.player))
+                and (self.mumboCCL(state) and (self.hasBKMove(state, itemName.FFLIP) or self.check_solo_moves(state, itemName.LSPRING) or self.hasBKMove(state, itemName.FPAD))\
+                     or (self.check_solo_moves(state, itemName.LSPRING) or (state.has(itemName.SPLITUP, self.player) and self.hasBKMove(state, itemName.TJUMP))) and self.hasBKMove(state, itemName.FPAD) and self.hasBKMove(state, itemName.BBOMB))
         return logic
 
     def jiggy_cheese(self, state: CollectionState) -> bool:
@@ -3593,6 +3595,18 @@ class BanjoTooieRules:
             logic = True
         elif self.world.options.logic_type == 3: # glitched
             logic = True
+        return logic
+
+    def notes_dippy(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.dive(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.dive(state) or self.check_solo_moves(state, itemName.SHPACK)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.dive(state) or self.check_solo_moves(state, itemName.SHPACK)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.dive(state) or self.check_solo_moves(state, itemName.SHPACK)
         return logic
 
 

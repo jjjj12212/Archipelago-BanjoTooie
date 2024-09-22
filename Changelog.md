@@ -1,3 +1,13 @@
+# 2.1.2-beta
+ - Logic fixes:
+   - Pot of gold: fixed logic for new BK moves.
+   - Targitzan jiggy: requires blue eggs, fire eggs or grenade eggs, in beginner and normal logic.
+   - GGM Entrance Cheato page: Getting it with the detonator is no longer in logic, due to its difficulty.
+   - CCL Dippy Pool Notes: can be gotten with shack pack, if not on beginner logic.
+   - fix in Region access for Progressive Items
+ - Fixed missing states Glitch Logic for Pot of Gold
+ - Banjo-Tooie AP will now check Generated, BTClient and Lua Versions. If any mismatch, it will let you know and no longer run.
+
 # 2.1.1-beta
  - remove Wonderwing's Randomized Notes and Cheato requirement 
  - Fix Issue with duplicate items if randomize_moves disabled
