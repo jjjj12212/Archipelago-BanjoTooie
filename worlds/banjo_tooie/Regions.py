@@ -643,7 +643,7 @@ def connect_regions(self):
     region_PG = multiworld.get_region(regionName.IOHPG, player)
     region_PG.add_exits({regionName.WW, regionName.IOHPGU, regionName.IOHPL},
     {regionName.WW: lambda state: rules.ww_jiggy(state),
-     regionName.IOHPGU: lambda state: rules.hasBKMove(state, itemName.DIVE),
+     regionName.IOHPGU: lambda state: rules.dive(state),
      regionName.IOHPL: lambda state: rules.PG_to_PL(state)})
     
     region_PGU = multiworld.get_region(regionName.IOHPGU, player)
@@ -685,7 +685,7 @@ def connect_regions(self):
     region_IOHWL = multiworld.get_region(regionName.IOHWL, player)
     region_IOHWL.add_exits({regionName.IOHPGU, regionName.IOHQM, regionName.TL, regionName.CC},
                         {regionName.IOHPGU: lambda state: rules.WL_to_PGU(state),
-                         regionName.IOHQM: lambda state: state.has(itemName.SPRINGB, player),
+                         regionName.IOHQM: lambda state: rules.springBoots(state),
                          regionName.TL: lambda state: rules.tdl_jiggy(state),
                          regionName.CC: lambda state: rules.ccl_jiggy(state)})
     
