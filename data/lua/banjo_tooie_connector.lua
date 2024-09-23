@@ -3826,7 +3826,7 @@ local NON_AGI_MAP = {
         ["1230813"] = {
             ['addr'] = 0x19,
             ['bit'] = 3,
-            ['name'] = "Egg Shoot"
+            ['name'] = "Third Person Egg Shooting"
         },
         ["1230814"] = {
             ['addr'] = 0x1A,
