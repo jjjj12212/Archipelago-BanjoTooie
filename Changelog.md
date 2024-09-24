@@ -2,6 +2,7 @@
   - The logic code has been completely rewritten to make it more readable. The only functional changes to the logic are listed below.
   - Name changes:
     - BH: Goggles Amaze-o-Gaze -> IoH: Amaze-o-Gaze Goggles
+    - Egg Shoot -> Third Person Egg Shooting
   - Logic fixes:
    - Fuel Depot notes: Now have actual logic.
    - Prospector notes: can be gotten with no moves, if not on beginner logic.
