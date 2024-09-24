@@ -1306,6 +1306,7 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230646", -- Underwater Waste Disposal
                 "1230655", -- Plant Box
+                "1230661", -- HFP Oil Drill
             },
         },
         ["0x101"] =	{ --GI - Floor 1
@@ -1366,32 +1367,62 @@ local ASSET_MAP_CHECK = {
         },
 
         --HAILFIRE PEAKS
-        ["0x131"] =	{"Hailfire Peaks", "Icy Side"},                     --HFP - Boggy's Igloo
-        ["0x12B"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Chilli Billi
-        ["0x12C"] =	{"Hailfire Peaks", "Icy Side"},                     --HFP - Chilly Willy
-        ["0x12a"] =	{"Hailfire Peaks", "Icy Side"},                     --HFP - Ice Train Station
-        ["0x132"] =	{"Hailfire Peaks", "Icy Side"},                     --HFP - Icicle Grotto
-        ["0x128"] =	{"Hailfire Peaks", "Icy Side"},                     --HFP - Icy Side
-        ["0x133"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Inside the Volcano
-        ["0x180"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Kickball Arena
-        ["0x12e"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Kickball Stadium 1
-        ["0x12f"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Kickball Stadium 2
-        ["0x130"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Kickball Stadium 3
-        ["0x12d"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Kickball Stadium lobby
-        ["0x127"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Lava Side
-        ["0x129"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Lava Train Station
-        ["0x134"] =	{"Hailfire Peaks", "Lava Side"},                    --HFP - Mumbo's Skull
-        ["0x135"] =	{"Hailfire Peaks", "Icy Side"},                     --HFP - Wumba's Wigwam
+        ["0x131"] =	{ --HFP - Boggy's Igloo
+            ["JIGGIES"] = {
+                "1230659", -- Boggy
+            },
+        },
+        ["0x12B"] =	{ --HFP - Chilli Billi
+            ["JIGGIES"] = {
+                "1230656", -- Brothers
+            },
+        },
+        ["0x12C"] =	{ --HFP - Chilly Willy
+            ["JIGGIES"] = {
+                "1230656", -- Brothers
+            },
+        },
+        ["0x132"] =	{ --HFP - Icicle Grotto
+
+        },
+        ["0x128"] =	{ --HFP - Icy Side
+            ["JIGGIES"] = {
+                "1230660", -- Icy Train Station
+                "1230662", -- Stomping
+                "1230664", -- Aliens
+            },
+        },
+        ["0x133"] =	{ --HFP - Inside the Volcano
+            ["JIGGIES"] = {
+                "1230657", -- Volcano
+            },
+        },
+        ["0x12D"] =	{ --HFP - Kickball Stadium lobby
+            ["JIGGIES"] = {
+                "1230663", -- Kickball
+            },
+        },
+        ["0x127"] =	{ --HFP - Lava Side
+            ["JIGGIES"] = {
+                "1230658", -- Sabreman
+                "1230665", -- Lava waterfall
+            },
+        },
+        ["0x129"] =	{ --HFP - Lava Train Station
+            --honeycomb
+        },
 
         --CLOUD CUCKOOLAND
-        ["0x136"] =	{"Cloud Cuckooland", "Outside"},                    --CCL
+        ["0x136"] =	{ --CCL
+
+        },
         ["0x161"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Canary Mary Race
-        ["0x13a"] =	{"Cloud Cuckooland", "Central Cave"},               --CCL - Central Cavern
+        ["0x13A"] =	{"Cloud Cuckooland", "Central Cave"},               --CCL - Central Cavern
         ["0x138"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Inside the Cheese Wedge
-        ["0x13d"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Inside the Pot o' Gold
+        ["0x13D"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Inside the Pot o' Gold
         ["0x137"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Inside the Trash Can
-        ["0x13f"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Mingy Jongo's Skull
-        ["0x13e"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Mumbo's Skull
+        ["0x13F"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Mingy Jongo's Skull
+        ["0x13E"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Mumbo's Skull
         ["0x185"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Trash Can Mini
         ["0x140"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Wumba's Wigwam
         ["0x139"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Zubbas' Nest
