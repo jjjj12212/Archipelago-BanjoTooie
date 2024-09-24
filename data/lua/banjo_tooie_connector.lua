@@ -1008,16 +1008,14 @@ local ASSET_MAP_CHECK = {
             ["STOPNSWAP"] = {
                 "1230957"
             }
-        },	
+        },
         ["0xAD"]  =	{ --SM - Grunty's Lair
             -- Cheato Rewards should be here
-        },	
-
+        },
         --JINJO VILLAGE
         ["0x143"] =	{ --JV - Bottles' House
             --Amaze-O-Gaze should be here
-        },     
-
+        },
         --ISLE O' HAGS
         ["0x155"] =	{"Isle O' Hags", "Cliff Top"},          --IoH - Cliff Top
         ["0x150"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Heggy's Egg Shed
@@ -1058,61 +1056,123 @@ local ASSET_MAP_CHECK = {
                 "1230603", --pillars
             }
         },
-        ["0x17a"] =	{"Mayahem Temple", "Main Area"},            --MT - Targitzan's Really Sacred Chamber
-        ["0x177"] =	{"Mayahem Temple", "Main Area"},            --MT - Targitzan's Slightly Sacred Chamber
-        ["0x179"] =	{"Mayahem Temple", "Main Area"},            --MT - Targitzan's Temple Lobby
-        ["0XC5"] =	{"Mayahem Temple", "Main Area"},            --MT - Treasure Chamber
-        ["0XB6"] =	{"Mayahem Temple", "Jade Snake Grove"},     --MT - Wumba's Wigwam
-
+        ["0x17A"] =	{ --MT - Targitzan's Really Sacred Chamber
+            ["JIGGIES"] = {
+                "1230596" --Targitzan
+            }
+        },
+        ["0x177"] =	{ --MT - Targitzan's Slightly Sacred Chamber
+            ["JIGGIES"] = {
+                "1230597" --Slightly Sacred Chamber
+            }
+        },
+        ["0xC5"] = { --MT - Treasure Chamber
+            ["JIGGIES"] = {
+                "1230600" --Treasure Chamber
+            }
+        },
         --GLITTER GULCH MINE
-        ["0XC7"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM
-        ["0XDB"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Canary Cave
-        ["0x16f"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Canary Mary Race (1)
-        ["0x170"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Canary Mary Race (2)
-        --["0XD0"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Chuffy's Cab
-        ["0XCB"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Crushing Shed
-        ["0XCC"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Flooded Caves
-        ["0XCA"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Fuel Depot
-        ["0XD3"] =	{"Glitter Gulch Mine", "Gloomy Caverns"},   --GGM - Generator Cavern
-        ["0XD2"] =	{"Glitter Gulch Mine", "Gloomy Caverns"},   --GGM - Gloomy Caverns
-        --["0XD1"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Inside Chuffy's Boiler
-        --["0x121"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Inside Chuffy's Wagon
-        ["0XD9"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Mumbo's Skull
-        ["0XDC"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Ordnance Storage
-        ["0x163"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Ordnance Storage Entrance
-        ["0XD4"] =	{"Glitter Gulch Mine", "Gloomy Caverns"},   --GGM - Power Hut
-        ["0XCF"] =	{"Glitter Gulch Mine", "Gloomy Caverns"},   --GGM - Power Hut Basement
-        ["0XD8"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Prospector's Hut
-        ["0XDA"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Toxic Gas Cave
-        ["0XD7"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Train Station
-        ["0XCD"] =	{"Glitter Gulch Mine", "Water Storage"},    --GGM - Water Storage
-        ["0x126"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Water Supply Pipe
-        ["0XCE"] =	{"Glitter Gulch Mine", "Waterfall Cavern"}, --GGM - Waterfall Cavern
-        ["0XE9"] =	{"Glitter Gulch Mine", "Main Area"},        --GGM - Wumba Wigwam
+        ["0xC7"] ={ --GGM
+            ["JIGGIES"] = {
+                "1230607", -- Canary Mary
+                "1230612", -- Crushing Shed
+                "1230613" -- Waterfall
+            }
+        },
+        ["0xCC"] ={ --GGM - Flooded Caves
+            ["JIGGIES"] = {
+                "1230615" -- Flooded Cave
+            }
+        },
+        ["0xCA"] ={ --GGM - Fuel Depot
+            --Notes
+        },
+        ["0xD3"] = { --GGM - Generator Cavern
+            ["JIGGIES"] = {
+                "1230608" -- Generator Cavern
+            }
+        },
+        ["0xD2"] = { --GGM - Gloomy Caverns
 
+        },
+        ["0xD1"] = { --GGM - Inside Chuffy's Boiler
+            ["JIGGIES"] = {
+                "1230606" -- King Coal
+            },
+        },
+        ["0x163"] =	{ --GGM - Ordnance Storage Entrance
+            ["JIGGIES"] = {
+                "1230610" -- Ordnance Storage
+            },
+        },
+        ["0xCF"] = { --GGM - Power Hut Basement
+            ["JIGGIES"] = {
+                "1230614" -- Power Hut Basement
+            },
+        },
+        ["0xD8"] = { --GGM - Prospector's Hut
+            ["JIGGIES"] = {
+                "1230611" -- Dilberta
+            },
+        },
+        ["0xDA"] = { --GGM - Toxic Gas Cave
+
+        },
+        ["0xD7"] = { --GGM - Train Station
+
+        },
+        ["0xCD"] = { --GGM - Water Storage
+
+        },
+        ["0xCE"] = { --GGM - Waterfall Cavern
+            ["JIGGIES"] = {
+                "1230609" -- Waterfall Cavern
+            },
+        },
         --WITCHYWORLD
-        ["0XD6"] =	{"Witchyworld", "Main Area"},               --WW
-        ["0XE4"] =	{"Witchyworld", "Crazy Castle Stockade"},   --WW - Balloon Burst Game
-        ["0XEA"] =	{"Witchyworld", "The Haunted Cavern"},      --WW - Cave of Horrors
-        ["0XE2"] =	{"Witchyworld", "Crazy Castle Stockade"},   --WW - Crazy Castle Lobby
-        ["0XE3"] =	{"Witchyworld", "Crazy Castle Stockade"},   --WW - Crazy Castle Pump Room
-        ["0XE1"] =	{"Witchyworld", "Crazy Castle Stockade "},  --WW - Crazy Castle Stockade
-        ["0x13b"] =	{"Witchyworld", "Crazy Castle Stockade "},  --WW - Crazy Castle Stockade (Saucer)
-        ["0XDE"] =	{"Witchyworld", "Main Area"},               --WW - Dodgem Challenge 1 vs 1
-        ["0XDF"] =	{"Witchyworld", "Main Area"},               --WW - Dodgem Challenge 2 vs 1
-        ["0XE0"] =	{"Witchyworld", "Main Area"},               --WW - Dodgem Challenge 3 vs 1
-        ["0XDD"] =	{"Witchyworld", "Main Area"},               --WW - Dodgem Dome Lobby
-        ["0x186"] =	{"Witchyworld", "Main Area"},               --WW - Dodgems
-        ["0XEB"] =	{"Witchyworld", "The Haunted Cavern"},      --WW - Haunted Cavern
-        ["0XE5"] =	{"Witchyworld", "Crazy Castle Stockade"},   --WW - Hoop Hurry
-        ["0XF9"] =	{"Witchyworld", "Main Area"},               --WW - Mr. Patch
-        ["0x176"] =	{"Witchyworld", "The Inferno"},             --WW - Mumbo's Skull
-        ["0x124"] =	{"Witchyworld", "Main Area"},               --WW - Saucer of Peril
-        ["0xe6"] =	{"Witchyworld", "Main Area"},               --WW - Star Spinner
-        ["0x13c"] =	{"Witchyworld", "Main Area"},               --WW - Star Spinner (Saucer)
-        ["0XE7"] =	{"Witchyworld", "The Inferno"},             --WW - The Inferno
-        ["0XEC"] =	{"Witchyworld", "Main Area"},               --WW - Train Station
-        ["0xd5"] =	{"Witchyworld", "Main Area"},               --WW - Wumba's Wigwam
+        ["0xD6"] = { --WW
+            ["JIGGIES"] = {
+                "1230619", -- Saucer of Peril
+                "1230621", -- Dive of Death
+                "1230622", -- Mrs Boggy
+                "1230625", -- Cactus of Strength
+            },
+        },
+        ["0xEA"] = { --WW - Cave of Horrors
+
+        },
+        ["0xE1"] = { --WW - Crazy Castle Stockade
+            ["JIGGIES"] = {
+                "1230616", -- Hoop Hurry
+                "1230620", -- Balloon Burst
+            },
+        },
+        ["0xDD"] = { --WW - Dodgem Dome Lobby
+            ["JIGGIES"] = {
+                "1230617", -- Dodgem
+            },
+        },
+        ["0xEB"] = { --WW - Haunted Cavern
+
+        },
+        ["0xF9"] = { --WW - Mr. Patch
+            ["JIGGIES"] = {
+                "1230618", -- Patches
+            },
+        },
+        ["0xE6"] = { --WW - Star Spinner
+            ["JIGGIES"] = {
+                "1230623", -- Star Spinner
+            },
+        },
+        ["0xE7"] = { --WW - The Inferno
+            ["JIGGIES"] = {
+                "1230624", -- The Inferno
+            },
+        },
+        ["0xD5"] = { --WW - Wumba's Wigwam
+
+        },
 
         --JOLLY ROGER'S LAGOON
         ["0x1a7"] =	{"Jolly Roger's Lagoon", "Main Area"},      --JRL
