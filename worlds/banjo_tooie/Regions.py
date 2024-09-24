@@ -631,7 +631,7 @@ def connect_regions(self):
     region_PL.add_exits({regionName.GM, regionName.IOHPG, regionName.IOHCT},
                         {regionName.GM: lambda state: rules.PL_to_GGM(state), 
                          regionName.IOHPG: lambda state: rules.PL_to_PG(state),
-                        regionName.IOHCT: lambda state: state.has(itemName.SPLITUP, player)})
+                        regionName.IOHCT: lambda state: rules.split_up(state)})
     
     region_GM = multiworld.get_region(regionName.GM, player)
     region_GM.add_exits({regionName.GMWSJT, regionName.IOHPL, regionName.CHUFFY, regionName.WW},
@@ -685,7 +685,7 @@ def connect_regions(self):
     region_IOHWL = multiworld.get_region(regionName.IOHWL, player)
     region_IOHWL.add_exits({regionName.IOHPGU, regionName.IOHQM, regionName.TL, regionName.CC},
                         {regionName.IOHPGU: lambda state: rules.WL_to_PGU(state),
-                         regionName.IOHQM: lambda state: rules.springBoots(state),
+                         regionName.IOHQM: lambda state: rules.springy_step_shoes(state),
                          regionName.TL: lambda state: rules.tdl_jiggy(state),
                          regionName.CC: lambda state: rules.ccl_jiggy(state)})
     
@@ -694,7 +694,7 @@ def connect_regions(self):
                         {regionName.WW: lambda state: rules.TDL_to_WW(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.tdl_to_chuffy(state),
                          regionName.IOHWL: lambda state: rules.TDL_to_IOHWL(state),
-                         regionName.TL_HATCH: lambda state: rules.longJump(state),
+                         regionName.TL_HATCH: lambda state: rules.long_jump(state),
                          })
     
     region_QM = multiworld.get_region(regionName.IOHQM, player)
@@ -712,8 +712,8 @@ def connect_regions(self):
     
     region_GI1 = multiworld.get_region(regionName.GI1, player)
     region_GI1.add_exits({regionName.GIO, regionName.GI2, regionName.GI3ALL, regionName.CHUFFY},
-                        {regionName.GIO: lambda state: state.has(itemName.SPLITUP, self.player),
-                         regionName.GI2: lambda state: rules.can_access_gi_fl1_2fl2(state),
+                        {regionName.GIO: lambda state: rules.split_up(state),
+                         regionName.GI2: lambda state: rules.F1_to_F2(state),
                          regionName.GI3ALL: lambda state: rules.F1_to_F3(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.gi_to_chuffy(state)})
     
