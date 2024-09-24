@@ -1563,7 +1563,7 @@ local AGI_JINJOS = {
 --     ["1230799"] = 0,
 -- };
 
-local JIGGIES = {};
+local BMM_JIGGIES = {};
 local BKM = {}; -- Banjo Tooie Movelist Table
 local BKNOTES = {}; -- Notes
 local BKSTATIONS = {} -- Stations
@@ -1580,459 +1580,6 @@ local DINO_KIDS = {} -- the 3 Dino Kids
 
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
-    ['JIGGY'] = {
-        ["1230676"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 0,
-            ['name'] = 'JV: White Jinjo Family Jiggy'
-        },
-        ["1230677"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 1,
-            ['name'] = 'Jinjo Village: Orange Jinjo Family Jiggy'
-        },
-        ["1230678"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 2,
-            ['name'] = 'JV: Yellow Jinjo Family Jiggy'
-        },
-        ["1230679"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 3,
-            ['name'] = 'JV: Brown Jinjo Family Jiggy'
-
-        },
-        ["1230680"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 4,
-            ['name'] = 'JV: Green Jinjo Family Jiggy'
-        },
-        ["1230681"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 5,
-            ['name'] = 'JV: Red Jinjo Family Jiggy'
-        },
-        ["1230682"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 6,
-            ['name'] = 'JV: Blue Jinjo Family Jiggy'
-        },
-        ["1230683"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 7,
-            ['name'] = 'JV: Purple Jinjo Family Jiggy'
-        },
-        ["1230684"] = {
-            ['addr'] = 0x50,
-            ['bit'] = 0,
-            ['name'] = 'JV: Black Jinjo Family Jiggy'
-        },
-        ["1230685"] = {
-            ['addr'] = 0x50,
-            ['bit'] = 1,
-            ['name'] = 'JV: King Jingaling Jiggy'
-        },
-        ["1230596"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 0,
-            ['name'] = 'MT: Targitzan Jiggy'
-        },
-        ["1230597"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 1,
-            ['name'] = 'MT: Slightly Sacred Chamber Jiggy'
-        },
-        ["1230598"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 2,
-            ['name'] = 'MT: Kickball Jiggy'
-        },
-        ["1230599"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 3,
-            ['name'] = 'MT: Bovina Jiggy'
-        },
-        ["1230600"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 4,
-            ['name'] = 'MT: Treasure Chamber Jiggy'
-        },
-        ["1230601"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 5,
-            ['name'] = 'MT: Golden Goliath Jiggy'
-        },
-        ["1230602"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 6,
-            ['name'] = 'MT: Prison Compound Quicksand Jiggy'
-        },
-        ["1230603"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 7,
-            ['name'] = 'MT: Pillars Jiggy'
-        },
-        ["1230604"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 0,
-            ['name'] = 'MT: Top of Temple Jiggy'
-        },
-        ["1230605"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 1,
-            ['name'] = 'MT: Ssslumber Jiggy'
-        },
-        ["1230606"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 2,
-            ['name'] = 'GGM: Old King Coal Jiggy'
-        },
-        ["1230607"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 3,
-            ['name'] = 'GGM: Canary Mary Jiggy'
-        },
-        ["1230608"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 4,
-            ['name'] = 'GGM: Generator Cavern Jiggy'
-        },
-        ["1230609"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 5,
-            ['name'] = 'GGM: Waterfall Cavern Jiggy'
-        },
-        ["1230610"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 6,
-            ['name'] = 'GGM: Ordinance Storage Jiggy'
-        },
-        ["1230611"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 7,
-            ['name'] = 'GGM: Dilberta Jiggy'
-        },
-        ["1230612"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 0,
-            ['name'] = 'GGM: Crushing Shed Jiggy'
-        },
-        ["1230613"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 1,
-            ['name'] = 'GGM: Waterfall Jiggy'
-        },
-        ["1230614"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 2,
-            ['name'] = 'GGM: Power Hut Basement Jiggy'
-        },
-        ["1230615"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 3,
-            ['name'] = 'GGM: Flooded Caves Jiggy'
-        },
-        ["1230616"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 4,
-            ['name'] = 'WW: Hoop Hurry Jiggy'
-        },
-        ["1230617"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 5,
-            ['name'] = 'WW: Dodgems Jiggy'
-        },
-        ["1230618"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 6,
-            ['name'] = 'WW: Mr. Patch Jiggy'
-        },
-        ["1230619"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 7,
-            ['name'] = 'WW: Saucer of Peril Jiggy'
-        },
-        ["1230620"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 0,
-            ['name'] = 'WW: Balloon Burst Jiggy'
-        },
-        ["1230621"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 1,
-            ['name'] = 'WW: Dive of Death Jiggy'
-        },
-        ["1230622"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 2,
-            ['name'] = 'WW: Mrs. Boggy Jiggy'
-        },
-        ["1230623"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 3,
-            ['name'] = 'WW: Star Spinner Jiggy'
-        },
-        ["1230624"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 4,
-            ['name'] = 'WW: The Inferno Jiggy'
-        },
-        ["1230625"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 5,
-            ['name'] = 'WW: Cactus of Strength Jiggy'
-        },
-        ["1230626"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 6,
-            ['name'] = 'JRL: Mini-Sub Challenge Jiggy'
-        },
-        ["1230627"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 7,
-            ['name'] = 'JRL: Tiptup Jiggy'
-        },
-        ["1230628"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 0,
-            ['name'] = 'JRL: Chris P. Bacon Jiggy'
-        },
-        ["1230629"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 1,
-            ['name'] = 'JRL: Pig Pool Jiggy'
-        },
-        ["1230630"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 2,
-            ['name'] = "JRL: Smuggler's Cavern Jiggy"
-        },
-        ["1230631"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 3,
-            ['name'] = 'JRL: Merry Maggie Jiggy'
-        },
-        ["1230632"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 4,
-            ['name'] = 'JRL: Woo Fak Fak Jiggy'
-        },
-        ["1230633"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 5,
-            ['name'] = 'JRL: Seemee Jiggy'
-        },
-        ["1230634"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 6,
-            ['name'] = 'JRL: Pawno Jiggy'
-        },
-        ["1230635"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 7,
-            ['name'] = 'JRL: UFO Jiggy'
-        },
-        ["1230636"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 0,
-            ['name'] = "TDL: Under Terry's Nest Jiggy"
-        },
-        ["1230637"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 1,
-            ['name'] = 'TDL: Dippy Jiggy'
-        },
-        ["1230638"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 2,
-            ['name'] = 'TDL: Scrotty Jiggy'
-        },
-        ["1230639"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 3,
-            ['name'] = 'TDL: Terry Jiggy'
-        },
-        ["1230640"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 4,
-            ['name'] = 'TDL: Oogle Boogle Tribe Jiggy'
-        },
-        ["1230641"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 5,
-            ['name'] = 'TDL: Chompas Belly Jiggy'
-        },
-        ["1230642"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 6,
-            ['name'] = "TDL: Terry's Kids Jiggy"
-        },
-        ["1230643"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 7,
-            ['name'] = 'TDL: Stomping Plains Jiggy'
-        },
-        ["1230644"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 0,
-            ['name'] = 'TDL: Rocknut Tribe Jiggy'
-        },
-        ["1230645"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 1,
-            ['name'] = 'TDL: Code of the Dinosaurs Jiggy'
-        },
-        ["1230646"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 2,
-            ['name'] = 'GI: Underwater Waste Disposal Plant Jiggy'
-        },
-        ["1230647"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 3,
-            ['name'] = 'GI: Weldar Jiggy'
-        },
-        ["1230648"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 4,
-            ['name'] = "GI: Clinker's Cavern Jiggy"
-        },
-        ["1230649"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 5,
-            ['name'] = 'GI: Skivvies Jiggy'
-        },
-        ["1230650"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 6,
-            ['name'] = 'GI: Floor 5 Jiggy'
-        },
-        ["1230651"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 7,
-            ['name'] = 'GI: Quality Control Jiggy'
-        },
-        ["1230652"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 0,
-            ['name'] = 'GI: Floor 1 Guarded Jiggy'
-        },
-        ["1230653"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 1,
-            ['name'] = 'GI: Trash Compactor Jiggy'
-        },
-        ["1230654"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 2,
-            ['name'] = 'GI: Twinkly Packing Jiggy'
-        },
-        ["1230655"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 3,
-            ['name'] = 'GI: Waste Disposal Plant Box Jiggy'
-        },
-        ["1230656"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 4,
-            ['name'] = 'HFP: Dragon Brothers Jiggy'
-        },
-        ["1230657"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 5,
-            ['name'] = 'HFP: Inside the Volcano Jiggy'
-        },
-        ["1230658"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 6,
-            ['name'] = 'HFP: Sabreman Jiggy'
-        },
-        ["1230659"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 7,
-            ['name'] = 'HFP: Boggy Jiggy'
-        },
-        ["1230660"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 0,
-            ['name'] = 'HFP: Icy Side Station Jiggy'
-        },
-        ["1230661"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 1,
-            ['name'] = 'HFP: Oil Drill Jiggy'
-        },
-        ["1230662"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 2,
-            ['name'] = 'HFP: Stomping Plains Jiggy'
-        },
-        ["1230663"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 3,
-            ['name'] = 'HFP: Kickball Jiggy'
-        },
-        ["1230664"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 4,
-            ['name'] = 'HFP: Aliens Jiggy'
-        },
-        ["1230665"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 5,
-            ['name'] = 'HFP: Lava Waterfall Jiggy'
-        },
-        ["1230666"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 6,
-            ['name'] = 'CCL: Mingy Jongo Jiggy'
-        },
-        ["1230667"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 7,
-            ['name'] = 'CCL: Mr Fit Jiggy'
-        },
-        ["1230668"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 0,
-            ['name'] = "CCL: Pot O' Gold Jiggy"
-        },
-        ["1230669"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 1,
-            ['name'] = 'CCL: Canary Mary Jiggy'
-        },
-        ["1230670"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 2,
-            ['name'] = 'CCL: Zubbas Jiggy'
-        },
-        ["1230671"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 3,
-            ['name'] = 'CCL: Jiggium Plant Jiggy'
-        },
-        ["1230672"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 4,
-            ['name'] = 'CCL: Cheese Wedge Jiggy'
-        },
-        ["1230673"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 5,
-            ['name'] = 'CCL: Trash Can Jiggy'
-        },
-        ["1230674"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 6,
-            ['name'] = 'CCL: Superstash Jiggy'
-        },
-        ["1230675"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 7,
-            ['name'] = 'CCL: Jelly Castle Jiggy'
-        },
-    },
     ['JINJO'] = {
         ["1230591"] = {
             ['addr'] = 0x3E,
@@ -5027,6 +4574,125 @@ function hag1_phase_skips()
     local pointer_addr = BTRAMOBJ:dereferencePointer(tmp_flg_pointer)
     mainmemory.writebyte(pointer_addr + beginning_phase_offset, 255); -- Skips part 1
     mainmemory.writebyte(pointer_addr + ending_phase_offset, 31); -- Skips Part 2
+end
+
+---------------------------------- BKNOTES ---------------------------------
+
+function init_JIGGIES(type) -- Initialize JIGGIES
+    local checks = {}
+    for locationId,v in pairs(NON_AGI_MAP['JIGGIES'])
+    do
+        if type == "BMM"
+        then
+            BMM_JIGGIES[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_JIGGY_BMM")
+        elseif type == "AGI"
+        then
+            checks[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_JIGGY_AGI")
+        end
+    end
+    return checks
+end
+
+function restore_BMM_JIGGIES() --Only run while unpausing 
+    for locationId,v in pairs(NON_AGI_MAP['JIGGIES']) do
+        if BMM_JIGGIES[locationId] == true
+        then
+            BTRAMOBJ:setFlag(v['addr'], v['bit']);
+        else
+            BTRAMOBJ:clearFlag(v['addr'], v['bit']);
+        end
+    end
+end
+
+function set_AP_JIGGIES() -- Only run while Pausing or Transistion to certain maps
+    for locationId, value in pairs(AGI_JIGGIES)
+    do
+        local get_addr = NON_AGI_MAP['JIGGIES'][locationId]
+        if value == true
+        then
+            BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
+        else
+            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+        end
+    end
+end
+
+function obtained_AP_JIGGY()
+    for locationId, value in pairs(AGI_JIGGIES)
+    do
+        if value == false
+        then
+            AGI_JIGGIES[locationId] = true;
+            local get_addr = NON_AGI_MAP['TREBLE'][tostring(locationId)]
+            BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_OBTAIN");
+            break
+        end
+    end
+end
+
+function jiggy_ui_update()
+    local jiggy_amt = 0
+    for locationId, value in pairs(AGI_JIGGIES)
+    do
+        if value == false
+        then
+            jiggy_amt = jiggy_amt + 1
+        end
+    end
+    mainmemory.write_u16_be(0x11B0BC, jiggy_amt)
+end
+
+function getTreblePlayerModel()
+    if TREBLE_WAIT_TIMER <= 3
+    then
+        if DEBUG == true
+        then
+            print("Watching Treble")
+        end
+        TREBLE_WAIT_TIMER = TREBLE_WAIT_TIMER + 1
+        return
+    end
+    BTMODELOBJ:changeName("Treble Clef", false)
+    local object = BTMODELOBJ:checkModel();
+    if object == false
+    then
+        BTMODELOBJ:changeName("Player", false)
+        local player = BTMODELOBJ:checkModel();
+        if player == false
+        then
+            return
+        end
+        if DEBUG == true
+        then
+            print("No Treble on Map")
+            print("AP Trebles enabled")
+        end
+        set_AP_BKNOTES() --No Treble on this map
+        CHECK_FOR_TREBLE = false
+        WATCH_LOADED_TREBLE = false
+        TREBLE_WAIT_TIMER = 0
+        return
+    end
+    if DEBUG == true
+    then
+        print("Treble Found")
+    end
+    set_AP_BKNOTES();
+    CHECK_FOR_TREBLE = false
+    TREBLE_GONE_CHECK = 2
+    WATCH_LOADED_TREBLE = true
+end
+
+function nearTreble()
+    BTMODELOBJ:changeName("Treble Clef", false);
+    local POS = BTMODELOBJ:getSingleModelCoords();
+    if POS == false
+    then
+        return false
+    end
+    TREBLE_SPOTED = true
+    TREBLE_MAP = CURRENT_MAP
+    return true
 end
 
 ---------------------------------- BKNOTES ---------------------------------
