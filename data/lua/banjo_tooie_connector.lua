@@ -1289,30 +1289,81 @@ local ASSET_MAP_CHECK = {
             },
         },
         --GRUNTY'S INDUSTRIES
-        ["0x100"] =	{"Grunty's Industries", "Outside"},                 --GI
-        ["0x10f"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Basement
-        ["0x110"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Basement (Repair Depot)
-        ["0x111"] =	{"Grunty's Industries", "Waste Disposal Plant"},    --GI - Basement (Waste Disposal)
-        --["0x105"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Elevator shaft
-        ["0x101"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Floor 1
-        ["0x106"] =	{"Grunty's Industries", "Floor 2"},                 --GI - Floor 2
-        ["0x107"] =	{"Grunty's Industries", "Floor 2"},                 --GI - Floor 2 (Electromagnet Chamber)
-        ["0x108"] =	{"Grunty's Industries", "Floor 3"},                 --GI - Floor 3
-        ["0x109"] =	{"Grunty's Industries", "Floor 3"},                 --GI - Floor 3 (Boiler Plant)
-        ["0x10a"] =	{"Grunty's Industries", "Floor 3"},                 --GI - Floor 3 (Packing Room)
-        ["0x10b"] =	{"Grunty's Industries", "Floor 4"},                 --GI - Floor 4
-        ["0x10c"] =	{"Grunty's Industries", "Floor 4"},                 --GI - Floor 4 (Cable Room)
-        ["0x162"] =	{"Grunty's Industries", "Floor 4"},                 --GI - Floor 4 (Clinker's Cavern)
-        ["0x10d"] =	{"Grunty's Industries", "Floor 4"},                 --GI - Floor 4 (Quality Control)
-        ["0x10e"] =	{"Grunty's Industries", "Floor 5"},                 --GI - Floor 5
-        ["0x172"] =	{"Grunty's Industries", "Floor 3"},                 --GI - Mumbo's Skull
-        ["0x17d"] =	{"Grunty's Industries", "Floor 3"},                 --GI - Packing Game
-        ["0x187"] =	{"Grunty's Industries", "Floor 4"},                 --GI - Sewer Entrance
-        ["0x102"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Train Station
-        ["0x104"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Trash Compactor
-        ["0x125"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Water Supply Pipe
-        ["0x103"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Workers' Quarters
-        ["0x11f"] =	{"Grunty's Industries", "Floor 2"},                 --GI - Wumba's Wigwam
+        ["0x100"] =	{ --GI
+            ["JIGGIES"] = {
+                "1230646", -- Skivvy
+            },
+        },
+        ["0x10F"] = { --GI - Basement
+            ["JIGGIES"] = {
+                "1230647", -- Weldar
+            },
+        },
+        ["0x110"] =	{ --GI - Basement (Repair Depot)
+            -- cheato
+        },
+        ["0x111"] =	{ --GI - Basement (Waste Disposal)
+            ["JIGGIES"] = {
+                "1230646", -- Underwater Waste Disposal
+                "1230655", -- Plant Box
+            },
+        },
+        ["0x101"] =	{ --GI - Floor 1
+            ["JIGGIES"] = {
+                "1230646", -- Skivvy
+                "1230652", -- Floor 1 Guarded
+            },
+        },
+        ["0x106"] =	{ --GI - Floor 2
+            ["JIGGIES"] = {
+                "1230646", -- Skivvy
+            },
+        },
+        ["0x108"] =	{ --GI - Floor 3
+            ["JIGGIES"] = {
+                "1230646", -- Skivvy
+            },
+        },
+        ["0x109"] =	{ --GI - Floor 3 (Boiler Plant)
+            --Jinjo
+        },
+        ["0x10A"] =	{ --GI - Floor 3 (Packing Room)
+            ["JIGGIES"] = {
+                "1230654", -- Twinkly Packing
+            },
+        },
+        ["0x10B"] =	{ --GI - Floor 4
+
+        },
+        ["0x10D"] =	{ --GI - Floor 4 (Quality Control)
+            ["JIGGIES"] = {
+                "1230651", -- Quality Control
+            },
+        },
+        ["0x10E"] =	{ --GI - Floor 5
+            ["JIGGIES"] = {
+                "1230646", -- Skivvy
+                "1230650", -- Floor 5
+            },
+        },
+        ["0x187"] =	{ --GI - Sewer Entrance
+            ["JIGGIES"] = {
+                "1230648", -- Clinker
+            },
+        },
+        ["0x102"] =	{ --GI - Train Station
+
+        },
+        ["0x104"] =	{ --GI - Trash Compactor
+            ["JIGGIES"] = {
+                "1230653", -- Trash Compactor
+            },
+        },
+        ["0x103"] =	{ --GI - Workers' Quarters
+            ["JIGGIES"] = {
+                "1230646", -- Skivvy
+            },
+        },
 
         --HAILFIRE PEAKS
         ["0x131"] =	{"Hailfire Peaks", "Icy Side"},                     --HFP - Boggy's Igloo
