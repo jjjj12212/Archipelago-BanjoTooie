@@ -3,6 +3,8 @@
   - Name changes:
     - BH: Goggles Amaze-o-Gaze -> IoH: Amaze-o-Gaze Goggles
     - Egg Shoot -> Third Person Egg Shooting
+    - CCL Green Pool Glowbo -> CCL Outdoors Pool Glowbo
+    - CCL Central Cavern Glowbo -> CCL Indoors Pool Glowbo
   - Logic fixes:
    - Fuel Depot notes: Now have actual logic.
    - Prospector notes: can be gotten with no moves, if not on beginner logic.
