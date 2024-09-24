@@ -1414,27 +1414,56 @@ local ASSET_MAP_CHECK = {
 
         --CLOUD CUCKOOLAND
         ["0x136"] =	{ --CCL
-
+            ["JIGGIES"] = {
+                "1230667", -- Mr Fit
+                "1230669", -- Canary Mary 3
+                "1230671", -- Jiggium Plant
+                "1230675", -- Jelly Castle
+            },
         },
-        ["0x161"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Canary Mary Race
-        ["0x13A"] =	{"Cloud Cuckooland", "Central Cave"},               --CCL - Central Cavern
-        ["0x138"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Inside the Cheese Wedge
-        ["0x13D"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Inside the Pot o' Gold
-        ["0x137"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Inside the Trash Can
-        ["0x13F"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Mingy Jongo's Skull
-        ["0x13E"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Mumbo's Skull
-        ["0x185"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Trash Can Mini
-        ["0x140"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Wumba's Wigwam
-        ["0x139"] =	{"Cloud Cuckooland", "Outside"},                    --CCL - Zubbas' Nest
+        ["0x13A"] =	{ --CCL - Central Cavern
+            ["JIGGIES"] = {
+                "1230674", -- Superstash
+            },
+        },
+        ["0x138"] =	{ --CCL - Inside the Cheese Wedge
+            ["JIGGIES"] = {
+                "1230672", -- Cheese Wedge
+            },
+        },
+        ["0x13D"] =	{ --CCL - Inside the Pot o' Gold
+            ["JIGGIES"] = {
+                "1230668", -- pot o gold
+            },
+        },
+        ["0x137"] =	{ --CCL - Inside the Trash Can
+            ["JIGGIES"] = {
+                "1230673", -- Trash Can
+            },
+        },
+        ["0x13F"] =	{ --CCL - Mingy Jongo's Skull
+            ["JIGGIES"] = {
+                "1230666", -- Mingy Jongo
+            },
+        },
+        ["0x13E"] =	{ --CCL - Mumbo's Skull
+            ["JIGGIES"] = {
+                "1230666", -- Mingy Jongo
+            },
+        },
+        ["0x140"] =	{ --CCL - Wumba's Wigwam
+            --Jinjo
+        },
+        ["0x139"] =	{ --CCL - Zubbas' Nest
+            ["JIGGIES"] = {
+                "1230670", -- Zubba
+            },
+        },
 
         --CAULDRON KEEP
-        ["0x15d"] =	{"Isle O' Hags", "Quagmire"},                      --CK
-        ["0x160"] =	{"Isle O' Hags", "Quagmire"},                      --CK - Gun Chamber
-        ["0x19a"] =	{"Isle O' Hags", "Quagmire"},                      --CK - HAG 1
-        ["0x18a"] =	{"Isle O' Hags", "Quagmire"},                      --CK - Inside HAG 1
-        ["0x15e"] =	{"Isle O' Hags", "Quagmire"},                      --CK - The Gatehouse
-        ["0x15f"] =	{"Isle O' Hags", "Quagmire"},                      --CK - Tower of Tragedy
+        ["0x19A"] =	{ --CK - HAG 1
 
+        },
     }
 }
 
