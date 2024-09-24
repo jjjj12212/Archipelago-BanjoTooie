@@ -986,16 +986,18 @@ local ASSET_MAP_CHECK = {
     ["AGI_ASSETS"] = {
         ["ALL"] = {
             ["JIGGIES"] = { --Jinjo Jiggies
-                "1230676",
-                "1230677",
-                "1230678",
-                "1230679",
-                "1230680",
-                "1230681",
-                "1230682",
-                "1230683",
-                "1230684",
-                "1230685"
+                "1230676", --Jinjo
+                "1230677", --Jinjo
+                "1230678", --Jinjo
+                "1230679", --Jinjo
+                "1230680", --Jinjo
+                "1230681", --Jinjo
+                "1230682", --Jinjo
+                "1230683", --Jinjo
+                "1230684", --Jinjo
+                "1230685", --Jingaling
+--                "1230629", -- Pig Pool
+--                "1230637" -- Dippy
             }
         },
         --SPIRAL MOUNTAIN
@@ -1175,40 +1177,117 @@ local ASSET_MAP_CHECK = {
         },
 
         --JOLLY ROGER'S LAGOON
-        ["0x1a7"] =	{"Jolly Roger's Lagoon", "Main Area"},      --JRL
-        ["0xf4"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Ancient Swimming Baths
-        ["0x1a8"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Atlantis
-        ["0XFF"] =	{"Jolly Roger's Lagoon", "Main Area"},      --JRL - Blubber's Wave Race Hire
-        ["0XF6"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Electric Eel's lair
-        ["0XF8"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Inside the Big Fish
-        ["0XF1"] =	{"Jolly Roger's Lagoon", "Main Area"},      --JRL - Inside the UFO
-        ["0XED"] =	{"Jolly Roger's Lagoon", "Main Area"},      --JRL - Jolly's
-        ["0XFC"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Lord Woo Fak Fak
-        ["0XEF"] =	{"Jolly Roger's Lagoon", "Main Area"},      --JRL - Mumbo's Skull
-        ["0XEE"] =	{"Jolly Roger's Lagoon", "Main Area"},      --JRL - Pawno's Emporium
-        ["0x1a9"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Sea Bottom
-        ["0x181"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Sea Botom Cavern
-        ["0XF7"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Seaweed Sanctum
-        ["0x1a6"] =	{"Jolly Roger's Lagoon", "Main Area"},      --JRL - Smuggler's cavern
-        ["0XFA"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Temple of the Fishes
-        ["0x120"] =	{"Jolly Roger's Lagoon", "Atlantis"},       --JRL - Wumba's Wigwam
+        ["0x1A7"] =	{
+            ["JIGGIES"] = {
+                "1230627", -- Tiptup
+                "1230635", -- UFO
+                "1230629", -- Pig Pool
+            },
+        },      --JRL
+        ["0xF4"] = { --JRL - Ancient Swimming Baths
+
+        },
+        ["0x1A8"] =	{ --JRL - Atlantis
+            ["JIGGIES"] = {
+                "1230633", -- SEEMEE
+            },
+        },
+        ["0xFF"] = { --JRL - Blubber's Wave Race Hire
+            
+        },
+        ["0xF6"] = {  --JRL - Electric Eel's lair
+
+        },
+        ["0xF8"] =	{ --JRL - Inside the Big Fish
+
+        },
+        ["0xED"] =	{ --JRL - Jolly's
+            ["JIGGIES"] = {
+                "1230631", -- Merry Maggie
+            },
+        },
+        ["0xFC"] =	{ --JRL - Lord Woo Fak Fak
+            ["JIGGIES"] = {
+                "1230632", -- Lord Woo
+            },
+        },      
+        ["0xEE"] =	{ --JRL - Pawno's Emporium
+            ["JIGGIES"] = {
+                "1230634", -- Pawno
+            },
+        },
+        ["0x1A9"] =	{ --JRL - Sea Bottom
+            ["JIGGIES"] = {
+                "1230633", -- SEEMEE
+            },
+        },       
+        ["0x181"] =	{ --JRL - Sea Botom Cavern
+            ["JIGGIES"] = {
+                "1230626", -- Mini-Sub Challenge
+            },
+        },
+        ["0xF7"] = { --JRL - Seaweed Sanctum
+
+        },
+        ["0x1A6"] =	{ --JRL - Smuggler's cavern
+            ["JIGGIES"] = {
+                "1230633", -- SEEMEE
+                "1230630", -- Smuggler
+            },
+        },     
+        ["0xFA"] = { --JRL - Temple of the Fishes
+            ["JIGGIES"] = {
+                "1230628", -- Chris P. Bacon
+            },
+        },
 
         --TERRYDACTYLAND
-        ["0x112"] =	{"Terrydactyland", "Main Area"},                --TDL
-        ["0x11b"] =	{"Terrydactyland", "Main Area"},                --TDL - Bonfire Cavern
-        ["0x123"] =	{"Terrydactyland", "Inside the Mountain"},      --TDL - Inside Chompa's Belly
-        ["0x116"] =	{"Terrydactyland", "Inside the Mountain"},      --TDL - Inside the Mountain
-        ["0x171"] =	{"Terrydactyland", "Main Area"},                --TDL - Mumbo's Skull
-        ["0x115"] =	{"Terrydactyland", "Main Area"},                --TDL - Oogle Boogles' Cave
-        ["0x117"] =	{"Terrydactyland", "River Passage"},            --TDL - River Passage
-        ["0x11a"] =	{"Terrydactyland", "Stomping Plains"},          --TDL - Stomping Plains
-        ["0x118"] =	{"Terrydactyland", "Main Area"},                --TDL - Styracosaurus Family Cave
-        ["0x113"] =	{"Terrydactyland", "Terry's Nest"},             --TDL - Terry's Nest
-        ["0x114"] =	{"Terrydactyland", "Main Area"},                --TDL - Train Station
-        ["0x119"] =	{"Terrydactyland", "Unga Bungas' Cave"},        --TDL - Unga Bunga's Cave
-        ["0x122"] =	{"Terrydactyland", "Main Area"},                --TDL - Wumba's Wigwam (Big)
-        ["0x11e"] =	{"Terrydactyland", "Main Area"},                --TDL - Wumba's Wigwam (Small)
+        ["0x112"] =	{ --TDL
+            ["JIGGIES"] = {
+                "1230637", -- Dippy
+                "1230644", -- Rocknut
+                "1230645", -- Dino Code
+            },
+        },
+        ["0x123"] =	{ --TDL - Inside Chompa's Belly
+            ["JIGGIES"] = {
+                "1230641", -- Chompa
+            },
+        },
+        ["0x116"] =	{ --TDL - Inside the Mountain
+            ["JIGGIES"] = {
+                "1230636", -- Under Terry Nest
+            },
+        },
+        ["0x115"] =	{
+            ["JIGGIES"] = {
+                "1230640", -- Oogle Boogle Tribe
+            },
+        },                --TDL - Oogle Boogles' Cave
+        ["0x117"] =	{ --TDL - River Passage
 
+        },
+        ["0x11A"] =	{ --TDL - Stomping Plains
+            ["JIGGIES"] = {
+                "1230643", -- Stomping
+            },
+        },
+        ["0x118"] =	{ --TDL - Styracosaurus Family Cave
+            ["JIGGIES"] = {
+                "1230638", -- Scrotty
+            },
+        },
+        ["0x113"] =	{ --TDL - Terry's Nest
+            ["JIGGIES"] = {
+                "1230639", -- Terry
+                "1230642", -- Terry's Kids
+            },
+        },
+        ["0x114"] =	{ --TDL - Train Station
+            ["JIGGIES"] = {
+                "1230644", -- Rocknut
+            },
+        },
         --GRUNTY'S INDUSTRIES
         ["0x100"] =	{"Grunty's Industries", "Outside"},                 --GI
         ["0x10f"] =	{"Grunty's Industries", "Floor 1"},                 --GI - Basement
