@@ -2816,7 +2816,7 @@ class BanjoTooieRules:
             logic = (state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state))\
                     or (self.has_explosives(state) and (self.pack_whack(state) or self.sack_pack(state)\
                         or (self.leg_spring(state) and self.glide(state))))\
-                    or self.tall_jump(state)\
+                    or self.tall_jump(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state))\
                     or self.clockwork_shot(state)
         return logic
     
