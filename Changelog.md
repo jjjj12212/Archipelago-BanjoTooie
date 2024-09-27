@@ -491,7 +491,7 @@
 - Easter eggs removed
 - QOL
   - Bosses Cutscenes, no longer have to wait until Banjo Arrives at boss
-- change wording for forbid certian AP items on Jinjo Families
+- change wording for forbid certain AP items on Jinjo Families
 - add YAML option to only forbid Magic behind Jinjo Families
 - Logic Changes
   - Beginner logic
