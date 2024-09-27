@@ -80,6 +80,11 @@ local AP_MESSAGES = {};
 
 local GAME_LOADED = false;
 
+-------------- JIGGY VARS -----------
+local JIGGY_COUNT = 0; -- Used for UI
+local BMM_BACKUP_JIGGY = false;
+local AGI_JIGGY_SET = false;
+
 -------------- SILO VARS ------------
 local CHECK_FOR_SILO = false; --  If True, you are Transistioning maps
 local WATCH_LOADED_SILOS = false; -- Silo found on Map, Need to Monitor Distance
@@ -4576,7 +4581,7 @@ function hag1_phase_skips()
     mainmemory.writebyte(pointer_addr + ending_phase_offset, 31); -- Skips Part 2
 end
 
----------------------------------- BKNOTES ---------------------------------
+---------------------------------- JIGGIES ---------------------------------
 
 function init_JIGGIES(type) -- Initialize JIGGIES
     local checks = {}
@@ -4594,26 +4599,35 @@ function init_JIGGIES(type) -- Initialize JIGGIES
 end
 
 function restore_BMM_JIGGIES() --Only run while unpausing 
-    for locationId,v in pairs(NON_AGI_MAP['JIGGIES']) do
-        if BMM_JIGGIES[locationId] == true
-        then
-            BTRAMOBJ:setFlag(v['addr'], v['bit']);
-        else
-            BTRAMOBJ:clearFlag(v['addr'], v['bit']);
+    if BMM_BACKUP_JIGGY == true and AGI_JIGGY_SET == true
+    then
+        for locationId,v in pairs(NON_AGI_MAP['JIGGIES']) do
+            if BMM_JIGGIES[locationId] == true
+            then
+                BTRAMOBJ:setFlag(v['addr'], v['bit']);
+            else
+                BTRAMOBJ:clearFlag(v['addr'], v['bit']);
+            end
         end
+        BMM_BACKUP_JIGGY = false
+        AGI_JIGGY_SET = false
     end
 end
 
 function set_AP_JIGGIES() -- Only run while Pausing or Transistion to certain maps
-    for locationId, value in pairs(AGI_JIGGIES)
-    do
-        local get_addr = NON_AGI_MAP['JIGGIES'][locationId]
-        if value == true
-        then
-            BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
-        else
-            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+    if BMM_BACKUP_JIGGY == true and AGI_JIGGY_SET == false
+    then
+        for locationId, value in pairs(AGI_JIGGIES)
+        do
+            local get_addr = NON_AGI_MAP['JIGGIES'][locationId]
+            if value == true
+            then
+                BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
+            else
+                BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+            end
         end
+        AGI_JIGGY_SET = true
     end
 end
 
@@ -4632,67 +4646,60 @@ end
 
 function jiggy_ui_update()
     local jiggy_amt = 0
-    for locationId, value in pairs(AGI_JIGGIES)
-    do
-        if value == false
-        then
-            jiggy_amt = jiggy_amt + 1
+    local ram_jiggy_count = mainmemory.read_u16_be(0x11B0BC)
+    if ram_jiggy_count ~= JIGGY_COUNT
+    then
+        for locationId, value in pairs(AGI_JIGGIES)
+        do
+            if value == false
+            then
+                jiggy_amt = jiggy_amt + 1
+            end
         end
+        mainmemory.write_u16_be(0x11B0BC, jiggy_amt)
+        JIGGY_COUNT = jiggy_amt
     end
-    mainmemory.write_u16_be(0x11B0BC, jiggy_amt)
 end
 
-function getTreblePlayerModel()
-    if TREBLE_WAIT_TIMER <= 3
+function backup_BMM_JIGGIES()
+    if BMM_BACKUP_JIGGY == false
     then
-        if DEBUG == true
-        then
-            print("Watching Treble")
+        for locationId,v in pairs(NON_AGI_MAP['JIGGIES']) do
+            if BTRAMOBJ:checkFlag(v['addr'], v['bit']) == true
+            then
+                BMM_JIGGIES[locationId] = true
+            else
+                BMM_JIGGIES[locationId] = false
+            end
         end
-        TREBLE_WAIT_TIMER = TREBLE_WAIT_TIMER + 1
-        return
+        BMM_BACKUP_JIGGY = true
     end
-    BTMODELOBJ:changeName("Treble Clef", false)
-    local object = BTMODELOBJ:checkModel();
-    if object == false
-    then
-        BTMODELOBJ:changeName("Player", false)
-        local player = BTMODELOBJ:checkModel();
-        if player == false
-        then
-            return
-        end
-        if DEBUG == true
-        then
-            print("No Treble on Map")
-            print("AP Trebles enabled")
-        end
-        set_AP_BKNOTES() --No Treble on this map
-        CHECK_FOR_TREBLE = false
-        WATCH_LOADED_TREBLE = false
-        TREBLE_WAIT_TIMER = 0
-        return
-    end
-    if DEBUG == true
-    then
-        print("Treble Found")
-    end
-    set_AP_BKNOTES();
-    CHECK_FOR_TREBLE = false
-    TREBLE_GONE_CHECK = 2
-    WATCH_LOADED_TREBLE = true
 end
 
-function nearTreble()
-    BTMODELOBJ:changeName("Treble Clef", false);
-    local POS = BTMODELOBJ:getSingleModelCoords();
-    if POS == false
+function jiggy_check() --TODO
+    local checks = {}
+    if BMM_BACKUP_JIGGY == true
     then
-        return false
+        return BMM_JIGGIES
     end
-    TREBLE_SPOTED = true
-    TREBLE_MAP = CURRENT_MAP
-    return true
+    if ASSET_MAP_CHECK["JIGGIES"][CURRENT_MAP] ~= nil
+    then
+        if BMM_BACKUP_JIGGY == true
+        then
+            return BMM_JIGGIES
+        end
+        for locationId,v in pairs(NON_AGI_MAP['JIGGIES'])
+        do
+            checks[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_JIGGY_AGI")
+        end
+        return checks
+    end
+
+    for locationId,v in pairs(NON_AGI_MAP['JIGGIES'])
+        do
+            checks[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_JIGGY_AGI")
+        end
+        return checks
 end
 
 ---------------------------------- BKNOTES ---------------------------------
