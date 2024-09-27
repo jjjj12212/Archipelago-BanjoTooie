@@ -77,7 +77,7 @@ Banjo-Tooie:
   randomize_notes: 'true'
   randomize_stop_n_swap: 'true' # Ice key + Eggs + Egg rewards are added to the item pool.
 
-  # Changes which levels are open; Not recommended when doing multiworld seeds.
+  # Changes which levels are open; Recommended when doing multiworld seeds.
   randomize_worlds: 'false'
 
   logic_type: 0                # 0: Beginner, 1: Normal, 2: Advanced, 3: glitched

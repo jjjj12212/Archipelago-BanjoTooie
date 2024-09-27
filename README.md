@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | 2.1.2-Beta
+# Archipelago Banjo-Tooie (US-Only) | 2.1.3-Beta
 Banjo Tooie for Archipelago 
 
 # Controller Shortcuts with this implementation
@@ -20,7 +20,7 @@ Banjo Tooie for Archipelago
 - Cheato Pages (YAML Option)
 - Glowbos activates magic automatically (YAML Option)
 - Banjo Advanced Jamjar Moves (YAML Option)
-- Auto skip certian dialogs and cutscenes
+- Auto skip certain dialogs and cutscenes
 - Doubloons (YAML Option)
 - Treble Clef (YAML Option)
 - Train Station (YAML Option)
@@ -28,7 +28,7 @@ Banjo Tooie for Archipelago
 - Jinjos (YAML Option)
 - Notes (YAML Option)
 - Skip Jiggywiggy puzzles to open levels
-- Option for worlds to open in random order. (requires certian amount of items randomized and puzzle skip)
+- Option for worlds to open in random order. (requires certain amount of items randomized and puzzle skip)
 - Alternate Goals
 - Prison code is always set to: <b>Sun, Moon, Star, Moon, Sun</b>
 - Cheato Rewards as an option (awards an additional randomized item)

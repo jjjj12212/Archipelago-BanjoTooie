@@ -73,7 +73,7 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
 
     def __init__(self, world, player):
-        self.version = "V2.1.2"
+        self.version = "V2.1.3"
         self.kingjingalingjiggy = False
         self.starting_egg: int = 0
         self.starting_attack: int = 0
@@ -331,16 +331,16 @@ class BanjoTooieWorld(World):
         if self.options.progressive_bash_attack.value == True and (self.options.randomize_stop_n_swap.value == False or self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive bash attack without randomizing Stop N Swap and randomizing BK moves")
         if self.options.egg_behaviour.value == 1:
-            eggs = list([itemName.BEGG, itemName.FEGGS, itemName.GEGGS, itemName.IEGGS, itemName.CEGGS])
+            eggs = list([itemName.BEGGS, itemName.FEGGS, itemName.GEGGS, itemName.IEGGS, itemName.CEGGS])
             random.shuffle(eggs)
             starting_egg = self.create_item(eggs[0])
             self.multiworld.push_precollected(starting_egg)
             banjoItem = all_item_table.get(eggs[0])
             self.starting_egg = banjoItem.btid
         if self.options.egg_behaviour.value == 0 or self.options.egg_behaviour.value == 2:
-            starting_egg = self.create_item(itemName.BEGG)
+            starting_egg = self.create_item(itemName.BEGGS)
             self.multiworld.push_precollected(starting_egg)
-            banjoItem = all_item_table.get(itemName.BEGG)
+            banjoItem = all_item_table.get(itemName.BEGGS)
             self.starting_egg = banjoItem.btid
         if self.options.randomize_bk_moves.value != 0:
             base_attacks: list
