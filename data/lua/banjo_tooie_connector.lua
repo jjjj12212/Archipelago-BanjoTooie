@@ -1329,22 +1329,28 @@ local ASSET_MAP_CHECK = {
                 "1230644", -- Rocknut
                 "1230645", -- Dino Code
             },
+            ["JINJOS"] = {
+                "1230571", -- Talon Torp
+                "1230572", -- Entrance
+                "1230573", -- Maze Cave
+                "1230574", -- T-rex
+            }
         },
-        [0x123] =	{ --TDL - Inside Chompa's Belly
+        [0x123] = { --TDL - Inside Chompa's Belly
             ["JIGGIES"] = {
                 "1230641", -- Chompa
             },
         },
-        [0x116] =	{ --TDL - Inside the Mountain
+        [0x116] = { --TDL - Inside the Mountain
             ["JIGGIES"] = {
                 "1230636", -- Under Terry Nest
             },
         },
-        [0x115] =	{
+        [0x115] = { --TDL - Oogle Boogles' Cave
             ["JIGGIES"] = {
                 "1230640", -- Oogle Boogle Tribe
             },
-        },                --TDL - Oogle Boogles' Cave
+        },
         [0x117] =	{ --TDL - River Passage
 
         },
@@ -1352,6 +1358,9 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230643", -- Stomping
             },
+            ["JINJOS"] = {
+                "1230575", -- Stomping
+            }
         },
         [0x118] =	{ --TDL - Styracosaurus Family Cave
             ["JIGGIES"] = {
@@ -1374,6 +1383,9 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230646", -- Skivvy
             },
+            ["JINJOS"] = {
+                "1230580" -- Outside
+            }
         },
         [0x10F] = { --GI - Basement
             ["JIGGIES"] = {
@@ -1389,6 +1401,9 @@ local ASSET_MAP_CHECK = {
                 "1230655", -- Plant Box
                 "1230661", -- HFP Oil Drill
             },
+            ["JINJOS"] = {
+                "1230578" -- Waste Disposal
+            }
         },
         [0x101] =	{ --GI - Floor 1
             ["JIGGIES"] = {
@@ -1400,6 +1415,9 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230646", -- Skivvy
             },
+            ["JINJOS"] = {
+                "1230577" -- leg spring -- TEST
+            }
         },
         [0x108] =	{ --GI - Floor 3
             ["JIGGIES"] = {
@@ -1407,7 +1425,9 @@ local ASSET_MAP_CHECK = {
             },
         },
         [0x109] =	{ --GI - Floor 3 (Boiler Plant)
-            --Jinjo
+            ["JINJOS"] = {
+                "1230579" -- Top of Boiler
+            }
         },
         [0x10A] =	{ --GI - Floor 3 (Packing Room)
             ["JIGGIES"] = {
@@ -1427,6 +1447,9 @@ local ASSET_MAP_CHECK = {
                 "1230646", -- Skivvy
                 "1230650", -- Floor 5
             },
+            ["JINJOS"] = {
+                "1230576" -- 5 floor
+            }
         },
         [0x187] =	{ --GI - Sewer Entrance
             ["JIGGIES"] = {
