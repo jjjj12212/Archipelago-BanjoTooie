@@ -1,5 +1,6 @@
 # 2.1.4-beta
   - Logic fixes:
+    - TDL Boulder Cheato Page: Added missing Grip Grab. Advanced and Glitched logic can fall into the alcove from the top.
     - Lower icy side collectibles: reworked the logic on how lower icy side can be reached.
     - Top of HFP collectibles: if not on beginner logic, the top of HFP can be reached with the snowball.
     - Ice Cube notes: no longer consider ice eggs or beak buster as part of the logic. And they consider Kazooie moves. And they consider the snowball.

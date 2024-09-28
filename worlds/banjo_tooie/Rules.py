@@ -2335,13 +2335,23 @@ class BanjoTooieRules:
     def cheato_tdlboulder(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.bill_drill(state) and self.flap_flip(state)
+            logic = self.bill_drill(state) and self.flap_flip(state) and self.grip_grab(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.bill_drill(state) and (self.TDL_flight_pad(state) and self.flap_flip(state) or (self.talon_trot(state) and self.flutter(state)))
+            logic = self.bill_drill(state)\
+                        and (self.TDL_flight_pad(state)\
+                             or self.grip_grab(state) and (self.flap_flip(state) or (self.talon_trot(state) and self.flutter(state))))
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.bill_drill(state) and (self.TDL_flight_pad(state) and self.flap_flip(state) or (self.talon_trot(state) and self.flutter(state)))
+            logic = self.bill_drill(state)\
+                        and (self.TDL_flight_pad(state)\
+                             or self.grip_grab(state) and (self.flap_flip(state) or (self.talon_trot(state) and self.flutter(state)))\
+                             or self.tdl_top(state) and self.talon_trot(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state))
+                        )
         elif self.world.options.logic_type == 3: # glitched
-            logic = (self.bill_drill(state) or self.egg_barge(state)) and (self.TDL_flight_pad(state) and self.flap_flip(state) or (self.talon_trot(state) and self.flutter(state)))
+            logic = (self.bill_drill(state) or self.egg_barge(state))\
+                        and (self.TDL_flight_pad(state)\
+                             or self.grip_grab(state) and (self.flap_flip(state) or (self.talon_trot(state) and self.flutter(state)))\
+                             or self.tdl_top(state) and self.talon_trot(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state))
+                        )
         return logic
     
     def cheato_loggo(self, state: CollectionState) -> bool:
