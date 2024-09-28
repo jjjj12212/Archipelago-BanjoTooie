@@ -1024,6 +1024,9 @@ local ASSET_MAP_CHECK = {
         ["0xAF"]  = { --SM - Spiral Mountain
             ["STOPNSWAP"] = {
                 "1230956"
+            },
+            ["JINJOS"] = {
+                "1230595" -- SM Jinjo
             }
         },
         [0xAE]  =	{ --SM - Behind the waterfall
@@ -1039,29 +1042,52 @@ local ASSET_MAP_CHECK = {
             --Amaze-O-Gaze should be here
         },
         --ISLE O' HAGS
-        -- ["0x155"] =	{"Isle O' Hags", "Cliff Top"},          --IoH - Cliff Top
+        [0x155] =	{ --IoH - Cliff Top
+            ["JINJOS"] = {
+                "1230593" -- Clifftop Jinjo
+            }
+        },
         -- ["0x150"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Heggy's Egg Shed
         -- ["0x15b"] =	{"Isle O' Hags", "Pine Grove"},         --IoH - Inside another digger tunnel
         -- ["0x151"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Jiggywiggy's Temple
         -- ["0x154"] =	{"Isle O' Hags", "Pine Grove"},         --IoH - Pine Grove
         -- ["0x157"] =	{"Isle O' Hags", "Pine Grove"},         --IoH - Pine Grove - Wumba's Wigwam
-        -- ["0x152"] =	{"Isle O' Hags", "Plateau"},            --IoH - Plateau
+        [0x152] = { --IoH - Plateau
+            ["JINJOS"] = {
+                "1230594" -- Plateau Jinjo
+            }
+        },
         -- ["0x153"] =	{"Isle O' Hags", "Plateau"},            --IoH - Plateau - Honey B's Hive
         -- ["0x15c"] =	{"Isle O' Hags", "Quagmire"},           --IoH - Quagmire
-        -- ["0x15a"] =	{"Isle O' Hags", "Wasteland"},          --IoH - Wasteland
-        -- ["0x14f"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Wooded Hollow
-
+        [0x15A] = { --IoH - Wasteland
+            ["JINJOS"] = {
+                "1230592" -- Wasteland Jinjo
+            }
+        },
+        [0x14F] = { --IoH - Wooded Hollow
+            ["JINJOS"] = {
+                "1230591" -- Wooded Hollow Jinjo
+            }
+        },
         --MAYAHEM TEMPLE
         [0xB8] = { --MT
             ["JIGGIES"] = {
                 "1230599",
                 "1230604"
+            },
+            ["JINJOS"] = {
+                "1230552", -- Stadium
+                "1230554", -- Pool
+                "1230555", -- Bridge
             }
         },
         [0xC4] = { --MT - Jade Snake Grove
             ["JIGGIES"] = {
                 "1230601", -- Golden Goliath
                 "1230605"  -- Ssslumber
+            },
+            ["JINJOS"] = {
+                "1230551" -- Snake Grove
             }
         },
         [0xBB] = { --MT - Mayan Kickball Stadium (Lobby)
@@ -1093,12 +1119,21 @@ local ASSET_MAP_CHECK = {
                 "1230600" --Treasure Chamber
             }
         },
+        [0x178] = { --MT - Inside Tatgitzan's Temple
+            ["JINJOS"] = {
+                "1230553" -- Temple Jiggy
+            }
+        },
         --GLITTER GULCH MINE
         [0xC7] ={ --GGM
             ["JIGGIES"] = {
                 "1230607", -- Canary Mary
                 "1230612", -- Crushing Shed
                 "1230613" -- Waterfall
+            },
+            ["JINJOS"] = {
+                "1230559", -- Boulder
+                "1230560", -- Tracks
             }
         },
         [0xCC] ={ --GGM - Flooded Caves
@@ -1115,7 +1150,9 @@ local ASSET_MAP_CHECK = {
             }
         },
         [0xD2] = { --GGM - Gloomy Caverns
-
+            ["JINJOS"] = {
+                "1230557" -- Jail
+            }
         },
         [0xD1] = { --GGM - Inside Chuffy's Boiler
             ["JIGGIES"] = {
@@ -1138,13 +1175,17 @@ local ASSET_MAP_CHECK = {
             },
         },
         [0xDA] = { --GGM - Toxic Gas Cave
-
+            ["JINJOS"] = {
+                "1230558" -- Toxic
+            }
         },
         [0xD7] = { --GGM - Train Station
 
         },
         [0xCD] = { --GGM - Water Storage
-
+            ["JINJOS"] = {
+                "1230556" -- Water Storage
+            }
         },
         [0xCE] = { --GGM - Waterfall Cavern
             ["JIGGIES"] = {
@@ -1159,9 +1200,17 @@ local ASSET_MAP_CHECK = {
                 "1230622", -- Mrs Boggy
                 "1230625", -- Cactus of Strength
             },
+            ["JINJOS"] = {
+                "1230561", -- Top of Tent
+                "1230563", -- Van door
+                "1230564", -- dogdem dome
+                "1230565", -- Cactus of Strength
+            }
         },
         [0xEA] = { --WW - Cave of Horrors
-
+            ["JINJOS"] = {
+                "1230562", -- Cave of Horrors
+            }
         },
         [0xE1] = { --WW - Crazy Castle Stockade
             ["JIGGIES"] = {
@@ -1197,13 +1246,16 @@ local ASSET_MAP_CHECK = {
         },
 
         --JOLLY ROGER'S LAGOON
-        [0x1A7] =	{
+        [0x1A7] = { --JRL
             ["JIGGIES"] = {
                 "1230627", -- Tiptup
                 "1230635", -- UFO
                 "1230629", -- Pig Pool
             },
-        },      --JRL
+            ["JINJOS"] = {
+                "1230566", -- alcove
+            }
+        },
         [0xF4] = { --JRL - Ancient Swimming Baths
 
         },
@@ -1211,15 +1263,22 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230633", -- SEEMEE
             },
+            ["JINJOS"] = {
+                "1230570", -- Sunken Ship
+            }
         },
         [0xFF] = { --JRL - Blubber's Wave Race Hire
-            
+            ["JINJOS"] = {
+                "1230567", -- Blubber
+            }
         },
         [0xF6] = {  --JRL - Electric Eel's lair
 
         },
-        [0xF8] =	{ --JRL - Inside the Big Fish
-
+        [0xF8] = { --JRL - Inside the Big Fish
+            ["JINJOS"] = {
+                "1230568", -- Big Fish
+            }
         },
         [0xED] =	{ --JRL - Jolly's
             ["JIGGIES"] = {
@@ -1247,7 +1306,9 @@ local ASSET_MAP_CHECK = {
             },
         },
         [0xF7] = { --JRL - Seaweed Sanctum
-
+            ["JINJOS"] = {
+                "1230569", -- Seaweed
+            }
         },
         [0x1A6] =	{ --JRL - Smuggler's cavern
             ["JIGGIES"] = {
@@ -1563,6 +1624,7 @@ local AMM = {};
 -- AGI - Archipelago given items
 local AGI = {};
 local AGI_JIGGIES = {};
+local AGI_JINJO_LOCATIONS = {}
 local AGI_MOVES = {};
 local AGI_NOTES = {};
 local AGI_STATIONS = {};
@@ -1570,7 +1632,7 @@ local AGI_CHUFFY = {};
 local AGI_MYSTERY = {};
 local AGI_JINJOS = {
     ["1230501"] = 0, -- white
-    ["1230502"] = 0, -- oragne
+    ["1230502"] = 0, -- orange
     ["1230503"] = 0, -- yellow
     ["1230504"] = 0, -- brown
     ["1230505"] = 0, -- green
@@ -1579,11 +1641,13 @@ local AGI_JINJOS = {
     ["1230508"] = 0, -- purple
     ["1230509"] = 0, -- black
 };
+
 -- local AGI_TRAPS = {
 --     ["1230799"] = 0,
 -- };
 
-local BMM_JIGGIES = {};
+local BMM_JIGGIES = {}; -- BMM JIGGIES
+local BMM_JINJOS = {}; -- BMM JINJOS
 local BKM = {}; -- Banjo Tooie Movelist Table
 local BKNOTES = {}; -- Notes
 local BKSTATIONS = {} -- Stations
@@ -1600,233 +1664,6 @@ local DINO_KIDS = {} -- the 3 Dino Kids
 
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
-    ['JINJO'] = {
-        ["1230591"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 4,
-            ['name'] = 'IoH:Wooded Hollow Jinjo'
-        },
-        ["1230595"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 0,
-            ['name'] = 'SM: Jinjo'
-        },
-        ["1230594"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 7,
-            ['name'] = 'IoH: Plateau Jinjo'
-        },
-        ["1230551"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 4,
-            ['name'] = 'MT: Jade Snake Grove Jinjo'
-        },
-        ["1230552"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 5,
-            ['name'] = 'MT: Stadium Jinjo'
-        },
-        ["1230553"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 6,
-            ['name'] = 'Mayahem Temple: Targitzan Temple Jinjo'
-        },
-        ["1230554"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 7,
-            ['name'] = 'MT: Water Pool Jinjo'
-        },
-        ["1230555"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 0,
-            ['name'] = 'MT: Bridge Jinjo'
-        },
-        ["1230556"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 1,
-            ['name'] = 'GGM: Water Storage Jinjo'
-        },
-        ["1230557"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 2,
-            ['name'] = 'GGM: Jail Jinjo'
-        },
-        ["1230558"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 3,
-            ['name'] = 'GGM: Toxic Gas Cave Jinjo'
-        },
-        ["1230559"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 4,
-            ['name'] = 'GGM: Boulder Jinjo'
-        },
-        ["1230560"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 5,
-            ['name'] = 'GGM: Mine Tracks Jinjo'
-        },
-        ["1230561"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 6,
-            ['name'] = 'WW: Big Top Jinjo'
-        },
-        ["1230562"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 7,
-            ['name'] = 'WW: Cave of Horrors Jinjo'
-        },
-        ["1230563"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 0,
-            ['name'] = 'WW: Van Door Jinjo'
-        },
-        ["1230564"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 1,
-            ['name'] = 'WW: Dodgem Dome Jinjo'
-        },
-        ["1230565"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 2,
-            ['name'] = 'WW: Cactus of Strength Jinjo'
-        },
-        ["1230593"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 6,
-            ['name'] = 'IoH: Clifftop Jinjo'
-        },
-        ["1230566"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 3,
-            ['name'] = 'JRL: Lagoon Alcove Jinjo'
-        },
-        ["1230567"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 4,
-            ['name'] = 'JRL: Blubber Jinjo'
-        },
-        ["1230568"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 5,
-            ['name'] = 'JRL: Big Fish Jinjo'
-        },
-        ["1230569"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 6,
-            ['name'] = 'JRL: Seaweed Sanctum Jinjo'
-        },
-        ["1230570"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 7,
-            ['name'] = 'JRL: Sunken Ship Jinjo'
-        },
-        ["1230592"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 5,
-            ['name'] = 'IoH: Wasteland Jinjo'
-        },
-        ["1230571"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 0,
-            ['name'] = 'TDL: Talon Torp Jinjo'
-        },
-        ["1230572"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 1,
-            ['name'] = 'TDL: Cutscene Skip Jinjo'
-        },
-        ["1230573"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 2,
-            ['name'] = 'TDL: Beside Rocknut Jinjo'
-        },
-        ["1230574"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 3,
-            ['name'] = 'TDL: Big T. Rex Skip Jinjo'
-        },
-        ["1230575"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 4,
-            ['name'] = 'TDL: Stomping Plains Jinjo'
-        },
-        ["1230576"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 5,
-            ['name'] = 'GI: Floor 5 Jinjo'
-        },
-        ["1230577"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 6,
-            ['name'] = 'GI: Leg Spring Jinjo'
-        },
-        ["1230578"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 7,
-            ['name'] = 'GI: Waste Disposal Plant Jinjo'
-        },
-        ["1230579"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 0,
-            ['name'] = 'GI: Boiler Plant Jinjo'
-        },
-        ["1230580"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 1,
-            ['name'] = 'GI: Outside Jinjo'
-        },
-        ["1230581"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 2,
-            ['name'] = 'HFP: Lava Waterfall Jinjo'
-        },
-        ["1230582"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 3,
-            ['name'] = 'HFP: Boiling Hot Pool Jinjo'
-        },
-        ["1230583"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 4,
-            ['name'] = 'HFP: Windy Hole Jinjo'
-        },
-        ["1230584"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 5,
-            ['name'] = 'HFP: Icicle Grotto Jinjo'
-        },
-        ["1230585"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 6,
-            ['name'] = 'HFP: Mildred Ice Cube Jinjo'
-        },
-        ["1230586"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 7,
-            ['name'] = 'CCL: Trash Can Jinjo'
-        },
-        ["1230587"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 0,
-            ['name'] = 'CCL: Cheese Wedge Jinjo'
-        },
-        ["1230588"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 1,
-            ['name'] = 'CCL: Central Cavern Jinjo'
-        },
-        ["1230589"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 2,
-            ['name'] = 'CCL: Fake Mumbo Skull Jinjo'
-        },
-        ["1230590"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 3,
-            ['name'] = 'CCL: Wumba Jinjo'
-        }
-    },
     ['CHEATO'] = {
         ["1230752"] = {
             ['addr'] = 0x59,
@@ -4436,7 +4273,234 @@ local NON_AGI_MAP = {
             ['bit'] = 7,
             ['name'] = 'CCL: Jelly Castle Jiggy'
         }
-    }
+    },
+    ['JINJOS'] = {
+        ["1230591"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 4,
+            ['name'] = 'IoH:Wooded Hollow Jinjo'
+        },
+        ["1230595"] = {
+            ['addr'] = 0x3F,
+            ['bit'] = 0,
+            ['name'] = 'SM: Jinjo'
+        },
+        ["1230594"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 7,
+            ['name'] = 'IoH: Plateau Jinjo'
+        },
+        ["1230551"] = {
+            ['addr'] = 0x39,
+            ['bit'] = 4,
+            ['name'] = 'MT: Jade Snake Grove Jinjo'
+        },
+        ["1230552"] = {
+            ['addr'] = 0x39,
+            ['bit'] = 5,
+            ['name'] = 'MT: Stadium Jinjo'
+        },
+        ["1230553"] = {
+            ['addr'] = 0x39,
+            ['bit'] = 6,
+            ['name'] = 'Mayahem Temple: Targitzan Temple Jinjo'
+        },
+        ["1230554"] = {
+            ['addr'] = 0x39,
+            ['bit'] = 7,
+            ['name'] = 'MT: Water Pool Jinjo'
+        },
+        ["1230555"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 0,
+            ['name'] = 'MT: Bridge Jinjo'
+        },
+        ["1230556"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 1,
+            ['name'] = 'GGM: Water Storage Jinjo'
+        },
+        ["1230557"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 2,
+            ['name'] = 'GGM: Jail Jinjo'
+        },
+        ["1230558"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 3,
+            ['name'] = 'GGM: Toxic Gas Cave Jinjo'
+        },
+        ["1230559"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 4,
+            ['name'] = 'GGM: Boulder Jinjo'
+        },
+        ["1230560"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 5,
+            ['name'] = 'GGM: Mine Tracks Jinjo'
+        },
+        ["1230561"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 6,
+            ['name'] = 'WW: Big Top Jinjo'
+        },
+        ["1230562"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 7,
+            ['name'] = 'WW: Cave of Horrors Jinjo'
+        },
+        ["1230563"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 0,
+            ['name'] = 'WW: Van Door Jinjo'
+        },
+        ["1230564"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 1,
+            ['name'] = 'WW: Dodgem Dome Jinjo'
+        },
+        ["1230565"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 2,
+            ['name'] = 'WW: Cactus of Strength Jinjo'
+        },
+        ["1230593"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 6,
+            ['name'] = 'IoH: Clifftop Jinjo'
+        },
+        ["1230566"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Lagoon Alcove Jinjo'
+        },
+        ["1230567"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Blubber Jinjo'
+        },
+        ["1230568"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Big Fish Jinjo'
+        },
+        ["1230569"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Seaweed Sanctum Jinjo'
+        },
+        ["1230570"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Sunken Ship Jinjo'
+        },
+        ["1230592"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 5,
+            ['name'] = 'IoH: Wasteland Jinjo'
+        },
+        ["1230571"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 0,
+            ['name'] = 'TDL: Talon Torp Jinjo'
+        },
+        ["1230572"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 1,
+            ['name'] = 'TDL: Cutscene Skip Jinjo'
+        },
+        ["1230573"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 2,
+            ['name'] = 'TDL: Beside Rocknut Jinjo'
+        },
+        ["1230574"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 3,
+            ['name'] = 'TDL: Big T. Rex Skip Jinjo'
+        },
+        ["1230575"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 4,
+            ['name'] = 'TDL: Stomping Plains Jinjo'
+        },
+        ["1230576"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 5,
+            ['name'] = 'GI: Floor 5 Jinjo'
+        },
+        ["1230577"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 6,
+            ['name'] = 'GI: Leg Spring Jinjo'
+        },
+        ["1230578"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 7,
+            ['name'] = 'GI: Waste Disposal Plant Jinjo'
+        },
+        ["1230579"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 0,
+            ['name'] = 'GI: Boiler Plant Jinjo'
+        },
+        ["1230580"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 1,
+            ['name'] = 'GI: Outside Jinjo'
+        },
+        ["1230581"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 2,
+            ['name'] = 'HFP: Lava Waterfall Jinjo'
+        },
+        ["1230582"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 3,
+            ['name'] = 'HFP: Boiling Hot Pool Jinjo'
+        },
+        ["1230583"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 4,
+            ['name'] = 'HFP: Windy Hole Jinjo'
+        },
+        ["1230584"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 5,
+            ['name'] = 'HFP: Icicle Grotto Jinjo'
+        },
+        ["1230585"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 6,
+            ['name'] = 'HFP: Mildred Ice Cube Jinjo'
+        },
+        ["1230586"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 7,
+            ['name'] = 'CCL: Trash Can Jinjo'
+        },
+        ["1230587"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 0,
+            ['name'] = 'CCL: Cheese Wedge Jinjo'
+        },
+        ["1230588"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 1,
+            ['name'] = 'CCL: Central Cavern Jinjo'
+        },
+        ["1230589"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 2,
+            ['name'] = 'CCL: Fake Mumbo Skull Jinjo'
+        },
+        ["1230590"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 3,
+            ['name'] = 'CCL: Wumba Jinjo'
+        }
+    },
 }
 
 -- Properties of world entrances and associated puzzles
