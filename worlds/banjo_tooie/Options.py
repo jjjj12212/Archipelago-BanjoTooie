@@ -136,7 +136,7 @@ class SkipToT(Choice):
     default = 1
 
 class LogicType(Choice):
-    """Choose your logic difficulty if you are expected to perform tricks to reach certian areas."""
+    """Choose your logic difficulty if you are expected to perform tricks to reach certain areas."""
     display_name = "Logic Type"
     option_beginner = 0
     option_normal = 1
