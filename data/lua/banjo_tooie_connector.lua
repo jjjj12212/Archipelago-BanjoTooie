@@ -40,7 +40,7 @@ local BTMODELOBJ = nil;
 local BTRAMOBJ = nil;
 local BTCONSUMEOBJ = nil;
 
-local CURRENT_MAP = nil;
+local DEMO_MODE = true;
 local SKIP_TOT = ""
 local MINIGAMES = ""
 local INIT_COMPLETE = false
@@ -51,8 +51,8 @@ local SAVE_GAME = false;
 local USE_BMM_TBL = false;
 local USE_BMM_ONLY_TBL = false;
 local USE_BMM_ONLY_TYP = "";
-local PREVIOUS_MAP = nil;
-local MAP_TRANSITION = false;
+
+
 local CLOSE_TO_ALTAR = false;
 
 local SNEAK = false;
@@ -79,6 +79,13 @@ local DISABLE_TEXT_OVERLAY = false;
 local AP_MESSAGES = {};
 
 local GAME_LOADED = false;
+
+-------------- MAP VARS -------------
+local MAP_TRANSITION = false;
+local PREVIOUS_MAP = nil;
+local CURRENT_MAP = nil;
+local NEXT_MAP = nil;
+
 
 -------------- JIGGY VARS -----------
 local JIGGY_COUNT = 0; -- Used for UI
@@ -276,6 +283,8 @@ BTRAM = {
     player_index = 0x1354DF;
     flag_block_ptr = 0x12C770;
     map_addr = 0x132DC2;
+    next_map = 0x127640;
+    entrance_id = 0x127643;
     player_pos_ptr = 0xE4,
     animationPointer = 0x136E70,
     movement_ptr = 0x120,
@@ -396,9 +405,15 @@ function BTRAM:getBanjoMovementState()
     return nil
 end
 
-function BTRAM:getMap()
-    local map = mainmemory.read_u16_be(self.map_addr);
-    return map;
+function BTRAM:getMap(nextmap)
+    if nextmap == false
+    then
+        local map = mainmemory.read_u16_be(self.map_addr);
+        return map;
+    else
+        local map = mainmemory.read_u16_be(self.next_map);
+        return map;
+    end
 end
 
 function BTRAM:checkFlag(byte, _bit, fromfuncDebug)
@@ -1011,133 +1026,133 @@ local ASSET_MAP_CHECK = {
                 "1230956"
             }
         },
-        ["0xAE"]  =	{ --SM - Behind the waterfall
+        [0xAE]  =	{ --SM - Behind the waterfall
             ["STOPNSWAP"] = {
                 "1230957"
             }
         },
-        ["0xAD"]  =	{ --SM - Grunty's Lair
+        [0xAD]  =	{ --SM - Grunty's Lair
             -- Cheato Rewards should be here
         },
         --JINJO VILLAGE
-        ["0x143"] =	{ --JV - Bottles' House
+        [0x143] =	{ --JV - Bottles' House
             --Amaze-O-Gaze should be here
         },
         --ISLE O' HAGS
-        ["0x155"] =	{"Isle O' Hags", "Cliff Top"},          --IoH - Cliff Top
-        ["0x150"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Heggy's Egg Shed
-        ["0x15b"] =	{"Isle O' Hags", "Pine Grove"},         --IoH - Inside another digger tunnel
-        ["0x151"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Jiggywiggy's Temple
-        ["0x154"] =	{"Isle O' Hags", "Pine Grove"},         --IoH - Pine Grove
-        ["0x157"] =	{"Isle O' Hags", "Pine Grove"},         --IoH - Pine Grove - Wumba's Wigwam
-        ["0x152"] =	{"Isle O' Hags", "Plateau"},            --IoH - Plateau
-        ["0x153"] =	{"Isle O' Hags", "Plateau"},            --IoH - Plateau - Honey B's Hive
-        ["0x15c"] =	{"Isle O' Hags", "Quagmire"},           --IoH - Quagmire
-        ["0x15a"] =	{"Isle O' Hags", "Wasteland"},          --IoH - Wasteland
-        ["0x14f"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Wooded Hollow
+        -- ["0x155"] =	{"Isle O' Hags", "Cliff Top"},          --IoH - Cliff Top
+        -- ["0x150"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Heggy's Egg Shed
+        -- ["0x15b"] =	{"Isle O' Hags", "Pine Grove"},         --IoH - Inside another digger tunnel
+        -- ["0x151"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Jiggywiggy's Temple
+        -- ["0x154"] =	{"Isle O' Hags", "Pine Grove"},         --IoH - Pine Grove
+        -- ["0x157"] =	{"Isle O' Hags", "Pine Grove"},         --IoH - Pine Grove - Wumba's Wigwam
+        -- ["0x152"] =	{"Isle O' Hags", "Plateau"},            --IoH - Plateau
+        -- ["0x153"] =	{"Isle O' Hags", "Plateau"},            --IoH - Plateau - Honey B's Hive
+        -- ["0x15c"] =	{"Isle O' Hags", "Quagmire"},           --IoH - Quagmire
+        -- ["0x15a"] =	{"Isle O' Hags", "Wasteland"},          --IoH - Wasteland
+        -- ["0x14f"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Wooded Hollow
 
         --MAYAHEM TEMPLE
-        ["0xB8"] = { --MT
+        [0xB8] = { --MT
             ["JIGGIES"] = {
                 "1230599",
                 "1230604"
             }
         },
-        ["0xC4"] = { --MT - Jade Snake Grove
+        [0xC4] = { --MT - Jade Snake Grove
             ["JIGGIES"] = {
                 "1230601", -- Golden Goliath
                 "1230605"  -- Ssslumber
             }
         },
-        ["0xBB"] = { --MT - Mayan Kickball Stadium (Lobby)
+        [0xBB] = { --MT - Mayan Kickball Stadium (Lobby)
             ["JIGGIES"] = {
                 "1230598", -- Kickball
             }
         },
-        ["0xB7"] = { --MT - Mumbo's Skull
+        [0xB7] = { --MT - Mumbo's Skull
             --glowbo
         },
-        ["0xB9"] = { --MT - Prison Compound
+        [0xB9] = { --MT - Prison Compound
             ["JIGGIES"] = {
                 "1230602", --quicksand
                 "1230603", --pillars
             }
         },
-        ["0x17A"] =	{ --MT - Targitzan's Really Sacred Chamber
+        [0x17A] =	{ --MT - Targitzan's Really Sacred Chamber
             ["JIGGIES"] = {
                 "1230596" --Targitzan
             }
         },
-        ["0x177"] =	{ --MT - Targitzan's Slightly Sacred Chamber
+        [0x177] =	{ --MT - Targitzan's Slightly Sacred Chamber
             ["JIGGIES"] = {
                 "1230597" --Slightly Sacred Chamber
             }
         },
-        ["0xC5"] = { --MT - Treasure Chamber
+        [0xC5] = { --MT - Treasure Chamber
             ["JIGGIES"] = {
                 "1230600" --Treasure Chamber
             }
         },
         --GLITTER GULCH MINE
-        ["0xC7"] ={ --GGM
+        [0xC7] ={ --GGM
             ["JIGGIES"] = {
                 "1230607", -- Canary Mary
                 "1230612", -- Crushing Shed
                 "1230613" -- Waterfall
             }
         },
-        ["0xCC"] ={ --GGM - Flooded Caves
+        [0xCC] ={ --GGM - Flooded Caves
             ["JIGGIES"] = {
                 "1230615" -- Flooded Cave
             }
         },
-        ["0xCA"] ={ --GGM - Fuel Depot
+        [0xCA] ={ --GGM - Fuel Depot
             --Notes
         },
-        ["0xD3"] = { --GGM - Generator Cavern
+        [0xD3] = { --GGM - Generator Cavern
             ["JIGGIES"] = {
                 "1230608" -- Generator Cavern
             }
         },
-        ["0xD2"] = { --GGM - Gloomy Caverns
+        [0xD2] = { --GGM - Gloomy Caverns
 
         },
-        ["0xD1"] = { --GGM - Inside Chuffy's Boiler
+        [0xD1] = { --GGM - Inside Chuffy's Boiler
             ["JIGGIES"] = {
                 "1230606" -- King Coal
             },
         },
-        ["0x163"] =	{ --GGM - Ordnance Storage Entrance
+        [0x163] =	{ --GGM - Ordnance Storage Entrance
             ["JIGGIES"] = {
                 "1230610" -- Ordnance Storage
             },
         },
-        ["0xCF"] = { --GGM - Power Hut Basement
+        [0xCF] = { --GGM - Power Hut Basement
             ["JIGGIES"] = {
                 "1230614" -- Power Hut Basement
             },
         },
-        ["0xD8"] = { --GGM - Prospector's Hut
+        [0xD8] = { --GGM - Prospector's Hut
             ["JIGGIES"] = {
                 "1230611" -- Dilberta
             },
         },
-        ["0xDA"] = { --GGM - Toxic Gas Cave
+        [0xDA] = { --GGM - Toxic Gas Cave
 
         },
-        ["0xD7"] = { --GGM - Train Station
+        [0xD7] = { --GGM - Train Station
 
         },
-        ["0xCD"] = { --GGM - Water Storage
+        [0xCD] = { --GGM - Water Storage
 
         },
-        ["0xCE"] = { --GGM - Waterfall Cavern
+        [0xCE] = { --GGM - Waterfall Cavern
             ["JIGGIES"] = {
                 "1230609" -- Waterfall Cavern
             },
         },
         --WITCHYWORLD
-        ["0xD6"] = { --WW
+        [0xD6] = { --WW
             ["JIGGIES"] = {
                 "1230619", -- Saucer of Peril
                 "1230621", -- Dive of Death
@@ -1145,280 +1160,280 @@ local ASSET_MAP_CHECK = {
                 "1230625", -- Cactus of Strength
             },
         },
-        ["0xEA"] = { --WW - Cave of Horrors
+        [0xEA] = { --WW - Cave of Horrors
 
         },
-        ["0xE1"] = { --WW - Crazy Castle Stockade
+        [0xE1] = { --WW - Crazy Castle Stockade
             ["JIGGIES"] = {
                 "1230616", -- Hoop Hurry
                 "1230620", -- Balloon Burst
             },
         },
-        ["0xDD"] = { --WW - Dodgem Dome Lobby
+        [0xDD] = { --WW - Dodgem Dome Lobby
             ["JIGGIES"] = {
                 "1230617", -- Dodgem
             },
         },
-        ["0xEB"] = { --WW - Haunted Cavern
+        [0xEB] = { --WW - Haunted Cavern
 
         },
-        ["0xF9"] = { --WW - Mr. Patch
+        [0xF9] = { --WW - Mr. Patch
             ["JIGGIES"] = {
                 "1230618", -- Patches
             },
         },
-        ["0xE6"] = { --WW - Star Spinner
+        [0xE6] = { --WW - Star Spinner
             ["JIGGIES"] = {
                 "1230623", -- Star Spinner
             },
         },
-        ["0xE7"] = { --WW - The Inferno
+        [0xE7] = { --WW - The Inferno
             ["JIGGIES"] = {
                 "1230624", -- The Inferno
             },
         },
-        ["0xD5"] = { --WW - Wumba's Wigwam
+        [0xD5] = { --WW - Wumba's Wigwam
 
         },
 
         --JOLLY ROGER'S LAGOON
-        ["0x1A7"] =	{
+        [0x1A7] =	{
             ["JIGGIES"] = {
                 "1230627", -- Tiptup
                 "1230635", -- UFO
                 "1230629", -- Pig Pool
             },
         },      --JRL
-        ["0xF4"] = { --JRL - Ancient Swimming Baths
+        [0xF4] = { --JRL - Ancient Swimming Baths
 
         },
-        ["0x1A8"] =	{ --JRL - Atlantis
+        [0x1A8] =	{ --JRL - Atlantis
             ["JIGGIES"] = {
                 "1230633", -- SEEMEE
             },
         },
-        ["0xFF"] = { --JRL - Blubber's Wave Race Hire
+        [0xFF] = { --JRL - Blubber's Wave Race Hire
             
         },
-        ["0xF6"] = {  --JRL - Electric Eel's lair
+        [0xF6] = {  --JRL - Electric Eel's lair
 
         },
-        ["0xF8"] =	{ --JRL - Inside the Big Fish
+        [0xF8] =	{ --JRL - Inside the Big Fish
 
         },
-        ["0xED"] =	{ --JRL - Jolly's
+        [0xED] =	{ --JRL - Jolly's
             ["JIGGIES"] = {
                 "1230631", -- Merry Maggie
             },
         },
-        ["0xFC"] =	{ --JRL - Lord Woo Fak Fak
+        [0xFC] =	{ --JRL - Lord Woo Fak Fak
             ["JIGGIES"] = {
                 "1230632", -- Lord Woo
             },
         },      
-        ["0xEE"] =	{ --JRL - Pawno's Emporium
+        [0xEE] =	{ --JRL - Pawno's Emporium
             ["JIGGIES"] = {
                 "1230634", -- Pawno
             },
         },
-        ["0x1A9"] =	{ --JRL - Sea Bottom
+        [0x1A9] =	{ --JRL - Sea Bottom
             ["JIGGIES"] = {
                 "1230633", -- SEEMEE
             },
         },       
-        ["0x181"] =	{ --JRL - Sea Botom Cavern
+        [0x181] =	{ --JRL - Sea Botom Cavern
             ["JIGGIES"] = {
                 "1230626", -- Mini-Sub Challenge
             },
         },
-        ["0xF7"] = { --JRL - Seaweed Sanctum
+        [0xF7] = { --JRL - Seaweed Sanctum
 
         },
-        ["0x1A6"] =	{ --JRL - Smuggler's cavern
+        [0x1A6] =	{ --JRL - Smuggler's cavern
             ["JIGGIES"] = {
                 "1230633", -- SEEMEE
                 "1230630", -- Smuggler
             },
         },     
-        ["0xFA"] = { --JRL - Temple of the Fishes
+        [0xFA] = { --JRL - Temple of the Fishes
             ["JIGGIES"] = {
                 "1230628", -- Chris P. Bacon
             },
         },
 
         --TERRYDACTYLAND
-        ["0x112"] =	{ --TDL
+        [0x112] =	{ --TDL
             ["JIGGIES"] = {
                 "1230637", -- Dippy
                 "1230644", -- Rocknut
                 "1230645", -- Dino Code
             },
         },
-        ["0x123"] =	{ --TDL - Inside Chompa's Belly
+        [0x123] =	{ --TDL - Inside Chompa's Belly
             ["JIGGIES"] = {
                 "1230641", -- Chompa
             },
         },
-        ["0x116"] =	{ --TDL - Inside the Mountain
+        [0x116] =	{ --TDL - Inside the Mountain
             ["JIGGIES"] = {
                 "1230636", -- Under Terry Nest
             },
         },
-        ["0x115"] =	{
+        [0x115] =	{
             ["JIGGIES"] = {
                 "1230640", -- Oogle Boogle Tribe
             },
         },                --TDL - Oogle Boogles' Cave
-        ["0x117"] =	{ --TDL - River Passage
+        [0x117] =	{ --TDL - River Passage
 
         },
-        ["0x11A"] =	{ --TDL - Stomping Plains
+        [0x11A] =	{ --TDL - Stomping Plains
             ["JIGGIES"] = {
                 "1230643", -- Stomping
             },
         },
-        ["0x118"] =	{ --TDL - Styracosaurus Family Cave
+        [0x118] =	{ --TDL - Styracosaurus Family Cave
             ["JIGGIES"] = {
                 "1230638", -- Scrotty
             },
         },
-        ["0x113"] =	{ --TDL - Terry's Nest
+        [0x113] =	{ --TDL - Terry's Nest
             ["JIGGIES"] = {
                 "1230639", -- Terry
                 "1230642", -- Terry's Kids
             },
         },
-        ["0x114"] =	{ --TDL - Train Station
+        [0x114] =	{ --TDL - Train Station
             ["JIGGIES"] = {
                 "1230644", -- Rocknut
             },
         },
         --GRUNTY'S INDUSTRIES
-        ["0x100"] =	{ --GI
+        [0x100] =	{ --GI
             ["JIGGIES"] = {
                 "1230646", -- Skivvy
             },
         },
-        ["0x10F"] = { --GI - Basement
+        [0x10F] = { --GI - Basement
             ["JIGGIES"] = {
                 "1230647", -- Weldar
             },
         },
-        ["0x110"] =	{ --GI - Basement (Repair Depot)
+        [0x110] =	{ --GI - Basement (Repair Depot)
             -- cheato
         },
-        ["0x111"] =	{ --GI - Basement (Waste Disposal)
+        [0x111] =	{ --GI - Basement (Waste Disposal)
             ["JIGGIES"] = {
                 "1230646", -- Underwater Waste Disposal
                 "1230655", -- Plant Box
                 "1230661", -- HFP Oil Drill
             },
         },
-        ["0x101"] =	{ --GI - Floor 1
+        [0x101] =	{ --GI - Floor 1
             ["JIGGIES"] = {
                 "1230646", -- Skivvy
                 "1230652", -- Floor 1 Guarded
             },
         },
-        ["0x106"] =	{ --GI - Floor 2
+        [0x106] =	{ --GI - Floor 2
             ["JIGGIES"] = {
                 "1230646", -- Skivvy
             },
         },
-        ["0x108"] =	{ --GI - Floor 3
+        [0x108] =	{ --GI - Floor 3
             ["JIGGIES"] = {
                 "1230646", -- Skivvy
             },
         },
-        ["0x109"] =	{ --GI - Floor 3 (Boiler Plant)
+        [0x109] =	{ --GI - Floor 3 (Boiler Plant)
             --Jinjo
         },
-        ["0x10A"] =	{ --GI - Floor 3 (Packing Room)
+        [0x10A] =	{ --GI - Floor 3 (Packing Room)
             ["JIGGIES"] = {
                 "1230654", -- Twinkly Packing
             },
         },
-        ["0x10B"] =	{ --GI - Floor 4
+        [0x10B] =	{ --GI - Floor 4
 
         },
-        ["0x10D"] =	{ --GI - Floor 4 (Quality Control)
+        [0x10D] =	{ --GI - Floor 4 (Quality Control)
             ["JIGGIES"] = {
                 "1230651", -- Quality Control
             },
         },
-        ["0x10E"] =	{ --GI - Floor 5
+        [0x10E] =	{ --GI - Floor 5
             ["JIGGIES"] = {
                 "1230646", -- Skivvy
                 "1230650", -- Floor 5
             },
         },
-        ["0x187"] =	{ --GI - Sewer Entrance
+        [0x187] =	{ --GI - Sewer Entrance
             ["JIGGIES"] = {
                 "1230648", -- Clinker
             },
         },
-        ["0x102"] =	{ --GI - Train Station
+        [0x102] =	{ --GI - Train Station
 
         },
-        ["0x104"] =	{ --GI - Trash Compactor
+        [0x104] =	{ --GI - Trash Compactor
             ["JIGGIES"] = {
                 "1230653", -- Trash Compactor
             },
         },
-        ["0x103"] =	{ --GI - Workers' Quarters
+        [0x103] =	{ --GI - Workers' Quarters
             ["JIGGIES"] = {
                 "1230646", -- Skivvy
             },
         },
 
         --HAILFIRE PEAKS
-        ["0x131"] =	{ --HFP - Boggy's Igloo
+        [0x131] =	{ --HFP - Boggy's Igloo
             ["JIGGIES"] = {
                 "1230659", -- Boggy
             },
         },
-        ["0x12B"] =	{ --HFP - Chilli Billi
+        [0x12B] =	{ --HFP - Chilli Billi
             ["JIGGIES"] = {
                 "1230656", -- Brothers
             },
         },
-        ["0x12C"] =	{ --HFP - Chilly Willy
+        [0x12C] =	{ --HFP - Chilly Willy
             ["JIGGIES"] = {
                 "1230656", -- Brothers
             },
         },
-        ["0x132"] =	{ --HFP - Icicle Grotto
+        [0x132] =	{ --HFP - Icicle Grotto
 
         },
-        ["0x128"] =	{ --HFP - Icy Side
+        [0x128] =	{ --HFP - Icy Side
             ["JIGGIES"] = {
                 "1230660", -- Icy Train Station
                 "1230662", -- Stomping
                 "1230664", -- Aliens
             },
         },
-        ["0x133"] =	{ --HFP - Inside the Volcano
+        [0x133] =	{ --HFP - Inside the Volcano
             ["JIGGIES"] = {
                 "1230657", -- Volcano
             },
         },
-        ["0x12D"] =	{ --HFP - Kickball Stadium lobby
+        [0x12D] =	{ --HFP - Kickball Stadium lobby
             ["JIGGIES"] = {
                 "1230663", -- Kickball
             },
         },
-        ["0x127"] =	{ --HFP - Lava Side
+        [0x127] =	{ --HFP - Lava Side
             ["JIGGIES"] = {
                 "1230658", -- Sabreman
                 "1230665", -- Lava waterfall
             },
         },
-        ["0x129"] =	{ --HFP - Lava Train Station
+        [0x129] =	{ --HFP - Lava Train Station
             --honeycomb
         },
 
         --CLOUD CUCKOOLAND
-        ["0x136"] =	{ --CCL
+        [0x136] =	{ --CCL
             ["JIGGIES"] = {
                 "1230667", -- Mr Fit
                 "1230669", -- Canary Mary 3
@@ -1426,47 +1441,47 @@ local ASSET_MAP_CHECK = {
                 "1230675", -- Jelly Castle
             },
         },
-        ["0x13A"] =	{ --CCL - Central Cavern
+        [0x13A] =	{ --CCL - Central Cavern
             ["JIGGIES"] = {
                 "1230674", -- Superstash
             },
         },
-        ["0x138"] =	{ --CCL - Inside the Cheese Wedge
+        [0x138] =	{ --CCL - Inside the Cheese Wedge
             ["JIGGIES"] = {
                 "1230672", -- Cheese Wedge
             },
         },
-        ["0x13D"] =	{ --CCL - Inside the Pot o' Gold
+        [0x13D] =	{ --CCL - Inside the Pot o' Gold
             ["JIGGIES"] = {
                 "1230668", -- pot o gold
             },
         },
-        ["0x137"] =	{ --CCL - Inside the Trash Can
+        [0x137] =	{ --CCL - Inside the Trash Can
             ["JIGGIES"] = {
                 "1230673", -- Trash Can
             },
         },
-        ["0x13F"] =	{ --CCL - Mingy Jongo's Skull
+        [0x13F] =	{ --CCL - Mingy Jongo's Skull
             ["JIGGIES"] = {
                 "1230666", -- Mingy Jongo
             },
         },
-        ["0x13E"] =	{ --CCL - Mumbo's Skull
+        [0x13E] =	{ --CCL - Mumbo's Skull
             ["JIGGIES"] = {
                 "1230666", -- Mingy Jongo
             },
         },
-        ["0x140"] =	{ --CCL - Wumba's Wigwam
+        [0x140] =	{ --CCL - Wumba's Wigwam
             --Jinjo
         },
-        ["0x139"] =	{ --CCL - Zubbas' Nest
+        [0x139] =	{ --CCL - Zubbas' Nest
             ["JIGGIES"] = {
                 "1230670", -- Zubba
             },
         },
 
         --CAULDRON KEEP
-        ["0x19A"] =	{ --CK - HAG 1
+        [0x19A] =	{ --CK - HAG 1
 
         },
     }
@@ -4563,14 +4578,6 @@ function readAPLocationChecks(type)
     end
 end
 
-function init_AGI()
-    local checks = {}
-    for location, value in pairs(AGI_MASTER_MAP['JIGGY'])
-    do
-        AGI['JIGGY'][location] = false
-    end
-end
-
 function hag1_phase_skips()
     local tmp_flg_pointer = 0x12C774
     local beginning_phase_offset = 0x09
@@ -4585,7 +4592,7 @@ end
 
 function init_JIGGIES(type) -- Initialize JIGGIES
     local checks = {}
-    for locationId,v in pairs(NON_AGI_MAP['JIGGIES'])
+    for locationId,v in pairs(NON_AGI_MAP["JIGGIES"])
     do
         if type == "BMM"
         then
@@ -4601,7 +4608,7 @@ end
 function restore_BMM_JIGGIES() --Only run while unpausing 
     if BMM_BACKUP_JIGGY == true and AGI_JIGGY_SET == true
     then
-        for locationId,v in pairs(NON_AGI_MAP['JIGGIES']) do
+        for locationId,v in pairs(NON_AGI_MAP["JIGGIES"]) do
             if BMM_JIGGIES[locationId] == true
             then
                 BTRAMOBJ:setFlag(v['addr'], v['bit']);
@@ -4619,7 +4626,7 @@ function set_AP_JIGGIES() -- Only run while Pausing or Transistion to certain ma
     then
         for locationId, value in pairs(AGI_JIGGIES)
         do
-            local get_addr = NON_AGI_MAP['JIGGIES'][locationId]
+            local get_addr = NON_AGI_MAP["JIGGIES"][locationId]
             if value == true
             then
                 BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
@@ -4632,16 +4639,24 @@ function set_AP_JIGGIES() -- Only run while Pausing or Transistion to certain ma
 end
 
 function obtained_AP_JIGGY()
+    if DEBUG == true
+    then
+        print("Jiggy Obtained")
+    end
     for locationId, value in pairs(AGI_JIGGIES)
     do
         if value == false
         then
             AGI_JIGGIES[locationId] = true;
-            local get_addr = NON_AGI_MAP['TREBLE'][tostring(locationId)]
-            BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_OBTAIN");
+            if AGI_JIGGY_SET == true
+            then
+                local get_addr = NON_AGI_MAP["JIGGIES"][tostring(locationId)]
+                BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
+            end
             break
         end
     end
+    JIGGY_COUNT = JIGGY_COUNT + 1
 end
 
 function jiggy_ui_update()
@@ -4664,7 +4679,7 @@ end
 function backup_BMM_JIGGIES()
     if BMM_BACKUP_JIGGY == false
     then
-        for locationId,v in pairs(NON_AGI_MAP['JIGGIES']) do
+        for locationId,v in pairs(NON_AGI_MAP["JIGGIES"]) do
             if BTRAMOBJ:checkFlag(v['addr'], v['bit']) == true
             then
                 BMM_JIGGIES[locationId] = true
@@ -4673,33 +4688,136 @@ function backup_BMM_JIGGIES()
             end
         end
         BMM_BACKUP_JIGGY = true
+        set_AP_JIGGIES()
     end
 end
 
-function jiggy_check() --TODO
+function jiggy_check()
     local checks = {}
     if BMM_BACKUP_JIGGY == true
     then
+        jiggy_ui_update()
+        if DEBUG == true
+        then
+            print("Setting BMM Jiggies")
+        end
         return BMM_JIGGIES
     end
-    if ASSET_MAP_CHECK["JIGGIES"][CURRENT_MAP] ~= nil
+    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
     then
-        if BMM_BACKUP_JIGGY == true
+        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["JIGGIES"] ~= nil
         then
-            return BMM_JIGGIES
+            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["JIGGIES"])
+            do
+                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["JIGGIES"][locationId]['addr'], NON_AGI_MAP["JIGGIES"][locationId]['bit'])
+                if DEBUG == true
+                then
+                    print(NON_AGI_MAP["JIGGIES"][locationId]['bit']..":"..tostring(checks[locationId]))
+                end
+            end
         end
-        for locationId,v in pairs(NON_AGI_MAP['JIGGIES'])
-        do
-            checks[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_JIGGY_AGI")
-        end
-        return checks
     end
+    for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"]["ALL"]["JIGGIES"])
+    do
+        checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["JIGGIES"][locationId]['addr'], NON_AGI_MAP["JIGGIES"][locationId]['bit'])
+        -- if DEBUG == true
+        -- then
+        --     print(NON_AGI_MAP["JIGGIES"][locationId]['name'] .. ":" .. tostring(checks[locationId]))
+        -- end
+    end
+    return checks
+end
 
-    for locationId,v in pairs(NON_AGI_MAP['JIGGIES'])
-        do
-            checks[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_JIGGY_AGI")
+function no_puzzle_skip()
+    if MAP_TRANSITION == true and NEXT_MAP == 0x14F and BMM_BACKUP_JIGGY == false --Wooded Hollow
+    then
+        backup_BMM_JIGGIES()
+    elseif MAP_TRANSITION == true and NEXT_MAP == 0x151 and BMM_BACKUP_JIGGY == false -- Jiggywiggy Temple
+    then
+        backup_BMM_JIGGIES()
+    elseif MAP_TRANSITION == true and BMM_BACKUP_JIGGY == true and NEXT_MAP ~= 0x14F and NEXT_MAP ~= 0x151  --Exiting Wooded Hollow
+    then
+        restore_BMM_JIGGIES()
+    end
+end
+
+function hag1_open()
+    if GAME_LOADED == true
+    then
+        if GOAL_TYPE == 0
+        then
+            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                BTRAMOBJ:setFlag(0x6E, 3);
+                table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                print("HAG 1 is now unlocked!")
+            end
+        elseif GOAL_TYPE == 4
+        then
+            local token_count = 0;
+            for id, itemId in pairs(receive_map)
+            do
+                if itemId == "1230798"
+                then
+                    token_count = token_count + 1
+                end
+            end
+            if token_count >= 32
+            then
+                if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                    BTRAMOBJ:setFlag(0x6E, 3);
+                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                    print("HAG 1 is now unlocked!")
+                end
+            end
         end
-        return checks
+    end
+end
+
+function check_open_level(show_message)  -- See if entrance conditions for a level have been met    
+    if DEBUG == true then
+        print(JIGGY_COUNT)
+    end
+    for _, values in pairs(WORLD_ENTRANCE_MAP)
+    do
+        if values["opened"] == false
+        then
+            if JIGGY_COUNT >= values["defaultCost"]
+            then
+                if DEBUG == true
+                then
+                    print(values["defaultName"] .. tostring(values["defaultCost"]))
+                end
+                BTRAMOBJ:setFlag(values["addr"], values["bit"])
+                if values["locationId"] ~= "0"
+                then
+                    UNLOCKED_WORLDS[values["locationId"]] = true
+                end
+                if ENABLE_AP_WORLDS == false
+                then
+                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                end
+                values["opened"] = true
+                if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
+                    and show_message == true
+                then
+                    if ENABLE_AP_WORLDS == false
+                    then
+                        table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
+                        print(values["defaultName"] .. " is now unlocked!")
+                    end
+                end
+            end
+        else --Make sure its open regardless but no message
+            if JIGGY_COUNT >= values["defaultCost"] and values["opened"] == true
+            then
+                BTRAMOBJ:setFlag(values["addr"], values["bit"])
+                if ENABLE_AP_WORLDS == false
+                then
+                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                end
+            end
+        end
+    end
 end
 
 ---------------------------------- BKNOTES ---------------------------------
@@ -6444,132 +6562,40 @@ function getBanjoDeath()
     end
 end
 
------------------- Warp Trap ----------------
+---------------------- MAP HANDLING -------------------
 
--- function ApWarp()
---     if TOTAL_WARP_COUNTER < AGI_TRAPS["1230799"]
---     then
--- 		local POS = {
--- 			["Xpos"] = 0,
--- 			["Ypos"] = 0,
--- 			["Zpos"] = 0,
--- 		};
-
---         local warpIndex = math.random(1, #WARP_TABLE)
--- 		local warpLocation = WARP_TABLE[warpIndex];
--- 		local mapValue = warpLocation["mapId"]
---         POS["Xpos"] = warpLocation["xPos"];
--- 		POS["Ypos"] = warpLocation["yPos"];
--- 		POS["Zpos"] = warpLocation["zPos"];
-
-
-
--- 		if (mapValue == CURRENT_MAP) -- and (WARP_TRAP_LOGIC == 1)
--- 		then
--- 		    print('hi dad')
---             BTModel.banjoRAM:setBanjoPos(POS["Xpos"], POS["Ypos"], POS["Zpos"]);
--- 		 	TOTAL_WARP_COUNTER = AGI_TRAPS["1230799"];
--- 		end
-
--- 		-- if WARP_TRAP_LOGIC == 2
--- 		-- then
--- 		-- 	for location, worlds in pairs(UNLOCKED_WORLDS)
--- 		-- 	do
--- 		-- 		if UNLOCKED_WORLDS[worlds["defaultName"]] == warpLocation["worldName"]
--- 		-- 		then
--- 		-- 			--set player map to warpitem mapid
--- 		-- 			BTModel.banjoRAM:setBanjoPos(POS["Xpos"], POS["Ypos"], POS["Zpos"]);
--- 		-- 			TOTAL_WARP_COUNTER = warpItems;
--- 		-- 		end
--- 		-- 	end
--- 		-- end
--- 	end
--- end
-
-function hag1_open()
-    if GAME_LOADED == true
+function watchMapTransition()
+    if mainmemory.read_u8(0x127642) == 1
     then
-        if GOAL_TYPE == 0
+        if MAP_TRANSITION == false then
+            NEXT_MAP = BTRAMOBJ:getMap(true)
+            MAP_TRANSITION = true
+            BKAssetFound();
+        end
+    else
+        finishTransition()
+        jiggy_ui_update()
+    end
+end
+
+function finishTransition()
+    BTMODELOBJ:changeName("Player", false)
+    local player = BTMODELOBJ:checkModel();
+    local mapaddr = BTRAMOBJ:getMap(false)
+    if mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == true and player == true and mapaddr == NEXT_MAP
+    then
+        MAP_TRANSITION = false
+        local mapaddr = BTRAMOBJ:getMap(false)
+        BKLogics(mapaddr)
+        if mapaddr ~= CURRENT_MAP
         then
-            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-                BTRAMOBJ:setFlag(0x6E, 3);
-                table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                print("HAG 1 is now unlocked!")
-            end
-        elseif GOAL_TYPE == 4
-        then
-            local token_count = 0;
-            for id, itemId in pairs(receive_map)
-            do
-                if itemId == "1230798"
-                then
-                    token_count = token_count + 1
-                end
-            end
-            if token_count >= 32
-            then
-                if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-                    BTRAMOBJ:setFlag(0x6E, 3);
-                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                    print("HAG 1 is now unlocked!")
-                end
-            end
+            PREVIOUS_MAP = CURRENT_MAP
+            CURRENT_MAP = mapaddr
         end
     end
 end
 
 
-function check_open_level(show_message)  -- See if entrance conditions for a level have been met
-    local jiggy_count = 0;
-    for location, values in pairs(AGI_MASTER_MAP["JIGGY"])
-    do
-        if AGI['JIGGY'][location] == true
-        then
-            jiggy_count = jiggy_count + 1
-        end
-    end
-    for location, values in pairs(WORLD_ENTRANCE_MAP)
-    do
-        if values["opened"] == false
-        then
-            if jiggy_count >= values["defaultCost"]
-            then
-                if DEBUG == true
-                then
-                    print(values["defaultName"] .. tostring(values["defaultCost"]))
-                end
-                BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                if values["locationId"] ~= "0"
-                then
-                    UNLOCKED_WORLDS[values["locationId"]] = true
-                end
-                if ENABLE_AP_WORLDS == false
-                then
-                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
-                end
-                values["opened"] = true
-                if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
-                    and show_message == true
-                then
-                    if ENABLE_AP_WORLDS == false
-                    then
-                        table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
-                        print(values["defaultName"] .. " is now unlocked!")
-                    end
-                end
-            end
-        else --Make sure its open regardless but no message
-            if jiggy_count >= values["defaultCost"] and values["opened"] == true
-            then
-                BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                if ENABLE_AP_WORLDS == false
-                then
-                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
-                end
-            end
-        end
-    end
-end
 
 function checkConsumables(consumable_type, location_checks)
     BTCONSUMEOBJ:changeConsumable(consumable_type)
@@ -6660,6 +6686,7 @@ function loadGame(current_map)
             hag1_open()
             hag1_phase_skips()
             GAME_LOADED = true;
+            DEMO_MODE = false;
         end
     end
 end
@@ -6893,26 +6920,29 @@ function BKAssetFound()
 
 end
 
+
+
 function locationControl()
-    local mapaddr = BTRAMOBJ:getMap()
+    local mapaddr = BTRAMOBJ:getMap(false)
     if mapaddr == nil --We don't want this to process anything
     then
-        local DEMO = { ['DEMO'] = true}
-        return DEMO
+        DEMO_MODE = true
+        return DEMO_MODE
     end
     if SolvingPuzzle(mapaddr) == true
     then
-        local DEMO = { ['DEMO'] = true}
-        return DEMO
+        DEMO_MODE = true
+        return DEMO_MODE
     end
 
     if USE_BMM_TBL == true --Only used If Pausing
     then
         if BTRAMOBJ:checkFlag(0x1F, 0, "LocControl1") == true -- DEMO FILE
         then
-            local DEMO = { ['DEMO'] = true}
-            return DEMO
+            DEMO_MODE = true
+            return DEMO_MODE
         end
+        DEMO_MODE = false
         BKLogics(mapaddr)
         getAltar()
         if ENABLE_AP_WORLDS == true
@@ -6925,9 +6955,10 @@ function locationControl()
         if GAME_LOADED == false
         then
             loadGame(mapaddr)
-            local DEMO = { ['DEMO'] = true}
+            DEMO = true
             return DEMO
         else
+            DEMO_MODE = false
             BKLogics(mapaddr)    
             if (mapaddr == 335 or mapaddr == 337) and TOTALS_MENU == false -- Wooded Hollow / JiggyTemple
             then
@@ -7426,20 +7457,9 @@ function processAGIItem(item_list)
                 BTCONSUMEOBJ:changeConsumable("CHEATO");
                 BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
  --               archipelago_msg_box("Received Cheato Page");
-            elseif(memlocation == 1230515)
+            elseif(memlocation == 1230515) -- Jiggy
             then
-                if DEBUG == true
-                then
-                    print("Jiggy Obtained")
-                end
-                for location, values in pairs(AGI_MASTER_MAP["JIGGY"])
-                do
-                    if AGI['JIGGY'][location] == false
-                    then
-                        AGI['JIGGY'][location] = true
-                        break
-                    end
-                end
+                obtained_AP_JIGGY()
                 if SKIP_PUZZLES == true then
                     check_open_level(true) -- check if the current jiggy count opens a new level
                 end
@@ -7736,8 +7756,8 @@ function SendToBTClient()
     retTable["scriptVersion"] = SCRIPT_VERSION;
     retTable["playerName"] = PLAYER;
     retTable["deathlinkActive"] = DEATH_LINK;
-    retTable['locations'] = locationControl()
-    retTable['jiggies'] = JIGGIES;
+    --retTable['locations'] = locationControl()
+    retTable["jiggies"] = jiggy_check()
     retTable['unlocked_moves'] = BKM;
     retTable['treble'] = BKNOTES;
     retTable['stations'] = BKSTATIONS;
@@ -7752,6 +7772,8 @@ function SendToBTClient()
     retTable["jiggy_chunks"] = JIGGY_CHUNKS;
     retTable["goggles"] = GOGGLES;
     retTable["dino_kids"] = DINO_KIDS;
+    retTable["DEMO"] = DEMO_MODE;
+    
     if CURRENT_MAP == nil
     then
         retTable["banjo_map"] = 0x0;
@@ -7837,8 +7859,10 @@ function checkPause()
         then
             print("Game Paused");
         end
+        backup_BMM_JIGGIES()
         BMMBackup();
         useAGI();
+
         if ENABLE_AP_JINJO == true
         then
             JinjoPause();
@@ -7851,10 +7875,15 @@ function checkPause()
         then
             print("Game Unpaused");
         end
-        if CURRENT_MAP ~= 335 and CURRENT_MAP ~= 337  -- Don't want to restore while in WH zone
-        then
-            BMMRestore()
+        if SKIP_PUZZLES == false then
+            if CURRENT_MAP ~= 0x14F and CURRENT_MAP ~= 0x151  -- Don't want to restore while in WH zone
+            then
+                print(CURRENT_MAP)
+                restore_BMM_JIGGIES()
+                BMMRestore()
+            end
         end
+        
         unpause_hide_AGI_key()
     elseif PAUSED == true and DEBUG == true
     then
@@ -8538,7 +8567,7 @@ end
 
 function initializeFlags()
 	-- Use Cutscene: "2 Years Have Passed..." to check for fresh save
-	local current_map = BTRAMOBJ:getMap();
+	local current_map = BTRAMOBJ:getMap(false);
 	if (current_map == 0xA1) then
 		-- First Time Pickup Text
 		for i = 0, 7 do
@@ -8584,15 +8613,16 @@ function initializeFlags()
             BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
         end
         GAME_LOADED = true  -- We don't have a real BMM at this point.  
+        DEMO_MODE = false
         init_BMK("BKM");
         init_BKNOTES("BKNOTES");
         init_BKSTATIONS("BKSTATIONS");
         init_CHUFFY("BKCHUFFY");
         init_JinjoFam();
         init_BKMYSTERY("BKMYSTERY")
-        init_AGI()
         init_roysten()
         init_DINO_KIDS()
+        init_JIGGIES("BMM")
         AGI_MOVES = init_BMK("AGI");
         AGI_NOTES = init_BKNOTES("AGI");
         AGI_MYSTERY = init_BKMYSTERY("AGI");
@@ -8759,12 +8789,16 @@ function main()
                 killBT()
             elseif (FRAME % 5 == 1)
             then
+                watchMapTransition()
+                if SKIP_PUZZLES == false
+                then
+                    no_puzzle_skip()
+                end
                 checkPause();
                 checkTotalMenu();
                 if not (INIT_COMPLETE) or CURRENT_MAP == 0x158 then
 					initializeFlags();
 				end
-                BKAssetFound();
                 DPadStats();
             end
         elseif (CUR_STATE == STATE_UNINITIALIZED) then

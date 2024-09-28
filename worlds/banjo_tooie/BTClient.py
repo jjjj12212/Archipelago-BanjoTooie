@@ -102,6 +102,7 @@ class BanjoTooieContext(CommonContext):
         self.jiggychunks_table = {}
         self.goggles_table = False
         self.dino_kids_table = {}
+        self.jiggy_table = {}
         self.current_map = 0
         self.deathlink_enabled = False
         self.deathlink_pending = False
@@ -318,7 +319,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         ctx.deathlink_enabled = True
 
     # Locations handling
-    locations = payload['locations']
+    #locations = payload['locations']
+    demo = payload['DEMO']
     chuffy = payload['chuffy']
     notelist = payload['treble']
     stationlist = payload['stations']
@@ -329,13 +331,14 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     honeybrewardslist = payload['honeyb_rewards']
     jiggychunklist = payload['jiggy_chunks']
     goggles = payload['goggles']
+    jiggylist = payload['jiggies']
     dino_kids = payload['dino_kids']
     worldslist = payload['worlds']
     banjo_map = payload['banjo_map']
 
     # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
-    if isinstance(locations, list):
-        locations = {}
+    # if isinstance(locations, list):
+    #     locations = {}
     if isinstance(chuffy, list):
         chuffy = {}
     if isinstance(notelist, list):
@@ -360,40 +363,44 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         dino_kids = {}
     if isinstance(goggles, bool) == False:
         goggles = False
+    if isinstance(demo, bool) == False:
+        demo = True
     if isinstance(banjo_map, int) == False:
         banjo_map = 0
+    if isinstance(jiggylist, list):
+        jiggylist = {}
 
-    if "DEMO" not in locations and ctx.sync_ready == True:
+    if demo == False and ctx.sync_ready == True:
         locs1 = []
-        if ctx.location_table != locations: 
-            for item_group, BTlocation_table in locations.items():
-                    if len(BTlocation_table) == 0:
-                        continue
+        # if ctx.location_table != locations: 
+        #     for item_group, BTlocation_table in locations.items():
+        #             if len(BTlocation_table) == 0:
+        #                 continue
 
-                    # Game completion handling
-                    if (("1230027" in BTlocation_table and BTlocation_table["1230027"] == True) 
-                    and (ctx.slot_data["goal_type"] == 0 or ctx.slot_data["goal_type"] == 4) and not ctx.finished_game):
-                        await ctx.send_msgs([{
-                            "cmd": "StatusUpdate",
-                            "status": 30
-                        }])
-                        ctx.finished_game = True
+        #             # Game completion handling
+        #             if (("1230027" in BTlocation_table and BTlocation_table["1230027"] == True) 
+        #             and (ctx.slot_data["goal_type"] == 0 or ctx.slot_data["goal_type"] == 4) and not ctx.finished_game):
+        #                 await ctx.send_msgs([{
+        #                     "cmd": "StatusUpdate",
+        #                     "status": 30
+        #                 }])
+        #                 ctx.finished_game = True
 
-                    else:
-                        for locationId, value in BTlocation_table.items():
-                            if value == True:
-                                if (locationId == "1230676" or locationId == "1230677" or locationId == "1230678" or
-                                    locationId == "1230679" or locationId == "1230680" or locationId == "1230681" or
-                                    locationId == "1230682" or locationId == "1230683" or locationId == "1230684") \
-                                    and ctx.slot_data["jinjo"] == "true":
-                                    continue
-                                if locationId not in ctx.location_table:
-                                    locs1.append(int(locationId))
-                                    if ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or \
-                                    ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
-                                       locs1 = mumbo_tokens_loc(locs1, int(locationId), ctx.slot_data["goal_type"])
+        #             else:
+        #                 for locationId, value in BTlocation_table.items():
+        #                     if value == True:
+        #                         if (locationId == "1230676" or locationId == "1230677" or locationId == "1230678" or
+        #                             locationId == "1230679" or locationId == "1230680" or locationId == "1230681" or
+        #                             locationId == "1230682" or locationId == "1230683" or locationId == "1230684") \
+        #                             and ctx.slot_data["jinjo"] == "true":
+        #                             continue
+        #                         if locationId not in ctx.location_table:
+        #                             locs1.append(int(locationId))
+        #                             if ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or \
+        #                             ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
+        #                                locs1 = mumbo_tokens_loc(locs1, int(locationId), ctx.slot_data["goal_type"])
                                    
-            ctx.location_table = locations       
+        #     ctx.location_table = locations       
         if ctx.chuffy_table != chuffy:
             ctx.chuffy_table = chuffy
             for locationId, value in chuffy.items():
@@ -433,6 +440,11 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         if ctx.dino_kids_table != dino_kids:
             ctx.dino_kids_table = dino_kids
             for locationId, value in dino_kids.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.jiggy_table != jiggylist:
+            ctx.jiggy_table = jiggylist
+            for locationId, value in jiggylist.items():
                 if value == True:
                     locs1.append(int(locationId))
 
@@ -617,7 +629,7 @@ async def n64_sync_task(ctx: BanjoTooieContext):
                     if getSlotData == True:
                         ctx.sendSlot = True
                     elif reported_version >= script_version:
-                        if ctx.game is not None and 'locations' in data_decoded:
+                        if ctx.game is not None and 'jiggies' in data_decoded:
                             # Not just a keep alive ping, parse
                             async_start(parse_payload(data_decoded, ctx, False))
                         if not ctx.auth:
