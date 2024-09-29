@@ -1820,8 +1820,11 @@ local ASSET_MAP_CHECK = {
 
         --CAULDRON KEEP
         [0x19A] =	{ --CK - HAG 1
-
+            ["H1"] = {
+                "1230027"
+            }
         },
+
     }
 }
 
@@ -2523,13 +2526,7 @@ local AGI_MASTER_MAP = {
             ['bit'] = 6,
         }
     },
-	["H1"] = {
-	 	["1230027"] = {
-			['addr'] = 0x03,
-			['bit'] = 3,
-            ['name'] = "Hag 1 Defeated"
-		},
-	},
+	
 }
 
 -- Address Map for Banjo-Tooie
@@ -4771,6 +4768,13 @@ local NON_AGI_MAP = {
             ['name'] = 'JRL: Near Jinjo 4 Doubloon'
         }
     },
+    ["H1"] = {
+        ["1230027"] = {
+           ['addr'] = 0x03,
+           ['bit'] = 3,
+           ['name'] = "Hag 1 Defeated"
+       },
+   },
 }
 
 -- Properties of world entrances and associated puzzles
@@ -5734,6 +5738,26 @@ function doubloon_math_check()
     return recv_doubloons
 end
 
+-------------------------------- HAG-1 Victory ----------------------------------
+
+function hag1_check()
+    local victory = false
+    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["H1"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["H1"])
+            do
+                victory = BTRAMOBJ:checkFlag(NON_AGI_MAP["H1"][locationId]['addr'], NON_AGI_MAP["H1"][locationId]['bit'])
+                if DEBUG == true
+                then
+                    print(NON_AGI_MAP["H1"][locationId]['name']..":"..tostring(victory))
+                end
+            end
+        end
+    end
+    return victory
+end
 
 --------------------------------- JIGGY CHUNKS ----------------------------------
 function init_JIGGY_CHUNK()
@@ -8341,6 +8365,7 @@ function SendToBTClient()
     retTable["honeycomb"] = honeycomb_check()
     retTable["glowbo"] = glowbo_check()
     retTable["doubloon"] = doubloon_check()
+    retTable["hag"] = hag1_check()
     retTable['unlocked_moves'] = BKM;
     retTable['treble'] = BKNOTES;
     retTable['stations'] = BKSTATIONS;

@@ -337,6 +337,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     honeycomblist = payload['honeycomb']
     glowbolist = payload['glowbo']
     doubloonlist = payload['doubloon']
+    hag = payload['hag']
     cheatorewardslist = payload['cheato_rewards']
     honeybrewardslist = payload['honeyb_rewards']
     jiggychunklist = payload['jiggy_chunks']
@@ -389,6 +390,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         glowbolist = {}
     if isinstance(doubloonlist, list):
         doubloonlist = {}
+    if isinstance(hag, bool) == False:
+        hag = False
 
     if demo == False and ctx.sync_ready == True:
         locs1 = []
@@ -492,7 +495,6 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             for locationId, value in doubloonlist.items():
                 if value == True:
                     locs1.append(int(locationId))
-                    
         if ctx.slot_data["moves"] == "true":
             # Locations handling
             movelist = payload['unlocked_moves']
@@ -539,6 +541,16 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             }])
             
         #GAME VICTORY
+        #Beat Hag-1
+        if hag == True and (ctx.slot_data["goal_type"] == 0 or ctx.slot_data["goal_type"] == 4) and not ctx.finished_game:
+            await ctx.send_msgs([{
+                "cmd": "StatusUpdate",
+                "status": 30
+            }])
+            ctx.finished_game = True
+            ctx._set_message("You have completed your goal", None)
+
+        #Mumbo Tokens
         if (ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or 
             ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 5) and not ctx.finished_game:
             mumbo_tokens = 0
@@ -556,6 +568,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                         ctx.finished_game = True
                         ctx._set_message("You have completed your goal", None)
 
+        # Ozone Banjo-Tooie Tracker
         if ctx.current_map != banjo_map:
             ctx.current_map = banjo_map
             await ctx.send_msgs([{
