@@ -1053,6 +1053,9 @@ local ASSET_MAP_CHECK = {
         [0x152] = { --IoH - Plateau
             ["JINJOS"] = {
                 "1230594" -- Plateau Jinjo
+            },
+            ["HONEYCOMB"] = {
+                "1230727" -- honey
             }
         },
         -- ["0x153"] =	{"Isle O' Hags", "Plateau"},            --IoH - Plateau - Honey B's Hive
@@ -1080,6 +1083,10 @@ local ASSET_MAP_CHECK = {
             },
             ["PAGES"] = {
                 "1230728" -- Top of Treasure Chamber
+            },
+            ["HONEYCOMB"] = {
+                "1230703", -- Entrance
+                "1230704", -- Bovina
             }
         },
         [0xC4] = { --MT - Jade Snake Grove
@@ -1124,6 +1131,9 @@ local ASSET_MAP_CHECK = {
         [0xC5] = { --MT - Treasure Chamber
             ["JIGGIES"] = {
                 "1230600" --Treasure Chamber
+            },
+            ["HONEYCOMB"] = {
+                "1230705", -- Treasure
             }
         },
         [0x178] = { --MT - Inside Tatgitzan's Temple
@@ -1145,6 +1155,9 @@ local ASSET_MAP_CHECK = {
             ["PAGES"] = {
                 "1230731", -- Canary
                 "1230732", -- Entrance
+            },
+            ["HONEYCOMB"] = {
+                "1230707", -- boulder
             }
         },
         [0xCC] ={ --GGM - Flooded Caves
@@ -1188,10 +1201,15 @@ local ASSET_MAP_CHECK = {
         [0xDA] = { --GGM - Toxic Gas Cave
             ["JINJOS"] = {
                 "1230558" -- Toxic
+            },
+            ["HONEYCOMB"] = {
+                "1230706", -- boulder
             }
         },
         [0xD7] = { --GGM - Train Station
-
+            ["HONEYCOMB"] = {
+                "1230708", -- Train
+            }
         },
         [0xCD] = { --GGM - Water Storage
             ["JINJOS"] = {
@@ -1222,6 +1240,9 @@ local ASSET_MAP_CHECK = {
             },
             ["PAGES"] = {
                 "1230736" -- Saucer 
+            },
+            ["HONEYCOMB"] = {
+                "1230709", -- Space Zone
             }
         },
         [0xEA] = { --WW - Cave of Horrors
@@ -1234,6 +1255,9 @@ local ASSET_MAP_CHECK = {
                 "1230616", -- Hoop Hurry
                 "1230620", -- Balloon Burst
             },
+            ["HONEYCOMB"] = {
+                "1230711", -- Crazy Castle
+            }
         },
         [0xDD] = { --WW - Dodgem Dome Lobby
             ["JIGGIES"] = {
@@ -1263,6 +1287,11 @@ local ASSET_MAP_CHECK = {
                 "1230735" -- Inferno
             }
         },
+        [0x176] = { -- WW - Mumbo Skull
+            ["HONEYCOMB"] = {
+                "1230710" -- Inferno
+            }
+        },
         [0xD5] = { --WW - Wumba's Wigwam
 
         },
@@ -1276,6 +1305,9 @@ local ASSET_MAP_CHECK = {
             },
             ["JINJOS"] = {
                 "1230566", -- alcove
+            },
+            ["HONEYCOMB"] = {
+                "1230714" -- Pipe
             }
         },
         [0xF4] = { --JRL - Ancient Swimming Baths
@@ -1292,6 +1324,10 @@ local ASSET_MAP_CHECK = {
             },
             ["PAGES"] = {
                 "1230738" -- SEEMEE
+            },
+            ["HONEYCOMB"] = {
+                "1230713", -- Atlantis
+                "1230712", -- SEEMEE
             }
         },
         [0xFF] = { --JRL - Blubber's Wave Race Hire
@@ -1331,6 +1367,9 @@ local ASSET_MAP_CHECK = {
             },
             ["PAGES"] = {
                 "1230738" -- SEEMEE
+            },
+            ["HONEYCOMB"] = {
+                "1230712", -- SEEMEE
             }
         },
         [0x181] =	{ --JRL - Sea Botom Cavern
@@ -1350,6 +1389,9 @@ local ASSET_MAP_CHECK = {
             },
             ["PAGES"] = {
                 "1230738" -- SEEMEE
+            },
+            ["HONEYCOMB"] = {
+                "1230712", -- SEEMEE
             }
         },
         [0xFA] = { --JRL - Temple of the Fishes
@@ -1374,6 +1416,9 @@ local ASSET_MAP_CHECK = {
             ["PAGES"] = {
                 "1230740", -- Dippy
                 "1230742" -- Boulder
+            },
+            ["HONEYCOMB"] = {
+                "1230715" -- Lakeside
             }
         },
         [0x123] = { --TDL - Inside Chompa's Belly
@@ -1395,7 +1440,9 @@ local ASSET_MAP_CHECK = {
             },
         },
         [0x117] =	{ --TDL - River Passage
-
+            ["HONEYCOMB"] = {
+                "1230717" -- Riverside
+            }
         },
         [0x11A] =	{ --TDL - Stomping Plains
             ["JIGGIES"] = {
@@ -1409,6 +1456,9 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230638", -- Scrotty
             },
+            ["HONEYCOMB"] = {
+                "1230716" -- Cave
+            }
         },
         [0x113] =	{ --TDL - Terry's Nest
             ["JIGGIES"] = {
@@ -1428,6 +1478,9 @@ local ASSET_MAP_CHECK = {
             },
             ["JINJOS"] = {
                 "1230580" -- Outside
+            },
+            ["HONEYCOMB"] = {
+                "1230720" -- Chimney
             }
         },
         [0x10F] = { --GI - Basement
@@ -1471,6 +1524,9 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230646", -- Skivvy
             },
+            ["HONEYCOMB"] = {
+                "1230718" -- Floor 3
+            }
         },
         [0x109] =	{ --GI - Floor 3 (Boiler Plant)
             ["JINJOS"] = {
@@ -1505,7 +1561,9 @@ local ASSET_MAP_CHECK = {
             },
         },
         [0x102] =	{ --GI - Train Station
-
+            ["HONEYCOMB"] = {
+                "1230719" -- Train
+            }
         },
         [0x104] =	{ --GI - Trash Compactor
             ["JIGGIES"] = {
@@ -1563,6 +1621,9 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230657", -- Volcano
             },
+            ["HONEYCOMB"] = {
+                "1230721" -- Volcano
+            }
         },
         [0x12D] =	{ --HFP - Kickball Stadium lobby
             ["JIGGIES"] = {
@@ -1580,10 +1641,15 @@ local ASSET_MAP_CHECK = {
             },
             ["PAGES"] = {
                 "1230746" -- Lava Side
+            },
+            ["HONEYCOMB"] = {
+                "1230723" -- Lava Side
             }
         },
         [0x129] =	{ --HFP - Lava Train Station
-            --honeycomb
+            ["HONEYCOMB"] = {
+                "1230721" -- Train Station
+            }
         },
 
         --CLOUD CUCKOOLAND
@@ -1596,7 +1662,12 @@ local ASSET_MAP_CHECK = {
             },
             ["PAGES"] = {
                 "1230749" -- Canary Mary
+            },
+            ["HONEYCOMB"] = {
+                "1230724", -- Dirt Patch
+                "1230726" -- Pot O Gold
             }
+
         },
         [0x13A] =	{ --CCL - Central Cavern
             ["JIGGIES"] = {
@@ -1628,6 +1699,9 @@ local ASSET_MAP_CHECK = {
             },
             ["JINJOS"] = {
                 "1230586" -- Trash
+            },
+            ["HONEYCOMB"] = {
+                "1230725" -- Trash
             }
         },
         [0x13F] =	{ --CCL - Mingy Jongo's Skull
@@ -1782,133 +1856,6 @@ local DINO_KIDS = {} -- the 3 Dino Kids
 
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
-    ['HONEYCOMB'] = {
-        ["1230727"] = {
-            ['addr'] = 0x42,
-            ['bit'] = 2,
-            ['name'] = 'Plateau: Honeycomb'
-        },
-        ["1230703"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 2,
-            ['name'] = 'MT: Entrance Honeycomb'
-        },
-        ["1230704"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 3,
-            ['name'] = 'MT: Bovina Honeycomb'
-        },
-        ["1230705"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 4,
-            ['name'] = 'MT: Treasure Chamber Honeycomb'
-        },
-        ["1230706"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 5,
-            ['name'] = 'GGM: Toxic Gas Cave Honeycomb'
-        },
-        ["1230707"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 6,
-            ['name'] = 'GGM: Boulder Honeycomb'
-        },
-        ["1230708"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 7,
-            ['name'] = 'GGM: Train Station Honeycomb'
-        },
-        ["1230709"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 0,
-            ['name'] = 'WW: Space Zone Honeycomb'
-        },
-        ["1230710"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 1,
-            ['name'] = 'WW: Mumbo Skull Honeycomb'
-        },
-        ["1230711"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 2,
-            ['name'] = 'WW: Crazy Castle Honeycomb'
-        },
-        ["1230712"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 3,
-            ['name'] = 'JRL: Seemee Honeycomb'
-        },
-        ["1230713"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 4,
-            ['name'] = 'JRL: Atlantis Honeycomb'
-        },
-        ["1230714"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 5,
-            ['name'] = 'JRL: Waste Pipe Honeycomb'
-        },
-        ["1230715"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 6,
-            ['name'] = 'TDL: Lakeside Honeycomb'
-        },
-        ["1230716"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 7,
-            ['name'] = 'TDL: Styracosaurus Cave Honeycomb'
-        },
-        ["1230717"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 0,
-            ['name'] = 'TDL: River Passage Honeycomb'
-        },
-        ["1230718"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 1,
-            ['name'] = 'GI: Floor 3 Honeycomb'
-        },
-        ["1230719"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 2,
-            ['name'] = 'GI: Train Station Honeycomb'
-        },
-        ["1230720"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 3,
-            ['name'] = 'GI: Chimney Honeycomb'
-        },
-        ["1230721"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 4,
-            ['name'] = 'HFP: Inside the Volcano Honeycomb'
-        },
-        ["1230722"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 5,
-            ['name'] = 'HFP: Train Station Honeycomb'
-        },
-        ["1230723"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 6,
-            ['name'] = 'HFP: Lava Side Honeycomb'
-        },
-        ["1230724"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 7,
-            ['name'] = 'CCL: Dirt Patch Honeycomb'
-        },
-        ["1230725"] = {
-            ['addr'] = 0x42,
-            ['bit'] = 0,
-            ['name'] = 'CCL: Trash Can Honeycomb'
-        },
-        ["1230726"] = {
-            ['addr'] = 0x42,
-            ['bit'] = 1,
-            ['name'] = "CCL: Pot O' Gold Honeycomb"
-        },
-    },
     ['GLOWBO'] = {
          ["1230686"] = {
              ['addr'] = 0x42,
@@ -4617,6 +4564,133 @@ local NON_AGI_MAP = {
             ['addr'] = 0x59,
             ['bit'] = 2,
             ['name'] = 'CCL: Zubbas Cheato Page'
+        },
+    },
+    ['HONEYCOMB'] = {
+        ["1230727"] = {
+            ['addr'] = 0x42,
+            ['bit'] = 2,
+            ['name'] = 'Plateau: Honeycomb'
+        },
+        ["1230703"] = {
+            ['addr'] = 0x3F,
+            ['bit'] = 2,
+            ['name'] = 'MT: Entrance Honeycomb'
+        },
+        ["1230704"] = {
+            ['addr'] = 0x3F,
+            ['bit'] = 3,
+            ['name'] = 'MT: Bovina Honeycomb'
+        },
+        ["1230705"] = {
+            ['addr'] = 0x3F,
+            ['bit'] = 4,
+            ['name'] = 'MT: Treasure Chamber Honeycomb'
+        },
+        ["1230706"] = {
+            ['addr'] = 0x3F,
+            ['bit'] = 5,
+            ['name'] = 'GGM: Toxic Gas Cave Honeycomb'
+        },
+        ["1230707"] = {
+            ['addr'] = 0x3F,
+            ['bit'] = 6,
+            ['name'] = 'GGM: Boulder Honeycomb'
+        },
+        ["1230708"] = {
+            ['addr'] = 0x3F,
+            ['bit'] = 7,
+            ['name'] = 'GGM: Train Station Honeycomb'
+        },
+        ["1230709"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 0,
+            ['name'] = 'WW: Space Zone Honeycomb'
+        },
+        ["1230710"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 1,
+            ['name'] = 'WW: Mumbo Skull Honeycomb'
+        },
+        ["1230711"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 2,
+            ['name'] = 'WW: Crazy Castle Honeycomb'
+        },
+        ["1230712"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Seemee Honeycomb'
+        },
+        ["1230713"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Atlantis Honeycomb'
+        },
+        ["1230714"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Waste Pipe Honeycomb'
+        },
+        ["1230715"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 6,
+            ['name'] = 'TDL: Lakeside Honeycomb'
+        },
+        ["1230716"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 7,
+            ['name'] = 'TDL: Styracosaurus Cave Honeycomb'
+        },
+        ["1230717"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 0,
+            ['name'] = 'TDL: River Passage Honeycomb'
+        },
+        ["1230718"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 1,
+            ['name'] = 'GI: Floor 3 Honeycomb'
+        },
+        ["1230719"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 2,
+            ['name'] = 'GI: Train Station Honeycomb'
+        },
+        ["1230720"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 3,
+            ['name'] = 'GI: Chimney Honeycomb'
+        },
+        ["1230721"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 4,
+            ['name'] = 'HFP: Inside the Volcano Honeycomb'
+        },
+        ["1230722"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 5,
+            ['name'] = 'HFP: Train Station Honeycomb'
+        },
+        ["1230723"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 6,
+            ['name'] = 'HFP: Lava Side Honeycomb'
+        },
+        ["1230724"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 7,
+            ['name'] = 'CCL: Dirt Patch Honeycomb'
+        },
+        ["1230725"] = {
+            ['addr'] = 0x42,
+            ['bit'] = 0,
+            ['name'] = 'CCL: Trash Can Honeycomb'
+        },
+        ["1230726"] = {
+            ['addr'] = 0x42,
+            ['bit'] = 1,
+            ['name'] = "CCL: Pot O' Gold Honeycomb"
         },
     },
 }
