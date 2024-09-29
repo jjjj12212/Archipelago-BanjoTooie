@@ -92,6 +92,19 @@ local JIGGY_COUNT = 0; -- Used for UI
 local BMM_BACKUP_JIGGY = false;
 local AGI_JIGGY_SET = false;
 
+-------------- JINJO VARS -----------
+local BMM_BACKUP_JINJO = false;
+local WHITE_JINJO_COUNT = 0;
+local ORANG_JINJO_COUNT = 0;
+local YELLO_JINJO_COUNT = 0;
+local BROWN_JINJO_COUNT = 0;
+local RED_JINJO_COUNT = 0;
+local PURPL_JINJO_COUNT = 0;
+local GREEN_JINJO_COUNT = 0;
+local BLUE_JINJO_COUNT = 0;
+local BLACK_JINJO_COUNT = 0;
+
+
 -------------- SILO VARS ------------
 local CHECK_FOR_SILO = false; --  If True, you are Transistioning maps
 local WATCH_LOADED_SILOS = false; -- Silo found on Map, Need to Monitor Distance
@@ -141,14 +154,6 @@ local MGH_LENGTH = nil;
 local BH_LENGTH = nil;
 local JFR_LENGTH = nil;
 local TH_LENGTH = nil;
-
--------------- TRAP VARS ------------
-
--- local TOTAL_WARP_COUNTER = 0
--- local WARP_TRAP_LOGIC = 0
--- local WARP_TABLE = {
---     [1]  = {mapId = 0xAF, worldName = "Spiral Mountain", xPos = 10000, yPos = 10320, zPos = 10231}, -- notes: CCL cavern, by the treble clef
--- }
 
 --------------- ROYSTEN VARS --------------------
 local FAST_SWIM = false
@@ -1021,7 +1026,7 @@ local ASSET_MAP_CHECK = {
             }
         },
         --SPIRAL MOUNTAIN
-        ["0xAF"]  = { --SM - Spiral Mountain
+        [0xAF]  = { --SM - Spiral Mountain
             ["STOPNSWAP"] = {
                 "1230956"
             },
@@ -1674,7 +1679,6 @@ local AMM = {};
 -- AGI - Archipelago given items
 local AGI = {};
 local AGI_JIGGIES = {};
-local AGI_JINJO_LOCATIONS = {}
 local AGI_MOVES = {};
 local AGI_NOTES = {};
 local AGI_STATIONS = {};
@@ -4826,7 +4830,7 @@ function jiggy_check()
                 checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["JIGGIES"][locationId]['addr'], NON_AGI_MAP["JIGGIES"][locationId]['bit'])
                 if DEBUG == true
                 then
-                    print(NON_AGI_MAP["JIGGIES"][locationId]['bit']..":"..tostring(checks[locationId]))
+                    print(NON_AGI_MAP["JIGGIES"][locationId]['name']..":"..tostring(checks[locationId]))
                 end
             end
         end
@@ -6439,11 +6443,96 @@ function MoveWitchyPads()
 end
 
 ------------------ Jinjos -------------------
--- Jinjos themselves are stored in MASTER_AGI_MAP
--- Famify complete checks are stored in BKJINJOFAM
 
+function init_JINJOS(type) -- Initialize JINJOS
+    local checks = {}
+    for locationId,v in pairs(NON_AGI_MAP["JINJOS"])
+    do
+        if type == "BMM"
+        then
+            BMM_JINJOS[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_JINJO_BMM")
+        elseif type == "AGI"
+        then
+            checks[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_JINJO_AGI")
+        end
+    end
+    return checks
+end
+
+function restore_BMM_JINJOS() -- Not sure if we need this...
+    if BMM_BACKUP_JINJO == true
+    then
+        for locationId,v in pairs(NON_AGI_MAP["JINJOS"]) do
+            if BMM_JINJOS[locationId] == true
+            then
+                BTRAMOBJ:setFlag(v['addr'], v['bit']);
+            else
+                BTRAMOBJ:clearFlag(v['addr'], v['bit']);
+            end
+        end
+        BMM_BACKUP_JINJO = false
+    end
+end
+
+function jinjo_ui_update()
+    mainmemory.write_u16_be(0x11B140, AGI_JINJOS["1230501"]) -- WHITE
+    mainmemory.write_u16_be(0x11B14C, AGI_JINJOS["1230502"]) -- ORANGE
+    mainmemory.write_u16_be(0x11B158, AGI_JINJOS["1230503"]) -- YELLOW
+    mainmemory.write_u16_be(0x11B164, AGI_JINJOS["1230504"]) -- BROWN
+    mainmemory.write_u16_be(0x11B170, AGI_JINJOS["1230505"]) -- GREEN
+    mainmemory.write_u16_be(0x11B17C, AGI_JINJOS["1230506"]) -- RED
+    mainmemory.write_u16_be(0x11B188, AGI_JINJOS["1230507"]) -- BLUE
+    mainmemory.write_u16_be(0x11B194, AGI_JINJOS["1230508"]) -- PURPLE
+    mainmemory.write_u16_be(0x11B1A0, AGI_JINJOS["1230509"]) -- BLACK
+end
+
+function jinjo_check()
+    local checks = {}
+    if BMM_BACKUP_JINJO == true
+    then
+        jinjo_ui_update()
+        if DEBUG == true
+        then
+            print("Setting BMM Jinjos")
+        end
+        return BMM_JINJOS
+    end
+    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["JINJOS"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["JINJOS"])
+            do
+                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["JINJOS"][locationId]['addr'], NON_AGI_MAP["JINJOS"][locationId]['bit'])
+                if DEBUG == true
+                then
+                    print(NON_AGI_MAP["JINJOS"][locationId]['name']..":"..tostring(checks[locationId]))
+                end
+            end
+        end
+    end
+    return checks
+end
+
+function backup_BMM_JINJOS()
+    if BMM_BACKUP_JINJO == false
+    then
+        for locationId,v in pairs(NON_AGI_MAP["JINJOS"]) do
+            if BTRAMOBJ:checkFlag(v['addr'], v['bit']) == true
+            then
+                BMM_JINJOS[locationId] = true
+            else
+                BMM_JINJOS[locationId] = false
+            end
+        end
+        BMM_BACKUP_JINJO = true
+        JinjoPause()
+    end
+end
+
+-- Family complete checks are stored in BKJINJOFAM
 function init_JinjoFam()
-    for locId, table in pairs(NON_AGI_MAP["JINJOFAM"])
+    for locId, _ in pairs(NON_AGI_MAP["JINJOFAM"])
     do
         BKJINJOFAM[locId] = false
     end
@@ -6513,12 +6602,8 @@ end
 
 function JinjoPause()
     -- Clear all Jinjo AMM Flags first, then Set. after
-    for locId, value in pairs(AGI_MASTER_MAP["JINJO"])
-    do
-        AMM["JINJO"][locId] = false
-    end
-    -- 15 =  0000 1111
-    -- 254 = 1111 1110
+    -- -- 15 =  0000 1111
+    -- -- 254 = 1111 1110
     BTRAMOBJ:setMultipleFlags(0x39, 15, 0)
     BTRAMOBJ:setMultipleFlags(0x3A, 0, 0)
     BTRAMOBJ:setMultipleFlags(0x3B, 0, 0)
@@ -6544,10 +6629,8 @@ function JinjoPause()
                 then
                     print("Setting Jinjo ID: " .. itemId .. " # " .. tostring(i))
                 end
-                AMM["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]] = true
-                AGI["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]] = true
-                BTRAMOBJ:setFlag(AGI_MASTER_MAP["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]]['addr'],
-                AGI_MASTER_MAP["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]]['bit'])
+                BTRAMOBJ:setFlag(NON_AGI_MAP["JINJOS"][JINJO_PATTER_MAP[itemId][tostring(i)]]['addr'],
+                NON_AGI_MAP["JINJOS"][JINJO_PATTER_MAP[itemId][tostring(i)]]['bit'])
             end
         end
     end
@@ -6686,9 +6769,10 @@ function watchMapTransition()
             MAP_TRANSITION = true
             BKAssetFound();
         end
-    else
+    else -- Runs Constantly while NOT transitioning
         finishTransition()
         jiggy_ui_update()
+        jinjo_ui_update()
     end
 end
 
@@ -7872,6 +7956,7 @@ function SendToBTClient()
     retTable["deathlinkActive"] = DEATH_LINK;
     --retTable['locations'] = locationControl()
     retTable["jiggies"] = jiggy_check()
+    retTable["jinjos"] = jinjo_check()
     retTable['unlocked_moves'] = BKM;
     retTable['treble'] = BKNOTES;
     retTable['stations'] = BKSTATIONS;
@@ -7973,13 +8058,14 @@ function checkPause()
         then
             print("Game Paused");
         end
+        DEMO_MODE = true -- SEND NO CHECKS
         backup_BMM_JIGGIES()
         BMMBackup();
         useAGI();
 
         if ENABLE_AP_JINJO == true
         then
-            JinjoPause();
+            backup_BMM_JINJOS()
         end
         PAUSED = true;
     elseif pause_menu == 0 and PAUSED == true  -- unpaused
@@ -7997,8 +8083,12 @@ function checkPause()
                 BMMRestore()
             end
         end
-        
+        if ENABLE_AP_JINJO == true
+        then
+            restore_BMM_JINJOS()
+        end
         unpause_hide_AGI_key()
+        DEMO_MODE = false -- SEND NO CHECKS
     elseif PAUSED == true and DEBUG == true
     then
         local check_controls = joypad.get()
