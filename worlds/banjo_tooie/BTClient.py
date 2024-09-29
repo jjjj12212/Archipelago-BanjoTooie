@@ -99,6 +99,7 @@ class BanjoTooieContext(CommonContext):
         self.pages_table = {}
         self.honeycomb_table = {}
         self.glowbo_table = {}
+        self.doubloon_table = {}
         self.worldlist_table = {}
         self.chuffy_table = {}
         self.mystery_table = {}
@@ -335,6 +336,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     pageslist = payload['pages']
     honeycomblist = payload['honeycomb']
     glowbolist = payload['glowbo']
+    doubloonlist = payload['doubloon']
     cheatorewardslist = payload['cheato_rewards']
     honeybrewardslist = payload['honeyb_rewards']
     jiggychunklist = payload['jiggy_chunks']
@@ -385,6 +387,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         honeycomblist = {}
     if isinstance(glowbolist, list):
         glowbolist = {}
+    if isinstance(doubloonlist, list):
+        doubloonlist = {}
 
     if demo == False and ctx.sync_ready == True:
         locs1 = []
@@ -483,7 +487,12 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             for locationId, value in glowbolist.items():
                 if value == True:
                     locs1.append(int(locationId))
-
+        if ctx.doubloon_table != doubloonlist:
+            ctx.doubloon_table = doubloonlist
+            for locationId, value in doubloonlist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+                    
         if ctx.slot_data["moves"] == "true":
             # Locations handling
             movelist = payload['unlocked_moves']

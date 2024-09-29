@@ -1325,6 +1325,32 @@ local ASSET_MAP_CHECK = {
             },
             ["HONEYCOMB"] = {
                 "1230714" -- Pipe
+            },
+            ["DOUBLOON"] = {
+                "1230521", -- Town Center Pole 1
+                "1230522", -- Town Center Pole 2
+                "1230523", -- Town Center Pole 3
+                "1230524", -- Town Center Pole 4
+                "1230525", -- Town Center Pole 5
+                "1230526", -- Town Center Pole 6
+                "1230527", -- Silo 1
+                "1230528", -- Silo 2
+                "1230529", -- Silo 3
+                "1230530", -- Silo 4
+                "1230531", -- Toxic Pool 1
+                "1230532", -- Toxic Pool 2
+                "1230533", -- Toxic Pool 3
+                "1230534", -- Toxic Pool 4
+                "1230539", -- Underground 1
+                "1230540", -- Underground 2
+                "1230541", -- Underground 3
+                "1230542", -- Alcove 1
+                "1230543", -- Alcove 2
+                "1230544", -- Alcove 3
+                "1230547", -- Jinjo 1
+                "1230548", -- Jinjo 2
+                "1230549", -- Jinjo 3
+                "1230550", -- Jinjo 4
             }
         },
         [0xF4] = { --JRL - Ancient Swimming Baths
@@ -1367,6 +1393,10 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230631", -- Merry Maggie
             },
+            ["DOUBLOON"] = {
+                "1230545", -- Blackeye 1
+                "1230546" -- Blackeye 2
+            }
         },
         [0xFC] =	{ --JRL - Lord Woo Fak Fak
             ["JIGGIES"] = {
@@ -1421,6 +1451,14 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230628", -- Chris P. Bacon
             },
+        },
+        [0xEF] = { --JRL - Mumbo's Skull
+            ["DOUBLOON"] = {
+                "1230535", -- Mumbo 1
+                "1230536", -- Mumbo 2
+                "1230537", -- Mumbo 3
+                "1230538" -- Mumbo 4
+            }
         },
 
         --TERRYDACTYLAND
@@ -1880,9 +1918,6 @@ local AGI_JINJOS = {
     ["1230509"] = 0, -- black
 };
 
--- local AGI_TRAPS = {
---     ["1230799"] = 0,
--- };
 
 local BMM_JIGGIES = {}; -- BMM JIGGIES
 local BMM_JINJOS = {}; -- BMM JINJOS
@@ -1902,158 +1937,6 @@ local DINO_KIDS = {} -- the 3 Dino Kids
 
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
-    ['DOUBLOON'] = {
-        ["1230521"] = {
-            ['addr'] = 0x22,
-            ['bit'] = 7,
-            ['name'] = 'JRL: Town Center Pole 1 Doubloon'
-        },
-        ["1230522"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 0,
-            ['name'] = 'JRL: Town Center Pole 2 Doubloon'
-        },
-        ["1230523"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 1,
-            ['name'] = 'JRL: Town Center Pole 3 Doubloon'
-        },
-        ["1230524"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 2,
-            ['name'] = 'JRL: Town Center Pole 4 Doubloon'
-        },
-        ["1230525"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 3,
-            ['name'] = 'JRL: Town Center Pole 5 Doubloon'
-        },
-        ["1230526"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 4,
-            ['name'] = 'JRL: Town Center Pole 6 Doubloon'
-        },
-        ["1230527"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 5,
-            ['name'] = 'JRL: Silo 1 Doubloon'
-        },
-        ["1230528"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 6,
-            ['name'] = 'JRL: Silo 2 Doubloon'
-        },
-        ["1230529"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 7,
-            ['name'] = 'JRL: Silo 3 Doubloon'
-        },
-        ["1230530"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 0,
-            ['name'] = 'JRL: Silo 4 Doubloon'
-        },
-        ["1230531"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 1,
-            ['name'] = 'JRL: Toxic Pool 1 Doubloon'
-        },
-        ["1230532"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 2,
-            ['name'] = 'JRL: Toxic Pool 2 Doubloon'
-        },
-        ["1230533"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 3,
-            ['name'] = 'JRL: Toxic Pool 3 Doubloon'
-        },
-        ["1230534"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 4,
-            ['name'] = 'JRL: Toxic Pool 4 Doubloon'
-        },
-        ["1230535"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 5,
-            ['name'] = 'JRL: Mumbo Skull 1 Doubloon'
-        },
-        ["1230536"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 6,
-            ['name'] = 'JRL: Mumbo Skull 2 Doubloon'
-        },
-        ["1230537"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 7,
-            ['name'] = 'JRL: Mumbo Skull 3 Doubloon'
-        },
-        ["1230538"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 0,
-            ['name'] = 'JRL: Mumbo Skull 4 Doubloon'
-        },
-        ["1230539"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 1,
-            ['name'] = 'JRL: Underground 1 Doubloon'
-        },
-        ["1230540"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 2,
-            ['name'] = 'JRL: Underground 2 Doubloon'
-        },
-        ["1230541"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 3,
-            ['name'] = 'JRL: Underground 3 Doubloon'
-        },
-        ["1230542"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 4,
-            ['name'] = 'JRL: Alcove 1 Doubloon'
-        },
-        ["1230543"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 5,
-            ['name'] = 'JRL: Alcove 2 Doubloon'
-        },
-        ["1230544"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 6,
-            ['name'] = 'JRL: Alcove 3 Doubloon'
-        },
-        ["1230545"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 7,
-            ['name'] = 'JRL: Capt Blackeye 1 Doubloon'
-        },
-        ["1230546"] = {
-            ['addr'] = 0x26,
-            ['bit'] = 0,
-            ['name'] = 'JRL: Capt Blackeye 2 Doubloon'
-        },
-        ["1230547"] = {
-            ['addr'] = 0x26,
-            ['bit'] = 1,
-            ['name'] = 'JRL: Near Jinjo 1 Doubloon'
-        },
-        ["1230548"] = {
-            ['addr'] = 0x26,
-            ['bit'] = 2,
-            ['name'] = 'JRL: Near Jinjo 2 Doubloon'
-        },
-        ["1230549"] = {
-            ['addr'] = 0x26,
-            ['bit'] = 3,
-            ['name'] = 'JRL: Near Jinjo 3 Doubloon'
-        },
-        ["1230550"] = {
-            ['addr'] = 0x26,
-            ['bit'] = 4,
-            ['name'] = 'JRL: Near Jinjo 4 Doubloon'
-        }
-    },
     ['NOTES'] = {
         ["1230800"] = {
             ['addr'] = 0x84,
@@ -2649,7 +2532,7 @@ local AGI_MASTER_MAP = {
 	},
 }
 
--- Flags not required to send back to BTClient
+-- Address Map for Banjo-Tooie
 local NON_AGI_MAP = {
     ["MOVES"] = {
         ["1230753"] = {
@@ -4735,7 +4618,159 @@ local NON_AGI_MAP = {
             ['name'] = 'CCL: Central Cavern Glowbo'
 
         },
-   },
+    },
+    ['DOUBLOON'] = {
+        ["1230521"] = {
+            ['addr'] = 0x22,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Town Center Pole 1 Doubloon'
+        },
+        ["1230522"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 0,
+            ['name'] = 'JRL: Town Center Pole 2 Doubloon'
+        },
+        ["1230523"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 1,
+            ['name'] = 'JRL: Town Center Pole 3 Doubloon'
+        },
+        ["1230524"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 2,
+            ['name'] = 'JRL: Town Center Pole 4 Doubloon'
+        },
+        ["1230525"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Town Center Pole 5 Doubloon'
+        },
+        ["1230526"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Town Center Pole 6 Doubloon'
+        },
+        ["1230527"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Silo 1 Doubloon'
+        },
+        ["1230528"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Silo 2 Doubloon'
+        },
+        ["1230529"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Silo 3 Doubloon'
+        },
+        ["1230530"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 0,
+            ['name'] = 'JRL: Silo 4 Doubloon'
+        },
+        ["1230531"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 1,
+            ['name'] = 'JRL: Toxic Pool 1 Doubloon'
+        },
+        ["1230532"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 2,
+            ['name'] = 'JRL: Toxic Pool 2 Doubloon'
+        },
+        ["1230533"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Toxic Pool 3 Doubloon'
+        },
+        ["1230534"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Toxic Pool 4 Doubloon'
+        },
+        ["1230535"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Mumbo Skull 1 Doubloon'
+        },
+        ["1230536"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Mumbo Skull 2 Doubloon'
+        },
+        ["1230537"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Mumbo Skull 3 Doubloon'
+        },
+        ["1230538"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 0,
+            ['name'] = 'JRL: Mumbo Skull 4 Doubloon'
+        },
+        ["1230539"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 1,
+            ['name'] = 'JRL: Underground 1 Doubloon'
+        },
+        ["1230540"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 2,
+            ['name'] = 'JRL: Underground 2 Doubloon'
+        },
+        ["1230541"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Underground 3 Doubloon'
+        },
+        ["1230542"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Alcove 1 Doubloon'
+        },
+        ["1230543"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Alcove 2 Doubloon'
+        },
+        ["1230544"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Alcove 3 Doubloon'
+        },
+        ["1230545"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Capt Blackeye 1 Doubloon'
+        },
+        ["1230546"] = {
+            ['addr'] = 0x26,
+            ['bit'] = 0,
+            ['name'] = 'JRL: Capt Blackeye 2 Doubloon'
+        },
+        ["1230547"] = {
+            ['addr'] = 0x26,
+            ['bit'] = 1,
+            ['name'] = 'JRL: Near Jinjo 1 Doubloon'
+        },
+        ["1230548"] = {
+            ['addr'] = 0x26,
+            ['bit'] = 2,
+            ['name'] = 'JRL: Near Jinjo 2 Doubloon'
+        },
+        ["1230549"] = {
+            ['addr'] = 0x26,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Near Jinjo 3 Doubloon'
+        },
+        ["1230550"] = {
+            ['addr'] = 0x26,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Near Jinjo 4 Doubloon'
+        }
+    },
 }
 
 -- Properties of world entrances and associated puzzles
@@ -5497,8 +5532,6 @@ function honeycomb_check()
     return checks
 end
 
-
-
 --------------------------------- HONEY B REWARDS -----------------------------------
 
 function init_HONEYB_REWARDS()
@@ -5589,6 +5622,7 @@ function honeycomb_math_check()
         honeycount = honeycount - 9
     end
     BTCONSUMEOBJ:setConsumable(honeycount);
+    return honeycount
 end
 
 ---------------------------------- GLOWBO AND MAGIC ---------------------------------
@@ -5628,6 +5662,78 @@ function glowbo_check()
     end
     return checks
 end
+
+--------------------------------- DOUBLOONS -------------------------------------
+
+function obtained_AP_DOUBLOON()
+    if DEBUG == true
+    then
+        print("Doubloon Obtained")
+    end
+    BTCONSUMEOBJ:changeConsumable("DOUBLOON");
+    BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
+end
+
+function doubloon_ui_update()
+    local doubloon = doubloon_math_check()
+    mainmemory.write_u16_be(0x11B128, doubloon)
+end
+
+function doubloon_check()
+    local checks = {}
+    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["DOUBLOON"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["DOUBLOON"])
+            do
+                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["DOUBLOON"][locationId]['addr'], NON_AGI_MAP["DOUBLOON"][locationId]['bit'])
+                if DEBUG == true
+                then
+                    print(NON_AGI_MAP["DOUBLOON"][locationId]['name']..":"..tostring(checks[locationId]))
+                end
+            end
+        end
+    end
+    return checks
+end
+
+function doubloon_math_check()
+    BTCONSUMEOBJ:changeConsumable("DOUBLOON");
+    local spent_counter = 0
+
+    local shoes = BTRAMOBJ:checkFlag(0x17, 0) -- Blubber Shoes
+    if shoes == true
+    then
+        spent_counter = spent_counter + 1
+    end
+    local jiggy = BTRAMOBJ:checkFlag(0x11, 4) -- Pawno Jiggy
+    if jiggy == true
+    then
+        spent_counter = spent_counter + 20
+    end
+    local cheato = BTRAMOBJ:checkFlag(0x11, 5) -- Pawno Cheato
+    if cheato == true
+    then
+        spent_counter = spent_counter + 5
+    end
+    local jolly = BTRAMOBJ:checkFlag(0x13, 2) -- Jolly Door
+    if cheato == true
+    then
+        spent_counter = spent_counter + 2
+    end
+    local recv_doubloons = 0
+    for _, memlocation in pairs(receive_map)
+    do
+        if memlocation == "1230514" then
+            recv_doubloons = recv_doubloons + 1
+        end
+    end
+    recv_doubloons = recv_doubloons - spent_counter
+    BTCONSUMEOBJ:setConsumable(recv_doubloons);
+    return recv_doubloons
+end
+
 
 --------------------------------- JIGGY CHUNKS ----------------------------------
 function init_JIGGY_CHUNK()
@@ -7072,6 +7178,7 @@ function watchMapTransition()
         pages_ui_update()
         honeycomb_ui_update()
         glowbo_ui_update()
+        doubloon_ui_update()
     end
 end
 
@@ -7926,12 +8033,15 @@ function processAGIItem(item_list)
     do
         if receive_map[tostring(ap_id)] == nil
         then
-            if(memlocation == 1230512 and ENABLE_AP_HONEYCOMB == true)  -- Honeycomb Item
+            if(memlocation == 1230512)  -- Honeycomb Item
             then
                 obtained_AP_HONEYCOMB()
-            elseif(memlocation == 1230513 and ENABLE_AP_PAGES == true) -- Cheato Item
+            elseif(memlocation == 1230513) -- Cheato Item
             then
                 obtained_AP_PAGES()
+            elseif(memlocation == 1230514) -- Doubloon Item
+            then
+                obtained_AP_DOUBLOON()
             elseif(memlocation == 1230515) -- Jiggy
             then
                 obtained_AP_JIGGY()
@@ -7972,14 +8082,7 @@ function processAGIItem(item_list)
                         set_AGI_MOVES_checks()
                     end
                 end
-            elseif(memlocation == 1230514 and ENABLE_AP_DOUBLOONS == true) -- Doubloon Item
-            then
-                if DEBUG == true
-                then
-                    print("Doubloon Obtained")
-                end
-                BTCONSUMEOBJ:changeConsumable("DOUBLOON");
-                BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
+
             elseif memlocation == 1230516 -- Treble Clef
             then
                 obtained_AP_BKNOTE();
@@ -8237,6 +8340,7 @@ function SendToBTClient()
     retTable["pages"] = pages_check()
     retTable["honeycomb"] = honeycomb_check()
     retTable["glowbo"] = glowbo_check()
+    retTable["doubloon"] = doubloon_check()
     retTable['unlocked_moves'] = BKM;
     retTable['treble'] = BKNOTES;
     retTable['stations'] = BKSTATIONS;
