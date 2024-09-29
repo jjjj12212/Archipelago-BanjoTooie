@@ -1416,7 +1416,7 @@ local ASSET_MAP_CHECK = {
                 "1230646", -- Skivvy
             },
             ["JINJOS"] = {
-                "1230577" -- leg spring -- TEST
+                "1230577" -- leg spring
             }
         },
         [0x108] =	{ --GI - Floor 3
@@ -1487,7 +1487,9 @@ local ASSET_MAP_CHECK = {
             },
         },
         [0x132] =	{ --HFP - Icicle Grotto
-
+            ["JINJOS"] = {
+                "1230584", -- Grotto
+            }
         },
         [0x128] =	{ --HFP - Icy Side
             ["JIGGIES"] = {
@@ -1495,6 +1497,10 @@ local ASSET_MAP_CHECK = {
                 "1230662", -- Stomping
                 "1230664", -- Aliens
             },
+            ["JINJOS"] = {
+                "1230585", -- Mildred
+                "1230583" -- Windy Hole
+            }
         },
         [0x133] =	{ --HFP - Inside the Volcano
             ["JIGGIES"] = {
@@ -1511,6 +1517,10 @@ local ASSET_MAP_CHECK = {
                 "1230658", -- Sabreman
                 "1230665", -- Lava waterfall
             },
+            ["JINJOS"] = {
+                "1230581", -- Lava waterfall
+                "1230582" -- Boiling Pool
+            }
         },
         [0x129] =	{ --HFP - Lava Train Station
             --honeycomb
@@ -1529,11 +1539,17 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230674", -- Superstash
             },
+            ["JINJOS"] = {
+                "1230588" -- Central
+            }
         },
         [0x138] =	{ --CCL - Inside the Cheese Wedge
             ["JIGGIES"] = {
                 "1230672", -- Cheese Wedge
             },
+            ["JINJOS"] = {
+                "1230587" -- Cheese
+            }
         },
         [0x13D] =	{ --CCL - Inside the Pot o' Gold
             ["JIGGIES"] = {
@@ -1544,19 +1560,30 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230673", -- Trash Can
             },
+            ["JINJOS"] = {
+                "1230586" -- Trash
+            }
         },
         [0x13F] =	{ --CCL - Mingy Jongo's Skull
             ["JIGGIES"] = {
                 "1230666", -- Mingy Jongo
             },
+            ["JINJOS"] = {
+                "1230589" -- Mumbo
+            }
         },
         [0x13E] =	{ --CCL - Mumbo's Skull
             ["JIGGIES"] = {
                 "1230666", -- Mingy Jongo
             },
+            ["JINJOS"] = {
+                "1230589" -- Mumbo
+            }
         },
         [0x140] =	{ --CCL - Wumba's Wigwam
-            --Jinjo
+            ["JINJOS"] = {
+                "1230590" -- Balasters
+            }
         },
         [0x139] =	{ --CCL - Zubbas' Nest
             ["JIGGIES"] = {
