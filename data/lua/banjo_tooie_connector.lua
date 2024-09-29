@@ -1043,6 +1043,9 @@ local ASSET_MAP_CHECK = {
         [0x155] =	{ --IoH - Cliff Top
             ["JINJOS"] = {
                 "1230593" -- Clifftop Jinjo
+            },
+            ["GLOWBO"] = {
+                "1230702"
             }
         },
         -- ["0x150"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Heggy's Egg Shed
@@ -1099,6 +1102,9 @@ local ASSET_MAP_CHECK = {
             },
             ["PAGES"] = {
                 "1230730" -- Snake Grove
+            },
+            ["GLOWBO"] = {
+                "1230687"
             }
         },
         [0xBB] = { --MT - Mayan Kickball Stadium (Lobby)
@@ -1107,7 +1113,9 @@ local ASSET_MAP_CHECK = {
             }
         },
         [0xB7] = { --MT - Mumbo's Skull
-            --glowbo
+            ["GLOWBO"] = {
+                "1230686"
+            }
         },
         [0xB9] = { --MT - Prison Compound
             ["JIGGIES"] = {
@@ -1158,6 +1166,10 @@ local ASSET_MAP_CHECK = {
             },
             ["HONEYCOMB"] = {
                 "1230707", -- boulder
+            },
+            ["GLOWBO"] = {
+                "1230688", -- Entrance
+                "1230689" -- near mumbo
             }
         },
         [0xCC] ={ --GGM - Flooded Caves
@@ -1285,6 +1297,9 @@ local ASSET_MAP_CHECK = {
             },
             ["PAGES"] = {
                 "1230735" -- Inferno
+            },
+            ["GLOWBO"] = {
+                "1230690" -- near mumbo
             }
         },
         [0x176] = { -- WW - Mumbo Skull
@@ -1293,7 +1308,9 @@ local ASSET_MAP_CHECK = {
             }
         },
         [0xD5] = { --WW - Wumba's Wigwam
-
+            ["GLOWBO"] = {
+                "1230691"
+            }
         },
 
         --JOLLY ROGER'S LAGOON
@@ -1328,6 +1345,9 @@ local ASSET_MAP_CHECK = {
             ["HONEYCOMB"] = {
                 "1230713", -- Atlantis
                 "1230712", -- SEEMEE
+            },
+            ["GLOWBO"] = {
+                "1230693" -- near humba
             }
         },
         [0xFF] = { --JRL - Blubber's Wave Race Hire
@@ -1359,6 +1379,9 @@ local ASSET_MAP_CHECK = {
             },
             ["PAGES"] = {
                 "1230737" -- Pawno
+            },
+            ["GLOWBO"] = {
+                "1230692"
             }
         },
         [0x1A9] =	{ --JRL - Sea Bottom
@@ -1419,6 +1442,10 @@ local ASSET_MAP_CHECK = {
             },
             ["HONEYCOMB"] = {
                 "1230715" -- Lakeside
+            },
+            ["GLOWBO"] = {
+                "1230694", -- near unga bunga
+                "1230695" -- near mumbo
             }
         },
         [0x123] = { --TDL - Inside Chompa's Belly
@@ -1518,6 +1545,9 @@ local ASSET_MAP_CHECK = {
             },
             ["PAGES"] = {
                 "1230743" -- Floor 2
+            },
+            ["GLOWBO"] = {
+                "1230696" -- near humba
             }
         },
         [0x108] =	{ --GI - Floor 3
@@ -1526,6 +1556,9 @@ local ASSET_MAP_CHECK = {
             },
             ["HONEYCOMB"] = {
                 "1230718" -- Floor 3
+            },
+            ["GLOWBO"] = {
+                "1230697" -- on boxes
             }
         },
         [0x109] =	{ --GI - Floor 3 (Boiler Plant)
@@ -1615,6 +1648,9 @@ local ASSET_MAP_CHECK = {
             },
             ["PAGES"] = {
                 "1230748" -- Ice Pillar
+            },
+            ["GLOWBO"] = {
+                "1230699"
             }
         },
         [0x133] =	{ --HFP - Inside the Volcano
@@ -1644,6 +1680,9 @@ local ASSET_MAP_CHECK = {
             },
             ["HONEYCOMB"] = {
                 "1230723" -- Lava Side
+            },
+            ["GLOWBO"] = {
+                "1230698"
             }
         },
         [0x129] =	{ --HFP - Lava Train Station
@@ -1666,6 +1705,9 @@ local ASSET_MAP_CHECK = {
             ["HONEYCOMB"] = {
                 "1230724", -- Dirt Patch
                 "1230726" -- Pot O Gold
+            },
+            ["GLOWBO"] = {
+                "1230700"
             }
 
         },
@@ -1675,6 +1717,9 @@ local ASSET_MAP_CHECK = {
             },
             ["JINJOS"] = {
                 "1230588" -- Central
+            },
+            ["GLOWBO"] = {
+                "1230701"
             }
         },
         [0x138] =	{ --CCL - Inside the Cheese Wedge
@@ -1856,109 +1901,6 @@ local DINO_KIDS = {} -- the 3 Dino Kids
 
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
-    ['GLOWBO'] = {
-         ["1230686"] = {
-             ['addr'] = 0x42,
-             ['bit'] = 7,
-             ['name'] = "MT: Mumbo's Glowbo"
-         },
-         ["1230687"] = {
-             ['addr'] = 0x43,
-             ['bit'] = 0,
-             ['name'] = 'MT: Jade Snake Grove Glowbo'
-
-         },
-         ["1230688"] = {
-             ['addr'] = 0x43,
-             ['bit'] = 1,
-             ['name'] = 'GGM: Near Entrance Glowbo'
-
-         },
-         ["1230689"] = {
-             ['addr'] = 0x43,
-             ['bit'] = 2,
-             ['name'] = 'GGM: Mine Entrance 2 Glowbo'
-
-         },
-         ["1230690"] = {
-             ['addr'] = 0x43,
-             ['bit'] = 3,
-             ['name'] = 'WW: The Inferno Glowbo'
-
-         },
-         ["1230691"] = {
-             ['addr'] = 0x43,
-             ['bit'] = 4,
-             ['name'] = "WW: Wumba's Glowbo"
-
-         },
-         ["1230702"] = {
-             ['addr'] = 0x44,
-             ['bit'] = 7,
-             ['name'] = 'Cliff Top: Glowbo'
-
-         },
-         ["1230692"] = {
-             ['addr'] = 0x43,
-             ['bit'] = 5,
-             ['name'] = "JRL: Pawno's Emporium Glowbo"
-
-         },
-         ["1230693"] = {
-             ['addr'] = 0x43,
-             ['bit'] = 6,
-             ['name'] = "JRL: Under Wumba's Wigwam Glowbo"
-
-         },
-         ["1230694"] = {
-             ['addr'] = 0x43,
-             ['bit'] = 7,
-             ['name'] = 'TDL: Unga Bunga Cave Entrance Glowbo'
-
-         },
-         ["1230695"] = {
-             ['addr'] = 0x44,
-             ['bit'] = 0,
-             ['name'] = "TDL: Behind Mumbo's Skull Glowbo"
-
-         },
-         ["1230696"] = {
-             ['addr'] = 0x44,
-             ['bit'] = 1,
-             ['name'] = 'GI: Floor 2 Glowbo'
-
-         },
-         ["1230697"] = {
-             ['addr'] = 0x44,
-             ['bit'] = 2,
-             ['name'] = 'GI: Floor 3 Glowbo'
-
-         },
-         ["1230698"] = {
-             ['addr'] = 0x44,
-             ['bit'] = 3,
-             ['name'] = 'HFP: Lava Side Glowbo'
-
-         },
-         ["1230699"] = {
-             ['addr'] = 0x44,
-             ['bit'] = 4,
-             ['name'] = 'HFP: Icy Side Glowbo'
-
-         },
-         ["1230700"] = {
-             ['addr'] = 0x44,
-             ['bit'] = 5,
-             ['name'] = 'CCL: Green Pool Glowbo'
-
-         },
-         ["1230701"] = {
-             ['addr'] = 0x44,
-             ['bit'] = 6,
-             ['name'] = 'CCL: Central Cavern Glowbo'
-
-         },
-    },
     ['MEGA GLOWBO'] = {
         ["1230046"] = {
             ['addr'] = 0x05,
@@ -4693,6 +4635,109 @@ local NON_AGI_MAP = {
             ['name'] = "CCL: Pot O' Gold Honeycomb"
         },
     },
+    ['GLOWBO'] = {
+        ["1230686"] = {
+            ['addr'] = 0x42,
+            ['bit'] = 7,
+            ['name'] = "MT: Mumbo's Glowbo"
+        },
+        ["1230687"] = {
+            ['addr'] = 0x43,
+            ['bit'] = 0,
+            ['name'] = 'MT: Jade Snake Grove Glowbo'
+
+        },
+        ["1230688"] = {
+            ['addr'] = 0x43,
+            ['bit'] = 1,
+            ['name'] = 'GGM: Near Entrance Glowbo'
+
+        },
+        ["1230689"] = {
+            ['addr'] = 0x43,
+            ['bit'] = 2,
+            ['name'] = 'GGM: Mine Entrance 2 Glowbo'
+
+        },
+        ["1230690"] = {
+            ['addr'] = 0x43,
+            ['bit'] = 3,
+            ['name'] = 'WW: The Inferno Glowbo'
+
+        },
+        ["1230691"] = {
+            ['addr'] = 0x43,
+            ['bit'] = 4,
+            ['name'] = "WW: Wumba's Glowbo"
+
+        },
+        ["1230702"] = {
+            ['addr'] = 0x44,
+            ['bit'] = 7,
+            ['name'] = 'Cliff Top: Glowbo'
+
+        },
+        ["1230692"] = {
+            ['addr'] = 0x43,
+            ['bit'] = 5,
+            ['name'] = "JRL: Pawno's Emporium Glowbo"
+
+        },
+        ["1230693"] = {
+            ['addr'] = 0x43,
+            ['bit'] = 6,
+            ['name'] = "JRL: Under Wumba's Wigwam Glowbo"
+
+        },
+        ["1230694"] = {
+            ['addr'] = 0x43,
+            ['bit'] = 7,
+            ['name'] = 'TDL: Unga Bunga Cave Entrance Glowbo'
+
+        },
+        ["1230695"] = {
+            ['addr'] = 0x44,
+            ['bit'] = 0,
+            ['name'] = "TDL: Behind Mumbo's Skull Glowbo"
+
+        },
+        ["1230696"] = {
+            ['addr'] = 0x44,
+            ['bit'] = 1,
+            ['name'] = 'GI: Floor 2 Glowbo'
+
+        },
+        ["1230697"] = {
+            ['addr'] = 0x44,
+            ['bit'] = 2,
+            ['name'] = 'GI: Floor 3 Glowbo'
+
+        },
+        ["1230698"] = {
+            ['addr'] = 0x44,
+            ['bit'] = 3,
+            ['name'] = 'HFP: Lava Side Glowbo'
+
+        },
+        ["1230699"] = {
+            ['addr'] = 0x44,
+            ['bit'] = 4,
+            ['name'] = 'HFP: Icy Side Glowbo'
+
+        },
+        ["1230700"] = {
+            ['addr'] = 0x44,
+            ['bit'] = 5,
+            ['name'] = 'CCL: Green Pool Glowbo'
+
+        },
+        ["1230701"] = {
+            ['addr'] = 0x44,
+            ['bit'] = 6,
+            ['name'] = 'CCL: Central Cavern Glowbo'
+
+        },
+   },
 }
 
 -- Properties of world entrances and associated puzzles
@@ -5419,6 +5464,43 @@ function cheato_math_check()
     return recv_pages
 end
 
+---------------------------------- HONEYCOMBS ---------------------------------
+
+function obtained_AP_HONEYCOMB()
+    if DEBUG == true
+    then
+        print("HC Obtained")
+    end
+    BTCONSUMEOBJ:changeConsumable("HONEYCOMB");
+    BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
+end
+
+function honeycomb_ui_update()
+    local honeycomb = honeycomb_math_check()
+    mainmemory.write_u16_be(0x11B0EC, honeycomb)
+end
+
+function honeycomb_check()
+    local checks = {}
+    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["HONEYCOMB"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["HONEYCOMB"])
+            do
+                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["HONEYCOMB"][locationId]['addr'], NON_AGI_MAP["HONEYCOMB"][locationId]['bit'])
+                if DEBUG == true
+                then
+                    print(NON_AGI_MAP["HONEYCOMB"][locationId]['name']..":"..tostring(checks[locationId]))
+                end
+            end
+        end
+    end
+    return checks
+end
+
+
+
 --------------------------------- HONEY B REWARDS -----------------------------------
 
 function init_HONEYB_REWARDS()
@@ -5509,6 +5591,42 @@ function honeycomb_math_check()
         honeycount = honeycount - 9
     end
     BTCONSUMEOBJ:setConsumable(honeycount);
+end
+
+---------------------------------- GLOWBO AND MAGIC ---------------------------------
+
+function processMagicItem(loc_ID)
+    for locationId, v in pairs(NON_AGI_MAP['MAGIC'])
+    do
+        if locationId == tostring(loc_ID)
+        then
+            BTRAMOBJ:setFlag(v['addr'], v['bit'])
+        end
+    end
+end
+
+function glowbo_ui_update()
+    BTCONSUMEOBJ:changeConsumable("GLOWBO");
+    BTCONSUMEOBJ:setConsumable(0);
+end
+
+function glowbo_check()
+    local checks = {}
+    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["GLOWBO"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["GLOWBO"])
+            do
+                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["GLOWBO"][locationId]['addr'], NON_AGI_MAP["GLOWBO"][locationId]['bit'])
+                if DEBUG == true
+                then
+                    print(NON_AGI_MAP["GLOWBO"][locationId]['name']..":"..tostring(checks[locationId]))
+                end
+            end
+        end
+    end
+    return checks
 end
 
 --------------------------------- JIGGY CHUNKS ----------------------------------
@@ -6942,12 +7060,18 @@ function watchMapTransition()
             NEXT_MAP = BTRAMOBJ:getMap(true)
             MAP_TRANSITION = true
             BKAssetFound();
+            if SKIP_PUZZLES == true
+            then
+                check_open_level(true)
+            end
         end
     else -- Runs Constantly while NOT transitioning
         finishTransition()
         jiggy_ui_update()
         jinjo_ui_update()
         pages_ui_update()
+        honeycomb_ui_update()
+        glowbo_ui_update()
     end
 end
 
@@ -7795,17 +7919,7 @@ function clearText()
     end
 end
 
-function processMagicItem(loc_ID)
-    for location, table in pairs(NON_AGI_MAP['MAGIC'])
-    do
-        if location == tostring(loc_ID)
-        then
-            BTRAMOBJ:setFlag(table['addr'], table['bit'])
---            archipelago_msg_box("Received " .. location);
-        end
-    end
 
-end
 
 function processAGIItem(item_list)
     for ap_id, memlocation in pairs(item_list) -- Items unrelated to AGI_MAP like Consumables
@@ -7814,13 +7928,7 @@ function processAGIItem(item_list)
         then
             if(memlocation == 1230512 and ENABLE_AP_HONEYCOMB == true)  -- Honeycomb Item
             then
-                if DEBUG == true
-                then
-                    print("HC Obtained")
-                end
-                BTCONSUMEOBJ:changeConsumable("HONEYCOMB");
-                BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
- --               archipelago_msg_box("Received Honeycomb");
+                obtained_AP_HONEYCOMB()
             elseif(memlocation == 1230513 and ENABLE_AP_PAGES == true) -- Cheato Item
             then
                 obtained_AP_PAGES()
@@ -8127,6 +8235,8 @@ function SendToBTClient()
     retTable["jiggies"] = jiggy_check()
     retTable["jinjos"] = jinjo_check()
     retTable["pages"] = pages_check()
+    retTable["honeycomb"] = honeycomb_check()
+    retTable["glowbo"] = glowbo_check()
     retTable['unlocked_moves'] = BKM;
     retTable['treble'] = BKNOTES;
     retTable['stations'] = BKSTATIONS;
