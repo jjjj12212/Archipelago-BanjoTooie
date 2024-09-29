@@ -94,16 +94,6 @@ local AGI_JIGGY_SET = false;
 
 -------------- JINJO VARS -----------
 local BMM_BACKUP_JINJO = false;
-local WHITE_JINJO_COUNT = 0;
-local ORANG_JINJO_COUNT = 0;
-local YELLO_JINJO_COUNT = 0;
-local BROWN_JINJO_COUNT = 0;
-local RED_JINJO_COUNT = 0;
-local PURPL_JINJO_COUNT = 0;
-local GREEN_JINJO_COUNT = 0;
-local BLUE_JINJO_COUNT = 0;
-local BLACK_JINJO_COUNT = 0;
-
 
 -------------- SILO VARS ------------
 local CHECK_FOR_SILO = false; --  If True, you are Transistioning maps
@@ -1032,6 +1022,9 @@ local ASSET_MAP_CHECK = {
             },
             ["JINJOS"] = {
                 "1230595" -- SM Jinjo
+            },
+            ["PAGES"] = {
+                "1230752" -- SM
             }
         },
         [0xAE]  =	{ --SM - Behind the waterfall
@@ -1084,6 +1077,9 @@ local ASSET_MAP_CHECK = {
                 "1230552", -- Stadium
                 "1230554", -- Pool
                 "1230555", -- Bridge
+            },
+            ["PAGES"] = {
+                "1230728" -- Top of Treasure Chamber
             }
         },
         [0xC4] = { --MT - Jade Snake Grove
@@ -1093,6 +1089,9 @@ local ASSET_MAP_CHECK = {
             },
             ["JINJOS"] = {
                 "1230551" -- Snake Grove
+            },
+            ["PAGES"] = {
+                "1230730" -- Snake Grove
             }
         },
         [0xBB] = { --MT - Mayan Kickball Stadium (Lobby)
@@ -1107,6 +1106,9 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230602", --quicksand
                 "1230603", --pillars
+            },
+            ["PAGES"] = {
+                "1230729" -- Prison
             }
         },
         [0x17A] =	{ --MT - Targitzan's Really Sacred Chamber
@@ -1139,6 +1141,10 @@ local ASSET_MAP_CHECK = {
             ["JINJOS"] = {
                 "1230559", -- Boulder
                 "1230560", -- Tracks
+            },
+            ["PAGES"] = {
+                "1230731", -- Canary
+                "1230732", -- Entrance
             }
         },
         [0xCC] ={ --GGM - Flooded Caves
@@ -1190,6 +1196,9 @@ local ASSET_MAP_CHECK = {
         [0xCD] = { --GGM - Water Storage
             ["JINJOS"] = {
                 "1230556" -- Water Storage
+            },
+            ["PAGES"] = {
+                "1230733" -- Water Tower
             }
         },
         [0xCE] = { --GGM - Waterfall Cavern
@@ -1210,6 +1219,9 @@ local ASSET_MAP_CHECK = {
                 "1230563", -- Van door
                 "1230564", -- dogdem dome
                 "1230565", -- Cactus of Strength
+            },
+            ["PAGES"] = {
+                "1230736" -- Saucer 
             }
         },
         [0xEA] = { --WW - Cave of Horrors
@@ -1229,7 +1241,9 @@ local ASSET_MAP_CHECK = {
             },
         },
         [0xEB] = { --WW - Haunted Cavern
-
+            ["PAGES"] = {
+                "1230734" -- Alcove
+            }
         },
         [0xF9] = { --WW - Mr. Patch
             ["JIGGIES"] = {
@@ -1245,6 +1259,9 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230624", -- The Inferno
             },
+            ["PAGES"] = {
+                "1230735" -- Inferno
+            }
         },
         [0xD5] = { --WW - Wumba's Wigwam
 
@@ -1262,7 +1279,9 @@ local ASSET_MAP_CHECK = {
             }
         },
         [0xF4] = { --JRL - Ancient Swimming Baths
-
+            ["PAGES"] = {
+                "1230739" -- Baths
+            }
         },
         [0x1A8] =	{ --JRL - Atlantis
             ["JIGGIES"] = {
@@ -1270,6 +1289,9 @@ local ASSET_MAP_CHECK = {
             },
             ["JINJOS"] = {
                 "1230570", -- Sunken Ship
+            },
+            ["PAGES"] = {
+                "1230738" -- SEEMEE
             }
         },
         [0xFF] = { --JRL - Blubber's Wave Race Hire
@@ -1299,12 +1321,18 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230634", -- Pawno
             },
+            ["PAGES"] = {
+                "1230737" -- Pawno
+            }
         },
         [0x1A9] =	{ --JRL - Sea Bottom
             ["JIGGIES"] = {
                 "1230633", -- SEEMEE
             },
-        },       
+            ["PAGES"] = {
+                "1230738" -- SEEMEE
+            }
+        },
         [0x181] =	{ --JRL - Sea Botom Cavern
             ["JIGGIES"] = {
                 "1230626", -- Mini-Sub Challenge
@@ -1320,7 +1348,10 @@ local ASSET_MAP_CHECK = {
                 "1230633", -- SEEMEE
                 "1230630", -- Smuggler
             },
-        },     
+            ["PAGES"] = {
+                "1230738" -- SEEMEE
+            }
+        },
         [0xFA] = { --JRL - Temple of the Fishes
             ["JIGGIES"] = {
                 "1230628", -- Chris P. Bacon
@@ -1339,6 +1370,10 @@ local ASSET_MAP_CHECK = {
                 "1230572", -- Entrance
                 "1230573", -- Maze Cave
                 "1230574", -- T-rex
+            },
+            ["PAGES"] = {
+                "1230740", -- Dippy
+                "1230742" -- Boulder
             }
         },
         [0x123] = { --TDL - Inside Chompa's Belly
@@ -1350,6 +1385,9 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230636", -- Under Terry Nest
             },
+            ["PAGES"] = {
+                "1230741", -- Mountain
+            }
         },
         [0x115] = { --TDL - Oogle Boogles' Cave
             ["JIGGIES"] = {
@@ -1398,7 +1436,9 @@ local ASSET_MAP_CHECK = {
             },
         },
         [0x110] =	{ --GI - Basement (Repair Depot)
-            -- cheato
+            ["PAGES"] = {
+                "1230745" -- Repair Depot
+            }
         },
         [0x111] =	{ --GI - Basement (Waste Disposal)
             ["JIGGIES"] = {
@@ -1422,6 +1462,9 @@ local ASSET_MAP_CHECK = {
             },
             ["JINJOS"] = {
                 "1230577" -- leg spring
+            },
+            ["PAGES"] = {
+                "1230743" -- Floor 2
             }
         },
         [0x108] =	{ --GI - Floor 3
@@ -1473,6 +1516,9 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230646", -- Skivvy
             },
+            ["PAGES"] = {
+                "1230743" -- Loggo
+            }
         },
 
         --HAILFIRE PEAKS
@@ -1494,6 +1540,9 @@ local ASSET_MAP_CHECK = {
         [0x132] =	{ --HFP - Icicle Grotto
             ["JINJOS"] = {
                 "1230584", -- Grotto
+            },
+            ["PAGES"] = {
+                "1230747" -- Icicle
             }
         },
         [0x128] =	{ --HFP - Icy Side
@@ -1505,6 +1554,9 @@ local ASSET_MAP_CHECK = {
             ["JINJOS"] = {
                 "1230585", -- Mildred
                 "1230583" -- Windy Hole
+            },
+            ["PAGES"] = {
+                "1230748" -- Ice Pillar
             }
         },
         [0x133] =	{ --HFP - Inside the Volcano
@@ -1525,6 +1577,9 @@ local ASSET_MAP_CHECK = {
             ["JINJOS"] = {
                 "1230581", -- Lava waterfall
                 "1230582" -- Boiling Pool
+            },
+            ["PAGES"] = {
+                "1230746" -- Lava Side
             }
         },
         [0x129] =	{ --HFP - Lava Train Station
@@ -1539,6 +1594,9 @@ local ASSET_MAP_CHECK = {
                 "1230671", -- Jiggium Plant
                 "1230675", -- Jelly Castle
             },
+            ["PAGES"] = {
+                "1230749" -- Canary Mary
+            }
         },
         [0x13A] =	{ --CCL - Central Cavern
             ["JIGGIES"] = {
@@ -1560,6 +1618,9 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230668", -- pot o gold
             },
+            ["PAGES"] = {
+                "1230750" -- O Gold
+            }
         },
         [0x137] =	{ --CCL - Inside the Trash Can
             ["JIGGIES"] = {
@@ -1594,6 +1655,9 @@ local ASSET_MAP_CHECK = {
             ["JIGGIES"] = {
                 "1230670", -- Zubba
             },
+            ["PAGES"] = {
+                "1230751" -- Zubba
+            }
         },
 
         --CAULDRON KEEP
@@ -1718,133 +1782,6 @@ local DINO_KIDS = {} -- the 3 Dino Kids
 
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
-    ['CHEATO'] = {
-        ["1230752"] = {
-            ['addr'] = 0x59,
-            ['bit'] = 3,
-            ['name'] = 'Spiral Mountain: Cheato Page'
-        },
-        ["1230728"] = {
-            ['addr'] = 0x56,
-            ['bit'] = 3,
-            ['name'] = 'MT: Snake Head Cheato Page'
-        },
-        ["1230729"] = {
-            ['addr'] = 0x56,
-            ['bit'] = 4,
-            ['name'] = 'MT: Prison Compound Cheato Page'
-        },
-        ["1230730"] = {
-            ['addr'] = 0x56,
-            ['bit'] = 5,
-            ['name'] = 'MT: Jade Snake Grove Cheato Page'
-        },
-        ["1230731"] = {
-            ['addr'] = 0x56,
-            ['bit'] = 6,
-            ['name'] = 'GGM: Canary Mary Cheato Page'
-        },
-        ["1230732"] = {
-            ['addr'] = 0x56,
-            ['bit'] = 7,
-            ['name'] = 'GGM: Entrance Cheato Page'
-        },
-        ["1230733"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 0,
-            ['name'] = 'GGM: Water Storage Cheato Page'
-        },
-        ["1230734"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 1,
-            ['name'] = 'WW: The Haunted Cavern Cheato Page'
-        },
-        ["1230735"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 2,
-            ['name'] = 'WW: The Inferno Cheato Page'
-        },
-        ["1230736"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 3,
-            ['name'] = 'WW: Saucer of Peril Cheato Page'
-        },
-        ["1230737"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 4,
-            ['name'] = "JRL: Pawno's Cheato Page"
-        },
-        ["1230738"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 5,
-            ['name'] = 'JRL: Seemee Cheato Page'
-        },
-        ["1230739"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 6,
-            ['name'] = 'JRL: Ancient Baths Cheato Page'
-        },
-        ["1230740"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 7,
-            ['name'] = "TDL: Dippy's Pool Cheato Page"
-        },
-        ["1230741"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 0,
-            ['name'] = 'TDL: Inside the Mountain Cheato Page'
-        },
-        ["1230742"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 1,
-            ['name'] = 'TDL: Boulder Cheato Page'
-        },
-        ["1230743"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 2,
-            ['name'] = 'GI: Loggo Cheato Page'
-        },
-        ["1230744"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 3,
-            ['name'] = 'GI: Floor 2 Cheato Page'
-        },
-        ["1230745"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 4,
-            ['name'] = 'GI: Repair Depot Cheato Page'
-        },
-        ["1230746"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 5,
-            ['name'] = 'HFP: Lava Side Cheato Page'
-        },
-        ["1230747"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 6,
-            ['name'] = 'HFP: Icicle Grotto Cheato Page'
-        },
-        ["1230748"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 7,
-            ['name'] = 'HFP: Icy Side Cheato Page'
-        },
-        ["1230749"] = {
-            ['addr'] = 0x59,
-            ['bit'] = 0,
-            ['name'] = 'CCL: Canary Mary Cheato Page'
-        },
-        ["1230750"] = {
-            ['addr'] = 0x59,
-            ['bit'] = 1,
-            ['name'] = "CCL: Pot O' Gold Cheato Page"
-        },
-        ["1230751"] = {
-            ['addr'] = 0x59,
-            ['bit'] = 2,
-            ['name'] = 'CCL: Zubbas Cheato Page'
-        },
-    },
     ['HONEYCOMB'] = {
         ["1230727"] = {
             ['addr'] = 0x42,
@@ -4554,6 +4491,133 @@ local NON_AGI_MAP = {
             ['bit'] = 3,
             ['name'] = 'CCL: Wumba Jinjo'
         }
+    },
+    ['PAGES'] = {
+        ["1230752"] = {
+            ['addr'] = 0x59,
+            ['bit'] = 3,
+            ['name'] = 'Spiral Mountain: Cheato Page'
+        },
+        ["1230728"] = {
+            ['addr'] = 0x56,
+            ['bit'] = 3,
+            ['name'] = 'MT: Snake Head Cheato Page'
+        },
+        ["1230729"] = {
+            ['addr'] = 0x56,
+            ['bit'] = 4,
+            ['name'] = 'MT: Prison Compound Cheato Page'
+        },
+        ["1230730"] = {
+            ['addr'] = 0x56,
+            ['bit'] = 5,
+            ['name'] = 'MT: Jade Snake Grove Cheato Page'
+        },
+        ["1230731"] = {
+            ['addr'] = 0x56,
+            ['bit'] = 6,
+            ['name'] = 'GGM: Canary Mary Cheato Page'
+        },
+        ["1230732"] = {
+            ['addr'] = 0x56,
+            ['bit'] = 7,
+            ['name'] = 'GGM: Entrance Cheato Page'
+        },
+        ["1230733"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 0,
+            ['name'] = 'GGM: Water Storage Cheato Page'
+        },
+        ["1230734"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 1,
+            ['name'] = 'WW: The Haunted Cavern Cheato Page'
+        },
+        ["1230735"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 2,
+            ['name'] = 'WW: The Inferno Cheato Page'
+        },
+        ["1230736"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 3,
+            ['name'] = 'WW: Saucer of Peril Cheato Page'
+        },
+        ["1230737"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 4,
+            ['name'] = "JRL: Pawno's Cheato Page"
+        },
+        ["1230738"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Seemee Cheato Page'
+        },
+        ["1230739"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Ancient Baths Cheato Page'
+        },
+        ["1230740"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 7,
+            ['name'] = "TDL: Dippy's Pool Cheato Page"
+        },
+        ["1230741"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 0,
+            ['name'] = 'TDL: Inside the Mountain Cheato Page'
+        },
+        ["1230742"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 1,
+            ['name'] = 'TDL: Boulder Cheato Page'
+        },
+        ["1230743"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 2,
+            ['name'] = 'GI: Loggo Cheato Page'
+        },
+        ["1230744"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 3,
+            ['name'] = 'GI: Floor 2 Cheato Page'
+        },
+        ["1230745"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 4,
+            ['name'] = 'GI: Repair Depot Cheato Page'
+        },
+        ["1230746"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 5,
+            ['name'] = 'HFP: Lava Side Cheato Page'
+        },
+        ["1230747"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 6,
+            ['name'] = 'HFP: Icicle Grotto Cheato Page'
+        },
+        ["1230748"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 7,
+            ['name'] = 'HFP: Icy Side Cheato Page'
+        },
+        ["1230749"] = {
+            ['addr'] = 0x59,
+            ['bit'] = 0,
+            ['name'] = 'CCL: Canary Mary Cheato Page'
+        },
+        ["1230750"] = {
+            ['addr'] = 0x59,
+            ['bit'] = 1,
+            ['name'] = "CCL: Pot O' Gold Cheato Page"
+        },
+        ["1230751"] = {
+            ['addr'] = 0x59,
+            ['bit'] = 2,
+            ['name'] = 'CCL: Zubbas Cheato Page'
+        },
     },
 }
 
