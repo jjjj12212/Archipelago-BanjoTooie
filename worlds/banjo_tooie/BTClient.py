@@ -95,6 +95,8 @@ class BanjoTooieContext(CommonContext):
         self.notelist_table = {}
         self.stationlist_table = {}
         self.jinjofamlist_table = {}
+        self.jinjolist_table = {}
+        self.pages_table = {}
         self.worldlist_table = {}
         self.chuffy_table = {}
         self.mystery_table = {}
@@ -327,6 +329,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     mystery = payload['mystery']
     roystenlist = payload['roysten']
     jinjofamlist = payload['jinjofam']
+    jinjolist = payload['jinjos']
+    pageslist = payload['pages']
     cheatorewardslist = payload['cheato_rewards']
     honeybrewardslist = payload['honeyb_rewards']
     jiggychunklist = payload['jiggy_chunks']
@@ -369,6 +373,10 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         banjo_map = 0
     if isinstance(jiggylist, list):
         jiggylist = {}
+    if isinstance(jinjolist, list):
+        jinjolist = {}
+    if isinstance(pageslist, list):
+        pageslist = {}
 
     if demo == False and ctx.sync_ready == True:
         locs1 = []
@@ -445,6 +453,16 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         if ctx.jiggy_table != jiggylist:
             ctx.jiggy_table = jiggylist
             for locationId, value in jiggylist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.jinjolist_table != jinjolist:
+            ctx.jinjolist_table = jinjolist
+            for locationId, value in jinjolist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.pages_table != pageslist:
+            ctx.pages_table = pageslist
+            for locationId, value in pageslist.items():
                 if value == True:
                     locs1.append(int(locationId))
 

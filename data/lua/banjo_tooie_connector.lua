@@ -216,10 +216,10 @@ function BTConsumable:new(BTRAM, itemName)
 end
 
 function BTConsumable:setConsumable(value)
-    if DEBUG == true
-    then
-        print("Setting Consumable value to :" .. tostring(value))
-    end
+    -- if DEBUG == true
+    -- then
+    --     print("Setting Consumable value to :" .. tostring(value))
+    -- end
     local addr = self.banjoRAM:dereferencePointer(self.CONSUME_PTR);
     if self.consumeIndex == 59
     then
@@ -228,10 +228,10 @@ function BTConsumable:setConsumable(value)
         mainmemory.write_u16_be(addr + self.consumeIndex * 2, value ~ self.consumeKey);
     end
     mainmemory.write_u16_be(self.CONSUME_IDX + self.consumeIndex * 0x0C, value);
-    if DEBUG == true
-    then
-        print(self.consumeName .. " has been modified")
-    end
+    -- if DEBUG == true
+    -- then
+    --     print(self.consumeName .. " has been modified")
+    -- end
 end
 
 function BTConsumable:getConsumable()
@@ -5253,6 +5253,41 @@ function check_real_goggles()
     end
 end
 
+---------------------------------- PAGES ---------------------------------
+
+function obtained_AP_PAGES()
+    if DEBUG == true
+    then
+        print("Cheato Page Obtained")
+    end
+    BTCONSUMEOBJ:changeConsumable("CHEATO");
+    BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
+end
+
+function pages_ui_update()
+    local pages = cheato_math_check()
+    mainmemory.write_u16_be(0x11B0F8, pages)
+end
+
+function pages_check()
+    local checks = {}
+    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["PAGES"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["PAGES"])
+            do
+                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["PAGES"][locationId]['addr'], NON_AGI_MAP["PAGES"][locationId]['bit'])
+                if DEBUG == true
+                then
+                    print(NON_AGI_MAP["PAGES"][locationId]['name']..":"..tostring(checks[locationId]))
+                end
+            end
+        end
+    end
+    return checks
+end
+
 --------------------------------- CHEATO REWARDS ----------------------------------
 function init_CHEATO_REWARDS()
     for k,v in pairs(NON_AGI_MAP['CHEATO'])
@@ -5307,6 +5342,7 @@ function cheato_math_check()
     end
     recv_pages = recv_pages - spent_pages
     BTCONSUMEOBJ:setConsumable(recv_pages);
+    return recv_pages
 end
 
 --------------------------------- HONEY B REWARDS -----------------------------------
@@ -6837,6 +6873,7 @@ function watchMapTransition()
         finishTransition()
         jiggy_ui_update()
         jinjo_ui_update()
+        pages_ui_update()
     end
 end
 
@@ -7621,18 +7658,18 @@ function all_location_checks(type)
         end
     end
 
-    if ENABLE_AP_HONEYCOMB == true then
-        checkConsumables('HONEYCOMB', location_checks)
-    end
+    -- if ENABLE_AP_HONEYCOMB == true then
+    --     checkConsumables('HONEYCOMB', location_checks)
+    -- end
 
-    if ENABLE_AP_PAGES == true then
-        checkConsumables('CHEATO', location_checks)
-    end
-    checkConsumables('GLOWBO', location_checks)
-    checkConsumables('MEGA GLOWBO', location_checks)
-    if ENABLE_AP_DOUBLOONS == true then
-        checkConsumables('DOUBLOON', location_checks)
-    end
+    -- if ENABLE_AP_PAGES == true then
+    --     checkConsumables('CHEATO', location_checks)
+    -- end
+    -- checkConsumables('GLOWBO', location_checks)
+    -- checkConsumables('MEGA GLOWBO', location_checks)
+    -- if ENABLE_AP_DOUBLOONS == true then
+    --     checkConsumables('DOUBLOON', location_checks)
+    -- end
 
     return location_checks
 end
@@ -7712,13 +7749,7 @@ function processAGIItem(item_list)
  --               archipelago_msg_box("Received Honeycomb");
             elseif(memlocation == 1230513 and ENABLE_AP_PAGES == true) -- Cheato Item
             then
-                if DEBUG == true
-                then
-                    print("Cheato Page Obtained")
-                end
-                BTCONSUMEOBJ:changeConsumable("CHEATO");
-                BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
- --               archipelago_msg_box("Received Cheato Page");
+                obtained_AP_PAGES()
             elseif(memlocation == 1230515) -- Jiggy
             then
                 obtained_AP_JIGGY()
@@ -8021,6 +8052,7 @@ function SendToBTClient()
     --retTable['locations'] = locationControl()
     retTable["jiggies"] = jiggy_check()
     retTable["jinjos"] = jinjo_check()
+    retTable["pages"] = pages_check()
     retTable['unlocked_moves'] = BKM;
     retTable['treble'] = BKNOTES;
     retTable['stations'] = BKSTATIONS;
