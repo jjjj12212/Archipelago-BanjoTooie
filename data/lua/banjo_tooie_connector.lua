@@ -1650,7 +1650,8 @@ local ASSET_MAP_CHECK = {
                 "1230748" -- Ice Pillar
             },
             ["GLOWBO"] = {
-                "1230699"
+                "1230699",
+                "1230046" -- Mega Glowbo
             }
         },
         [0x133] =	{ --HFP - Inside the Volcano
@@ -1901,14 +1902,6 @@ local DINO_KIDS = {} -- the 3 Dino Kids
 
 -- Mapping required for AGI Table
 local AGI_MASTER_MAP = {
-    ['MEGA GLOWBO'] = {
-        ["1230046"] = {
-            ['addr'] = 0x05,
-            ['bit'] = 6,
-            ['name'] = 'Mega Glowbo'
-        }
-
-    },
     ['DOUBLOON'] = {
         ["1230521"] = {
             ['addr'] = 0x22,
@@ -4636,6 +4629,11 @@ local NON_AGI_MAP = {
         },
     },
     ['GLOWBO'] = {
+        ["1230046"] = {
+            ['addr'] = 0x05,
+            ['bit'] = 6,
+            ['name'] = 'Mega Glowbo'
+        },
         ["1230686"] = {
             ['addr'] = 0x42,
             ['bit'] = 7,
@@ -5607,6 +5605,8 @@ end
 
 function glowbo_ui_update()
     BTCONSUMEOBJ:changeConsumable("GLOWBO");
+    BTCONSUMEOBJ:setConsumable(0);
+    BTCONSUMEOBJ:changeConsumable("MEGA GLOWBO");
     BTCONSUMEOBJ:setConsumable(0);
 end
 
