@@ -7313,113 +7313,67 @@ end
 
 function JinjoCounter() -- counts AP jinjos and Marks as Completed if true
     init_JINJOS("AGI")
+    for _, locationId in pairs(receive_map) do
+        if locationId == "1230501" or locationId == "1230502" or locationId == "1230503" or locationId == "1230504"
+            or locationId == "1230505" or locationId == "1230506" or locationId == "1230507" or locationId == "1230508"
+            or locationId == "1230509"
+        then
+            AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
+        end
+    end
     for locId, value in pairs(BKJINJOFAM) do
         if value == false
         then
             if locId == "1230676"
             then
-                for _, locationId in pairs(receive_map) do
-                    if locationId == "1230501"
-                    then
-                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
-                    end
-                end
                 if AGI_JINJOS["1230501"] >= 1 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230677"
             then
-                for _, locationId in pairs(receive_map) do
-                    if locationId == "1230502"
-                    then
-                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
-                    end
-                end
                 if AGI_JINJOS["1230502"] >= 2 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230678"
             then
-                for _, locationId in pairs(receive_map) do
-                    if locationId == "1230503"
-                    then
-                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
-                    end
-                end
                 if AGI_JINJOS["1230503"] >= 3 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230679"
             then
-                for _, locationId in pairs(receive_map) do
-                    if locationId == "1230504"
-                    then
-                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
-                    end
-                end
                 if AGI_JINJOS["1230504"] >= 4 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230680"
             then
-                for _, locationId in pairs(receive_map) do
-                    if locationId == "1230505"
-                    then
-                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
-                    end
-                end
                 if AGI_JINJOS["1230505"] >= 5 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230681"
             then
-                for _, locationId in pairs(receive_map) do
-                    if locationId == "1230506"
-                    then
-                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
-                    end
-                end
                 if AGI_JINJOS["1230506"] >= 6 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230682"
             then
-                for _, locationId in pairs(receive_map) do
-                    if locationId == "1230507"
-                    then
-                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
-                    end
-                end
                 if AGI_JINJOS["1230507"] >= 7 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230683"
             then
-                for _, locationId in pairs(receive_map) do
-                    if locationId == "1230508"
-                    then
-                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
-                    end
-                end
                 if AGI_JINJOS["1230508"] >= 8 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230684"
             then
-                for _, locationId in pairs(receive_map) do
-                    if locationId == "1230509"
-                    then
-                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
-                    end
-                end
                 if AGI_JINJOS["1230509"] >= 9 then
                     BKJINJOFAM[locId] = true
                 end
