@@ -5198,7 +5198,6 @@ function jiggy_ui_update()
         end
     end
     mainmemory.write_u16_be(0x11B0BC, JIGGY_COUNT)
-    print(JIGGY_COUNT)
 end
 
 function backup_BMM_JIGGIES()
@@ -5573,6 +5572,7 @@ end
 
 --------------------------------- AMAZE-O-GAZE ------------------------------------
 function check_goggles()
+    check_real_goggles()
     if CURRENT_MAP == 0x143
     then
         local gogglesflg = BTRAMOBJ:checkFlag(0x30, 1, "CHECK_GOOGLES")
@@ -7557,6 +7557,7 @@ function watchMapTransition()
             doubloon_ui_update()
             note_ui_update()
             JinjoCounter()
+            check_goggles()
         end
     else
         loadGame(BTRAMOBJ:getMap(false))
@@ -7629,7 +7630,6 @@ function loadGame(current_map)
             BKM = json.decode(f:read("l"));
             BKSTATIONS = json.decode(f:read("l"));
             BKCHUFFY = json.decode(f:read("l"));
-            BKJINJOFAM = json.decode(f:read("l"));
             BKMYSTERY = json.decode(f:read("l"));
             restore_BMM_JIGGIES()
             restore_BMM_NOTES()
@@ -7744,7 +7744,6 @@ function BKLogics(mapaddr)
         watchHoneyB()
     end
     watchJChunk()
-    check_goggles()
     watchDinoFlags()
     if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_MOVES == true
     then
@@ -7807,7 +7806,6 @@ function BKLogics(mapaddr)
         clearKey()
         check_progressive()
         obtain_breegull_bash()
-        check_real_goggles()
     end
 end
 
@@ -8709,19 +8707,9 @@ function savingAGI()
     f:write(json.encode(AGI_CHUFFY) .. "\n");
     if DEBUGLVL2 == true
     then
-        print("Writing JINJOS");
-    end
-    f:write(json.encode(AGI_JINJOS) .. "\n");
-    if DEBUGLVL2 == true
-    then
         print("Writing MYSTERY");
     end
     f:write(json.encode(AGI_MYSTERY) .. "\n");
-    -- if DEBUGLVL2 == true
-    -- then
-    --     print("Writing Traps");
-    -- end
-    -- f:write(json.encode(AGI_TRAPS) .. "\n");
     if DEBUGLVL2 == true
     then
         print("Writing Received_Map");
@@ -8762,17 +8750,11 @@ function loadAGI()
         if DEBUGLVL2 == true
         then
             print("Writing AGI File from LoadAGI");
-            print(AGI);
         end
-        -- f:write(json.encode(AGI_JIGGIES).."\n");
-        -- f:write(json.encode(AGI_NOTES).."\n");
-        -- f:write(json.encode(AGI_TREBLE).."\n");
-        -- f:write(json.encode(AGI_JINJOS).."\n");
 
         f:write(json.encode(AGI_MOVES).."\n");
         f:write(json.encode(AGI_STATIONS) .. "\n");
         f:write(json.encode(AGI_CHUFFY) .. "\n");
-        f:write(json.encode(AGI_JINJOS) .. "\n");
         f:write(json.encode(AGI_MYSTERY) .. "\n");
         f:write(json.encode(receive_map));
         f:close();
@@ -8784,7 +8766,6 @@ function loadAGI()
         AGI_MOVES = json.decode(f:read("l"));
         AGI_STATIONS = json.decode(f:read("l"));
         AGI_CHUFFY = json.decode(f:read("l"));
-        AGI_JINJOS = json.decode(f:read("l"));
         AGI_MYSTERY = json.decode(f:read("l"));
         receive_map = json.decode(f:read("l"));
         f:close();
@@ -8808,7 +8789,6 @@ function savingBMM()
     f:write(json.encode(BKM) .. "\n");
     f:write(json.encode(BKSTATIONS) .. "\n");
     f:write(json.encode(BKCHUFFY) .. "\n");
-    f:write(json.encode(BKJINJOFAM) .. "\n");
     f:write(json.encode(BKMYSTERY));
     f:close()
     if PAUSED == false then
@@ -9004,10 +8984,6 @@ function process_slot(block)
     then
         TH_LENGTH = block['slot_token_hunt_length']
     end
-    -- if block['slot_warp_traps'] ~= nil and block['slot_warp_traps'] ~= ""
-    -- then
-    --     WARP_TRAP_LOGIC = block['slot_warp_traps']
-    -- end
     if block['slot_world_order'] ~= nil
     then
         for level, jiggy_amt in pairs(block['slot_world_order'])
@@ -9257,11 +9233,8 @@ function setToTComplete()
 end
 
 function saveGame()
-    restore_BMM_JIGGIES()
-    restore_BMM_JINJOS()
-    restore_BMM_NOTES()
-    restore_BMM_TREBLE()
     GAME_LOADED = false;
+    DEMO_MODE = true
     SAVE_GAME = false;
 end
 
@@ -9296,7 +9269,7 @@ function main()
                 if SKIP_TOT == "true" and CURRENT_MAP == 0x15E then
 					setToTComplete();
 				end
-                if SAVE_GAME == true
+                if SAVE_GAME == true and DEMO_MODE == false
                 then
                     saveGame();
                 end
