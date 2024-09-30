@@ -84,7 +84,7 @@ local NEXT_MAP = nil;
 
 
 -------------- JIGGY VARS -----------
-local JIGGY_COUNT = 0; -- Used for UI
+local JIGGY_COUNT = 0; -- Used for UI and skip puzzles
 local BMM_BACKUP_JIGGY = false;
 local AGI_JIGGY_SET = false;
 
@@ -2122,7 +2122,6 @@ local BMM_NOTES = {};
 local BMM_TREBLE = {};
 local BMM_JINJOS = {}; -- BMM JINJOS
 local BKM = {}; -- Banjo Tooie Movelist Table
-local BKNOTES = {}; -- Notes
 local BKSTATIONS = {} -- Stations
 local BKCHUFFY = {} -- King Coal Progress Flag
 local BKJINJOFAM = {} -- Jinjo Family check 
@@ -5190,20 +5189,16 @@ function obtained_AP_JIGGY()
 end
 
 function jiggy_ui_update()
-    local jiggy_amt = 0
-    local ram_jiggy_count = mainmemory.read_u16_be(0x11B0BC)
-    if ram_jiggy_count ~= JIGGY_COUNT
-    then
-        for locationId, value in pairs(AGI_JIGGIES)
-        do
-            if value == false
-            then
-                jiggy_amt = jiggy_amt + 1
-            end
+    JIGGY_COUNT = 0
+    for _, value in pairs(AGI_JIGGIES)
+    do
+        if value == true
+        then
+            JIGGY_COUNT = JIGGY_COUNT + 1
         end
-        mainmemory.write_u16_be(0x11B0BC, jiggy_amt)
-        JIGGY_COUNT = jiggy_amt
     end
+    mainmemory.write_u16_be(0x11B0BC, JIGGY_COUNT)
+    print(JIGGY_COUNT)
 end
 
 function backup_BMM_JIGGIES()
@@ -6038,7 +6033,7 @@ function note_ui_update()
         treble_amt = treble_amt * 20
         
         note_amt = note_amt + treble_amt
-        mainmemory.write_u16_be(0x11B0BC, note_amt)
+        mainmemory.write_u16_be(0x11B074, note_amt)
         NOTE_COUNT = note_amt
     end
 end
@@ -7561,6 +7556,7 @@ function watchMapTransition()
             glowbo_ui_update()
             doubloon_ui_update()
             note_ui_update()
+            JinjoCounter()
         end
     else
         loadGame(BTRAMOBJ:getMap(false))
@@ -8029,7 +8025,7 @@ function processAGIItem(item_list)
             elseif memlocation == 1230796 and ENABLE_AP_CHUFFY == true
             then
                 obtained_AP_CHUFFY()
-            elseif( 1230501 <= memlocation and memlocation <= 1230509) and ENABLE_AP_JINJO == true
+            elseif( 1230501 <= memlocation and memlocation <= 1230509) -- Jinjos
             then
                 AGI_JINJOS[tostring(memlocation)] = AGI_JINJOS[tostring(memlocation)] + 1
                 JinjoCounter() -- check and see if family completes and mark true
