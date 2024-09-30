@@ -48,10 +48,6 @@ local PAUSED = false;
 local TOTALS_MENU = false;
 local OBJ_TOTALS_MENU = false;
 local SAVE_GAME = false;
-local USE_BMM_TBL = false;
-local USE_BMM_ONLY_TBL = false;
-local USE_BMM_ONLY_TYP = "";
-
 
 local CLOSE_TO_ALTAR = false;
 
@@ -92,6 +88,15 @@ local JIGGY_COUNT = 0; -- Used for UI
 local BMM_BACKUP_JIGGY = false;
 local AGI_JIGGY_SET = false;
 
+-------------- TREBLE VARS -----------
+local BMM_BACKUP_TREBLE = false;
+local AGI_TREBLE_SET = false;
+
+-------------- NOTES VARS -----------
+local NOTE_COUNT = 0; -- Used for UI
+local BMM_BACKUP_NOTES = false;
+local AGI_NOTES_SET = false;
+
 -------------- JINJO VARS -----------
 local BMM_BACKUP_JINJO = false;
 
@@ -103,14 +108,6 @@ local SILOS_LOADED = false; -- Handles if learned a move at Silo
 local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
 local LOAD_SILO_NOTES = false;
 local TOT_SET_COMPLETE = false;
-
--------------- TREBLE VARS ------------
-local CHECK_FOR_TREBLE = false; -- Treble logic
-local TREBLE_WAIT_TIMER = 0; -- waits until Treble is loaded if any
-local WATCH_LOADED_TREBLE = false; -- if object is loaded or not 
-local TREBLE_SPOTED = false; -- used if Collected Treble
-local TREBLE_MAP = 0x00; -- validate TREBLE_MAP
-local TREBLE_GONE_CHECK = 2;
 
 -------------- SKIP VARS ------------
 local OPEN_HAG1 = false;
@@ -972,17 +969,6 @@ local ASSET_MAP_CHECK = {
             }
         }
     },
-    ["TREBLE"] = {
-        [0xB8] = "1230781", -- MT
-        [0xCD] = "1230782", -- GGM:Water Storage
-        [0xD6] = "1230783", -- WW
-        [0x1A8] = "1230784", -- JR:Atlantis
-        [0x112] = "1230785", -- TL
-        [0x100] = "1230786", -- GI
-        [0x132] = "1230787", -- HF:Ice Grotto
-        [0x13A] = "1230788", -- CC:Cavern
-        [0x142] = "1230789" -- JV
-    },
     ["STATIONBTN"] = {
         [0x155] = "1230794", -- Clifftop + Button
         [0x112] = "1230791", -- TDL Button
@@ -1036,11 +1022,16 @@ local ASSET_MAP_CHECK = {
             -- Cheato Rewards should be here
         },
         --JINJO VILLAGE
-        [0x143] =	{ --JV - Bottles' House
+        [0x142] = { -- JV
+            ["TREBLE"] = {
+                "1230789"
+            }
+        },
+        [0x143] = { --JV - Bottles' House
             --Amaze-O-Gaze should be here
         },
         --ISLE O' HAGS
-        [0x155] =	{ --IoH - Cliff Top
+        [0x155] = { --IoH - Cliff Top
             ["JINJOS"] = {
                 "1230593" -- Clifftop Jinjo
             },
@@ -1055,7 +1046,6 @@ local ASSET_MAP_CHECK = {
             }
         },
         -- ["0x150"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Heggy's Egg Shed
-        -- ["0x15b"] =	{"Isle O' Hags", "Pine Grove"},         --IoH - Inside another digger tunnel
         -- ["0x151"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Jiggywiggy's Temple
         [0x154] = { --IoH - Pine Grove
             ["NOTES"] = {
@@ -1066,7 +1056,6 @@ local ASSET_MAP_CHECK = {
 
             }
         },
-        -- ["0x157"] =	{"Isle O' Hags", "Pine Grove"},         --IoH - Pine Grove - Wumba's Wigwam
         [0x152] = { --IoH - Plateau
             ["JINJOS"] = {
                 "1230594" -- Plateau Jinjo
@@ -1082,7 +1071,6 @@ local ASSET_MAP_CHECK = {
             }
         },
         -- ["0x153"] =	{"Isle O' Hags", "Plateau"},            --IoH - Plateau - Honey B's Hive
-        -- ["0x15c"] =	{"Isle O' Hags", "Quagmire"},           --IoH - Quagmire
         [0x15A] = { --IoH - Wasteland
             ["JINJOS"] = {
                 "1230592" -- Wasteland Jinjo
@@ -1135,6 +1123,9 @@ local ASSET_MAP_CHECK = {
                 "1230813", -- MT: Top Stairs (2)
                 "1230814", -- MT: Top Stairs (3)
                 "1230815", -- MT: Top Stairs (4)
+            },
+            ["TREBLE"] = {
+                "1230781"
             }
         },
         [0xC4] = { --MT - Jade Snake Grove
@@ -1293,6 +1284,9 @@ local ASSET_MAP_CHECK = {
             },
             ["PAGES"] = {
                 "1230733" -- Water Tower
+            },
+            ["TREBLE"] = {
+                "1230782"
             }
         },
         [0xCE] = { --GGM - Waterfall Cavern
@@ -1337,6 +1331,9 @@ local ASSET_MAP_CHECK = {
                 "1230845", -- Dive of Death (2)
                 "1230846", -- Crazy Castle Entrance (1)
                 "1230847", -- Crazy Castle Entrance (2)
+            },
+            ["TREBLE"] = {
+                "1230783"
             }
         },
         [0xEA] = { --WW - Cave of Horrors
@@ -1394,7 +1391,6 @@ local ASSET_MAP_CHECK = {
                 "1230691"
             }
         },
-
         --JOLLY ROGER'S LAGOON
         [0x1A7] = { --JRL
             ["JIGGIES"] = {
@@ -1467,6 +1463,9 @@ local ASSET_MAP_CHECK = {
             ["NOTES"] = {
                 "1230853", -- Eel 1
                 "1230854", -- Eel 2
+            },
+            ["TREBLE"] = {
+                "1230784"
             }
         },
         [0xFF] = { --JRL - Blubber's Wave Race Hire
@@ -1568,7 +1567,6 @@ local ASSET_MAP_CHECK = {
                 "1230538" -- Mumbo 4
             }
         },
-
         --TERRYDACTYLAND
         [0x112] =	{ --TDL
             ["JIGGIES"] = {
@@ -1606,6 +1604,9 @@ local ASSET_MAP_CHECK = {
                 "1230873", -- roarpath 1
                 "1230874", -- roarpath 2
                 "1230875", -- roarpath 3
+            },
+            ["TREBLE"] = {
+                "1230785"
             }
         },
         [0x123] = { --TDL - Inside Chompa's Belly
@@ -1674,6 +1675,9 @@ local ASSET_MAP_CHECK = {
             },
             ["HONEYCOMB"] = {
                 "1230720" -- Chimney
+            },
+            ["TREBLE"] = {
+                "1230786"
             }
         },
         [0x10F] = { --GI - Basement
@@ -1805,7 +1809,6 @@ local ASSET_MAP_CHECK = {
                 "1230743" -- Loggo
             }
         },
-
         --HAILFIRE PEAKS
         [0x131] =	{ --HFP - Boggy's Igloo
             ["JIGGIES"] = {
@@ -1828,6 +1831,9 @@ local ASSET_MAP_CHECK = {
             },
             ["PAGES"] = {
                 "1230747" -- Icicle
+            },
+            ["TREBLE"] = {
+                "1230787"
             }
         },
         [0x128] =	{ --HFP - Icy Side
@@ -1846,6 +1852,16 @@ local ASSET_MAP_CHECK = {
             ["GLOWBO"] = {
                 "1230699",
                 "1230046" -- Mega Glowbo
+            },
+            ["NOTES"] = {
+                "1230904",
+                "1230905",
+                "1230906",
+                "1230907",
+                "1230908",
+                "1230909",
+                "1230910",
+                "1230911",
             }
         },
         [0x133] =	{ --HFP - Inside the Volcano
@@ -1878,6 +1894,16 @@ local ASSET_MAP_CHECK = {
             },
             ["GLOWBO"] = {
                 "1230698"
+            },
+            ["NOTES"] = {
+                "1230896",
+                "1230897",
+                "1230898",
+                "1230899",
+                "1230900",
+                "1230901",
+                "1230902",
+                "1230903",
             }
         },
         [0x129] =	{ --HFP - Lava Train Station
@@ -1885,7 +1911,6 @@ local ASSET_MAP_CHECK = {
                 "1230721" -- Train Station
             }
         },
-
         --CLOUD CUCKOOLAND
         [0x136] =	{ --CCL
             ["JIGGIES"] = {
@@ -1915,6 +1940,27 @@ local ASSET_MAP_CHECK = {
             },
             ["GLOWBO"] = {
                 "1230701"
+            },
+            ["NOTES"] = {
+                "1230912",
+                "1230913",
+                "1230914",
+                "1230915",
+                "1230916",
+                "1230917",
+                "1230918",
+                "1230919",
+                "1230920",
+                "1230921",
+                "1230922",
+                "1230923",
+                "1230924",
+                "1230925",
+                "1230926",
+                "1230927",
+            },
+            ["TREBLE"] = {
+                "1230788"
             }
         },
         [0x138] =	{ --CCL - Inside the Cheese Wedge
@@ -1973,7 +2019,6 @@ local ASSET_MAP_CHECK = {
                 "1230751" -- Zubba
             }
         },
-
         --CAULDRON KEEP
         [0x19A] =	{ --CK - HAG 1
             ["H1"] = {
@@ -2051,17 +2096,11 @@ local JINJO_PATTER_MAP = {
     },
 }
 
--- BMM - Backup Memory Map 
-local BMM =  {};
-
--- AMM - Actual Memory Map
-local AMM = {};
-
 -- AGI - Archipelago given items
-local AGI = {};
 local AGI_JIGGIES = {};
 local AGI_MOVES = {};
 local AGI_NOTES = {};
+local AGI_TREBLE = {};
 local AGI_STATIONS = {};
 local AGI_CHUFFY = {};
 local AGI_MYSTERY = {};
@@ -2079,6 +2118,8 @@ local AGI_JINJOS = {
 
 
 local BMM_JIGGIES = {}; -- BMM JIGGIES
+local BMM_NOTES = {};
+local BMM_TREBLE = {};
 local BMM_JINJOS = {}; -- BMM JINJOS
 local BKM = {}; -- Banjo Tooie Movelist Table
 local BKNOTES = {}; -- Notes
@@ -2093,11 +2134,6 @@ local HONEYB_REWARDS = {} -- Honey B Check Locations
 local JIGGY_CHUNKS = {} -- Jiggy Chunky Check Locations
 local DINO_KIDS = {} -- the 3 Dino Kids
 
-
--- Mapping required for AGI Table
-local AGI_MASTER_MAP = {
-
-}
 
 -- Address Map for Banjo-Tooie
 local NON_AGI_MAP = {
@@ -5190,7 +5226,6 @@ function jiggy_check()
     local checks = {}
     if BMM_BACKUP_JIGGY == true
     then
-        jiggy_ui_update()
         if DEBUG == true
         then
             print("Setting BMM Jiggies")
@@ -5314,119 +5349,133 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
     end
 end
 
----------------------------------- BKNOTES ---------------------------------
+---------------------------------- TREBLE ---------------------------------
 
-function init_BKNOTES(type) -- Initialize BMK
+function init_TREBLE(type) -- Initialize Notes
     local checks = {}
-    for k,v in pairs(NON_AGI_MAP['TREBLE'])
+    for locationId,v in pairs(NON_AGI_MAP["TREBLE"])
     do
-        if type == "BKNOTES"
+        if type == "BMM"
         then
-            BKNOTES[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
+            BMM_TREBLE[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
         elseif type == "AGI"
         then
-            checks[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK_AGI")
+            checks[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
         end
     end
     return checks
 end
 
-function set_checked_BKNOTES() --Only run transitioning maps
-    if ASSET_MAP_CHECK["TREBLE"][CURRENT_MAP] == nil --Happens when exiting map too quickly when entering a new map
+function restore_BMM_TREBLE() --Only run while unpausing 
+    if BMM_BACKUP_TREBLE == true and AGI_TREBLE_SET == true
     then
-        if DEBUG == true 
-        then
-            print("Canceling Clearing of Treble")
+        for locationId,v in pairs(NON_AGI_MAP["TREBLE"]) do
+            if BMM_TREBLE[locationId] == true
+            then
+                BTRAMOBJ:setFlag(v['addr'], v['bit']);
+            else
+                BTRAMOBJ:clearFlag(v['addr'], v['bit']);
+            end
         end
-        return false
-    end
-    local noteId = ASSET_MAP_CHECK["TREBLE"][CURRENT_MAP];
-    local get_addr = NON_AGI_MAP['TREBLE'][noteId];
-    if BKNOTES[noteId] == true
-    then
-        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_CHECK");
-    else
-        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKNOTES_CHECK");
-    end
-    return true;
-end
-
-function set_AP_BKNOTES() -- Only run after Transistion
-    for noteId, value in pairs(AGI_NOTES)
-    do
-        local get_addr = NON_AGI_MAP['TREBLE'][noteId]
-        if value == true
-        then
-            BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_SET");
-        else
-            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKNOTES_SET");
-        end
+        BMM_BACKUP_TREBLE = false
+        AGI_TREBLE_SET = false
     end
 end
 
-function obtained_AP_BKNOTE()
-    for locationId, value in pairs(AGI_NOTES)
+-- Treble UI is part of Notes
+
+function set_AP_TREBLE() -- Only run while Pausing or Transistion to certain maps
+    if BMM_BACKUP_TREBLE == true and AGI_TREBLE_SET == false
+    then
+        for locationId, value in pairs(AGI_TREBLE)
+        do
+            local get_addr = NON_AGI_MAP["TREBLE"][locationId]
+            if value == true
+            then
+                BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
+            else
+                BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+            end
+        end
+        AGI_TREBLE_SET = true
+    end
+end
+
+function obtained_AP_TREBLE()
+    if DEBUG == true
+    then
+        print("Treble Obtained")
+    end
+    for locationId, value in pairs(AGI_TREBLE)
     do
         if value == false
         then
-            AGI_NOTES[locationId] = true;
-            local get_addr = NON_AGI_MAP['TREBLE'][tostring(locationId)]
-            BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_OBTAIN");
+            AGI_TREBLE[locationId] = true;
+            if AGI_TREBLE_SET == true
+            then
+                local get_addr = NON_AGI_MAP["TREBLE"][tostring(locationId)]
+                BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
+            end
             break
         end
     end
 end
 
-function getTreblePlayerModel()
-    if TREBLE_WAIT_TIMER <= 3
+function backup_BMM_TREBLE()
+    if BMM_BACKUP_TREBLE == false
     then
-        if DEBUG == true
-        then
-            print("Watching Treble")
+        for locationId,v in pairs(NON_AGI_MAP["TREBLE"]) do
+            if BTRAMOBJ:checkFlag(v['addr'], v['bit']) == true
+            then
+                BMM_TREBLE[locationId] = true
+            else
+                BMM_TREBLE[locationId] = false
+            end
         end
-        TREBLE_WAIT_TIMER = TREBLE_WAIT_TIMER + 1
-        return
+        BMM_BACKUP_TREBLE = true
+        set_AP_TREBLE()
     end
-    BTMODELOBJ:changeName("Treble Clef", false)
-    local object = BTMODELOBJ:checkModel();
-    if object == false
-    then
-        BTMODELOBJ:changeName("Player", false)
-        local player = BTMODELOBJ:checkModel();
-        if player == false
-        then
-            return
-        end
-        if DEBUG == true
-        then
-            print("No Treble on Map")
-            print("AP Trebles enabled")
-        end
-        set_AP_BKNOTES() --No Treble on this map
-        CHECK_FOR_TREBLE = false
-        WATCH_LOADED_TREBLE = false
-        TREBLE_WAIT_TIMER = 0
-        return
-    end
-    if DEBUG == true
-    then
-        print("Treble Found")
-    end
-    set_AP_BKNOTES();
-    CHECK_FOR_TREBLE = false
-    TREBLE_GONE_CHECK = 2
-    WATCH_LOADED_TREBLE = true
 end
 
-function nearTreble()
-    BTMODELOBJ:changeName("Treble Clef", false);
-    local POS = BTMODELOBJ:getSingleModelCoords();
-    if POS == false
+function treble_check()
+    local checks = {}
+    if BMM_BACKUP_TREBLE == true
+    then
+        if DEBUG == true
+        then
+            print("Setting BMM TREBLE")
+        end
+        return BMM_TREBLE
+    end
+    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["TREBLE"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["TREBLE"])
+            do
+                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["TREBLE"][locationId]['addr'], NON_AGI_MAP["TREBLE"][locationId]['bit'])
+                if DEBUG == true
+                then
+                    print(NON_AGI_MAP["TREBLE"][locationId]['name'] .. ":" .. tostring(checks[locationId]))
+                end
+                if locationId == "1230789" and checks[locationId] == true
+                then
+                    collected_JV_TREBLE()
+                end
+            end
+        end
+    end
+    return checks
+end
+
+function collected_JV_TREBLE()
+    BTMODELOBJ:changeName("Treble Clef", false)
+    local model = BTMODELOBJ:checkModel();
+    if model == false
     then
         return false
     end
-    TREBLE_SPOTED = true
-    TREBLE_MAP = CURRENT_MAP
+    BTMODELOBJ:moveModelObject(nil, nil, -300, nil)
     return true
 end
 
@@ -5892,6 +5941,149 @@ function doubloon_math_check()
     recv_doubloons = recv_doubloons - spent_counter
     BTCONSUMEOBJ:setConsumable(recv_doubloons);
     return recv_doubloons
+end
+
+---------------------------------- NOTES ---------------------------------
+
+function init_NOTES(type) -- Initialize Notes
+    local checks = {}
+    for locationId,v in pairs(NON_AGI_MAP["NOTES"])
+    do
+        if type == "BMM"
+        then
+            BMM_NOTES[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
+        elseif type == "AGI"
+        then
+            checks[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
+        end
+    end
+    return checks
+end
+
+function restore_BMM_NOTES() --Only run while unpausing 
+    if BMM_BACKUP_NOTES == true and AGI_NOTES_SET == true
+    then
+        for locationId,v in pairs(NON_AGI_MAP["NOTES"]) do
+            if BMM_NOTES[locationId] == true
+            then
+                BTRAMOBJ:setFlag(v['addr'], v['bit']);
+            else
+                BTRAMOBJ:clearFlag(v['addr'], v['bit']);
+            end
+        end
+        BMM_BACKUP_NOTES = false
+        AGI_NOTES_SET = false
+    end
+end
+
+function set_AP_NOTES() -- Only run while Pausing or Transistion to certain maps
+    if BMM_BACKUP_NOTES == true and AGI_NOTES_SET == false
+    then
+        for locationId, value in pairs(AGI_NOTES)
+        do
+            local get_addr = NON_AGI_MAP["NOTES"][locationId]
+            if value == true
+            then
+                BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
+            else
+                BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+            end
+        end
+        AGI_NOTES_SET = true
+    end
+end
+
+function obtained_AP_NOTES()
+    if DEBUG == true
+    then
+        print("Note Obtained")
+    end
+    for locationId, value in pairs(AGI_NOTES)
+    do
+        if value == false
+        then
+            AGI_NOTES[locationId] = true;
+            if AGI_NOTES_SET == true
+            then
+                local get_addr = NON_AGI_MAP["NOTES"][tostring(locationId)]
+                BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
+            end
+            break
+        end
+    end
+end
+
+function note_ui_update()
+    local note_amt = 0
+    local treble_amt = 0
+    local ram_note_count = mainmemory.read_u16_be(0x11B074)
+    if ram_note_count ~= NOTE_COUNT
+    then
+        for _, value in pairs(AGI_NOTES)
+        do
+            if value == true
+            then
+                note_amt = note_amt + 1
+            end
+        end
+        note_amt = note_amt * 5
+
+        for _, value in pairs(AGI_TREBLE)
+        do
+            if value == true
+            then
+                treble_amt = treble_amt + 1
+            end
+        end
+        treble_amt = treble_amt * 20
+        
+        note_amt = note_amt + treble_amt
+        mainmemory.write_u16_be(0x11B0BC, note_amt)
+        NOTE_COUNT = note_amt
+    end
+end
+
+function backup_BMM_NOTES()
+    if BMM_BACKUP_NOTES == false
+    then
+        for locationId,v in pairs(NON_AGI_MAP["NOTES"]) do
+            if BTRAMOBJ:checkFlag(v['addr'], v['bit']) == true
+            then
+                BMM_NOTES[locationId] = true
+            else
+                BMM_NOTES[locationId] = false
+            end
+        end
+        BMM_BACKUP_NOTES = true
+        set_AP_NOTES()
+    end
+end
+
+function notes_check()
+    local checks = {}
+    if BMM_BACKUP_NOTES == true
+    then
+        if DEBUG == true
+        then
+            print("Setting BMM NOTES")
+        end
+        return BMM_NOTES
+    end
+    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["NOTES"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["NOTES"])
+            do
+                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["NOTES"][locationId]['addr'], NON_AGI_MAP["NOTES"][locationId]['bit'])
+                if DEBUG == true
+                then
+                    print(locationId .. ":" .. tostring(checks[locationId]))
+                end
+            end
+        end
+    end
+    return checks
 end
 
 -------------------------------- HAG-1 Victory ----------------------------------
@@ -7340,25 +7532,38 @@ end
 ---------------------- MAP HANDLING -------------------
 
 function watchMapTransition()
-    if mainmemory.read_u8(0x127642) == 1
-    then
-        if MAP_TRANSITION == false then
-            NEXT_MAP = BTRAMOBJ:getMap(true)
-            MAP_TRANSITION = true
-            BKAssetFound();
-            if SKIP_PUZZLES == true
-            then
-                check_open_level(true)
-            end
+    if GAME_LOADED == true then
+        local mapaddr = BTRAMOBJ:getMap(false)
+        if mapaddr == 0x158 or mapaddr == 0x18B
+        then
+            GAME_LOADED = false
+            DEMO_MODE = true
+            return
         end
-    else -- Runs Constantly while NOT transitioning
-        finishTransition()
-        jiggy_ui_update()
-        jinjo_ui_update()
-        pages_ui_update()
-        honeycomb_ui_update()
-        glowbo_ui_update()
-        doubloon_ui_update()
+        if mainmemory.read_u8(0x127642) == 1
+        then
+            if MAP_TRANSITION == false then
+                savingBMM()
+                NEXT_MAP = BTRAMOBJ:getMap(true)
+                MAP_TRANSITION = true
+                BKAssetFound();
+                if SKIP_PUZZLES == true
+                then
+                    check_open_level(true)
+                end
+            end
+        else -- Runs Constantly while NOT transitioning
+            finishTransition()
+            jiggy_ui_update()
+            jinjo_ui_update()
+            pages_ui_update()
+            honeycomb_ui_update()
+            glowbo_ui_update()
+            doubloon_ui_update()
+            note_ui_update()
+        end
+    else
+        loadGame(BTRAMOBJ:getMap(false))
     end
 end
 
@@ -7399,8 +7604,11 @@ function checkConsumables(consumable_type, location_checks)
 end
 
 function loadGame(current_map)
+    BTMODELOBJ:changeName("Player", false)
+    local player = BTMODELOBJ:checkModel();
     if(current_map == 0x142 or current_map == 0xAF or current_map == 0x160)
     then
+        CURRENT_MAP = current_map
         local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".BMM", "r") -- get #BTplayer_seed.BMM
         if f==nil then
            return false
@@ -7409,26 +7617,37 @@ function loadGame(current_map)
             then
                 print("Loading BMM Files");
             end
-            USE_BMM_TBL = true
-            BMM = json.decode(f:read("l"));
+            -- USE_BMM_TBL = true
+            init_JIGGIES("BMM")
+            backup_BMM_JIGGIES()
+            init_NOTES("BMM")
+            backup_BMM_NOTES()
+            init_TREBLE("BMM")
+            backup_BMM_TREBLE()
+            init_JINJOS("BMM")
+            backup_BMM_JINJOS()
+            BMM_JIGGY = json.decode(f:read("l"));
+            BMM_NOTES = json.decode(f:read("l"));
+            BMM_TREBLE = json.decode(f:read("l"));
+            BMM_JINJOS = json.decode(f:read("l"));
             BKM = json.decode(f:read("l"));
-            BKNOTES = json.decode(f:read("l"));
             BKSTATIONS = json.decode(f:read("l"));
             BKCHUFFY = json.decode(f:read("l"));
             BKJINJOFAM = json.decode(f:read("l"));
             BKMYSTERY = json.decode(f:read("l"));
+            restore_BMM_JIGGIES()
+            restore_BMM_NOTES()
+            restore_BMM_TREBLE()
+            restore_BMM_JINJOS()
             f:close();
-            all_location_checks("AMM");
-            all_location_checks("BMM");
-            BMMRestore();
             if DEBUG == true
             then
                 print("Restoring from Load Game")
             end
-            set_AGI_MOVES_checks();
-            set_AP_BKNOTES();
-            set_AP_STATIONS();
-            init_roysten()
+            -- set_AGI_MOVES_checks();
+            -- set_AP_BKNOTES();
+            -- set_AP_STATIONS();
+            -- init_roysten()
             if ENABLE_AP_CHUFFY == true -- Sanity Check
             then
                 if BTRAMOBJ:checkFlag(0x98, 5) == false and BTRAMOBJ:checkFlag(0x98, 6) == false and
@@ -7549,9 +7768,6 @@ function BKLogics(mapaddr)
     end
     if ((CURRENT_MAP ~= mapaddr) or player == false)
     then
-        set_checked_BKNOTES();
-        TREBLE_WAIT_TIMER = 0
-        CHECK_FOR_TREBLE = true
         set_checked_BKSTATIONS()
         STATION_BTN_TIMER = 0
         CHECK_FOR_STATIONBTN = true
@@ -7700,463 +7916,6 @@ function BKAssetFound()
     check_hatched_mystery()
     check_local_icekey()
     ap_icekey_glowbo_map()
- -- ApWarp();
-
-end
-
-
-
-function locationControl()
-    local mapaddr = BTRAMOBJ:getMap(false)
-    if mapaddr == nil --We don't want this to process anything
-    then
-        DEMO_MODE = true
-        return DEMO_MODE
-    end
-    if SolvingPuzzle(mapaddr) == true
-    then
-        DEMO_MODE = true
-        return DEMO_MODE
-    end
-
-    if USE_BMM_TBL == true --Only used If Pausing
-    then
-        if BTRAMOBJ:checkFlag(0x1F, 0, "LocControl1") == true -- DEMO FILE
-        then
-            DEMO_MODE = true
-            return DEMO_MODE
-        end
-        DEMO_MODE = false
-        BKLogics(mapaddr)
-        getAltar()
-        if ENABLE_AP_WORLDS == true
-        then
-            nearDisiple()
-        end
-        CURRENT_MAP = mapaddr
-        return all_location_checks("BMM");
-    else
-        if GAME_LOADED == false
-        then
-            loadGame(mapaddr)
-            DEMO = true
-            return DEMO
-        else
-            DEMO_MODE = false
-            BKLogics(mapaddr)    
-            if (mapaddr == 335 or mapaddr == 337) and TOTALS_MENU == false -- Wooded Hollow / JiggyTemple
-            then
-                if CURRENT_MAP ~= 335 and CURRENT_MAP ~= 337
-                then
-                    BMMBackup();
-                    useAGI();
-                    CURRENT_MAP = mapaddr
-                end
-                nearWHJinjo()
-                if ENABLE_AP_WORLDS == true
-                then
-                    nearDisiple()
-                end
-                return all_location_checks("BMM");
-            else
-                CURRENT_MAP = mapaddr
-                getAltar()
-                if CLOSE_TO_ALTAR == true
-                then
-                    return all_location_checks("BMM");
-                end
-                return all_location_checks("AMM");
-            end
-        end
-    end
-end
-
-function BMMBackup()
-    if USE_BMM_TBL == true or GAME_LOADED == false
-    then
-        return
-    end
-    for item_group, table in pairs(AGI_MASTER_MAP)
-    do
-        if BMM[item_group] == nil then
-            BMM[item_group] = {}
-        end
-        if USE_BMM_ONLY_TBL == true
-        then
-            if USE_BMM_ONLY_TYP ~= item_group
-            then
-                for location, values in pairs(table)
-                do
-                    BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
-                end
-            else
-                if DEBUG == true
-                then
-                    print("Backup excluding " .. USE_BMM_ONLY_TYP);
-                end
-            end
-        else
-            if ENABLE_AP_NOTES == false and item_group == "NOTES"
-            then
-                goto continue_BMM_backup
-            end
-            for location, values in pairs(table)
-            do
-                BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
-            end
-        end
-        ::continue_BMM_backup::
-    end
-    if DEBUG == true
-    then
-        print("Backup complete");
-    end
-    savingBMM()
-    USE_BMM_TBL = true
-end
-
-function BMMBackupOnly(backup_type)
-    if USE_BMM_TBL == true or GAME_LOADED == false or
-    (USE_BMM_ONLY_TBL == true and USE_BMM_ONLY_TYP == backup_type)
-    then
-        return
-    end
-    for item_group, table in pairs(AGI_MASTER_MAP)
-    do
-        if BMM[item_group] == nil then
-            BMM[item_group] = {}
-        end
-        if item_group == backup_type
-        then
-            for location, values in pairs(table)
-            do
-                BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
-            end
-        end
-    end
-    if DEBUG == true
-    then
-        print("Backup " .. backup_type .. " complete");
-    end
-    USE_BMM_ONLY_TBL = true
-    USE_BMM_ONLY_TYP = backup_type
-end
-
-function BMMRestore()
-    if USE_BMM_TBL == false
-    then
-        return
-    end
-
-    for item_group , location in pairs(AGI_MASTER_MAP)
-    do
-        if USE_BMM_ONLY_TBL == true
-        then
-            if item_group ~= USE_BMM_ONLY_TYP
-            then
-                for loc,v in pairs(location)
-                do
-                    if AMM[item_group][loc] == false and BMM[item_group][loc] == true
-                    then
-                        BTRAMOBJ:setFlag(v['addr'], v['bit'])
-                        AMM[item_group][loc] = BMM[item_group][loc]
-                        if DEBUG == true
-                        then
-                            print(loc .. " Flag Set")
-                        end
-                    elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
-                    then
-                        BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE")
-                        AMM[item_group][loc] = BMM[item_group][loc]
-                        if DEBUG == true
-                        then
-                            print(loc .. " Flag Cleared")
-                        end
-                    end
-                end
-            else
-                if DEBUG == true
-                then
-                    print("BMM Restoring exlude " .. USE_BMM_ONLY_TYP)
-                end
-            end
-        else
-            for loc,v in pairs(location)
-            do
-                if AMM[item_group][loc] == false and BMM[item_group][loc] == true
-                then
-                    BTRAMOBJ:setFlag(v['addr'], v['bit'])
-                    AMM[item_group][loc] = BMM[item_group][loc]
-                    if DEBUG == true
-                    then
-                        print(loc .. " Flag Set")
-                    end
-                elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
-                then
-                    BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE")
-                    AMM[item_group][loc] = BMM[item_group][loc]
-                    if DEBUG == true
-                    then
-                        print(loc .. " Flag Cleared")
-                    end
-                end
-            end
-        end
-    end
-    if DEBUG == true
-    then
-        print("BMM Restored")
-    end
-    USE_BMM_TBL = false;
-end
-
-function BMMRestoreOnly(backup_type)
-    if USE_BMM_ONLY_TBL == false
-    then
-        return
-    end
-
-    for item_group , location in pairs(AGI_MASTER_MAP)
-    do
-        if item_group == backup_type
-        then
-            for loc,v in pairs(location)
-            do
-                if AMM[item_group][loc] == false and BMM[item_group][loc] == true
-                then
-                    BTRAMOBJ:setFlag(v['addr'], v['bit'])
-                    AMM[item_group][loc] = BMM[item_group][loc]
-                    if DEBUG == true
-                    then
-                        print(loc .. " Flag Set")
-                    end
-                elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
-                then
-                    BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE_ONLY")
-                    AMM[item_group][loc] = BMM[item_group][loc]
-                    if DEBUG == true
-                    then
-                        print(loc .. " Flag Cleared")
-                    end
-                end
-            end
-            USE_BMM_ONLY_TBL = false;
-            USE_BMM_ONLY_TYP = "";
-            if DEBUG == true
-            then
-                print(backup_type .. " BMM Restored")
-            end
-        end
-    end
-end
-
-function useAGI()
-    for item_group, table in pairs(AGI_MASTER_MAP)
-    do
-        if ENABLE_AP_NOTES == false and item_group == "NOTES"
-        then
-            if DEBUG == true
-            then
-                print("Skipping Notes, not enabled.")
-            end
-            goto continue_USE_AGI
-        end
-        if USE_BMM_ONLY_TBL == true
-        then
-            if USE_BMM_ONLY_TYP ~= item_group
-            then
-                for location,values in pairs(table)
-                do
-                    if AMM[item_group][location] == false and AGI[item_group][location] == true
-                    then
-                        BTRAMOBJ:setFlag(values['addr'], values['bit'])
-                        AMM[item_group][location] = true
-                        if DEBUG == true
-                        then
-                            print(location .. " Flag Set from AGI");
-                        end
-                    elseif AMM[item_group][location] == true and AGI[item_group][location] == false
-                    then
-                        BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
-                        AMM[item_group][location] = false;
-                        if DEBUG == true
-                        then
-                            print(location .. " Flag Cleared from AGI");
-                        end
-                    elseif ENABLE_AP_JINJO == true
-                    then
-                        if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
-                        or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
-                        or location == "1230684") and AGI[item_group][location] == true
-                        then
-                            BTRAMOBJ:setFlag(values['addr'], values['bit'])
-                            AMM[item_group][location] = true
-                            if DEBUG == true
-                            then
-                                print(location .. " Flag Set from AGI");
-                            end
-                        end
-                    end
-                end
-            else
-                if DEBUG == true
-                then
-                    print("AGI exclude " .. USE_BMM_ONLY_TYP);
-                end
-            end
-        else
-            for location,values in pairs(table)
-            do
-                if AMM[item_group][location] == false and AGI[item_group][location] == true
-                then
-                    BTRAMOBJ:setFlag(values['addr'], values['bit'])
-                    AMM[item_group][location] = true
-                    if DEBUG == true
-                    then
-                        print(location .. " Flag Set from AGI");
-                    end
-                elseif AMM[item_group][location] == true and AGI[item_group][location] == false
-                then
-                    BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
-                    AMM[item_group][location] = false;
-                    if DEBUG == true
-                    then
-                        print(location .. " Flag Cleared from AGI");
-                    end
-                elseif ENABLE_AP_JINJO == true
-                then
-                    if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
-                    or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
-                    or location == "1230684") and AGI[item_group][location] == true
-                    then
-                        BTRAMOBJ:setFlag(values['addr'], values['bit'])
-                        AMM[item_group][location] = true
-                        if DEBUG == true
-                        then
-                            print(location .. " Flag Set from AGI");
-                        end
-                    end
-                end
-            end
-        end
-        ::continue_USE_AGI::
-    end
-end
-
-function useAGINoJiggies()
-    for location,values in pairs(AGI_MASTER_MAP["JIGGY"])
-    do
-        if AMM["JIGGY"][location] == true
-        then
-            BTRAMOBJ:clearFlag(values['addr'], values['bit'])
-            AMM["JIGGY"][location] = false
-            if DEBUG == true
-            then
-                print(location .. " Flag Cleared from AGI JIGGY");
-            end
-        end
-    end
-end
-
-function useAGIOnly(agi_type)
-    for item_group, table in pairs(AGI_MASTER_MAP)
-    do
-        if item_group == agi_type
-        then
-            for location,values in pairs(table)
-            do
-                if AMM[item_group][location] == false and AGI[item_group][location] == true
-                then
-                    BTRAMOBJ:setFlag(values['addr'], values['bit'])
-                    AMM[item_group][location] = true
-                    if DEBUG == true
-                    then
-                        print(location .. " Flag Set from AGI");
-                    end
-                elseif AMM[item_group][location] == true and AGI[item_group][location] == false
-                then
-                    BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
-                    AMM[item_group][location] = false;
-                    if DEBUG == true
-                    then
-                        print(location .. " Flag Cleared from AGI");
-                    end
-                elseif ENABLE_AP_JINJO == true
-                then
-                    if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
-                    or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
-                    or location == "1230684") and AGI[item_group][location] == true
-                    then
-                        BTRAMOBJ:setFlag(values['addr'], values['bit'])
-                        AMM[item_group][location] = true
-                        if DEBUG == true
-                        then
-                            print(location .. " Flag Set from AGI");
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
-
-function all_location_checks(type)
-
-    local location_checks = readAPLocationChecks(type)
-
-    if type == "AMM"
-    then
-        for item_group, locations in pairs(location_checks)
-        do
-            if AMM[item_group] == nil
-            then
-                AMM[item_group] = {}
-            end
-            if USE_BMM_ONLY_TBL == true
-            then
-                if item_group ~= USE_BMM_ONLY_TYP
-                then
-                    for locationId, value in pairs(locations)
-                    do
-                        AMM[item_group][locationId] = value
-                    end
-                end
-            else
-                for locationId, value in pairs(locations)
-                do
-                    AMM[item_group][locationId] = value
-                end
-            end
-        end
-    end
-    if next(AGI) == nil then --Only runs first time starting the game.
-        for item_group, locations in pairs(location_checks)
-        do
-             if AGI[item_group] == nil
-             then
-                 AGI[item_group] = {}
-             end  
-             for locationId, value in pairs(locations)
-             do
-                 AGI[item_group][locationId] = value
-             end
-        end
-    end
-
-    -- if ENABLE_AP_HONEYCOMB == true then
-    --     checkConsumables('HONEYCOMB', location_checks)
-    -- end
-
-    -- if ENABLE_AP_PAGES == true then
-    --     checkConsumables('CHEATO', location_checks)
-    -- end
-    -- checkConsumables('GLOWBO', location_checks)
-    -- checkConsumables('MEGA GLOWBO', location_checks)
-    -- if ENABLE_AP_DOUBLOONS == true then
-    --     checkConsumables('DOUBLOON', location_checks)
-    -- end
-
-    return location_checks
 end
 
 function processMessages()
@@ -8205,8 +7964,6 @@ function clearText()
         TEXT_START = false
     end
 end
-
-
 
 function processAGIItem(item_list)
     for ap_id, memlocation in pairs(item_list) -- Items unrelated to AGI_MAP like Consumables
@@ -8265,7 +8022,7 @@ function processAGIItem(item_list)
 
             elseif memlocation == 1230516 -- Treble Clef
             then
-                obtained_AP_BKNOTE();
+                obtained_AP_TREBLE()
             elseif(1230790 <= memlocation and memlocation <= 1230795) -- Station Btns
             then
                 obtained_AP_STATIONS(memlocation);
@@ -8276,20 +8033,9 @@ function processAGIItem(item_list)
             then
                 AGI_JINJOS[tostring(memlocation)] = AGI_JINJOS[tostring(memlocation)] + 1
                 JinjoCounter() -- check and see if family completes and mark true
-            elseif(memlocation == 1230797) and ENABLE_AP_NOTES == true
+            elseif(memlocation == 1230797) -- Notes
             then
-                if DEBUG == true
-                then
-                    print("5 Notes Obtained")
-                end
-                for location, values in pairs(AGI_MASTER_MAP["NOTES"])
-                do
-                    if AGI['NOTES'][location] == false
-                    then
-                        AGI['NOTES'][location] = true
-                        break
-                    end
-                end
+                obtained_AP_NOTES()
             elseif(memlocation == 1230800)
             then
                 if DEBUG == true
@@ -8514,16 +8260,16 @@ function SendToBTClient()
     retTable["scriptVersion"] = SCRIPT_VERSION;
     retTable["playerName"] = PLAYER;
     retTable["deathlinkActive"] = DEATH_LINK;
-    --retTable['locations'] = locationControl()
     retTable["jiggies"] = jiggy_check()
     retTable["jinjos"] = jinjo_check()
     retTable["pages"] = pages_check()
     retTable["honeycomb"] = honeycomb_check()
     retTable["glowbo"] = glowbo_check()
     retTable["doubloon"] = doubloon_check()
+    retTable["notes"] = notes_check()
     retTable["hag"] = hag1_check()
     retTable['unlocked_moves'] = BKM;
-    retTable['treble'] = BKNOTES;
+    retTable['treble'] = treble_check();
     retTable['stations'] = BKSTATIONS;
     retTable['chuffy'] = BKCHUFFY;
     retTable["isDead"] = DETECT_DEATH;
@@ -8625,14 +8371,11 @@ function checkPause()
         end
         DEMO_MODE = true -- SEND NO CHECKS
         backup_BMM_JIGGIES()
-        BMMBackup();
-        useAGI();
-
-        if ENABLE_AP_JINJO == true
-        then
-            backup_BMM_JINJOS()
-        end
+        backup_BMM_NOTES()
+        backup_BMM_TREBLE()
+        backup_BMM_JINJOS()
         PAUSED = true;
+        savingBMM()
     elseif pause_menu == 0 and PAUSED == true  -- unpaused
     then
         PAUSED = false
@@ -8643,15 +8386,12 @@ function checkPause()
         if SKIP_PUZZLES == false then
             if CURRENT_MAP ~= 0x14F and CURRENT_MAP ~= 0x151  -- Don't want to restore while in WH zone
             then
-                print(CURRENT_MAP)
                 restore_BMM_JIGGIES()
-                BMMRestore()
             end
         end
-        if ENABLE_AP_JINJO == true
-        then
-            restore_BMM_JINJOS()
-        end
+        restore_BMM_NOTES()
+        restore_BMM_TREBLE()
+        restore_BMM_JINJOS()
         unpause_hide_AGI_key()
         DEMO_MODE = false -- SEND NO CHECKS
     elseif PAUSED == true and DEBUG == true
@@ -8960,20 +8700,10 @@ function savingAGI()
         print(AGI)
         print(receive_map)
     end
-    f:write(json.encode(AGI) .. "\n");
-    if DEBUGLVL2 == true
-    then
-        print("Writing AGI MOVES from Saving");
-    end
     f:write(json.encode(AGI_MOVES) .. "\n");
     if DEBUGLVL2 == true
     then
         print("Writing Treble");
-    end
-    f:write(json.encode(AGI_NOTES) .. "\n");
-    if DEBUGLVL2 == true
-    then
-        print("Writing Stations");
     end
     f:write(json.encode(AGI_STATIONS) .. "\n");
     if DEBUGLVL2 == true
@@ -9011,12 +8741,17 @@ end
 function loadAGI()
     local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "r") --generate #BTplayer_seed.AGI
     if f==nil then
-        AGI = all_location_checks("AGI");
-        if next(AGI_MOVES) == nil then
-            AGI_MOVES = init_BMK("AGI");
+        if next(AGI_JIGGIES) == nil then
+            AGI_JIGGIES = init_JIGGIES("AGI")
         end
         if next(AGI_NOTES) == nil then
-            AGI_NOTES = init_BKNOTES("AGI");
+            AGI_NOTES = init_NOTES("AGI")
+        end
+        if next(AGI_TREBLE) == nil then
+            AGI_TREBLE = init_TREBLE("AGI")
+        end
+        if next(AGI_MOVES) == nil then
+            AGI_MOVES = init_BMK("AGI");
         end
         if next(AGI_STATIONS) == nil then
             AGI_STATIONS = init_BKSTATIONS("AGI");
@@ -9033,14 +8768,16 @@ function loadAGI()
             print("Writing AGI File from LoadAGI");
             print(AGI);
         end
-        f:write(json.encode(AGI).."\n");
+        -- f:write(json.encode(AGI_JIGGIES).."\n");
+        -- f:write(json.encode(AGI_NOTES).."\n");
+        -- f:write(json.encode(AGI_TREBLE).."\n");
+        -- f:write(json.encode(AGI_JINJOS).."\n");
+
         f:write(json.encode(AGI_MOVES).."\n");
-        f:write(json.encode(AGI_NOTES).."\n");
         f:write(json.encode(AGI_STATIONS) .. "\n");
         f:write(json.encode(AGI_CHUFFY) .. "\n");
         f:write(json.encode(AGI_JINJOS) .. "\n");
         f:write(json.encode(AGI_MYSTERY) .. "\n");
-     -- f:write(json.encode(AGI_TRAPS) .. "\n");
         f:write(json.encode(receive_map));
         f:close();
     else
@@ -9048,14 +8785,11 @@ function loadAGI()
         then
             print("Loading AGI File");
         end
-        AGI = json.decode(f:read("l"));
         AGI_MOVES = json.decode(f:read("l"));
-        AGI_NOTES = json.decode(f:read("l"));
         AGI_STATIONS = json.decode(f:read("l"));
         AGI_CHUFFY = json.decode(f:read("l"));
         AGI_JINJOS = json.decode(f:read("l"));
         AGI_MYSTERY = json.decode(f:read("l"));
-     -- AGI_TRAPS = json.decode(f:read("l"));
         receive_map = json.decode(f:read("l"));
         f:close();
     end
@@ -9067,14 +8801,32 @@ function savingBMM()
     then
         print("Saving BMM File");
     end
-    f:write(json.encode(BMM) .. "\n");
+    backup_BMM_JIGGIES()
+    backup_BMM_NOTES()
+    backup_BMM_TREBLE()
+    backup_BMM_JINJOS()
+    f:write(json.encode(BMM_JIGGIES) .. "\n");
+    f:write(json.encode(BMM_NOTES) .. "\n");
+    f:write(json.encode(BMM_TREBLE) .. "\n");
+    f:write(json.encode(BMM_JINJOS) .. "\n");
     f:write(json.encode(BKM) .. "\n");
-    f:write(json.encode(BKNOTES) .. "\n");
     f:write(json.encode(BKSTATIONS) .. "\n");
     f:write(json.encode(BKCHUFFY) .. "\n");
     f:write(json.encode(BKJINJOFAM) .. "\n");
     f:write(json.encode(BKMYSTERY));
     f:close()
+    if PAUSED == false then
+        if SKIP_PUZZLES == false then
+            if CURRENT_MAP ~= 0x14F and CURRENT_MAP ~= 0x151  -- Don't want to restore while in WH zone
+            then
+                restore_BMM_JIGGIES()
+            end
+        end
+        restore_BMM_NOTES()
+        restore_BMM_TREBLE()
+        restore_BMM_JINJOS()
+    end
+    
     if DEBUG == true
     then
         print("BMM Table Saved");
@@ -9384,7 +9136,6 @@ function initializeFlags()
         GAME_LOADED = true  -- We don't have a real BMM at this point.  
         DEMO_MODE = false
         init_BMK("BKM");
-        init_BKNOTES("BKNOTES");
         init_BKSTATIONS("BKSTATIONS");
         init_CHUFFY("BKCHUFFY");
         init_JinjoFam();
@@ -9392,8 +9143,15 @@ function initializeFlags()
         init_roysten()
         init_DINO_KIDS()
         init_JIGGIES("BMM")
+        init_NOTES("BMM")
+        init_TREBLE("BMM");
+        init_JINJOS("BMM")
+
+        AGI_JIGGIES = init_JIGGIES("AGI")
+        AGI_NOTES = init_NOTES("AGI")
+        AGI_TREBLE = init_TREBLE("AGI")
+
         AGI_MOVES = init_BMK("AGI");
-        AGI_NOTES = init_BKNOTES("AGI");
         AGI_MYSTERY = init_BKMYSTERY("AGI");
         receive_map = { -- initialize incase suffered a hard crash and losing save file.
         ["NA"] = "NA"
@@ -9413,9 +9171,6 @@ function initializeFlags()
 				BTRAMOBJ:setFlag(0x83, 3)
 			end
 		end
-        all_location_checks("AMM")
-        BMMBackup()
-        BMMRestore()
 		INIT_COMPLETE = true
         if SKIP_PUZZLES == true then
             check_open_level(true) -- sanity check that level open flags are still set
@@ -9506,7 +9261,10 @@ function setToTComplete()
 end
 
 function saveGame()
-    BMMBackup();
+    restore_BMM_JIGGIES()
+    restore_BMM_JINJOS()
+    restore_BMM_NOTES()
+    restore_BMM_TREBLE()
     GAME_LOADED = false;
     SAVE_GAME = false;
 end

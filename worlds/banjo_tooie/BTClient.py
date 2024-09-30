@@ -92,7 +92,7 @@ class BanjoTooieContext(CommonContext):
         self.movelist_table = {}
         self.cheatorewardslist_table = {}
         self.honeybrewardslist_table = {}
-        self.notelist_table = {}
+        self.treblelist_table = {}
         self.stationlist_table = {}
         self.jinjofamlist_table = {}
         self.jinjolist_table = {}
@@ -100,6 +100,7 @@ class BanjoTooieContext(CommonContext):
         self.honeycomb_table = {}
         self.glowbo_table = {}
         self.doubloon_table = {}
+        self.notes_table = {}
         self.worldlist_table = {}
         self.chuffy_table = {}
         self.mystery_table = {}
@@ -327,7 +328,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     #locations = payload['locations']
     demo = payload['DEMO']
     chuffy = payload['chuffy']
-    notelist = payload['treble']
+    treblelist = payload['treble']
     stationlist = payload['stations']
     mystery = payload['mystery']
     roystenlist = payload['roysten']
@@ -337,6 +338,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     honeycomblist = payload['honeycomb']
     glowbolist = payload['glowbo']
     doubloonlist = payload['doubloon']
+    noteslist = payload['notes']
     hag = payload['hag']
     cheatorewardslist = payload['cheato_rewards']
     honeybrewardslist = payload['honeyb_rewards']
@@ -352,8 +354,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     #     locations = {}
     if isinstance(chuffy, list):
         chuffy = {}
-    if isinstance(notelist, list):
-        notelist = {}
+    if isinstance(treblelist, list):
+        treblelist = {}
     if isinstance(stationlist, list):
         stationlist = {}
     if isinstance(mystery, list):
@@ -390,6 +392,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         glowbolist = {}
     if isinstance(doubloonlist, list):
         doubloonlist = {}
+    if isinstance(noteslist, list):
+        noteslist = {}
     if isinstance(hag, bool) == False:
         hag = False
 
@@ -429,9 +433,9 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             for locationId, value in chuffy.items():
                 if value == True:
                     locs1.append(int(locationId))
-        if ctx.notelist_table != notelist:
-            ctx.notelist_table = notelist
-            for locationId, value in notelist.items():
+        if ctx.treblelist_table != treblelist:
+            ctx.treblelist_table = treblelist
+            for locationId, value in treblelist.items():
                 if value == True:
                     locs1.append(int(locationId))
         if ctx.stationlist_table != stationlist:
@@ -493,6 +497,11 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         if ctx.doubloon_table != doubloonlist:
             ctx.doubloon_table = doubloonlist
             for locationId, value in doubloonlist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.notes_table != noteslist:
+            ctx.notes_table = noteslist
+            for locationId, value in noteslist.items():
                 if value == True:
                     locs1.append(int(locationId))
         if ctx.slot_data["moves"] == "true":
