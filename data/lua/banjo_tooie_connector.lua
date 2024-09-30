@@ -7210,7 +7210,6 @@ end
 ------------------ Jinjos -------------------
 
 function init_JINJOS(type) -- Initialize JINJOS
-    local checks = {}
     for locationId,v in pairs(NON_AGI_MAP["JINJOS"])
     do
         if type == "BMM"
@@ -7218,10 +7217,19 @@ function init_JINJOS(type) -- Initialize JINJOS
             BMM_JINJOS[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_JINJO_BMM")
         elseif type == "AGI"
         then
-            checks[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_JINJO_AGI")
+            AGI_JINJOS = {
+                ["1230501"] = 0, -- white
+                ["1230502"] = 0, -- orange
+                ["1230503"] = 0, -- yellow
+                ["1230504"] = 0, -- brown
+                ["1230505"] = 0, -- green
+                ["1230506"] = 0, -- red
+                ["1230507"] = 0, -- blue
+                ["1230508"] = 0, -- purple
+                ["1230509"] = 0, -- black
+            };
         end
     end
-    return checks
 end
 
 function restore_BMM_JINJOS() -- Not sure if we need this...
@@ -7304,59 +7312,114 @@ function init_JinjoFam()
 end
 
 function JinjoCounter() -- counts AP jinjos and Marks as Completed if true
+    init_JINJOS("AGI")
     for locId, value in pairs(BKJINJOFAM) do
         if value == false
         then
             if locId == "1230676"
             then
+                for _, locationId in pairs(receive_map) do
+                    if locationId == "1230501"
+                    then
+                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
+                    end
+                end
                 if AGI_JINJOS["1230501"] >= 1 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230677"
             then
+                for _, locationId in pairs(receive_map) do
+                    if locationId == "1230502"
+                    then
+                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
+                    end
+                end
                 if AGI_JINJOS["1230502"] >= 2 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230678"
             then
+                for _, locationId in pairs(receive_map) do
+                    if locationId == "1230503"
+                    then
+                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
+                    end
+                end
                 if AGI_JINJOS["1230503"] >= 3 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230679"
             then
+                for _, locationId in pairs(receive_map) do
+                    if locationId == "1230504"
+                    then
+                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
+                    end
+                end
                 if AGI_JINJOS["1230504"] >= 4 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230680"
             then
+                for _, locationId in pairs(receive_map) do
+                    if locationId == "1230505"
+                    then
+                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
+                    end
+                end
                 if AGI_JINJOS["1230505"] >= 5 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230681"
             then
+                for _, locationId in pairs(receive_map) do
+                    if locationId == "1230506"
+                    then
+                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
+                    end
+                end
                 if AGI_JINJOS["1230506"] >= 6 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230682"
             then
+                for _, locationId in pairs(receive_map) do
+                    if locationId == "1230507"
+                    then
+                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
+                    end
+                end
                 if AGI_JINJOS["1230507"] >= 7 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230683"
             then
+                for _, locationId in pairs(receive_map) do
+                    if locationId == "1230508"
+                    then
+                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
+                    end
+                end
                 if AGI_JINJOS["1230508"] >= 8 then
                     BKJINJOFAM[locId] = true
                 end
             end
             if locId == "1230684"
             then
+                for _, locationId in pairs(receive_map) do
+                    if locationId == "1230509"
+                    then
+                        AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
+                    end
+                end
                 if AGI_JINJOS["1230509"] >= 9 then
                     BKJINJOFAM[locId] = true
                 end
@@ -7614,7 +7677,7 @@ function loadGame(current_map)
             then
                 print("Loading BMM Files");
             end
-            -- USE_BMM_TBL = true
+            init_JinjoFam()
             init_JIGGIES("BMM")
             backup_BMM_JIGGIES()
             init_NOTES("BMM")
@@ -7794,10 +7857,6 @@ function BKLogics(mapaddr)
     -- end
     if (CURRENT_MAP ~= mapaddr)
     then
-        if ENABLE_AP_JINJO == true
-        then
-            JinjoCounter()
-        end
         client.saveram()
         if SKIP_PUZZLES == true -- another sanity check
         then
@@ -8026,7 +8085,6 @@ function processAGIItem(item_list)
             elseif( 1230501 <= memlocation and memlocation <= 1230509) -- Jinjos
             then
                 AGI_JINJOS[tostring(memlocation)] = AGI_JINJOS[tostring(memlocation)] + 1
-                JinjoCounter() -- check and see if family completes and mark true
             elseif(memlocation == 1230797) -- Notes
             then
                 obtained_AP_NOTES()
