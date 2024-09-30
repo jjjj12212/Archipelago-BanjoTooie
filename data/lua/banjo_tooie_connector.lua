@@ -33,6 +33,7 @@ local CLIENT_VERSION = 0
 
 
 local DEBUG = false
+local DEBUG_SILO = true
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
@@ -105,7 +106,6 @@ local CHECK_FOR_SILO = false; --  If True, you are Transistioning maps
 local WATCH_LOADED_SILOS = false; -- Silo found on Map, Need to Monitor Distance
 local LOAD_BMK_MOVES = false; -- If close to Silo
 local SILOS_LOADED = false; -- Handles if learned a move at Silo
-local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
 local LOAD_SILO_NOTES = false;
 local TOT_SET_COMPLETE = false;
 
@@ -833,142 +833,6 @@ end
 
 -- Moves that needs to be checked Per Map. some silos NEEDS other moves as well to get to.
 local ASSET_MAP_CHECK = {
-    ["SILO"] = {
-        [0x155] = { -- Cliff Top
-            "1230763",
-            ["Exceptions"] = {
-
-            }
-        },
-        [0x152] = { -- Platau
-            "1230756",
-            ["Exceptions"] = {
-                "1230755"
-            }
-        },
-        [0x154] = { -- Pine Grove
-            "1230759",
-            ["Exceptions"] = {
-                
-            }
-        },
-        [0x15A] = { -- Wasteland
-            "1230767",
-            ["Exceptions"] = {
-                
-            }
-        },
-        [0xB8] = { -- MT Main
-            "1230754",
-            "1230755",
-            ["Exceptions"] = {
-                
-            }
-        },
-        [0xC4] = { -- MT Grove
-            "1230753",
-            ["Exceptions"] = {
-                
-            }
-        },
-        [0xC7] = { -- GM Main
-            "1230757",
-            ["Exceptions"] = {
-                
-            }
-        },
-        [0x163] = { -- GM Storage
-            "1230758",
-            ["Exceptions"] = {
-                
-            }
-        },
-        [0xD6] = { -- WW Main
-            "1230761",
-            "1230760",
-            ["Exceptions"] = {
-                
-            }
-        },
-        [0xE1] = { -- WW Castle
-            "1230762",
-            ["Exceptions"] = {
-                
-            }
-        },
-        [0x1A7] = { -- JRL Main
-            "1230764",
-            ["Exceptions"] = {
-                
-            }
-        },
-        [0xF6] = { -- JRL Eel Lair
-            "1230765",
-            ["Exceptions"] = {
-                
-            }
-        },
-        [0xED] = { -- JRL Jolly
-            "1230766",
-            ["Exceptions"] = {
-                
-            }
-        },
-        [0x112] = { --TDL Main
-            "1230768",
-            ["Exceptions"] = {
-                
-            }
-        },
-        [0x119] = { -- Unga Bunga Cave
-            "1230770",
-            ["Exceptions"] = {
-    
-            }
-        },
-        [0x117] = { -- TDL River
-            "1230769",
-            ["Exceptions"] = {
-    
-            }
-        },
-        [0x101] = { -- GI Floor 1
-            "1230773",
-            ["Exceptions"] = {
-    
-            }
-        },
-        [0x106] = { -- Floor 2
-            "1230772",
-            ["Exceptions"] = {
-    
-            }
-        },
-        [0x111] = { -- GI Waste Disposal
-            "1230771",
-            ["Exceptions"] = {
-    
-            }
-        },
-        [0x127] = { -- HFP Fire
-            "1230774",
-            ["Exceptions"] = {
-    
-            }
-        },
-        [0x128] = { -- HFP Ice
-            "1230775",
-            ["Exceptions"] = {
-    
-            }
-        },
-        [0x13A] = { -- CC Cave
-            "1230776",
-            ["Exceptions"] = {
-    
-            }
-        }
-    },
     ["STATIONBTN"] = {
         [0x155] = "1230794", -- Clifftop + Button
         [0x112] = "1230791", -- TDL Button
@@ -1043,10 +907,13 @@ local ASSET_MAP_CHECK = {
                 "1230937",
                 "1230938",
                 "1230939",
-            }
+            },
+            ["SILO"] = {
+                "1230763",
+                ["Exceptions"] = {}
+            },
         },
         -- ["0x150"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Heggy's Egg Shed
-        -- ["0x151"] =	{"Isle O' Hags", "Wooded Hollow"},      --IoH - Jiggywiggy's Temple
         [0x154] = { --IoH - Pine Grove
             ["NOTES"] = {
                 "1230932",
@@ -1054,7 +921,11 @@ local ASSET_MAP_CHECK = {
                 "1230934", -- underwater 1
                 "1230935", -- underwater 2
 
-            }
+            },
+            ["SILO"] = {
+                "1230759",
+                ["Exceptions"] = {}
+            },
         },
         [0x152] = { --IoH - Plateau
             ["JINJOS"] = {
@@ -1068,7 +939,13 @@ local ASSET_MAP_CHECK = {
                 "1230929", -- GGM Sign 2
                 "1230930", -- Bee 1
                 "1230931", -- Bee 2
-            }
+            },
+            ["SILO"] = {
+                "1230756",
+                ["Exceptions"] = {
+                    "1230755"
+                }
+            },
         },
         -- ["0x153"] =	{"Isle O' Hags", "Plateau"},            --IoH - Plateau - Honey B's Hive
         [0x15A] = { --IoH - Wasteland
@@ -1081,7 +958,11 @@ local ASSET_MAP_CHECK = {
                 "1230942",
                 "1230943",
 
-            }
+            },
+            ["SILO"] = {
+                "1230767",
+                ["Exceptions"] = {}
+            },
         },
         [0x14F] = { --IoH - Wooded Hollow
             ["JINJOS"] = {
@@ -1126,7 +1007,12 @@ local ASSET_MAP_CHECK = {
             },
             ["TREBLE"] = {
                 "1230781"
-            }
+            },
+            ["SILO"] = {
+                "1230754",
+                "1230755",
+                ["Exceptions"] = {}
+            },
         },
         [0xC4] = { --MT - Jade Snake Grove
             ["JIGGIES"] = {
@@ -1141,7 +1027,11 @@ local ASSET_MAP_CHECK = {
             },
             ["GLOWBO"] = {
                 "1230687"
-            }
+            },
+            ["SILO"] = {
+                "1230753",
+                ["Exceptions"] = {}
+            },
         },
         [0xBB] = { --MT - Mayan Kickball Stadium (Lobby)
             ["JIGGIES"] = {
@@ -1220,7 +1110,11 @@ local ASSET_MAP_CHECK = {
                 "1230825", -- Mumbo (1)
                 "1230826", -- Mumbo (2)
                 "1230827", -- Mumbo (3)
-            }
+            },
+            ["SILO"] = {
+                "1230757",
+                ["Exceptions"] = {}
+            },
         },
         [0xCC] ={ --GGM - Flooded Caves
             ["JIGGIES"] = {
@@ -1253,6 +1147,10 @@ local ASSET_MAP_CHECK = {
         [0x163] =	{ --GGM - Ordnance Storage Entrance
             ["JIGGIES"] = {
                 "1230610" -- Ordnance Storage
+            },
+            ["SILO"] = {
+                "1230758",
+                ["Exceptions"] = {}
             },
         },
         [0xCF] = { --GGM - Power Hut Basement
@@ -1334,7 +1232,12 @@ local ASSET_MAP_CHECK = {
             },
             ["TREBLE"] = {
                 "1230783"
-            }
+            },
+            ["SILO"] = {
+                "1230761",
+                "1230760",
+                ["Exceptions"] = {}
+            },
         },
         [0xEA] = { --WW - Cave of Horrors
             ["JINJOS"] = {
@@ -1348,7 +1251,11 @@ local ASSET_MAP_CHECK = {
             },
             ["HONEYCOMB"] = {
                 "1230711", -- Crazy Castle
-            }
+            },
+            ["SILO"] = {
+                "1230762",
+                ["Exceptions"] = {}
+            },
         },
         [0xDD] = { --WW - Dodgem Dome Lobby
             ["JIGGIES"] = {
@@ -1436,7 +1343,11 @@ local ASSET_MAP_CHECK = {
                 "1230850", -- Outside Blubber
                 "1230851", -- Blubbul 1
                 "1230852", -- Blubbul 2
-            }
+            },
+            ["SILO"] = {
+                "1230764",
+                ["Exceptions"] = {}
+            },
         },
         [0xF4] = { --JRL - Ancient Swimming Baths
             ["PAGES"] = {
@@ -1479,7 +1390,10 @@ local ASSET_MAP_CHECK = {
             }
         },
         [0xF6] = {  --JRL - Electric Eel's lair
-
+            ["SILO"] = {
+                "1230765",
+                ["Exceptions"] = {}
+            },
         },
         [0xF8] = { --JRL - Inside the Big Fish
             ["JINJOS"] = {
@@ -1498,7 +1412,11 @@ local ASSET_MAP_CHECK = {
                 "1230861",
                 "1230862",
                 "1230863",
-            }
+            },
+            ["SILO"] = {
+                "1230766",
+                ["Exceptions"] = {}
+            },
         },
         [0xFC] =	{ --JRL - Lord Woo Fak Fak
             ["JIGGIES"] = {
@@ -1607,7 +1525,11 @@ local ASSET_MAP_CHECK = {
             },
             ["TREBLE"] = {
                 "1230785"
-            }
+            },
+            ["SILO"] = {
+                "1230768",
+                ["Exceptions"] = {}
+            },
         },
         [0x123] = { --TDL - Inside Chompa's Belly
             ["JIGGIES"] = {
@@ -1627,7 +1549,7 @@ local ASSET_MAP_CHECK = {
                 "1230640", -- Oogle Boogle Tribe
             },
         },
-        [0x117] =	{ --TDL - River Passage
+        [0x117] = { --TDL - River Passage
             ["HONEYCOMB"] = {
                 "1230717" -- Riverside
             },
@@ -1636,9 +1558,19 @@ local ASSET_MAP_CHECK = {
                 "1230877",
                 "1230878",
                 "1230879",
-            }
+            },
+            ["SILO"] = {
+                "1230769",
+                ["Exceptions"] = {}
+            },
         },
-        [0x11A] =	{ --TDL - Stomping Plains
+        [0x119] = { -- Unga Bunga Cave
+            ["SILO"] = {
+                "1230770",
+                ["Exceptions"] = {}
+            },
+        },
+        [0x11A] = { --TDL - Stomping Plains
             ["JIGGIES"] = {
                 "1230643", -- Stomping
             },
@@ -1706,7 +1638,11 @@ local ASSET_MAP_CHECK = {
             ["NOTES"] = {
                 "1230890",
                 "1230891",
-            }
+            },
+            ["SILO"] = {
+                "1230771",
+                ["Exceptions"] = {}
+            },
         },
         [0x101] =	{ --GI - Floor 1
             ["JIGGIES"] = {
@@ -1716,7 +1652,11 @@ local ASSET_MAP_CHECK = {
             ["NOTES"] = {
                 "1230883",
                 "1230884",
-            }
+            },
+            ["SILO"] = {
+                "1230773",
+                ["Exceptions"] = {}
+            },
         },
         [0x106] =	{ --GI - Floor 2
             ["JIGGIES"] = {
@@ -1737,7 +1677,11 @@ local ASSET_MAP_CHECK = {
                 "1230887",
                 "1230888",
                 "1230889"
-            }
+            },
+            ["SILO"] = {
+                "1230772",
+                ["Exceptions"] = {}
+            },
         },
         [0x108] =	{ --GI - Floor 3
             ["JIGGIES"] = {
@@ -1862,7 +1806,11 @@ local ASSET_MAP_CHECK = {
                 "1230909",
                 "1230910",
                 "1230911",
-            }
+            },
+            ["SILO"] = {
+                "1230775",
+                ["Exceptions"] = {}
+            },
         },
         [0x133] =	{ --HFP - Inside the Volcano
             ["JIGGIES"] = {
@@ -1904,7 +1852,11 @@ local ASSET_MAP_CHECK = {
                 "1230901",
                 "1230902",
                 "1230903",
-            }
+            },
+            ["SILO"] = {
+                "1230774",
+                ["Exceptions"] = {}
+            },
         },
         [0x129] =	{ --HFP - Lava Train Station
             ["HONEYCOMB"] = {
@@ -1961,6 +1913,10 @@ local ASSET_MAP_CHECK = {
             },
             ["TREBLE"] = {
                 "1230788"
+            },
+            ["SILO"] = {
+                "1230776",
+                ["Exceptions"] = {}
             }
         },
         [0x138] =	{ --CCL - Inside the Cheese Wedge
@@ -5952,6 +5908,16 @@ function init_NOTES(type) -- Initialize Notes
             checks[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
         end
     end
+    if type == "AGI"
+    then
+        for _, locationId in pairs(receive_map)
+        do
+            if locationId == "1230797"
+            then
+                obtained_AP_NOTES()
+            end
+        end
+    end
     return checks
 end
 
@@ -6011,31 +5977,26 @@ end
 function note_ui_update()
     local note_amt = 0
     local treble_amt = 0
-    local ram_note_count = mainmemory.read_u16_be(0x11B074)
-    if ram_note_count ~= NOTE_COUNT
-    then
-        for _, value in pairs(AGI_NOTES)
-        do
-            if value == true
-            then
-                note_amt = note_amt + 1
-            end
+    for _, value in pairs(AGI_NOTES)
+    do
+        if value == true
+        then
+            note_amt = note_amt + 1
         end
-        note_amt = note_amt * 5
-
-        for _, value in pairs(AGI_TREBLE)
-        do
-            if value == true
-            then
-                treble_amt = treble_amt + 1
-            end
-        end
-        treble_amt = treble_amt * 20
-        
-        note_amt = note_amt + treble_amt
-        mainmemory.write_u16_be(0x11B074, note_amt)
-        NOTE_COUNT = note_amt
     end
+    note_amt = note_amt * 5
+    for _, value in pairs(AGI_TREBLE)
+    do
+        if value == true
+        then
+            treble_amt = treble_amt + 1
+        end
+    end
+    treble_amt = treble_amt * 20
+    note_amt = note_amt + treble_amt
+    mainmemory.write_u16_be(0x11B074, note_amt)
+    NOTE_COUNT = note_amt
+    print(NOTE_COUNT)
 end
 
 function backup_BMM_NOTES()
@@ -6951,52 +6912,57 @@ function init_BMK(type) -- Initialize BMK
 end
 
 function update_BMK_MOVES_checks() --Only run when close to Silos
-    for keys, moveId in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP])
-    do
-        if keys ~= "Exceptions"
+    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["SILO"] ~= nil
         then
-            local get_addr = NON_AGI_MAP['MOVES'][moveId]
-            if BKM[moveId] == false
-            then
-                local res = BTRAMOBJ:checkFlag(get_addr['addr'], get_addr['bit'], "BMK_MOVES_CHECK")
-                if res == true
+            for keys, locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["SILO"])
+            do
+                if keys ~= "Exceptions"
                 then
-                    if DEBUG == true 
+                    local get_addr = NON_AGI_MAP['MOVES'][locationId]
+                    if BKM[locationId] == false
                     then
-                        print("Already learnt this Silo. finished")
+                        local res = BTRAMOBJ:checkFlag(get_addr['addr'], get_addr['bit'], "BMK_MOVES_CHECK")
+                        if res == true
+                        then
+                            if DEBUG_SILO == true
+                            then
+                                print("Already learnt this Silo. finished")
+                            end
+                            BKM[locationId] = res
+                            SILOS_LOADED = true
+                        end
                     end
-                    BKM[moveId] = res
-                    SILOS_LOADED = true
                 end
             end
         end
     end
 end
 
-function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Silo Model is loaded OR Close to Silo
+function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND Close to Silo.
     --Only clear the moves that we need to clear
-    if ASSET_MAP_CHECK["SILO"][CURRENT_MAP] == nil --Happens when exiting map too quickly when entering a new map
+    if ASSET_MAP_CHECK["AGI_ASSETS"][mapaddr] == nil or ASSET_MAP_CHECK["AGI_ASSETS"][mapaddr]["SILO"] == nil
     then
-        if DEBUG == true 
+        if DEBUG_SILO == true
         then
             print("Canceling Clearing of AMM Moves")
         end
         return false
     end
-    for keys, moveId in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP])
+    for keys, locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][mapaddr]["SILO"])
     do
         if keys ~= "Exceptions"
         then
-            local addr_info = NON_AGI_MAP["MOVES"][moveId]
-            if BKM[moveId] == false
-            then
-                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit'], "CLEAR_AMM_MOVES");
-            elseif BKM[moveId] == true
+            local addr_info = NON_AGI_MAP["MOVES"][locationId]
+            if BKM[locationId] == true
             then
                 BTRAMOBJ:setFlag(addr_info['addr'], addr_info['bit'])
+            else
+                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit']);
             end
         else
-            for key, disable_move in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP][keys]) --Exception list, always disable
+            for _, disable_move in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][mapaddr]["SILO"][keys]) --Exception list, always disable
             do
                 local addr_info = NON_AGI_MAP["MOVES"][disable_move]
                 BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit'], "CLEAR_AMM_MOVES_EXCEPTION");
@@ -7018,158 +6984,120 @@ function set_AGI_MOVES_checks() -- SET AGI Moves into RAM AFTER BT/Silo Model is
     end
 end
 
-function getSiloPlayerModel()
-    if SILOS_WAIT_TIMER <= 2
-    then
-        if DEBUG == true
-        then
-            print("Watching Silo")
-        end
-        SILOS_WAIT_TIMER = SILOS_WAIT_TIMER + 1
-        return
-    end
-    BTMODELOBJ:changeName("Silo", false)
-    local object = BTMODELOBJ:checkModel();
-    if object == false
-    then
-        BTMODELOBJ:changeName("Player", false)
-        local player = BTMODELOBJ:checkModel();
-        if player == false
-        then
-            return
-        end
-        if DEBUG == true
-        then
-            print("No silo on Map")
-            print("AP Abilities enabled")
-        end
-        set_AGI_MOVES_checks() --No Silo on this map
-        CHECK_FOR_SILO = false
-        WATCH_LOADED_SILOS = false
-        SILOS_WAIT_TIMER = 0
-        return
-    end
-    if DEBUG == true
-    then
-        print("Silo Found")
-    end
-    set_AGI_MOVES_checks()
-    CHECK_FOR_SILO = false
-    WATCH_LOADED_SILOS = true
-end
-
 function nearSilo()
-    BTMODELOBJ:changeName("Silo", false);
-    local modelPOS = BTMODELOBJ:getMultipleModelCoords()
-    if modelPOS == false
+    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
     then
-        return
-    end
-    local siloPOS = { ["Distance"] = 9999};
-    for modelObjPtr, POS in pairs(modelPOS) do
-        if POS ~= false
+        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["SILO"] ~= nil
         then
-            siloPOS = POS
-            --Move the Silo in Witchyworld.
-            if POS["Xpos"] == 0 and POS["Ypos"] == -163 and POS["Zpos"] == -1257
-                and CURRENT_MAP == 0xD6
+            BTMODELOBJ:changeName("Silo", false);
+            local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+            if modelPOS == false
             then
-                mainmemory.writefloat(modelObjPtr + 0x0C, POS["Zpos"] + 100, true);
-                MoveWitchyPads();
+                return
+            end
+            local siloPOS = { ["Distance"] = 9999};
+            for modelObjPtr, POS in pairs(modelPOS) do
+                if POS ~= false
+                then
+                    siloPOS = POS
+                    --Move the Silo in Witchyworld.
+                    if POS["Xpos"] == 0 and POS["Ypos"] == -163 and POS["Zpos"] == -1257
+                        and CURRENT_MAP == 0xD6
+                    then
+                        mainmemory.writefloat(modelObjPtr + 0x0C, POS["Zpos"] + 100, true);
+                        MoveWitchyPads();
+                    end
+
+                    if POS["Distance"] <= 650 and CURRENT_MAP ~= 0x1A7 -- Not CC
+                    then
+                        if DEBUG_SILO == true and LOAD_BMK_MOVES == false
+                        then
+                            print("Near Silo");
+                        end
+                        break;
+                    elseif POS["Distance"] <= 300 and CURRENT_MAP == 0x1A7 -- CC
+                    then
+                        if DEBUG_SILO == true and LOAD_BMK_MOVES == false
+                        then
+                            print("Near Silo");
+                        end
+                        break;
+                    end
+                end
+            end
+        
+            if siloPOS["Distance"] <= 650 -- and CURRENT_MAP ~= 0x1A7
+            then
+                if LOAD_BMK_MOVES == false
+                then
+                    clear_AMM_MOVES_checks(CURRENT_MAP);
+                    update_BMK_MOVES_checks();
+                    LOAD_BMK_MOVES = true
+                elseif SILOS_LOADED == false
+                then
+                    if DEBUG_SILO == true
+                    then
+                        print("Watching BKM Moves");
+                    end
+                    update_BMK_MOVES_checks();
+                end
+            else
+                if LOAD_BMK_MOVES == true
+                then
+                    if DEBUG_SILO == true
+                    then
+                        print("Reseting Movelist");
+                    end
+                    set_AGI_MOVES_checks();
+                    restore_BMM_NOTES()
+                    restore_BMM_TREBLE()
+                    LOAD_BMK_MOVES = false;
+                    SILOS_LOADED = false;
+                end
             end
 
-            if POS["Distance"] <= 650 and CURRENT_MAP ~= 0x1A7
+            if siloPOS["Distance"] <= 410 and CURRENT_MAP ~= 0x13A -- Notes and not CCL
             then
-                if DEBUG == true and LOAD_BMK_MOVES == false
+                if LOAD_SILO_NOTES == false
                 then
-                    print("Near Silo");
+                    backup_BMM_NOTES()
+                    backup_BMM_TREBLE()
+                    LOAD_SILO_NOTES = true
                 end
-                break;
-            elseif POS["Distance"] <= 300 and CURRENT_MAP == 0x1A7
+            elseif siloPOS["Distance"] > 410 and CURRENT_MAP ~= 0x13A
             then
-                if DEBUG == true and LOAD_BMK_MOVES == false
+                if LOAD_SILO_NOTES == true
                 then
-                    print("Near Silo");
+                    if DEBUG_SILO == true
+                    then
+                        print("Reseting Note Count");
+                    end
+                    restore_BMM_NOTES()
+                    restore_BMM_TREBLE()
+                    LOAD_SILO_NOTES = false;
                 end
-                break;
             end
-        end
-    end
-   
-    if siloPOS["Distance"] <= 650 -- and CURRENT_MAP ~= 0x1A7
-    then
-        if LOAD_BMK_MOVES == false
-        then
-            clear_AMM_MOVES_checks();
-            update_BMK_MOVES_checks();
-            LOAD_BMK_MOVES = true
-        elseif SILOS_LOADED == false
-        then
-            -- if DEBUG == true
-            -- then
-            --     print("Watching BKM Moves");
-            -- end
-            update_BMK_MOVES_checks();
-        else
-            -- if DEBUG == true
-            -- then
-            -- print("BKM Move Learnt");
-            -- end
-        end
-    else
-        if LOAD_BMK_MOVES == true
-        then
-            if DEBUG == true
-            then
-                print("Reseting Movelist");
-            end
-            set_AGI_MOVES_checks();
-            BMMRestoreOnly("NOTES");
-            LOAD_BMK_MOVES = false;
-            SILOS_LOADED = false;
-        end
-    end
 
-    if ENABLE_AP_NOTES == true
-    then
-        if siloPOS["Distance"] <= 410 and CURRENT_MAP ~= 0x13A -- Notes and not CCL
-        then
-            if LOAD_SILO_NOTES == false
+            if siloPOS["Distance"] <= 260 and CURRENT_MAP == 0x13A -- Notes and CCL
             then
-                BMMBackupOnly("NOTES");
-                useAGIOnly("NOTES");
-                LOAD_SILO_NOTES = true
-            end
-        elseif siloPOS["Distance"] > 410 and CURRENT_MAP ~= 0x13A
-        then
-            if LOAD_SILO_NOTES == true
-            then
-                if DEBUG == true
+                if LOAD_SILO_NOTES == false
                 then
-                    print("Reseting Note Count");
+                    backup_BMM_NOTES()
+                    backup_BMM_TREBLE()
+                    LOAD_SILO_NOTES = true
                 end
-                BMMRestoreOnly("NOTES");
-                LOAD_SILO_NOTES = false;
-            end
-        end
-        if siloPOS["Distance"] <= 260 and CURRENT_MAP == 0x13A -- Notes and CCL
-        then
-            if LOAD_SILO_NOTES == false
+            elseif siloPOS["Distance"] > 260 and CURRENT_MAP == 0x13A -- Notes and CCL
             then
-                BMMBackupOnly("NOTES");
-                useAGIOnly("NOTES");
-                LOAD_SILO_NOTES = true
-            end
-        elseif siloPOS["Distance"] > 260 and CURRENT_MAP == 0x13A -- Notes and CCL
-        then
-            if LOAD_SILO_NOTES == true
-            then
-                if DEBUG == true
+                if LOAD_SILO_NOTES == true
                 then
-                    print("Reseting Note Count");
+                    if DEBUG_SILO == true
+                    then
+                        print("Reseting Note Count");
+                    end
+                    restore_BMM_NOTES()
+                    restore_BMM_TREBLE()
+                    LOAD_SILO_NOTES = false;
                 end
-                BMMRestoreOnly("NOTES");
-                LOAD_SILO_NOTES = false;
             end
         end
     end
@@ -7546,7 +7474,7 @@ end
 function watchMapTransition()
     if GAME_LOADED == true then
         local mapaddr = BTRAMOBJ:getMap(false)
-        if mapaddr == 0x158 or mapaddr == 0x18B
+        if mapaddr == 0x158 or mapaddr == 0x18B -- main menu / select screen
         then
             GAME_LOADED = false
             DEMO_MODE = true
@@ -7563,6 +7491,7 @@ function watchMapTransition()
                 then
                     check_open_level(true)
                 end
+                clear_AMM_MOVES_checks(NEXT_MAP)
             end
         else -- Runs Constantly while NOT transitioning
             finishTransition()
@@ -7585,7 +7514,7 @@ function finishTransition()
     BTMODELOBJ:changeName("Player", false)
     local player = BTMODELOBJ:checkModel();
     local mapaddr = BTRAMOBJ:getMap(false)
-    if mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == true and player == true and mapaddr == NEXT_MAP
+    if mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == true and player == true and mapaddr == NEXT_MAP -- runs once
     then
         MAP_TRANSITION = false
         local mapaddr = BTRAMOBJ:getMap(false)
@@ -7595,6 +7524,10 @@ function finishTransition()
             PREVIOUS_MAP = CURRENT_MAP
             CURRENT_MAP = mapaddr
         end
+        set_AGI_MOVES_checks()
+    elseif mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == false and player == true -- constantly runs while NOT transitioning
+    then
+        nearSilo()
     end
 end
 
@@ -7653,6 +7586,7 @@ function loadGame(current_map)
             restore_BMM_TREBLE()
             restore_BMM_JINJOS()
             f:close();
+            AGI_NOTES = init_NOTES("AGI")
             if DEBUG == true
             then
                 print("Restoring from Load Game")
@@ -7762,22 +7696,6 @@ function BKLogics(mapaddr)
     end
     watchJChunk()
     watchDinoFlags()
-    if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_MOVES == true
-    then
-        WATCH_LOADED_SILOS = false
-        for map,moves in pairs(ASSET_MAP_CHECK["SILO"])
-        do
-            if mapaddr == map
-            then
-                if DEBUG == true
-                then
-                    print("Checking Silos")
-                end
-                SILOS_WAIT_TIMER = 0;
-                CHECK_FOR_SILO = true
-            end
-        end
-    end
     if ((CURRENT_MAP ~= mapaddr) or player == false)
     then
         set_checked_BKSTATIONS()
@@ -7802,13 +7720,6 @@ function BKLogics(mapaddr)
     then
         BATH_PADS_QOL = false
     end
-    -- if CURRENT_MAP == 0x1A7 and DOUBLOON_SILO_MOVE == false
-    -- then
-    --     MoveDoubloon()
-    -- elseif DOUBLOON_SILO_MOVE == true and  CURRENT_MAP ~= 0x1A7 
-    -- then
-    --     DOUBLOON_SILO_MOVE = false
-    -- end
     if (CURRENT_MAP ~= mapaddr)
     then
         client.saveram()
@@ -7823,36 +7734,6 @@ function BKLogics(mapaddr)
 end
 
 function BKCheckAssetLogic()
-    if CHECK_FOR_SILO == true
-    then
-        if DEBUG == true
-        then
-            print("clearing all AMM moves")
-        end
-        local res = clear_AMM_MOVES_checks()
-        if res == true
-        then
-            getSiloPlayerModel()
-        else
-            CHECK_FOR_SILO = false
-            set_AGI_MOVES_checks()
-        end
-    end
-    if CHECK_FOR_TREBLE == true
-    then
-        if DEBUG == true
-        then
-            print("clearing all AP Trebles")
-        end
-        local res = set_checked_BKNOTES()
-        if res == true
-        then
-            getTreblePlayerModel()
-        else
-            CHECK_FOR_TREBLE = false
-            set_AP_BKNOTES()
-        end
-    end
     if CHECK_FOR_STATIONBTN == true
     then
         if DEBUG == true
@@ -7884,37 +7765,6 @@ function BKCheckAssetLogic()
 end
 
 function BKAssetFound()
-    if WATCH_LOADED_SILOS == true
-    then
-        nearSilo()
-    end
-    if WATCH_LOADED_TREBLE == true
-    then
-        res = nearTreble()
-        if res == false and TREBLE_SPOTED == true and CURRENT_MAP == TREBLE_MAP and TREBLE_GONE_CHECK == 0 --Treble collected
-        then
-            BTMODELOBJ:changeName("Player", false)
-            local player = BTMODELOBJ:checkModel();
-            if player == true
-            then
-                BKNOTES[ASSET_MAP_CHECK["TREBLE"][TREBLE_MAP]] = true;
-                TREBLE_SPOTED = false;
-                WATCH_LOADED_TREBLE = false;
-                set_AP_BKNOTES()
-            else
-                TREBLE_SPOTED = false;
-                TREBLE_MAP = 0x00;
-            end
-        elseif res == false and TREBLE_SPOTED == true and CURRENT_MAP == TREBLE_MAP and TREBLE_GONE_CHECK > 0
-        then
-            TREBLE_GONE_CHECK = TREBLE_GONE_CHECK - 1
-        elseif res == false and CURRENT_MAP ~= TREBLE_MAP
-        then
-            TREBLE_SPOTED = false;
-            TREBLE_MAP = 0x00;
-            WATCH_LOADED_TREBLE = false
-        end
-    end
     if WATCH_LOADED_STATIONBTN == true --Don't need to watch every 10 frames
     then
         watchBtnAnimation()
@@ -8740,9 +8590,6 @@ function loadAGI()
         if next(AGI_JIGGIES) == nil then
             AGI_JIGGIES = init_JIGGIES("AGI")
         end
-        if next(AGI_NOTES) == nil then
-            AGI_NOTES = init_NOTES("AGI")
-        end
         if next(AGI_TREBLE) == nil then
             AGI_TREBLE = init_TREBLE("AGI")
         end
@@ -8763,7 +8610,6 @@ function loadAGI()
         then
             print("Writing AGI File from LoadAGI");
         end
-
         f:write(json.encode(AGI_MOVES).."\n");
         f:write(json.encode(AGI_STATIONS) .. "\n");
         f:write(json.encode(AGI_CHUFFY) .. "\n");
