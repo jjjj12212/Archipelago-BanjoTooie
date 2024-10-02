@@ -846,15 +846,16 @@ local ASSET_MAP_CHECK = {
     ["AGI_ASSETS"] = {
         ["ALL"] = {
             ["JIGGIES"] = { --Jinjo Jiggies
-                "1230676", --Jinjo
-                "1230677", --Jinjo
-                "1230678", --Jinjo
-                "1230679", --Jinjo
-                "1230680", --Jinjo
-                "1230681", --Jinjo
-                "1230682", --Jinjo
-                "1230683", --Jinjo
-                "1230684", --Jinjo
+                -- Jinjos are part of JinjoFAM
+                -- "1230676", --Jinjo
+                -- "1230677", --Jinjo
+                -- "1230678", --Jinjo
+                -- "1230679", --Jinjo
+                -- "1230680", --Jinjo
+                -- "1230681", --Jinjo
+                -- "1230682", --Jinjo
+                -- "1230683", --Jinjo
+                -- "1230684", --Jinjo
                 "1230685", --Jingaling
 --                "1230629", -- Pig Pool
 --                "1230637" -- Dippy
@@ -3130,53 +3131,8 @@ local NON_AGI_MAP = {
             ['name'] = "GGM: Crushing Shed Jiggy Chunk 3"
         }
     },
+    --Jinjo Jiggies are part of JINJOFAM
     ["JIGGIES"] = {
-        ["1230676"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 0,
-            ['name'] = 'JV: White Jinjo Family Jiggy'
-        },
-        ["1230677"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 1,
-            ['name'] = 'Jinjo Village: Orange Jinjo Family Jiggy'
-        },
-        ["1230678"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 2,
-            ['name'] = 'JV: Yellow Jinjo Family Jiggy'
-        },
-        ["1230679"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 3,
-            ['name'] = 'JV: Brown Jinjo Family Jiggy'
-
-        },
-        ["1230680"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 4,
-            ['name'] = 'JV: Green Jinjo Family Jiggy'
-        },
-        ["1230681"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 5,
-            ['name'] = 'JV: Red Jinjo Family Jiggy'
-        },
-        ["1230682"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 6,
-            ['name'] = 'JV: Blue Jinjo Family Jiggy'
-        },
-        ["1230683"] = {
-            ['addr'] = 0x4F,
-            ['bit'] = 7,
-            ['name'] = 'JV: Purple Jinjo Family Jiggy'
-        },
-        ["1230684"] = {
-            ['addr'] = 0x50,
-            ['bit'] = 0,
-            ['name'] = 'JV: Black Jinjo Family Jiggy'
-        },
         ["1230685"] = {
             ['addr'] = 0x50,
             ['bit'] = 1,
@@ -5075,7 +5031,7 @@ function init_JIGGIES(type, getReceiveMap) -- Initialize JIGGIES
     do
         if type == "BMM"
         then
-            BMM_JIGGIES[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_JIGGY_BMM")
+            BMM_JIGGIES[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
         elseif type == "AGI"
         then
             AGI_JIGGIES[locationId] = false
@@ -7286,6 +7242,10 @@ function JinjoCounter() -- counts AP jinjos and Marks as Completed if true
             AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
         end
     end
+    -- for locId, value in pairs(AGI_JINJOS)
+    -- do
+    --     print(locId ..": " .. tostring(value))
+    -- end
     for locId, value in pairs(BKJINJOFAM) do
         if value == false
         then
@@ -7593,6 +7553,7 @@ function loadGame(current_map)
     local player = BTMODELOBJ:checkModel();
     if(current_map == 0x142 or current_map == 0xAF or current_map == 0x160)
     then
+        JIGGY_COUNT = 0
         CURRENT_MAP = current_map
         local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".BMM", "r") -- get #BTplayer_seed.BMM
         if f==nil then
@@ -7614,7 +7575,7 @@ function loadGame(current_map)
             backup_BMM_TREBLE()
             init_JINJOS("BMM")
             backup_BMM_JINJOS()
-            BMM_JIGGY = json.decode(f:read("l"));
+            BMM_JIGGIES = json.decode(f:read("l"));
             BMM_NOTES = json.decode(f:read("l"));
             BMM_TREBLE = json.decode(f:read("l"));
             BMM_JINJOS = json.decode(f:read("l"));
@@ -7622,6 +7583,7 @@ function loadGame(current_map)
             BKSTATIONS = json.decode(f:read("l"));
             BKCHUFFY = json.decode(f:read("l"));
             BKMYSTERY = json.decode(f:read("l"));
+
             restore_BMM_JIGGIES()
             restore_BMM_NOTES()
             restore_BMM_TREBLE()
@@ -8713,7 +8675,6 @@ function savingBMM()
             restore_BMM_TREBLE()
             restore_BMM_JINJOS()
         end
-        
         if DEBUG == true
         then
             print("BMM Table Saved");
