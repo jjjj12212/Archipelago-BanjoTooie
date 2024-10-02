@@ -35,7 +35,7 @@ local CLIENT_VERSION = 0
 local DEBUG = false
 local DEBUG_SILO = true
 local DEBUG_JIGGY = false
-local DEBUG_NOTES = true
+local DEBUG_NOTES = false
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
@@ -5070,7 +5070,7 @@ end
 
 ---------------------------------- JIGGIES ---------------------------------
 
-function init_JIGGIES(type) -- Initialize JIGGIES
+function init_JIGGIES(type, getReceiveMap) -- Initialize JIGGIES
     for locationId,v in pairs(NON_AGI_MAP["JIGGIES"])
     do
         if type == "BMM"
@@ -5081,7 +5081,7 @@ function init_JIGGIES(type) -- Initialize JIGGIES
             AGI_JIGGIES[locationId] = false
         end
     end
-    if type == "AGI"
+    if type == "AGI" and getReceiveMap == true
     then
         for _, locationId in pairs(receive_map)
         do
@@ -5319,7 +5319,7 @@ end
 
 ---------------------------------- TREBLE ---------------------------------
 
-function init_TREBLE(type) -- Initialize Notes
+function init_TREBLE(type, getReceiveMap) -- Initialize Notes
     for locationId,v in pairs(NON_AGI_MAP["TREBLE"])
     do
         if type == "BMM"
@@ -5330,7 +5330,7 @@ function init_TREBLE(type) -- Initialize Notes
             AGI_TREBLE[locationId] = false
         end
     end
-    if type == "AGI"
+    if type == "AGI" and getReceiveMap == true
     then
         for _, locationId in pairs(receive_map)
         do
@@ -5925,7 +5925,7 @@ end
 
 ---------------------------------- NOTES ---------------------------------
 
-function init_NOTES(type) -- Initialize Notes
+function init_NOTES(type, getReceiveMap) -- Initialize Notes
     local checks = {}
     for locationId,v in pairs(NON_AGI_MAP["NOTES"])
     do
@@ -5937,7 +5937,7 @@ function init_NOTES(type) -- Initialize Notes
             AGI_NOTES[locationId] = false
         end
     end
-    if type == "AGI"
+    if type == "AGI" and getReceiveMap == true
     then
         for _, locationId in pairs(receive_map)
         do
@@ -7521,7 +7521,6 @@ function watchMapTransition()
         if mainmemory.read_u8(0x127642) == 1
         then
             if MAP_TRANSITION == false then
-                savingBMM()
                 NEXT_MAP = BTRAMOBJ:getMap(true)
                 MAP_TRANSITION = true
                 BKAssetFound();
@@ -7561,6 +7560,7 @@ function finishTransition()
         then
             PREVIOUS_MAP = CURRENT_MAP
             CURRENT_MAP = mapaddr
+            savingBMM()
         end
         set_AGI_MOVES_checks()
     elseif mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == false and player == true -- constantly runs while NOT transitioning
@@ -7603,14 +7603,14 @@ function loadGame(current_map)
                 print("Loading BMM Files");
             end
             init_JinjoFam()
-            init_JIGGIES("BMM")
-            init_JIGGIES("AGI")
+            init_JIGGIES("BMM", false)
+            init_JIGGIES("AGI", true)
             backup_BMM_JIGGIES()
-            init_NOTES("BMM")
-            init_NOTES("AGI")
+            init_NOTES("BMM", false)
+            init_NOTES("AGI", true)
             backup_BMM_NOTES()
-            init_TREBLE("BMM")
-            init_TREBLE("AGI")
+            init_TREBLE("BMM", false)
+            init_TREBLE("AGI", true)
             backup_BMM_TREBLE()
             init_JINJOS("BMM")
             backup_BMM_JINJOS()
@@ -8287,6 +8287,8 @@ function checkPause()
                 then
                     restore_BMM_JIGGIES()
                 end
+            else
+                restore_BMM_JIGGIES()
             end
                 restore_BMM_NOTES()
                 restore_BMM_TREBLE()
@@ -8632,13 +8634,13 @@ function loadAGI()
     local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "r") --generate #BTplayer_seed.AGI
     if f==nil then
         if next(AGI_JIGGIES) == nil then
-            init_JIGGIES("AGI")
+            init_JIGGIES("AGI", false)
         end
         if next(AGI_NOTES) == nil then
-            init_NOTES("AGI")
+            init_NOTES("AGI", false)
         end
         if next(AGI_TREBLE) == nil then
-            init_TREBLE("AGI")
+            init_TREBLE("AGI", false)
         end
         if next(AGI_MOVES) == nil then
             AGI_MOVES = init_BMK("AGI");
@@ -8704,6 +8706,8 @@ function savingBMM()
                 then
                     restore_BMM_JIGGIES()
                 end
+            else
+                restore_BMM_JIGGIES()
             end
             restore_BMM_NOTES()
             restore_BMM_TREBLE()
@@ -9021,14 +9025,14 @@ function initializeFlags()
         init_BKMYSTERY("BKMYSTERY")
         init_roysten()
         init_DINO_KIDS()
-        init_JIGGIES("BMM")
-        init_NOTES("BMM")
-        init_TREBLE("BMM");
+        init_JIGGIES("BMM", false)
+        init_NOTES("BMM", false)
+        init_TREBLE("BMM", false);
         init_JINJOS("BMM")
 
-        init_JIGGIES("AGI")
-        init_NOTES("AGI")
-        init_TREBLE("AGI")
+        init_JIGGIES("AGI", false)
+        init_NOTES("AGI", false)
+        init_TREBLE("AGI", false)
 
         AGI_MOVES = init_BMK("AGI");
         AGI_MYSTERY = init_BKMYSTERY("AGI");
