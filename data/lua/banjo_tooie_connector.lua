@@ -34,7 +34,7 @@ local CLIENT_VERSION = 0
 
 local DEBUG = false
 local DEBUG_SILO = true
-local DEBUG_JIGGY = true
+local DEBUG_JIGGY = false
 local DEBUG_NOTES = true
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
@@ -7515,6 +7515,7 @@ function watchMapTransition()
         then
             GAME_LOADED = false
             DEMO_MODE = true
+            MAP_TRANSITION = false
             return
         end
         if mainmemory.read_u8(0x127642) == 1
@@ -8279,17 +8280,20 @@ function checkPause()
         then
             print("Game Unpaused");
         end
-        if SKIP_PUZZLES == false then
-            if CURRENT_MAP ~= 0x14F and CURRENT_MAP ~= 0x151  -- Don't want to restore while in WH zone
-            then
-                restore_BMM_JIGGIES()
+        if GAME_LOADED == true
+        then 
+            if SKIP_PUZZLES == false then
+                if CURRENT_MAP ~= 0x14F and CURRENT_MAP ~= 0x151  -- Don't want to restore while in WH zone
+                then
+                    restore_BMM_JIGGIES()
+                end
             end
+                restore_BMM_NOTES()
+                restore_BMM_TREBLE()
+                restore_BMM_JINJOS()
+                unpause_hide_AGI_key()
+                DEMO_MODE = false -- SEND NO CHECKS
         end
-        restore_BMM_NOTES()
-        restore_BMM_TREBLE()
-        restore_BMM_JINJOS()
-        unpause_hide_AGI_key()
-        DEMO_MODE = false -- SEND NO CHECKS
     elseif PAUSED == true and DEBUG == true
     then
         local check_controls = joypad.get()
@@ -8674,39 +8678,42 @@ function loadAGI()
 end
 
 function savingBMM()
-    local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".BMM", "w") --generate #BTplayer_seed.AGI
-    if DEBUGLVL2 == true
+    if GAME_LOADED == true 
     then
-        print("Saving BMM File");
-    end
-    backup_BMM_JIGGIES()
-    backup_BMM_NOTES()
-    backup_BMM_TREBLE()
-    backup_BMM_JINJOS()
-    f:write(json.encode(BMM_JIGGIES) .. "\n");
-    f:write(json.encode(BMM_NOTES) .. "\n");
-    f:write(json.encode(BMM_TREBLE) .. "\n");
-    f:write(json.encode(BMM_JINJOS) .. "\n");
-    f:write(json.encode(BKM) .. "\n");
-    f:write(json.encode(BKSTATIONS) .. "\n");
-    f:write(json.encode(BKCHUFFY) .. "\n");
-    f:write(json.encode(BKMYSTERY));
-    f:close()
-    if PAUSED == false then
-        if SKIP_PUZZLES == false then
-            if CURRENT_MAP ~= 0x14F and CURRENT_MAP ~= 0x151  -- Don't want to restore while in WH zone
-            then
-                restore_BMM_JIGGIES()
-            end
+        local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".BMM", "w") --generate #BTplayer_seed.AGI
+        if DEBUGLVL2 == true
+        then
+            print("Saving BMM File");
         end
-        restore_BMM_NOTES()
-        restore_BMM_TREBLE()
-        restore_BMM_JINJOS()
-    end
-    
-    if DEBUG == true
-    then
-        print("BMM Table Saved");
+        backup_BMM_JIGGIES()
+        backup_BMM_NOTES()
+        backup_BMM_TREBLE()
+        backup_BMM_JINJOS()
+        f:write(json.encode(BMM_JIGGIES) .. "\n");
+        f:write(json.encode(BMM_NOTES) .. "\n");
+        f:write(json.encode(BMM_TREBLE) .. "\n");
+        f:write(json.encode(BMM_JINJOS) .. "\n");
+        f:write(json.encode(BKM) .. "\n");
+        f:write(json.encode(BKSTATIONS) .. "\n");
+        f:write(json.encode(BKCHUFFY) .. "\n");
+        f:write(json.encode(BKMYSTERY));
+        f:close()
+        if PAUSED == false then
+            if SKIP_PUZZLES == false then
+                if CURRENT_MAP ~= 0x14F and CURRENT_MAP ~= 0x151  -- Don't want to restore while in WH zone
+                then
+                    restore_BMM_JIGGIES()
+                end
+            end
+            restore_BMM_NOTES()
+            restore_BMM_TREBLE()
+            restore_BMM_JINJOS()
+        end
+        
+        if DEBUG == true
+        then
+            print("BMM Table Saved");
+        end
     end
 end
 
@@ -8715,9 +8722,8 @@ function gameSaving()
     then
         return
     else
-        -- local save_game = mainmemory.read_u8(0x05F450);
-        local save_game2 = mainmemory.read_u8(0x044A81);
-        if save_game2 == 1
+        local save_game = mainmemory.read_u8(0x044A81);
+        if save_game == 1
         then
             SAVE_GAME = true
             if DEBUG == true
@@ -9135,7 +9141,6 @@ end
 
 function saveGame()
     GAME_LOADED = false;
-    DEMO_MODE = true
     SAVE_GAME = false;
 end
 
@@ -9170,11 +9175,10 @@ function main()
                 if SKIP_TOT == "true" and CURRENT_MAP == 0x15E then
 					setToTComplete();
 				end
-                if SAVE_GAME == true and DEMO_MODE == false
+                if SAVE_GAME == true and GAME_LOADED == false
                 then
                     saveGame();
                 end
-                BKCheckAssetLogic()
                 gameSaving();
                 hag1_open()
                 if TEXT_START == true then
