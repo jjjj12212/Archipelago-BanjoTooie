@@ -36,6 +36,7 @@ local DEBUG = false
 local DEBUG_SILO = true
 local DEBUG_JIGGY = false
 local DEBUG_NOTES = false
+local DEBUG_ROYSTEN = false
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
@@ -140,6 +141,7 @@ local TH_LENGTH = nil;
 --------------- ROYSTEN VARS --------------------
 local FAST_SWIM = false
 local DOUBLE_AIR = false
+local ROYSTEN_TIMER = 0;
 
 --------------- DEATH LINK ----------------------
 local KILL_BANJO = false
@@ -480,6 +482,7 @@ BTModel = {
         ["Jiggy Guy"] = 0x937,
         ["Ice Key"] = 0x63B,
         ["Cartridge"] = 0x910,
+        ["Roysten"] = 0x6FA
     };
     model_enemy_list = {
         ["Ugger"] = 0x671,
@@ -4969,51 +4972,6 @@ local WORLD_ENTRANCE_MAP = {
     },
 }
 
-function readAPLocationChecks(type)
-    local checks = {}
-    if type ~= "BMM"
-    then
-        for check_type, location in pairs(AGI_MASTER_MAP)
-        do
-            if USE_BMM_ONLY_TBL == true
-            then
-                if check_type == USE_BMM_ONLY_TYP
-                then
-                    for locId, value in pairs(BMM[check_type])
-                    do
-                        if checks[check_type] == nil
-                        then
-                            checks[check_type] = {}
-                        end
-                        checks[check_type][locId] = value
-                    end
-                else
-                    for locId, table in pairs(location)
-                    do
-                        if checks[check_type] == nil
-                        then
-                            checks[check_type] = {}
-                        end
-                        checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
-                    end
-                end
-            else
-                for locId, table in pairs(location)
-                do
-                    if checks[check_type] == nil
-                    then
-                        checks[check_type] = {}
-                    end
-                    checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
-                end
-            end
-        end
-        return checks;
-    else
-        return BMM;
-    end
-end
-
 function hag1_phase_skips()
     local tmp_flg_pointer = 0x12C774
     local beginning_phase_offset = 0x09
@@ -5451,47 +5409,105 @@ function init_roysten()
     end
 end
 
-function check_freed_roysten()
-    if CURRENT_MAP == 0xAF
+-- function check_freed_roysten()
+--     if NEXT_MAP == 0xAF
+--     then
+--         for k,v in pairs(NON_AGI_MAP['ROYSTEN'])
+--         do
+--             if ROYSTEN[k] == false
+--             then
+--                 ROYSTEN[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_ROYSTEN")
+--             end
+--         end
+--         if DOUBLE_AIR == true and ROYSTEN["1230778"] == true then
+--             ROYSTEN["1230777"] = true
+--         end
+--         if BTRAMOBJ:checkFlag(0x1E, 5, "CHECK_SWIM") == true and FAST_SWIM == false
+--         then
+--             if DEBUG == true
+--             then
+--                 print("Removing Fast Swimming")
+--             end
+--             BTRAMOBJ:clearFlag(0x1E, 5)
+--         end
+--         if BTRAMOBJ:checkFlag(0x32, 7, "CHECK_DAIR") == true and DOUBLE_AIR == false
+--         then
+--             if DEBUG == true
+--             then
+--                 print("Removing Double Air")
+--             end
+--             BTRAMOBJ:clearFlag(0x32, 7)
+--         end
+--     end
+-- end
+
+function clear_roysten()
+    if NEXT_MAP == 0xAF
     then
         for k,v in pairs(NON_AGI_MAP['ROYSTEN'])
         do
             if ROYSTEN[k] == false
             then
-                ROYSTEN[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_ROYSTEN")
+                BTRAMOBJ:clearFlag(0x1E, 5)
+                BTRAMOBJ:clearFlag(0x32, 7)
+                FAST_SWIM = false
+                DOUBLE_AIR = false
+                ROYSTEN_TIMER = 0
+                if DEBUG_ROYSTEN == true
+                then
+                    print("Cleared Roysten Moves")
+                end
+                break
             end
-        end
-        if DOUBLE_AIR == true and ROYSTEN["1230778"] == true then
-            ROYSTEN["1230777"] = true
-        end
-        if BTRAMOBJ:checkFlag(0x1E, 5, "CHECK_SWIM") == true and FAST_SWIM == false
-        then
-            if DEBUG == true
-            then
-                print("Removing Fast Swimming")
-            end
-            BTRAMOBJ:clearFlag(0x1E, 5)
-        end
-        if BTRAMOBJ:checkFlag(0x32, 7, "CHECK_DAIR") == true and DOUBLE_AIR == false
-        then
-            if DEBUG == true
-            then
-                print("Removing Double Air")
-            end
-            BTRAMOBJ:clearFlag(0x32, 7)
         end
     end
 end
 
+function check_freed_roysten() -- Roysten asset loads then deloads if abilities are set.
+    if (CURRENT_MAP == 0xAF or NEXT_MAP == 0xAF) and (ROYSTEN["1230778"] == false or ROYSTEN["1230777"] == false)
+    then
+        if ROYSTEN_TIMER <= 30 then -- Enough time for deloading Roysten to pass
+            if DEBUG_ROYSTEN == true
+            then
+                print("Roysten timer")
+            end
+            ROYSTEN_TIMER = ROYSTEN_TIMER + 1
+            return
+        end
+        BTMODELOBJ:changeName("Roysten", false)
+        local roysten = BTMODELOBJ:checkModel();
+        if roysten == false then
+            if DEBUG_ROYSTEN == true
+            then
+                print("Roysten Not Found")
+            end
+        else
+            if DEBUG_ROYSTEN == true
+            then
+                print("Roysten found")
+            end
+        end
+        for k,v in pairs(NON_AGI_MAP['ROYSTEN'])
+        do
+            if ROYSTEN[k] == false
+            then
+                ROYSTEN[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_ROYSTEN")
+                print(ROYSTEN[k])
+            end
+        end
+    end
+    obtain_swimming()
+end
 
-function obtain_swimming()
+
+function obtain_swimming() -- Roysten asset loads then deloads if abilities are set.
     if (FAST_SWIM == false or DOUBLE_AIR == false)
     then
         for apid, itemId in pairs(receive_map)
         do
             if itemId == "1230777"
             then
-                if DEBUG == true
+                if DEBUG_ROYSTEN == true
                 then
                     print("Found Fast Swimming")
                 end
@@ -5500,7 +5516,7 @@ function obtain_swimming()
             end
             if itemId == "1230778"
             then
-                if DEBUG == true
+                if DEBUG_ROYSTEN == true
                 then
                     print("Found Double Air")
                 end
@@ -7489,6 +7505,7 @@ function watchMapTransition()
                     check_open_level(true)
                 end
                 clear_AMM_MOVES_checks(NEXT_MAP)
+                clear_roysten()
             end
         else -- Runs Constantly while NOT transitioning
             finishTransition()
@@ -7526,6 +7543,7 @@ function finishTransition()
     elseif mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == false and player == true -- constantly runs while NOT transitioning
     then
         nearSilo()
+        check_freed_roysten()
     end
 end
 
@@ -7596,7 +7614,7 @@ function loadGame(current_map)
             -- set_AGI_MOVES_checks();
             -- set_AP_BKNOTES();
             -- set_AP_STATIONS();
-            -- init_roysten()
+            init_roysten()
             if ENABLE_AP_CHUFFY == true -- Sanity Check
             then
                 if BTRAMOBJ:checkFlag(0x98, 5) == false and BTRAMOBJ:checkFlag(0x98, 6) == false and
@@ -7683,8 +7701,6 @@ end
 function BKLogics(mapaddr)
     BTMODELOBJ:changeName("Player", false)
     local player = BTMODELOBJ:checkModel();
-    check_freed_roysten()
-    obtain_swimming()
     if ENABLE_AP_BK_MOVES ~= 0
     then
         obtain_bkmove()
