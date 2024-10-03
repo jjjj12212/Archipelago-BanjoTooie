@@ -7037,17 +7037,17 @@ function check_jamjar_silo()
         if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["SILO"] ~= nil
         then
             SILO_TIMER = SILO_TIMER + 1
-            if SILO_TIMER == 20
+            if SILO_TIMER == 25
             then
                 set_AGI_MOVES_checks()
             end
         else
             set_AGI_MOVES_checks()
-            SILO_TIMER = 20
+            SILO_TIMER = 25
         end
     else
         set_AGI_MOVES_checks()
-        SILO_TIMER = 20
+        SILO_TIMER = 25
     end
 end
 
@@ -7087,7 +7087,7 @@ function nearSilo()
                     if POS["Xpos"] == 0 and POS["Ypos"] == -163 and POS["Zpos"] == -1257
                         and CURRENT_MAP == 0xD6
                     then
-                        mainmemory.writefloat(modelObjPtr + 0x0C, POS["Zpos"] + 100, true);
+                        mainmemory.writefloat(modelObjPtr + 0x0C, POS["Zpos"] + 120, true);
                         MoveWitchyPads();
                     end
 
@@ -7198,7 +7198,7 @@ function MoveWitchyPads()
         if (POS["Xpos"] == -125 and POS["Ypos"] == -163 and POS["Zpos"] == -1580)
             and CURRENT_MAP == 0xD6
         then
-            BTModel:moveModelObject(modelObjPtr, POS["Xpos"] + 850, nil, POS["Zpos"] - 300)
+            BTMODELOBJ:moveModelObject(modelObjPtr, -300, -163, -1855)
             break
         end
     end
@@ -7212,7 +7212,7 @@ function MoveWitchyPads()
         if (POS["Xpos"] == 125 and POS["Zpos"] == -1580)
             and CURRENT_MAP == 0xD6
         then
-            BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] + 850, nil, POS["Zpos"] - 300)
+            BTMODELOBJ:moveModelObject(modelObjPtr, 304, -163, -1855)
             break
         end
     end
@@ -7624,7 +7624,7 @@ function finishTransition()
         moveLevitatePad()
         watchChuffyFlag()
         -- Advance Moves
-        if SILO_TIMER ~= 20 --Silo greenlights sooner if not wait for timer
+        if SILO_TIMER ~= 25 --Silo greenlights sooner if not wait for timer
         then
             check_jamjar_silo()
         end
