@@ -33,7 +33,7 @@ local CLIENT_VERSION = 0
 
 
 local DEBUG = false
-local DEBUG_SILO = true
+local DEBUG_SILO = false
 local DEBUG_JIGGY = false
 local DEBUG_NOTES = false
 local DEBUG_ROYSTEN = false
@@ -93,7 +93,6 @@ local BMM_BACKUP_TREBLE = false;
 local AGI_TREBLE_SET = false;
 
 -------------- NOTES VARS -----------
--- local NOTE_COUNT = 0; -- Used for UI
 local BMM_BACKUP_NOTES = false;
 local AGI_NOTES_SET = false;
 
@@ -101,16 +100,17 @@ local AGI_NOTES_SET = false;
 local BMM_BACKUP_JINJO = false;
 
 -------------- SILO VARS ------------
+local SILO_TIMER = 0;
 local LOAD_BMK_MOVES = false; -- If close to Silo
 local SILOS_LOADED = false; -- Handles if learned a move at Silo
 local LOAD_SILO_NOTES = false;
-local TOT_SET_COMPLETE = false;
 
 -------------- SKIP VARS ------------
 local OPEN_HAG1 = false;
 local SKIP_PUZZLES = false;
 local SKIP_KLUNGO = false;
 local SKIP_KING = false;
+local TOT_SET_COMPLETE = false;
 
 -------------- MYSTERY VARS -----------
 local EGGS_CLEARED = true;
@@ -123,6 +123,17 @@ local CHECK_FOR_STATIONBTN = false;
 local STATION_BTN_TIMER = 0;
 local WATCH_LOADED_STATIONBTN = false;
 
+-------------- PROGRESSIVES -----------
+local BEAK_BUST = false
+local BILL_DRILL = false;
+local FIR_EGGS = false;
+local GRE_EGGS = false;
+local ICE_EGGS = false;
+local CLK_EGGS = false;
+local WADE_SHOE = false;
+local TURB_SHOE = false;
+local SPRG_SHOE = false;
+local CLAW_SHOE = false
 -------------- CHUFFY VARS ------------
 DEAD_COAL_CHECK = 0;
 CHUFFY_MAP_TRANS = false;
@@ -6148,60 +6159,70 @@ function check_progressive()
         end
     end
 
-    if beak_bust == 1 then
+    if beak_bust == 1 and BEAK_BUST == false then
         BTRAMOBJ:setFlag(0x18, 7, "Beak Buster")
-    elseif beak_bust == 2 then
+        BEAK_BUST = true
+    elseif beak_bust == 2 and BILL_DRILL == false then
         BTRAMOBJ:setFlag(0x18, 7, "Beak Buster")
         location = "1230757"
         AGI_MOVES[location] = true
-        set_AGI_MOVES_checks()
+        check_jamjar_silo()
+        BILL_DRILL = true
     end
 
-    if eggs == 1 then
+    if eggs == 1 and FIR_EGGS == false then
         AGI_MOVES["1230756"] = true
-        set_AGI_MOVES_checks()
-    elseif eggs == 2 then
+        check_jamjar_silo()
+        FIR_EGGS = true
+    elseif eggs == 2 and GRE_EGGS == false then
         AGI_MOVES["1230756"] = true
         AGI_MOVES["1230759"] = true
-        set_AGI_MOVES_checks()
-    elseif eggs == 3 then
+        check_jamjar_silo()
+        GRE_EGGS = true
+    elseif eggs == 3 and ICE_EGGS == false then
         AGI_MOVES["1230756"] = true
         AGI_MOVES["1230759"] = true
         AGI_MOVES["1230763"] = true
-        set_AGI_MOVES_checks()
-    elseif eggs == 4 then
+        check_jamjar_silo()
+        ICE_EGGS = true
+    elseif eggs == 4 and CLK_EGGS == false then
         AGI_MOVES["1230756"] = true
         AGI_MOVES["1230759"] = true
         AGI_MOVES["1230763"] = true
         AGI_MOVES["1230767"] = true
-        set_AGI_MOVES_checks()
+        check_jamjar_silo()
+        CLK_EGGS = true
     end
 
-    if shoes == 1 then
+    if shoes == 1 and WADE_SHOE == false then
         BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
-    elseif shoes == 2 then
+        WADE_SHOE = true
+    elseif shoes == 2 and TURB_SHOE == false then
         BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
         BTRAMOBJ:setFlag(0x1A, 6, "Turbo Trainers")
-    elseif shoes == 3 then
+        TURB_SHOE = true
+    elseif shoes == 3 and SPRG_SHOE == false then
         BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
         BTRAMOBJ:setFlag(0x1A, 6, "Turbo Trainers")
         AGI_MOVES["1230768"] = true
-        set_AGI_MOVES_checks()
-    elseif shoes == 4 then
+        check_jamjar_silo()
+        SPRG_SHOE = true
+    elseif shoes == 4 and CLAW_SHOE == false then
         BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
         BTRAMOBJ:setFlag(0x1A, 6, "Turbo Trainers")
         AGI_MOVES["1230768"] = true
         AGI_MOVES["1230773"] = true
-        set_AGI_MOVES_checks()
+        check_jamjar_silo()
+        CLAW_SHOE = true
     end
 
     if swim == 1 then
         BTRAMOBJ:setFlag(0x1A, 4, "Dive")
-    elseif swim == 2 then
+    elseif swim == 2 and DOUBLE_AIR == false then
         BTRAMOBJ:setFlag(0x1A, 4, "Dive")
         BTRAMOBJ:setFlag(0x32, 7, "Double Air")
         DOUBLE_AIR = true
-    elseif swim == 3 then
+    elseif swim == 3 and FAST_SWIM == false then
         BTRAMOBJ:setFlag(0x1A, 4, "Dive")
         BTRAMOBJ:setFlag(0x32, 7, "Double Air")
         BTRAMOBJ:setFlag(0x1E, 5, "Fast Swimming")
@@ -6988,8 +7009,16 @@ function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND 
             if BKM[locationId] == true
             then
                 BTRAMOBJ:setFlag(addr_info['addr'], addr_info['bit'])
+                if DEBUG_SILO == true
+                then
+                    print(addr_info['name'] .. " IS SET")
+                end
             else
                 BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit']);
+                if DEBUG_SILO == true
+                then
+                    print(addr_info['name'] .. " IS CLEARED")
+                end
             end
         else
             for _, disable_move in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][mapaddr]["SILO"][keys]) --Exception list, always disable
@@ -7002,6 +7031,26 @@ function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND 
     return true
 end
 
+function check_jamjar_silo()
+    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["SILO"] ~= nil
+        then
+            SILO_TIMER = SILO_TIMER + 1
+            if SILO_TIMER == 20
+            then
+                set_AGI_MOVES_checks()
+            end
+        else
+            set_AGI_MOVES_checks()
+            SILO_TIMER = 20
+        end
+    else
+        set_AGI_MOVES_checks()
+        SILO_TIMER = 20
+    end
+end
+
 function set_AGI_MOVES_checks() -- SET AGI Moves into RAM AFTER BT/Silo Model is loaded
     for moveId, table in pairs(NON_AGI_MAP['MOVES'])
     do
@@ -7011,6 +7060,10 @@ function set_AGI_MOVES_checks() -- SET AGI Moves into RAM AFTER BT/Silo Model is
         else
             BTRAMOBJ:clearFlag(table['addr'], table['bit'], "CLEAR_AGI_MOVES");
         end
+    end
+    if DEBUG_SILO == true
+    then
+        print("AGI MOVES IS SET")
     end
 end
 
@@ -7520,6 +7573,7 @@ function watchMapTransition()
             if MAP_TRANSITION == false then
                 NEXT_MAP = BTRAMOBJ:getMap(true)
                 MAP_TRANSITION = true
+                SILO_TIMER = 0
                 BKAssetFound();
                 if SKIP_PUZZLES == true
                 then
@@ -7560,7 +7614,6 @@ function finishTransition()
             CURRENT_MAP = mapaddr
             savingBMM()
         end
-        set_AGI_MOVES_checks()
         if ENABLE_AP_CHUFFY == true
         then
             getChuffyMaps()
@@ -7571,6 +7624,10 @@ function finishTransition()
         moveLevitatePad()
         watchChuffyFlag()
         -- Advance Moves
+        if SILO_TIMER ~= 20 --Silo greenlights sooner if not wait for timer
+        then
+            check_jamjar_silo()
+        end
         nearSilo()
         -- Roysten
         check_freed_roysten()
@@ -7887,7 +7944,7 @@ function processAGIItem(item_list)
                             BTCONSUMEOBJ:changeConsumable("CWK EGGS")
                             BTCONSUMEOBJ:setConsumable(10)
                         end
-                        set_AGI_MOVES_checks()
+                        check_jamjar_silo()
                     end
                 end
 
@@ -7981,7 +8038,7 @@ function processAGIItem(item_list)
                 if progressive_count == 1 then
                     local location = "1230757"
                     AGI_MOVES[location] = true
-                    set_AGI_MOVES_checks()
+                    check_jamjar_silo()
                 end
             elseif(memlocation == 1230829) -- Progressive Eggs
             then
@@ -7996,28 +8053,28 @@ function processAGIItem(item_list)
                 if progressive_count == 0 then
                     local location = "1230756"
                     AGI_MOVES[location] = true
-                    set_AGI_MOVES_checks()
+                    check_jamjar_silo()
                     BTCONSUMEOBJ:changeConsumable("FIRE EGGS")
                     BTCONSUMEOBJ:setConsumable(50)
                 end
                 if progressive_count == 1 then
                     local location = "1230759"
                     AGI_MOVES[location] = true
-                    set_AGI_MOVES_checks()
+                    check_jamjar_silo()
                     BTCONSUMEOBJ:changeConsumable("GRENADE EGGS")
                     BTCONSUMEOBJ:setConsumable(25)
                 end
                 if progressive_count == 2 then
                     local location = "1230763"
                     AGI_MOVES[location] = true
-                    set_AGI_MOVES_checks()
+                    check_jamjar_silo()
                     BTCONSUMEOBJ:changeConsumable("ICE EGGS")
                     BTCONSUMEOBJ:setConsumable(50)
                 end
                 if progressive_count == 3 then
                     local location = "1230767"
                     AGI_MOVES[location] = true
-                    set_AGI_MOVES_checks()
+                    check_jamjar_silo()
                     BTCONSUMEOBJ:changeConsumable("CWK EGGS")
                     BTCONSUMEOBJ:setConsumable(10)
                 end
@@ -8040,12 +8097,12 @@ function processAGIItem(item_list)
                 if progressive_count == 2 then
                     local location = "1230768"
                     AGI_MOVES[location] = true
-                    set_AGI_MOVES_checks()
+                    check_jamjar_silo()
                 end
                 if progressive_count == 3 then
                     local location = "1230773"
                     AGI_MOVES[location] = true
-                    set_AGI_MOVES_checks()
+                    check_jamjar_silo()
                 end
             elseif(memlocation == 1230831) -- Progressive Water Training
             then
