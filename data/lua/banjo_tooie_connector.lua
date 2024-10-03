@@ -37,6 +37,7 @@ local DEBUG_SILO = true
 local DEBUG_JIGGY = false
 local DEBUG_NOTES = false
 local DEBUG_ROYSTEN = false
+local DEBUG_CHUFFY = false
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
@@ -2078,7 +2079,7 @@ local BMM_TREBLE = {};
 local BMM_JINJOS = {}; -- BMM JINJOS
 local BKM = {}; -- Banjo Tooie Movelist Table
 local BKSTATIONS = {} -- Stations
-local BKCHUFFY = {} -- King Coal Progress Flag
+local BMM_CHUFFY = {} -- King Coal Progress Flag
 local BKJINJOFAM = {} -- Jinjo Family check 
 local UNLOCKED_WORLDS = {} -- Worlds unlocked
 local BKMYSTERY = {} -- Stop n Swap 
@@ -5231,6 +5232,20 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
     end
 end
 
+function SolvingPuzzle(mapaddr) -- Avoid false checks when working on puzzles -- Not Used?
+    if CURRENT_MAP ~= 0x151 --The Temple
+    then
+        return false
+    end
+    if mapaddr == 0xC5 or mapaddr == 0xD8 or mapaddr == 0x152 or mapaddr == 0xE1
+        or mapaddr == 0x154 or mapaddr == 0xF4 or mapaddr == 0x155 or mapaddr == 0x114
+        or mapaddr == 0x15A or mapaddr == 0x107 or mapaddr == 0x15C or mapaddr == 0x129
+        or mapaddr == 0x13A or mapaddr == 0x151 or mapaddr == 0x15D or mapaddr == 0x160
+    then
+        return true
+    end
+end
+
 ---------------------------------- TREBLE ---------------------------------
 
 function init_TREBLE(type, getReceiveMap) -- Initialize Notes
@@ -5409,38 +5424,6 @@ function init_roysten()
     end
 end
 
--- function check_freed_roysten()
---     if NEXT_MAP == 0xAF
---     then
---         for k,v in pairs(NON_AGI_MAP['ROYSTEN'])
---         do
---             if ROYSTEN[k] == false
---             then
---                 ROYSTEN[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_ROYSTEN")
---             end
---         end
---         if DOUBLE_AIR == true and ROYSTEN["1230778"] == true then
---             ROYSTEN["1230777"] = true
---         end
---         if BTRAMOBJ:checkFlag(0x1E, 5, "CHECK_SWIM") == true and FAST_SWIM == false
---         then
---             if DEBUG == true
---             then
---                 print("Removing Fast Swimming")
---             end
---             BTRAMOBJ:clearFlag(0x1E, 5)
---         end
---         if BTRAMOBJ:checkFlag(0x32, 7, "CHECK_DAIR") == true and DOUBLE_AIR == false
---         then
---             if DEBUG == true
---             then
---                 print("Removing Double Air")
---             end
---             BTRAMOBJ:clearFlag(0x32, 7)
---         end
---     end
--- end
-
 function clear_roysten()
     if NEXT_MAP == 0xAF
     then
@@ -5492,7 +5475,6 @@ function check_freed_roysten() -- Roysten asset loads then deloads if abilities 
             if ROYSTEN[k] == false
             then
                 ROYSTEN[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_ROYSTEN")
-                print(ROYSTEN[k])
             end
         end
     end
@@ -5503,7 +5485,7 @@ end
 function obtain_swimming() -- Roysten asset loads then deloads if abilities are set.
     if (FAST_SWIM == false or DOUBLE_AIR == false)
     then
-        for apid, itemId in pairs(receive_map)
+        for _, itemId in pairs(receive_map)
         do
             if itemId == "1230777"
             then
@@ -5723,17 +5705,11 @@ function watchHoneyB()
         then
             bit3 = 4
         end
-        
-        local final_res = bit1 + bit2 + bit3
 
+        local final_res = bit1 + bit2 + bit3
         for i = 1230997, final_res + base_location_id, 1 do
             HONEYB_REWARDS[tostring(i)] = true
         end
-        --TODO: Loop through base_location_id UNTIL the end number
-        -- if final_res >= 1
-        -- then
-        --     HONEY_REWARDS[]
-        -- end
     end
 end
 
@@ -6812,38 +6788,69 @@ end
 
 ---------------------------------- Chuffy ------------------------------------
 
-function init_CHUFFY(type) -- Initialize BMK
-    local checks = {}
-    for k,v in pairs(NON_AGI_MAP['CHUFFY'])
+
+function init_CHUFFY(type, getReceiveMap) -- Initialize Chuffy
+    for locationId,v in pairs(NON_AGI_MAP['CHUFFY'])
     do
-        if type == "BKCHUFFY"
+        if type == "BMM"
         then
-            BKCHUFFY[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
+            BMM_CHUFFY[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
+            if DEBUG_CHUFFY == true
+            then
+                print("Chuffy BMM Initialized")
+            end
         elseif type == "AGI"
         then
-            checks[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK_AGI")
+            AGI_CHUFFY[locationId] = false
+            if DEBUG_CHUFFY == true
+            then
+                print("Chuffy AGI Initialized")
+            end
         end
     end
-    return checks
+    if type == "AGI" and getReceiveMap == true
+    then
+        for _, locationId in pairs(receive_map)
+        do
+            if locationId == "1230796"
+            then
+                obtained_AP_CHUFFY()
+            end
+        end
+    end
 end
 
-function set_checked_BKCHUFFY() --Only when Inside Chuffy
+function set_checked_CHUFFY() --Only when Inside Chuffy
     local get_addr = NON_AGI_MAP['CHUFFY']["1230796"];
-    if BKCHUFFY["1230796"] == false and BMM['JIGGY']["1230606"] == false
+    if BMM_CHUFFY["1230796"] == false and BMM_JIGGIES["1230606"] == false
     then
-        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKCHUFFY_CHECK");
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+        if DEBUG_CHUFFY == true
+        then
+            print("Chuffy Unset")
+        end
     else
-        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKCHUFFY_CHECK");
+        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
+        if DEBUG_CHUFFY == true
+        then
+            print("Chuffy Set")
+        end
     end
 end
 
 function watchChuffyFlag()
-    BTMODELOBJ:changeName("Jiggy", false)
-    killedKing = BTMODELOBJ:checkModel()
-    if killedKing == true
-    then  -- Sanity check incase Pointer is moving
-        BKCHUFFY["1230796"] = true
-        CHUFFY_STOP_WATCH = true
+    if CURRENT_MAP == 0xD1 and BMM_CHUFFY["1230796"] == false
+    then
+        BTMODELOBJ:changeName("Jiggy", false)
+        killedKing = BTMODELOBJ:checkModel()
+        if killedKing == true
+        then  -- Sanity check incase Pointer is moving
+            BMM_CHUFFY["1230796"] = true
+        end
+        if DEBUG_CHUFFY == true
+        then
+            print("Chuffy Jiggywatch")
+        end
     end
 end
 
@@ -6851,56 +6858,70 @@ function set_AP_CHUFFY() -- Only run after Transistion
     local get_addr = NON_AGI_MAP['CHUFFY']["1230796"];
     if AGI_CHUFFY["1230796"] == true
     then
-        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "APCHUFFY_SET");
-        BTRAMOBJ:setFlag(0x0D, 5, "Levitate")
+        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
+        BTRAMOBJ:setFlag(0x0D, 5) -- Levitate
+        if DEBUG_CHUFFY == true
+        then
+            print("Chuffy is open")
+        end
         return true
     else
-        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_APCHUFFY_SET");
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+        if DEBUG_CHUFFY == true
+        then
+            print("Chuffy not yet open")
+        end
         return false
     end
 end
 
 function obtained_AP_CHUFFY()
     AGI_CHUFFY["1230796"] = true
-    BTRAMOBJ:setFlag(0x0D, 5, "Levitate")
+    BTRAMOBJ:setFlag(0x0D, 5) -- Levitate
     local get_addr = NON_AGI_MAP['CHUFFY']["1230796"]
     if CURRENT_MAP == 0xD0 or CURRENT_MAP == 0xD1
     then
         return
     end
-    BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "APCHUFFY_OBTAIN");
+    BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
+    if DEBUG_CHUFFY == true
+    then
+        print("Chuffy Obtained")
+    end
 end
 
 function getChuffyMaps()
-    if CURRENT_MAP == nil
-    then
-        return
-    end
     if CURRENT_MAP == 0xD0 or CURRENT_MAP == 0xD1
     then
-        set_checked_BKCHUFFY()
+        set_checked_CHUFFY()
     else
         set_AP_CHUFFY()
-        CHUFFY_STOP_WATCH = true
-    end
-    if CURRENT_MAP == 0xD1
-    then
-        watchChuffyFlag()
-    else
-        CHUFFY_STOP_WATCH = true
     end
 end
 
 function moveLevitatePad()
-    BTMODELOBJ:changeName("Levitate Pad", false)
-    local model = BTMODELOBJ:checkModel();
-    if model == false
+    if ENABLE_AP_CHUFFY == true
     then
-        return false
+        if AGI_CHUFFY["1230796"] == false and CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false
+        then
+            BTMODELOBJ:changeName("Levitate Pad", false)
+            local model = BTMODELOBJ:checkModel();
+            if model == false
+            then
+                return false
+            end
+            BTMODELOBJ:moveModelObject(nil, nil, -100, nil)
+            LEVI_PAD_MOVED = true;
+            if DEBUG_CHUFFY == true
+            then
+                print("Lebitate Pads Moved")
+            end
+            return true
+        elseif AGI_CHUFFY["1230796"] == false and CURRENT_MAP ~= 0xD7 and LEVI_PAD_MOVED == true
+        then
+            LEVI_PAD_MOVED = false
+        end
     end
-    BTMODELOBJ:moveModelObject(nil, nil, -100, nil)
-    LEVI_PAD_MOVED = true;
-    return true
 end
 
 ---------------------------------- JamJars MOVES -----------------------------------
@@ -7507,7 +7528,7 @@ function watchMapTransition()
                 clear_AMM_MOVES_checks(NEXT_MAP)
                 clear_roysten()
             end
-        else -- Runs Constantly while NOT transitioning
+        else -- Runs Constantly while NOT transitioning (and runs while player not yet loaded)
             finishTransition()
             jiggy_ui_update()
             jinjo_ui_update()
@@ -7532,7 +7553,7 @@ function finishTransition()
     then
         MAP_TRANSITION = false
         local mapaddr = BTRAMOBJ:getMap(false)
-        BKLogics(mapaddr)
+        -- BKLogics(mapaddr)
         if mapaddr ~= CURRENT_MAP
         then
             PREVIOUS_MAP = CURRENT_MAP
@@ -7540,10 +7561,41 @@ function finishTransition()
             savingBMM()
         end
         set_AGI_MOVES_checks()
-    elseif mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == false and player == true -- constantly runs while NOT transitioning
+        if ENABLE_AP_CHUFFY == true
+        then
+            getChuffyMaps()
+        end
+    elseif mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == false and player == true -- constantly runs while NOT transitioning AND Player is loaded
     then
+        -- Chuffy
+        moveLevitatePad()
+        watchChuffyFlag()
+        -- Advance Moves
         nearSilo()
+        -- Roysten
         check_freed_roysten()
+        -- BK Moves
+        if ENABLE_AP_BK_MOVES ~= 0
+        then
+            obtain_bkmove()
+            check_progressive()
+        end
+        -- Honey B
+        if ENABLE_AP_HONEYB_REWARDS == true
+        then
+            watchHoneyB()
+        end
+        --Cheato 
+        if ENABLE_AP_CHEATO_REWARDS == true
+        then
+            watchCheato()
+        end
+        -- Jiggy Chunks
+        watchJChunk()
+        -- Scrotty Kids
+        watchDinoFlags()
+        -- Bath Pads
+        MoveBathPads()
     end
 end
 
@@ -7599,7 +7651,8 @@ function loadGame(current_map)
             BMM_JINJOS = json.decode(f:read("l"));
             BKM = json.decode(f:read("l"));
             BKSTATIONS = json.decode(f:read("l"));
-            BKCHUFFY = json.decode(f:read("l"));
+            BMM_CHUFFY = json.decode(f:read("l"));
+            init_CHUFFY("AGI", true)
             BKMYSTERY = json.decode(f:read("l"));
 
             restore_BMM_JIGGIES()
@@ -7622,13 +7675,13 @@ function loadGame(current_map)
                 BTRAMOBJ:checkFlag(0x99, 1) == false and BTRAMOBJ:checkFlag(0x99, 2) == false and
                 BTRAMOBJ:checkFlag(0x99, 3) == false
                 then
-                    if DEBUG == true
+                    if DEBUG_CHUFFY == true
                     then
                         print("Moving Chuffy to GGM")
                     end
                     BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
                 else
-                    if DEBUG == true
+                    if DEBUG_CHUFFY == true
                     then
                         print("Sorry, but Chuffy is at a different Station")
                     end
@@ -7663,91 +7716,46 @@ function loadGame(current_map)
 end
 
 function MoveBathPads()
-    BTMODELOBJ:changeName("Kazooie Split Pad", false)
-    POS = BTMODELOBJ:getSingleModelCoords(nil)
-    if POS == false
+    if CURRENT_MAP == 0xF4 and BATH_PADS_QOL == false
     then
-        return
-    end
+        BTMODELOBJ:changeName("Kazooie Split Pad", false)
+        POS = BTMODELOBJ:getSingleModelCoords(nil)
+        if POS == false
+        then
+            return
+        end
 
-    BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450 );
-    BTMODELOBJ:changeRotation(nil, nil, 0);
+        BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450 );
+        BTMODELOBJ:changeRotation(nil, nil, 0);
 
-    BTMODELOBJ:changeName("Banjo Split Pad", false)
-    POS = BTMODELOBJ:getSingleModelCoords(nil)
-    if POS == false
+        BTMODELOBJ:changeName("Banjo Split Pad", false)
+        POS = BTMODELOBJ:getSingleModelCoords(nil)
+        if POS == false
+        then
+            return
+        end
+        BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450);
+        BTMODELOBJ:changeRotation(nil, nil, 0)
+        BATH_PADS_QOL = true
+    elseif  CURRENT_MAP ~= 0xF4 and BATH_PADS_QOL == true
     then
-        return
-    end
-    BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450);
-    BTMODELOBJ:changeRotation(nil, nil, 0)
-    BATH_PADS_QOL = true
-end
-
-function SolvingPuzzle(mapaddr) -- Avoid false checks when working on puzzles
-    if CURRENT_MAP ~= 0x151 --The Temple
-    then
-        return false
-    end
-    if mapaddr == 0xC5 or mapaddr == 0xD8 or mapaddr == 0x152 or mapaddr == 0xE1
-        or mapaddr == 0x154 or mapaddr == 0xF4 or mapaddr == 0x155 or mapaddr == 0x114
-        or mapaddr == 0x15A or mapaddr == 0x107 or mapaddr == 0x15C or mapaddr == 0x129
-        or mapaddr == 0x13A or mapaddr == 0x151 or mapaddr == 0x15D or mapaddr == 0x160
-    then
-        return true
+        BATH_PADS_QOL = false
     end
 end
 
 function BKLogics(mapaddr)
     BTMODELOBJ:changeName("Player", false)
     local player = BTMODELOBJ:checkModel();
-    if ENABLE_AP_BK_MOVES ~= 0
-    then
-        obtain_bkmove()
-    end
-    if ENABLE_AP_CHEATO_REWARDS == true
-    then
-        watchCheato()
-    end
-    if ENABLE_AP_HONEYB_REWARDS == true
-    then
-        watchHoneyB()
-    end
-    watchJChunk()
-    watchDinoFlags()
+
     if ((CURRENT_MAP ~= mapaddr) or player == false)
     then
         set_checked_BKSTATIONS()
         STATION_BTN_TIMER = 0
         CHECK_FOR_STATIONBTN = true
-        honeycomb_math_check()
-        cheato_math_check()
-    end
-    if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_CHUFFY == true
-    then
-        CHUFFY_MAP_TRANS = true
-    elseif ENABLE_AP_CHUFFY == false and BKCHUFFY["1230796"] == false then
-        if CURRENT_MAP == 0xD1 -- Only watch for King Coal Check.
-        then
-            watchChuffyFlag()
-        end
-    end
-    if CURRENT_MAP == 0xF4 and BATH_PADS_QOL == false
-    then
-        MoveBathPads()
-    elseif  CURRENT_MAP ~= 0xF4 and BATH_PADS_QOL == true
-    then
-        BATH_PADS_QOL = false
     end
     if (CURRENT_MAP ~= mapaddr)
     then
-        client.saveram()
-        if SKIP_PUZZLES == true -- another sanity check
-        then
-            check_open_level(false)
-        end
         clearKey()
-        check_progressive()
         obtain_breegull_bash()
     end
 end
@@ -7767,19 +7775,6 @@ function BKCheckAssetLogic()
             CHECK_FOR_STATIONBTN = false
             set_AP_STATIONS()
         end
-    end
-    if (CHUFFY_MAP_TRANS == true or CHUFFY_STOP_WATCH == false or (CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false)) and ENABLE_AP_CHUFFY == true
-    then
-        if AGI_CHUFFY["1230796"] == false and CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false
-        then
-            moveLevitatePad()
-        elseif AGI_CHUFFY["1230796"] == false and CURRENT_MAP ~= 0xD7 and LEVI_PAD_MOVED == true
-        then
-            LEVI_PAD_MOVED = false
-        end
-        CHUFFY_STOP_WATCH = false
-        CHUFFY_MAP_TRANS = false
-        getChuffyMaps()
     end
 end
 
@@ -8146,7 +8141,7 @@ function SendToBTClient()
     retTable['unlocked_moves'] = BKM;
     retTable['treble'] = treble_check();
     retTable['stations'] = BKSTATIONS;
-    retTable['chuffy'] = BKCHUFFY;
+    retTable['chuffy'] = BMM_CHUFFY;
     retTable["isDead"] = DETECT_DEATH;
     retTable["jinjofam"] = BKJINJOFAM;
     retTable["worlds"] = UNLOCKED_WORLDS;
@@ -8588,11 +8583,6 @@ function savingAGI()
     f:write(json.encode(AGI_STATIONS) .. "\n");
     if DEBUGLVL2 == true
     then
-        print("Writing Chuffy");
-    end
-    f:write(json.encode(AGI_CHUFFY) .. "\n");
-    if DEBUGLVL2 == true
-    then
         print("Writing MYSTERY");
     end
     f:write(json.encode(AGI_MYSTERY) .. "\n");
@@ -8627,7 +8617,7 @@ function loadAGI()
             AGI_STATIONS = init_BKSTATIONS("AGI");
         end
         if next(AGI_CHUFFY) == nil then
-            AGI_CHUFFY = init_CHUFFY("AGI");
+            init_CHUFFY("AGI", false);
         end
         if next(AGI_MYSTERY) == nil then
             AGI_MYSTERY = init_BKMYSTERY("AGI");
@@ -8639,7 +8629,6 @@ function loadAGI()
         end
         f:write(json.encode(AGI_MOVES).."\n");
         f:write(json.encode(AGI_STATIONS) .. "\n");
-        f:write(json.encode(AGI_CHUFFY) .. "\n");
         f:write(json.encode(AGI_MYSTERY) .. "\n");
         f:write(json.encode(receive_map));
         f:close();
@@ -8650,7 +8639,6 @@ function loadAGI()
         end
         AGI_MOVES = json.decode(f:read("l"));
         AGI_STATIONS = json.decode(f:read("l"));
-        AGI_CHUFFY = json.decode(f:read("l"));
         AGI_MYSTERY = json.decode(f:read("l"));
         receive_map = json.decode(f:read("l"));
         f:close();
@@ -8675,7 +8663,7 @@ function savingBMM()
         f:write(json.encode(BMM_JINJOS) .. "\n");
         f:write(json.encode(BKM) .. "\n");
         f:write(json.encode(BKSTATIONS) .. "\n");
-        f:write(json.encode(BKCHUFFY) .. "\n");
+        f:write(json.encode(BMM_CHUFFY) .. "\n");
         f:write(json.encode(BKMYSTERY));
         f:close()
         if PAUSED == false then
@@ -8997,7 +8985,7 @@ function initializeFlags()
         DEMO_MODE = false
         init_BMK("BKM");
         init_BKSTATIONS("BKSTATIONS");
-        init_CHUFFY("BKCHUFFY");
+        init_CHUFFY("BMM");
         init_JinjoFam();
         init_BKMYSTERY("BKMYSTERY")
         init_roysten()
@@ -9010,6 +8998,7 @@ function initializeFlags()
         init_JIGGIES("AGI", false)
         init_NOTES("AGI", false)
         init_TREBLE("AGI", false)
+        init_CHUFFY("AGI", false)
 
         AGI_MOVES = init_BMK("AGI");
         AGI_MYSTERY = init_BKMYSTERY("AGI");
