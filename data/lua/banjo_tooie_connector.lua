@@ -38,6 +38,7 @@ local DEBUG_JIGGY = false
 local DEBUG_NOTES = false
 local DEBUG_ROYSTEN = false
 local DEBUG_CHUFFY = false
+local DEBUG_STOPNSWAP = false
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
@@ -855,9 +856,6 @@ local ASSET_MAP_CHECK = {
         [0xAF] = "1230956",
         [0xAE] = "1230957",
     },
-    ["ICEKEY"] = {
-        [0x142] = "1230958"
-    },
     ["AGI_ASSETS"] = {
         ["ALL"] = {
             ["JIGGIES"] = { --Jinjo Jiggies
@@ -900,6 +898,9 @@ local ASSET_MAP_CHECK = {
         [0x142] = { -- JV
             ["TREBLE"] = {
                 "1230789"
+            },
+            ["ICEKEY"] = {
+                "1230958"
             }
         },
         [0x143] = { --JV - Bottles' House
@@ -2093,7 +2094,7 @@ local BKSTATIONS = {} -- Stations
 local BMM_CHUFFY = {} -- King Coal Progress Flag
 local BKJINJOFAM = {} -- Jinjo Family check 
 local UNLOCKED_WORLDS = {} -- Worlds unlocked
-local BKMYSTERY = {} -- Stop n Swap 
+local BMM_MYSTERY = {} -- Stop n Swap 
 local ROYSTEN = {} -- Roysten flags. Because the flags are separate from moves, we don't need to save this.
 local CHEATO_REWARDS = {} -- Cheato Check Locations
 local HONEYB_REWARDS = {} -- Honey B Check Locations
@@ -6233,26 +6234,24 @@ end
 
 --------------------------------- Stop N Swap --------------------------------
 
-function init_BKMYSTERY(type) -- Initialize BMK
-    local checks = {}
-    if type == "BKMYSTERY"
+function init_STOPNSWAP(type) -- Initialize BMK
+    if type == "BMM"
     then
-        BKMYSTERY['REMOVE'] = {}
+        BMM_MYSTERY['REMOVE'] = {}
         for k,v in pairs(NON_AGI_MAP['STOPNSWAP'])
         do
-            BKMYSTERY[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
-            BKMYSTERY['REMOVE'][k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
+            BMM_MYSTERY[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
+            BMM_MYSTERY['REMOVE'][k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
         end
-        BKMYSTERY["1230958"] = false -- Ice key
-        BKMYSTERY['REMOVE']["1230958"] = false
+        BMM_MYSTERY["1230958"] = false -- Ice key
+        BMM_MYSTERY['REMOVE']["1230958"] = false
     else
-        checks["1230799"] = false -- Icekey
-        checks["1230800"] = false -- Bregull Bash
-        checks["1230801"] = false -- Nothing
-        checks["1230802"] = false -- Homing Eggs
-        checks["1230803"] = false -- Blue egg
-        checks["1230804"] = false -- Pink egg
-        return checks;
+        AGI_MYSTERY["1230799"] = false -- Icekey
+        AGI_MYSTERY["1230800"] = false -- Bregull Bash
+        AGI_MYSTERY["1230801"] = false -- Nothing
+        AGI_MYSTERY["1230802"] = false -- Homing Eggs
+        AGI_MYSTERY["1230803"] = false -- Blue egg
+        AGI_MYSTERY["1230804"] = false -- Pink egg
     end
 end
 
@@ -6289,7 +6288,7 @@ function check_egg_mystery()
                             then
                                 print("Unsetting Local Blue Egg Flag")
                             end
-                            if BKMYSTERY["1230957"] == true
+                            if BMM_MYSTERY["1230957"] == true
                             then
                                 local eggTable = NON_AGI_MAP['STOPNSWAP']["1230957"]
                                 BTRAMOBJ:clearFlag(eggTable['addr'], eggTable['bit'])
@@ -6315,7 +6314,7 @@ function check_egg_mystery()
                             then
                                 print("Unsetting Local Pink Egg Flag")
                             end
-                            if BKMYSTERY["1230956"] == true
+                            if BMM_MYSTERY["1230956"] == true
                             then
                                 local eggTable = NON_AGI_MAP['STOPNSWAP']["1230956"]
                                 BTRAMOBJ:clearFlag(eggTable['addr'], eggTable['bit'])
@@ -6340,7 +6339,7 @@ function check_egg_mystery()
                         if BTRAMOBJ:checkFlag(hatched['addr'], hatched['bit']) == false -- Egg not hatched yet
                         then
                             local eggTable = NON_AGI_MAP['STOPNSWAP']["1230957"]
-                            if BKMYSTERY["1230957"] == true
+                            if BMM_MYSTERY["1230957"] == true
                             then
                                 if DEBUG == true
                                 then
@@ -6360,7 +6359,7 @@ function check_egg_mystery()
                         then
                             print("setting back Local Blue Egg Flag")
                         end
-                        if BKMYSTERY["1230957"] == true
+                        if BMM_MYSTERY["1230957"] == true
                         then
                             local eggTable = NON_AGI_MAP['STOPNSWAP']["1230957"]
                             BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
@@ -6374,7 +6373,7 @@ function check_egg_mystery()
                         if BTRAMOBJ:checkFlag(hatched['addr'], hatched['bit']) == false -- Egg not hatched yet
                         then
                             local eggTable = NON_AGI_MAP['STOPNSWAP']["1230956"]
-                            if BKMYSTERY["1230956"] == true
+                            if BMM_MYSTERY["1230956"] == true
                             then
                                 if DEBUG == true
                                 then
@@ -6394,7 +6393,7 @@ function check_egg_mystery()
                         then
                             print("Unsetting Local Pink Egg Flag")
                         end
-                        if BKMYSTERY["1230956"] == true
+                        if BMM_MYSTERY["1230956"] == true
                         then
                             local eggTable = NON_AGI_MAP['STOPNSWAP']["1230956"]
                             BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
@@ -6409,21 +6408,21 @@ function check_egg_mystery()
     local eggLocId = ASSET_MAP_CHECK["STOPNSWAP"][CURRENT_MAP];
     local eggTable = NON_AGI_MAP['STOPNSWAP'][eggLocId]
     local got_egg = BTRAMOBJ:checkFlag(eggTable['addr'], eggTable['bit'])
-    if BKMYSTERY[eggLocId] == false
+    if BMM_MYSTERY[eggLocId] == false
     then
         local eggTable = NON_AGI_MAP['STOPNSWAP'][eggLocId]
         local got_egg = BTRAMOBJ:checkFlag(eggTable['addr'], eggTable['bit'])
         BTCONSUMEOBJ:changeConsumable("Eggs")
         local egg_amt = BTCONSUMEOBJ:getEggConsumable()
-        if got_egg == true and egg_amt > 0 and  BKMYSTERY['REMOVE'][eggLocId] == false
+        if got_egg == true and egg_amt > 0 and  BMM_MYSTERY['REMOVE'][eggLocId] == false
         then
             if DEBUG == true
             then
                 print("Got a Local Mystery Egg")
             end
             BTCONSUMEOBJ:setConsumable(egg_amt - 1)
-            BKMYSTERY['REMOVE'][eggLocId] = true
-            BKMYSTERY[eggLocId] = true
+            BMM_MYSTERY['REMOVE'][eggLocId] = true
+            BMM_MYSTERY[eggLocId] = true
             savingBMM()
         end
     end
@@ -6434,7 +6433,7 @@ function check_hatched_mystery()
     then
         if WAIT_FOR_HATCH == false
         then
-            if AGI_MYSTERY["1230800"] == true and BKMYSTERY["1230954"] == false -- BBASH
+            if AGI_MYSTERY["1230800"] == true and BMM_MYSTERY["1230954"] == false -- BBASH
             then
                 if DEBUG == true then
                     print("Remove Bregull Bash")
@@ -6442,32 +6441,32 @@ function check_hatched_mystery()
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
                 BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
                 BTRAMOBJ:clearFlag(0x1E, 7)
-            elseif BKMYSTERY["1230954"] == true
+            elseif BMM_MYSTERY["1230954"] == true
             then
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
                 BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
                 BTRAMOBJ:clearFlag(0x77, 5)
             end
-            if AGI_MYSTERY["1230801"] == true and BKMYSTERY["1230953"] == false -- nothing
+            if AGI_MYSTERY["1230801"] == true and BMM_MYSTERY["1230953"] == false -- nothing
             then
                 if DEBUG == true then
                     print("Remove Yellow Jinjo")
                 end
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
                 BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
-            elseif BKMYSTERY["1230953"] == true
+            elseif BMM_MYSTERY["1230953"] == true
             then
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
                 BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
             end
-            if AGI_MYSTERY["1230802"] == true and BKMYSTERY["1230955"] == false -- homing eggs
+            if AGI_MYSTERY["1230802"] == true and BMM_MYSTERY["1230955"] == false -- homing eggs
             then
                 if DEBUG == true then
                     print("Remove Homing Eggs")
                 end
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
                 BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
-            elseif BKMYSTERY["1230955"] == true
+            elseif BMM_MYSTERY["1230955"] == true
             then
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
                 BTRAMOBJ:clearFlag(0x77, 3)
@@ -6475,53 +6474,53 @@ function check_hatched_mystery()
             end
             WAIT_FOR_HATCH = true
         else -- Watch if Eggs are hatched
-            if BKMYSTERY["1230954"] == false
+            if BMM_MYSTERY["1230954"] == false
             then
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
                 if BTRAMOBJ:checkFlag(tbl['addr'], tbl['bit']) == true
                 then
-                    BKMYSTERY["1230954"] = true
+                    BMM_MYSTERY["1230954"] = true
                     BTRAMOBJ:clearFlag(0x1E, 7)
                 end
             end
-            if BKMYSTERY["1230953"] == false
+            if BMM_MYSTERY["1230953"] == false
             then
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
                 if BTRAMOBJ:checkFlag(tbl['addr'], tbl['bit']) == true
                 then
-                    BKMYSTERY["1230953"] = true
+                    BMM_MYSTERY["1230953"] = true
                 end
             end
-            if BKMYSTERY["1230955"] == false
+            if BMM_MYSTERY["1230955"] == false
             then
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
                 if BTRAMOBJ:checkFlag(tbl['addr'], tbl['bit']) == true
                 then
-                    BKMYSTERY["1230955"] = true
+                    BMM_MYSTERY["1230955"] = true
                 end
             end
         end
     elseif CURRENT_MAP == 0x14F -- Wooded Hollow
     then
-        if BKMYSTERY["1230954"] == true
+        if BMM_MYSTERY["1230954"] == true
         then
             local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
             BTRAMOBJ:clearFlag(0x77, 5)
             BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         end
-        if BKMYSTERY["1230953"] == true
+        if BMM_MYSTERY["1230953"] == true
         then
             local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
             BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         end
-        if BKMYSTERY["1230955"] == true
+        if BMM_MYSTERY["1230955"] == true
         then
             local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
             BTRAMOBJ:clearFlag(0x77, 3)
             BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         end
     else
-        if BKMYSTERY["1230956"] == false
+        if BMM_MYSTERY["1230956"] == false
         then
             -- if DEBUG == true then
             --     print("reverse Hatch flag, Pink egg not yet obtained")
@@ -6533,7 +6532,7 @@ function check_hatched_mystery()
         then
             BTRAMOBJ:clearFlag(0x1E, 7)
         end
-        if BKMYSTERY["1230957"] == false
+        if BMM_MYSTERY["1230957"] == false
         then
             -- if DEBUG == true then
             --     print("reverse Hatch flag, Blue egg not yet obtained")
@@ -6562,70 +6561,69 @@ function obtain_breegull_bash()
 end
 
 function check_local_icekey()
-    local keyLocId = ASSET_MAP_CHECK["ICEKEY"][CURRENT_MAP];
-    if BKMYSTERY[keyLocId] == false
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        BTCONSUMEOBJ:changeConsumable("Ice Keys")
-        local key_amt = BTCONSUMEOBJ:getConsumable()
-
-        if KEY_DROPPED == false
+        if ASSET_MAP_CHECK[CURRENT_MAP]["ICEKEY"] ~= nil
         then
-            BTMODELOBJ:changeName("Player", false)
-            local player = BTMODELOBJ:checkModel();
-            if player == false
+            local keyLocId = ASSET_MAP_CHECK["ICEKEY"][CURRENT_MAP];
+            if BMM_MYSTERY[keyLocId] == false
             then
-                return
-            end
-            BTMODELOBJ:changeName("Ice Key", false);
-            local key_spawn = BTMODELOBJ:checkModel()
-            if key_spawn == true
-            then
-                if DEBUG == true
-                then
-                    print("Key Spawned")
-                end
-                KEY_DROPPED = true
-            end
-        end
-
-        if KEY_DROPPED == true and KEY_GRABBED == false
-        then
-            BTMODELOBJ:changeName("Ice Key", false);
-            local key_spawn = BTMODELOBJ:checkModel()
-            if key_spawn == false
-            then
-                if DEBUG == true
-                then
-                    print("Key grabbed")
-                end
-                KEY_GRABBED = true
-            end
-        end
-
-        if key_amt > 0 and KEY_DROPPED == true and KEY_GRABBED == true and BKMYSTERY['REMOVE'][keyLocId] == false
-        then
-            if DEBUG == true
-            then
-                print("Got a Local Ice Key")
-            end
-            if AGI_MYSTERY["1230799"] == false
-            then
-                if DEBUG == true
-                then
-                    print("Removing Key as we don't have AGI key yet")
-                end
                 BTCONSUMEOBJ:changeConsumable("Ice Keys")
-                BTCONSUMEOBJ:setConsumable(key_amt - 1)
+                local key_amt = BTCONSUMEOBJ:getConsumable()
+                if KEY_DROPPED == false
+                then
+                    BTMODELOBJ:changeName("Ice Key", false);
+                    local key_spawn = BTMODELOBJ:checkModel()
+                    if key_spawn == true
+                    then
+                        if DEBUG_STOPNSWAP == true
+                        then
+                            print("Key Spawned")
+                        end
+                        KEY_DROPPED = true
+                    end
+                end
+        
+                if KEY_DROPPED == true and KEY_GRABBED == false
+                then
+                    BTMODELOBJ:changeName("Ice Key", false);
+                    local key_spawn = BTMODELOBJ:checkModel()
+                    if key_spawn == false
+                    then
+                        if DEBUG_STOPNSWAP == true
+                        then
+                            print("Key grabbed")
+                        end
+                        KEY_GRABBED = true
+                    end
+                end
+        
+                if key_amt > 0 and KEY_DROPPED == true and KEY_GRABBED == true and BMM_MYSTERY['REMOVE'][keyLocId] == false
+                then
+                    if DEBUG == true
+                    then
+                        print("Got a Local Ice Key")
+                    end
+                    if AGI_MYSTERY["1230799"] == false
+                    then
+                        if DEBUG == true
+                        then
+                            print("Removing Key as we don't have AGI key yet")
+                        end
+                        BTCONSUMEOBJ:changeConsumable("Ice Keys")
+                        BTCONSUMEOBJ:setConsumable(key_amt - 1)
+                    end
+                    BMM_MYSTERY['REMOVE'][keyLocId] = true
+                    BMM_MYSTERY[keyLocId] = true
+                    savingBMM()
+                end
             end
-            BKMYSTERY['REMOVE'][keyLocId] = true
-            BKMYSTERY[keyLocId] = true
-            savingBMM()
         end
     end
 end
 
 function pause_show_AGI_key()
-    if AGI_MYSTERY["1230799"] == true and BKMYSTERY["1230958"] == false
+    if AGI_MYSTERY["1230799"] == true and BMM_MYSTERY["1230958"] == false
     then
         if DEBUG == true
         then
@@ -6637,7 +6635,7 @@ function pause_show_AGI_key()
 end
 
 function unpause_hide_AGI_key()
-    if AGI_MYSTERY["1230799"] == true and BKMYSTERY["1230958"] == false
+    if AGI_MYSTERY["1230799"] == true and BMM_MYSTERY["1230958"] == false
     then
         if DEBUG == true
         then
@@ -6649,7 +6647,7 @@ function unpause_hide_AGI_key()
 end
 
 function ap_icekey_glowbo_map()
-    if AGI_MYSTERY["1230799"] == true and BKMYSTERY["1230958"] == false and CURRENT_MAP == 0x128 --Icy Side
+    if AGI_MYSTERY["1230799"] == true and BMM_MYSTERY["1230958"] == false and CURRENT_MAP == 0x128 --Icy Side
     then
         if DEBUG == true
         then
@@ -6661,7 +6659,7 @@ function ap_icekey_glowbo_map()
 end
 
 function clearKey()
-    if AGI_MYSTERY["1230799"] == true and BKMYSTERY["1230958"] == false and CURRENT_MAP ~= 0x128 --Icy Side
+    if AGI_MYSTERY["1230799"] == true and BMM_MYSTERY["1230958"] == false and CURRENT_MAP ~= 0x128 --Icy Side
     then
         if DEBUG == true
         then
@@ -7631,6 +7629,8 @@ function finishTransition()
         nearSilo()
         -- Roysten
         check_freed_roysten()
+        -- StopNSwap
+        check_local_icekey()
         -- BK Moves
         if ENABLE_AP_BK_MOVES ~= 0
         then
@@ -7710,7 +7710,7 @@ function loadGame(current_map)
             BKSTATIONS = json.decode(f:read("l"));
             BMM_CHUFFY = json.decode(f:read("l"));
             init_CHUFFY("AGI", true)
-            BKMYSTERY = json.decode(f:read("l"));
+            BMM_MYSTERY = json.decode(f:read("l"));
 
             restore_BMM_JIGGIES()
             restore_BMM_NOTES()
@@ -7842,7 +7842,6 @@ function BKAssetFound()
     end
     check_egg_mystery()
     check_hatched_mystery()
-    check_local_icekey()
     ap_icekey_glowbo_map()
 end
 
@@ -8012,7 +8011,7 @@ function processAGIItem(item_list)
                     print("Ice Key Obtained")
                 end
                 AGI_MYSTERY[tostring(memlocation)] = true
-                if BKMYSTERY["1230958"] == true
+                if BMM_MYSTERY["1230958"] == true
                 then
                     BTCONSUMEOBJ:changeConsumable("Ice Keys")
                     BTCONSUMEOBJ:setConsumable(1)
@@ -8202,7 +8201,7 @@ function SendToBTClient()
     retTable["isDead"] = DETECT_DEATH;
     retTable["jinjofam"] = BKJINJOFAM;
     retTable["worlds"] = UNLOCKED_WORLDS;
-    retTable["mystery"] = BKMYSTERY;
+    retTable["mystery"] = BMM_MYSTERY;
     retTable["roysten"] = ROYSTEN;
     retTable["cheato_rewards"] = CHEATO_REWARDS;
     retTable["honeyb_rewards"] = HONEYB_REWARDS;
@@ -8677,7 +8676,7 @@ function loadAGI()
             init_CHUFFY("AGI", false);
         end
         if next(AGI_MYSTERY) == nil then
-            AGI_MYSTERY = init_BKMYSTERY("AGI");
+            init_STOPNSWAP("AGI");
         end
         f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "w");
         if DEBUGLVL2 == true
@@ -8721,7 +8720,7 @@ function savingBMM()
         f:write(json.encode(BKM) .. "\n");
         f:write(json.encode(BKSTATIONS) .. "\n");
         f:write(json.encode(BMM_CHUFFY) .. "\n");
-        f:write(json.encode(BKMYSTERY));
+        f:write(json.encode(BMM_MYSTERY));
         f:close()
         if PAUSED == false then
             if SKIP_PUZZLES == false then
@@ -9044,7 +9043,7 @@ function initializeFlags()
         init_BKSTATIONS("BKSTATIONS");
         init_CHUFFY("BMM");
         init_JinjoFam();
-        init_BKMYSTERY("BKMYSTERY")
+        init_STOPNSWAP("BMM")
         init_roysten()
         init_DINO_KIDS()
         init_JIGGIES("BMM", false)
@@ -9058,18 +9057,16 @@ function initializeFlags()
         init_CHUFFY("AGI", false)
 
         AGI_MOVES = init_BMK("AGI");
-        AGI_MYSTERY = init_BKMYSTERY("AGI");
+        init_STOPNSWAP("AGI");
         receive_map = { -- initialize incase suffered a hard crash and losing save file.
             ["NA"] = "NA"
         }
-		if (SKIP_TOT ~= "false") then
-			-- ToT Misc Flags
+		if (SKIP_TOT ~= "false") then -- ToT Misc Flags	
 			BTRAMOBJ:setFlag(0xAB, 2)
 			BTRAMOBJ:setFlag(0xAB, 3)
 			BTRAMOBJ:setFlag(0xAB, 4)
 			BTRAMOBJ:setFlag(0xAB, 5)
-			if (SKIP_TOT == "true") then
-			-- ToT Complete Flags
+			if (SKIP_TOT == "true") then -- ToT Complete Flags
                 BTRAMOBJ:setFlag(0x83, 0)
                 BTRAMOBJ:setFlag(0x83, 4)
 			else
@@ -9207,7 +9204,6 @@ function main()
                     saveGame();
                 end
                 gameSaving();
-                hag1_open()
                 if TEXT_START == true then
                     clearText()
                 elseif TEXT_START == false then
