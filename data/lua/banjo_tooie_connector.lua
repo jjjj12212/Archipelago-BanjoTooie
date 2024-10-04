@@ -6600,13 +6600,13 @@ function check_local_icekey()
         
                 if key_amt > 0 and KEY_DROPPED == true and KEY_GRABBED == true and BMM_MYSTERY['REMOVE'][keyLocId] == false
                 then
-                    if DEBUG == true
+                    if DEBUG_STOPNSWAP == true
                     then
-                        print("Got a Local Ice Key")
+                        print("Got the Local Ice Key")
                     end
                     if AGI_MYSTERY["1230799"] == false
                     then
-                        if DEBUG == true
+                        if DEBUG_STOPNSWAP == true
                         then
                             print("Removing Key as we don't have AGI key yet")
                         end
@@ -6625,7 +6625,7 @@ end
 function pause_show_AGI_key()
     if AGI_MYSTERY["1230799"] == true and BMM_MYSTERY["1230958"] == false
     then
-        if DEBUG == true
+        if DEBUG_STOPNSWAP == true
         then
             print("Setting Key")
         end
@@ -6637,7 +6637,7 @@ end
 function unpause_hide_AGI_key()
     if AGI_MYSTERY["1230799"] == true and BMM_MYSTERY["1230958"] == false
     then
-        if DEBUG == true
+        if DEBUG_STOPNSWAP == true
         then
             print("Unsetting Key")
         end
@@ -6649,17 +6649,13 @@ end
 function ap_icekey_glowbo_map()
     if AGI_MYSTERY["1230799"] == true and BMM_MYSTERY["1230958"] == false and CURRENT_MAP == 0x128 --Icy Side
     then
-        if DEBUG == true
+        if DEBUG_STOPNSWAP == true
         then
             print("Setting Key")
         end
         BTCONSUMEOBJ:changeConsumable("Ice Keys")
         BTCONSUMEOBJ:setConsumable(1)
-    end
-end
-
-function clearKey()
-    if AGI_MYSTERY["1230799"] == true and BMM_MYSTERY["1230958"] == false and CURRENT_MAP ~= 0x128 --Icy Side
+    elseif AGI_MYSTERY["1230799"] == true and BMM_MYSTERY["1230958"] == false and CURRENT_MAP ~= 0x128 --Not on Icy Side
     then
         if DEBUG == true
         then
@@ -7616,6 +7612,7 @@ function finishTransition()
         then
             getChuffyMaps()
         end
+        ap_icekey_glowbo_map()
     elseif mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == false and player == true -- constantly runs while NOT transitioning AND Player is loaded
     then
         -- Chuffy
@@ -7812,7 +7809,6 @@ function BKLogics(mapaddr)
     end
     if (CURRENT_MAP ~= mapaddr)
     then
-        clearKey()
         obtain_breegull_bash()
     end
 end
@@ -7842,7 +7838,6 @@ function BKAssetFound()
     end
     check_egg_mystery()
     check_hatched_mystery()
-    ap_icekey_glowbo_map()
 end
 
 function processMessages()
