@@ -38,7 +38,7 @@ local DEBUG_JIGGY = false
 local DEBUG_NOTES = false
 local DEBUG_ROYSTEN = false
 local DEBUG_CHUFFY = false
-local DEBUG_STOPNSWAP = false
+local DEBUG_STOPNSWAP = true
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
@@ -6252,9 +6252,9 @@ function init_STOPNSWAP(type) -- Initialize BMK
 end
 
 function check_egg_mystery()
-    if ASSET_MAP_CHECK["AGI_ASSETS"][NEXT_MAP] ~= nil
+    if ASSET_MAP_CHECK[NEXT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][NEXT_MAP]["STOPNSWAP"] ~= nil
+        if ASSET_MAP_CHECK[NEXT_MAP]["STOPNSWAP"] ~= nil
         then
             if NEXT_MAP == 0x150 -- on Heggy map / Wooded Hollow, if you have eggs, enable flags
             then
@@ -6350,13 +6350,13 @@ function check_egg_mystery()
                                 local eggTable = NON_AGI_MAP['STOPNSWAP']["1230957"]
                                 if BMM_MYSTERY["1230957"] == true
                                 then
-                                    if DEBUG_STOPNSWAP == true
+                                    if DEBUG == true
                                     then
                                         print("Setting Local Blue Egg")
                                     end
                                     BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
                                 else
-                                    if DEBUG_STOPNSWAP == true
+                                    if DEBUG == true
                                     then
                                         print("Clearing Blue Egg")
                                     end
@@ -6384,13 +6384,13 @@ function check_egg_mystery()
                                 local eggTable = NON_AGI_MAP['STOPNSWAP']["1230956"]
                                 if BMM_MYSTERY["1230956"] == true
                                 then
-                                    if DEBUG_STOPNSWAP == true
+                                    if DEBUG == true
                                     then
                                         print("Setting Local Pink Egg")
                                     end
                                     BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
                                 else
-                                    if DEBUG_STOPNSWAP == true
+                                    if DEBUG == true
                                     then
                                         print("Clearing Pink Egg")
                                     end
