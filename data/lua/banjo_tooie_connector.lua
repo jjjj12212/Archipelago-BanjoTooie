@@ -39,6 +39,7 @@ local DEBUG_NOTES = false
 local DEBUG_ROYSTEN = false
 local DEBUG_CHUFFY = false
 local DEBUG_STOPNSWAP = false
+local DEBUG_STATION = false
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
@@ -505,7 +506,7 @@ BTModel = {
     modelObjectList = {};
     animation_index = 0x8C,
     animationPointer = nil;
-} 
+}
 
 function BTModel:new(BTRAM, modelName, isEnemy)
     t = t or {}
@@ -844,14 +845,6 @@ end
 
 -- Moves that needs to be checked Per Map. some silos NEEDS other moves as well to get to.
 local ASSET_MAP_CHECK = {
-    ["STATIONBTN"] = {
-        [0x155] = "1230794", -- Clifftop + Button
-        [0x112] = "1230791", -- TDL Button
-        [0x100] = "1230790", -- GI Button
-        [0x127] = "1230792", -- HFP Lava button
-        [0x128] = "1230793", -- HFP Ice button
-        [0xEC]  = "1230795" -- WW Button + Station
-    },
     ["AGI_ASSETS"] = {
         ["ALL"] = {
             ["JIGGIES"] = { --Jinjo Jiggies
@@ -914,6 +907,7 @@ local ASSET_MAP_CHECK = {
                 "1230763",
                 ["Exceptions"] = {}
             },
+            ["STATIONBTN"] = "1230794"
         },
         [0x150] = { --IoH - Heggy's Egg Shed
             ["STOPNSWAP"] = {
@@ -1306,6 +1300,9 @@ local ASSET_MAP_CHECK = {
                 "1230691"
             }
         },
+        [0xEC] = { -- WW - Train Station
+            ["STATIONBTN"] = "1230795"
+        },
         --JOLLY ROGER'S LAGOON
         [0x1A7] = { --JRL
             ["JIGGIES"] = {
@@ -1538,6 +1535,7 @@ local ASSET_MAP_CHECK = {
                 "1230768",
                 ["Exceptions"] = {}
             },
+            ["STATIONBTN"] = "1230791"
         },
         [0x123] = { --TDL - Inside Chompa's Belly
             ["JIGGIES"] = {
@@ -1618,7 +1616,8 @@ local ASSET_MAP_CHECK = {
             },
             ["TREBLE"] = {
                 "1230786"
-            }
+            },
+            ["STATIONBTN"] = "1230790"
         },
         [0x10F] = { --GI - Basement
             ["JIGGIES"] = {
@@ -1819,6 +1818,7 @@ local ASSET_MAP_CHECK = {
                 "1230775",
                 ["Exceptions"] = {}
             },
+            ["STATIONBTN"] = "1230793"
         },
         [0x133] =	{ --HFP - Inside the Volcano
             ["JIGGIES"] = {
@@ -1865,6 +1865,7 @@ local ASSET_MAP_CHECK = {
                 "1230774",
                 ["Exceptions"] = {}
             },
+            ["STATIONBTN"] = "1230792"
         },
         [0x129] =	{ --HFP - Lava Train Station
             ["HONEYCOMB"] = {
@@ -2086,7 +2087,7 @@ local BMM_NOTES = {};
 local BMM_TREBLE = {};
 local BMM_JINJOS = {}; -- BMM JINJOS
 local BKM = {}; -- Banjo Tooie Movelist Table
-local BKSTATIONS = {} -- Stations
+local BMM_STATIONS = {} -- Stations
 local BMM_CHUFFY = {} -- King Coal Progress Flag
 local BKJINJOFAM = {} -- Jinjo Family check 
 local UNLOCKED_WORLDS = {} -- Worlds unlocked
@@ -6689,19 +6690,28 @@ end
 
 ---------------------------------- BKStation ---------------------------------
 
-function init_BKSTATIONS(type) -- Initialize BMK
-    local checks = {}
-    for k,v in pairs(NON_AGI_MAP['STATIONS'])
+function init_STATIONS(type, getReceiveMap) -- Initialize BMK
+    for locationId,v in pairs(NON_AGI_MAP['STATIONS'])
     do
-        if type == "BKSTATIONS"
+        if type == "BMM"
         then
-            BKSTATIONS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
+            BMM_STATIONS[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
         elseif type == "AGI"
         then
-            checks[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK_AGI")
+            AGI_STATIONS[locationId] = false
         end
     end
-    return checks
+    if type == "AGI" and getReceiveMap == true
+    then
+        for _, itemId in pairs(receive_map)
+        do
+            if itemId == "1230790" or itemId == "1230791" or itemId == "1230792"
+                or itemId == "1230793" or itemId == "1230794" or itemId == "1230795"
+            then
+                obtained_AP_STATIONS(itemId)
+            end
+        end
+    end
 end
 
 function set_checked_BKSTATIONS() --Only run transitioning maps
@@ -6715,11 +6725,11 @@ function set_checked_BKSTATIONS() --Only run transitioning maps
     end
     local stationId = ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP];
     local get_addr = NON_AGI_MAP['STATIONS'][stationId];
-    if BKSTATIONS[stationId] == true
+    if BMM_STATIONS[stationId] == true
     then
-        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKSTATIONS_CHECK");
+        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
     else
-        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKSTATIONS_CHECK");
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
     end
     return true;
 end
@@ -6730,9 +6740,9 @@ function set_AP_STATIONS() -- Only run after Transistion
         local get_addr = NON_AGI_MAP['STATIONS'][stationId]
         if value == true
         then
-            BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKSTATIONS_SET");
+            BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
         else
-            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKSTATIONS_SET");
+            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
         end
     end
 end
@@ -6740,7 +6750,7 @@ end
 function obtained_AP_STATIONS(itemId)
     AGI_STATIONS[tostring(itemId)] = true
     local get_addr = NON_AGI_MAP['STATIONS'][tostring(itemId)]
-    BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKSTATIONS_OBTAIN");
+    BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
 end
 
 function getStationBtnPlayerModel()
@@ -6800,7 +6810,7 @@ function watchBtnAnimation()
     then
         return
     end
-    if ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP] == nil or BKSTATIONS[ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP]] == nil
+    if ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP] == nil or BMM_STATIONS[ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP]] == nil
     then
         return
     end
@@ -6816,7 +6826,7 @@ function watchBtnAnimation()
         then
             print("Detected Station Button got pressed")
         end
-        BKSTATIONS[ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP]] = true;
+        BMM_STATIONS[ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP]] = true;
         --Removed the Stop Watch here as the Stations doesn't get set right away. this will cover it at least...
         set_AP_STATIONS()
     end
@@ -7729,7 +7739,8 @@ function loadGame(current_map)
             BMM_TREBLE = json.decode(f:read("l"));
             BMM_JINJOS = json.decode(f:read("l"));
             BKM = json.decode(f:read("l"));
-            BKSTATIONS = json.decode(f:read("l"));
+            BMM_STATIONS = json.decode(f:read("l"));
+            init_STATIONS("AGI", true)
             BMM_CHUFFY = json.decode(f:read("l"));
             init_CHUFFY("AGI", true)
             BMM_MYSTERY = json.decode(f:read("l"));
@@ -8210,7 +8221,7 @@ function SendToBTClient()
     retTable["hag"] = hag1_check()
     retTable['unlocked_moves'] = BKM;
     retTable['treble'] = treble_check();
-    retTable['stations'] = BKSTATIONS;
+    retTable['stations'] = BMM_STATIONS;
     retTable['chuffy'] = BMM_CHUFFY;
     retTable["isDead"] = DETECT_DEATH;
     retTable["jinjofam"] = BKJINJOFAM;
@@ -8684,7 +8695,7 @@ function loadAGI()
             AGI_MOVES = init_BMK("AGI");
         end
         if next(AGI_STATIONS) == nil then
-            AGI_STATIONS = init_BKSTATIONS("AGI");
+            init_STATIONS("AGI", false);
         end
         if next(AGI_CHUFFY) == nil then
             init_CHUFFY("AGI", false);
@@ -8698,7 +8709,6 @@ function loadAGI()
             print("Writing AGI File from LoadAGI");
         end
         f:write(json.encode(AGI_MOVES).."\n");
-        f:write(json.encode(AGI_STATIONS) .. "\n");
         f:write(json.encode(AGI_MYSTERY) .. "\n");
         f:write(json.encode(receive_map));
         f:close();
@@ -8708,7 +8718,6 @@ function loadAGI()
             print("Loading AGI File");
         end
         AGI_MOVES = json.decode(f:read("l"));
-        AGI_STATIONS = json.decode(f:read("l"));
         AGI_MYSTERY = json.decode(f:read("l"));
         receive_map = json.decode(f:read("l"));
         f:close();
@@ -8732,7 +8741,7 @@ function savingBMM()
         f:write(json.encode(BMM_TREBLE) .. "\n");
         f:write(json.encode(BMM_JINJOS) .. "\n");
         f:write(json.encode(BKM) .. "\n");
-        f:write(json.encode(BKSTATIONS) .. "\n");
+        f:write(json.encode(BMM_STATIONS) .. "\n");
         f:write(json.encode(BMM_CHUFFY) .. "\n");
         f:write(json.encode(BMM_MYSTERY));
         f:close()
@@ -9054,7 +9063,7 @@ function initializeFlags()
         GAME_LOADED = true  -- We don't have a real BMM at this point.  
         DEMO_MODE = false
         init_BMK("BKM");
-        init_BKSTATIONS("BKSTATIONS");
+        init_STATIONS("BMM", false);
         init_CHUFFY("BMM");
         init_JinjoFam();
         init_STOPNSWAP("BMM")
@@ -9072,6 +9081,7 @@ function initializeFlags()
 
         AGI_MOVES = init_BMK("AGI");
         init_STOPNSWAP("AGI");
+        init_STATIONS("AGI", false)
         receive_map = { -- initialize incase suffered a hard crash and losing save file.
             ["NA"] = "NA"
         }
