@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V2.1.3"
+local BT_VERSION = "V2.1.4"
 local PLAYER = ""
 local SEED = 0
 
@@ -33,20 +33,16 @@ local CLIENT_VERSION = 0
 
 
 local DEBUG = false
-local DEBUG_SILO = false
-local DEBUG_JIGGY = false
-local DEBUG_NOTES = false
-local DEBUG_ROYSTEN = false
-local DEBUG_CHUFFY = false
-local DEBUG_STOPNSWAP = true
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
+
+local BYPASS_GAME_LOAD = false;
 
 local BTMODELOBJ = nil;
 local BTRAMOBJ = nil;
 local BTCONSUMEOBJ = nil;
 
-local DEMO_MODE = true;
+local CURRENT_MAP = nil;
 local SKIP_TOT = ""
 local MINIGAMES = ""
 local INIT_COMPLETE = false
@@ -54,9 +50,11 @@ local PAUSED = false;
 local TOTALS_MENU = false;
 local OBJ_TOTALS_MENU = false;
 local SAVE_GAME = false;
+local USE_BMM_TBL = false;
+local USE_BMM_ONLY_TBL = false;
+local USE_BMM_ONLY_TYP = "";
 
 local CLOSE_TO_ALTAR = false;
-
 local SNEAK = false;
 local AIMASSIST = false;
 local SUPERBANJO = false;
@@ -65,53 +63,44 @@ local TEXT_TIMER = 2;
 local TEXT_START = false;
 local FPS = false
 
+local ENABLE_AP_HONEYCOMB = false;
+local ENABLE_AP_PAGES = false;
+local ENABLE_AP_MOVES = false; -- Enable AP Moves Logics
 local ENABLE_AP_BK_MOVES = 0; -- 0: disable 1: Talon Trot + Full Jump 2: ALL REMOVED
 local ENABLE_AP_CHEATO_REWARDS = false;
 local ENABLE_AP_HONEYB_REWARDS = false;
+local ENABLE_AP_DOUBLOONS = false;
 local ENABLE_AP_CHUFFY = false;
 local ENABLE_AP_JINJO = false;
+local ENABLE_AP_NOTES = false;
 local ENABLE_AP_WORLDS = false;
 local ENABLE_AP_MYSTERY = false;
 local DISABLE_TEXT_OVERLAY = false;
 local AP_MESSAGES = {};
 
 local GAME_LOADED = false;
-
--------------- MAP VARS -------------
-local MAP_TRANSITION = false;
-local PREVIOUS_MAP = nil;
-local CURRENT_MAP = nil;
-local NEXT_MAP = nil;
-
-
--------------- JIGGY VARS -----------
-local JIGGY_COUNT = 0; -- Used for UI and skip puzzles
-local BMM_BACKUP_JIGGY = false;
-local AGI_JIGGY_SET = false;
-
--------------- TREBLE VARS -----------
-local BMM_BACKUP_TREBLE = false;
-local AGI_TREBLE_SET = false;
-
--------------- NOTES VARS -----------
-local BMM_BACKUP_NOTES = false;
-local AGI_NOTES_SET = false;
-
--------------- JINJO VARS -----------
-local BMM_BACKUP_JINJO = false;
-
 -------------- SILO VARS ------------
-local SILO_TIMER = 0;
+local CHECK_FOR_SILO = false; --  If True, you are Transistioning maps
+local WATCH_LOADED_SILOS = false; -- Silo found on Map, Need to Monitor Distance
 local LOAD_BMK_MOVES = false; -- If close to Silo
 local SILOS_LOADED = false; -- Handles if learned a move at Silo
+local SILOS_WAIT_TIMER = 0; -- waits until Silos are loaded if any
 local LOAD_SILO_NOTES = false;
+local TOT_SET_COMPLETE = false;
+
+-------------- TREBLE VARS ------------
+local CHECK_FOR_TREBLE = false; -- Treble logic
+local TREBLE_WAIT_TIMER = 0; -- waits until Treble is loaded if any
+local WATCH_LOADED_TREBLE = false; -- if object is loaded or not 
+local TREBLE_SPOTED = false; -- used if Collected Treble
+local TREBLE_MAP = 0x00; -- validate TREBLE_MAP
+local TREBLE_GONE_CHECK = 2;
 
 -------------- SKIP VARS ------------
 local OPEN_HAG1 = false;
 local SKIP_PUZZLES = false;
 local SKIP_KLUNGO = false;
 local SKIP_KING = false;
-local TOT_SET_COMPLETE = false;
 
 -------------- MYSTERY VARS -----------
 local EGGS_CLEARED = true;
@@ -124,17 +113,6 @@ local CHECK_FOR_STATIONBTN = false;
 local STATION_BTN_TIMER = 0;
 local WATCH_LOADED_STATIONBTN = false;
 
--------------- PROGRESSIVES -----------
-local BEAK_BUST = false
-local BILL_DRILL = false;
-local FIR_EGGS = false;
-local GRE_EGGS = false;
-local ICE_EGGS = false;
-local CLK_EGGS = false;
-local WADE_SHOE = false;
-local TURB_SHOE = false;
-local SPRG_SHOE = false;
-local CLAW_SHOE = false
 -------------- CHUFFY VARS ------------
 DEAD_COAL_CHECK = 0;
 CHUFFY_MAP_TRANS = false;
@@ -151,10 +129,17 @@ local BH_LENGTH = nil;
 local JFR_LENGTH = nil;
 local TH_LENGTH = nil;
 
+-------------- TRAP VARS ------------
+
+-- local TOTAL_WARP_COUNTER = 0
+-- local WARP_TRAP_LOGIC = 0
+-- local WARP_TABLE = {
+--     [1]  = {mapId = 0xAF, worldName = "Spiral Mountain", xPos = 10000, yPos = 10320, zPos = 10231}, -- notes: CCL cavern, by the treble clef
+-- }
+
 --------------- ROYSTEN VARS --------------------
 local FAST_SWIM = false
 local DOUBLE_AIR = false
-local ROYSTEN_TIMER = 0;
 
 --------------- DEATH LINK ----------------------
 local KILL_BANJO = false
@@ -223,10 +208,10 @@ function BTConsumable:new(BTRAM, itemName)
 end
 
 function BTConsumable:setConsumable(value)
-    -- if DEBUG == true
-    -- then
-    --     print("Setting Consumable value to :" .. tostring(value))
-    -- end
+    if DEBUG == true
+    then
+        print("Setting Consumable value to :" .. tostring(value))
+    end
     local addr = self.banjoRAM:dereferencePointer(self.CONSUME_PTR);
     if self.consumeIndex == 59
     then
@@ -235,10 +220,10 @@ function BTConsumable:setConsumable(value)
         mainmemory.write_u16_be(addr + self.consumeIndex * 2, value ~ self.consumeKey);
     end
     mainmemory.write_u16_be(self.CONSUME_IDX + self.consumeIndex * 0x0C, value);
-    -- if DEBUG == true
-    -- then
-    --     print(self.consumeName .. " has been modified")
-    -- end
+    if DEBUG == true
+    then
+        print(self.consumeName .. " has been modified")
+    end
 end
 
 function BTConsumable:getConsumable()
@@ -285,8 +270,6 @@ BTRAM = {
     player_index = 0x1354DF;
     flag_block_ptr = 0x12C770;
     map_addr = 0x132DC2;
-    next_map = 0x127640;
-    entrance_id = 0x127643;
     player_pos_ptr = 0xE4,
     animationPointer = 0x136E70,
     movement_ptr = 0x120,
@@ -407,15 +390,9 @@ function BTRAM:getBanjoMovementState()
     return nil
 end
 
-function BTRAM:getMap(nextmap)
-    if nextmap == false
-    then
-        local map = mainmemory.read_u16_be(self.map_addr);
-        return map;
-    else
-        local map = mainmemory.read_u16_be(self.next_map);
-        return map;
-    end
+function BTRAM:getMap()
+    local map = mainmemory.read_u16_be(self.map_addr);
+    return map;
 end
 
 function BTRAM:checkFlag(byte, _bit, fromfuncDebug)
@@ -495,7 +472,6 @@ BTModel = {
         ["Jiggy Guy"] = 0x937,
         ["Ice Key"] = 0x63B,
         ["Cartridge"] = 0x910,
-        ["Roysten"] = 0x6FA
     };
     model_enemy_list = {
         ["Ugger"] = 0x671,
@@ -758,6 +734,10 @@ function BTModel:changeRotation(modelObjPtr, Yrot, Zrot)
 end
 
 function getAltar()
+    if CURRENT_MAP == 335 or CURRENT_MAP == 337 -- No need to modify RAM when already in WH
+    then
+        return
+    end
     BTMODELOBJ:changeName("Altar", false);
     if SKIP_PUZZLES == false
     then
@@ -844,6 +824,153 @@ end
 
 -- Moves that needs to be checked Per Map. some silos NEEDS other moves as well to get to.
 local ASSET_MAP_CHECK = {
+    ["SILO"] = {
+        [0x155] = { -- Cliff Top
+            "1230763",
+            ["Exceptions"] = {
+
+            }
+        },
+        [0x152] = { -- Platau
+            "1230756",
+            ["Exceptions"] = {
+                "1230755"
+            }
+        },
+        [0x154] = { -- Pine Grove
+            "1230759",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0x15A] = { -- Wasteland
+            "1230767",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0xB8] = { -- MT Main
+            "1230754",
+            "1230755",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0xC4] = { -- MT Grove
+            "1230753",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0xC7] = { -- GM Main
+            "1230757",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0x163] = { -- GM Storage
+            "1230758",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0xD6] = { -- WW Main
+            "1230761",
+            "1230760",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0xE1] = { -- WW Castle
+            "1230762",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0x1A7] = { -- JRL Main
+            "1230764",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0xF6] = { -- JRL Eel Lair
+            "1230765",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0xED] = { -- JRL Jolly
+            "1230766",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0x112] = { --TDL Main
+            "1230768",
+            ["Exceptions"] = {
+                
+            }
+        },
+        [0x119] = { -- Unga Bunga Cave
+            "1230770",
+            ["Exceptions"] = {
+    
+            }
+        },
+        [0x117] = { -- TDL River
+            "1230769",
+            ["Exceptions"] = {
+    
+            }
+        },
+        [0x101] = { -- GI Floor 1
+            "1230773",
+            ["Exceptions"] = {
+    
+            }
+        },
+        [0x106] = { -- Floor 2
+            "1230772",
+            ["Exceptions"] = {
+    
+            }
+        },
+        [0x111] = { -- GI Waste Disposal
+            "1230771",
+            ["Exceptions"] = {
+    
+            }
+        },
+        [0x127] = { -- HFP Fire
+            "1230774",
+            ["Exceptions"] = {
+    
+            }
+        },
+        [0x128] = { -- HFP Ice
+            "1230775",
+            ["Exceptions"] = {
+    
+            }
+        },
+        [0x13A] = { -- CC Cave
+            "1230776",
+            ["Exceptions"] = {
+    
+            }
+        }
+    },
+    ["TREBLE"] = {
+        [0xB8] = "1230781", -- MT
+        [0xCD] = "1230782", -- GGM:Water Storage
+        [0xD6] = "1230783", -- WW
+        [0x1A8] = "1230784", -- JR:Atlantis
+        [0x112] = "1230785", -- TL
+        [0x100] = "1230786", -- GI
+        [0x132] = "1230787", -- HF:Ice Grotto
+        [0x13A] = "1230788", -- CC:Cavern
+        [0x142] = "1230789" -- JV
+    },
     ["STATIONBTN"] = {
         [0x155] = "1230794", -- Clifftop + Button
         [0x112] = "1230791", -- TDL Button
@@ -852,1144 +979,12 @@ local ASSET_MAP_CHECK = {
         [0x128] = "1230793", -- HFP Ice button
         [0xEC]  = "1230795" -- WW Button + Station
     },
-    ["AGI_ASSETS"] = {
-        ["ALL"] = {
-            ["JIGGIES"] = { --Jinjo Jiggies
-                -- Jinjos are part of JinjoFAM
-                -- "1230676", --Jinjo
-                -- "1230677", --Jinjo
-                -- "1230678", --Jinjo
-                -- "1230679", --Jinjo
-                -- "1230680", --Jinjo
-                -- "1230681", --Jinjo
-                -- "1230682", --Jinjo
-                -- "1230683", --Jinjo
-                -- "1230684", --Jinjo
-                "1230685", --Jingaling
---                "1230629", -- Pig Pool
---                "1230637" -- Dippy
-            }
-        },
-        --SPIRAL MOUNTAIN
-        [0xAF]  = { --SM - Spiral Mountain
-            ["STOPNSWAP"] = "1230956",
-            ["JINJOS"] = {
-                "1230595" -- SM Jinjo
-            },
-            ["PAGES"] = {
-                "1230752" -- SM
-            }
-        },
-        [0xAE]  =	{ --SM - Behind the waterfall
-            ["STOPNSWAP"] = "1230957"
-        },
-        [0xAD]  =	{ --SM - Grunty's Lair
-            -- Cheato Rewards should be here
-        },
-        --JINJO VILLAGE
-        [0x142] = { -- JV
-            ["TREBLE"] = {
-                "1230789"
-            },
-            ["ICEKEY"] = "1230958"
-        },
-        [0x143] = { --JV - Bottles' House
-            --Amaze-O-Gaze should be here
-        },
-        --ISLE O' HAGS
-        [0x155] = { --IoH - Cliff Top
-            ["JINJOS"] = {
-                "1230593" -- Clifftop Jinjo
-            },
-            ["GLOWBO"] = {
-                "1230702"
-            },
-            ["NOTES"] = {
-                "1230936",
-                "1230937",
-                "1230938",
-                "1230939",
-            },
-            ["SILO"] = {
-                "1230763",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x150] = { --IoH - Heggy's Egg Shed
-            ["STOPNSWAP"] = {
-                "1230953", -- Yellow Egg Hatch
-                "1230954", -- Pink Egg Hatch
-                "1230955" -- Blue Egg Hatch
-            }
-        },
-        [0x154] = { --IoH - Pine Grove
-            ["NOTES"] = {
-                "1230932",
-                "1230933",
-                "1230934", -- underwater 1
-                "1230935", -- underwater 2
-
-            },
-            ["SILO"] = {
-                "1230759",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x152] = { --IoH - Plateau
-            ["JINJOS"] = {
-                "1230594" -- Plateau Jinjo
-            },
-            ["HONEYCOMB"] = {
-                "1230727" -- honey
-            },
-            ["NOTES"] = {
-                "1230928", -- GGM Sign 1
-                "1230929", -- GGM Sign 2
-                "1230930", -- Bee 1
-                "1230931", -- Bee 2
-            },
-            ["SILO"] = {
-                "1230756",
-                ["Exceptions"] = {
-                    "1230755"
-                }
-            },
-        },
-        -- ["0x153"] =	{"Isle O' Hags", "Plateau"},            --IoH - Plateau - Honey B's Hive
-        [0x15A] = { --IoH - Wasteland
-            ["JINJOS"] = {
-                "1230592" -- Wasteland Jinjo
-            },
-            ["NOTES"] = {
-                "1230940",
-                "1230941",
-                "1230942",
-                "1230943",
-
-            },
-            ["SILO"] = {
-                "1230767",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x14F] = { --IoH - Wooded Hollow
-            ["JINJOS"] = {
-                "1230591" -- Wooded Hollow Jinjo
-            }
-        },
-        --MAYAHEM TEMPLE
-        [0xB8] = { --MT
-            ["JIGGIES"] = {
-                "1230599",
-                "1230604"
-            },
-            ["JINJOS"] = {
-                "1230552", -- Stadium
-                "1230554", -- Pool
-                "1230555", -- Bridge
-            },
-            ["PAGES"] = {
-                "1230728" -- Top of Treasure Chamber
-            },
-            ["HONEYCOMB"] = {
-                "1230703", -- Entrance
-                "1230704", -- Bovina
-            },
-            ["NOTES"] = {
-                "1230800", -- MT: First Stairs (1)
-                "1230801", -- MT: First Stairs (2)
-                "1230802", -- MT: First Stairs (3)
-                "1230803", -- MT: First Stairs (4)
-                "1230804", -- MT: Second Stairs (1)
-                "1230805", -- MT: Second Stairs (2)
-                "1230806", -- MT: Second Stairs (3)
-                "1230807", -- MT: Second Stairs (4)
-                "1230808", -- MT: Third Stairs (1)
-                "1230809", -- MT: Third Stairs (2)
-                "1230810", -- MT: Third Stairs (3)
-                "1230811", -- MT: Third Stairs (4)
-                "1230812", -- MT: Top Stairs (1)
-                "1230813", -- MT: Top Stairs (2)
-                "1230814", -- MT: Top Stairs (3)
-                "1230815", -- MT: Top Stairs (4)
-            },
-            ["TREBLE"] = {
-                "1230781"
-            },
-            ["SILO"] = {
-                "1230754",
-                "1230755",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xC4] = { --MT - Jade Snake Grove
-            ["JIGGIES"] = {
-                "1230601", -- Golden Goliath
-                "1230605"  -- Ssslumber
-            },
-            ["JINJOS"] = {
-                "1230551" -- Snake Grove
-            },
-            ["PAGES"] = {
-                "1230730" -- Snake Grove
-            },
-            ["GLOWBO"] = {
-                "1230687"
-            },
-            ["SILO"] = {
-                "1230753",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xBB] = { --MT - Mayan Kickball Stadium (Lobby)
-            ["JIGGIES"] = {
-                "1230598", -- Kickball
-            }
-        },
-        [0xB7] = { --MT - Mumbo's Skull
-            ["GLOWBO"] = {
-                "1230686"
-            }
-        },
-        [0xB9] = { --MT - Prison Compound
-            ["JIGGIES"] = {
-                "1230602", --quicksand
-                "1230603", --pillars
-            },
-            ["PAGES"] = {
-                "1230729" -- Prison
-            }
-        },
-        [0x17A] =	{ --MT - Targitzan's Really Sacred Chamber
-            ["JIGGIES"] = {
-                "1230596" --Targitzan
-            }
-        },
-        [0x177] =	{ --MT - Targitzan's Slightly Sacred Chamber
-            ["JIGGIES"] = {
-                "1230597" --Slightly Sacred Chamber
-            }
-        },
-        [0xC5] = { --MT - Treasure Chamber
-            ["JIGGIES"] = {
-                "1230600" --Treasure Chamber
-            },
-            ["HONEYCOMB"] = {
-                "1230705", -- Treasure
-            }
-        },
-        [0x178] = { --MT - Inside Tatgitzan's Temple
-            ["JINJOS"] = {
-                "1230553" -- Temple Jiggy
-            }
-        },
-        --GLITTER GULCH MINE
-        [0xC7] ={ --GGM
-            ["JIGGIES"] = {
-                "1230607", -- Canary Mary
-                "1230612", -- Crushing Shed
-                "1230613" -- Waterfall
-            },
-            ["JINJOS"] = {
-                "1230559", -- Boulder
-                "1230560", -- Tracks
-            },
-            ["PAGES"] = {
-                "1230731", -- Canary
-                "1230732", -- Entrance
-            },
-            ["HONEYCOMB"] = {
-                "1230707", -- boulder
-            },
-            ["GLOWBO"] = {
-                "1230688", -- Entrance
-                "1230689" -- near mumbo
-            },
-            ["NOTES"] = {
-                "1230816", -- by Crushing Shed (1)
-                "1230817", -- by Crushing Shed (2)
-                "1230818", -- by Crushing Shed (3)
-                "1230819", -- by Crushing Shed (4)
-                "1230820", -- Hut Bottom-Left Note
-                "1230821", -- Hut Top-Left Note
-                "1230822", -- Hut Top-Right Note
-                "1230823", -- Hut Mid-Right Note
-                "1230824", -- Hut Bottom-Right Note
-                "1230825", -- Mumbo (1)
-                "1230826", -- Mumbo (2)
-                "1230827", -- Mumbo (3)
-            },
-            ["SILO"] = {
-                "1230757",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xCC] ={ --GGM - Flooded Caves
-            ["JIGGIES"] = {
-                "1230615" -- Flooded Cave
-            }
-        },
-        [0xCA] ={ --GGM - Fuel Depot
-            ["NOTES"] = {
-                "1230828", -- Front-left
-                "1230829", -- Back-left
-                "1230830", -- Back-Right
-                "1230831", -- Front-Right
-            }
-        },
-        [0xD3] = { --GGM - Generator Cavern
-            ["JIGGIES"] = {
-                "1230608" -- Generator Cavern
-            }
-        },
-        [0xD2] = { --GGM - Gloomy Caverns
-            ["JINJOS"] = {
-                "1230557" -- Jail
-            }
-        },
-        [0xD1] = { --GGM - Inside Chuffy's Boiler
-            ["JIGGIES"] = {
-                "1230606" -- King Coal
-            },
-        },
-        [0x163] =	{ --GGM - Ordnance Storage Entrance
-            ["JIGGIES"] = {
-                "1230610" -- Ordnance Storage
-            },
-            ["SILO"] = {
-                "1230758",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xCF] = { --GGM - Power Hut Basement
-            ["JIGGIES"] = {
-                "1230614" -- Power Hut Basement
-            },
-        },
-        [0xD8] = { --GGM - Prospector's Hut
-            ["JIGGIES"] = {
-                "1230611" -- Dilberta
-            },
-        },
-        [0xDA] = { --GGM - Toxic Gas Cave
-            ["JINJOS"] = {
-                "1230558" -- Toxic
-            },
-            ["HONEYCOMB"] = {
-                "1230706", -- boulder
-            }
-        },
-        [0xD7] = { --GGM - Train Station
-            ["HONEYCOMB"] = {
-                "1230708", -- Train
-            }
-        },
-        [0xCD] = { --GGM - Water Storage
-            ["JINJOS"] = {
-                "1230556" -- Water Storage
-            },
-            ["PAGES"] = {
-                "1230733" -- Water Tower
-            },
-            ["TREBLE"] = {
-                "1230782"
-            }
-        },
-        [0xCE] = { --GGM - Waterfall Cavern
-            ["JIGGIES"] = {
-                "1230609" -- Waterfall Cavern
-            },
-        },
-        --WITCHYWORLD
-        [0xD6] = { --WW
-            ["JIGGIES"] = {
-                "1230619", -- Saucer of Peril
-                "1230621", -- Dive of Death
-                "1230622", -- Mrs Boggy
-                "1230625", -- Cactus of Strength
-            },
-            ["JINJOS"] = {
-                "1230561", -- Top of Tent
-                "1230563", -- Van door
-                "1230564", -- dogdem dome
-                "1230565", -- Cactus of Strength
-            },
-            ["PAGES"] = {
-                "1230736" -- Saucer 
-            },
-            ["HONEYCOMB"] = {
-                "1230709", -- Space Zone
-            },
-            ["NOTES"] = {
-                "1230832", -- Around the Tent (1)
-                "1230833", -- Around the Tent (2)
-                "1230834", -- Around the Tent (3)
-                "1230835", -- Around the Tent (4)
-                "1230836", -- Around the Tent (5)
-                "1230837", -- Around the Tent (6)
-                "1230838", -- Around the Tent (7)
-                "1230839", -- Around the Tent (8)
-                "1230840", -- Area 51 Gate (1)
-                "1230841", -- Area 51 Gate (2)
-                "1230842", -- Outside Dodgem Dome (1)
-                "1230843", -- Outside Dodgem Dome (2)
-                "1230844", -- Dive of Death (1)
-                "1230845", -- Dive of Death (2)
-                "1230846", -- Crazy Castle Entrance (1)
-                "1230847", -- Crazy Castle Entrance (2)
-            },
-            ["TREBLE"] = {
-                "1230783"
-            },
-            ["SILO"] = {
-                "1230761",
-                "1230760",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xEA] = { --WW - Cave of Horrors
-            ["JINJOS"] = {
-                "1230562", -- Cave of Horrors
-            }
-        },
-        [0xE1] = { --WW - Crazy Castle Stockade
-            ["JIGGIES"] = {
-                "1230616", -- Hoop Hurry
-                "1230620", -- Balloon Burst
-            },
-            ["HONEYCOMB"] = {
-                "1230711", -- Crazy Castle
-            },
-            ["SILO"] = {
-                "1230762",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xDD] = { --WW - Dodgem Dome Lobby
-            ["JIGGIES"] = {
-                "1230617", -- Dodgem
-            },
-        },
-        [0xEB] = { --WW - Haunted Cavern
-            ["PAGES"] = {
-                "1230734" -- Alcove
-            }
-        },
-        [0xF9] = { --WW - Mr. Patch
-            ["JIGGIES"] = {
-                "1230618", -- Patches
-            },
-        },
-        [0xE6] = { --WW - Star Spinner
-            ["JIGGIES"] = {
-                "1230623", -- Star Spinner
-            },
-        },
-        [0xE7] = { --WW - The Inferno
-            ["JIGGIES"] = {
-                "1230624", -- The Inferno
-            },
-            ["PAGES"] = {
-                "1230735" -- Inferno
-            },
-            ["GLOWBO"] = {
-                "1230690" -- near mumbo
-            }
-        },
-        [0x176] = { -- WW - Mumbo Skull
-            ["HONEYCOMB"] = {
-                "1230710" -- Inferno
-            }
-        },
-        [0xD5] = { --WW - Wumba's Wigwam
-            ["GLOWBO"] = {
-                "1230691"
-            }
-        },
-        --JOLLY ROGER'S LAGOON
-        [0x1A7] = { --JRL
-            ["JIGGIES"] = {
-                "1230627", -- Tiptup
-                "1230635", -- UFO
-                "1230629", -- Pig Pool
-            },
-            ["JINJOS"] = {
-                "1230566", -- alcove
-            },
-            ["HONEYCOMB"] = {
-                "1230714" -- Pipe
-            },
-            ["DOUBLOON"] = {
-                "1230521", -- Town Center Pole 1
-                "1230522", -- Town Center Pole 2
-                "1230523", -- Town Center Pole 3
-                "1230524", -- Town Center Pole 4
-                "1230525", -- Town Center Pole 5
-                "1230526", -- Town Center Pole 6
-                "1230527", -- Silo 1
-                "1230528", -- Silo 2
-                "1230529", -- Silo 3
-                "1230530", -- Silo 4
-                "1230531", -- Toxic Pool 1
-                "1230532", -- Toxic Pool 2
-                "1230533", -- Toxic Pool 3
-                "1230534", -- Toxic Pool 4
-                "1230539", -- Underground 1
-                "1230540", -- Underground 2
-                "1230541", -- Underground 3
-                "1230542", -- Alcove 1
-                "1230543", -- Alcove 2
-                "1230544", -- Alcove 3
-                "1230547", -- Jinjo 1
-                "1230548", -- Jinjo 2
-                "1230549", -- Jinjo 3
-                "1230550", -- Jinjo 4
-            },
-            ["NOTES"] = {
-                "1230848", -- Outside Jollys
-                "1230849", -- Outside Pawno
-                "1230850", -- Outside Blubber
-                "1230851", -- Blubbul 1
-                "1230852", -- Blubbul 2
-            },
-            ["SILO"] = {
-                "1230764",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xF4] = { --JRL - Ancient Swimming Baths
-            ["PAGES"] = {
-                "1230739" -- Baths
-            }
-        },
-        [0x1A8] =	{ --JRL - Atlantis
-            ["JIGGIES"] = {
-                "1230633", -- SEEMEE
-            },
-            ["JINJOS"] = {
-                "1230570", -- Sunken Ship
-            },
-            ["PAGES"] = {
-                "1230738" -- SEEMEE
-            },
-            ["HONEYCOMB"] = {
-                "1230713", -- Atlantis
-                "1230712", -- SEEMEE
-            },
-            ["GLOWBO"] = {
-                "1230693" -- near humba
-            },
-            ["NOTES"] = {
-                "1230853", -- Eel 1
-                "1230854", -- Eel 2
-            },
-            ["TREBLE"] = {
-                "1230784"
-            }
-        },
-        [0xFF] = { --JRL - Blubber's Wave Race Hire
-            ["JINJOS"] = {
-                "1230567", -- Blubber
-            },
-            ["NOTES"] = {
-                "1230855",
-                "1230856",
-                "1230857",
-            }
-        },
-        [0xF6] = {  --JRL - Electric Eel's lair
-            ["SILO"] = {
-                "1230765",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xF8] = { --JRL - Inside the Big Fish
-            ["JINJOS"] = {
-                "1230568", -- Big Fish
-            }
-        },
-        [0xED] =	{ --JRL - Jolly's
-            ["JIGGIES"] = {
-                "1230631", -- Merry Maggie
-            },
-            ["DOUBLOON"] = {
-                "1230545", -- Blackeye 1
-                "1230546" -- Blackeye 2
-            },
-            ["NOTES"] = {
-                "1230861",
-                "1230862",
-                "1230863",
-            },
-            ["SILO"] = {
-                "1230766",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xFC] =	{ --JRL - Lord Woo Fak Fak
-            ["JIGGIES"] = {
-                "1230632", -- Lord Woo
-            },
-        },      
-        [0xEE] =	{ --JRL - Pawno's Emporium
-            ["JIGGIES"] = {
-                "1230634", -- Pawno
-            },
-            ["PAGES"] = {
-                "1230737" -- Pawno
-            },
-            ["GLOWBO"] = {
-                "1230692"
-            },
-            ["NOTES"] = {
-                "1230858",
-                "1230859",
-                "1230860",
-            }
-        },
-        [0x1A9] =	{ --JRL - Sea Bottom
-            ["JIGGIES"] = {
-                "1230633", -- SEEMEE
-            },
-            ["PAGES"] = {
-                "1230738" -- SEEMEE
-            },
-            ["HONEYCOMB"] = {
-                "1230712", -- SEEMEE
-            }
-        },
-        [0x181] =	{ --JRL - Sea Botom Cavern
-            ["JIGGIES"] = {
-                "1230626", -- Mini-Sub Challenge
-            },
-        },
-        [0xF7] = { --JRL - Seaweed Sanctum
-            ["JINJOS"] = {
-                "1230569", -- Seaweed
-            }
-        },
-        [0x1A6] =	{ --JRL - Smuggler's cavern
-            ["JIGGIES"] = {
-                "1230633", -- SEEMEE
-                "1230630", -- Smuggler
-            },
-            ["PAGES"] = {
-                "1230738" -- SEEMEE
-            },
-            ["HONEYCOMB"] = {
-                "1230712", -- SEEMEE
-            }
-        },
-        [0xFA] = { --JRL - Temple of the Fishes
-            ["JIGGIES"] = {
-                "1230628", -- Chris P. Bacon
-            },
-        },
-        [0xEF] = { --JRL - Mumbo's Skull
-            ["DOUBLOON"] = {
-                "1230535", -- Mumbo 1
-                "1230536", -- Mumbo 2
-                "1230537", -- Mumbo 3
-                "1230538" -- Mumbo 4
-            }
-        },
-        --TERRYDACTYLAND
-        [0x112] =	{ --TDL
-            ["JIGGIES"] = {
-                "1230637", -- Dippy
-                "1230644", -- Rocknut
-                "1230645", -- Dino Code
-            },
-            ["JINJOS"] = {
-                "1230571", -- Talon Torp
-                "1230572", -- Entrance
-                "1230573", -- Maze Cave
-                "1230574", -- T-rex
-            },
-            ["PAGES"] = {
-                "1230740", -- Dippy
-                "1230742" -- Boulder
-            },
-            ["HONEYCOMB"] = {
-                "1230715" -- Lakeside
-            },
-            ["GLOWBO"] = {
-                "1230694", -- near unga bunga
-                "1230695" -- near mumbo
-            },
-            ["NOTES"] = {
-                "1230864", -- train 1
-                "1230865", -- train 2
-                "1230866", -- train 3
-                "1230867", -- lakeside 1
-                "1230868", -- lakeside 2
-                "1230869", -- lakeside 3
-                "1230870", -- zigzag 1
-                "1230871", -- zigzag 2
-                "1230872", -- zigzag 3
-                "1230873", -- roarpath 1
-                "1230874", -- roarpath 2
-                "1230875", -- roarpath 3
-            },
-            ["TREBLE"] = {
-                "1230785"
-            },
-            ["SILO"] = {
-                "1230768",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x123] = { --TDL - Inside Chompa's Belly
-            ["JIGGIES"] = {
-                "1230641", -- Chompa
-            },
-        },
-        [0x116] = { --TDL - Inside the Mountain
-            ["JIGGIES"] = {
-                "1230636", -- Under Terry Nest
-            },
-            ["PAGES"] = {
-                "1230741", -- Mountain
-            }
-        },
-        [0x115] = { --TDL - Oogle Boogles' Cave
-            ["JIGGIES"] = {
-                "1230640", -- Oogle Boogle Tribe
-            },
-        },
-        [0x117] = { --TDL - River Passage
-            ["HONEYCOMB"] = {
-                "1230717" -- Riverside
-            },
-            ["NOTES"] = {
-                "1230876",
-                "1230877",
-                "1230878",
-                "1230879",
-            },
-            ["SILO"] = {
-                "1230769",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x119] = { -- Unga Bunga Cave
-            ["SILO"] = {
-                "1230770",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x11A] = { --TDL - Stomping Plains
-            ["JIGGIES"] = {
-                "1230643", -- Stomping
-            },
-            ["JINJOS"] = {
-                "1230575", -- Stomping
-            }
-        },
-        [0x118] =	{ --TDL - Styracosaurus Family Cave
-            ["JIGGIES"] = {
-                "1230638", -- Scrotty
-            },
-            ["HONEYCOMB"] = {
-                "1230716" -- Cave
-            }
-        },
-        [0x113] =	{ --TDL - Terry's Nest
-            ["JIGGIES"] = {
-                "1230639", -- Terry
-                "1230642", -- Terry's Kids
-            },
-        },
-        [0x114] =	{ --TDL - Train Station
-            ["JIGGIES"] = {
-                "1230644", -- Rocknut
-            }
-        },
-        --GRUNTY'S INDUSTRIES
-        [0x100] =	{ --GI
-            ["JIGGIES"] = {
-                "1230646", -- Skivvy
-            },
-            ["JINJOS"] = {
-                "1230580" -- Outside
-            },
-            ["HONEYCOMB"] = {
-                "1230720" -- Chimney
-            },
-            ["TREBLE"] = {
-                "1230786"
-            }
-        },
-        [0x10F] = { --GI - Basement
-            ["JIGGIES"] = {
-                "1230647", -- Weldar
-            },
-            ["NOTES"] = {
-                "1230892",
-                "1230893",
-            }
-        },
-        [0x110] =	{ --GI - Basement (Repair Depot)
-            ["PAGES"] = {
-                "1230745" -- Repair Depot
-            }
-        },
-        [0x111] =	{ --GI - Basement (Waste Disposal)
-            ["JIGGIES"] = {
-                "1230646", -- Underwater Waste Disposal
-                "1230655", -- Plant Box
-                "1230661", -- HFP Oil Drill
-            },
-            ["JINJOS"] = {
-                "1230578" -- Waste Disposal
-            },
-            ["NOTES"] = {
-                "1230890",
-                "1230891",
-            },
-            ["SILO"] = {
-                "1230771",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x101] =	{ --GI - Floor 1
-            ["JIGGIES"] = {
-                "1230646", -- Skivvy
-                "1230652", -- Floor 1 Guarded
-            },
-            ["NOTES"] = {
-                "1230883",
-                "1230884",
-            },
-            ["SILO"] = {
-                "1230773",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x106] =	{ --GI - Floor 2
-            ["JIGGIES"] = {
-                "1230646", -- Skivvy
-            },
-            ["JINJOS"] = {
-                "1230577" -- leg spring
-            },
-            ["PAGES"] = {
-                "1230743" -- Floor 2
-            },
-            ["GLOWBO"] = {
-                "1230696" -- near humba
-            },
-            ["NOTES"] = {
-                "1230885",
-                "1230886",
-                "1230887",
-                "1230888",
-                "1230889"
-            },
-            ["SILO"] = {
-                "1230772",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x108] =	{ --GI - Floor 3
-            ["JIGGIES"] = {
-                "1230646", -- Skivvy
-            },
-            ["HONEYCOMB"] = {
-                "1230718" -- Floor 3
-            },
-            ["GLOWBO"] = {
-                "1230697" -- on boxes
-            },
-            ["NOTES"] = {
-                "1230894",
-                "1230895"
-            }
-        },
-        [0x109] =	{ --GI - Floor 3 (Boiler Plant)
-            ["JINJOS"] = {
-                "1230579" -- Top of Boiler
-            }
-        },
-        [0x10A] =	{ --GI - Floor 3 (Packing Room)
-            ["JIGGIES"] = {
-                "1230654", -- Twinkly Packing
-            },
-        },
-        [0x10B] =	{ --GI - Floor 4
-
-        },
-        [0x10D] =	{ --GI - Floor 4 (Quality Control)
-            ["JIGGIES"] = {
-                "1230651", -- Quality Control
-            },
-        },
-        [0x10E] =	{ --GI - Floor 5
-            ["JIGGIES"] = {
-                "1230646", -- Skivvy
-                "1230650", -- Floor 5
-            },
-            ["JINJOS"] = {
-                "1230576" -- 5 floor
-            }
-        },
-        [0x187] =	{ --GI - Sewer Entrance
-            ["JIGGIES"] = {
-                "1230648", -- Clinker
-            },
-        },
-        [0x102] =	{ --GI - Train Station
-            ["HONEYCOMB"] = {
-                "1230719" -- Train
-            },
-            ["NOTES"] = {
-                "1230880",
-                "1230881",
-                "1230882",
-            }
-        },
-        [0x104] =	{ --GI - Trash Compactor
-            ["JIGGIES"] = {
-                "1230653", -- Trash Compactor
-            },
-        },
-        [0x103] =	{ --GI - Workers' Quarters
-            ["JIGGIES"] = {
-                "1230646", -- Skivvy
-            },
-            ["PAGES"] = {
-                "1230743" -- Loggo
-            }
-        },
-        --HAILFIRE PEAKS
-        [0x131] =	{ --HFP - Boggy's Igloo
-            ["JIGGIES"] = {
-                "1230659", -- Boggy
-            },
-        },
-        [0x12B] =	{ --HFP - Chilli Billi
-            ["JIGGIES"] = {
-                "1230656", -- Brothers
-            },
-        },
-        [0x12C] =	{ --HFP - Chilly Willy
-            ["JIGGIES"] = {
-                "1230656", -- Brothers
-            },
-        },
-        [0x132] =	{ --HFP - Icicle Grotto
-            ["JINJOS"] = {
-                "1230584", -- Grotto
-            },
-            ["PAGES"] = {
-                "1230747" -- Icicle
-            },
-            ["TREBLE"] = {
-                "1230787"
-            }
-        },
-        [0x128] =	{ --HFP - Icy Side
-            ["JIGGIES"] = {
-                "1230660", -- Icy Train Station
-                "1230662", -- Stomping
-                "1230664", -- Aliens
-            },
-            ["JINJOS"] = {
-                "1230585", -- Mildred
-                "1230583" -- Windy Hole
-            },
-            ["PAGES"] = {
-                "1230748" -- Ice Pillar
-            },
-            ["GLOWBO"] = {
-                "1230699",
-                "1230046" -- Mega Glowbo
-            },
-            ["NOTES"] = {
-                "1230904",
-                "1230905",
-                "1230906",
-                "1230907",
-                "1230908",
-                "1230909",
-                "1230910",
-                "1230911",
-            },
-            ["SILO"] = {
-                "1230775",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x133] =	{ --HFP - Inside the Volcano
-            ["JIGGIES"] = {
-                "1230657", -- Volcano
-            },
-            ["HONEYCOMB"] = {
-                "1230721" -- Volcano
-            }
-        },
-        [0x12D] =	{ --HFP - Kickball Stadium lobby
-            ["JIGGIES"] = {
-                "1230663", -- Kickball
-            },
-        },
-        [0x127] =	{ --HFP - Lava Side
-            ["JIGGIES"] = {
-                "1230658", -- Sabreman
-                "1230665", -- Lava waterfall
-            },
-            ["JINJOS"] = {
-                "1230581", -- Lava waterfall
-                "1230582" -- Boiling Pool
-            },
-            ["PAGES"] = {
-                "1230746" -- Lava Side
-            },
-            ["HONEYCOMB"] = {
-                "1230723" -- Lava Side
-            },
-            ["GLOWBO"] = {
-                "1230698"
-            },
-            ["NOTES"] = {
-                "1230896",
-                "1230897",
-                "1230898",
-                "1230899",
-                "1230900",
-                "1230901",
-                "1230902",
-                "1230903",
-            },
-            ["SILO"] = {
-                "1230774",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x129] =	{ --HFP - Lava Train Station
-            ["HONEYCOMB"] = {
-                "1230721" -- Train Station
-            }
-        },
-        --CLOUD CUCKOOLAND
-        [0x136] =	{ --CCL
-            ["JIGGIES"] = {
-                "1230667", -- Mr Fit
-                "1230669", -- Canary Mary 3
-                "1230671", -- Jiggium Plant
-                "1230675", -- Jelly Castle
-            },
-            ["PAGES"] = {
-                "1230749" -- Canary Mary
-            },
-            ["HONEYCOMB"] = {
-                "1230724", -- Dirt Patch
-                "1230726" -- Pot O Gold
-            },
-            ["GLOWBO"] = {
-                "1230700"
-            }
-
-        },
-        [0x13A] =	{ --CCL - Central Cavern
-            ["JIGGIES"] = {
-                "1230674", -- Superstash
-            },
-            ["JINJOS"] = {
-                "1230588" -- Central
-            },
-            ["GLOWBO"] = {
-                "1230701"
-            },
-            ["NOTES"] = {
-                "1230912",
-                "1230913",
-                "1230914",
-                "1230915",
-                "1230916",
-                "1230917",
-                "1230918",
-                "1230919",
-                "1230920",
-                "1230921",
-                "1230922",
-                "1230923",
-                "1230924",
-                "1230925",
-                "1230926",
-                "1230927",
-            },
-            ["TREBLE"] = {
-                "1230788"
-            },
-            ["SILO"] = {
-                "1230776",
-                ["Exceptions"] = {}
-            }
-        },
-        [0x138] =	{ --CCL - Inside the Cheese Wedge
-            ["JIGGIES"] = {
-                "1230672", -- Cheese Wedge
-            },
-            ["JINJOS"] = {
-                "1230587" -- Cheese
-            }
-        },
-        [0x13D] =	{ --CCL - Inside the Pot o' Gold
-            ["JIGGIES"] = {
-                "1230668", -- pot o gold
-            },
-            ["PAGES"] = {
-                "1230750" -- O Gold
-            }
-        },
-        [0x137] =	{ --CCL - Inside the Trash Can
-            ["JIGGIES"] = {
-                "1230673", -- Trash Can
-            },
-            ["JINJOS"] = {
-                "1230586" -- Trash
-            },
-            ["HONEYCOMB"] = {
-                "1230725" -- Trash
-            }
-        },
-        [0x13F] =	{ --CCL - Mingy Jongo's Skull
-            ["JIGGIES"] = {
-                "1230666", -- Mingy Jongo
-            },
-            ["JINJOS"] = {
-                "1230589" -- Mumbo
-            }
-        },
-        [0x13E] =	{ --CCL - Mumbo's Skull
-            ["JIGGIES"] = {
-                "1230666", -- Mingy Jongo
-            },
-            ["JINJOS"] = {
-                "1230589" -- Mumbo
-            }
-        },
-        [0x140] =	{ --CCL - Wumba's Wigwam
-            ["JINJOS"] = {
-                "1230590" -- Balasters
-            }
-        },
-        [0x139] =	{ --CCL - Zubbas' Nest
-            ["JIGGIES"] = {
-                "1230670", -- Zubba
-            },
-            ["PAGES"] = {
-                "1230751" -- Zubba
-            }
-        },
-        --CAULDRON KEEP
-        [0x19A] =	{ --CK - HAG 1
-            ["H1"] = {
-                "1230027"
-            }
-        },
-
+    ["STOPNSWAP"] = {
+        [0xAF] = "1230956",
+        [0xAE] = "1230957",
+    },
+    ["ICEKEY"] = {
+        [0x142] = "1230958"
     }
 }
 
@@ -2060,17 +1055,22 @@ local JINJO_PATTER_MAP = {
     },
 }
 
+-- BMM - Backup Memory Map 
+local BMM =  {};
+
+-- AMM - Actual Memory Map
+local AMM = {};
+
 -- AGI - Archipelago given items
-local AGI_JIGGIES = {};
+local AGI = {};
 local AGI_MOVES = {};
 local AGI_NOTES = {};
-local AGI_TREBLE = {};
 local AGI_STATIONS = {};
 local AGI_CHUFFY = {};
 local AGI_MYSTERY = {};
 local AGI_JINJOS = {
     ["1230501"] = 0, -- white
-    ["1230502"] = 0, -- orange
+    ["1230502"] = 0, -- oragne
     ["1230503"] = 0, -- yellow
     ["1230504"] = 0, -- brown
     ["1230505"] = 0, -- green
@@ -2079,18 +1079,18 @@ local AGI_JINJOS = {
     ["1230508"] = 0, -- purple
     ["1230509"] = 0, -- black
 };
+-- local AGI_TRAPS = {
+--     ["1230799"] = 0,
+-- };
 
 
-local BMM_JIGGIES = {}; -- BMM JIGGIES
-local BMM_NOTES = {};
-local BMM_TREBLE = {};
-local BMM_JINJOS = {}; -- BMM JINJOS
 local BKM = {}; -- Banjo Tooie Movelist Table
+local BKNOTES = {}; -- Notes
 local BKSTATIONS = {} -- Stations
-local BMM_CHUFFY = {} -- King Coal Progress Flag
+local BKCHUFFY = {} -- King Coal Progress Flag
 local BKJINJOFAM = {} -- Jinjo Family check 
 local UNLOCKED_WORLDS = {} -- Worlds unlocked
-local BMM_MYSTERY = {} -- Stop n Swap 
+local BKMYSTERY = {} -- Stop n Swap 
 local ROYSTEN = {} -- Roysten flags. Because the flags are separate from moves, we don't need to save this.
 local CHEATO_REWARDS = {} -- Cheato Check Locations
 local HONEYB_REWARDS = {} -- Honey B Check Locations
@@ -2098,7 +1098,1801 @@ local JIGGY_CHUNKS = {} -- Jiggy Chunky Check Locations
 local DINO_KIDS = {} -- the 3 Dino Kids
 
 
--- Address Map for Banjo-Tooie
+-- Mapping required for AGI Table
+local AGI_MASTER_MAP = {
+    ['JIGGY'] = {
+        ["1230676"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 0,
+            ['name'] = 'JV: White Jinjo Family Jiggy'
+        },
+        ["1230677"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 1,
+            ['name'] = 'Jinjo Village: Orange Jinjo Family Jiggy'
+        },
+        ["1230678"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 2,
+            ['name'] = 'JV: Yellow Jinjo Family Jiggy'
+        },
+        ["1230679"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 3,
+            ['name'] = 'JV: Brown Jinjo Family Jiggy'
+
+        },
+        ["1230680"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 4,
+            ['name'] = 'JV: Green Jinjo Family Jiggy'
+        },
+        ["1230681"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 5,
+            ['name'] = 'JV: Red Jinjo Family Jiggy'
+        },
+        ["1230682"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 6,
+            ['name'] = 'JV: Blue Jinjo Family Jiggy'
+        },
+        ["1230683"] = {
+            ['addr'] = 0x4F,
+            ['bit'] = 7,
+            ['name'] = 'JV: Purple Jinjo Family Jiggy'
+        },
+        ["1230684"] = {
+            ['addr'] = 0x50,
+            ['bit'] = 0,
+            ['name'] = 'JV: Black Jinjo Family Jiggy'
+        },
+        ["1230685"] = {
+            ['addr'] = 0x50,
+            ['bit'] = 1,
+            ['name'] = 'JV: King Jingaling Jiggy'
+        },
+        ["1230596"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 0,
+            ['name'] = 'MT: Targitzan Jiggy'
+        },
+        ["1230597"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 1,
+            ['name'] = 'MT: Slightly Sacred Chamber Jiggy'
+        },
+        ["1230598"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 2,
+            ['name'] = 'MT: Kickball Jiggy'
+        },
+        ["1230599"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 3,
+            ['name'] = 'MT: Bovina Jiggy'
+        },
+        ["1230600"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 4,
+            ['name'] = 'MT: Treasure Chamber Jiggy'
+        },
+        ["1230601"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 5,
+            ['name'] = 'MT: Golden Goliath Jiggy'
+        },
+        ["1230602"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 6,
+            ['name'] = 'MT: Prison Compound Quicksand Jiggy'
+        },
+        ["1230603"] = {
+            ['addr'] = 0x45,
+            ['bit'] = 7,
+            ['name'] = 'MT: Pillars Jiggy'
+        },
+        ["1230604"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 0,
+            ['name'] = 'MT: Top of Temple Jiggy'
+        },
+        ["1230605"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 1,
+            ['name'] = 'MT: Ssslumber Jiggy'
+        },
+        ["1230606"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 2,
+            ['name'] = 'GGM: Old King Coal Jiggy'
+        },
+        ["1230607"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 3,
+            ['name'] = 'GGM: Canary Mary Jiggy'
+        },
+        ["1230608"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 4,
+            ['name'] = 'GGM: Generator Cavern Jiggy'
+        },
+        ["1230609"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 5,
+            ['name'] = 'GGM: Waterfall Cavern Jiggy'
+        },
+        ["1230610"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 6,
+            ['name'] = 'GGM: Ordinance Storage Jiggy'
+        },
+        ["1230611"] = {
+            ['addr'] = 0x46,
+            ['bit'] = 7,
+            ['name'] = 'GGM: Dilberta Jiggy'
+        },
+        ["1230612"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 0,
+            ['name'] = 'GGM: Crushing Shed Jiggy'
+        },
+        ["1230613"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 1,
+            ['name'] = 'GGM: Waterfall Jiggy'
+        },
+        ["1230614"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 2,
+            ['name'] = 'GGM: Power Hut Basement Jiggy'
+        },
+        ["1230615"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 3,
+            ['name'] = 'GGM: Flooded Caves Jiggy'
+        },
+        ["1230616"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 4,
+            ['name'] = 'WW: Hoop Hurry Jiggy'
+        },
+        ["1230617"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 5,
+            ['name'] = 'WW: Dodgems Jiggy'
+        },
+        ["1230618"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 6,
+            ['name'] = 'WW: Mr. Patch Jiggy'
+        },
+        ["1230619"] = {
+            ['addr'] = 0x47,
+            ['bit'] = 7,
+            ['name'] = 'WW: Saucer of Peril Jiggy'
+        },
+        ["1230620"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 0,
+            ['name'] = 'WW: Balloon Burst Jiggy'
+        },
+        ["1230621"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 1,
+            ['name'] = 'WW: Dive of Death Jiggy'
+        },
+        ["1230622"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 2,
+            ['name'] = 'WW: Mrs. Boggy Jiggy'
+        },
+        ["1230623"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 3,
+            ['name'] = 'WW: Star Spinner Jiggy'
+        },
+        ["1230624"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 4,
+            ['name'] = 'WW: The Inferno Jiggy'
+        },
+        ["1230625"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 5,
+            ['name'] = 'WW: Cactus of Strength Jiggy'
+        },
+        ["1230626"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Mini-Sub Challenge Jiggy'
+        },
+        ["1230627"] = {
+            ['addr'] = 0x48,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Tiptup Jiggy'
+        },
+        ["1230628"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 0,
+            ['name'] = 'JRL: Chris P. Bacon Jiggy'
+        },
+        ["1230629"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 1,
+            ['name'] = 'JRL: Pig Pool Jiggy'
+        },
+        ["1230630"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 2,
+            ['name'] = "JRL: Smuggler's Cavern Jiggy"
+        },
+        ["1230631"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Merry Maggie Jiggy'
+        },
+        ["1230632"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Woo Fak Fak Jiggy'
+        },
+        ["1230633"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Seemee Jiggy'
+        },
+        ["1230634"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Pawno Jiggy'
+        },
+        ["1230635"] = {
+            ['addr'] = 0x49,
+            ['bit'] = 7,
+            ['name'] = 'JRL: UFO Jiggy'
+        },
+        ["1230636"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 0,
+            ['name'] = "TDL: Under Terry's Nest Jiggy"
+        },
+        ["1230637"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 1,
+            ['name'] = 'TDL: Dippy Jiggy'
+        },
+        ["1230638"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 2,
+            ['name'] = 'TDL: Scrotty Jiggy'
+        },
+        ["1230639"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 3,
+            ['name'] = 'TDL: Terry Jiggy'
+        },
+        ["1230640"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 4,
+            ['name'] = 'TDL: Oogle Boogle Tribe Jiggy'
+        },
+        ["1230641"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 5,
+            ['name'] = 'TDL: Chompas Belly Jiggy'
+        },
+        ["1230642"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 6,
+            ['name'] = "TDL: Terry's Kids Jiggy"
+        },
+        ["1230643"] = {
+            ['addr'] = 0x4A,
+            ['bit'] = 7,
+            ['name'] = 'TDL: Stomping Plains Jiggy'
+        },
+        ["1230644"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 0,
+            ['name'] = 'TDL: Rocknut Tribe Jiggy'
+        },
+        ["1230645"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 1,
+            ['name'] = 'TDL: Code of the Dinosaurs Jiggy'
+        },
+        ["1230646"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 2,
+            ['name'] = 'GI: Underwater Waste Disposal Plant Jiggy'
+        },
+        ["1230647"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 3,
+            ['name'] = 'GI: Weldar Jiggy'
+        },
+        ["1230648"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 4,
+            ['name'] = "GI: Clinker's Cavern Jiggy"
+        },
+        ["1230649"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 5,
+            ['name'] = 'GI: Skivvies Jiggy'
+        },
+        ["1230650"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 6,
+            ['name'] = 'GI: Floor 5 Jiggy'
+        },
+        ["1230651"] = {
+            ['addr'] = 0x4B,
+            ['bit'] = 7,
+            ['name'] = 'GI: Quality Control Jiggy'
+        },
+        ["1230652"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 0,
+            ['name'] = 'GI: Floor 1 Guarded Jiggy'
+        },
+        ["1230653"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 1,
+            ['name'] = 'GI: Trash Compactor Jiggy'
+        },
+        ["1230654"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 2,
+            ['name'] = 'GI: Twinkly Packing Jiggy'
+        },
+        ["1230655"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 3,
+            ['name'] = 'GI: Waste Disposal Plant Box Jiggy'
+        },
+        ["1230656"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 4,
+            ['name'] = 'HFP: Dragon Brothers Jiggy'
+        },
+        ["1230657"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 5,
+            ['name'] = 'HFP: Inside the Volcano Jiggy'
+        },
+        ["1230658"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 6,
+            ['name'] = 'HFP: Sabreman Jiggy'
+        },
+        ["1230659"] = {
+            ['addr'] = 0x4C,
+            ['bit'] = 7,
+            ['name'] = 'HFP: Boggy Jiggy'
+        },
+        ["1230660"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 0,
+            ['name'] = 'HFP: Icy Side Station Jiggy'
+        },
+        ["1230661"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 1,
+            ['name'] = 'HFP: Oil Drill Jiggy'
+        },
+        ["1230662"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 2,
+            ['name'] = 'HFP: Stomping Plains Jiggy'
+        },
+        ["1230663"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 3,
+            ['name'] = 'HFP: Kickball Jiggy'
+        },
+        ["1230664"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 4,
+            ['name'] = 'HFP: Aliens Jiggy'
+        },
+        ["1230665"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 5,
+            ['name'] = 'HFP: Lava Waterfall Jiggy'
+        },
+        ["1230666"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 6,
+            ['name'] = 'CCL: Mingy Jongo Jiggy'
+        },
+        ["1230667"] = {
+            ['addr'] = 0x4D,
+            ['bit'] = 7,
+            ['name'] = 'CCL: Mr Fit Jiggy'
+        },
+        ["1230668"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 0,
+            ['name'] = "CCL: Pot O' Gold Jiggy"
+        },
+        ["1230669"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 1,
+            ['name'] = 'CCL: Canary Mary Jiggy'
+        },
+        ["1230670"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 2,
+            ['name'] = 'CCL: Zubbas Jiggy'
+        },
+        ["1230671"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 3,
+            ['name'] = 'CCL: Jiggium Plant Jiggy'
+        },
+        ["1230672"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 4,
+            ['name'] = 'CCL: Cheese Wedge Jiggy'
+        },
+        ["1230673"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 5,
+            ['name'] = 'CCL: Trash Can Jiggy'
+        },
+        ["1230674"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 6,
+            ['name'] = 'CCL: Superstash Jiggy'
+        },
+        ["1230675"] = {
+            ['addr'] = 0x4E,
+            ['bit'] = 7,
+            ['name'] = 'CCL: Jelly Castle Jiggy'
+        },
+    },
+    ['JINJO'] = {
+        ["1230591"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 4,
+            ['name'] = 'IoH:Wooded Hollow Jinjo'
+        },
+        ["1230595"] = {
+            ['addr'] = 0x3F,
+            ['bit'] = 0,
+            ['name'] = 'SM: Jinjo'
+        },
+        ["1230594"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 7,
+            ['name'] = 'IoH: Plateau Jinjo'
+        },
+        ["1230551"] = {
+            ['addr'] = 0x39,
+            ['bit'] = 4,
+            ['name'] = 'MT: Jade Snake Grove Jinjo'
+        },
+        ["1230552"] = {
+            ['addr'] = 0x39,
+            ['bit'] = 5,
+            ['name'] = 'MT: Stadium Jinjo'
+        },
+        ["1230553"] = {
+            ['addr'] = 0x39,
+            ['bit'] = 6,
+            ['name'] = 'Mayahem Temple: Targitzan Temple Jinjo'
+        },
+        ["1230554"] = {
+            ['addr'] = 0x39,
+            ['bit'] = 7,
+            ['name'] = 'MT: Water Pool Jinjo'
+        },
+        ["1230555"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 0,
+            ['name'] = 'MT: Bridge Jinjo'
+        },
+        ["1230556"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 1,
+            ['name'] = 'GGM: Water Storage Jinjo'
+        },
+        ["1230557"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 2,
+            ['name'] = 'GGM: Jail Jinjo'
+        },
+        ["1230558"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 3,
+            ['name'] = 'GGM: Toxic Gas Cave Jinjo'
+        },
+        ["1230559"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 4,
+            ['name'] = 'GGM: Boulder Jinjo'
+        },
+        ["1230560"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 5,
+            ['name'] = 'GGM: Mine Tracks Jinjo'
+        },
+        ["1230561"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 6,
+            ['name'] = 'WW: Big Top Jinjo'
+        },
+        ["1230562"] = {
+            ['addr'] = 0x3A,
+            ['bit'] = 7,
+            ['name'] = 'WW: Cave of Horrors Jinjo'
+        },
+        ["1230563"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 0,
+            ['name'] = 'WW: Van Door Jinjo'
+        },
+        ["1230564"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 1,
+            ['name'] = 'WW: Dodgem Dome Jinjo'
+        },
+        ["1230565"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 2,
+            ['name'] = 'WW: Cactus of Strength Jinjo'
+        },
+        ["1230593"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 6,
+            ['name'] = 'IoH: Clifftop Jinjo'
+        },
+        ["1230566"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Lagoon Alcove Jinjo'
+        },
+        ["1230567"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Blubber Jinjo'
+        },
+        ["1230568"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Big Fish Jinjo'
+        },
+        ["1230569"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Seaweed Sanctum Jinjo'
+        },
+        ["1230570"] = {
+            ['addr'] = 0x3B,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Sunken Ship Jinjo'
+        },
+        ["1230592"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 5,
+            ['name'] = 'IoH: Wasteland Jinjo'
+        },
+        ["1230571"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 0,
+            ['name'] = 'TDL: Talon Torp Jinjo'
+        },
+        ["1230572"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 1,
+            ['name'] = 'TDL: Cutscene Skip Jinjo'
+        },
+        ["1230573"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 2,
+            ['name'] = 'TDL: Beside Rocknut Jinjo'
+        },
+        ["1230574"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 3,
+            ['name'] = 'TDL: Big T. Rex Skip Jinjo'
+        },
+        ["1230575"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 4,
+            ['name'] = 'TDL: Stomping Plains Jinjo'
+        },
+        ["1230576"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 5,
+            ['name'] = 'GI: Floor 5 Jinjo'
+        },
+        ["1230577"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 6,
+            ['name'] = 'GI: Leg Spring Jinjo'
+        },
+        ["1230578"] = {
+            ['addr'] = 0x3C,
+            ['bit'] = 7,
+            ['name'] = 'GI: Waste Disposal Plant Jinjo'
+        },
+        ["1230579"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 0,
+            ['name'] = 'GI: Boiler Plant Jinjo'
+        },
+        ["1230580"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 1,
+            ['name'] = 'GI: Outside Jinjo'
+        },
+        ["1230581"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 2,
+            ['name'] = 'HFP: Lava Waterfall Jinjo'
+        },
+        ["1230582"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 3,
+            ['name'] = 'HFP: Boiling Hot Pool Jinjo'
+        },
+        ["1230583"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 4,
+            ['name'] = 'HFP: Windy Hole Jinjo'
+        },
+        ["1230584"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 5,
+            ['name'] = 'HFP: Icicle Grotto Jinjo'
+        },
+        ["1230585"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 6,
+            ['name'] = 'HFP: Mildred Ice Cube Jinjo'
+        },
+        ["1230586"] = {
+            ['addr'] = 0x3D,
+            ['bit'] = 7,
+            ['name'] = 'CCL: Trash Can Jinjo'
+        },
+        ["1230587"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 0,
+            ['name'] = 'CCL: Cheese Wedge Jinjo'
+        },
+        ["1230588"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 1,
+            ['name'] = 'CCL: Central Cavern Jinjo'
+        },
+        ["1230589"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 2,
+            ['name'] = 'CCL: Fake Mumbo Skull Jinjo'
+        },
+        ["1230590"] = {
+            ['addr'] = 0x3E,
+            ['bit'] = 3,
+            ['name'] = 'CCL: Wumba Jinjo'
+        }
+    },
+    ['CHEATO'] = {
+        ["1230752"] = {
+            ['addr'] = 0x59,
+            ['bit'] = 3,
+            ['name'] = 'Spiral Mountain: Cheato Page'
+        },
+        ["1230728"] = {
+            ['addr'] = 0x56,
+            ['bit'] = 3,
+            ['name'] = 'MT: Snake Head Cheato Page'
+        },
+        ["1230729"] = {
+            ['addr'] = 0x56,
+            ['bit'] = 4,
+            ['name'] = 'MT: Prison Compound Cheato Page'
+        },
+        ["1230730"] = {
+            ['addr'] = 0x56,
+            ['bit'] = 5,
+            ['name'] = 'MT: Jade Snake Grove Cheato Page'
+        },
+        ["1230731"] = {
+            ['addr'] = 0x56,
+            ['bit'] = 6,
+            ['name'] = 'GGM: Canary Mary Cheato Page'
+        },
+        ["1230732"] = {
+            ['addr'] = 0x56,
+            ['bit'] = 7,
+            ['name'] = 'GGM: Entrance Cheato Page'
+        },
+        ["1230733"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 0,
+            ['name'] = 'GGM: Water Storage Cheato Page'
+        },
+        ["1230734"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 1,
+            ['name'] = 'WW: The Haunted Cavern Cheato Page'
+        },
+        ["1230735"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 2,
+            ['name'] = 'WW: The Inferno Cheato Page'
+        },
+        ["1230736"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 3,
+            ['name'] = 'WW: Saucer of Peril Cheato Page'
+        },
+        ["1230737"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 4,
+            ['name'] = "JRL: Pawno's Cheato Page"
+        },
+        ["1230738"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Seemee Cheato Page'
+        },
+        ["1230739"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Ancient Baths Cheato Page'
+        },
+        ["1230740"] = {
+            ['addr'] = 0x57,
+            ['bit'] = 7,
+            ['name'] = "TDL: Dippy's Pool Cheato Page"
+        },
+        ["1230741"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 0,
+            ['name'] = 'TDL: Inside the Mountain Cheato Page'
+        },
+        ["1230742"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 1,
+            ['name'] = 'TDL: Boulder Cheato Page'
+        },
+        ["1230743"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 2,
+            ['name'] = 'GI: Loggo Cheato Page'
+        },
+        ["1230744"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 3,
+            ['name'] = 'GI: Floor 2 Cheato Page'
+        },
+        ["1230745"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 4,
+            ['name'] = 'GI: Repair Depot Cheato Page'
+        },
+        ["1230746"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 5,
+            ['name'] = 'HFP: Lava Side Cheato Page'
+        },
+        ["1230747"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 6,
+            ['name'] = 'HFP: Icicle Grotto Cheato Page'
+        },
+        ["1230748"] = {
+            ['addr'] = 0x58,
+            ['bit'] = 7,
+            ['name'] = 'HFP: Icy Side Cheato Page'
+        },
+        ["1230749"] = {
+            ['addr'] = 0x59,
+            ['bit'] = 0,
+            ['name'] = 'CCL: Canary Mary Cheato Page'
+        },
+        ["1230750"] = {
+            ['addr'] = 0x59,
+            ['bit'] = 1,
+            ['name'] = "CCL: Pot O' Gold Cheato Page"
+        },
+        ["1230751"] = {
+            ['addr'] = 0x59,
+            ['bit'] = 2,
+            ['name'] = 'CCL: Zubbas Cheato Page'
+        },
+    },
+    ['HONEYCOMB'] = {
+        ["1230727"] = {
+            ['addr'] = 0x42,
+            ['bit'] = 2,
+            ['name'] = 'Plateau: Honeycomb'
+        },
+        ["1230703"] = {
+            ['addr'] = 0x3F,
+            ['bit'] = 2,
+            ['name'] = 'MT: Entrance Honeycomb'
+        },
+        ["1230704"] = {
+            ['addr'] = 0x3F,
+            ['bit'] = 3,
+            ['name'] = 'MT: Bovina Honeycomb'
+        },
+        ["1230705"] = {
+            ['addr'] = 0x3F,
+            ['bit'] = 4,
+            ['name'] = 'MT: Treasure Chamber Honeycomb'
+        },
+        ["1230706"] = {
+            ['addr'] = 0x3F,
+            ['bit'] = 5,
+            ['name'] = 'GGM: Toxic Gas Cave Honeycomb'
+        },
+        ["1230707"] = {
+            ['addr'] = 0x3F,
+            ['bit'] = 6,
+            ['name'] = 'GGM: Boulder Honeycomb'
+        },
+        ["1230708"] = {
+            ['addr'] = 0x3F,
+            ['bit'] = 7,
+            ['name'] = 'GGM: Train Station Honeycomb'
+        },
+        ["1230709"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 0,
+            ['name'] = 'WW: Space Zone Honeycomb'
+        },
+        ["1230710"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 1,
+            ['name'] = 'WW: Mumbo Skull Honeycomb'
+        },
+        ["1230711"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 2,
+            ['name'] = 'WW: Crazy Castle Honeycomb'
+        },
+        ["1230712"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Seemee Honeycomb'
+        },
+        ["1230713"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Atlantis Honeycomb'
+        },
+        ["1230714"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Waste Pipe Honeycomb'
+        },
+        ["1230715"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 6,
+            ['name'] = 'TDL: Lakeside Honeycomb'
+        },
+        ["1230716"] = {
+            ['addr'] = 0x40,
+            ['bit'] = 7,
+            ['name'] = 'TDL: Styracosaurus Cave Honeycomb'
+        },
+        ["1230717"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 0,
+            ['name'] = 'TDL: River Passage Honeycomb'
+        },
+        ["1230718"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 1,
+            ['name'] = 'GI: Floor 3 Honeycomb'
+        },
+        ["1230719"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 2,
+            ['name'] = 'GI: Train Station Honeycomb'
+        },
+        ["1230720"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 3,
+            ['name'] = 'GI: Chimney Honeycomb'
+        },
+        ["1230721"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 4,
+            ['name'] = 'HFP: Inside the Volcano Honeycomb'
+        },
+        ["1230722"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 5,
+            ['name'] = 'HFP: Train Station Honeycomb'
+        },
+        ["1230723"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 6,
+            ['name'] = 'HFP: Lava Side Honeycomb'
+        },
+        ["1230724"] = {
+            ['addr'] = 0x41,
+            ['bit'] = 7,
+            ['name'] = 'CCL: Dirt Patch Honeycomb'
+        },
+        ["1230725"] = {
+            ['addr'] = 0x42,
+            ['bit'] = 0,
+            ['name'] = 'CCL: Trash Can Honeycomb'
+        },
+        ["1230726"] = {
+            ['addr'] = 0x42,
+            ['bit'] = 1,
+            ['name'] = "CCL: Pot O' Gold Honeycomb"
+        },
+    },
+    ['GLOWBO'] = {
+         ["1230686"] = {
+             ['addr'] = 0x42,
+             ['bit'] = 7,
+             ['name'] = "MT: Mumbo's Glowbo"
+         },
+         ["1230687"] = {
+             ['addr'] = 0x43,
+             ['bit'] = 0,
+             ['name'] = 'MT: Jade Snake Grove Glowbo'
+
+         },
+         ["1230688"] = {
+             ['addr'] = 0x43,
+             ['bit'] = 1,
+             ['name'] = 'GGM: Near Entrance Glowbo'
+
+         },
+         ["1230689"] = {
+             ['addr'] = 0x43,
+             ['bit'] = 2,
+             ['name'] = 'GGM: Mine Entrance 2 Glowbo'
+
+         },
+         ["1230690"] = {
+             ['addr'] = 0x43,
+             ['bit'] = 3,
+             ['name'] = 'WW: The Inferno Glowbo'
+
+         },
+         ["1230691"] = {
+             ['addr'] = 0x43,
+             ['bit'] = 4,
+             ['name'] = "WW: Wumba's Glowbo"
+
+         },
+         ["1230702"] = {
+             ['addr'] = 0x44,
+             ['bit'] = 7,
+             ['name'] = 'Cliff Top: Glowbo'
+
+         },
+         ["1230692"] = {
+             ['addr'] = 0x43,
+             ['bit'] = 5,
+             ['name'] = "JRL: Pawno's Emporium Glowbo"
+
+         },
+         ["1230693"] = {
+             ['addr'] = 0x43,
+             ['bit'] = 6,
+             ['name'] = "JRL: Under Wumba's Wigwam Glowbo"
+
+         },
+         ["1230694"] = {
+             ['addr'] = 0x43,
+             ['bit'] = 7,
+             ['name'] = 'TDL: Unga Bunga Cave Entrance Glowbo'
+
+         },
+         ["1230695"] = {
+             ['addr'] = 0x44,
+             ['bit'] = 0,
+             ['name'] = "TDL: Behind Mumbo's Skull Glowbo"
+
+         },
+         ["1230696"] = {
+             ['addr'] = 0x44,
+             ['bit'] = 1,
+             ['name'] = 'GI: Floor 2 Glowbo'
+
+         },
+         ["1230697"] = {
+             ['addr'] = 0x44,
+             ['bit'] = 2,
+             ['name'] = 'GI: Floor 3 Glowbo'
+
+         },
+         ["1230698"] = {
+             ['addr'] = 0x44,
+             ['bit'] = 3,
+             ['name'] = 'HFP: Lava Side Glowbo'
+
+         },
+         ["1230699"] = {
+             ['addr'] = 0x44,
+             ['bit'] = 4,
+             ['name'] = 'HFP: Icy Side Glowbo'
+
+         },
+         ["1230700"] = {
+             ['addr'] = 0x44,
+             ['bit'] = 5,
+             ['name'] = 'CCL: Green Pool Glowbo'
+
+         },
+         ["1230701"] = {
+             ['addr'] = 0x44,
+             ['bit'] = 6,
+             ['name'] = 'CCL: Central Cavern Glowbo'
+
+         },
+    },
+    ['MEGA GLOWBO'] = {
+        ["1230046"] = {
+            ['addr'] = 0x05,
+            ['bit'] = 6,
+            ['name'] = 'Mega Glowbo'
+        }
+
+    },
+    ['DOUBLOON'] = {
+        ["1230521"] = {
+            ['addr'] = 0x22,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Town Center Pole 1 Doubloon'
+        },
+        ["1230522"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 0,
+            ['name'] = 'JRL: Town Center Pole 2 Doubloon'
+        },
+        ["1230523"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 1,
+            ['name'] = 'JRL: Town Center Pole 3 Doubloon'
+        },
+        ["1230524"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 2,
+            ['name'] = 'JRL: Town Center Pole 4 Doubloon'
+        },
+        ["1230525"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Town Center Pole 5 Doubloon'
+        },
+        ["1230526"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Town Center Pole 6 Doubloon'
+        },
+        ["1230527"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Silo 1 Doubloon'
+        },
+        ["1230528"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Silo 2 Doubloon'
+        },
+        ["1230529"] = {
+            ['addr'] = 0x23,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Silo 3 Doubloon'
+        },
+        ["1230530"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 0,
+            ['name'] = 'JRL: Silo 4 Doubloon'
+        },
+        ["1230531"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 1,
+            ['name'] = 'JRL: Toxic Pool 1 Doubloon'
+        },
+        ["1230532"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 2,
+            ['name'] = 'JRL: Toxic Pool 2 Doubloon'
+        },
+        ["1230533"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Toxic Pool 3 Doubloon'
+        },
+        ["1230534"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Toxic Pool 4 Doubloon'
+        },
+        ["1230535"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Mumbo Skull 1 Doubloon'
+        },
+        ["1230536"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Mumbo Skull 2 Doubloon'
+        },
+        ["1230537"] = {
+            ['addr'] = 0x24,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Mumbo Skull 3 Doubloon'
+        },
+        ["1230538"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 0,
+            ['name'] = 'JRL: Mumbo Skull 4 Doubloon'
+        },
+        ["1230539"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 1,
+            ['name'] = 'JRL: Underground 1 Doubloon'
+        },
+        ["1230540"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 2,
+            ['name'] = 'JRL: Underground 2 Doubloon'
+        },
+        ["1230541"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Underground 3 Doubloon'
+        },
+        ["1230542"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Alcove 1 Doubloon'
+        },
+        ["1230543"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 5,
+            ['name'] = 'JRL: Alcove 2 Doubloon'
+        },
+        ["1230544"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 6,
+            ['name'] = 'JRL: Alcove 3 Doubloon'
+        },
+        ["1230545"] = {
+            ['addr'] = 0x25,
+            ['bit'] = 7,
+            ['name'] = 'JRL: Capt Blackeye 1 Doubloon'
+        },
+        ["1230546"] = {
+            ['addr'] = 0x26,
+            ['bit'] = 0,
+            ['name'] = 'JRL: Capt Blackeye 2 Doubloon'
+        },
+        ["1230547"] = {
+            ['addr'] = 0x26,
+            ['bit'] = 1,
+            ['name'] = 'JRL: Near Jinjo 1 Doubloon'
+        },
+        ["1230548"] = {
+            ['addr'] = 0x26,
+            ['bit'] = 2,
+            ['name'] = 'JRL: Near Jinjo 2 Doubloon'
+        },
+        ["1230549"] = {
+            ['addr'] = 0x26,
+            ['bit'] = 3,
+            ['name'] = 'JRL: Near Jinjo 3 Doubloon'
+        },
+        ["1230550"] = {
+            ['addr'] = 0x26,
+            ['bit'] = 4,
+            ['name'] = 'JRL: Near Jinjo 4 Doubloon'
+        }
+    },
+    ['NOTES'] = {
+        ["1230800"] = {
+            ['addr'] = 0x84,
+            ['bit'] = 7,
+        },
+        ["1230801"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 0,
+        },
+        ["1230802"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 1,
+        },
+        ["1230803"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 2,
+        },
+        ["1230804"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 3,
+        },
+        ["1230805"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 4,
+        },
+        ["1230806"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 5,
+        },
+        ["1230807"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 6,
+        },
+        ["1230808"] = {
+            ['addr'] = 0x85,
+            ['bit'] = 7,
+        },
+        ["1230809"] = {
+            ['addr'] = 0x86,
+            ['bit'] = 0,
+        },
+        ["1230810"] = {
+            ['addr'] = 0x86,
+            ['bit'] = 1,
+        },
+        ["1230811"] = {
+            ['addr'] = 0x86,
+            ['bit'] = 2,
+        },
+        ["1230812"] = {
+            ['addr'] = 0x86,
+            ['bit'] = 3,
+        },
+        ["1230813"] = {
+            ['addr'] = 0x86,
+            ['bit'] = 4,
+        },
+        ["1230814"] = {
+            ['addr'] = 0x86,
+            ['bit'] = 5,
+        },
+        ["1230815"] = {
+            ['addr'] = 0x86,
+            ['bit'] = 6,
+        },
+         -- EO Mayahem Temple
+         ["1230816"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 0,
+        },
+        ["1230817"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 1,
+        },
+        ["1230818"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 2,
+        },
+        ["1230819"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 3,
+        },
+        ["1230820"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 4,
+        },
+        ["1230821"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 5,
+        },
+        ["1230822"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 6,
+        },
+        ["1230823"] = {
+            ['addr'] = 0x87,
+            ['bit'] = 7,
+        },
+        ["1230824"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 0,
+        },
+        ["1230825"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 1,
+        },
+        ["1230826"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 2,
+        },
+        ["1230827"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 3,
+        },
+        ["1230828"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 4,
+        },
+        ["1230829"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 5,
+        },
+        ["1230830"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 6,
+        },
+        ["1230831"] = {
+            ['addr'] = 0x88,
+            ['bit'] = 7,
+        },
+        -- EO GGM
+        ["1230832"] = {
+            ['addr'] = 0x89,
+            ['bit'] = 1,
+        },
+        ["1230833"] = {
+            ['addr'] = 0x89,
+            ['bit'] = 2,
+        },
+        ["1230834"] = {
+            ['addr'] = 0x89,
+            ['bit'] = 3,
+        },
+        ["1230835"] = {
+            ['addr'] = 0x89,
+            ['bit'] = 4,
+        },
+        ["1230836"] = {
+            ['addr'] = 0x89,
+            ['bit'] = 5,
+        },
+        ["1230837"] = {
+            ['addr'] = 0x89,
+            ['bit'] = 6,
+        },
+        ["1230838"] = {
+            ['addr'] = 0x89,
+            ['bit'] = 7,
+        },
+        ["1230839"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 0,
+        },
+        ["1230840"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 1,
+        },
+        ["1230841"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 2,
+        },
+        ["1230842"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 3,
+        },
+        ["1230843"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 4,
+        },
+        ["1230844"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 5,
+        },
+        ["1230845"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 6,
+        },
+        ["1230846"] = {
+            ['addr'] = 0x8A,
+            ['bit'] = 7,
+        },
+        ["1230847"] = {
+            ['addr'] = 0x8B,
+            ['bit'] = 0,
+        },
+        --EO WW
+        ["1230848"] = {
+            ['addr'] = 0x8B,
+            ['bit'] = 2,
+        },
+        ["1230849"] = {
+            ['addr'] = 0x8B,
+            ['bit'] = 3,
+        },
+        ["1230850"] = {
+            ['addr'] = 0x8B,
+            ['bit'] = 4,
+        },
+        ["1230851"] = {
+            ['addr'] = 0x8B,
+            ['bit'] = 5,
+        },
+        ["1230852"] = {
+            ['addr'] = 0x8B,
+            ['bit'] = 6,
+        },
+        ["1230853"] = {
+            ['addr'] = 0x8B,
+            ['bit'] = 7,
+        },
+        ["1230854"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 0,
+        },
+        ["1230855"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 1,
+        },
+        ["1230856"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 2,
+        },
+        ["1230857"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 3,
+        },
+        ["1230858"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 4,
+        },
+        ["1230859"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 5,
+        },
+        ["1230860"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 6,
+        },
+        ["1230861"] = {
+            ['addr'] = 0x8C,
+            ['bit'] = 7,
+        },
+        ["1230862"] = {
+            ['addr'] = 0x8D,
+            ['bit'] = 0,
+        },
+        ["1230863"] = {
+            ['addr'] = 0x8D,
+            ['bit'] = 1,
+        },
+        -- EO JRL
+        ["1230864"] = {
+            ['addr'] = 0x8D,
+            ['bit'] = 3,
+        },
+        ["1230865"] = {
+            ['addr'] = 0x8D,
+            ['bit'] = 4,
+        },
+        ["1230866"] = {
+            ['addr'] = 0x8D,
+            ['bit'] = 5,
+        },
+        ["1230867"] = {
+            ['addr'] = 0x8D,
+            ['bit'] = 6,
+        },
+        ["1230868"] = {
+            ['addr'] = 0x8D,
+            ['bit'] = 7,
+        },
+        ["1230869"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 0,
+        },
+        ["1230870"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 1,
+        },
+        ["1230871"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 2,
+        },
+        ["1230872"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 3,
+        },
+        ["1230873"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 4,
+        },
+        ["1230874"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 5,
+        },
+        ["1230875"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 6,
+        },
+        ["1230876"] = {
+            ['addr'] = 0x8E,
+            ['bit'] = 7,
+        },
+        ["1230877"] = {
+            ['addr'] = 0x8F,
+            ['bit'] = 0,
+        },
+        ["1230878"] = {
+            ['addr'] = 0x8F,
+            ['bit'] = 1,
+        },
+        ["1230879"] = {
+            ['addr'] = 0x8F,
+            ['bit'] = 2,
+        },
+        -- EO TDL
+        ["1230880"] = {
+            ['addr'] = 0x8F,
+            ['bit'] = 4,
+        },
+        ["1230881"] = {
+            ['addr'] = 0x8F,
+            ['bit'] = 5,
+        },
+        ["1230882"] = {
+            ['addr'] = 0x8F,
+            ['bit'] = 6,
+        },
+        ["1230883"] = {
+            ['addr'] = 0x8F,
+            ['bit'] = 7,
+        },
+        ["1230884"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 0,
+        },
+        ["1230885"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 1,
+        },
+        ["1230886"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 2,
+        },
+        ["1230887"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 3,
+        },
+        ["1230888"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 4,
+        },
+        ["1230889"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 5,
+        },
+        ["1230890"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 6,
+        },
+        ["1230891"] = {
+            ['addr'] = 0x90,
+            ['bit'] = 7,
+        },
+        ["1230892"] = {
+            ['addr'] = 0x91,
+            ['bit'] = 0,
+        },
+        ["1230893"] = {
+            ['addr'] = 0x91,
+            ['bit'] = 1,
+        },
+        ["1230894"] = {
+            ['addr'] = 0x91,
+            ['bit'] = 2,
+        },
+        ["1230895"] = {
+            ['addr'] = 0x91,
+            ['bit'] = 3,
+        },
+        -- EO GI
+        ["1230896"] = {
+            ['addr'] = 0x91,
+            ['bit'] = 5,
+        },
+        ["1230897"] = {
+            ['addr'] = 0x91,
+            ['bit'] = 6,
+        },
+        ["1230898"] = {
+            ['addr'] = 0x91,
+            ['bit'] = 7,
+        },
+        ["1230899"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 0,
+        },
+        ["1230900"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 1,
+        },
+        ["1230901"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 2,
+        },
+        ["1230902"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 3,
+        },
+        ["1230903"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 4,
+        },
+        ["1230904"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 5,
+        },
+        ["1230905"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 6,
+        },
+        ["1230906"] = {
+            ['addr'] = 0x92,
+            ['bit'] = 7,
+        },
+        ["1230907"] = {
+            ['addr'] = 0x93,
+            ['bit'] = 0,
+        },
+        ["1230908"] = {
+            ['addr'] = 0x93,
+            ['bit'] = 1,
+        },
+        ["1230909"] = {
+            ['addr'] = 0x93,
+            ['bit'] = 2,
+        },
+        ["1230910"] = {
+            ['addr'] = 0x93,
+            ['bit'] = 3,
+        },
+        ["1230911"] = {
+            ['addr'] = 0x93,
+            ['bit'] = 4,
+        },
+        -- EO HFP
+        ["1230912"] = {
+            ['addr'] = 0x93,
+            ['bit'] = 6,
+        },
+        ["1230913"] = {
+            ['addr'] = 0x93,
+            ['bit'] = 7,
+        },
+        ["1230914"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 0,
+        },
+        ["1230915"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 1,
+        },
+        ["1230916"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 2,
+        },
+        ["1230917"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 3,
+        },
+        ["1230918"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 4,
+        },
+        ["1230919"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 5,
+        },
+        ["1230920"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 6,
+        },
+        ["1230921"] = {
+            ['addr'] = 0x94,
+            ['bit'] = 7,
+        },
+        ["1230922"] = {
+            ['addr'] = 0x95,
+            ['bit'] = 0,
+        },
+        ["1230923"] = {
+            ['addr'] = 0x95,
+            ['bit'] = 1,
+        },
+        ["1230924"] = {
+            ['addr'] = 0x95,
+            ['bit'] = 2,
+        },
+        ["1230925"] = {
+            ['addr'] = 0x95,
+            ['bit'] = 3,
+        },
+        ["1230926"] = {
+            ['addr'] = 0x95,
+            ['bit'] = 4,
+        },
+        ["1230927"] = {
+            ['addr'] = 0x95,
+            ['bit'] = 5,
+        },
+        -- EO CCL
+        ["1230928"] = {
+            ['addr'] = 0x95,
+            ['bit'] = 7,
+        },
+        ["1230929"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 0,
+        },
+        ["1230930"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 1,
+        },
+        ["1230931"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 2,
+        },
+        ["1230932"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 3,
+        },
+        ["1230933"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 4,
+        },
+        ["1230934"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 5,
+        },
+        ["1230935"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 6,
+        },
+        ["1230936"] = {
+            ['addr'] = 0x96,
+            ['bit'] = 7,
+        },
+        ["1230937"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 0,
+        },
+        ["1230938"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 1,
+        },
+        ["1230939"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 2,
+        },
+        ["1230940"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 3,
+        },
+        ["1230941"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 4,
+        },
+        ["1230942"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 5,
+        },
+        ["1230943"] = {
+            ['addr'] = 0x97,
+            ['bit'] = 6,
+        }
+    },
+	["H1"] = {
+	 	["1230027"] = {
+			['addr'] = 0x03,
+			['bit'] = 3,
+            ['name'] = "Hag 1 Defeated"
+		},
+	},
+}
+
+-- Flags not required to send back to BTClient
 local NON_AGI_MAP = {
     ["MOVES"] = {
         ["1230753"] = {
@@ -3142,1749 +3936,7 @@ local NON_AGI_MAP = {
             ['bit'] = 2,
             ['name'] = "GGM: Crushing Shed Jiggy Chunk 3"
         }
-    },
-    --Jinjo Jiggies are part of JINJOFAM
-    ["JIGGIES"] = {
-        ["1230685"] = {
-            ['addr'] = 0x50,
-            ['bit'] = 1,
-            ['name'] = 'JV: King Jingaling Jiggy'
-        },
-        ["1230596"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 0,
-            ['name'] = 'MT: Targitzan Jiggy'
-        },
-        ["1230597"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 1,
-            ['name'] = 'MT: Slightly Sacred Chamber Jiggy'
-        },
-        ["1230598"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 2,
-            ['name'] = 'MT: Kickball Jiggy'
-        },
-        ["1230599"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 3,
-            ['name'] = 'MT: Bovina Jiggy'
-        },
-        ["1230600"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 4,
-            ['name'] = 'MT: Treasure Chamber Jiggy'
-        },
-        ["1230601"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 5,
-            ['name'] = 'MT: Golden Goliath Jiggy'
-        },
-        ["1230602"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 6,
-            ['name'] = 'MT: Prison Compound Quicksand Jiggy'
-        },
-        ["1230603"] = {
-            ['addr'] = 0x45,
-            ['bit'] = 7,
-            ['name'] = 'MT: Pillars Jiggy'
-        },
-        ["1230604"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 0,
-            ['name'] = 'MT: Top of Temple Jiggy'
-        },
-        ["1230605"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 1,
-            ['name'] = 'MT: Ssslumber Jiggy'
-        },
-        ["1230606"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 2,
-            ['name'] = 'GGM: Old King Coal Jiggy'
-        },
-        ["1230607"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 3,
-            ['name'] = 'GGM: Canary Mary Jiggy'
-        },
-        ["1230608"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 4,
-            ['name'] = 'GGM: Generator Cavern Jiggy'
-        },
-        ["1230609"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 5,
-            ['name'] = 'GGM: Waterfall Cavern Jiggy'
-        },
-        ["1230610"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 6,
-            ['name'] = 'GGM: Ordinance Storage Jiggy'
-        },
-        ["1230611"] = {
-            ['addr'] = 0x46,
-            ['bit'] = 7,
-            ['name'] = 'GGM: Dilberta Jiggy'
-        },
-        ["1230612"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 0,
-            ['name'] = 'GGM: Crushing Shed Jiggy'
-        },
-        ["1230613"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 1,
-            ['name'] = 'GGM: Waterfall Jiggy'
-        },
-        ["1230614"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 2,
-            ['name'] = 'GGM: Power Hut Basement Jiggy'
-        },
-        ["1230615"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 3,
-            ['name'] = 'GGM: Flooded Caves Jiggy'
-        },
-        ["1230616"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 4,
-            ['name'] = 'WW: Hoop Hurry Jiggy'
-        },
-        ["1230617"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 5,
-            ['name'] = 'WW: Dodgems Jiggy'
-        },
-        ["1230618"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 6,
-            ['name'] = 'WW: Mr. Patch Jiggy'
-        },
-        ["1230619"] = {
-            ['addr'] = 0x47,
-            ['bit'] = 7,
-            ['name'] = 'WW: Saucer of Peril Jiggy'
-        },
-        ["1230620"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 0,
-            ['name'] = 'WW: Balloon Burst Jiggy'
-        },
-        ["1230621"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 1,
-            ['name'] = 'WW: Dive of Death Jiggy'
-        },
-        ["1230622"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 2,
-            ['name'] = 'WW: Mrs. Boggy Jiggy'
-        },
-        ["1230623"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 3,
-            ['name'] = 'WW: Star Spinner Jiggy'
-        },
-        ["1230624"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 4,
-            ['name'] = 'WW: The Inferno Jiggy'
-        },
-        ["1230625"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 5,
-            ['name'] = 'WW: Cactus of Strength Jiggy'
-        },
-        ["1230626"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 6,
-            ['name'] = 'JRL: Mini-Sub Challenge Jiggy'
-        },
-        ["1230627"] = {
-            ['addr'] = 0x48,
-            ['bit'] = 7,
-            ['name'] = 'JRL: Tiptup Jiggy'
-        },
-        ["1230628"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 0,
-            ['name'] = 'JRL: Chris P. Bacon Jiggy'
-        },
-        ["1230629"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 1,
-            ['name'] = 'JRL: Pig Pool Jiggy'
-        },
-        ["1230630"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 2,
-            ['name'] = "JRL: Smuggler's Cavern Jiggy"
-        },
-        ["1230631"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 3,
-            ['name'] = 'JRL: Merry Maggie Jiggy'
-        },
-        ["1230632"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 4,
-            ['name'] = 'JRL: Woo Fak Fak Jiggy'
-        },
-        ["1230633"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 5,
-            ['name'] = 'JRL: Seemee Jiggy'
-        },
-        ["1230634"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 6,
-            ['name'] = 'JRL: Pawno Jiggy'
-        },
-        ["1230635"] = {
-            ['addr'] = 0x49,
-            ['bit'] = 7,
-            ['name'] = 'JRL: UFO Jiggy'
-        },
-        ["1230636"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 0,
-            ['name'] = "TDL: Under Terry's Nest Jiggy"
-        },
-        ["1230637"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 1,
-            ['name'] = 'TDL: Dippy Jiggy'
-        },
-        ["1230638"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 2,
-            ['name'] = 'TDL: Scrotty Jiggy'
-        },
-        ["1230639"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 3,
-            ['name'] = 'TDL: Terry Jiggy'
-        },
-        ["1230640"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 4,
-            ['name'] = 'TDL: Oogle Boogle Tribe Jiggy'
-        },
-        ["1230641"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 5,
-            ['name'] = 'TDL: Chompas Belly Jiggy'
-        },
-        ["1230642"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 6,
-            ['name'] = "TDL: Terry's Kids Jiggy"
-        },
-        ["1230643"] = {
-            ['addr'] = 0x4A,
-            ['bit'] = 7,
-            ['name'] = 'TDL: Stomping Plains Jiggy'
-        },
-        ["1230644"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 0,
-            ['name'] = 'TDL: Rocknut Tribe Jiggy'
-        },
-        ["1230645"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 1,
-            ['name'] = 'TDL: Code of the Dinosaurs Jiggy'
-        },
-        ["1230646"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 2,
-            ['name'] = 'GI: Underwater Waste Disposal Plant Jiggy'
-        },
-        ["1230647"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 3,
-            ['name'] = 'GI: Weldar Jiggy'
-        },
-        ["1230648"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 4,
-            ['name'] = "GI: Clinker's Cavern Jiggy"
-        },
-        ["1230649"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 5,
-            ['name'] = 'GI: Skivvies Jiggy'
-        },
-        ["1230650"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 6,
-            ['name'] = 'GI: Floor 5 Jiggy'
-        },
-        ["1230651"] = {
-            ['addr'] = 0x4B,
-            ['bit'] = 7,
-            ['name'] = 'GI: Quality Control Jiggy'
-        },
-        ["1230652"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 0,
-            ['name'] = 'GI: Floor 1 Guarded Jiggy'
-        },
-        ["1230653"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 1,
-            ['name'] = 'GI: Trash Compactor Jiggy'
-        },
-        ["1230654"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 2,
-            ['name'] = 'GI: Twinkly Packing Jiggy'
-        },
-        ["1230655"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 3,
-            ['name'] = 'GI: Waste Disposal Plant Box Jiggy'
-        },
-        ["1230656"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 4,
-            ['name'] = 'HFP: Dragon Brothers Jiggy'
-        },
-        ["1230657"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 5,
-            ['name'] = 'HFP: Inside the Volcano Jiggy'
-        },
-        ["1230658"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 6,
-            ['name'] = 'HFP: Sabreman Jiggy'
-        },
-        ["1230659"] = {
-            ['addr'] = 0x4C,
-            ['bit'] = 7,
-            ['name'] = 'HFP: Boggy Jiggy'
-        },
-        ["1230660"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 0,
-            ['name'] = 'HFP: Icy Side Station Jiggy'
-        },
-        ["1230661"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 1,
-            ['name'] = 'HFP: Oil Drill Jiggy'
-        },
-        ["1230662"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 2,
-            ['name'] = 'HFP: Stomping Plains Jiggy'
-        },
-        ["1230663"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 3,
-            ['name'] = 'HFP: Kickball Jiggy'
-        },
-        ["1230664"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 4,
-            ['name'] = 'HFP: Aliens Jiggy'
-        },
-        ["1230665"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 5,
-            ['name'] = 'HFP: Lava Waterfall Jiggy'
-        },
-        ["1230666"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 6,
-            ['name'] = 'CCL: Mingy Jongo Jiggy'
-        },
-        ["1230667"] = {
-            ['addr'] = 0x4D,
-            ['bit'] = 7,
-            ['name'] = 'CCL: Mr Fit Jiggy'
-        },
-        ["1230668"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 0,
-            ['name'] = "CCL: Pot O' Gold Jiggy"
-        },
-        ["1230669"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 1,
-            ['name'] = 'CCL: Canary Mary Jiggy'
-        },
-        ["1230670"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 2,
-            ['name'] = 'CCL: Zubbas Jiggy'
-        },
-        ["1230671"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 3,
-            ['name'] = 'CCL: Jiggium Plant Jiggy'
-        },
-        ["1230672"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 4,
-            ['name'] = 'CCL: Cheese Wedge Jiggy'
-        },
-        ["1230673"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 5,
-            ['name'] = 'CCL: Trash Can Jiggy'
-        },
-        ["1230674"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 6,
-            ['name'] = 'CCL: Superstash Jiggy'
-        },
-        ["1230675"] = {
-            ['addr'] = 0x4E,
-            ['bit'] = 7,
-            ['name'] = 'CCL: Jelly Castle Jiggy'
-        }
-    },
-    ['JINJOS'] = {
-        ["1230591"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 4,
-            ['name'] = 'IoH:Wooded Hollow Jinjo'
-        },
-        ["1230595"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 0,
-            ['name'] = 'SM: Jinjo'
-        },
-        ["1230594"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 7,
-            ['name'] = 'IoH: Plateau Jinjo'
-        },
-        ["1230551"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 4,
-            ['name'] = 'MT: Jade Snake Grove Jinjo'
-        },
-        ["1230552"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 5,
-            ['name'] = 'MT: Stadium Jinjo'
-        },
-        ["1230553"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 6,
-            ['name'] = 'Mayahem Temple: Targitzan Temple Jinjo'
-        },
-        ["1230554"] = {
-            ['addr'] = 0x39,
-            ['bit'] = 7,
-            ['name'] = 'MT: Water Pool Jinjo'
-        },
-        ["1230555"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 0,
-            ['name'] = 'MT: Bridge Jinjo'
-        },
-        ["1230556"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 1,
-            ['name'] = 'GGM: Water Storage Jinjo'
-        },
-        ["1230557"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 2,
-            ['name'] = 'GGM: Jail Jinjo'
-        },
-        ["1230558"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 3,
-            ['name'] = 'GGM: Toxic Gas Cave Jinjo'
-        },
-        ["1230559"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 4,
-            ['name'] = 'GGM: Boulder Jinjo'
-        },
-        ["1230560"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 5,
-            ['name'] = 'GGM: Mine Tracks Jinjo'
-        },
-        ["1230561"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 6,
-            ['name'] = 'WW: Big Top Jinjo'
-        },
-        ["1230562"] = {
-            ['addr'] = 0x3A,
-            ['bit'] = 7,
-            ['name'] = 'WW: Cave of Horrors Jinjo'
-        },
-        ["1230563"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 0,
-            ['name'] = 'WW: Van Door Jinjo'
-        },
-        ["1230564"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 1,
-            ['name'] = 'WW: Dodgem Dome Jinjo'
-        },
-        ["1230565"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 2,
-            ['name'] = 'WW: Cactus of Strength Jinjo'
-        },
-        ["1230593"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 6,
-            ['name'] = 'IoH: Clifftop Jinjo'
-        },
-        ["1230566"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 3,
-            ['name'] = 'JRL: Lagoon Alcove Jinjo'
-        },
-        ["1230567"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 4,
-            ['name'] = 'JRL: Blubber Jinjo'
-        },
-        ["1230568"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 5,
-            ['name'] = 'JRL: Big Fish Jinjo'
-        },
-        ["1230569"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 6,
-            ['name'] = 'JRL: Seaweed Sanctum Jinjo'
-        },
-        ["1230570"] = {
-            ['addr'] = 0x3B,
-            ['bit'] = 7,
-            ['name'] = 'JRL: Sunken Ship Jinjo'
-        },
-        ["1230592"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 5,
-            ['name'] = 'IoH: Wasteland Jinjo'
-        },
-        ["1230571"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 0,
-            ['name'] = 'TDL: Talon Torp Jinjo'
-        },
-        ["1230572"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 1,
-            ['name'] = 'TDL: Cutscene Skip Jinjo'
-        },
-        ["1230573"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 2,
-            ['name'] = 'TDL: Beside Rocknut Jinjo'
-        },
-        ["1230574"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 3,
-            ['name'] = 'TDL: Big T. Rex Skip Jinjo'
-        },
-        ["1230575"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 4,
-            ['name'] = 'TDL: Stomping Plains Jinjo'
-        },
-        ["1230576"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 5,
-            ['name'] = 'GI: Floor 5 Jinjo'
-        },
-        ["1230577"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 6,
-            ['name'] = 'GI: Leg Spring Jinjo'
-        },
-        ["1230578"] = {
-            ['addr'] = 0x3C,
-            ['bit'] = 7,
-            ['name'] = 'GI: Waste Disposal Plant Jinjo'
-        },
-        ["1230579"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 0,
-            ['name'] = 'GI: Boiler Plant Jinjo'
-        },
-        ["1230580"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 1,
-            ['name'] = 'GI: Outside Jinjo'
-        },
-        ["1230581"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 2,
-            ['name'] = 'HFP: Lava Waterfall Jinjo'
-        },
-        ["1230582"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 3,
-            ['name'] = 'HFP: Boiling Hot Pool Jinjo'
-        },
-        ["1230583"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 4,
-            ['name'] = 'HFP: Windy Hole Jinjo'
-        },
-        ["1230584"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 5,
-            ['name'] = 'HFP: Icicle Grotto Jinjo'
-        },
-        ["1230585"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 6,
-            ['name'] = 'HFP: Mildred Ice Cube Jinjo'
-        },
-        ["1230586"] = {
-            ['addr'] = 0x3D,
-            ['bit'] = 7,
-            ['name'] = 'CCL: Trash Can Jinjo'
-        },
-        ["1230587"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 0,
-            ['name'] = 'CCL: Cheese Wedge Jinjo'
-        },
-        ["1230588"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 1,
-            ['name'] = 'CCL: Central Cavern Jinjo'
-        },
-        ["1230589"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 2,
-            ['name'] = 'CCL: Fake Mumbo Skull Jinjo'
-        },
-        ["1230590"] = {
-            ['addr'] = 0x3E,
-            ['bit'] = 3,
-            ['name'] = 'CCL: Wumba Jinjo'
-        }
-    },
-    ['PAGES'] = {
-        ["1230752"] = {
-            ['addr'] = 0x59,
-            ['bit'] = 3,
-            ['name'] = 'Spiral Mountain: Cheato Page'
-        },
-        ["1230728"] = {
-            ['addr'] = 0x56,
-            ['bit'] = 3,
-            ['name'] = 'MT: Snake Head Cheato Page'
-        },
-        ["1230729"] = {
-            ['addr'] = 0x56,
-            ['bit'] = 4,
-            ['name'] = 'MT: Prison Compound Cheato Page'
-        },
-        ["1230730"] = {
-            ['addr'] = 0x56,
-            ['bit'] = 5,
-            ['name'] = 'MT: Jade Snake Grove Cheato Page'
-        },
-        ["1230731"] = {
-            ['addr'] = 0x56,
-            ['bit'] = 6,
-            ['name'] = 'GGM: Canary Mary Cheato Page'
-        },
-        ["1230732"] = {
-            ['addr'] = 0x56,
-            ['bit'] = 7,
-            ['name'] = 'GGM: Entrance Cheato Page'
-        },
-        ["1230733"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 0,
-            ['name'] = 'GGM: Water Storage Cheato Page'
-        },
-        ["1230734"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 1,
-            ['name'] = 'WW: The Haunted Cavern Cheato Page'
-        },
-        ["1230735"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 2,
-            ['name'] = 'WW: The Inferno Cheato Page'
-        },
-        ["1230736"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 3,
-            ['name'] = 'WW: Saucer of Peril Cheato Page'
-        },
-        ["1230737"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 4,
-            ['name'] = "JRL: Pawno's Cheato Page"
-        },
-        ["1230738"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 5,
-            ['name'] = 'JRL: Seemee Cheato Page'
-        },
-        ["1230739"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 6,
-            ['name'] = 'JRL: Ancient Baths Cheato Page'
-        },
-        ["1230740"] = {
-            ['addr'] = 0x57,
-            ['bit'] = 7,
-            ['name'] = "TDL: Dippy's Pool Cheato Page"
-        },
-        ["1230741"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 0,
-            ['name'] = 'TDL: Inside the Mountain Cheato Page'
-        },
-        ["1230742"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 1,
-            ['name'] = 'TDL: Boulder Cheato Page'
-        },
-        ["1230743"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 2,
-            ['name'] = 'GI: Loggo Cheato Page'
-        },
-        ["1230744"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 3,
-            ['name'] = 'GI: Floor 2 Cheato Page'
-        },
-        ["1230745"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 4,
-            ['name'] = 'GI: Repair Depot Cheato Page'
-        },
-        ["1230746"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 5,
-            ['name'] = 'HFP: Lava Side Cheato Page'
-        },
-        ["1230747"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 6,
-            ['name'] = 'HFP: Icicle Grotto Cheato Page'
-        },
-        ["1230748"] = {
-            ['addr'] = 0x58,
-            ['bit'] = 7,
-            ['name'] = 'HFP: Icy Side Cheato Page'
-        },
-        ["1230749"] = {
-            ['addr'] = 0x59,
-            ['bit'] = 0,
-            ['name'] = 'CCL: Canary Mary Cheato Page'
-        },
-        ["1230750"] = {
-            ['addr'] = 0x59,
-            ['bit'] = 1,
-            ['name'] = "CCL: Pot O' Gold Cheato Page"
-        },
-        ["1230751"] = {
-            ['addr'] = 0x59,
-            ['bit'] = 2,
-            ['name'] = 'CCL: Zubbas Cheato Page'
-        },
-    },
-    ['HONEYCOMB'] = {
-        ["1230727"] = {
-            ['addr'] = 0x42,
-            ['bit'] = 2,
-            ['name'] = 'Plateau: Honeycomb'
-        },
-        ["1230703"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 2,
-            ['name'] = 'MT: Entrance Honeycomb'
-        },
-        ["1230704"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 3,
-            ['name'] = 'MT: Bovina Honeycomb'
-        },
-        ["1230705"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 4,
-            ['name'] = 'MT: Treasure Chamber Honeycomb'
-        },
-        ["1230706"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 5,
-            ['name'] = 'GGM: Toxic Gas Cave Honeycomb'
-        },
-        ["1230707"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 6,
-            ['name'] = 'GGM: Boulder Honeycomb'
-        },
-        ["1230708"] = {
-            ['addr'] = 0x3F,
-            ['bit'] = 7,
-            ['name'] = 'GGM: Train Station Honeycomb'
-        },
-        ["1230709"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 0,
-            ['name'] = 'WW: Space Zone Honeycomb'
-        },
-        ["1230710"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 1,
-            ['name'] = 'WW: Mumbo Skull Honeycomb'
-        },
-        ["1230711"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 2,
-            ['name'] = 'WW: Crazy Castle Honeycomb'
-        },
-        ["1230712"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 3,
-            ['name'] = 'JRL: Seemee Honeycomb'
-        },
-        ["1230713"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 4,
-            ['name'] = 'JRL: Atlantis Honeycomb'
-        },
-        ["1230714"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 5,
-            ['name'] = 'JRL: Waste Pipe Honeycomb'
-        },
-        ["1230715"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 6,
-            ['name'] = 'TDL: Lakeside Honeycomb'
-        },
-        ["1230716"] = {
-            ['addr'] = 0x40,
-            ['bit'] = 7,
-            ['name'] = 'TDL: Styracosaurus Cave Honeycomb'
-        },
-        ["1230717"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 0,
-            ['name'] = 'TDL: River Passage Honeycomb'
-        },
-        ["1230718"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 1,
-            ['name'] = 'GI: Floor 3 Honeycomb'
-        },
-        ["1230719"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 2,
-            ['name'] = 'GI: Train Station Honeycomb'
-        },
-        ["1230720"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 3,
-            ['name'] = 'GI: Chimney Honeycomb'
-        },
-        ["1230721"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 4,
-            ['name'] = 'HFP: Inside the Volcano Honeycomb'
-        },
-        ["1230722"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 5,
-            ['name'] = 'HFP: Train Station Honeycomb'
-        },
-        ["1230723"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 6,
-            ['name'] = 'HFP: Lava Side Honeycomb'
-        },
-        ["1230724"] = {
-            ['addr'] = 0x41,
-            ['bit'] = 7,
-            ['name'] = 'CCL: Dirt Patch Honeycomb'
-        },
-        ["1230725"] = {
-            ['addr'] = 0x42,
-            ['bit'] = 0,
-            ['name'] = 'CCL: Trash Can Honeycomb'
-        },
-        ["1230726"] = {
-            ['addr'] = 0x42,
-            ['bit'] = 1,
-            ['name'] = "CCL: Pot O' Gold Honeycomb"
-        },
-    },
-    ['GLOWBO'] = {
-        ["1230046"] = {
-            ['addr'] = 0x05,
-            ['bit'] = 6,
-            ['name'] = 'Mega Glowbo'
-        },
-        ["1230686"] = {
-            ['addr'] = 0x42,
-            ['bit'] = 7,
-            ['name'] = "MT: Mumbo's Glowbo"
-        },
-        ["1230687"] = {
-            ['addr'] = 0x43,
-            ['bit'] = 0,
-            ['name'] = 'MT: Jade Snake Grove Glowbo'
-
-        },
-        ["1230688"] = {
-            ['addr'] = 0x43,
-            ['bit'] = 1,
-            ['name'] = 'GGM: Near Entrance Glowbo'
-
-        },
-        ["1230689"] = {
-            ['addr'] = 0x43,
-            ['bit'] = 2,
-            ['name'] = 'GGM: Mine Entrance 2 Glowbo'
-
-        },
-        ["1230690"] = {
-            ['addr'] = 0x43,
-            ['bit'] = 3,
-            ['name'] = 'WW: The Inferno Glowbo'
-
-        },
-        ["1230691"] = {
-            ['addr'] = 0x43,
-            ['bit'] = 4,
-            ['name'] = "WW: Wumba's Glowbo"
-
-        },
-        ["1230702"] = {
-            ['addr'] = 0x44,
-            ['bit'] = 7,
-            ['name'] = 'Cliff Top: Glowbo'
-
-        },
-        ["1230692"] = {
-            ['addr'] = 0x43,
-            ['bit'] = 5,
-            ['name'] = "JRL: Pawno's Emporium Glowbo"
-
-        },
-        ["1230693"] = {
-            ['addr'] = 0x43,
-            ['bit'] = 6,
-            ['name'] = "JRL: Under Wumba's Wigwam Glowbo"
-
-        },
-        ["1230694"] = {
-            ['addr'] = 0x43,
-            ['bit'] = 7,
-            ['name'] = 'TDL: Unga Bunga Cave Entrance Glowbo'
-
-        },
-        ["1230695"] = {
-            ['addr'] = 0x44,
-            ['bit'] = 0,
-            ['name'] = "TDL: Behind Mumbo's Skull Glowbo"
-
-        },
-        ["1230696"] = {
-            ['addr'] = 0x44,
-            ['bit'] = 1,
-            ['name'] = 'GI: Floor 2 Glowbo'
-
-        },
-        ["1230697"] = {
-            ['addr'] = 0x44,
-            ['bit'] = 2,
-            ['name'] = 'GI: Floor 3 Glowbo'
-
-        },
-        ["1230698"] = {
-            ['addr'] = 0x44,
-            ['bit'] = 3,
-            ['name'] = 'HFP: Lava Side Glowbo'
-
-        },
-        ["1230699"] = {
-            ['addr'] = 0x44,
-            ['bit'] = 4,
-            ['name'] = 'HFP: Icy Side Glowbo'
-
-        },
-        ["1230700"] = {
-            ['addr'] = 0x44,
-            ['bit'] = 5,
-            ['name'] = 'CCL: Green Pool Glowbo'
-
-        },
-        ["1230701"] = {
-            ['addr'] = 0x44,
-            ['bit'] = 6,
-            ['name'] = 'CCL: Central Cavern Glowbo'
-
-        },
-    },
-    ['DOUBLOON'] = {
-        ["1230521"] = {
-            ['addr'] = 0x22,
-            ['bit'] = 7,
-            ['name'] = 'JRL: Town Center Pole 1 Doubloon'
-        },
-        ["1230522"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 0,
-            ['name'] = 'JRL: Town Center Pole 2 Doubloon'
-        },
-        ["1230523"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 1,
-            ['name'] = 'JRL: Town Center Pole 3 Doubloon'
-        },
-        ["1230524"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 2,
-            ['name'] = 'JRL: Town Center Pole 4 Doubloon'
-        },
-        ["1230525"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 3,
-            ['name'] = 'JRL: Town Center Pole 5 Doubloon'
-        },
-        ["1230526"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 4,
-            ['name'] = 'JRL: Town Center Pole 6 Doubloon'
-        },
-        ["1230527"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 5,
-            ['name'] = 'JRL: Silo 1 Doubloon'
-        },
-        ["1230528"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 6,
-            ['name'] = 'JRL: Silo 2 Doubloon'
-        },
-        ["1230529"] = {
-            ['addr'] = 0x23,
-            ['bit'] = 7,
-            ['name'] = 'JRL: Silo 3 Doubloon'
-        },
-        ["1230530"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 0,
-            ['name'] = 'JRL: Silo 4 Doubloon'
-        },
-        ["1230531"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 1,
-            ['name'] = 'JRL: Toxic Pool 1 Doubloon'
-        },
-        ["1230532"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 2,
-            ['name'] = 'JRL: Toxic Pool 2 Doubloon'
-        },
-        ["1230533"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 3,
-            ['name'] = 'JRL: Toxic Pool 3 Doubloon'
-        },
-        ["1230534"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 4,
-            ['name'] = 'JRL: Toxic Pool 4 Doubloon'
-        },
-        ["1230535"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 5,
-            ['name'] = 'JRL: Mumbo Skull 1 Doubloon'
-        },
-        ["1230536"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 6,
-            ['name'] = 'JRL: Mumbo Skull 2 Doubloon'
-        },
-        ["1230537"] = {
-            ['addr'] = 0x24,
-            ['bit'] = 7,
-            ['name'] = 'JRL: Mumbo Skull 3 Doubloon'
-        },
-        ["1230538"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 0,
-            ['name'] = 'JRL: Mumbo Skull 4 Doubloon'
-        },
-        ["1230539"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 1,
-            ['name'] = 'JRL: Underground 1 Doubloon'
-        },
-        ["1230540"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 2,
-            ['name'] = 'JRL: Underground 2 Doubloon'
-        },
-        ["1230541"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 3,
-            ['name'] = 'JRL: Underground 3 Doubloon'
-        },
-        ["1230542"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 4,
-            ['name'] = 'JRL: Alcove 1 Doubloon'
-        },
-        ["1230543"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 5,
-            ['name'] = 'JRL: Alcove 2 Doubloon'
-        },
-        ["1230544"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 6,
-            ['name'] = 'JRL: Alcove 3 Doubloon'
-        },
-        ["1230545"] = {
-            ['addr'] = 0x25,
-            ['bit'] = 7,
-            ['name'] = 'JRL: Capt Blackeye 1 Doubloon'
-        },
-        ["1230546"] = {
-            ['addr'] = 0x26,
-            ['bit'] = 0,
-            ['name'] = 'JRL: Capt Blackeye 2 Doubloon'
-        },
-        ["1230547"] = {
-            ['addr'] = 0x26,
-            ['bit'] = 1,
-            ['name'] = 'JRL: Near Jinjo 1 Doubloon'
-        },
-        ["1230548"] = {
-            ['addr'] = 0x26,
-            ['bit'] = 2,
-            ['name'] = 'JRL: Near Jinjo 2 Doubloon'
-        },
-        ["1230549"] = {
-            ['addr'] = 0x26,
-            ['bit'] = 3,
-            ['name'] = 'JRL: Near Jinjo 3 Doubloon'
-        },
-        ["1230550"] = {
-            ['addr'] = 0x26,
-            ['bit'] = 4,
-            ['name'] = 'JRL: Near Jinjo 4 Doubloon'
-        }
-    },
-    ['NOTES'] = {
-        ["1230800"] = {
-            ['addr'] = 0x84,
-            ['bit'] = 7,
-        },
-        ["1230801"] = {
-            ['addr'] = 0x85,
-            ['bit'] = 0,
-        },
-        ["1230802"] = {
-            ['addr'] = 0x85,
-            ['bit'] = 1,
-        },
-        ["1230803"] = {
-            ['addr'] = 0x85,
-            ['bit'] = 2,
-        },
-        ["1230804"] = {
-            ['addr'] = 0x85,
-            ['bit'] = 3,
-        },
-        ["1230805"] = {
-            ['addr'] = 0x85,
-            ['bit'] = 4,
-        },
-        ["1230806"] = {
-            ['addr'] = 0x85,
-            ['bit'] = 5,
-        },
-        ["1230807"] = {
-            ['addr'] = 0x85,
-            ['bit'] = 6,
-        },
-        ["1230808"] = {
-            ['addr'] = 0x85,
-            ['bit'] = 7,
-        },
-        ["1230809"] = {
-            ['addr'] = 0x86,
-            ['bit'] = 0,
-        },
-        ["1230810"] = {
-            ['addr'] = 0x86,
-            ['bit'] = 1,
-        },
-        ["1230811"] = {
-            ['addr'] = 0x86,
-            ['bit'] = 2,
-        },
-        ["1230812"] = {
-            ['addr'] = 0x86,
-            ['bit'] = 3,
-        },
-        ["1230813"] = {
-            ['addr'] = 0x86,
-            ['bit'] = 4,
-        },
-        ["1230814"] = {
-            ['addr'] = 0x86,
-            ['bit'] = 5,
-        },
-        ["1230815"] = {
-            ['addr'] = 0x86,
-            ['bit'] = 6,
-        },
-         -- EO Mayahem Temple
-         ["1230816"] = {
-            ['addr'] = 0x87,
-            ['bit'] = 0,
-        },
-        ["1230817"] = {
-            ['addr'] = 0x87,
-            ['bit'] = 1,
-        },
-        ["1230818"] = {
-            ['addr'] = 0x87,
-            ['bit'] = 2,
-        },
-        ["1230819"] = {
-            ['addr'] = 0x87,
-            ['bit'] = 3,
-        },
-        ["1230820"] = {
-            ['addr'] = 0x87,
-            ['bit'] = 4,
-        },
-        ["1230821"] = {
-            ['addr'] = 0x87,
-            ['bit'] = 5,
-        },
-        ["1230822"] = {
-            ['addr'] = 0x87,
-            ['bit'] = 6,
-        },
-        ["1230823"] = {
-            ['addr'] = 0x87,
-            ['bit'] = 7,
-        },
-        ["1230824"] = {
-            ['addr'] = 0x88,
-            ['bit'] = 0,
-        },
-        ["1230825"] = {
-            ['addr'] = 0x88,
-            ['bit'] = 1,
-        },
-        ["1230826"] = {
-            ['addr'] = 0x88,
-            ['bit'] = 2,
-        },
-        ["1230827"] = {
-            ['addr'] = 0x88,
-            ['bit'] = 3,
-        },
-        ["1230828"] = {
-            ['addr'] = 0x88,
-            ['bit'] = 4,
-        },
-        ["1230829"] = {
-            ['addr'] = 0x88,
-            ['bit'] = 5,
-        },
-        ["1230830"] = {
-            ['addr'] = 0x88,
-            ['bit'] = 6,
-        },
-        ["1230831"] = {
-            ['addr'] = 0x88,
-            ['bit'] = 7,
-        },
-        -- EO GGM
-        ["1230832"] = {
-            ['addr'] = 0x89,
-            ['bit'] = 1,
-        },
-        ["1230833"] = {
-            ['addr'] = 0x89,
-            ['bit'] = 2,
-        },
-        ["1230834"] = {
-            ['addr'] = 0x89,
-            ['bit'] = 3,
-        },
-        ["1230835"] = {
-            ['addr'] = 0x89,
-            ['bit'] = 4,
-        },
-        ["1230836"] = {
-            ['addr'] = 0x89,
-            ['bit'] = 5,
-        },
-        ["1230837"] = {
-            ['addr'] = 0x89,
-            ['bit'] = 6,
-        },
-        ["1230838"] = {
-            ['addr'] = 0x89,
-            ['bit'] = 7,
-        },
-        ["1230839"] = {
-            ['addr'] = 0x8A,
-            ['bit'] = 0,
-        },
-        ["1230840"] = {
-            ['addr'] = 0x8A,
-            ['bit'] = 1,
-        },
-        ["1230841"] = {
-            ['addr'] = 0x8A,
-            ['bit'] = 2,
-        },
-        ["1230842"] = {
-            ['addr'] = 0x8A,
-            ['bit'] = 3,
-        },
-        ["1230843"] = {
-            ['addr'] = 0x8A,
-            ['bit'] = 4,
-        },
-        ["1230844"] = {
-            ['addr'] = 0x8A,
-            ['bit'] = 5,
-        },
-        ["1230845"] = {
-            ['addr'] = 0x8A,
-            ['bit'] = 6,
-        },
-        ["1230846"] = {
-            ['addr'] = 0x8A,
-            ['bit'] = 7,
-        },
-        ["1230847"] = {
-            ['addr'] = 0x8B,
-            ['bit'] = 0,
-        },
-        --EO WW
-        ["1230848"] = {
-            ['addr'] = 0x8B,
-            ['bit'] = 2,
-        },
-        ["1230849"] = {
-            ['addr'] = 0x8B,
-            ['bit'] = 3,
-        },
-        ["1230850"] = {
-            ['addr'] = 0x8B,
-            ['bit'] = 4,
-        },
-        ["1230851"] = {
-            ['addr'] = 0x8B,
-            ['bit'] = 5,
-        },
-        ["1230852"] = {
-            ['addr'] = 0x8B,
-            ['bit'] = 6,
-        },
-        ["1230853"] = {
-            ['addr'] = 0x8B,
-            ['bit'] = 7,
-        },
-        ["1230854"] = {
-            ['addr'] = 0x8C,
-            ['bit'] = 0,
-        },
-        ["1230855"] = {
-            ['addr'] = 0x8C,
-            ['bit'] = 1,
-        },
-        ["1230856"] = {
-            ['addr'] = 0x8C,
-            ['bit'] = 2,
-        },
-        ["1230857"] = {
-            ['addr'] = 0x8C,
-            ['bit'] = 3,
-        },
-        ["1230858"] = {
-            ['addr'] = 0x8C,
-            ['bit'] = 4,
-        },
-        ["1230859"] = {
-            ['addr'] = 0x8C,
-            ['bit'] = 5,
-        },
-        ["1230860"] = {
-            ['addr'] = 0x8C,
-            ['bit'] = 6,
-        },
-        ["1230861"] = {
-            ['addr'] = 0x8C,
-            ['bit'] = 7,
-        },
-        ["1230862"] = {
-            ['addr'] = 0x8D,
-            ['bit'] = 0,
-        },
-        ["1230863"] = {
-            ['addr'] = 0x8D,
-            ['bit'] = 1,
-        },
-        -- EO JRL
-        ["1230864"] = {
-            ['addr'] = 0x8D,
-            ['bit'] = 3,
-        },
-        ["1230865"] = {
-            ['addr'] = 0x8D,
-            ['bit'] = 4,
-        },
-        ["1230866"] = {
-            ['addr'] = 0x8D,
-            ['bit'] = 5,
-        },
-        ["1230867"] = {
-            ['addr'] = 0x8D,
-            ['bit'] = 6,
-        },
-        ["1230868"] = {
-            ['addr'] = 0x8D,
-            ['bit'] = 7,
-        },
-        ["1230869"] = {
-            ['addr'] = 0x8E,
-            ['bit'] = 0,
-        },
-        ["1230870"] = {
-            ['addr'] = 0x8E,
-            ['bit'] = 1,
-        },
-        ["1230871"] = {
-            ['addr'] = 0x8E,
-            ['bit'] = 2,
-        },
-        ["1230872"] = {
-            ['addr'] = 0x8E,
-            ['bit'] = 3,
-        },
-        ["1230873"] = {
-            ['addr'] = 0x8E,
-            ['bit'] = 4,
-        },
-        ["1230874"] = {
-            ['addr'] = 0x8E,
-            ['bit'] = 5,
-        },
-        ["1230875"] = {
-            ['addr'] = 0x8E,
-            ['bit'] = 6,
-        },
-        ["1230876"] = {
-            ['addr'] = 0x8E,
-            ['bit'] = 7,
-        },
-        ["1230877"] = {
-            ['addr'] = 0x8F,
-            ['bit'] = 0,
-        },
-        ["1230878"] = {
-            ['addr'] = 0x8F,
-            ['bit'] = 1,
-        },
-        ["1230879"] = {
-            ['addr'] = 0x8F,
-            ['bit'] = 2,
-        },
-        -- EO TDL
-        ["1230880"] = {
-            ['addr'] = 0x8F,
-            ['bit'] = 4,
-        },
-        ["1230881"] = {
-            ['addr'] = 0x8F,
-            ['bit'] = 5,
-        },
-        ["1230882"] = {
-            ['addr'] = 0x8F,
-            ['bit'] = 6,
-        },
-        ["1230883"] = {
-            ['addr'] = 0x8F,
-            ['bit'] = 7,
-        },
-        ["1230884"] = {
-            ['addr'] = 0x90,
-            ['bit'] = 0,
-        },
-        ["1230885"] = {
-            ['addr'] = 0x90,
-            ['bit'] = 1,
-        },
-        ["1230886"] = {
-            ['addr'] = 0x90,
-            ['bit'] = 2,
-        },
-        ["1230887"] = {
-            ['addr'] = 0x90,
-            ['bit'] = 3,
-        },
-        ["1230888"] = {
-            ['addr'] = 0x90,
-            ['bit'] = 4,
-        },
-        ["1230889"] = {
-            ['addr'] = 0x90,
-            ['bit'] = 5,
-        },
-        ["1230890"] = {
-            ['addr'] = 0x90,
-            ['bit'] = 6,
-        },
-        ["1230891"] = {
-            ['addr'] = 0x90,
-            ['bit'] = 7,
-        },
-        ["1230892"] = {
-            ['addr'] = 0x91,
-            ['bit'] = 0,
-        },
-        ["1230893"] = {
-            ['addr'] = 0x91,
-            ['bit'] = 1,
-        },
-        ["1230894"] = {
-            ['addr'] = 0x91,
-            ['bit'] = 2,
-        },
-        ["1230895"] = {
-            ['addr'] = 0x91,
-            ['bit'] = 3,
-        },
-        -- EO GI
-        ["1230896"] = {
-            ['addr'] = 0x91,
-            ['bit'] = 5,
-        },
-        ["1230897"] = {
-            ['addr'] = 0x91,
-            ['bit'] = 6,
-        },
-        ["1230898"] = {
-            ['addr'] = 0x91,
-            ['bit'] = 7,
-        },
-        ["1230899"] = {
-            ['addr'] = 0x92,
-            ['bit'] = 0,
-        },
-        ["1230900"] = {
-            ['addr'] = 0x92,
-            ['bit'] = 1,
-        },
-        ["1230901"] = {
-            ['addr'] = 0x92,
-            ['bit'] = 2,
-        },
-        ["1230902"] = {
-            ['addr'] = 0x92,
-            ['bit'] = 3,
-        },
-        ["1230903"] = {
-            ['addr'] = 0x92,
-            ['bit'] = 4,
-        },
-        ["1230904"] = {
-            ['addr'] = 0x92,
-            ['bit'] = 5,
-        },
-        ["1230905"] = {
-            ['addr'] = 0x92,
-            ['bit'] = 6,
-        },
-        ["1230906"] = {
-            ['addr'] = 0x92,
-            ['bit'] = 7,
-        },
-        ["1230907"] = {
-            ['addr'] = 0x93,
-            ['bit'] = 0,
-        },
-        ["1230908"] = {
-            ['addr'] = 0x93,
-            ['bit'] = 1,
-        },
-        ["1230909"] = {
-            ['addr'] = 0x93,
-            ['bit'] = 2,
-        },
-        ["1230910"] = {
-            ['addr'] = 0x93,
-            ['bit'] = 3,
-        },
-        ["1230911"] = {
-            ['addr'] = 0x93,
-            ['bit'] = 4,
-        },
-        -- EO HFP
-        ["1230912"] = {
-            ['addr'] = 0x93,
-            ['bit'] = 6,
-        },
-        ["1230913"] = {
-            ['addr'] = 0x93,
-            ['bit'] = 7,
-        },
-        ["1230914"] = {
-            ['addr'] = 0x94,
-            ['bit'] = 0,
-        },
-        ["1230915"] = {
-            ['addr'] = 0x94,
-            ['bit'] = 1,
-        },
-        ["1230916"] = {
-            ['addr'] = 0x94,
-            ['bit'] = 2,
-        },
-        ["1230917"] = {
-            ['addr'] = 0x94,
-            ['bit'] = 3,
-        },
-        ["1230918"] = {
-            ['addr'] = 0x94,
-            ['bit'] = 4,
-        },
-        ["1230919"] = {
-            ['addr'] = 0x94,
-            ['bit'] = 5,
-        },
-        ["1230920"] = {
-            ['addr'] = 0x94,
-            ['bit'] = 6,
-        },
-        ["1230921"] = {
-            ['addr'] = 0x94,
-            ['bit'] = 7,
-        },
-        ["1230922"] = {
-            ['addr'] = 0x95,
-            ['bit'] = 0,
-        },
-        ["1230923"] = {
-            ['addr'] = 0x95,
-            ['bit'] = 1,
-        },
-        ["1230924"] = {
-            ['addr'] = 0x95,
-            ['bit'] = 2,
-        },
-        ["1230925"] = {
-            ['addr'] = 0x95,
-            ['bit'] = 3,
-        },
-        ["1230926"] = {
-            ['addr'] = 0x95,
-            ['bit'] = 4,
-        },
-        ["1230927"] = {
-            ['addr'] = 0x95,
-            ['bit'] = 5,
-        },
-        -- EO CCL
-        ["1230928"] = {
-            ['addr'] = 0x95,
-            ['bit'] = 7,
-        },
-        ["1230929"] = {
-            ['addr'] = 0x96,
-            ['bit'] = 0,
-        },
-        ["1230930"] = {
-            ['addr'] = 0x96,
-            ['bit'] = 1,
-        },
-        ["1230931"] = {
-            ['addr'] = 0x96,
-            ['bit'] = 2,
-        },
-        ["1230932"] = {
-            ['addr'] = 0x96,
-            ['bit'] = 3,
-        },
-        ["1230933"] = {
-            ['addr'] = 0x96,
-            ['bit'] = 4,
-        },
-        ["1230934"] = {
-            ['addr'] = 0x96,
-            ['bit'] = 5,
-        },
-        ["1230935"] = {
-            ['addr'] = 0x96,
-            ['bit'] = 6,
-        },
-        ["1230936"] = {
-            ['addr'] = 0x96,
-            ['bit'] = 7,
-        },
-        ["1230937"] = {
-            ['addr'] = 0x97,
-            ['bit'] = 0,
-        },
-        ["1230938"] = {
-            ['addr'] = 0x97,
-            ['bit'] = 1,
-        },
-        ["1230939"] = {
-            ['addr'] = 0x97,
-            ['bit'] = 2,
-        },
-        ["1230940"] = {
-            ['addr'] = 0x97,
-            ['bit'] = 3,
-        },
-        ["1230941"] = {
-            ['addr'] = 0x97,
-            ['bit'] = 4,
-        },
-        ["1230942"] = {
-            ['addr'] = 0x97,
-            ['bit'] = 5,
-        },
-        ["1230943"] = {
-            ['addr'] = 0x97,
-            ['bit'] = 6,
-        }
-    },
-    ["H1"] = {
-        ["1230027"] = {
-           ['addr'] = 0x03,
-           ['bit'] = 3,
-           ['name'] = "Hag 1 Defeated"
-       },
-   },
+    }
 }
 
 -- Properties of world entrances and associated puzzles
@@ -4981,6 +4033,59 @@ local WORLD_ENTRANCE_MAP = {
     },
 }
 
+function readAPLocationChecks(type)
+    local checks = {}
+    if type ~= "BMM"
+    then
+        for check_type, location in pairs(AGI_MASTER_MAP)
+        do
+            if USE_BMM_ONLY_TBL == true
+            then
+                if check_type == USE_BMM_ONLY_TYP
+                then
+                    for locId, value in pairs(BMM[check_type])
+                    do
+                        if checks[check_type] == nil
+                        then
+                            checks[check_type] = {}
+                        end
+                        checks[check_type][locId] = value
+                    end
+                else
+                    for locId, table in pairs(location)
+                    do
+                        if checks[check_type] == nil
+                        then
+                            checks[check_type] = {}
+                        end
+                        checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
+                    end
+                end
+            else
+                for locId, table in pairs(location)
+                do
+                    if checks[check_type] == nil
+                    then
+                        checks[check_type] = {}
+                    end
+                    checks[check_type][locId] = BTRAMOBJ:checkFlag(table['addr'], table['bit'], table['name'])
+                end
+            end
+        end
+        return checks;
+    else
+        return BMM;
+    end
+end
+
+function init_AGI()
+    local checks = {}
+    for location, value in pairs(AGI_MASTER_MAP['JIGGY'])
+    do
+        AGI['JIGGY'][location] = false
+    end
+end
+
 function hag1_phase_skips()
     local tmp_flg_pointer = 0x12C774
     local beginning_phase_offset = 0x09
@@ -4991,407 +4096,119 @@ function hag1_phase_skips()
     mainmemory.writebyte(pointer_addr + ending_phase_offset, 31); -- Skips Part 2
 end
 
----------------------------------- JIGGIES ---------------------------------
+---------------------------------- BKNOTES ---------------------------------
 
-function init_JIGGIES(type, getReceiveMap) -- Initialize JIGGIES
-    for locationId,v in pairs(NON_AGI_MAP["JIGGIES"])
+function init_BKNOTES(type) -- Initialize BMK
+    local checks = {}
+    for k,v in pairs(NON_AGI_MAP['TREBLE'])
     do
-        if type == "BMM"
+        if type == "BKNOTES"
         then
-            BMM_JIGGIES[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
+            BKNOTES[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
         elseif type == "AGI"
         then
-            AGI_JIGGIES[locationId] = false
+            checks[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK_AGI")
         end
     end
-    if type == "AGI" and getReceiveMap == true
-    then
-        for _, locationId in pairs(receive_map)
-        do
-            if locationId == "1230515"
-            then
-                obtained_AP_JIGGY()
-            end
-        end
-    end
+    return checks
 end
 
-function restore_BMM_JIGGIES() --Only run while unpausing 
-    if BMM_BACKUP_JIGGY == true and AGI_JIGGY_SET == true
+function set_checked_BKNOTES() --Only run transitioning maps
+    if ASSET_MAP_CHECK["TREBLE"][CURRENT_MAP] == nil --Happens when exiting map too quickly when entering a new map
     then
-        for locationId,v in pairs(NON_AGI_MAP["JIGGIES"]) do
-            if BMM_JIGGIES[locationId] == true
-            then
-                BTRAMOBJ:setFlag(v['addr'], v['bit']);
-            else
-                BTRAMOBJ:clearFlag(v['addr'], v['bit']);
-            end
-        end
-        BMM_BACKUP_JIGGY = false
-        AGI_JIGGY_SET = false
-        if DEBUG_JIGGY == true
+        if DEBUG == true 
         then
-            print("JIGGY BMM RESTORED")
+            print("Canceling Clearing of Treble")
         end
+        return false
     end
+    local noteId = ASSET_MAP_CHECK["TREBLE"][CURRENT_MAP];
+    local get_addr = NON_AGI_MAP['TREBLE'][noteId];
+    if BKNOTES[noteId] == true
+    then
+        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_CHECK");
+    else
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKNOTES_CHECK");
+    end
+    return true;
 end
 
-function set_AP_JIGGIES() -- Only run while Pausing or Transistion to certain maps
-    if BMM_BACKUP_JIGGY == true and AGI_JIGGY_SET == false
-    then
-        for locationId, value in pairs(AGI_JIGGIES)
-        do
-            local get_addr = NON_AGI_MAP["JIGGIES"][locationId]
-            if value == true
-            then
-                BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
-            else
-                BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
-            end
-        end
-        AGI_JIGGY_SET = true
-        if DEBUG_JIGGY == true
-        then
-            print("AGI JIGGIES SET")
-        end
-    end
-end
-
-function obtained_AP_JIGGY()
-    if DEBUG_JIGGY == true
-    then
-        print("Jiggy Obtained")
-    end
-    for locationId, value in pairs(AGI_JIGGIES)
+function set_AP_BKNOTES() -- Only run after Transistion
+    for noteId, value in pairs(AGI_NOTES)
     do
-        if value == false
-        then
-            AGI_JIGGIES[locationId] = true;
-            if AGI_JIGGY_SET == true
-            then
-                local get_addr = NON_AGI_MAP["JIGGIES"][tostring(locationId)]
-                BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
-            end
-            break
-        end
-    end
-    JIGGY_COUNT = JIGGY_COUNT + 1
-end
-
-function jiggy_ui_update()
-    JIGGY_COUNT = 0
-    for _, value in pairs(AGI_JIGGIES)
-    do
+        local get_addr = NON_AGI_MAP['TREBLE'][noteId]
         if value == true
         then
-            JIGGY_COUNT = JIGGY_COUNT + 1
-        end
-    end
-    mainmemory.write_u16_be(0x11B0BC, JIGGY_COUNT)
-end
-
-function backup_BMM_JIGGIES()
-    if BMM_BACKUP_JIGGY == false
-    then
-        for locationId,v in pairs(NON_AGI_MAP["JIGGIES"]) do
-            if BTRAMOBJ:checkFlag(v['addr'], v['bit']) == true
-            then
-                BMM_JIGGIES[locationId] = true
-            else
-                BMM_JIGGIES[locationId] = false
-            end
-        end
-        BMM_BACKUP_JIGGY = true
-        if DEBUG_JIGGY == true
-        then
-            print("JIGGY BMM SET")
-        end
-        set_AP_JIGGIES()
-    end
-end
-
-function jiggy_check()
-    local checks = {}
-    if GAME_LOADED == true
-    then
-        if BMM_BACKUP_JIGGY == true
-        then
-            if DEBUG == true
-            then
-                print("Setting BMM Jiggies")
-            end
-            return BMM_JIGGIES
-        end
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
-        then
-            if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["JIGGIES"] ~= nil
-            then
-                for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["JIGGIES"])
-                do
-                    checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["JIGGIES"][locationId]['addr'], NON_AGI_MAP["JIGGIES"][locationId]['bit'])
-                    if DEBUG_JIGGY == true
-                    then
-                        print(NON_AGI_MAP["JIGGIES"][locationId]['name']..":"..tostring(checks[locationId]))
-                    end
-                end
-            end
-        end
-        for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"]["ALL"]["JIGGIES"])
-        do
-            checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["JIGGIES"][locationId]['addr'], NON_AGI_MAP["JIGGIES"][locationId]['bit'])
-            -- if DEBUG_JIGGY == true
-            -- then
-            --     print(NON_AGI_MAP["JIGGIES"][locationId]['name'] .. ":" .. tostring(checks[locationId]))
-            -- end
-        end
-    end
-    return checks
-end
-
-function no_puzzle_skip()
-    if MAP_TRANSITION == true and NEXT_MAP == 0x14F and BMM_BACKUP_JIGGY == false --Wooded Hollow
-    then
-        backup_BMM_JIGGIES()
-    elseif MAP_TRANSITION == true and NEXT_MAP == 0x151 and BMM_BACKUP_JIGGY == false -- Jiggywiggy Temple
-    then
-        backup_BMM_JIGGIES()
-    elseif MAP_TRANSITION == true and BMM_BACKUP_JIGGY == true and NEXT_MAP ~= 0x14F and NEXT_MAP ~= 0x151  --Exiting Wooded Hollow
-    then
-        restore_BMM_JIGGIES()
-    end
-end
-
-function hag1_open()
-    if GAME_LOADED == true
-    then
-        if GOAL_TYPE == 0
-        then
-            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-                BTRAMOBJ:setFlag(0x6E, 3);
-                table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                print("HAG 1 is now unlocked!")
-            end
-        elseif GOAL_TYPE == 4
-        then
-            local token_count = 0;
-            for id, itemId in pairs(receive_map)
-            do
-                if itemId == "1230798"
-                then
-                    token_count = token_count + 1
-                end
-            end
-            if token_count >= 32
-            then
-                if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
-                    BTRAMOBJ:setFlag(0x6E, 3);
-                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                    print("HAG 1 is now unlocked!")
-                end
-            end
+            BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_SET");
+        else
+            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKNOTES_SET");
         end
     end
 end
 
-function check_open_level(show_message)  -- See if entrance conditions for a level have been met    
-    if DEBUG == true then
-        print(JIGGY_COUNT)
-    end
-    for _, values in pairs(WORLD_ENTRANCE_MAP)
-    do
-        if values["opened"] == false
-        then
-            if JIGGY_COUNT >= values["defaultCost"]
-            then
-                if DEBUG == true
-                then
-                    print(values["defaultName"] .. tostring(values["defaultCost"]))
-                end
-                BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                if values["locationId"] ~= "0"
-                then
-                    UNLOCKED_WORLDS[values["locationId"]] = true
-                end
-                if ENABLE_AP_WORLDS == false
-                then
-                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
-                end
-                values["opened"] = true
-                if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
-                    and show_message == true
-                then
-                    if ENABLE_AP_WORLDS == false
-                    then
-                        table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
-                        print(values["defaultName"] .. " is now unlocked!")
-                    end
-                end
-            end
-        else --Make sure its open regardless but no message
-            if JIGGY_COUNT >= values["defaultCost"] and values["opened"] == true
-            then
-                BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                if ENABLE_AP_WORLDS == false
-                then
-                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
-                end
-            end
-        end
-    end
-end
-
-function SolvingPuzzle(mapaddr) -- Avoid false checks when working on puzzles -- Not Used?
-    if CURRENT_MAP ~= 0x151 --The Temple
-    then
-        return false
-    end
-    if mapaddr == 0xC5 or mapaddr == 0xD8 or mapaddr == 0x152 or mapaddr == 0xE1
-        or mapaddr == 0x154 or mapaddr == 0xF4 or mapaddr == 0x155 or mapaddr == 0x114
-        or mapaddr == 0x15A or mapaddr == 0x107 or mapaddr == 0x15C or mapaddr == 0x129
-        or mapaddr == 0x13A or mapaddr == 0x151 or mapaddr == 0x15D or mapaddr == 0x160
-    then
-        return true
-    end
-end
-
----------------------------------- TREBLE ---------------------------------
-
-function init_TREBLE(type, getReceiveMap) -- Initialize Notes
-    for locationId,v in pairs(NON_AGI_MAP["TREBLE"])
-    do
-        if type == "BMM"
-        then
-            BMM_TREBLE[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
-        elseif type == "AGI"
-        then
-            AGI_TREBLE[locationId] = false
-        end
-    end
-    if type == "AGI" and getReceiveMap == true
-    then
-        for _, locationId in pairs(receive_map)
-        do
-            if locationId == "1230516"
-            then
-                obtained_AP_TREBLE()
-            end
-        end
-    end
-end
-
-function restore_BMM_TREBLE() --Only run while unpausing 
-    if BMM_BACKUP_TREBLE == true and AGI_TREBLE_SET == true
-    then
-        for locationId,v in pairs(NON_AGI_MAP["TREBLE"]) do
-            if BMM_TREBLE[locationId] == true
-            then
-                BTRAMOBJ:setFlag(v['addr'], v['bit']);
-            else
-                BTRAMOBJ:clearFlag(v['addr'], v['bit']);
-            end
-        end
-        BMM_BACKUP_TREBLE = false
-        AGI_TREBLE_SET = false
-    end
-end
-
--- Treble UI is part of Notes
-
-function set_AP_TREBLE() -- Only run while Pausing or Transistion to certain maps
-    if BMM_BACKUP_TREBLE == true and AGI_TREBLE_SET == false
-    then
-        for locationId, value in pairs(AGI_TREBLE)
-        do
-            local get_addr = NON_AGI_MAP["TREBLE"][locationId]
-            if value == true
-            then
-                BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
-            else
-                BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
-            end
-        end
-        AGI_TREBLE_SET = true
-    end
-end
-
-function obtained_AP_TREBLE()
-    if DEBUG == true
-    then
-        print("Treble Obtained")
-    end
-    for locationId, value in pairs(AGI_TREBLE)
+function obtained_AP_BKNOTE()
+    for locationId, value in pairs(AGI_NOTES)
     do
         if value == false
         then
-            AGI_TREBLE[locationId] = true;
-            if AGI_TREBLE_SET == true
-            then
-                local get_addr = NON_AGI_MAP["TREBLE"][tostring(locationId)]
-                BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
-            end
+            AGI_NOTES[locationId] = true;
+            local get_addr = NON_AGI_MAP['TREBLE'][tostring(locationId)]
+            BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKNOTES_OBTAIN");
             break
         end
     end
 end
 
-function backup_BMM_TREBLE()
-    if BMM_BACKUP_TREBLE == false
+function getTreblePlayerModel()
+    if TREBLE_WAIT_TIMER <= 3
     then
-        for locationId,v in pairs(NON_AGI_MAP["TREBLE"]) do
-            if BTRAMOBJ:checkFlag(v['addr'], v['bit']) == true
-            then
-                BMM_TREBLE[locationId] = true
-            else
-                BMM_TREBLE[locationId] = false
-            end
-        end
-        BMM_BACKUP_TREBLE = true
-        set_AP_TREBLE()
-    end
-end
-
-function treble_check()
-    local checks = {}
-    if GAME_LOADED == true
-    then
-        if BMM_BACKUP_TREBLE == true
+        if DEBUG == true
         then
-            if DEBUG == true
-            then
-                print("Setting BMM TREBLE")
-            end
-            return BMM_TREBLE
+            print("Watching Treble")
         end
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
-        then
-            if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["TREBLE"] ~= nil
-            then
-                for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["TREBLE"])
-                do
-                    checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["TREBLE"][locationId]['addr'], NON_AGI_MAP["TREBLE"][locationId]['bit'])
-                    if DEBUG == true
-                    then
-                        print(NON_AGI_MAP["TREBLE"][locationId]['name'] .. ":" .. tostring(checks[locationId]))
-                    end
-                    if locationId == "1230789" and checks[locationId] == true
-                    then
-                        collected_JV_TREBLE()
-                    end
-                end
-            end
-        end
+        TREBLE_WAIT_TIMER = TREBLE_WAIT_TIMER + 1
+        return
     end
-    return checks
-end
-
-function collected_JV_TREBLE()
     BTMODELOBJ:changeName("Treble Clef", false)
-    local model = BTMODELOBJ:checkModel();
-    if model == false
+    local object = BTMODELOBJ:checkModel();
+    if object == false
+    then
+        BTMODELOBJ:changeName("Player", false)
+        local player = BTMODELOBJ:checkModel();
+        if player == false
+        then
+            return
+        end
+        if DEBUG == true
+        then
+            print("No Treble on Map")
+            print("AP Trebles enabled")
+        end
+        set_AP_BKNOTES() --No Treble on this map
+        CHECK_FOR_TREBLE = false
+        WATCH_LOADED_TREBLE = false
+        TREBLE_WAIT_TIMER = 0
+        return
+    end
+    if DEBUG == true
+    then
+        print("Treble Found")
+    end
+    set_AP_BKNOTES();
+    CHECK_FOR_TREBLE = false
+    TREBLE_GONE_CHECK = 2
+    WATCH_LOADED_TREBLE = true
+end
+
+function nearTreble()
+    BTMODELOBJ:changeName("Treble Clef", false);
+    local POS = BTMODELOBJ:getSingleModelCoords();
+    if POS == false
     then
         return false
     end
-    BTMODELOBJ:moveModelObject(nil, nil, -300, nil)
+    TREBLE_SPOTED = true
+    TREBLE_MAP = CURRENT_MAP
     return true
 end
 
@@ -5432,52 +4249,9 @@ function init_roysten()
     end
 end
 
-function clear_roysten()
-    if NEXT_MAP == 0xAF
+function check_freed_roysten()
+    if CURRENT_MAP == 0xAF
     then
-        for k,v in pairs(NON_AGI_MAP['ROYSTEN'])
-        do
-            if ROYSTEN[k] == false
-            then
-                BTRAMOBJ:clearFlag(0x1E, 5)
-                BTRAMOBJ:clearFlag(0x32, 7)
-                FAST_SWIM = false
-                DOUBLE_AIR = false
-                ROYSTEN_TIMER = 0
-                if DEBUG_ROYSTEN == true
-                then
-                    print("Cleared Roysten Moves")
-                end
-                break
-            end
-        end
-    end
-end
-
-function check_freed_roysten() -- Roysten asset loads then deloads if abilities are set.
-    if (CURRENT_MAP == 0xAF or NEXT_MAP == 0xAF) and (ROYSTEN["1230778"] == false or ROYSTEN["1230777"] == false)
-    then
-        if ROYSTEN_TIMER <= 30 then -- Enough time for deloading Roysten to pass
-            if DEBUG_ROYSTEN == true
-            then
-                print("Roysten timer")
-            end
-            ROYSTEN_TIMER = ROYSTEN_TIMER + 1
-            return
-        end
-        BTMODELOBJ:changeName("Roysten", false)
-        local roysten = BTMODELOBJ:checkModel();
-        if roysten == false then
-            if DEBUG_ROYSTEN == true
-            then
-                print("Roysten Not Found")
-            end
-        else
-            if DEBUG_ROYSTEN == true
-            then
-                print("Roysten found")
-            end
-        end
         for k,v in pairs(NON_AGI_MAP['ROYSTEN'])
         do
             if ROYSTEN[k] == false
@@ -5485,19 +4259,37 @@ function check_freed_roysten() -- Roysten asset loads then deloads if abilities 
                 ROYSTEN[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_ROYSTEN")
             end
         end
+        if DOUBLE_AIR == true and ROYSTEN["1230778"] == true then
+            ROYSTEN["1230777"] = true
+        end
+        if BTRAMOBJ:checkFlag(0x1E, 5, "CHECK_SWIM") == true and FAST_SWIM == false
+        then
+            if DEBUG == true
+            then
+                print("Removing Fast Swimming")
+            end
+            BTRAMOBJ:clearFlag(0x1E, 5)
+        end
+        if BTRAMOBJ:checkFlag(0x32, 7, "CHECK_DAIR") == true and DOUBLE_AIR == false
+        then
+            if DEBUG == true
+            then
+                print("Removing Double Air")
+            end
+            BTRAMOBJ:clearFlag(0x32, 7)
+        end
     end
-    obtain_swimming()
 end
 
 
-function obtain_swimming() -- Roysten asset loads then deloads if abilities are set.
+function obtain_swimming()
     if (FAST_SWIM == false or DOUBLE_AIR == false)
     then
-        for _, itemId in pairs(receive_map)
+        for apid, itemId in pairs(receive_map)
         do
             if itemId == "1230777"
             then
-                if DEBUG_ROYSTEN == true
+                if DEBUG == true
                 then
                     print("Found Fast Swimming")
                 end
@@ -5506,7 +4298,7 @@ function obtain_swimming() -- Roysten asset loads then deloads if abilities are 
             end
             if itemId == "1230778"
             then
-                if DEBUG_ROYSTEN == true
+                if DEBUG == true
                 then
                     print("Found Double Air")
                 end
@@ -5519,7 +4311,6 @@ end
 
 --------------------------------- AMAZE-O-GAZE ------------------------------------
 function check_goggles()
-    check_real_goggles()
     if CURRENT_MAP == 0x143
     then
         local gogglesflg = BTRAMOBJ:checkFlag(0x30, 1, "CHECK_GOOGLES")
@@ -5554,41 +4345,6 @@ function check_real_goggles()
             end
         end
     end
-end
-
----------------------------------- PAGES ---------------------------------
-
-function obtained_AP_PAGES()
-    if DEBUG == true
-    then
-        print("Cheato Page Obtained")
-    end
-    BTCONSUMEOBJ:changeConsumable("CHEATO");
-    BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
-end
-
-function pages_ui_update()
-    local pages = cheato_math_check()
-    mainmemory.write_u16_be(0x11B0F8, pages)
-end
-
-function pages_check()
-    local checks = {}
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
-    then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["PAGES"] ~= nil
-        then
-            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["PAGES"])
-            do
-                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["PAGES"][locationId]['addr'], NON_AGI_MAP["PAGES"][locationId]['bit'])
-                if DEBUG == true
-                then
-                    print(NON_AGI_MAP["PAGES"][locationId]['name']..":"..tostring(checks[locationId]))
-                end
-            end
-        end
-    end
-    return checks
 end
 
 --------------------------------- CHEATO REWARDS ----------------------------------
@@ -5645,42 +4401,6 @@ function cheato_math_check()
     end
     recv_pages = recv_pages - spent_pages
     BTCONSUMEOBJ:setConsumable(recv_pages);
-    return recv_pages
-end
-
----------------------------------- HONEYCOMBS ---------------------------------
-
-function obtained_AP_HONEYCOMB()
-    if DEBUG == true
-    then
-        print("HC Obtained")
-    end
-    BTCONSUMEOBJ:changeConsumable("HONEYCOMB");
-    BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
-end
-
-function honeycomb_ui_update()
-    local honeycomb = honeycomb_math_check()
-    mainmemory.write_u16_be(0x11B0EC, honeycomb)
-end
-
-function honeycomb_check()
-    local checks = {}
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
-    then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["HONEYCOMB"] ~= nil
-        then
-            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["HONEYCOMB"])
-            do
-                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["HONEYCOMB"][locationId]['addr'], NON_AGI_MAP["HONEYCOMB"][locationId]['bit'])
-                if DEBUG == true
-                then
-                    print(NON_AGI_MAP["HONEYCOMB"][locationId]['name']..":"..tostring(checks[locationId]))
-                end
-            end
-        end
-    end
-    return checks
 end
 
 --------------------------------- HONEY B REWARDS -----------------------------------
@@ -5713,11 +4433,17 @@ function watchHoneyB()
         then
             bit3 = 4
         end
-
+        
         local final_res = bit1 + bit2 + bit3
+
         for i = 1230997, final_res + base_location_id, 1 do
             HONEYB_REWARDS[tostring(i)] = true
         end
+        --TODO: Loop through base_location_id UNTIL the end number
+        -- if final_res >= 1
+        -- then
+        --     HONEY_REWARDS[]
+        -- end
     end
 end
 
@@ -5767,293 +4493,6 @@ function honeycomb_math_check()
         honeycount = honeycount - 9
     end
     BTCONSUMEOBJ:setConsumable(honeycount);
-    return honeycount
-end
-
----------------------------------- GLOWBO AND MAGIC ---------------------------------
-
-function processMagicItem(loc_ID)
-    for locationId, v in pairs(NON_AGI_MAP['MAGIC'])
-    do
-        if locationId == tostring(loc_ID)
-        then
-            BTRAMOBJ:setFlag(v['addr'], v['bit'])
-        end
-    end
-end
-
-function glowbo_ui_update()
-    BTCONSUMEOBJ:changeConsumable("GLOWBO");
-    BTCONSUMEOBJ:setConsumable(0);
-    BTCONSUMEOBJ:changeConsumable("MEGA GLOWBO");
-    BTCONSUMEOBJ:setConsumable(0);
-end
-
-function glowbo_check()
-    local checks = {}
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
-    then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["GLOWBO"] ~= nil
-        then
-            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["GLOWBO"])
-            do
-                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["GLOWBO"][locationId]['addr'], NON_AGI_MAP["GLOWBO"][locationId]['bit'])
-                if DEBUG == true
-                then
-                    print(NON_AGI_MAP["GLOWBO"][locationId]['name']..":"..tostring(checks[locationId]))
-                end
-            end
-        end
-    end
-    return checks
-end
-
---------------------------------- DOUBLOONS -------------------------------------
-
-function obtained_AP_DOUBLOON()
-    if DEBUG == true
-    then
-        print("Doubloon Obtained")
-    end
-    BTCONSUMEOBJ:changeConsumable("DOUBLOON");
-    BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
-end
-
-function doubloon_ui_update()
-    local doubloon = doubloon_math_check()
-    mainmemory.write_u16_be(0x11B128, doubloon)
-end
-
-function doubloon_check()
-    local checks = {}
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
-    then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["DOUBLOON"] ~= nil
-        then
-            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["DOUBLOON"])
-            do
-                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["DOUBLOON"][locationId]['addr'], NON_AGI_MAP["DOUBLOON"][locationId]['bit'])
-                if DEBUG == true
-                then
-                    print(NON_AGI_MAP["DOUBLOON"][locationId]['name']..":"..tostring(checks[locationId]))
-                end
-            end
-        end
-    end
-    return checks
-end
-
-function doubloon_math_check()
-    BTCONSUMEOBJ:changeConsumable("DOUBLOON");
-    local spent_counter = 0
-
-    local shoes = BTRAMOBJ:checkFlag(0x17, 0) -- Blubber Shoes
-    if shoes == true
-    then
-        spent_counter = spent_counter + 1
-    end
-    local jiggy = BTRAMOBJ:checkFlag(0x11, 4) -- Pawno Jiggy
-    if jiggy == true
-    then
-        spent_counter = spent_counter + 20
-    end
-    local cheato = BTRAMOBJ:checkFlag(0x11, 5) -- Pawno Cheato
-    if cheato == true
-    then
-        spent_counter = spent_counter + 5
-    end
-    local jolly = BTRAMOBJ:checkFlag(0x13, 2) -- Jolly Door
-    if cheato == true
-    then
-        spent_counter = spent_counter + 2
-    end
-    local recv_doubloons = 0
-    for _, memlocation in pairs(receive_map)
-    do
-        if memlocation == "1230514" then
-            recv_doubloons = recv_doubloons + 1
-        end
-    end
-    recv_doubloons = recv_doubloons - spent_counter
-    BTCONSUMEOBJ:setConsumable(recv_doubloons);
-    return recv_doubloons
-end
-
----------------------------------- NOTES ---------------------------------
-
-function init_NOTES(type, getReceiveMap) -- Initialize Notes
-    local checks = {}
-    for locationId,v in pairs(NON_AGI_MAP["NOTES"])
-    do
-        if type == "BMM"
-        then
-            BMM_NOTES[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
-        elseif type == "AGI"
-        then
-            AGI_NOTES[locationId] = false
-        end
-    end
-    if type == "AGI" and getReceiveMap == true
-    then
-        for _, locationId in pairs(receive_map)
-        do
-            if locationId == "1230797"
-            then
-                obtained_AP_NOTES()
-            end
-        end
-    end
-end
-
-function restore_BMM_NOTES() --Only run while unpausing 
-    if BMM_BACKUP_NOTES == true and AGI_NOTES_SET == true
-    then
-        for locationId,v in pairs(NON_AGI_MAP["NOTES"]) do
-            if BMM_NOTES[locationId] == true
-            then
-                BTRAMOBJ:setFlag(v['addr'], v['bit']);
-            else
-                BTRAMOBJ:clearFlag(v['addr'], v['bit']);
-            end
-        end
-        BMM_BACKUP_NOTES = false
-        AGI_NOTES_SET = false
-        if DEBUG_NOTES == true
-        then
-            print("NOTES BMM RESTORED")
-        end
-    end
-end
-
-function set_AP_NOTES() -- Only run while Pausing or Transistion to certain maps
-    if BMM_BACKUP_NOTES == true and AGI_NOTES_SET == false
-    then
-        for locationId, value in pairs(AGI_NOTES)
-        do
-            local get_addr = NON_AGI_MAP["NOTES"][locationId]
-            if value == true
-            then
-                BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
-            else
-                BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
-            end
-        end
-        AGI_NOTES_SET = true
-        if DEBUG_NOTES == true
-        then
-            print("AGI NOTES SET")
-        end
-    end
-end
-
-function obtained_AP_NOTES()
-    if DEBUG_NOTES == true
-    then
-        print("Note Obtained")
-    end
-    for locationId, value in pairs(AGI_NOTES)
-    do
-        if value == false
-        then
-            AGI_NOTES[locationId] = true;
-            if AGI_NOTES_SET == true
-            then
-                local get_addr = NON_AGI_MAP["NOTES"][tostring(locationId)]
-                BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
-            end
-            break
-        end
-    end
-end
-
-function note_ui_update()
-    local note_amt = 0
-    local treble_amt = 0
-    for _, value in pairs(AGI_NOTES)
-    do
-        if value == true
-        then
-            note_amt = note_amt + 1
-        end
-    end
-    note_amt = note_amt * 5
-    for _, value in pairs(AGI_TREBLE)
-    do
-        if value == true
-        then
-            treble_amt = treble_amt + 1
-        end
-    end
-    treble_amt = treble_amt * 20
-    note_amt = note_amt + treble_amt
-    mainmemory.write_u16_be(0x11B074, note_amt)
-end
-
-function backup_BMM_NOTES()
-    if BMM_BACKUP_NOTES == false
-    then
-        for locationId,v in pairs(NON_AGI_MAP["NOTES"]) do
-            if BTRAMOBJ:checkFlag(v['addr'], v['bit']) == true
-            then
-                BMM_NOTES[locationId] = true
-            else
-                BMM_NOTES[locationId] = false
-            end
-        end
-        BMM_BACKUP_NOTES = true
-        if DEBUG_NOTES == true
-        then
-            print("NOTES BMM SET")
-        end
-        set_AP_NOTES()
-    end
-end
-
-function notes_check()
-    local checks = {}
-    if GAME_LOADED == true
-    then
-        if BMM_BACKUP_NOTES == true
-        then
-            return BMM_NOTES
-        end
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
-        then
-            if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["NOTES"] ~= nil
-            then
-                for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["NOTES"])
-                do
-                    checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["NOTES"][locationId]['addr'], NON_AGI_MAP["NOTES"][locationId]['bit'])
-                    if DEBUG_NOTES == true
-                    then
-                        print(locationId .. ":" .. tostring(checks[locationId]))
-                    end
-                end
-            end
-        end
-    end
-    return checks
-end
-
--------------------------------- HAG-1 Victory ----------------------------------
-
-function hag1_check()
-    local victory = false
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
-    then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["H1"] ~= nil
-        then
-            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["H1"])
-            do
-                victory = BTRAMOBJ:checkFlag(NON_AGI_MAP["H1"][locationId]['addr'], NON_AGI_MAP["H1"][locationId]['bit'])
-                if DEBUG == true
-                then
-                    print(NON_AGI_MAP["H1"][locationId]['name']..":"..tostring(victory))
-                end
-            end
-        end
-    end
-    return victory
 end
 
 --------------------------------- JIGGY CHUNKS ----------------------------------
@@ -6156,70 +4595,60 @@ function check_progressive()
         end
     end
 
-    if beak_bust == 1 and BEAK_BUST == false then
+    if beak_bust == 1 then
         BTRAMOBJ:setFlag(0x18, 7, "Beak Buster")
-        BEAK_BUST = true
-    elseif beak_bust == 2 and BILL_DRILL == false then
+    elseif beak_bust == 2 then
         BTRAMOBJ:setFlag(0x18, 7, "Beak Buster")
         location = "1230757"
         AGI_MOVES[location] = true
-        check_jamjar_silo()
-        BILL_DRILL = true
+        set_AGI_MOVES_checks()
     end
 
-    if eggs == 1 and FIR_EGGS == false then
+    if eggs == 1 then
         AGI_MOVES["1230756"] = true
-        check_jamjar_silo()
-        FIR_EGGS = true
-    elseif eggs == 2 and GRE_EGGS == false then
+        set_AGI_MOVES_checks()
+    elseif eggs == 2 then
         AGI_MOVES["1230756"] = true
         AGI_MOVES["1230759"] = true
-        check_jamjar_silo()
-        GRE_EGGS = true
-    elseif eggs == 3 and ICE_EGGS == false then
+        set_AGI_MOVES_checks()
+    elseif eggs == 3 then
         AGI_MOVES["1230756"] = true
         AGI_MOVES["1230759"] = true
         AGI_MOVES["1230763"] = true
-        check_jamjar_silo()
-        ICE_EGGS = true
-    elseif eggs == 4 and CLK_EGGS == false then
+        set_AGI_MOVES_checks()
+    elseif eggs == 4 then
         AGI_MOVES["1230756"] = true
         AGI_MOVES["1230759"] = true
         AGI_MOVES["1230763"] = true
         AGI_MOVES["1230767"] = true
-        check_jamjar_silo()
-        CLK_EGGS = true
+        set_AGI_MOVES_checks()
     end
 
-    if shoes == 1 and WADE_SHOE == false then
+    if shoes == 1 then
         BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
-        WADE_SHOE = true
-    elseif shoes == 2 and TURB_SHOE == false then
+    elseif shoes == 2 then
         BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
         BTRAMOBJ:setFlag(0x1A, 6, "Turbo Trainers")
-        TURB_SHOE = true
-    elseif shoes == 3 and SPRG_SHOE == false then
+    elseif shoes == 3 then
         BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
         BTRAMOBJ:setFlag(0x1A, 6, "Turbo Trainers")
         AGI_MOVES["1230768"] = true
-        check_jamjar_silo()
-        SPRG_SHOE = true
-    elseif shoes == 4 and CLAW_SHOE == false then
+        set_AGI_MOVES_checks()
+    elseif shoes == 4 then
         BTRAMOBJ:setFlag(0x1A, 3, "Stilt Stride")
         BTRAMOBJ:setFlag(0x1A, 6, "Turbo Trainers")
         AGI_MOVES["1230768"] = true
         AGI_MOVES["1230773"] = true
-        check_jamjar_silo()
-        CLAW_SHOE = true
+        set_AGI_MOVES_checks()
     end
 
     if swim == 1 then
         BTRAMOBJ:setFlag(0x1A, 4, "Dive")
-    elseif swim == 2 and DOUBLE_AIR == false then
+    elseif swim == 2 then
         BTRAMOBJ:setFlag(0x1A, 4, "Dive")
         BTRAMOBJ:setFlag(0x32, 7, "Double Air")
         DOUBLE_AIR = true
-    elseif swim == 3 and FAST_SWIM == false then
+    elseif swim == 3 then
         BTRAMOBJ:setFlag(0x1A, 4, "Dive")
         BTRAMOBJ:setFlag(0x32, 7, "Double Air")
         BTRAMOBJ:setFlag(0x1E, 5, "Fast Swimming")
@@ -6230,113 +4659,40 @@ end
 
 --------------------------------- Stop N Swap --------------------------------
 
-function init_STOPNSWAP(type) -- Initialize BMK
-    if type == "BMM"
+function init_BKMYSTERY(type) -- Initialize BMK
+    local checks = {}
+    if type == "BKMYSTERY"
     then
-        BMM_MYSTERY['REMOVE'] = {}
+        BKMYSTERY['REMOVE'] = {}
         for k,v in pairs(NON_AGI_MAP['STOPNSWAP'])
         do
-            BMM_MYSTERY[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
-            BMM_MYSTERY['REMOVE'][k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
+            BKMYSTERY[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
+            BKMYSTERY['REMOVE'][k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
         end
-        BMM_MYSTERY["1230958"] = false -- Ice key
-        BMM_MYSTERY['REMOVE']["1230958"] = false
+        BKMYSTERY["1230958"] = false -- Ice key
+        BKMYSTERY['REMOVE']["1230958"] = false
     else
-        AGI_MYSTERY["1230799"] = false -- Icekey
-        AGI_MYSTERY["1230800"] = false -- Bregull Bash
-        AGI_MYSTERY["1230801"] = false -- Nothing
-        AGI_MYSTERY["1230802"] = false -- Homing Eggs
-        AGI_MYSTERY["1230803"] = false -- Blue egg
-        AGI_MYSTERY["1230804"] = false -- Pink egg
+        checks["1230799"] = false -- Icekey
+        checks["1230800"] = false -- Bregull Bash
+        checks["1230801"] = false -- Nothing
+        checks["1230802"] = false -- Homing Eggs
+        checks["1230803"] = false -- Blue egg
+        checks["1230804"] = false -- Pink egg
+        return checks;
     end
 end
 
 function check_egg_mystery()
-    if ASSET_MAP_CHECK[NEXT_MAP] ~= nil
+    if ASSET_MAP_CHECK["STOPNSWAP"][CURRENT_MAP] == nil --Happens when exiting map too quickly when entering a new map
     then
-        if ASSET_MAP_CHECK[NEXT_MAP]["STOPNSWAP"] ~= nil
+        if CURRENT_MAP == 0x150 or CURRENT_MAP == 0x14F -- on Heggy map / Wooded Hollow, if you have eggs, enable flags
         then
-            if NEXT_MAP == 0x150 -- on Heggy map / Wooded Hollow, if you have eggs, enable flags
+            if EGGS_CLEARED == true
             then
-                if EGGS_CLEARED == true
+                EGGS_CLEARED = false
+                if DEBUG == true
                 then
-                    EGGS_CLEARED = false
-                    if DEBUG_STOPNSWAP == true
-                    then
-                        print("On Heggy's Map")
-                    end
-                    for itemId, value in pairs(AGI_MYSTERY)
-                    do
-                        if itemId == "1230803"
-                        then
-                            if value == true
-                            then
-                                local hatched = NON_AGI_MAP['STOPNSWAP']["1230955"]
-                                if BTRAMOBJ:checkFlag(hatched['addr'], hatched['bit']) == false -- Egg not hatched yet
-                                then
-                                    if DEBUG_STOPNSWAP == true
-                                    then
-                                        print("Ready to hand in Blue Egg")
-                                    end
-                                    local eggTable = NON_AGI_MAP['STOPNSWAP']["1230957"]
-                                    BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
-                                    BTCONSUMEOBJ:changeConsumable("Eggs")
-                                    local egg_amt = BTCONSUMEOBJ:getEggConsumable()
-                                    if egg_amt < 1
-                                    then
-                                        BTCONSUMEOBJ:setConsumable(1)
-                                    end
-                                end
-                            else
-                                if DEBUG_STOPNSWAP == true
-                                then
-                                    print("Unsetting Local Blue Egg Flag")
-                                end
-                                if BMM_MYSTERY["1230957"] == true
-                                then
-                                    local eggTable = NON_AGI_MAP['STOPNSWAP']["1230957"]
-                                    BTRAMOBJ:clearFlag(eggTable['addr'], eggTable['bit'])
-                                end
-                            end
-                        end
-                        if itemId == "1230804"
-                        then
-                            if value == true
-                            then
-                                local hatched = NON_AGI_MAP['STOPNSWAP']["1230954"]
-                                if BTRAMOBJ:checkFlag(hatched['addr'], hatched['bit']) == false -- Egg not hatched yet
-                                then
-                                    if DEBUG_STOPNSWAP == true
-                                    then
-                                        print("Ready to hand in Pink Egg")
-                                    end
-                                    local eggTable = NON_AGI_MAP['STOPNSWAP']["1230956"]
-                                    BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
-                                    BTCONSUMEOBJ:changeConsumable("Eggs")
-                                    local egg_amt = BTCONSUMEOBJ:getEggConsumable()
-                                    if egg_amt < 1
-                                    then
-                                        BTCONSUMEOBJ:setConsumable(1)
-                                    end
-                                end
-                            else
-                                if DEBUG_STOPNSWAP == true
-                                then
-                                    print("Unsetting Local Pink Egg Flag")
-                                end
-                                if BMM_MYSTERY["1230956"] == true
-                                then
-                                    local eggTable = NON_AGI_MAP['STOPNSWAP']["1230956"]
-                                    BTRAMOBJ:clearFlag(eggTable['addr'], eggTable['bit'])
-                                end
-                            end
-                        end
-                    end
-                end
-            else -- on a different map, clearFlags
-                if EGGS_CLEARED == true
-                then
-                    return
+                  print("On Heggy's or Wooded Hollow Map")
                 end
                 for itemId, value in pairs(AGI_MYSTERY)
                 do
@@ -6347,104 +4703,154 @@ function check_egg_mystery()
                             local hatched = NON_AGI_MAP['STOPNSWAP']["1230955"]
                             if BTRAMOBJ:checkFlag(hatched['addr'], hatched['bit']) == false -- Egg not hatched yet
                             then
-                                local eggTable = NON_AGI_MAP['STOPNSWAP']["1230957"]
-                                if BMM_MYSTERY["1230957"] == true
+                                if DEBUG == true
                                 then
-                                    if DEBUG == true
-                                    then
-                                        print("Setting Local Blue Egg")
-                                    end
-                                    BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
-                                else
-                                    if DEBUG == true
-                                    then
-                                        print("Clearing Blue Egg")
-                                    end
-                                    BTRAMOBJ:clearFlag(eggTable['addr'], eggTable['bit'])
+                                    print("Ready to hand in Blue Egg")
                                 end
-                            end
-                        else
-                            if DEBUG_STOPNSWAP == true
-                            then
-                                print("setting back Local Blue Egg Flag")
-                            end
-                            if BMM_MYSTERY["1230957"] == true
-                            then
                                 local eggTable = NON_AGI_MAP['STOPNSWAP']["1230957"]
                                 BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
                             end
+                        else
+                            if DEBUG == true
+                            then
+                                print("Unsetting Local Blue Egg Flag")
+                            end
+                            if BKMYSTERY["1230957"] == true
+                            then
+                                local eggTable = NON_AGI_MAP['STOPNSWAP']["1230957"]
+                                BTRAMOBJ:clearFlag(eggTable['addr'], eggTable['bit'])
+                            end
                         end
-                    elseif itemId == "1230804"
+                    end
+                    if itemId == "1230804"
                     then
                         if value == true
                         then
                             local hatched = NON_AGI_MAP['STOPNSWAP']["1230954"]
                             if BTRAMOBJ:checkFlag(hatched['addr'], hatched['bit']) == false -- Egg not hatched yet
                             then
-                                local eggTable = NON_AGI_MAP['STOPNSWAP']["1230956"]
-                                if BMM_MYSTERY["1230956"] == true
+                                if DEBUG == true
                                 then
-                                    if DEBUG == true
-                                    then
-                                        print("Setting Local Pink Egg")
-                                    end
-                                    BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
-                                else
-                                    if DEBUG == true
-                                    then
-                                        print("Clearing Pink Egg")
-                                    end
-                                    BTRAMOBJ:clearFlag(eggTable['addr'], eggTable['bit'])
+                                    print("Ready to hand in Pink Egg")
                                 end
+                                local eggTable = NON_AGI_MAP['STOPNSWAP']["1230956"]
+                                BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
                             end
                         else
                             if DEBUG == true
                             then
                                 print("Unsetting Local Pink Egg Flag")
                             end
-                            if BMM_MYSTERY["1230956"] == true
+                            if BKMYSTERY["1230956"] == true
                             then
                                 local eggTable = NON_AGI_MAP['STOPNSWAP']["1230956"]
-                                BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
+                                BTRAMOBJ:clearFlag(eggTable['addr'], eggTable['bit'])
                             end
                         end
                     end
                 end
-                EGGS_CLEARED = true
             end
-            return
-        end
-    end
-end
-
-function check_STOPNSWAPEGGS()
-    if CURRENT_MAP == 0x150 -- Heggy Map
-    then
-        return
-    end
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
-    then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["STOPNSWAP"] ~= nil
-        then
-            local eggLocId = ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["STOPNSWAP"];
-            if BMM_MYSTERY[eggLocId] == false
+        else -- on a different map, clearFlags
+            if EGGS_CLEARED == true
             then
-                local eggTable = NON_AGI_MAP['STOPNSWAP'][eggLocId]
-                local got_egg = BTRAMOBJ:checkFlag(eggTable['addr'], eggTable['bit'])
-                BTCONSUMEOBJ:changeConsumable("Eggs")
-                local egg_amt = BTCONSUMEOBJ:getEggConsumable()
-                if got_egg == true and egg_amt > 0 and BMM_MYSTERY['REMOVE'][eggLocId] == false
+                return
+            end
+
+            for itemId, value in pairs(AGI_MYSTERY)
+            do
+                if itemId == "1230803"
                 then
-                    if DEBUG_STOPNSWAP == true
+                    if value == true
                     then
-                        print("Got a Local Mystery Egg")
+                        local hatched = NON_AGI_MAP['STOPNSWAP']["1230955"]
+                        if BTRAMOBJ:checkFlag(hatched['addr'], hatched['bit']) == false -- Egg not hatched yet
+                        then
+                            local eggTable = NON_AGI_MAP['STOPNSWAP']["1230957"]
+                            if BKMYSTERY["1230957"] == true
+                            then
+                                if DEBUG == true
+                                then
+                                    print("Setting Local Blue Egg")
+                                end
+                                BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
+                            else
+                                if DEBUG == true
+                                then
+                                    print("Clearing Blue Egg")
+                                end
+                                BTRAMOBJ:clearFlag(eggTable['addr'], eggTable['bit'])
+                            end
+                        end
+                    else
+                        if DEBUG == true
+                        then
+                            print("setting back Local Blue Egg Flag")
+                        end
+                        if BKMYSTERY["1230957"] == true
+                        then
+                            local eggTable = NON_AGI_MAP['STOPNSWAP']["1230957"]
+                            BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
+                        end
                     end
-                    BTCONSUMEOBJ:setConsumable(egg_amt - 1)
-                    BMM_MYSTERY['REMOVE'][eggLocId] = true
-                    BMM_MYSTERY[eggLocId] = true
-                    savingBMM()
+                elseif itemId == "1230804"
+                then
+                    if value == true
+                    then
+                        local hatched = NON_AGI_MAP['STOPNSWAP']["1230954"]
+                        if BTRAMOBJ:checkFlag(hatched['addr'], hatched['bit']) == false -- Egg not hatched yet
+                        then
+                            local eggTable = NON_AGI_MAP['STOPNSWAP']["1230956"]
+                            if BKMYSTERY["1230956"] == true
+                            then
+                                if DEBUG == true
+                                then
+                                    print("Setting Local Pink Egg")
+                                end
+                                BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
+                            else
+                                if DEBUG == true
+                                then
+                                    print("Clearing Pink Egg")
+                                end
+                                BTRAMOBJ:clearFlag(eggTable['addr'], eggTable['bit'])
+                            end
+                        end
+                    else
+                        if DEBUG == true
+                        then
+                            print("Unsetting Local Pink Egg Flag")
+                        end
+                        if BKMYSTERY["1230956"] == true
+                        then
+                            local eggTable = NON_AGI_MAP['STOPNSWAP']["1230956"]
+                            BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
+                        end
+                    end
                 end
             end
+            EGGS_CLEARED = true
+        end
+        return
+    end
+    local eggLocId = ASSET_MAP_CHECK["STOPNSWAP"][CURRENT_MAP];
+    local eggTable = NON_AGI_MAP['STOPNSWAP'][eggLocId]
+    local got_egg = BTRAMOBJ:checkFlag(eggTable['addr'], eggTable['bit'])
+    if BKMYSTERY[eggLocId] == false
+    then
+        local eggTable = NON_AGI_MAP['STOPNSWAP'][eggLocId]
+        local got_egg = BTRAMOBJ:checkFlag(eggTable['addr'], eggTable['bit'])
+        BTCONSUMEOBJ:changeConsumable("Eggs")
+        local egg_amt = BTCONSUMEOBJ:getEggConsumable()
+        if got_egg == true and egg_amt > 0 and  BKMYSTERY['REMOVE'][eggLocId] == false
+        then
+            if DEBUG == true
+            then
+                print("Got a Local Mystery Egg")
+            end
+            BTCONSUMEOBJ:setConsumable(egg_amt - 1)
+            BKMYSTERY['REMOVE'][eggLocId] = true
+            BKMYSTERY[eggLocId] = true
+            savingBMM()
         end
     end
 end
@@ -6454,40 +4860,40 @@ function check_hatched_mystery()
     then
         if WAIT_FOR_HATCH == false
         then
-            if AGI_MYSTERY["1230800"] == true and BMM_MYSTERY["1230954"] == false -- BBASH
+            if AGI_MYSTERY["1230800"] == true and BKMYSTERY["1230954"] == false -- BBASH
             then
-                if DEBUG_STOPNSWAP == true then
+                if DEBUG == true then
                     print("Remove Bregull Bash")
                 end
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
                 BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
                 BTRAMOBJ:clearFlag(0x1E, 7)
-            elseif BMM_MYSTERY["1230954"] == true
+            elseif BKMYSTERY["1230954"] == true
             then
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
                 BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
                 BTRAMOBJ:clearFlag(0x77, 5)
             end
-            if AGI_MYSTERY["1230801"] == true and BMM_MYSTERY["1230953"] == false -- nothing
+            if AGI_MYSTERY["1230801"] == true and BKMYSTERY["1230953"] == false -- nothing
             then
-                if DEBUG_STOPNSWAP == true then
-                    print("Remove Multi Jinjo")
+                if DEBUG == true then
+                    print("Remove Yellow Jinjo")
                 end
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
                 BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
-            elseif BMM_MYSTERY["1230953"] == true
+            elseif BKMYSTERY["1230953"] == true
             then
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
                 BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
             end
-            if AGI_MYSTERY["1230802"] == true and BMM_MYSTERY["1230955"] == false -- homing eggs
+            if AGI_MYSTERY["1230802"] == true and BKMYSTERY["1230955"] == false -- homing eggs
             then
-                if DEBUG_STOPNSWAP == true then
+                if DEBUG == true then
                     print("Remove Homing Eggs")
                 end
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
                 BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
-            elseif BMM_MYSTERY["1230955"] == true
+            elseif BKMYSTERY["1230955"] == true
             then
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
                 BTRAMOBJ:clearFlag(0x77, 3)
@@ -6495,53 +4901,53 @@ function check_hatched_mystery()
             end
             WAIT_FOR_HATCH = true
         else -- Watch if Eggs are hatched
-            if BMM_MYSTERY["1230954"] == false
+            if BKMYSTERY["1230954"] == false
             then
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
                 if BTRAMOBJ:checkFlag(tbl['addr'], tbl['bit']) == true
                 then
-                    BMM_MYSTERY["1230954"] = true
+                    BKMYSTERY["1230954"] = true
                     BTRAMOBJ:clearFlag(0x1E, 7)
                 end
             end
-            if BMM_MYSTERY["1230953"] == false
+            if BKMYSTERY["1230953"] == false
             then
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
                 if BTRAMOBJ:checkFlag(tbl['addr'], tbl['bit']) == true
                 then
-                    BMM_MYSTERY["1230953"] = true
+                    BKMYSTERY["1230953"] = true
                 end
             end
-            if BMM_MYSTERY["1230955"] == false
+            if BKMYSTERY["1230955"] == false
             then
                 local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
                 if BTRAMOBJ:checkFlag(tbl['addr'], tbl['bit']) == true
                 then
-                    BMM_MYSTERY["1230955"] = true
+                    BKMYSTERY["1230955"] = true
                 end
             end
         end
     elseif CURRENT_MAP == 0x14F -- Wooded Hollow
     then
-        if BMM_MYSTERY["1230954"] == true
+        if BKMYSTERY["1230954"] == true
         then
             local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
             BTRAMOBJ:clearFlag(0x77, 5)
             BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         end
-        if BMM_MYSTERY["1230953"] == true
+        if BKMYSTERY["1230953"] == true
         then
             local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
             BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         end
-        if BMM_MYSTERY["1230955"] == true
+        if BKMYSTERY["1230955"] == true
         then
             local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
             BTRAMOBJ:clearFlag(0x77, 3)
             BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         end
     else
-        if BMM_MYSTERY["1230956"] == false
+        if BKMYSTERY["1230956"] == false
         then
             -- if DEBUG == true then
             --     print("reverse Hatch flag, Pink egg not yet obtained")
@@ -6553,7 +4959,7 @@ function check_hatched_mystery()
         then
             BTRAMOBJ:clearFlag(0x1E, 7)
         end
-        if BMM_MYSTERY["1230957"] == false
+        if BKMYSTERY["1230957"] == false
         then
             -- if DEBUG == true then
             --     print("reverse Hatch flag, Blue egg not yet obtained")
@@ -6561,14 +4967,19 @@ function check_hatched_mystery()
             local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
             BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
         end
+        -- if AGI_MYSTERY["1230802"] == true
+        -- then
+        --     local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
+        --     -- BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
+        -- end
         WAIT_FOR_HATCH = false
     end
 end
 
 function obtain_breegull_bash()
-    if AGI_MYSTERY["1230800"] == true and NEXT_MAP ~= 0x150
+    if AGI_MYSTERY["1230800"] == true and CURRENT_MAP ~= 0x150
     then
-        if DEBUG_STOPNSWAP == true
+        if DEBUG == true
         then
             print("Setting BBASH")
         end
@@ -6577,76 +4988,72 @@ function obtain_breegull_bash()
 end
 
 function check_local_icekey()
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    local keyLocId = ASSET_MAP_CHECK["ICEKEY"][CURRENT_MAP];
+    if BKMYSTERY[keyLocId] == false
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["ICEKEY"] ~= nil
+        BTCONSUMEOBJ:changeConsumable("Ice Keys")
+        local key_amt = BTCONSUMEOBJ:getConsumable()
+
+        if KEY_DROPPED == false
         then
-            local keyLocId = ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["ICEKEY"];
-            if BMM_MYSTERY[keyLocId] == false
+            BTMODELOBJ:changeName("Player", false)
+            local player = BTMODELOBJ:checkModel();
+            if player == false
             then
-                BTCONSUMEOBJ:changeConsumable("Ice Keys")
-                local key_amt = BTCONSUMEOBJ:getConsumable()
-                if KEY_DROPPED == false
-                then
-                    BTMODELOBJ:changeName("Ice Key", false);
-                    local key_spawn = BTMODELOBJ:checkModel()
-                    if key_spawn == true
-                    then
-                        if DEBUG_STOPNSWAP == true
-                        then
-                            print("Key Spawned")
-                        end
-                        KEY_DROPPED = true
-                    else
-                        if DEBUG_STOPNSWAP == true
-                        then
-                            print("Checking for Key")
-                        end
-                    end
-                end
-        
-                if KEY_DROPPED == true and KEY_GRABBED == false
-                then
-                    BTMODELOBJ:changeName("Ice Key", false);
-                    local key_spawn = BTMODELOBJ:checkModel()
-                    if key_spawn == false
-                    then
-                        if DEBUG_STOPNSWAP == true
-                        then
-                            print("Key grabbed")
-                        end
-                        KEY_GRABBED = true
-                    end
-                end
-        
-                if key_amt > 0 and KEY_DROPPED == true and KEY_GRABBED == true and BMM_MYSTERY['REMOVE'][keyLocId] == false
-                then
-                    if DEBUG_STOPNSWAP == true
-                    then
-                        print("Got the Local Ice Key")
-                    end
-                    if AGI_MYSTERY["1230799"] == false
-                    then
-                        if DEBUG_STOPNSWAP == true
-                        then
-                            print("Removing Key as we don't have AGI key yet")
-                        end
-                        BTCONSUMEOBJ:changeConsumable("Ice Keys")
-                        BTCONSUMEOBJ:setConsumable(key_amt - 1)
-                    end
-                    BMM_MYSTERY['REMOVE'][keyLocId] = true
-                    BMM_MYSTERY[keyLocId] = true
-                    savingBMM()
-                end
+                return
             end
+            BTMODELOBJ:changeName("Ice Key", false);
+            local key_spawn = BTMODELOBJ:checkModel()
+            if key_spawn == true
+            then
+                if DEBUG == true
+                then
+                    print("Key Spawned")
+                end
+                KEY_DROPPED = true
+            end
+        end
+
+        if KEY_DROPPED == true and KEY_GRABBED == false
+        then
+            BTMODELOBJ:changeName("Ice Key", false);
+            local key_spawn = BTMODELOBJ:checkModel()
+            if key_spawn == false
+            then
+                if DEBUG == true
+                then
+                    print("Key grabbed")
+                end
+                KEY_GRABBED = true
+            end
+        end
+
+        if key_amt > 0 and KEY_DROPPED == true and KEY_GRABBED == true and BKMYSTERY['REMOVE'][keyLocId] == false
+        then
+            if DEBUG == true
+            then
+                print("Got a Local Ice Key")
+            end
+            if AGI_MYSTERY["1230799"] == false
+            then
+                if DEBUG == true
+                then
+                    print("Removing Key as we don't have AGI key yet")
+                end
+                BTCONSUMEOBJ:changeConsumable("Ice Keys")
+                BTCONSUMEOBJ:setConsumable(key_amt - 1)
+            end
+            BKMYSTERY['REMOVE'][keyLocId] = true
+            BKMYSTERY[keyLocId] = true
+            savingBMM()
         end
     end
 end
 
 function pause_show_AGI_key()
-    if AGI_MYSTERY["1230799"] == true and BMM_MYSTERY["1230958"] == false
+    if AGI_MYSTERY["1230799"] == true and BKMYSTERY["1230958"] == false
     then
-        if DEBUG_STOPNSWAP == true
+        if DEBUG == true
         then
             print("Setting Key")
         end
@@ -6656,9 +5063,9 @@ function pause_show_AGI_key()
 end
 
 function unpause_hide_AGI_key()
-    if AGI_MYSTERY["1230799"] == true and BMM_MYSTERY["1230958"] == false
+    if AGI_MYSTERY["1230799"] == true and BKMYSTERY["1230958"] == false
     then
-        if DEBUG_STOPNSWAP == true
+        if DEBUG == true
         then
             print("Unsetting Key")
         end
@@ -6668,15 +5075,19 @@ function unpause_hide_AGI_key()
 end
 
 function ap_icekey_glowbo_map()
-    if AGI_MYSTERY["1230799"] == true and BMM_MYSTERY["1230958"] == false and CURRENT_MAP == 0x128 --Icy Side
+    if AGI_MYSTERY["1230799"] == true and BKMYSTERY["1230958"] == false and CURRENT_MAP == 0x128 --Icy Side
     then
-        if DEBUG_STOPNSWAP == true
+        if DEBUG == true
         then
             print("Setting Key")
         end
         BTCONSUMEOBJ:changeConsumable("Ice Keys")
         BTCONSUMEOBJ:setConsumable(1)
-    elseif AGI_MYSTERY["1230799"] == true and BMM_MYSTERY["1230958"] == false and CURRENT_MAP ~= 0x128 --Not on Icy Side
+    end
+end
+
+function clearKey()
+    if AGI_MYSTERY["1230799"] == true and BKMYSTERY["1230958"] == false and CURRENT_MAP ~= 0x128 --Icy Side
     then
         if DEBUG == true
         then
@@ -6824,69 +5235,38 @@ end
 
 ---------------------------------- Chuffy ------------------------------------
 
-
-function init_CHUFFY(type, getReceiveMap) -- Initialize Chuffy
-    for locationId,v in pairs(NON_AGI_MAP['CHUFFY'])
+function init_CHUFFY(type) -- Initialize BMK
+    local checks = {}
+    for k,v in pairs(NON_AGI_MAP['CHUFFY'])
     do
-        if type == "BMM"
+        if type == "BKCHUFFY"
         then
-            BMM_CHUFFY[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
-            if DEBUG_CHUFFY == true
-            then
-                print("Chuffy BMM Initialized")
-            end
+            BKCHUFFY[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
         elseif type == "AGI"
         then
-            AGI_CHUFFY[locationId] = false
-            if DEBUG_CHUFFY == true
-            then
-                print("Chuffy AGI Initialized")
-            end
+            checks[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK_AGI")
         end
     end
-    if type == "AGI" and getReceiveMap == true
-    then
-        for _, locationId in pairs(receive_map)
-        do
-            if locationId == "1230796"
-            then
-                obtained_AP_CHUFFY()
-            end
-        end
-    end
+    return checks
 end
 
-function set_checked_CHUFFY() --Only when Inside Chuffy
+function set_checked_BKCHUFFY() --Only when Inside Chuffy
     local get_addr = NON_AGI_MAP['CHUFFY']["1230796"];
-    if BMM_CHUFFY["1230796"] == false and BMM_JIGGIES["1230606"] == false
+    if BKCHUFFY["1230796"] == false and BMM['JIGGY']["1230606"] == false
     then
-        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
-        if DEBUG_CHUFFY == true
-        then
-            print("Chuffy Unset")
-        end
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_BKCHUFFY_CHECK");
     else
-        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
-        if DEBUG_CHUFFY == true
-        then
-            print("Chuffy Set")
-        end
+        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "BKCHUFFY_CHECK");
     end
 end
 
 function watchChuffyFlag()
-    if CURRENT_MAP == 0xD1 and BMM_CHUFFY["1230796"] == false
-    then
-        BTMODELOBJ:changeName("Jiggy", false)
-        killedKing = BTMODELOBJ:checkModel()
-        if killedKing == true
-        then  -- Sanity check incase Pointer is moving
-            BMM_CHUFFY["1230796"] = true
-        end
-        if DEBUG_CHUFFY == true
-        then
-            print("Chuffy Jiggywatch")
-        end
+    BTMODELOBJ:changeName("Jiggy", false)
+    killedKing = BTMODELOBJ:checkModel()
+    if killedKing == true
+    then  -- Sanity check incase Pointer is moving
+        BKCHUFFY["1230796"] = true
+        CHUFFY_STOP_WATCH = true
     end
 end
 
@@ -6894,70 +5274,56 @@ function set_AP_CHUFFY() -- Only run after Transistion
     local get_addr = NON_AGI_MAP['CHUFFY']["1230796"];
     if AGI_CHUFFY["1230796"] == true
     then
-        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
-        BTRAMOBJ:setFlag(0x0D, 5) -- Levitate
-        if DEBUG_CHUFFY == true
-        then
-            print("Chuffy is open")
-        end
+        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "APCHUFFY_SET");
+        BTRAMOBJ:setFlag(0x0D, 5, "Levitate")
         return true
     else
-        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
-        if DEBUG_CHUFFY == true
-        then
-            print("Chuffy not yet open")
-        end
+        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit'], "CLEAR_APCHUFFY_SET");
         return false
     end
 end
 
 function obtained_AP_CHUFFY()
     AGI_CHUFFY["1230796"] = true
-    BTRAMOBJ:setFlag(0x0D, 5) -- Levitate
+    BTRAMOBJ:setFlag(0x0D, 5, "Levitate")
     local get_addr = NON_AGI_MAP['CHUFFY']["1230796"]
     if CURRENT_MAP == 0xD0 or CURRENT_MAP == 0xD1
     then
         return
     end
-    BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
-    if DEBUG_CHUFFY == true
-    then
-        print("Chuffy Obtained")
-    end
+    BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit'], "APCHUFFY_OBTAIN");
 end
 
 function getChuffyMaps()
+    if CURRENT_MAP == nil
+    then
+        return
+    end
     if CURRENT_MAP == 0xD0 or CURRENT_MAP == 0xD1
     then
-        set_checked_CHUFFY()
+        set_checked_BKCHUFFY()
     else
         set_AP_CHUFFY()
+        CHUFFY_STOP_WATCH = true
+    end
+    if CURRENT_MAP == 0xD1
+    then
+        watchChuffyFlag()
+    else
+        CHUFFY_STOP_WATCH = true
     end
 end
 
 function moveLevitatePad()
-    if ENABLE_AP_CHUFFY == true
+    BTMODELOBJ:changeName("Levitate Pad", false)
+    local model = BTMODELOBJ:checkModel();
+    if model == false
     then
-        if AGI_CHUFFY["1230796"] == false and CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false
-        then
-            BTMODELOBJ:changeName("Levitate Pad", false)
-            local model = BTMODELOBJ:checkModel();
-            if model == false
-            then
-                return false
-            end
-            BTMODELOBJ:moveModelObject(nil, nil, -100, nil)
-            LEVI_PAD_MOVED = true;
-            if DEBUG_CHUFFY == true
-            then
-                print("Lebitate Pads Moved")
-            end
-            return true
-        elseif AGI_CHUFFY["1230796"] == false and CURRENT_MAP ~= 0xD7 and LEVI_PAD_MOVED == true
-        then
-            LEVI_PAD_MOVED = false
-        end
+        return false
     end
+    BTMODELOBJ:moveModelObject(nil, nil, -100, nil)
+    LEVI_PAD_MOVED = true;
+    return true
 end
 
 ---------------------------------- JamJars MOVES -----------------------------------
@@ -6978,65 +5344,52 @@ function init_BMK(type) -- Initialize BMK
 end
 
 function update_BMK_MOVES_checks() --Only run when close to Silos
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
-    then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["SILO"] ~= nil
+    for keys, moveId in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP])
+    do
+        if keys ~= "Exceptions"
         then
-            for keys, locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["SILO"])
-            do
-                if keys ~= "Exceptions"
+            local get_addr = NON_AGI_MAP['MOVES'][moveId]
+            if BKM[moveId] == false
+            then
+                local res = BTRAMOBJ:checkFlag(get_addr['addr'], get_addr['bit'], "BMK_MOVES_CHECK")
+                if res == true
                 then
-                    local get_addr = NON_AGI_MAP['MOVES'][locationId]
-                    if BKM[locationId] == false
+                    if DEBUG == true 
                     then
-                        local res = BTRAMOBJ:checkFlag(get_addr['addr'], get_addr['bit'], "BMK_MOVES_CHECK")
-                        if res == true
-                        then
-                            if DEBUG_SILO == true
-                            then
-                                print("Already learnt this Silo. finished")
-                            end
-                            BKM[locationId] = res
-                            SILOS_LOADED = true
-                        end
+                        print("Already learnt this Silo. finished")
                     end
+                    BKM[moveId] = res
+                    SILOS_LOADED = true
                 end
             end
         end
     end
 end
 
-function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND Close to Silo.
+function clear_AMM_MOVES_checks() --Only run when transitioning Maps until BT/Silo Model is loaded OR Close to Silo
     --Only clear the moves that we need to clear
-    if ASSET_MAP_CHECK["AGI_ASSETS"][mapaddr] == nil or ASSET_MAP_CHECK["AGI_ASSETS"][mapaddr]["SILO"] == nil
+    if ASSET_MAP_CHECK["SILO"][CURRENT_MAP] == nil --Happens when exiting map too quickly when entering a new map
     then
-        if DEBUG_SILO == true
+        if DEBUG == true 
         then
             print("Canceling Clearing of AMM Moves")
         end
         return false
     end
-    for keys, locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][mapaddr]["SILO"])
+    for keys, moveId in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP])
     do
         if keys ~= "Exceptions"
         then
-            local addr_info = NON_AGI_MAP["MOVES"][locationId]
-            if BKM[locationId] == true
+            local addr_info = NON_AGI_MAP["MOVES"][moveId]
+            if BKM[moveId] == false
+            then
+                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit'], "CLEAR_AMM_MOVES");
+            elseif BKM[moveId] == true
             then
                 BTRAMOBJ:setFlag(addr_info['addr'], addr_info['bit'])
-                if DEBUG_SILO == true
-                then
-                    print(addr_info['name'] .. " IS SET")
-                end
-            else
-                BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit']);
-                if DEBUG_SILO == true
-                then
-                    print(addr_info['name'] .. " IS CLEARED")
-                end
             end
         else
-            for _, disable_move in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][mapaddr]["SILO"][keys]) --Exception list, always disable
+            for key, disable_move in pairs(ASSET_MAP_CHECK["SILO"][CURRENT_MAP][keys]) --Exception list, always disable
             do
                 local addr_info = NON_AGI_MAP["MOVES"][disable_move]
                 BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit'], "CLEAR_AMM_MOVES_EXCEPTION");
@@ -7044,26 +5397,6 @@ function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND 
         end
     end
     return true
-end
-
-function check_jamjar_silo()
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
-    then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["SILO"] ~= nil
-        then
-            SILO_TIMER = SILO_TIMER + 1
-            if SILO_TIMER == 25
-            then
-                set_AGI_MOVES_checks()
-            end
-        else
-            set_AGI_MOVES_checks()
-            SILO_TIMER = 25
-        end
-    else
-        set_AGI_MOVES_checks()
-        SILO_TIMER = 25
-    end
 end
 
 function set_AGI_MOVES_checks() -- SET AGI Moves into RAM AFTER BT/Silo Model is loaded
@@ -7076,126 +5409,160 @@ function set_AGI_MOVES_checks() -- SET AGI Moves into RAM AFTER BT/Silo Model is
             BTRAMOBJ:clearFlag(table['addr'], table['bit'], "CLEAR_AGI_MOVES");
         end
     end
-    if DEBUG_SILO == true
+end
+
+function getSiloPlayerModel()
+    if SILOS_WAIT_TIMER <= 2
     then
-        print("AGI MOVES IS SET")
+        if DEBUG == true
+        then
+            print("Watching Silo")
+        end
+        SILOS_WAIT_TIMER = SILOS_WAIT_TIMER + 1
+        return
     end
+    BTMODELOBJ:changeName("Silo", false)
+    local object = BTMODELOBJ:checkModel();
+    if object == false
+    then
+        BTMODELOBJ:changeName("Player", false)
+        local player = BTMODELOBJ:checkModel();
+        if player == false
+        then
+            return
+        end
+        if DEBUG == true
+        then
+            print("No silo on Map")
+            print("AP Abilities enabled")
+        end
+        set_AGI_MOVES_checks() --No Silo on this map
+        CHECK_FOR_SILO = false
+        WATCH_LOADED_SILOS = false
+        SILOS_WAIT_TIMER = 0
+        return
+    end
+    if DEBUG == true
+    then
+        print("Silo Found")
+    end
+    set_AGI_MOVES_checks()
+    CHECK_FOR_SILO = false
+    WATCH_LOADED_SILOS = true
 end
 
 function nearSilo()
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    BTMODELOBJ:changeName("Silo", false);
+    local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+    if modelPOS == false
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["SILO"] ~= nil
+        return
+    end
+    local siloPOS = { ["Distance"] = 9999};
+    for modelObjPtr, POS in pairs(modelPOS) do
+        if POS ~= false
         then
-            BTMODELOBJ:changeName("Silo", false);
-            local modelPOS = BTMODELOBJ:getMultipleModelCoords()
-            if modelPOS == false
+            siloPOS = POS
+            --Move the Silo in Witchyworld.
+            if POS["Xpos"] == 0 and POS["Ypos"] == -163 and POS["Zpos"] == -1257
+                and CURRENT_MAP == 0xD6
             then
-                return
-            end
-            local siloPOS = { ["Distance"] = 9999};
-            for modelObjPtr, POS in pairs(modelPOS) do
-                if POS ~= false
-                then
-                    siloPOS = POS
-                    --Move the Silo in Witchyworld.
-                    if POS["Xpos"] == 0 and POS["Ypos"] == -163 and POS["Zpos"] == -1257
-                        and CURRENT_MAP == 0xD6
-                    then
-                        mainmemory.writefloat(modelObjPtr + 0x0C, POS["Zpos"] + 120, true);
-                        MoveWitchyPads();
-                    end
-
-                    if POS["Distance"] <= 650 and CURRENT_MAP ~= 0x1A7 -- Not CC
-                    then
-                        if DEBUG_SILO == true and LOAD_BMK_MOVES == false
-                        then
-                            print("Near Silo");
-                        end
-                        break;
-                    elseif POS["Distance"] <= 300 and CURRENT_MAP == 0x1A7 -- CC
-                    then
-                        if DEBUG_SILO == true and LOAD_BMK_MOVES == false
-                        then
-                            print("Near Silo");
-                        end
-                        break;
-                    end
-                end
-            end
-        
-            if siloPOS["Distance"] <= 650 -- and CURRENT_MAP ~= 0x1A7
-            then
-                if LOAD_BMK_MOVES == false
-                then
-                    clear_AMM_MOVES_checks(CURRENT_MAP);
-                    update_BMK_MOVES_checks();
-                    LOAD_BMK_MOVES = true
-                elseif SILOS_LOADED == false
-                then
-                    if DEBUG_SILO == true
-                    then
-                        print("Watching BKM Moves");
-                    end
-                    update_BMK_MOVES_checks();
-                end
-            else
-                if LOAD_BMK_MOVES == true
-                then
-                    if DEBUG_SILO == true
-                    then
-                        print("Reseting Movelist");
-                    end
-                    set_AGI_MOVES_checks();
-                    restore_BMM_NOTES()
-                    restore_BMM_TREBLE()
-                    LOAD_BMK_MOVES = false;
-                    SILOS_LOADED = false;
-                end
+                mainmemory.writefloat(modelObjPtr + 0x0C, POS["Zpos"] + 100, true);
+                MoveWitchyPads();
             end
 
-            if siloPOS["Distance"] <= 410 and CURRENT_MAP ~= 0x13A -- Notes and not CCL
+            if POS["Distance"] <= 650 and CURRENT_MAP ~= 0x1A7
             then
-                if LOAD_SILO_NOTES == false
+                if DEBUG == true and LOAD_BMK_MOVES == false
                 then
-                    backup_BMM_NOTES()
-                    backup_BMM_TREBLE()
-                    LOAD_SILO_NOTES = true
+                    print("Near Silo");
                 end
-            elseif siloPOS["Distance"] > 410 and CURRENT_MAP ~= 0x13A
+                break;
+            elseif POS["Distance"] <= 300 and CURRENT_MAP == 0x1A7
             then
-                if LOAD_SILO_NOTES == true
+                if DEBUG == true and LOAD_BMK_MOVES == false
                 then
-                    if DEBUG_SILO == true
-                    then
-                        print("Reseting Note Count");
-                    end
-                    restore_BMM_NOTES()
-                    restore_BMM_TREBLE()
-                    LOAD_SILO_NOTES = false;
+                    print("Near Silo");
                 end
+                break;
             end
+        end
+    end
+   
+    if siloPOS["Distance"] <= 650 -- and CURRENT_MAP ~= 0x1A7
+    then
+        if LOAD_BMK_MOVES == false
+        then
+            clear_AMM_MOVES_checks();
+            update_BMK_MOVES_checks();
+            LOAD_BMK_MOVES = true
+        elseif SILOS_LOADED == false
+        then
+            -- if DEBUG == true
+            -- then
+            --     print("Watching BKM Moves");
+            -- end
+            update_BMK_MOVES_checks();
+        else
+            -- if DEBUG == true
+            -- then
+            -- print("BKM Move Learnt");
+            -- end
+        end
+    else
+        if LOAD_BMK_MOVES == true
+        then
+            if DEBUG == true
+            then
+                print("Reseting Movelist");
+            end
+            set_AGI_MOVES_checks();
+            BMMRestoreOnly("NOTES");
+            LOAD_BMK_MOVES = false;
+            SILOS_LOADED = false;
+        end
+    end
 
-            if siloPOS["Distance"] <= 260 and CURRENT_MAP == 0x13A -- Notes and CCL
+    if ENABLE_AP_NOTES == true
+    then
+        if siloPOS["Distance"] <= 410 and CURRENT_MAP ~= 0x13A -- Notes and not CCL
+        then
+            if LOAD_SILO_NOTES == false
             then
-                if LOAD_SILO_NOTES == false
-                then
-                    backup_BMM_NOTES()
-                    backup_BMM_TREBLE()
-                    LOAD_SILO_NOTES = true
-                end
-            elseif siloPOS["Distance"] > 260 and CURRENT_MAP == 0x13A -- Notes and CCL
+                BMMBackupOnly("NOTES");
+                useAGIOnly("NOTES");
+                LOAD_SILO_NOTES = true
+            end
+        elseif siloPOS["Distance"] > 410 and CURRENT_MAP ~= 0x13A
+        then
+            if LOAD_SILO_NOTES == true
             then
-                if LOAD_SILO_NOTES == true
+                if DEBUG == true
                 then
-                    if DEBUG_SILO == true
-                    then
-                        print("Reseting Note Count");
-                    end
-                    restore_BMM_NOTES()
-                    restore_BMM_TREBLE()
-                    LOAD_SILO_NOTES = false;
+                    print("Reseting Note Count");
                 end
+                BMMRestoreOnly("NOTES");
+                LOAD_SILO_NOTES = false;
+            end
+        end
+        if siloPOS["Distance"] <= 260 and CURRENT_MAP == 0x13A -- Notes and CCL
+        then
+            if LOAD_SILO_NOTES == false
+            then
+                BMMBackupOnly("NOTES");
+                useAGIOnly("NOTES");
+                LOAD_SILO_NOTES = true
+            end
+        elseif siloPOS["Distance"] > 260 and CURRENT_MAP == 0x13A -- Notes and CCL
+        then
+            if LOAD_SILO_NOTES == true
+            then
+                if DEBUG == true
+                then
+                    print("Reseting Note Count");
+                end
+                BMMRestoreOnly("NOTES");
+                LOAD_SILO_NOTES = false;
             end
         end
     end
@@ -7213,7 +5580,7 @@ function MoveWitchyPads()
         if (POS["Xpos"] == -125 and POS["Ypos"] == -163 and POS["Zpos"] == -1580)
             and CURRENT_MAP == 0xD6
         then
-            BTMODELOBJ:moveModelObject(modelObjPtr, -300, -163, -1855)
+            BTModel:moveModelObject(modelObjPtr, POS["Xpos"] + 850, nil, POS["Zpos"] - 300)
             break
         end
     end
@@ -7227,130 +5594,24 @@ function MoveWitchyPads()
         if (POS["Xpos"] == 125 and POS["Zpos"] == -1580)
             and CURRENT_MAP == 0xD6
         then
-            BTMODELOBJ:moveModelObject(modelObjPtr, 304, -163, -1855)
+            BTMODELOBJ:moveModelObject(modelObjPtr, POS["Xpos"] + 850, nil, POS["Zpos"] - 300)
             break
         end
     end
 end
 
 ------------------ Jinjos -------------------
+-- Jinjos themselves are stored in MASTER_AGI_MAP
+-- Famify complete checks are stored in BKJINJOFAM
 
-function init_JINJOS(type) -- Initialize JINJOS
-    for locationId,v in pairs(NON_AGI_MAP["JINJOS"])
-    do
-        if type == "BMM"
-        then
-            BMM_JINJOS[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_JINJO_BMM")
-        elseif type == "AGI"
-        then
-            AGI_JINJOS = {
-                ["1230501"] = 0, -- white
-                ["1230502"] = 0, -- orange
-                ["1230503"] = 0, -- yellow
-                ["1230504"] = 0, -- brown
-                ["1230505"] = 0, -- green
-                ["1230506"] = 0, -- red
-                ["1230507"] = 0, -- blue
-                ["1230508"] = 0, -- purple
-                ["1230509"] = 0, -- black
-            };
-        end
-    end
-end
-
-function restore_BMM_JINJOS() -- Not sure if we need this...
-    if BMM_BACKUP_JINJO == true
-    then
-        for locationId,v in pairs(NON_AGI_MAP["JINJOS"]) do
-            if BMM_JINJOS[locationId] == true
-            then
-                BTRAMOBJ:setFlag(v['addr'], v['bit']);
-            else
-                BTRAMOBJ:clearFlag(v['addr'], v['bit']);
-            end
-        end
-        BMM_BACKUP_JINJO = false
-    end
-end
-
-function jinjo_ui_update()
-    mainmemory.write_u16_be(0x11B140, AGI_JINJOS["1230501"]) -- WHITE
-    mainmemory.write_u16_be(0x11B14C, AGI_JINJOS["1230502"]) -- ORANGE
-    mainmemory.write_u16_be(0x11B158, AGI_JINJOS["1230503"]) -- YELLOW
-    mainmemory.write_u16_be(0x11B164, AGI_JINJOS["1230504"]) -- BROWN
-    mainmemory.write_u16_be(0x11B170, AGI_JINJOS["1230505"]) -- GREEN
-    mainmemory.write_u16_be(0x11B17C, AGI_JINJOS["1230506"]) -- RED
-    mainmemory.write_u16_be(0x11B188, AGI_JINJOS["1230507"]) -- BLUE
-    mainmemory.write_u16_be(0x11B194, AGI_JINJOS["1230508"]) -- PURPLE
-    mainmemory.write_u16_be(0x11B1A0, AGI_JINJOS["1230509"]) -- BLACK
-end
-
-function jinjo_check()
-    local checks = {}
-    if BMM_BACKUP_JINJO == true
-    then
-        jinjo_ui_update()
-        if DEBUG == true
-        then
-            print("Setting BMM Jinjos")
-        end
-        return BMM_JINJOS
-    end
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
-    then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["JINJOS"] ~= nil
-        then
-            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["JINJOS"])
-            do
-                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["JINJOS"][locationId]['addr'], NON_AGI_MAP["JINJOS"][locationId]['bit'])
-                if DEBUG == true
-                then
-                    print(NON_AGI_MAP["JINJOS"][locationId]['name']..":"..tostring(checks[locationId]))
-                end
-            end
-        end
-    end
-    return checks
-end
-
-function backup_BMM_JINJOS()
-    if BMM_BACKUP_JINJO == false
-    then
-        for locationId,v in pairs(NON_AGI_MAP["JINJOS"]) do
-            if BTRAMOBJ:checkFlag(v['addr'], v['bit']) == true
-            then
-                BMM_JINJOS[locationId] = true
-            else
-                BMM_JINJOS[locationId] = false
-            end
-        end
-        BMM_BACKUP_JINJO = true
-        JinjoPause()
-    end
-end
-
--- Family complete checks are stored in BKJINJOFAM
 function init_JinjoFam()
-    for locId, _ in pairs(NON_AGI_MAP["JINJOFAM"])
+    for locId, table in pairs(NON_AGI_MAP["JINJOFAM"])
     do
         BKJINJOFAM[locId] = false
     end
 end
 
 function JinjoCounter() -- counts AP jinjos and Marks as Completed if true
-    init_JINJOS("AGI")
-    for _, locationId in pairs(receive_map) do
-        if locationId == "1230501" or locationId == "1230502" or locationId == "1230503" or locationId == "1230504"
-            or locationId == "1230505" or locationId == "1230506" or locationId == "1230507" or locationId == "1230508"
-            or locationId == "1230509"
-        then
-            AGI_JINJOS[locationId] = AGI_JINJOS[locationId] + 1
-        end
-    end
-    -- for locId, value in pairs(AGI_JINJOS)
-    -- do
-    --     print(locId ..": " .. tostring(value))
-    -- end
     for locId, value in pairs(BKJINJOFAM) do
         if value == false
         then
@@ -7414,8 +5675,12 @@ end
 
 function JinjoPause()
     -- Clear all Jinjo AMM Flags first, then Set. after
-    -- -- 15 =  0000 1111
-    -- -- 254 = 1111 1110
+    for locId, value in pairs(AGI_MASTER_MAP["JINJO"])
+    do
+        AMM["JINJO"][locId] = false
+    end
+    -- 15 =  0000 1111
+    -- 254 = 1111 1110
     BTRAMOBJ:setMultipleFlags(0x39, 15, 0)
     BTRAMOBJ:setMultipleFlags(0x3A, 0, 0)
     BTRAMOBJ:setMultipleFlags(0x3B, 0, 0)
@@ -7441,8 +5706,10 @@ function JinjoPause()
                 then
                     print("Setting Jinjo ID: " .. itemId .. " # " .. tostring(i))
                 end
-                BTRAMOBJ:setFlag(NON_AGI_MAP["JINJOS"][JINJO_PATTER_MAP[itemId][tostring(i)]]['addr'],
-                NON_AGI_MAP["JINJOS"][JINJO_PATTER_MAP[itemId][tostring(i)]]['bit'])
+                AMM["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]] = true
+                AGI["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]] = true
+                BTRAMOBJ:setFlag(AGI_MASTER_MAP["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]]['addr'],
+                AGI_MASTER_MAP["JINJO"][JINJO_PATTER_MAP[itemId][tostring(i)]]['bit'])
             end
         end
     end
@@ -7571,114 +5838,132 @@ function getBanjoDeath()
     end
 end
 
----------------------- MAP HANDLING -------------------
+------------------ Warp Trap ----------------
 
-function watchMapTransition()
-    if GAME_LOADED == true then
-        local mapaddr = BTRAMOBJ:getMap(false)
-        if mapaddr == 0x158 or mapaddr == 0x18B -- main menu / select screen
+-- function ApWarp()
+--     if TOTAL_WARP_COUNTER < AGI_TRAPS["1230799"]
+--     then
+-- 		local POS = {
+-- 			["Xpos"] = 0,
+-- 			["Ypos"] = 0,
+-- 			["Zpos"] = 0,
+-- 		};
+
+--         local warpIndex = math.random(1, #WARP_TABLE)
+-- 		local warpLocation = WARP_TABLE[warpIndex];
+-- 		local mapValue = warpLocation["mapId"]
+--         POS["Xpos"] = warpLocation["xPos"];
+-- 		POS["Ypos"] = warpLocation["yPos"];
+-- 		POS["Zpos"] = warpLocation["zPos"];
+
+
+
+-- 		if (mapValue == CURRENT_MAP) -- and (WARP_TRAP_LOGIC == 1)
+-- 		then
+-- 		    print('hi dad')
+--             BTModel.banjoRAM:setBanjoPos(POS["Xpos"], POS["Ypos"], POS["Zpos"]);
+-- 		 	TOTAL_WARP_COUNTER = AGI_TRAPS["1230799"];
+-- 		end
+
+-- 		-- if WARP_TRAP_LOGIC == 2
+-- 		-- then
+-- 		-- 	for location, worlds in pairs(UNLOCKED_WORLDS)
+-- 		-- 	do
+-- 		-- 		if UNLOCKED_WORLDS[worlds["defaultName"]] == warpLocation["worldName"]
+-- 		-- 		then
+-- 		-- 			--set player map to warpitem mapid
+-- 		-- 			BTModel.banjoRAM:setBanjoPos(POS["Xpos"], POS["Ypos"], POS["Zpos"]);
+-- 		-- 			TOTAL_WARP_COUNTER = warpItems;
+-- 		-- 		end
+-- 		-- 	end
+-- 		-- end
+-- 	end
+-- end
+
+function hag1_open()
+    if GAME_LOADED == true
+    then
+        if GOAL_TYPE == 0
         then
-            GAME_LOADED = false
-            DEMO_MODE = true
-            MAP_TRANSITION = false
-            return
-        end
-        if mainmemory.read_u8(0x127642) == 1
-        then
-            if MAP_TRANSITION == false then
-                NEXT_MAP = BTRAMOBJ:getMap(true)
-                MAP_TRANSITION = true
-                SILO_TIMER = 0
-                BKAssetFound();
-                if SKIP_PUZZLES == true
-                then
-                    check_open_level(true)
-                end
-                clear_AMM_MOVES_checks(NEXT_MAP)
-                clear_roysten()
-                check_egg_mystery()
-                obtain_breegull_bash()
+            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                BTRAMOBJ:setFlag(0x6E, 3);
+                table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                print("HAG 1 is now unlocked!")
             end
-        else -- Runs Constantly while NOT transitioning (and runs while player not yet loaded)
-            finishTransition()
-            jiggy_ui_update()
-            jinjo_ui_update()
-            pages_ui_update()
-            honeycomb_ui_update()
-            glowbo_ui_update()
-            doubloon_ui_update()
-            note_ui_update()
-            JinjoCounter()
-            check_goggles()
-        end
-    else
-        loadGame(BTRAMOBJ:getMap(false))
-    end
-end
-
-function finishTransition()
-    BTMODELOBJ:changeName("Player", false)
-    local player = BTMODELOBJ:checkModel();
-    local mapaddr = BTRAMOBJ:getMap(false)
-    if mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == true and player == true and mapaddr == NEXT_MAP -- runs once
-    then
-        MAP_TRANSITION = false
-        local mapaddr = BTRAMOBJ:getMap(false)
-        -- BKLogics(mapaddr)
-        if mapaddr ~= CURRENT_MAP
+        elseif GOAL_TYPE == 4
         then
-            PREVIOUS_MAP = CURRENT_MAP
-            CURRENT_MAP = mapaddr
-            savingBMM()
+            local token_count = 0;
+            for id, itemId in pairs(receive_map)
+            do
+                if itemId == "1230798"
+                then
+                    token_count = token_count + 1
+                end
+            end
+            if token_count >= 32
+            then
+                if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                    BTRAMOBJ:setFlag(0x6E, 3);
+                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
+                    print("HAG 1 is now unlocked!")
+                end
+            end
         end
-        if ENABLE_AP_CHUFFY == true
-        then
-            getChuffyMaps()
-        end
-        ap_icekey_glowbo_map()
-    elseif mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == false and player == true -- constantly runs while NOT transitioning AND Player is loaded
-    then
-        -- Chuffy
-        moveLevitatePad()
-        watchChuffyFlag()
-        -- Advance Moves
-        if SILO_TIMER ~= 25 --Silo greenlights sooner if not wait for timer
-        then
-            check_jamjar_silo()
-        end
-        nearSilo()
-        -- Roysten
-        check_freed_roysten()
-        -- StopNSwap
-        check_STOPNSWAPEGGS()
-        check_hatched_mystery()
-        check_local_icekey()
-        -- BK Moves
-        if ENABLE_AP_BK_MOVES ~= 0
-        then
-            obtain_bkmove()
-            check_progressive()
-        end
-        -- Honey B
-        if ENABLE_AP_HONEYB_REWARDS == true
-        then
-            watchHoneyB()
-        end
-        --Cheato 
-        if ENABLE_AP_CHEATO_REWARDS == true
-        then
-            watchCheato()
-        end
-        -- Jiggy Chunks
-        watchJChunk()
-        -- Scrotty Kids
-        watchDinoFlags()
-        -- Bath Pads
-        MoveBathPads()
     end
 end
 
 
+function check_open_level(show_message)  -- See if entrance conditions for a level have been met
+    local jiggy_count = 0;
+    for location, values in pairs(AGI_MASTER_MAP["JIGGY"])
+    do
+        if AGI['JIGGY'][location] == true
+        then
+            jiggy_count = jiggy_count + 1
+        end
+    end
+    for location, values in pairs(WORLD_ENTRANCE_MAP)
+    do
+        if values["opened"] == false
+        then
+            if jiggy_count >= values["defaultCost"]
+            then
+                if DEBUG == true
+                then
+                    print(values["defaultName"] .. tostring(values["defaultCost"]))
+                end
+                BTRAMOBJ:setFlag(values["addr"], values["bit"])
+                if values["locationId"] ~= "0"
+                then
+                    UNLOCKED_WORLDS[values["locationId"]] = true
+                end
+                if ENABLE_AP_WORLDS == false
+                then
+                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                end
+                values["opened"] = true
+                if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
+                    and show_message == true
+                then
+                    if ENABLE_AP_WORLDS == false
+                    then
+                        table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
+                        print(values["defaultName"] .. " is now unlocked!")
+                    end
+                end
+            end
+        else --Make sure its open regardless but no message
+            if jiggy_count >= values["defaultCost"] and values["opened"] == true
+            then
+                BTRAMOBJ:setFlag(values["addr"], values["bit"])
+                if ENABLE_AP_WORLDS == false
+                then
+                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
+                end
+            end
+        end
+    end
+end
 
 function checkConsumables(consumable_type, location_checks)
     BTCONSUMEOBJ:changeConsumable(consumable_type)
@@ -7698,12 +5983,8 @@ function checkConsumables(consumable_type, location_checks)
 end
 
 function loadGame(current_map)
-    BTMODELOBJ:changeName("Player", false)
-    local player = BTMODELOBJ:checkModel();
     if(current_map == 0x142 or current_map == 0xAF or current_map == 0x160)
     then
-        JIGGY_COUNT = 0
-        CURRENT_MAP = current_map
         local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".BMM", "r") -- get #BTplayer_seed.BMM
         if f==nil then
            return false
@@ -7712,40 +5993,25 @@ function loadGame(current_map)
             then
                 print("Loading BMM Files");
             end
-            init_JinjoFam()
-            init_JIGGIES("BMM", false)
-            init_JIGGIES("AGI", true)
-            backup_BMM_JIGGIES()
-            init_NOTES("BMM", false)
-            init_NOTES("AGI", true)
-            backup_BMM_NOTES()
-            init_TREBLE("BMM", false)
-            init_TREBLE("AGI", true)
-            backup_BMM_TREBLE()
-            init_JINJOS("BMM")
-            backup_BMM_JINJOS()
-            BMM_JIGGIES = json.decode(f:read("l"));
-            BMM_NOTES = json.decode(f:read("l"));
-            BMM_TREBLE = json.decode(f:read("l"));
-            BMM_JINJOS = json.decode(f:read("l"));
+            USE_BMM_TBL = true
+            BMM = json.decode(f:read("l"));
             BKM = json.decode(f:read("l"));
+            BKNOTES = json.decode(f:read("l"));
             BKSTATIONS = json.decode(f:read("l"));
-            BMM_CHUFFY = json.decode(f:read("l"));
-            init_CHUFFY("AGI", true)
-            BMM_MYSTERY = json.decode(f:read("l"));
-
-            restore_BMM_JIGGIES()
-            restore_BMM_NOTES()
-            restore_BMM_TREBLE()
-            restore_BMM_JINJOS()
+            BKCHUFFY = json.decode(f:read("l"));
+            BKJINJOFAM = json.decode(f:read("l"));
+            BKMYSTERY = json.decode(f:read("l"));
             f:close();
+            all_location_checks("AMM");
+            all_location_checks("BMM");
+            BMMRestore();
             if DEBUG == true
             then
                 print("Restoring from Load Game")
             end
-            -- set_AGI_MOVES_checks();
-            -- set_AP_BKNOTES();
-            -- set_AP_STATIONS();
+            set_AGI_MOVES_checks();
+            set_AP_BKNOTES();
+            set_AP_STATIONS();
             init_roysten()
             if ENABLE_AP_CHUFFY == true -- Sanity Check
             then
@@ -7754,13 +6020,13 @@ function loadGame(current_map)
                 BTRAMOBJ:checkFlag(0x99, 1) == false and BTRAMOBJ:checkFlag(0x99, 2) == false and
                 BTRAMOBJ:checkFlag(0x99, 3) == false
                 then
-                    if DEBUG_CHUFFY == true
+                    if DEBUG == true
                     then
                         print("Moving Chuffy to GGM")
                     end
                     BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
                 else
-                    if DEBUG_CHUFFY == true
+                    if DEBUG == true
                     then
                         print("Sorry, but Chuffy is at a different Station")
                     end
@@ -7788,53 +6054,171 @@ function loadGame(current_map)
             hag1_open()
             hag1_phase_skips()
             GAME_LOADED = true;
-            DEMO_MODE = false;
-            print("GAME LOADED!")
         end
+    else
+        if BYPASS_GAME_LOAD == true
+        then
+            GAME_LOADED = true;
+        end
+        return false;
     end
 end
 
 function MoveBathPads()
-    if CURRENT_MAP == 0xF4 and BATH_PADS_QOL == false
+    BTMODELOBJ:changeName("Kazooie Split Pad", false)
+    POS = BTMODELOBJ:getSingleModelCoords(nil)
+    if POS == false
     then
-        BTMODELOBJ:changeName("Kazooie Split Pad", false)
-        POS = BTMODELOBJ:getSingleModelCoords(nil)
-        if POS == false
-        then
-            return
-        end
+        return
+    end
 
-        BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450 );
-        BTMODELOBJ:changeRotation(nil, nil, 0);
+    BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450 );
+    BTMODELOBJ:changeRotation(nil, nil, 0);
 
-        BTMODELOBJ:changeName("Banjo Split Pad", false)
-        POS = BTMODELOBJ:getSingleModelCoords(nil)
-        if POS == false
-        then
-            return
-        end
-        BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450);
-        BTMODELOBJ:changeRotation(nil, nil, 0)
-        BATH_PADS_QOL = true
-    elseif  CURRENT_MAP ~= 0xF4 and BATH_PADS_QOL == true
+    BTMODELOBJ:changeName("Banjo Split Pad", false)
+    POS = BTMODELOBJ:getSingleModelCoords(nil)
+    if POS == false
     then
-        BATH_PADS_QOL = false
+        return
+    end
+    BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450);
+    BTMODELOBJ:changeRotation(nil, nil, 0)
+    BATH_PADS_QOL = true
+end
+
+function SolvingPuzzle(mapaddr) -- Avoid false checks when working on puzzles
+    if CURRENT_MAP ~= 0x151 --The Temple
+    then
+        return false
+    end
+    if mapaddr == 0xC5 or mapaddr == 0xD8 or mapaddr == 0x152 or mapaddr == 0xE1
+        or mapaddr == 0x154 or mapaddr == 0xF4 or mapaddr == 0x155 or mapaddr == 0x114
+        or mapaddr == 0x15A or mapaddr == 0x107 or mapaddr == 0x15C or mapaddr == 0x129
+        or mapaddr == 0x13A or mapaddr == 0x151 or mapaddr == 0x15D or mapaddr == 0x160
+    then
+        return true
     end
 end
 
 function BKLogics(mapaddr)
     BTMODELOBJ:changeName("Player", false)
     local player = BTMODELOBJ:checkModel();
-
+    check_freed_roysten()
+    obtain_swimming()
+    if ENABLE_AP_BK_MOVES ~= 0
+    then
+        obtain_bkmove()
+    end
+    if ENABLE_AP_CHEATO_REWARDS == true
+    then
+        watchCheato()
+    end
+    if ENABLE_AP_HONEYB_REWARDS == true
+    then
+        watchHoneyB()
+    end
+    watchJChunk()
+    check_goggles()
+    watchDinoFlags()
+    if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_MOVES == true
+    then
+        WATCH_LOADED_SILOS = false
+        for map,moves in pairs(ASSET_MAP_CHECK["SILO"])
+        do
+            if mapaddr == map
+            then
+                if DEBUG == true
+                then
+                    print("Checking Silos")
+                end
+                SILOS_WAIT_TIMER = 0;
+                CHECK_FOR_SILO = true
+            end
+        end
+    end
     if ((CURRENT_MAP ~= mapaddr) or player == false)
     then
+        set_checked_BKNOTES();
+        TREBLE_WAIT_TIMER = 0
+        CHECK_FOR_TREBLE = true
         set_checked_BKSTATIONS()
         STATION_BTN_TIMER = 0
         CHECK_FOR_STATIONBTN = true
+        honeycomb_math_check()
+        cheato_math_check()
+    end
+    if ((CURRENT_MAP ~= mapaddr) or player == false) and ENABLE_AP_CHUFFY == true
+    then
+        CHUFFY_MAP_TRANS = true
+    elseif ENABLE_AP_CHUFFY == false and BKCHUFFY["1230796"] == false then
+        if CURRENT_MAP == 0xD1 -- Only watch for King Coal Check.
+        then
+            watchChuffyFlag()
+        end
+    end
+    if CURRENT_MAP == 0xF4 and BATH_PADS_QOL == false
+    then
+        MoveBathPads()
+    elseif  CURRENT_MAP ~= 0xF4 and BATH_PADS_QOL == true
+    then
+        BATH_PADS_QOL = false
+    end
+    -- if CURRENT_MAP == 0x1A7 and DOUBLOON_SILO_MOVE == false
+    -- then
+    --     MoveDoubloon()
+    -- elseif DOUBLOON_SILO_MOVE == true and  CURRENT_MAP ~= 0x1A7 
+    -- then
+    --     DOUBLOON_SILO_MOVE = false
+    -- end
+    if (CURRENT_MAP ~= mapaddr)
+    then
+        if ENABLE_AP_JINJO == true
+        then
+            JinjoCounter()
+        end
+        client.saveram()
+        if SKIP_PUZZLES == true -- another sanity check
+        then
+            check_open_level(false)
+        end
+        clearKey()
+        check_progressive()
+        obtain_breegull_bash()
+        check_real_goggles()
     end
 end
 
 function BKCheckAssetLogic()
+    if CHECK_FOR_SILO == true
+    then
+        if DEBUG == true
+        then
+            print("clearing all AMM moves")
+        end
+        local res = clear_AMM_MOVES_checks()
+        if res == true
+        then
+            getSiloPlayerModel()
+        else
+            CHECK_FOR_SILO = false
+            set_AGI_MOVES_checks()
+        end
+    end
+    if CHECK_FOR_TREBLE == true
+    then
+        if DEBUG == true
+        then
+            print("clearing all AP Trebles")
+        end
+        local res = set_checked_BKNOTES()
+        if res == true
+        then
+            getTreblePlayerModel()
+        else
+            CHECK_FOR_TREBLE = false
+            set_AP_BKNOTES()
+        end
+    end
     if CHECK_FOR_STATIONBTN == true
     then
         if DEBUG == true
@@ -7850,13 +6234,522 @@ function BKCheckAssetLogic()
             set_AP_STATIONS()
         end
     end
+    if (CHUFFY_MAP_TRANS == true or CHUFFY_STOP_WATCH == false or (CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false)) and ENABLE_AP_CHUFFY == true
+    then
+        if AGI_CHUFFY["1230796"] == false and CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false
+        then
+            moveLevitatePad()
+        elseif AGI_CHUFFY["1230796"] == false and CURRENT_MAP ~= 0xD7 and LEVI_PAD_MOVED == true
+        then
+            LEVI_PAD_MOVED = false
+        end
+        CHUFFY_STOP_WATCH = false
+        CHUFFY_MAP_TRANS = false
+        getChuffyMaps()
+    end
 end
 
 function BKAssetFound()
+    if WATCH_LOADED_SILOS == true
+    then
+        nearSilo()
+    end
+    if WATCH_LOADED_TREBLE == true
+    then
+        res = nearTreble()
+        if res == false and TREBLE_SPOTED == true and CURRENT_MAP == TREBLE_MAP and TREBLE_GONE_CHECK == 0 --Treble collected
+        then
+            BTMODELOBJ:changeName("Player", false)
+            local player = BTMODELOBJ:checkModel();
+            if player == true
+            then
+                BKNOTES[ASSET_MAP_CHECK["TREBLE"][TREBLE_MAP]] = true;
+                TREBLE_SPOTED = false;
+                WATCH_LOADED_TREBLE = false;
+                set_AP_BKNOTES()
+            else
+                TREBLE_SPOTED = false;
+                TREBLE_MAP = 0x00;
+            end
+        elseif res == false and TREBLE_SPOTED == true and CURRENT_MAP == TREBLE_MAP and TREBLE_GONE_CHECK > 0
+        then
+            TREBLE_GONE_CHECK = TREBLE_GONE_CHECK - 1
+        elseif res == false and CURRENT_MAP ~= TREBLE_MAP
+        then
+            TREBLE_SPOTED = false;
+            TREBLE_MAP = 0x00;
+            WATCH_LOADED_TREBLE = false
+        end
+    end
     if WATCH_LOADED_STATIONBTN == true --Don't need to watch every 10 frames
     then
         watchBtnAnimation()
     end
+    check_egg_mystery()
+    check_hatched_mystery()
+    check_local_icekey()
+    ap_icekey_glowbo_map()
+ -- ApWarp();
+
+end
+
+function locationControl()
+    local mapaddr = BTRAMOBJ:getMap()
+    if mapaddr == nil --We don't want this to process anything
+    then
+        local DEMO = { ['DEMO'] = true}
+        return DEMO
+    end
+    if SolvingPuzzle(mapaddr) == true
+    then
+        local DEMO = { ['DEMO'] = true}
+        return DEMO
+    end
+
+    if USE_BMM_TBL == true --Only used If Maps are AROUND or IN Wooded Hollow or JWTemple
+    then
+        if BTRAMOBJ:checkFlag(0x1F, 0, "LocControl1")== true -- DEMO FILE
+        then
+            local DEMO = { ['DEMO'] = true}
+            return DEMO
+        end
+        BKLogics(mapaddr)
+        if ((CURRENT_MAP == 335 or CURRENT_MAP == 337) and (mapaddr ~= 335 and mapaddr ~= 337)) -- Wooded Hollow
+        then
+            BMMRestore()
+            CURRENT_MAP = mapaddr
+            return all_location_checks("AMM")
+        else
+            getAltar()
+            nearWHJinjo()
+            if ENABLE_AP_WORLDS == true
+            then
+                nearDisiple()
+            end
+            CURRENT_MAP = mapaddr
+            return all_location_checks("BMM");
+        end
+    else
+        if GAME_LOADED == false
+        then
+            loadGame(mapaddr)
+            local DEMO = { ['DEMO'] = true}
+            return DEMO
+        else
+            BKLogics(mapaddr)    
+            if (mapaddr == 335 or mapaddr == 337) and TOTALS_MENU == false -- Wooded Hollow / JiggyTemple
+            then
+                if CURRENT_MAP ~= 335 and CURRENT_MAP ~= 337
+                then
+                    BMMBackup();
+                    useAGI();
+                    CURRENT_MAP = mapaddr
+                end
+                nearWHJinjo()
+                if ENABLE_AP_WORLDS == true
+                then
+                    nearDisiple()
+                end
+                return all_location_checks("BMM");
+            else
+                CURRENT_MAP = mapaddr
+                getAltar()
+                if CLOSE_TO_ALTAR == true
+                then
+                    return all_location_checks("BMM");
+                end
+                return all_location_checks("AMM");
+            end
+        end
+    end
+end
+
+function BMMBackup()
+    if USE_BMM_TBL == true or GAME_LOADED == false
+    then
+        return
+    end
+    for item_group, table in pairs(AGI_MASTER_MAP)
+    do
+        if BMM[item_group] == nil then
+            BMM[item_group] = {}
+        end
+        if USE_BMM_ONLY_TBL == true
+        then
+            if USE_BMM_ONLY_TYP ~= item_group
+            then
+                for location, values in pairs(table)
+                do
+                    BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
+                end
+            else
+                if DEBUG == true
+                then
+                    print("Backup excluding " .. USE_BMM_ONLY_TYP);
+                end
+            end
+        else
+            if ENABLE_AP_NOTES == false and item_group == "NOTES"
+            then
+                goto continue_BMM_backup
+            end
+            for location, values in pairs(table)
+            do
+                BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
+            end
+        end
+        ::continue_BMM_backup::
+    end
+    if DEBUG == true
+    then
+        print("Backup complete");
+    end
+    savingBMM()
+    USE_BMM_TBL = true
+end
+
+function BMMBackupOnly(backup_type)
+    if USE_BMM_TBL == true or GAME_LOADED == false or
+    (USE_BMM_ONLY_TBL == true and USE_BMM_ONLY_TYP == backup_type)
+    then
+        return
+    end
+    for item_group, table in pairs(AGI_MASTER_MAP)
+    do
+        if BMM[item_group] == nil then
+            BMM[item_group] = {}
+        end
+        if item_group == backup_type
+        then
+            for location, values in pairs(table)
+            do
+                BMM[item_group][location] = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "BMMBackup");
+            end
+        end
+    end
+    if DEBUG == true
+    then
+        print("Backup " .. backup_type .. " complete");
+    end
+    USE_BMM_ONLY_TBL = true
+    USE_BMM_ONLY_TYP = backup_type
+end
+
+function BMMRestore()
+    if USE_BMM_TBL == false
+    then
+        return
+    end
+
+    for item_group , location in pairs(AGI_MASTER_MAP)
+    do
+        if USE_BMM_ONLY_TBL == true
+        then
+            if item_group ~= USE_BMM_ONLY_TYP
+            then
+                for loc,v in pairs(location)
+                do
+                    if AMM[item_group][loc] == false and BMM[item_group][loc] == true
+                    then
+                        BTRAMOBJ:setFlag(v['addr'], v['bit'])
+                        AMM[item_group][loc] = BMM[item_group][loc]
+                        if DEBUG == true
+                        then
+                            print(loc .. " Flag Set")
+                        end
+                    elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
+                    then
+                        BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE")
+                        AMM[item_group][loc] = BMM[item_group][loc]
+                        if DEBUG == true
+                        then
+                            print(loc .. " Flag Cleared")
+                        end
+                    end
+                end
+            else
+                if DEBUG == true
+                then
+                    print("BMM Restoring exlude " .. USE_BMM_ONLY_TYP)
+                end
+            end
+        else
+            for loc,v in pairs(location)
+            do
+                if AMM[item_group][loc] == false and BMM[item_group][loc] == true
+                then
+                    BTRAMOBJ:setFlag(v['addr'], v['bit'])
+                    AMM[item_group][loc] = BMM[item_group][loc]
+                    if DEBUG == true
+                    then
+                        print(loc .. " Flag Set")
+                    end
+                elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
+                then
+                    BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE")
+                    AMM[item_group][loc] = BMM[item_group][loc]
+                    if DEBUG == true
+                    then
+                        print(loc .. " Flag Cleared")
+                    end
+                end
+            end
+        end
+    end
+    if DEBUG == true
+    then
+        print("BMM Restored")
+    end
+    USE_BMM_TBL = false;
+end
+
+function BMMRestoreOnly(backup_type)
+    if USE_BMM_ONLY_TBL == false
+    then
+        return
+    end
+
+    for item_group , location in pairs(AGI_MASTER_MAP)
+    do
+        if item_group == backup_type
+        then
+            for loc,v in pairs(location)
+            do
+                if AMM[item_group][loc] == false and BMM[item_group][loc] == true
+                then
+                    BTRAMOBJ:setFlag(v['addr'], v['bit'])
+                    AMM[item_group][loc] = BMM[item_group][loc]
+                    if DEBUG == true
+                    then
+                        print(loc .. " Flag Set")
+                    end
+                elseif AMM[item_group][loc] == true and BMM[item_group][loc] == false
+                then
+                    BTRAMOBJ:clearFlag(v['addr'], v['bit'], "CLEAR_BMM_RESTORE_ONLY")
+                    AMM[item_group][loc] = BMM[item_group][loc]
+                    if DEBUG == true
+                    then
+                        print(loc .. " Flag Cleared")
+                    end
+                end
+            end
+            USE_BMM_ONLY_TBL = false;
+            USE_BMM_ONLY_TYP = "";
+            if DEBUG == true
+            then
+                print(backup_type .. " BMM Restored")
+            end
+        end
+    end
+end
+
+function useAGI()
+    for item_group, table in pairs(AGI_MASTER_MAP)
+    do
+        if ENABLE_AP_NOTES == false and item_group == "NOTES"
+        then
+            if DEBUG == true
+            then
+                print("Skipping Notes, not enabled.")
+            end
+            goto continue_USE_AGI
+        end
+        if USE_BMM_ONLY_TBL == true
+        then
+            if USE_BMM_ONLY_TYP ~= item_group
+            then
+                for location,values in pairs(table)
+                do
+                    if AMM[item_group][location] == false and AGI[item_group][location] == true
+                    then
+                        BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                        AMM[item_group][location] = true
+                        if DEBUG == true
+                        then
+                            print(location .. " Flag Set from AGI");
+                        end
+                    elseif AMM[item_group][location] == true and AGI[item_group][location] == false
+                    then
+                        BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
+                        AMM[item_group][location] = false;
+                        if DEBUG == true
+                        then
+                            print(location .. " Flag Cleared from AGI");
+                        end
+                    elseif ENABLE_AP_JINJO == true
+                    then
+                        if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
+                        or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
+                        or location == "1230684") and AGI[item_group][location] == true
+                        then
+                            BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                            AMM[item_group][location] = true
+                            if DEBUG == true
+                            then
+                                print(location .. " Flag Set from AGI");
+                            end
+                        end
+                    end
+                end
+            else
+                if DEBUG == true
+                then
+                    print("AGI exclude " .. USE_BMM_ONLY_TYP);
+                end
+            end
+        else
+            for location,values in pairs(table)
+            do
+                if AMM[item_group][location] == false and AGI[item_group][location] == true
+                then
+                    BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                    AMM[item_group][location] = true
+                    if DEBUG == true
+                    then
+                        print(location .. " Flag Set from AGI");
+                    end
+                elseif AMM[item_group][location] == true and AGI[item_group][location] == false
+                then
+                    BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
+                    AMM[item_group][location] = false;
+                    if DEBUG == true
+                    then
+                        print(location .. " Flag Cleared from AGI");
+                    end
+                elseif ENABLE_AP_JINJO == true
+                then
+                    if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
+                    or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
+                    or location == "1230684") and AGI[item_group][location] == true
+                    then
+                        BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                        AMM[item_group][location] = true
+                        if DEBUG == true
+                        then
+                            print(location .. " Flag Set from AGI");
+                        end
+                    end
+                end
+            end
+        end
+        ::continue_USE_AGI::
+    end
+end
+
+function useAGINoJiggies()
+    for location,values in pairs(AGI_MASTER_MAP["JIGGY"])
+    do
+        if AMM["JIGGY"][location] == true
+        then
+            BTRAMOBJ:clearFlag(values['addr'], values['bit'])
+            AMM["JIGGY"][location] = false
+            if DEBUG == true
+            then
+                print(location .. " Flag Cleared from AGI JIGGY");
+            end
+        end
+    end
+end
+
+function useAGIOnly(agi_type)
+    for item_group, table in pairs(AGI_MASTER_MAP)
+    do
+        if item_group == agi_type
+        then
+            for location,values in pairs(table)
+            do
+                if AMM[item_group][location] == false and AGI[item_group][location] == true
+                then
+                    BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                    AMM[item_group][location] = true
+                    if DEBUG == true
+                    then
+                        print(location .. " Flag Set from AGI");
+                    end
+                elseif AMM[item_group][location] == true and AGI[item_group][location] == false
+                then
+                    BTRAMOBJ:clearFlag(values['addr'], values['bit'], "CLEAR_USEAGI");
+                    AMM[item_group][location] = false;
+                    if DEBUG == true
+                    then
+                        print(location .. " Flag Cleared from AGI");
+                    end
+                elseif ENABLE_AP_JINJO == true
+                then
+                    if (location == "1230676" or location == "1230677" or location == "1230678" or location == "1230679"
+                    or location == "1230680" or location == "1230681" or location == "1230682" or location == "1230683"
+                    or location == "1230684") and AGI[item_group][location] == true
+                    then
+                        BTRAMOBJ:setFlag(values['addr'], values['bit'])
+                        AMM[item_group][location] = true
+                        if DEBUG == true
+                        then
+                            print(location .. " Flag Set from AGI");
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+function all_location_checks(type)
+
+    local location_checks = readAPLocationChecks(type)
+
+    if type == "AMM"
+    then
+        for item_group, locations in pairs(location_checks)
+        do
+            if AMM[item_group] == nil
+            then
+                AMM[item_group] = {}
+            end
+            if USE_BMM_ONLY_TBL == true
+            then
+                if item_group ~= USE_BMM_ONLY_TYP
+                then
+                    for locationId, value in pairs(locations)
+                    do
+                        AMM[item_group][locationId] = value
+                    end
+                end
+            else
+                for locationId, value in pairs(locations)
+                do
+                    AMM[item_group][locationId] = value
+                end
+            end
+        end
+    end
+    if next(AGI) == nil then --Only runs first time starting the game.
+        for item_group, locations in pairs(location_checks)
+        do
+             if AGI[item_group] == nil
+             then
+                 AGI[item_group] = {}
+             end  
+             for locationId, value in pairs(locations)
+             do
+                 AGI[item_group][locationId] = value
+             end
+        end
+    end
+
+    if ENABLE_AP_HONEYCOMB == true then
+        checkConsumables('HONEYCOMB', location_checks)
+    end
+
+    if ENABLE_AP_PAGES == true then
+        checkConsumables('CHEATO', location_checks)
+    end
+    checkConsumables('GLOWBO', location_checks)
+    checkConsumables('MEGA GLOWBO', location_checks)
+    if ENABLE_AP_DOUBLOONS == true then
+        checkConsumables('DOUBLOON', location_checks)
+    end
+
+    return location_checks
 end
 
 function processMessages()
@@ -7906,23 +6799,55 @@ function clearText()
     end
 end
 
+function processMagicItem(loc_ID)
+    for location, table in pairs(NON_AGI_MAP['MAGIC'])
+    do
+        if location == tostring(loc_ID)
+        then
+            BTRAMOBJ:setFlag(table['addr'], table['bit'])
+--            archipelago_msg_box("Received " .. location);
+        end
+    end
+
+end
+
 function processAGIItem(item_list)
     for ap_id, memlocation in pairs(item_list) -- Items unrelated to AGI_MAP like Consumables
     do
         if receive_map[tostring(ap_id)] == nil
         then
-            if(memlocation == 1230512)  -- Honeycomb Item
+            if(memlocation == 1230512 and ENABLE_AP_HONEYCOMB == true)  -- Honeycomb Item
             then
-                obtained_AP_HONEYCOMB()
-            elseif(memlocation == 1230513) -- Cheato Item
+                if DEBUG == true
+                then
+                    print("HC Obtained")
+                end
+                BTCONSUMEOBJ:changeConsumable("HONEYCOMB");
+                BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
+ --               archipelago_msg_box("Received Honeycomb");
+            elseif(memlocation == 1230513 and ENABLE_AP_PAGES == true) -- Cheato Item
             then
-                obtained_AP_PAGES()
-            elseif(memlocation == 1230514) -- Doubloon Item
+                if DEBUG == true
+                then
+                    print("Cheato Page Obtained")
+                end
+                BTCONSUMEOBJ:changeConsumable("CHEATO");
+                BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
+ --               archipelago_msg_box("Received Cheato Page");
+            elseif(memlocation == 1230515)
             then
-                obtained_AP_DOUBLOON()
-            elseif(memlocation == 1230515) -- Jiggy
-            then
-                obtained_AP_JIGGY()
+                if DEBUG == true
+                then
+                    print("Jiggy Obtained")
+                end
+                for location, values in pairs(AGI_MASTER_MAP["JIGGY"])
+                do
+                    if AGI['JIGGY'][location] == false
+                    then
+                        AGI['JIGGY'][location] = true
+                        break
+                    end
+                end
                 if SKIP_PUZZLES == true then
                     check_open_level(true) -- check if the current jiggy count opens a new level
                 end
@@ -7957,25 +6882,44 @@ function processAGIItem(item_list)
                             BTCONSUMEOBJ:changeConsumable("CWK EGGS")
                             BTCONSUMEOBJ:setConsumable(10)
                         end
-                        check_jamjar_silo()
+                        set_AGI_MOVES_checks()
                     end
                 end
-
+            elseif(memlocation == 1230514 and ENABLE_AP_DOUBLOONS == true) -- Doubloon Item
+            then
+                if DEBUG == true
+                then
+                    print("Doubloon Obtained")
+                end
+                BTCONSUMEOBJ:changeConsumable("DOUBLOON");
+                BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
             elseif memlocation == 1230516 -- Treble Clef
             then
-                obtained_AP_TREBLE()
+                obtained_AP_BKNOTE();
             elseif(1230790 <= memlocation and memlocation <= 1230795) -- Station Btns
             then
                 obtained_AP_STATIONS(memlocation);
             elseif memlocation == 1230796 and ENABLE_AP_CHUFFY == true
             then
                 obtained_AP_CHUFFY()
-            elseif( 1230501 <= memlocation and memlocation <= 1230509) -- Jinjos
+            elseif( 1230501 <= memlocation and memlocation <= 1230509) and ENABLE_AP_JINJO == true
             then
                 AGI_JINJOS[tostring(memlocation)] = AGI_JINJOS[tostring(memlocation)] + 1
-            elseif(memlocation == 1230797) -- Notes
+                JinjoCounter() -- check and see if family completes and mark true
+            elseif(memlocation == 1230797) and ENABLE_AP_NOTES == true
             then
-                obtained_AP_NOTES()
+                if DEBUG == true
+                then
+                    print("5 Notes Obtained")
+                end
+                for location, values in pairs(AGI_MASTER_MAP["NOTES"])
+                do
+                    if AGI['NOTES'][location] == false
+                    then
+                        AGI['NOTES'][location] = true
+                        break
+                    end
+                end
             elseif(memlocation == 1230800)
             then
                 if DEBUG == true
@@ -8025,7 +6969,7 @@ function processAGIItem(item_list)
                     print("Ice Key Obtained")
                 end
                 AGI_MYSTERY[tostring(memlocation)] = true
-                if BMM_MYSTERY["1230958"] == true
+                if BKMYSTERY["1230958"] == true
                 then
                     BTCONSUMEOBJ:changeConsumable("Ice Keys")
                     BTCONSUMEOBJ:setConsumable(1)
@@ -8051,7 +6995,7 @@ function processAGIItem(item_list)
                 if progressive_count == 1 then
                     local location = "1230757"
                     AGI_MOVES[location] = true
-                    check_jamjar_silo()
+                    set_AGI_MOVES_checks()
                 end
             elseif(memlocation == 1230829) -- Progressive Eggs
             then
@@ -8066,28 +7010,28 @@ function processAGIItem(item_list)
                 if progressive_count == 0 then
                     local location = "1230756"
                     AGI_MOVES[location] = true
-                    check_jamjar_silo()
+                    set_AGI_MOVES_checks()
                     BTCONSUMEOBJ:changeConsumable("FIRE EGGS")
                     BTCONSUMEOBJ:setConsumable(50)
                 end
                 if progressive_count == 1 then
                     local location = "1230759"
                     AGI_MOVES[location] = true
-                    check_jamjar_silo()
+                    set_AGI_MOVES_checks()
                     BTCONSUMEOBJ:changeConsumable("GRENADE EGGS")
                     BTCONSUMEOBJ:setConsumable(25)
                 end
                 if progressive_count == 2 then
                     local location = "1230763"
                     AGI_MOVES[location] = true
-                    check_jamjar_silo()
+                    set_AGI_MOVES_checks()
                     BTCONSUMEOBJ:changeConsumable("ICE EGGS")
                     BTCONSUMEOBJ:setConsumable(50)
                 end
                 if progressive_count == 3 then
                     local location = "1230767"
                     AGI_MOVES[location] = true
-                    check_jamjar_silo()
+                    set_AGI_MOVES_checks()
                     BTCONSUMEOBJ:changeConsumable("CWK EGGS")
                     BTCONSUMEOBJ:setConsumable(10)
                 end
@@ -8110,12 +7054,12 @@ function processAGIItem(item_list)
                 if progressive_count == 2 then
                     local location = "1230768"
                     AGI_MOVES[location] = true
-                    check_jamjar_silo()
+                    set_AGI_MOVES_checks()
                 end
                 if progressive_count == 3 then
                     local location = "1230773"
                     AGI_MOVES[location] = true
-                    check_jamjar_silo()
+                    set_AGI_MOVES_checks()
                 end
             elseif(memlocation == 1230831) -- Progressive Water Training
             then
@@ -8200,30 +7144,21 @@ function SendToBTClient()
     retTable["scriptVersion"] = SCRIPT_VERSION;
     retTable["playerName"] = PLAYER;
     retTable["deathlinkActive"] = DEATH_LINK;
-    retTable["jiggies"] = jiggy_check()
-    retTable["jinjos"] = jinjo_check()
-    retTable["pages"] = pages_check()
-    retTable["honeycomb"] = honeycomb_check()
-    retTable["glowbo"] = glowbo_check()
-    retTable["doubloon"] = doubloon_check()
-    retTable["notes"] = notes_check()
-    retTable["hag"] = hag1_check()
+    retTable['locations'] = locationControl()
     retTable['unlocked_moves'] = BKM;
-    retTable['treble'] = treble_check();
+    retTable['treble'] = BKNOTES;
     retTable['stations'] = BKSTATIONS;
-    retTable['chuffy'] = BMM_CHUFFY;
+    retTable['chuffy'] = BKCHUFFY;
     retTable["isDead"] = DETECT_DEATH;
     retTable["jinjofam"] = BKJINJOFAM;
     retTable["worlds"] = UNLOCKED_WORLDS;
-    retTable["mystery"] = BMM_MYSTERY;
+    retTable["mystery"] = BKMYSTERY;
     retTable["roysten"] = ROYSTEN;
     retTable["cheato_rewards"] = CHEATO_REWARDS;
     retTable["honeyb_rewards"] = HONEYB_REWARDS;
     retTable["jiggy_chunks"] = JIGGY_CHUNKS;
     retTable["goggles"] = GOGGLES;
     retTable["dino_kids"] = DINO_KIDS;
-    retTable["DEMO"] = DEMO_MODE;
-    
     if CURRENT_MAP == nil
     then
         retTable["banjo_map"] = 0x0;
@@ -8309,13 +7244,13 @@ function checkPause()
         then
             print("Game Paused");
         end
-        DEMO_MODE = true -- SEND NO CHECKS
-        backup_BMM_JIGGIES()
-        backup_BMM_NOTES()
-        backup_BMM_TREBLE()
-        backup_BMM_JINJOS()
+        BMMBackup();
+        useAGI();
+        if ENABLE_AP_JINJO == true
+        then
+            JinjoPause();
+        end
         PAUSED = true;
-        savingBMM()
     elseif pause_menu == 0 and PAUSED == true  -- unpaused
     then
         PAUSED = false
@@ -8323,22 +7258,11 @@ function checkPause()
         then
             print("Game Unpaused");
         end
-        if GAME_LOADED == true
-        then 
-            if SKIP_PUZZLES == false then
-                if CURRENT_MAP ~= 0x14F and CURRENT_MAP ~= 0x151  -- Don't want to restore while in WH zone
-                then
-                    restore_BMM_JIGGIES()
-                end
-            else
-                restore_BMM_JIGGIES()
-            end
-                restore_BMM_NOTES()
-                restore_BMM_TREBLE()
-                restore_BMM_JINJOS()
-                unpause_hide_AGI_key()
-                DEMO_MODE = false -- SEND NO CHECKS
+        if CURRENT_MAP ~= 335 and CURRENT_MAP ~= 337  -- Don't want to restore while in WH zone
+        then
+            BMMRestore()
         end
+        unpause_hide_AGI_key()
     elseif PAUSED == true and DEBUG == true
     then
         local check_controls = joypad.get()
@@ -8645,17 +7569,42 @@ function savingAGI()
         print(AGI)
         print(receive_map)
     end
+    f:write(json.encode(AGI) .. "\n");
+    if DEBUGLVL2 == true
+    then
+        print("Writing AGI MOVES from Saving");
+    end
     f:write(json.encode(AGI_MOVES) .. "\n");
     if DEBUGLVL2 == true
     then
         print("Writing Treble");
     end
+    f:write(json.encode(AGI_NOTES) .. "\n");
+    if DEBUGLVL2 == true
+    then
+        print("Writing Stations");
+    end
     f:write(json.encode(AGI_STATIONS) .. "\n");
+    if DEBUGLVL2 == true
+    then
+        print("Writing Chuffy");
+    end
+    f:write(json.encode(AGI_CHUFFY) .. "\n");
+    if DEBUGLVL2 == true
+    then
+        print("Writing JINJOS");
+    end
+    f:write(json.encode(AGI_JINJOS) .. "\n");
     if DEBUGLVL2 == true
     then
         print("Writing MYSTERY");
     end
     f:write(json.encode(AGI_MYSTERY) .. "\n");
+    -- if DEBUGLVL2 == true
+    -- then
+    --     print("Writing Traps");
+    -- end
+    -- f:write(json.encode(AGI_TRAPS) .. "\n");
     if DEBUGLVL2 == true
     then
         print("Writing Received_Map");
@@ -8671,35 +7620,36 @@ end
 function loadAGI()
     local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "r") --generate #BTplayer_seed.AGI
     if f==nil then
-        if next(AGI_JIGGIES) == nil then
-            init_JIGGIES("AGI", false)
-        end
-        if next(AGI_NOTES) == nil then
-            init_NOTES("AGI", false)
-        end
-        if next(AGI_TREBLE) == nil then
-            init_TREBLE("AGI", false)
-        end
+        AGI = all_location_checks("AGI");
         if next(AGI_MOVES) == nil then
             AGI_MOVES = init_BMK("AGI");
+        end
+        if next(AGI_NOTES) == nil then
+            AGI_NOTES = init_BKNOTES("AGI");
         end
         if next(AGI_STATIONS) == nil then
             AGI_STATIONS = init_BKSTATIONS("AGI");
         end
         if next(AGI_CHUFFY) == nil then
-            init_CHUFFY("AGI", false);
+            AGI_CHUFFY = init_CHUFFY("AGI");
         end
         if next(AGI_MYSTERY) == nil then
-            init_STOPNSWAP("AGI");
+            AGI_MYSTERY = init_BKMYSTERY("AGI");
         end
         f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "w");
         if DEBUGLVL2 == true
         then
             print("Writing AGI File from LoadAGI");
+            print(AGI);
         end
+        f:write(json.encode(AGI).."\n");
         f:write(json.encode(AGI_MOVES).."\n");
+        f:write(json.encode(AGI_NOTES).."\n");
         f:write(json.encode(AGI_STATIONS) .. "\n");
+        f:write(json.encode(AGI_CHUFFY) .. "\n");
+        f:write(json.encode(AGI_JINJOS) .. "\n");
         f:write(json.encode(AGI_MYSTERY) .. "\n");
+     -- f:write(json.encode(AGI_TRAPS) .. "\n");
         f:write(json.encode(receive_map));
         f:close();
     else
@@ -8707,52 +7657,36 @@ function loadAGI()
         then
             print("Loading AGI File");
         end
+        AGI = json.decode(f:read("l"));
         AGI_MOVES = json.decode(f:read("l"));
+        AGI_NOTES = json.decode(f:read("l"));
         AGI_STATIONS = json.decode(f:read("l"));
+        AGI_CHUFFY = json.decode(f:read("l"));
+        AGI_JINJOS = json.decode(f:read("l"));
         AGI_MYSTERY = json.decode(f:read("l"));
+     -- AGI_TRAPS = json.decode(f:read("l"));
         receive_map = json.decode(f:read("l"));
         f:close();
     end
 end
 
 function savingBMM()
-    if GAME_LOADED == true 
+    local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".BMM", "w") --generate #BTplayer_seed.AGI
+    if DEBUGLVL2 == true
     then
-        local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".BMM", "w") --generate #BTplayer_seed.AGI
-        if DEBUGLVL2 == true
-        then
-            print("Saving BMM File");
-        end
-        backup_BMM_JIGGIES()
-        backup_BMM_NOTES()
-        backup_BMM_TREBLE()
-        backup_BMM_JINJOS()
-        f:write(json.encode(BMM_JIGGIES) .. "\n");
-        f:write(json.encode(BMM_NOTES) .. "\n");
-        f:write(json.encode(BMM_TREBLE) .. "\n");
-        f:write(json.encode(BMM_JINJOS) .. "\n");
-        f:write(json.encode(BKM) .. "\n");
-        f:write(json.encode(BKSTATIONS) .. "\n");
-        f:write(json.encode(BMM_CHUFFY) .. "\n");
-        f:write(json.encode(BMM_MYSTERY));
-        f:close()
-        if PAUSED == false then
-            if SKIP_PUZZLES == false then
-                if CURRENT_MAP ~= 0x14F and CURRENT_MAP ~= 0x151  -- Don't want to restore while in WH zone
-                then
-                    restore_BMM_JIGGIES()
-                end
-            else
-                restore_BMM_JIGGIES()
-            end
-            restore_BMM_NOTES()
-            restore_BMM_TREBLE()
-            restore_BMM_JINJOS()
-        end
-        if DEBUG == true
-        then
-            print("BMM Table Saved");
-        end
+        print("Saving BMM File");
+    end
+    f:write(json.encode(BMM) .. "\n");
+    f:write(json.encode(BKM) .. "\n");
+    f:write(json.encode(BKNOTES) .. "\n");
+    f:write(json.encode(BKSTATIONS) .. "\n");
+    f:write(json.encode(BKCHUFFY) .. "\n");
+    f:write(json.encode(BKJINJOFAM) .. "\n");
+    f:write(json.encode(BKMYSTERY));
+    f:close()
+    if DEBUG == true
+    then
+        print("BMM Table Saved");
     end
 end
 
@@ -8761,8 +7695,9 @@ function gameSaving()
     then
         return
     else
-        local save_game = mainmemory.read_u8(0x044A81);
-        if save_game == 1
+        -- local save_game = mainmemory.read_u8(0x05F450);
+        local save_game2 = mainmemory.read_u8(0x044A81);
+        if save_game2 == 1
         then
             SAVE_GAME = true
             if DEBUG == true
@@ -8930,6 +7865,10 @@ function process_slot(block)
     then
         TH_LENGTH = block['slot_token_hunt_length']
     end
+    -- if block['slot_warp_traps'] ~= nil and block['slot_warp_traps'] ~= ""
+    -- then
+    --     WARP_TRAP_LOGIC = block['slot_warp_traps']
+    -- end
     if block['slot_world_order'] ~= nil
     then
         for level, jiggy_amt in pairs(block['slot_world_order'])
@@ -9006,7 +7945,7 @@ end
 
 function initializeFlags()
 	-- Use Cutscene: "2 Years Have Passed..." to check for fresh save
-	local current_map = BTRAMOBJ:getMap(false);
+	local current_map = BTRAMOBJ:getMap();
 	if (current_map == 0xA1) then
 		-- First Time Pickup Text
 		for i = 0, 7 do
@@ -9052,35 +7991,29 @@ function initializeFlags()
             BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
         end
         GAME_LOADED = true  -- We don't have a real BMM at this point.  
-        DEMO_MODE = false
         init_BMK("BKM");
+        init_BKNOTES("BKNOTES");
         init_BKSTATIONS("BKSTATIONS");
-        init_CHUFFY("BMM");
+        init_CHUFFY("BKCHUFFY");
         init_JinjoFam();
-        init_STOPNSWAP("BMM")
+        init_BKMYSTERY("BKMYSTERY")
+        init_AGI()
         init_roysten()
         init_DINO_KIDS()
-        init_JIGGIES("BMM", false)
-        init_NOTES("BMM", false)
-        init_TREBLE("BMM", false);
-        init_JINJOS("BMM")
-
-        init_JIGGIES("AGI", false)
-        init_NOTES("AGI", false)
-        init_TREBLE("AGI", false)
-        init_CHUFFY("AGI", false)
-
         AGI_MOVES = init_BMK("AGI");
-        init_STOPNSWAP("AGI");
+        AGI_NOTES = init_BKNOTES("AGI");
+        AGI_MYSTERY = init_BKMYSTERY("AGI");
         receive_map = { -- initialize incase suffered a hard crash and losing save file.
-            ["NA"] = "NA"
+        ["NA"] = "NA"
         }
-		if (SKIP_TOT ~= "false") then -- ToT Misc Flags	
+		if (SKIP_TOT ~= "false") then
+			-- ToT Misc Flags
 			BTRAMOBJ:setFlag(0xAB, 2)
 			BTRAMOBJ:setFlag(0xAB, 3)
 			BTRAMOBJ:setFlag(0xAB, 4)
 			BTRAMOBJ:setFlag(0xAB, 5)
-			if (SKIP_TOT == "true") then -- ToT Complete Flags
+			if (SKIP_TOT == "true") then
+			-- ToT Complete Flags
                 BTRAMOBJ:setFlag(0x83, 0)
                 BTRAMOBJ:setFlag(0x83, 4)
 			else
@@ -9088,6 +8021,9 @@ function initializeFlags()
 				BTRAMOBJ:setFlag(0x83, 3)
 			end
 		end
+        all_location_checks("AMM")
+        BMMBackup()
+        BMMRestore()
 		INIT_COMPLETE = true
         if SKIP_PUZZLES == true then
             check_open_level(true) -- sanity check that level open flags are still set
@@ -9178,6 +8114,7 @@ function setToTComplete()
 end
 
 function saveGame()
+    BMMBackup();
     GAME_LOADED = false;
     SAVE_GAME = false;
 end
@@ -9200,7 +8137,7 @@ function main()
             PREV_STATE = CUR_STATE
         end
         if (CUR_STATE == STATE_OK) or (CUR_STATE == STATE_INITIAL_CONNECTION_MADE) or (CUR_STATE == STATE_TENTATIVELY_CONNECTED) then
-            if (FRAME % 30 == 1) then
+            if (FRAME % 60 == 1) then
                 BTRAM:banjoPTR()
                 receive();
                 if VERROR == true
@@ -9213,11 +8150,13 @@ function main()
                 if SKIP_TOT == "true" and CURRENT_MAP == 0x15E then
 					setToTComplete();
 				end
-                if SAVE_GAME == true and GAME_LOADED == false
+                if SAVE_GAME == true
                 then
                     saveGame();
                 end
+                BKCheckAssetLogic()
                 gameSaving();
+                hag1_open()
                 if TEXT_START == true then
                     clearText()
                 elseif TEXT_START == false then
@@ -9225,18 +8164,14 @@ function main()
                 end
                 getBanjoDeath()
                 killBT()
-            elseif (FRAME % 5 == 1)
+            elseif (FRAME % 10 == 1)
             then
-                watchMapTransition()
-                if SKIP_PUZZLES == false
-                then
-                    no_puzzle_skip()
-                end
                 checkPause();
                 checkTotalMenu();
                 if not (INIT_COMPLETE) or CURRENT_MAP == 0x158 then
 					initializeFlags();
 				end
+                BKAssetFound();
                 DPadStats();
             end
         elseif (CUR_STATE == STATE_UNINITIALIZED) then
