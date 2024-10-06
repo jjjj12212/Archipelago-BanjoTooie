@@ -326,7 +326,8 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_boss_hunt_length": ctx.slot_data["boss_hunt_length"],
             "slot_jinjo_family_rescue_length": ctx.slot_data["jinjo_family_rescue_length"],
             "slot_token_hunt_length": ctx.slot_data["token_hunt_length"],
-            "slot_version": version
+            "slot_version": version,
+            "slot_text_colour": ctx.slot_data["text_colour"]
         })
     ctx.sendSlot = False
     return payload
@@ -369,6 +370,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     glowbolist = payload['glowbo']
     doubloonlist = payload['doubloon']
     noteslist = payload['notes']
+    movelist = payload['unlocked_moves']
     hag = payload['hag']
     cheatorewardslist = payload['cheato_rewards']
     honeybrewardslist = payload['honeyb_rewards']
@@ -414,6 +416,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         jiggylist = {}
     if isinstance(jinjolist, list):
         jinjolist = {}
+    if isinstance(movelist, list):
+        movelist = {}
     if isinstance(pageslist, list):
         pageslist = {}
     if isinstance(honeycomblist, list):
@@ -429,35 +433,6 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
 
     if demo == False and ctx.sync_ready == True:
         locs1 = []
-        # if ctx.location_table != locations: 
-        #     for item_group, BTlocation_table in locations.items():
-        #             if len(BTlocation_table) == 0:
-        #                 continue
-
-        #             # Game completion handling
-        #             if (("1230027" in BTlocation_table and BTlocation_table["1230027"] == True) 
-        #             and (ctx.slot_data["goal_type"] == 0 or ctx.slot_data["goal_type"] == 4) and not ctx.finished_game):
-        #                 await ctx.send_msgs([{
-        #                     "cmd": "StatusUpdate",
-        #                     "status": 30
-        #                 }])
-        #                 ctx.finished_game = True
-
-        #             else:
-        #                 for locationId, value in BTlocation_table.items():
-        #                     if value == True:
-        #                         if (locationId == "1230676" or locationId == "1230677" or locationId == "1230678" or
-        #                             locationId == "1230679" or locationId == "1230680" or locationId == "1230681" or
-        #                             locationId == "1230682" or locationId == "1230683" or locationId == "1230684") \
-        #                             and ctx.slot_data["jinjo"] == "true":
-        #                             continue
-        #                         if locationId not in ctx.location_table:
-        #                             locs1.append(int(locationId))
-        #                             if ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or \
-        #                             ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
-        #                                locs1 = mumbo_tokens_loc(locs1, int(locationId), ctx.slot_data["goal_type"])
-                                   
-        #     ctx.location_table = locations       
         if ctx.chuffy_table != chuffy:
             ctx.chuffy_table = chuffy
             for locationId, value in chuffy.items():
@@ -534,39 +509,28 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             for locationId, value in noteslist.items():
                 if value == True:
                     locs1.append(int(locationId))
-        if ctx.slot_data["moves"] == "true":
-            # Locations handling
-            movelist = payload['unlocked_moves']
-            # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
-            if isinstance(movelist, list):
-                movelist = {}
-
-            if ctx.movelist_table != movelist:
-                ctx.movelist_table = movelist
-
-                for locationId, value in movelist.items():
-                    if value == True:
-                        locs1.append(int(locationId))
-        if ctx.slot_data["jinjo"] == "true":
-            if ctx.jinjofamlist_table != jinjofamlist:
-                ctx.jinjofamlist_table = jinjofamlist
-                for locationId, value in jinjofamlist.items():
-                    if value == True:
-                        locs1.append(int(locationId))
-                        if ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
-                            locs1 = mumbo_tokens_loc(locs1, int(locationId), ctx.slot_data["goal_type"])
-        if ctx.slot_data["cheato_rewards"] == "true":
-            if ctx.cheatorewardslist_table != cheatorewardslist:
-                ctx.cheatorewardslist_table = cheatorewardslist
-                for locationId, value in cheatorewardslist.items():
-                    if value == True:
-                        locs1.append(int(locationId))
-        if ctx.slot_data["honeyb_rewards"] == "true":
-            if ctx.honeybrewardslist_table != honeybrewardslist:
-                ctx.honeybrewardslist_table = honeybrewardslist
-                for locationId, value in honeybrewardslist.items():
-                    if value == True:
-                        locs1.append(int(locationId))
+        if ctx.movelist_table != movelist:
+            ctx.movelist_table = movelist
+            for locationId, value in movelist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.jinjofamlist_table != jinjofamlist:
+            ctx.jinjofamlist_table = jinjofamlist
+            for locationId, value in jinjofamlist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+                    if ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
+                        locs1 = mumbo_tokens_loc(locs1, int(locationId), ctx.slot_data["goal_type"])
+        if ctx.cheatorewardslist_table != cheatorewardslist:
+            ctx.cheatorewardslist_table = cheatorewardslist
+            for locationId, value in cheatorewardslist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.honeybrewardslist_table != honeybrewardslist:
+            ctx.honeybrewardslist_table = honeybrewardslist
+            for locationId, value in honeybrewardslist.items():
+                if value == True:
+                    locs1.append(int(locationId))
         if ctx.slot_data["skip_puzzles"] == "true":
             if ctx.worldlist_table != worldslist:
                 ctx.worldlist_table = worldslist

@@ -84,17 +84,16 @@ local ENABLE_AP_BK_MOVES = 0; -- 0: disable 1: Talon Trot + Full Jump 2: ALL REM
 local ENABLE_AP_CHEATO_REWARDS = false;
 local ENABLE_AP_HONEYB_REWARDS = false;
 local ENABLE_AP_CHUFFY = false;
-local ENABLE_AP_JINJO = false;
 local ENABLE_AP_WORLDS = false;
 local ENABLE_AP_MYSTERY = false;
 local DISABLE_TEXT_OVERLAY = false;
 local AP_MESSAGES = {};
+local TEXT_COLOUR = 0;
 
 local GAME_LOADED = false;
 
 -------------- MAP VARS -------------
 local MAP_TRANSITION = false;
-local PREVIOUS_MAP = nil;
 local CURRENT_MAP = nil;
 local NEXT_MAP = nil;
 
@@ -135,9 +134,7 @@ local KEY_GRABBED = false;
 local WAIT_FOR_HATCH = false;
 
 -------------- STATION VARS -----------
-local CHECK_FOR_STATIONBTN = false;
 local STATION_BTN_TIMER = 0;
-local WATCH_LOADED_STATIONBTN = false;
 
 -------------- PROGRESSIVES -----------
 local BEAK_BUST = false
@@ -8013,7 +8010,6 @@ function DPadStats()
             CHECK_MOVES_R = true
         elseif check_controls ~= nil and check_controls['P1 DPad R'] == false and check_controls['P1 L'] == false and CHECK_MOVES_R == true
         then
-            print("RESET")
             CHECK_MOVES_R = false
 		end
 		-- Check Magic
@@ -8282,15 +8278,13 @@ function initializeFlags()
         end
         hag1_open()
 
-        if ENABLE_AP_JINJO == true then
-            -- 129 is 1000 0001
-            -- 2 is   0000 0010
-            if DEBUG == true
-            then
-                print("Setting Jinjo Pattern")
-            end
-            BTRAMOBJ:setMultipleFlags(0x6A, 129, 2)
+        -- 129 is 1000 0001
+        -- 2 is   0000 0010
+        if DEBUG == true
+        then
+            print("Setting Jinjo Pattern")
         end
+        BTRAMOBJ:setMultipleFlags(0x6A, 129, 2)
         if SKIP_KLUNGO == true then
             --{byte=0x5E, bit=0, name="Klungo 1 Defeated", type="Progress"},
 	        --{byte=0x5E, bit=1, name="Klungo 2 Defeated", type="Progress"},
@@ -8402,8 +8396,18 @@ end
 
 function archipelago_msg_box(msg)
     gui.use_surface("client")
-    bgcolor = "#590000"
-    fgcolor = "#ca0000"
+    local bgcolor = "#590000"
+    local fgcolor = "#ca0000"
+    if TEXT_COLOUR == 0
+    then
+        bgcolor = "#590000"
+        fgcolor = "#ca0000"
+    elseif TEXT_COLOUR == 1
+    then
+        bgcolor = "#0000ff"
+        fgcolor = "#ffffff"
+    end
+
     local ratio = client.screenwidth() / client.screenheight()
     if ratio > 1.35
     then
@@ -9064,10 +9068,6 @@ function process_slot(block)
     then
         ENABLE_AP_CHUFFY = true
     end
-    if block['slot_jinjo'] ~= nil and block['slot_jinjo'] ~= "false"
-    then
-        ENABLE_AP_JINJO = true
-    end
     if block['slot_worlds'] ~= nil and block['slot_worlds'] ~= "false"
     then
         ENABLE_AP_WORLDS = true
@@ -9130,6 +9130,10 @@ function process_slot(block)
             VERROR = true
             return false
         end
+    end
+    if block['slot_text_colour'] ~= nil and block['slot_text_colour'] ~= ""
+    then
+        TEXT_COLOUR = tonumber(block['slot_text_colour'])
     end
     printGoalInfo();
     if SEED ~= 0

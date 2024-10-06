@@ -46,6 +46,14 @@ class DisableOverlayText(Toggle):
     """Disables the overlay text on screen. Useful if your already streaming/viewing the BT_Client."""
     display_name = "Disable Overlay Text"
 
+class OverlayTextColour(Choice):
+    """Banjo-Kazooie Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves.
+    Mcjiggy Special - No Talon Trot and Tall Jump in the Pool """
+    display_name = "Text Overlay Colour"
+    option_chilli_billi = 0
+    option_chilly_willy = 1
+    default = 0
+
 class EnableMultiWorldJinjos(DefaultOnToggle):
     """Jinjos fled to other worlds. Other players need return them home."""
     display_name = "Randomize Jinjos"
@@ -281,6 +289,7 @@ class ExceedingItemsFiller(Toggle):
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
     disable_overlay_text:DisableOverlayText
+    overlay_text_colour:OverlayTextColour
     randomize_moves: EnableMultiWorldMoveList
     randomize_bk_moves: EnableMultiWorldBKMoveList
     progressive_beak_buster: ProgressiveBeakBuster

@@ -562,6 +562,8 @@ class BanjoTooieWorld(World):
         btoptions["seed"] = random.randint(12212, 69996)
         btoptions["deathlink"] = "true" if self.options.death_link.value == 1 else "false"
         btoptions["disable_text"] = "true" if self.options.disable_overlay_text.value == 1 else "false"
+        btoptions['text_colour'] = int(self.options.overlay_text_colour.value)
+
 
         if self.options.skip_tower_of_tragedy == 1:
             btoptions["skip_tot"] = "true"
