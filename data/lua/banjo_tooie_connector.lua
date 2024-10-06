@@ -180,6 +180,8 @@ local CHECK_DEATH = false;
 ---------------- AMAZE-O-GAZE VARS ---------------
 local GOGGLES = false;
 
+---------------- D-PAD MENU CONTROL ---------------
+local DPAD_MENU = false;
 
 -------------- ENCOURAGEMENT MESSAGES ------------
 local ENCOURAGEMENT = {
