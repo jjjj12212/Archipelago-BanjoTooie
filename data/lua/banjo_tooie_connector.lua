@@ -845,1152 +845,1151 @@ end
 
 -- Moves that needs to be checked Per Map. some silos NEEDS other moves as well to get to.
 local ASSET_MAP_CHECK = {
-    ["AGI_ASSETS"] = {
-        ["ALL"] = {
-            ["JIGGIES"] = { --Jinjo Jiggies
-                -- Jinjos are part of JinjoFAM
-                -- "1230676", --Jinjo
-                -- "1230677", --Jinjo
-                -- "1230678", --Jinjo
-                -- "1230679", --Jinjo
-                -- "1230680", --Jinjo
-                -- "1230681", --Jinjo
-                -- "1230682", --Jinjo
-                -- "1230683", --Jinjo
-                -- "1230684", --Jinjo
-                "1230685", --Jingaling
+    ["ALL"] = {
+        ["JIGGIES"] = { --Jinjo Jiggies
+            -- Jinjos are part of JinjoFAM
+            -- "1230676", --Jinjo
+            -- "1230677", --Jinjo
+            -- "1230678", --Jinjo
+            -- "1230679", --Jinjo
+            -- "1230680", --Jinjo
+            -- "1230681", --Jinjo
+            -- "1230682", --Jinjo
+            -- "1230683", --Jinjo
+            -- "1230684", --Jinjo
+            "1230685", --Jingaling
 --                "1230629", -- Pig Pool
 --                "1230637" -- Dippy
-            }
-        },
-        --SPIRAL MOUNTAIN
-        [0xAF]  = { --SM - Spiral Mountain
-            ["STOPNSWAP"] = "1230956",
-            ["JINJOS"] = {
-                "1230595" -- SM Jinjo
-            },
-            ["PAGES"] = {
-                "1230752" -- SM
-            }
-        },
-        [0xAE]  =	{ --SM - Behind the waterfall
-            ["STOPNSWAP"] = "1230957"
-        },
-        [0xAD]  =	{ --SM - Grunty's Lair
-            -- Cheato Rewards should be here
-        },
-        --JINJO VILLAGE
-        [0x142] = { -- JV
-            ["TREBLE"] = {
-                "1230789"
-            },
-            ["ICEKEY"] = "1230958"
-        },
-        [0x143] = { --JV - Bottles' House
-            --Amaze-O-Gaze should be here
-        },
-        --ISLE O' HAGS
-        [0x155] = { --IoH - Cliff Top
-            ["JINJOS"] = {
-                "1230593" -- Clifftop Jinjo
-            },
-            ["GLOWBO"] = {
-                "1230702"
-            },
-            ["NOTES"] = {
-                "1230936",
-                "1230937",
-                "1230938",
-                "1230939",
-            },
-            ["SILO"] = {
-                "1230763",
-                ["Exceptions"] = {}
-            },
-            ["STATIONBTN"] = "1230794"
-        },
-        [0x150] = { --IoH - Heggy's Egg Shed
-            ["STOPNSWAP"] = {
-                "1230953", -- Yellow Egg Hatch
-                "1230954", -- Pink Egg Hatch
-                "1230955" -- Blue Egg Hatch
-            }
-        },
-        [0x154] = { --IoH - Pine Grove
-            ["NOTES"] = {
-                "1230932",
-                "1230933",
-                "1230934", -- underwater 1
-                "1230935", -- underwater 2
-
-            },
-            ["SILO"] = {
-                "1230759",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x152] = { --IoH - Plateau
-            ["JINJOS"] = {
-                "1230594" -- Plateau Jinjo
-            },
-            ["HONEYCOMB"] = {
-                "1230727" -- honey
-            },
-            ["NOTES"] = {
-                "1230928", -- GGM Sign 1
-                "1230929", -- GGM Sign 2
-                "1230930", -- Bee 1
-                "1230931", -- Bee 2
-            },
-            ["SILO"] = {
-                "1230756",
-                ["Exceptions"] = {
-                    "1230755"
-                }
-            },
-        },
-        -- ["0x153"] =	{"Isle O' Hags", "Plateau"},            --IoH - Plateau - Honey B's Hive
-        [0x15A] = { --IoH - Wasteland
-            ["JINJOS"] = {
-                "1230592" -- Wasteland Jinjo
-            },
-            ["NOTES"] = {
-                "1230940",
-                "1230941",
-                "1230942",
-                "1230943",
-
-            },
-            ["SILO"] = {
-                "1230767",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x14F] = { --IoH - Wooded Hollow
-            ["JINJOS"] = {
-                "1230591" -- Wooded Hollow Jinjo
-            }
-        },
-        --MAYAHEM TEMPLE
-        [0xB8] = { --MT
-            ["JIGGIES"] = {
-                "1230599",
-                "1230604"
-            },
-            ["JINJOS"] = {
-                "1230552", -- Stadium
-                "1230554", -- Pool
-                "1230555", -- Bridge
-            },
-            ["PAGES"] = {
-                "1230728" -- Top of Treasure Chamber
-            },
-            ["HONEYCOMB"] = {
-                "1230703", -- Entrance
-                "1230704", -- Bovina
-            },
-            ["NOTES"] = {
-                "1230800", -- MT: First Stairs (1)
-                "1230801", -- MT: First Stairs (2)
-                "1230802", -- MT: First Stairs (3)
-                "1230803", -- MT: First Stairs (4)
-                "1230804", -- MT: Second Stairs (1)
-                "1230805", -- MT: Second Stairs (2)
-                "1230806", -- MT: Second Stairs (3)
-                "1230807", -- MT: Second Stairs (4)
-                "1230808", -- MT: Third Stairs (1)
-                "1230809", -- MT: Third Stairs (2)
-                "1230810", -- MT: Third Stairs (3)
-                "1230811", -- MT: Third Stairs (4)
-                "1230812", -- MT: Top Stairs (1)
-                "1230813", -- MT: Top Stairs (2)
-                "1230814", -- MT: Top Stairs (3)
-                "1230815", -- MT: Top Stairs (4)
-            },
-            ["TREBLE"] = {
-                "1230781"
-            },
-            ["SILO"] = {
-                "1230754",
-                "1230755",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xC4] = { --MT - Jade Snake Grove
-            ["JIGGIES"] = {
-                "1230601", -- Golden Goliath
-                "1230605"  -- Ssslumber
-            },
-            ["JINJOS"] = {
-                "1230551" -- Snake Grove
-            },
-            ["PAGES"] = {
-                "1230730" -- Snake Grove
-            },
-            ["GLOWBO"] = {
-                "1230687"
-            },
-            ["SILO"] = {
-                "1230753",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xBB] = { --MT - Mayan Kickball Stadium (Lobby)
-            ["JIGGIES"] = {
-                "1230598", -- Kickball
-            }
-        },
-        [0xB7] = { --MT - Mumbo's Skull
-            ["GLOWBO"] = {
-                "1230686"
-            }
-        },
-        [0xB9] = { --MT - Prison Compound
-            ["JIGGIES"] = {
-                "1230602", --quicksand
-                "1230603", --pillars
-            },
-            ["PAGES"] = {
-                "1230729" -- Prison
-            }
-        },
-        [0x17A] =	{ --MT - Targitzan's Really Sacred Chamber
-            ["JIGGIES"] = {
-                "1230596" --Targitzan
-            }
-        },
-        [0x177] =	{ --MT - Targitzan's Slightly Sacred Chamber
-            ["JIGGIES"] = {
-                "1230597" --Slightly Sacred Chamber
-            }
-        },
-        [0xC5] = { --MT - Treasure Chamber
-            ["JIGGIES"] = {
-                "1230600" --Treasure Chamber
-            },
-            ["HONEYCOMB"] = {
-                "1230705", -- Treasure
-            }
-        },
-        [0x178] = { --MT - Inside Tatgitzan's Temple
-            ["JINJOS"] = {
-                "1230553" -- Temple Jiggy
-            }
-        },
-        --GLITTER GULCH MINE
-        [0xC7] ={ --GGM
-            ["JIGGIES"] = {
-                "1230607", -- Canary Mary
-                "1230612", -- Crushing Shed
-                "1230613" -- Waterfall
-            },
-            ["JINJOS"] = {
-                "1230559", -- Boulder
-                "1230560", -- Tracks
-            },
-            ["PAGES"] = {
-                "1230731", -- Canary
-                "1230732", -- Entrance
-            },
-            ["HONEYCOMB"] = {
-                "1230707", -- boulder
-            },
-            ["GLOWBO"] = {
-                "1230688", -- Entrance
-                "1230689" -- near mumbo
-            },
-            ["NOTES"] = {
-                "1230816", -- by Crushing Shed (1)
-                "1230817", -- by Crushing Shed (2)
-                "1230818", -- by Crushing Shed (3)
-                "1230819", -- by Crushing Shed (4)
-                "1230820", -- Hut Bottom-Left Note
-                "1230821", -- Hut Top-Left Note
-                "1230822", -- Hut Top-Right Note
-                "1230823", -- Hut Mid-Right Note
-                "1230824", -- Hut Bottom-Right Note
-                "1230825", -- Mumbo (1)
-                "1230826", -- Mumbo (2)
-                "1230827", -- Mumbo (3)
-            },
-            ["SILO"] = {
-                "1230757",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xCC] ={ --GGM - Flooded Caves
-            ["JIGGIES"] = {
-                "1230615" -- Flooded Cave
-            }
-        },
-        [0xCA] ={ --GGM - Fuel Depot
-            ["NOTES"] = {
-                "1230828", -- Front-left
-                "1230829", -- Back-left
-                "1230830", -- Back-Right
-                "1230831", -- Front-Right
-            }
-        },
-        [0xD3] = { --GGM - Generator Cavern
-            ["JIGGIES"] = {
-                "1230608" -- Generator Cavern
-            }
-        },
-        [0xD2] = { --GGM - Gloomy Caverns
-            ["JINJOS"] = {
-                "1230557" -- Jail
-            }
-        },
-        [0xD1] = { --GGM - Inside Chuffy's Boiler
-            ["JIGGIES"] = {
-                "1230606" -- King Coal
-            },
-        },
-        [0x163] =	{ --GGM - Ordnance Storage Entrance
-            ["JIGGIES"] = {
-                "1230610" -- Ordnance Storage
-            },
-            ["SILO"] = {
-                "1230758",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xCF] = { --GGM - Power Hut Basement
-            ["JIGGIES"] = {
-                "1230614" -- Power Hut Basement
-            },
-        },
-        [0xD8] = { --GGM - Prospector's Hut
-            ["JIGGIES"] = {
-                "1230611" -- Dilberta
-            },
-        },
-        [0xDA] = { --GGM - Toxic Gas Cave
-            ["JINJOS"] = {
-                "1230558" -- Toxic
-            },
-            ["HONEYCOMB"] = {
-                "1230706", -- boulder
-            }
-        },
-        [0xD7] = { --GGM - Train Station
-            ["HONEYCOMB"] = {
-                "1230708", -- Train
-            }
-        },
-        [0xCD] = { --GGM - Water Storage
-            ["JINJOS"] = {
-                "1230556" -- Water Storage
-            },
-            ["PAGES"] = {
-                "1230733" -- Water Tower
-            },
-            ["TREBLE"] = {
-                "1230782"
-            }
-        },
-        [0xCE] = { --GGM - Waterfall Cavern
-            ["JIGGIES"] = {
-                "1230609" -- Waterfall Cavern
-            },
-        },
-        --WITCHYWORLD
-        [0xD6] = { --WW
-            ["JIGGIES"] = {
-                "1230619", -- Saucer of Peril
-                "1230621", -- Dive of Death
-                "1230622", -- Mrs Boggy
-                "1230625", -- Cactus of Strength
-            },
-            ["JINJOS"] = {
-                "1230561", -- Top of Tent
-                "1230563", -- Van door
-                "1230564", -- dogdem dome
-                "1230565", -- Cactus of Strength
-            },
-            ["PAGES"] = {
-                "1230736" -- Saucer 
-            },
-            ["HONEYCOMB"] = {
-                "1230709", -- Space Zone
-            },
-            ["NOTES"] = {
-                "1230832", -- Around the Tent (1)
-                "1230833", -- Around the Tent (2)
-                "1230834", -- Around the Tent (3)
-                "1230835", -- Around the Tent (4)
-                "1230836", -- Around the Tent (5)
-                "1230837", -- Around the Tent (6)
-                "1230838", -- Around the Tent (7)
-                "1230839", -- Around the Tent (8)
-                "1230840", -- Area 51 Gate (1)
-                "1230841", -- Area 51 Gate (2)
-                "1230842", -- Outside Dodgem Dome (1)
-                "1230843", -- Outside Dodgem Dome (2)
-                "1230844", -- Dive of Death (1)
-                "1230845", -- Dive of Death (2)
-                "1230846", -- Crazy Castle Entrance (1)
-                "1230847", -- Crazy Castle Entrance (2)
-            },
-            ["TREBLE"] = {
-                "1230783"
-            },
-            ["SILO"] = {
-                "1230761",
-                "1230760",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xEA] = { --WW - Cave of Horrors
-            ["JINJOS"] = {
-                "1230562", -- Cave of Horrors
-            }
-        },
-        [0xE1] = { --WW - Crazy Castle Stockade
-            ["JIGGIES"] = {
-                "1230616", -- Hoop Hurry
-                "1230620", -- Balloon Burst
-            },
-            ["HONEYCOMB"] = {
-                "1230711", -- Crazy Castle
-            },
-            ["SILO"] = {
-                "1230762",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xDD] = { --WW - Dodgem Dome Lobby
-            ["JIGGIES"] = {
-                "1230617", -- Dodgem
-            },
-        },
-        [0xEB] = { --WW - Haunted Cavern
-            ["PAGES"] = {
-                "1230734" -- Alcove
-            }
-        },
-        [0xF9] = { --WW - Mr. Patch
-            ["JIGGIES"] = {
-                "1230618", -- Patches
-            },
-        },
-        [0xE6] = { --WW - Star Spinner
-            ["JIGGIES"] = {
-                "1230623", -- Star Spinner
-            },
-        },
-        [0xE7] = { --WW - The Inferno
-            ["JIGGIES"] = {
-                "1230624", -- The Inferno
-            },
-            ["PAGES"] = {
-                "1230735" -- Inferno
-            },
-            ["GLOWBO"] = {
-                "1230690" -- near mumbo
-            }
-        },
-        [0x176] = { -- WW - Mumbo Skull
-            ["HONEYCOMB"] = {
-                "1230710" -- Inferno
-            }
-        },
-        [0xD5] = { --WW - Wumba's Wigwam
-            ["GLOWBO"] = {
-                "1230691"
-            }
-        },
-        [0xEC] = { -- WW - Train Station
-            ["STATIONBTN"] = "1230795"
-        },
-        --JOLLY ROGER'S LAGOON
-        [0x1A7] = { --JRL
-            ["JIGGIES"] = {
-                "1230627", -- Tiptup
-                "1230635", -- UFO
-                "1230629", -- Pig Pool
-            },
-            ["JINJOS"] = {
-                "1230566", -- alcove
-            },
-            ["HONEYCOMB"] = {
-                "1230714" -- Pipe
-            },
-            ["DOUBLOON"] = {
-                "1230521", -- Town Center Pole 1
-                "1230522", -- Town Center Pole 2
-                "1230523", -- Town Center Pole 3
-                "1230524", -- Town Center Pole 4
-                "1230525", -- Town Center Pole 5
-                "1230526", -- Town Center Pole 6
-                "1230527", -- Silo 1
-                "1230528", -- Silo 2
-                "1230529", -- Silo 3
-                "1230530", -- Silo 4
-                "1230531", -- Toxic Pool 1
-                "1230532", -- Toxic Pool 2
-                "1230533", -- Toxic Pool 3
-                "1230534", -- Toxic Pool 4
-                "1230539", -- Underground 1
-                "1230540", -- Underground 2
-                "1230541", -- Underground 3
-                "1230542", -- Alcove 1
-                "1230543", -- Alcove 2
-                "1230544", -- Alcove 3
-                "1230547", -- Jinjo 1
-                "1230548", -- Jinjo 2
-                "1230549", -- Jinjo 3
-                "1230550", -- Jinjo 4
-            },
-            ["NOTES"] = {
-                "1230848", -- Outside Jollys
-                "1230849", -- Outside Pawno
-                "1230850", -- Outside Blubber
-                "1230851", -- Blubbul 1
-                "1230852", -- Blubbul 2
-            },
-            ["SILO"] = {
-                "1230764",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xF4] = { --JRL - Ancient Swimming Baths
-            ["PAGES"] = {
-                "1230739" -- Baths
-            }
-        },
-        [0x1A8] =	{ --JRL - Atlantis
-            ["JIGGIES"] = {
-                "1230633", -- SEEMEE
-            },
-            ["JINJOS"] = {
-                "1230570", -- Sunken Ship
-            },
-            ["PAGES"] = {
-                "1230738" -- SEEMEE
-            },
-            ["HONEYCOMB"] = {
-                "1230713", -- Atlantis
-                "1230712", -- SEEMEE
-            },
-            ["GLOWBO"] = {
-                "1230693" -- near humba
-            },
-            ["NOTES"] = {
-                "1230853", -- Eel 1
-                "1230854", -- Eel 2
-            },
-            ["TREBLE"] = {
-                "1230784"
-            }
-        },
-        [0xFF] = { --JRL - Blubber's Wave Race Hire
-            ["JINJOS"] = {
-                "1230567", -- Blubber
-            },
-            ["NOTES"] = {
-                "1230855",
-                "1230856",
-                "1230857",
-            }
-        },
-        [0xF6] = {  --JRL - Electric Eel's lair
-            ["SILO"] = {
-                "1230765",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xF8] = { --JRL - Inside the Big Fish
-            ["JINJOS"] = {
-                "1230568", -- Big Fish
-            }
-        },
-        [0xED] =	{ --JRL - Jolly's
-            ["JIGGIES"] = {
-                "1230631", -- Merry Maggie
-            },
-            ["DOUBLOON"] = {
-                "1230545", -- Blackeye 1
-                "1230546" -- Blackeye 2
-            },
-            ["NOTES"] = {
-                "1230861",
-                "1230862",
-                "1230863",
-            },
-            ["SILO"] = {
-                "1230766",
-                ["Exceptions"] = {}
-            },
-        },
-        [0xFC] =	{ --JRL - Lord Woo Fak Fak
-            ["JIGGIES"] = {
-                "1230632", -- Lord Woo
-            },
-        },      
-        [0xEE] =	{ --JRL - Pawno's Emporium
-            ["JIGGIES"] = {
-                "1230634", -- Pawno
-            },
-            ["PAGES"] = {
-                "1230737" -- Pawno
-            },
-            ["GLOWBO"] = {
-                "1230692"
-            },
-            ["NOTES"] = {
-                "1230858",
-                "1230859",
-                "1230860",
-            }
-        },
-        [0x1A9] =	{ --JRL - Sea Bottom
-            ["JIGGIES"] = {
-                "1230633", -- SEEMEE
-            },
-            ["PAGES"] = {
-                "1230738" -- SEEMEE
-            },
-            ["HONEYCOMB"] = {
-                "1230712", -- SEEMEE
-            }
-        },
-        [0x181] =	{ --JRL - Sea Botom Cavern
-            ["JIGGIES"] = {
-                "1230626", -- Mini-Sub Challenge
-            },
-        },
-        [0xF7] = { --JRL - Seaweed Sanctum
-            ["JINJOS"] = {
-                "1230569", -- Seaweed
-            }
-        },
-        [0x1A6] =	{ --JRL - Smuggler's cavern
-            ["JIGGIES"] = {
-                "1230633", -- SEEMEE
-                "1230630", -- Smuggler
-            },
-            ["PAGES"] = {
-                "1230738" -- SEEMEE
-            },
-            ["HONEYCOMB"] = {
-                "1230712", -- SEEMEE
-            }
-        },
-        [0xFA] = { --JRL - Temple of the Fishes
-            ["JIGGIES"] = {
-                "1230628", -- Chris P. Bacon
-            },
-        },
-        [0xEF] = { --JRL - Mumbo's Skull
-            ["DOUBLOON"] = {
-                "1230535", -- Mumbo 1
-                "1230536", -- Mumbo 2
-                "1230537", -- Mumbo 3
-                "1230538" -- Mumbo 4
-            }
-        },
-        --TERRYDACTYLAND
-        [0x112] =	{ --TDL
-            ["JIGGIES"] = {
-                "1230637", -- Dippy
-                "1230644", -- Rocknut
-                "1230645", -- Dino Code
-            },
-            ["JINJOS"] = {
-                "1230571", -- Talon Torp
-                "1230572", -- Entrance
-                "1230573", -- Maze Cave
-                "1230574", -- T-rex
-            },
-            ["PAGES"] = {
-                "1230740", -- Dippy
-                "1230742" -- Boulder
-            },
-            ["HONEYCOMB"] = {
-                "1230715" -- Lakeside
-            },
-            ["GLOWBO"] = {
-                "1230694", -- near unga bunga
-                "1230695" -- near mumbo
-            },
-            ["NOTES"] = {
-                "1230864", -- train 1
-                "1230865", -- train 2
-                "1230866", -- train 3
-                "1230867", -- lakeside 1
-                "1230868", -- lakeside 2
-                "1230869", -- lakeside 3
-                "1230870", -- zigzag 1
-                "1230871", -- zigzag 2
-                "1230872", -- zigzag 3
-                "1230873", -- roarpath 1
-                "1230874", -- roarpath 2
-                "1230875", -- roarpath 3
-            },
-            ["TREBLE"] = {
-                "1230785"
-            },
-            ["SILO"] = {
-                "1230768",
-                ["Exceptions"] = {}
-            },
-            ["STATIONBTN"] = "1230791"
-        },
-        [0x123] = { --TDL - Inside Chompa's Belly
-            ["JIGGIES"] = {
-                "1230641", -- Chompa
-            },
-        },
-        [0x116] = { --TDL - Inside the Mountain
-            ["JIGGIES"] = {
-                "1230636", -- Under Terry Nest
-            },
-            ["PAGES"] = {
-                "1230741", -- Mountain
-            }
-        },
-        [0x115] = { --TDL - Oogle Boogles' Cave
-            ["JIGGIES"] = {
-                "1230640", -- Oogle Boogle Tribe
-            },
-        },
-        [0x117] = { --TDL - River Passage
-            ["HONEYCOMB"] = {
-                "1230717" -- Riverside
-            },
-            ["NOTES"] = {
-                "1230876",
-                "1230877",
-                "1230878",
-                "1230879",
-            },
-            ["SILO"] = {
-                "1230769",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x119] = { -- Unga Bunga Cave
-            ["SILO"] = {
-                "1230770",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x11A] = { --TDL - Stomping Plains
-            ["JIGGIES"] = {
-                "1230643", -- Stomping
-            },
-            ["JINJOS"] = {
-                "1230575", -- Stomping
-            }
-        },
-        [0x118] =	{ --TDL - Styracosaurus Family Cave
-            ["JIGGIES"] = {
-                "1230638", -- Scrotty
-            },
-            ["HONEYCOMB"] = {
-                "1230716" -- Cave
-            }
-        },
-        [0x113] =	{ --TDL - Terry's Nest
-            ["JIGGIES"] = {
-                "1230639", -- Terry
-                "1230642", -- Terry's Kids
-            },
-        },
-        [0x114] =	{ --TDL - Train Station
-            ["JIGGIES"] = {
-                "1230644", -- Rocknut
-            }
-        },
-        --GRUNTY'S INDUSTRIES
-        [0x100] =	{ --GI
-            ["JIGGIES"] = {
-                "1230646", -- Skivvy
-            },
-            ["JINJOS"] = {
-                "1230580" -- Outside
-            },
-            ["HONEYCOMB"] = {
-                "1230720" -- Chimney
-            },
-            ["TREBLE"] = {
-                "1230786"
-            },
-            ["STATIONBTN"] = "1230790"
-        },
-        [0x10F] = { --GI - Basement
-            ["JIGGIES"] = {
-                "1230647", -- Weldar
-            },
-            ["NOTES"] = {
-                "1230892",
-                "1230893",
-            }
-        },
-        [0x110] =	{ --GI - Basement (Repair Depot)
-            ["PAGES"] = {
-                "1230745" -- Repair Depot
-            }
-        },
-        [0x111] =	{ --GI - Basement (Waste Disposal)
-            ["JIGGIES"] = {
-                "1230646", -- Underwater Waste Disposal
-                "1230655", -- Plant Box
-                "1230661", -- HFP Oil Drill
-            },
-            ["JINJOS"] = {
-                "1230578" -- Waste Disposal
-            },
-            ["NOTES"] = {
-                "1230890",
-                "1230891",
-            },
-            ["SILO"] = {
-                "1230771",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x101] =	{ --GI - Floor 1
-            ["JIGGIES"] = {
-                "1230646", -- Skivvy
-                "1230652", -- Floor 1 Guarded
-            },
-            ["NOTES"] = {
-                "1230883",
-                "1230884",
-            },
-            ["SILO"] = {
-                "1230773",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x106] =	{ --GI - Floor 2
-            ["JIGGIES"] = {
-                "1230646", -- Skivvy
-            },
-            ["JINJOS"] = {
-                "1230577" -- leg spring
-            },
-            ["PAGES"] = {
-                "1230743" -- Floor 2
-            },
-            ["GLOWBO"] = {
-                "1230696" -- near humba
-            },
-            ["NOTES"] = {
-                "1230885",
-                "1230886",
-                "1230887",
-                "1230888",
-                "1230889"
-            },
-            ["SILO"] = {
-                "1230772",
-                ["Exceptions"] = {}
-            },
-        },
-        [0x108] =	{ --GI - Floor 3
-            ["JIGGIES"] = {
-                "1230646", -- Skivvy
-            },
-            ["HONEYCOMB"] = {
-                "1230718" -- Floor 3
-            },
-            ["GLOWBO"] = {
-                "1230697" -- on boxes
-            },
-            ["NOTES"] = {
-                "1230894",
-                "1230895"
-            }
-        },
-        [0x109] =	{ --GI - Floor 3 (Boiler Plant)
-            ["JINJOS"] = {
-                "1230579" -- Top of Boiler
-            }
-        },
-        [0x10A] =	{ --GI - Floor 3 (Packing Room)
-            ["JIGGIES"] = {
-                "1230654", -- Twinkly Packing
-            },
-        },
-        [0x10B] =	{ --GI - Floor 4
+        }
+    },
+    --SPIRAL MOUNTAIN
+    [0xAF]  = { --SM - Spiral Mountain
+        ["STOPNSWAP"] = "1230956",
+        ["JINJOS"] = {
+            "1230595" -- SM Jinjo
+        },
+        ["PAGES"] = {
+            "1230752" -- SM
+        }
+    },
+    [0xAE]  =	{ --SM - Behind the waterfall
+        ["STOPNSWAP"] = "1230957"
+    },
+    [0xAD]  =	{ --SM - Grunty's Lair
+        -- Cheato Rewards should be here
+    },
+    --JINJO VILLAGE
+    [0x142] = { -- JV
+        ["TREBLE"] = {
+            "1230789"
+        },
+        ["ICEKEY"] = "1230958"
+    },
+    [0x143] = { --JV - Bottles' House
+        --Amaze-O-Gaze should be here
+    },
+    --ISLE O' HAGS
+    [0x155] = { --IoH - Cliff Top
+        ["JINJOS"] = {
+            "1230593" -- Clifftop Jinjo
+        },
+        ["GLOWBO"] = {
+            "1230702"
+        },
+        ["NOTES"] = {
+            "1230936",
+            "1230937",
+            "1230938",
+            "1230939",
+        },
+        ["SILO"] = {
+            "1230763",
+            ["Exceptions"] = {}
+        },
+        ["STATIONBTN"] = "1230794"
+    },
+    [0x150] = { --IoH - Heggy's Egg Shed
+        ["STOPNSWAP"] = {
+            "1230953", -- Yellow Egg Hatch
+            "1230954", -- Pink Egg Hatch
+            "1230955" -- Blue Egg Hatch
+        }
+    },
+    [0x154] = { --IoH - Pine Grove
+        ["NOTES"] = {
+            "1230932",
+            "1230933",
+            "1230934", -- underwater 1
+            "1230935", -- underwater 2
 
         },
-        [0x10D] =	{ --GI - Floor 4 (Quality Control)
-            ["JIGGIES"] = {
-                "1230651", -- Quality Control
-            },
+        ["SILO"] = {
+            "1230759",
+            ["Exceptions"] = {}
         },
-        [0x10E] =	{ --GI - Floor 5
-            ["JIGGIES"] = {
-                "1230646", -- Skivvy
-                "1230650", -- Floor 5
-            },
-            ["JINJOS"] = {
-                "1230576" -- 5 floor
+    },
+    [0x152] = { --IoH - Plateau
+        ["JINJOS"] = {
+            "1230594" -- Plateau Jinjo
+        },
+        ["HONEYCOMB"] = {
+            "1230727" -- honey
+        },
+        ["NOTES"] = {
+            "1230928", -- GGM Sign 1
+            "1230929", -- GGM Sign 2
+            "1230930", -- Bee 1
+            "1230931", -- Bee 2
+        },
+        ["SILO"] = {
+            "1230756",
+            ["Exceptions"] = {
+                "1230755"
             }
         },
-        [0x187] =	{ --GI - Sewer Entrance
-            ["JIGGIES"] = {
-                "1230648", -- Clinker
-            },
+    },
+    -- ["0x153"] =	{"Isle O' Hags", "Plateau"},            --IoH - Plateau - Honey B's Hive
+    
+    [0x15A] = { --IoH - Wasteland
+        ["JINJOS"] = {
+            "1230592" -- Wasteland Jinjo
         },
-        [0x102] =	{ --GI - Train Station
-            ["HONEYCOMB"] = {
-                "1230719" -- Train
-            },
-            ["NOTES"] = {
-                "1230880",
-                "1230881",
-                "1230882",
-            }
-        },
-        [0x104] =	{ --GI - Trash Compactor
-            ["JIGGIES"] = {
-                "1230653", -- Trash Compactor
-            },
-        },
-        [0x103] =	{ --GI - Workers' Quarters
-            ["JIGGIES"] = {
-                "1230646", -- Skivvy
-            },
-            ["PAGES"] = {
-                "1230743" -- Loggo
-            }
-        },
-        --HAILFIRE PEAKS
-        [0x131] =	{ --HFP - Boggy's Igloo
-            ["JIGGIES"] = {
-                "1230659", -- Boggy
-            },
-        },
-        [0x12B] =	{ --HFP - Chilli Billi
-            ["JIGGIES"] = {
-                "1230656", -- Brothers
-            },
-        },
-        [0x12C] =	{ --HFP - Chilly Willy
-            ["JIGGIES"] = {
-                "1230656", -- Brothers
-            },
-        },
-        [0x132] =	{ --HFP - Icicle Grotto
-            ["JINJOS"] = {
-                "1230584", -- Grotto
-            },
-            ["PAGES"] = {
-                "1230747" -- Icicle
-            },
-            ["TREBLE"] = {
-                "1230787"
-            }
-        },
-        [0x128] =	{ --HFP - Icy Side
-            ["JIGGIES"] = {
-                "1230660", -- Icy Train Station
-                "1230662", -- Stomping
-                "1230664", -- Aliens
-            },
-            ["JINJOS"] = {
-                "1230585", -- Mildred
-                "1230583" -- Windy Hole
-            },
-            ["PAGES"] = {
-                "1230748" -- Ice Pillar
-            },
-            ["GLOWBO"] = {
-                "1230699",
-                "1230046" -- Mega Glowbo
-            },
-            ["NOTES"] = {
-                "1230904",
-                "1230905",
-                "1230906",
-                "1230907",
-                "1230908",
-                "1230909",
-                "1230910",
-                "1230911",
-            },
-            ["SILO"] = {
-                "1230775",
-                ["Exceptions"] = {}
-            },
-            ["STATIONBTN"] = "1230793"
-        },
-        [0x133] =	{ --HFP - Inside the Volcano
-            ["JIGGIES"] = {
-                "1230657", -- Volcano
-            },
-            ["HONEYCOMB"] = {
-                "1230721" -- Volcano
-            }
-        },
-        [0x12D] =	{ --HFP - Kickball Stadium lobby
-            ["JIGGIES"] = {
-                "1230663", -- Kickball
-            },
-        },
-        [0x127] =	{ --HFP - Lava Side
-            ["JIGGIES"] = {
-                "1230658", -- Sabreman
-                "1230665", -- Lava waterfall
-            },
-            ["JINJOS"] = {
-                "1230581", -- Lava waterfall
-                "1230582" -- Boiling Pool
-            },
-            ["PAGES"] = {
-                "1230746" -- Lava Side
-            },
-            ["HONEYCOMB"] = {
-                "1230723" -- Lava Side
-            },
-            ["GLOWBO"] = {
-                "1230698"
-            },
-            ["NOTES"] = {
-                "1230896",
-                "1230897",
-                "1230898",
-                "1230899",
-                "1230900",
-                "1230901",
-                "1230902",
-                "1230903",
-            },
-            ["SILO"] = {
-                "1230774",
-                ["Exceptions"] = {}
-            },
-            ["STATIONBTN"] = "1230792"
-        },
-        [0x129] =	{ --HFP - Lava Train Station
-            ["HONEYCOMB"] = {
-                "1230721" -- Train Station
-            }
-        },
-        --CLOUD CUCKOOLAND
-        [0x136] =	{ --CCL
-            ["JIGGIES"] = {
-                "1230667", -- Mr Fit
-                "1230669", -- Canary Mary 3
-                "1230671", -- Jiggium Plant
-                "1230675", -- Jelly Castle
-            },
-            ["PAGES"] = {
-                "1230749" -- Canary Mary
-            },
-            ["HONEYCOMB"] = {
-                "1230724", -- Dirt Patch
-                "1230726" -- Pot O Gold
-            },
-            ["GLOWBO"] = {
-                "1230700"
-            }
+        ["NOTES"] = {
+            "1230940",
+            "1230941",
+            "1230942",
+            "1230943",
 
         },
-        [0x13A] =	{ --CCL - Central Cavern
-            ["JIGGIES"] = {
-                "1230674", -- Superstash
-            },
-            ["JINJOS"] = {
-                "1230588" -- Central
-            },
-            ["GLOWBO"] = {
-                "1230701"
-            },
-            ["NOTES"] = {
-                "1230912",
-                "1230913",
-                "1230914",
-                "1230915",
-                "1230916",
-                "1230917",
-                "1230918",
-                "1230919",
-                "1230920",
-                "1230921",
-                "1230922",
-                "1230923",
-                "1230924",
-                "1230925",
-                "1230926",
-                "1230927",
-            },
-            ["TREBLE"] = {
-                "1230788"
-            },
-            ["SILO"] = {
-                "1230776",
-                ["Exceptions"] = {}
-            }
+        ["SILO"] = {
+            "1230767",
+            ["Exceptions"] = {}
         },
-        [0x138] =	{ --CCL - Inside the Cheese Wedge
-            ["JIGGIES"] = {
-                "1230672", -- Cheese Wedge
-            },
-            ["JINJOS"] = {
-                "1230587" -- Cheese
-            }
+    },
+    [0x14F] = { --IoH - Wooded Hollow
+        ["JINJOS"] = {
+            "1230591" -- Wooded Hollow Jinjo
+        }
+    },
+    --MAYAHEM TEMPLE
+    [0xB8] = { --MT
+        ["JIGGIES"] = {
+            "1230599",
+            "1230604"
         },
-        [0x13D] =	{ --CCL - Inside the Pot o' Gold
-            ["JIGGIES"] = {
-                "1230668", -- pot o gold
-            },
-            ["PAGES"] = {
-                "1230750" -- O Gold
-            }
+        ["JINJOS"] = {
+            "1230552", -- Stadium
+            "1230554", -- Pool
+            "1230555", -- Bridge
         },
-        [0x137] =	{ --CCL - Inside the Trash Can
-            ["JIGGIES"] = {
-                "1230673", -- Trash Can
-            },
-            ["JINJOS"] = {
-                "1230586" -- Trash
-            },
-            ["HONEYCOMB"] = {
-                "1230725" -- Trash
-            }
+        ["PAGES"] = {
+            "1230728" -- Top of Treasure Chamber
         },
-        [0x13F] =	{ --CCL - Mingy Jongo's Skull
-            ["JIGGIES"] = {
-                "1230666", -- Mingy Jongo
-            },
-            ["JINJOS"] = {
-                "1230589" -- Mumbo
-            }
+        ["HONEYCOMB"] = {
+            "1230703", -- Entrance
+            "1230704", -- Bovina
         },
-        [0x13E] =	{ --CCL - Mumbo's Skull
-            ["JIGGIES"] = {
-                "1230666", -- Mingy Jongo
-            },
-            ["JINJOS"] = {
-                "1230589" -- Mumbo
-            }
+        ["NOTES"] = {
+            "1230800", -- MT: First Stairs (1)
+            "1230801", -- MT: First Stairs (2)
+            "1230802", -- MT: First Stairs (3)
+            "1230803", -- MT: First Stairs (4)
+            "1230804", -- MT: Second Stairs (1)
+            "1230805", -- MT: Second Stairs (2)
+            "1230806", -- MT: Second Stairs (3)
+            "1230807", -- MT: Second Stairs (4)
+            "1230808", -- MT: Third Stairs (1)
+            "1230809", -- MT: Third Stairs (2)
+            "1230810", -- MT: Third Stairs (3)
+            "1230811", -- MT: Third Stairs (4)
+            "1230812", -- MT: Top Stairs (1)
+            "1230813", -- MT: Top Stairs (2)
+            "1230814", -- MT: Top Stairs (3)
+            "1230815", -- MT: Top Stairs (4)
         },
-        [0x140] =	{ --CCL - Wumba's Wigwam
-            ["JINJOS"] = {
-                "1230590" -- Balasters
-            }
+        ["TREBLE"] = {
+            "1230781"
         },
-        [0x139] =	{ --CCL - Zubbas' Nest
-            ["JIGGIES"] = {
-                "1230670", -- Zubba
-            },
-            ["PAGES"] = {
-                "1230751" -- Zubba
-            }
+        ["SILO"] = {
+            "1230754",
+            "1230755",
+            ["Exceptions"] = {}
         },
-        --CAULDRON KEEP
-        [0x19A] =	{ --CK - HAG 1
-            ["H1"] = {
-                "1230027"
-            }
+    },
+    [0xC4] = { --MT - Jade Snake Grove
+        ["JIGGIES"] = {
+            "1230601", -- Golden Goliath
+            "1230605"  -- Ssslumber
         },
+        ["JINJOS"] = {
+            "1230551" -- Snake Grove
+        },
+        ["PAGES"] = {
+            "1230730" -- Snake Grove
+        },
+        ["GLOWBO"] = {
+            "1230687"
+        },
+        ["SILO"] = {
+            "1230753",
+            ["Exceptions"] = {}
+        },
+    },
+    [0xBB] = { --MT - Mayan Kickball Stadium (Lobby)
+        ["JIGGIES"] = {
+            "1230598", -- Kickball
+        }
+    },
+    [0xB7] = { --MT - Mumbo's Skull
+        ["GLOWBO"] = {
+            "1230686"
+        }
+    },
+    [0xB9] = { --MT - Prison Compound
+        ["JIGGIES"] = {
+            "1230602", --quicksand
+            "1230603", --pillars
+        },
+        ["PAGES"] = {
+            "1230729" -- Prison
+        }
+    },
+    [0x17A] =	{ --MT - Targitzan's Really Sacred Chamber
+        ["JIGGIES"] = {
+            "1230596" --Targitzan
+        }
+    },
+    [0x177] =	{ --MT - Targitzan's Slightly Sacred Chamber
+        ["JIGGIES"] = {
+            "1230597" --Slightly Sacred Chamber
+        }
+    },
+    [0xC5] = { --MT - Treasure Chamber
+        ["JIGGIES"] = {
+            "1230600" --Treasure Chamber
+        },
+        ["HONEYCOMB"] = {
+            "1230705", -- Treasure
+        }
+    },
+    [0x178] = { --MT - Inside Tatgitzan's Temple
+        ["JINJOS"] = {
+            "1230553" -- Temple Jiggy
+        }
+    },
+    --GLITTER GULCH MINE
+    
+    [0xC7] ={ --GGM
+        ["JIGGIES"] = {
+            "1230607", -- Canary Mary
+            "1230612", -- Crushing Shed
+            "1230613" -- Waterfall
+        },
+        ["JINJOS"] = {
+            "1230559", -- Boulder
+            "1230560", -- Tracks
+        },
+        ["PAGES"] = {
+            "1230731", -- Canary
+            "1230732", -- Entrance
+        },
+        ["HONEYCOMB"] = {
+            "1230707", -- boulder
+        },
+        ["GLOWBO"] = {
+            "1230688", -- Entrance
+            "1230689" -- near mumbo
+        },
+        ["NOTES"] = {
+            "1230816", -- by Crushing Shed (1)
+            "1230817", -- by Crushing Shed (2)
+            "1230818", -- by Crushing Shed (3)
+            "1230819", -- by Crushing Shed (4)
+            "1230820", -- Hut Bottom-Left Note
+            "1230821", -- Hut Top-Left Note
+            "1230822", -- Hut Top-Right Note
+            "1230823", -- Hut Mid-Right Note
+            "1230824", -- Hut Bottom-Right Note
+            "1230825", -- Mumbo (1)
+            "1230826", -- Mumbo (2)
+            "1230827", -- Mumbo (3)
+        },
+        ["SILO"] = {
+            "1230757",
+            ["Exceptions"] = {}
+        },
+    },
+    [0xCC] ={ --GGM - Flooded Caves
+        ["JIGGIES"] = {
+            "1230615" -- Flooded Cave
+        }
+    },
+    [0xCA] ={ --GGM - Fuel Depot
+        ["NOTES"] = {
+            "1230828", -- Front-left
+            "1230829", -- Back-left
+            "1230830", -- Back-Right
+            "1230831", -- Front-Right
+        }
+    },
+    [0xD3] = { --GGM - Generator Cavern
+        ["JIGGIES"] = {
+            "1230608" -- Generator Cavern
+        }
+    },
+    [0xD2] = { --GGM - Gloomy Caverns
+        ["JINJOS"] = {
+            "1230557" -- Jail
+        }
+    },
+    [0xD1] = { --GGM - Inside Chuffy's Boiler
+        ["JIGGIES"] = {
+            "1230606" -- King Coal
+        },
+    },
+    [0x163] =	{ --GGM - Ordnance Storage Entrance
+        ["JIGGIES"] = {
+            "1230610" -- Ordnance Storage
+        },
+        ["SILO"] = {
+            "1230758",
+            ["Exceptions"] = {}
+        },
+    },
+    [0xCF] = { --GGM - Power Hut Basement
+        ["JIGGIES"] = {
+            "1230614" -- Power Hut Basement
+        },
+    },
+    [0xD8] = { --GGM - Prospector's Hut
+        ["JIGGIES"] = {
+            "1230611" -- Dilberta
+        },
+    },
+    [0xDA] = { --GGM - Toxic Gas Cave
+        ["JINJOS"] = {
+            "1230558" -- Toxic
+        },
+        ["HONEYCOMB"] = {
+            "1230706", -- boulder
+        }
+    },
+    [0xD7] = { --GGM - Train Station
+        ["HONEYCOMB"] = {
+            "1230708", -- Train
+        }
+    },
+    [0xCD] = { --GGM - Water Storage
+        ["JINJOS"] = {
+            "1230556" -- Water Storage
+        },
+        ["PAGES"] = {
+            "1230733" -- Water Tower
+        },
+        ["TREBLE"] = {
+            "1230782"
+        }
+    },
+    [0xCE] = { --GGM - Waterfall Cavern
+        ["JIGGIES"] = {
+            "1230609" -- Waterfall Cavern
+        },
+    },
+    --WITCHYWORLD
+    [0xD6] = { --WW
+        ["JIGGIES"] = {
+            "1230619", -- Saucer of Peril
+            "1230621", -- Dive of Death
+            "1230622", -- Mrs Boggy
+            "1230625", -- Cactus of Strength
+        },
+        ["JINJOS"] = {
+            "1230561", -- Top of Tent
+            "1230563", -- Van door
+            "1230564", -- dogdem dome
+            "1230565", -- Cactus of Strength
+        },
+        ["PAGES"] = {
+            "1230736" -- Saucer 
+        },
+        ["HONEYCOMB"] = {
+            "1230709", -- Space Zone
+        },
+        ["NOTES"] = {
+            "1230832", -- Around the Tent (1)
+            "1230833", -- Around the Tent (2)
+            "1230834", -- Around the Tent (3)
+            "1230835", -- Around the Tent (4)
+            "1230836", -- Around the Tent (5)
+            "1230837", -- Around the Tent (6)
+            "1230838", -- Around the Tent (7)
+            "1230839", -- Around the Tent (8)
+            "1230840", -- Area 51 Gate (1)
+            "1230841", -- Area 51 Gate (2)
+            "1230842", -- Outside Dodgem Dome (1)
+            "1230843", -- Outside Dodgem Dome (2)
+            "1230844", -- Dive of Death (1)
+            "1230845", -- Dive of Death (2)
+            "1230846", -- Crazy Castle Entrance (1)
+            "1230847", -- Crazy Castle Entrance (2)
+        },
+        ["TREBLE"] = {
+            "1230783"
+        },
+        ["SILO"] = {
+            "1230761",
+            "1230760",
+            ["Exceptions"] = {}
+        },
+    },
+    [0xEA] = { --WW - Cave of Horrors
+        ["JINJOS"] = {
+            "1230562", -- Cave of Horrors
+        }
+    },
+    [0xE1] = { --WW - Crazy Castle Stockade
+        ["JIGGIES"] = {
+            "1230616", -- Hoop Hurry
+            "1230620", -- Balloon Burst
+        },
+        ["HONEYCOMB"] = {
+            "1230711", -- Crazy Castle
+        },
+        ["SILO"] = {
+            "1230762",
+            ["Exceptions"] = {}
+        },
+    },
+    [0xDD] = { --WW - Dodgem Dome Lobby
+        ["JIGGIES"] = {
+            "1230617", -- Dodgem
+        },
+    },
+    [0xEB] = { --WW - Haunted Cavern
+        ["PAGES"] = {
+            "1230734" -- Alcove
+        }
+    },
+    [0xF9] = { --WW - Mr. Patch
+        ["JIGGIES"] = {
+            "1230618", -- Patches
+        },
+    },
+    [0xE6] = { --WW - Star Spinner
+        ["JIGGIES"] = {
+            "1230623", -- Star Spinner
+        },
+    },
+    [0xE7] = { --WW - The Inferno
+        ["JIGGIES"] = {
+            "1230624", -- The Inferno
+        },
+        ["PAGES"] = {
+            "1230735" -- Inferno
+        },
+        ["GLOWBO"] = {
+            "1230690" -- near mumbo
+        }
+    },
+    [0x176] = { -- WW - Mumbo Skull
+        ["HONEYCOMB"] = {
+            "1230710" -- Inferno
+        }
+    },
+    [0xD5] = { --WW - Wumba's Wigwam
+        ["GLOWBO"] = {
+            "1230691"
+        }
+    },
+    [0xEC] = { -- WW - Train Station
+        ["STATIONBTN"] = "1230795"
+    },
+    --JOLLY ROGER'S LAGOON
+    [0x1A7] = { --JRL
+        ["JIGGIES"] = {
+            "1230627", -- Tiptup
+            "1230635", -- UFO
+            "1230629", -- Pig Pool
+        },
+        ["JINJOS"] = {
+            "1230566", -- alcove
+        },
+        ["HONEYCOMB"] = {
+            "1230714" -- Pipe
+        },
+        ["DOUBLOON"] = {
+            "1230521", -- Town Center Pole 1
+            "1230522", -- Town Center Pole 2
+            "1230523", -- Town Center Pole 3
+            "1230524", -- Town Center Pole 4
+            "1230525", -- Town Center Pole 5
+            "1230526", -- Town Center Pole 6
+            "1230527", -- Silo 1
+            "1230528", -- Silo 2
+            "1230529", -- Silo 3
+            "1230530", -- Silo 4
+            "1230531", -- Toxic Pool 1
+            "1230532", -- Toxic Pool 2
+            "1230533", -- Toxic Pool 3
+            "1230534", -- Toxic Pool 4
+            "1230539", -- Underground 1
+            "1230540", -- Underground 2
+            "1230541", -- Underground 3
+            "1230542", -- Alcove 1
+            "1230543", -- Alcove 2
+            "1230544", -- Alcove 3
+            "1230547", -- Jinjo 1
+            "1230548", -- Jinjo 2
+            "1230549", -- Jinjo 3
+            "1230550", -- Jinjo 4
+        },
+        ["NOTES"] = {
+            "1230848", -- Outside Jollys
+            "1230849", -- Outside Pawno
+            "1230850", -- Outside Blubber
+            "1230851", -- Blubbul 1
+            "1230852", -- Blubbul 2
+        },
+        ["SILO"] = {
+            "1230764",
+            ["Exceptions"] = {}
+        },
+    },
+    [0xF4] = { --JRL - Ancient Swimming Baths
+        ["PAGES"] = {
+            "1230739" -- Baths
+        }
+    },
+    [0x1A8] =	{ --JRL - Atlantis
+        ["JIGGIES"] = {
+            "1230633", -- SEEMEE
+        },
+        ["JINJOS"] = {
+            "1230570", -- Sunken Ship
+        },
+        ["PAGES"] = {
+            "1230738" -- SEEMEE
+        },
+        ["HONEYCOMB"] = {
+            "1230713", -- Atlantis
+            "1230712", -- SEEMEE
+        },
+        ["GLOWBO"] = {
+            "1230693" -- near humba
+        },
+        ["NOTES"] = {
+            "1230853", -- Eel 1
+            "1230854", -- Eel 2
+        },
+        ["TREBLE"] = {
+            "1230784"
+        }
+    },
+    [0xFF] = { --JRL - Blubber's Wave Race Hire
+        ["JINJOS"] = {
+            "1230567", -- Blubber
+        },
+        ["NOTES"] = {
+            "1230855",
+            "1230856",
+            "1230857",
+        }
+    },
+    [0xF6] = {  --JRL - Electric Eel's lair
+        ["SILO"] = {
+            "1230765",
+            ["Exceptions"] = {}
+        },
+    },
+    [0xF8] = { --JRL - Inside the Big Fish
+        ["JINJOS"] = {
+            "1230568", -- Big Fish
+        }
+    },
+    [0xED] =	{ --JRL - Jolly's
+        ["JIGGIES"] = {
+            "1230631", -- Merry Maggie
+        },
+        ["DOUBLOON"] = {
+            "1230545", -- Blackeye 1
+            "1230546" -- Blackeye 2
+        },
+        ["NOTES"] = {
+            "1230861",
+            "1230862",
+            "1230863",
+        },
+        ["SILO"] = {
+            "1230766",
+            ["Exceptions"] = {}
+        },
+    },
+    [0xFC] =	{ --JRL - Lord Woo Fak Fak
+        ["JIGGIES"] = {
+            "1230632", -- Lord Woo
+        },
+    },      
+    [0xEE] =	{ --JRL - Pawno's Emporium
+        ["JIGGIES"] = {
+            "1230634", -- Pawno
+        },
+        ["PAGES"] = {
+            "1230737" -- Pawno
+        },
+        ["GLOWBO"] = {
+            "1230692"
+        },
+        ["NOTES"] = {
+            "1230858",
+            "1230859",
+            "1230860",
+        }
+    },
+    [0x1A9] =	{ --JRL - Sea Bottom
+        ["JIGGIES"] = {
+            "1230633", -- SEEMEE
+        },
+        ["PAGES"] = {
+            "1230738" -- SEEMEE
+        },
+        ["HONEYCOMB"] = {
+            "1230712", -- SEEMEE
+        }
+    },
+    [0x181] =	{ --JRL - Sea Botom Cavern
+        ["JIGGIES"] = {
+            "1230626", -- Mini-Sub Challenge
+        },
+    },
+    [0xF7] = { --JRL - Seaweed Sanctum
+        ["JINJOS"] = {
+            "1230569", -- Seaweed
+        }
+    },
+    [0x1A6] =	{ --JRL - Smuggler's cavern
+        ["JIGGIES"] = {
+            "1230633", -- SEEMEE
+            "1230630", -- Smuggler
+        },
+        ["PAGES"] = {
+            "1230738" -- SEEMEE
+        },
+        ["HONEYCOMB"] = {
+            "1230712", -- SEEMEE
+        }
+    },
+    [0xFA] = { --JRL - Temple of the Fishes
+        ["JIGGIES"] = {
+            "1230628", -- Chris P. Bacon
+        },
+    },
+    [0xEF] = { --JRL - Mumbo's Skull
+        ["DOUBLOON"] = {
+            "1230535", -- Mumbo 1
+            "1230536", -- Mumbo 2
+            "1230537", -- Mumbo 3
+            "1230538" -- Mumbo 4
+        }
+    },
+    --TERRYDACTYLAND
+    [0x112] =	{ --TDL
+        ["JIGGIES"] = {
+            "1230637", -- Dippy
+            "1230644", -- Rocknut
+            "1230645", -- Dino Code
+        },
+        ["JINJOS"] = {
+            "1230571", -- Talon Torp
+            "1230572", -- Entrance
+            "1230573", -- Maze Cave
+            "1230574", -- T-rex
+        },
+        ["PAGES"] = {
+            "1230740", -- Dippy
+            "1230742" -- Boulder
+        },
+        ["HONEYCOMB"] = {
+            "1230715" -- Lakeside
+        },
+        ["GLOWBO"] = {
+            "1230694", -- near unga bunga
+            "1230695" -- near mumbo
+        },
+        ["NOTES"] = {
+            "1230864", -- train 1
+            "1230865", -- train 2
+            "1230866", -- train 3
+            "1230867", -- lakeside 1
+            "1230868", -- lakeside 2
+            "1230869", -- lakeside 3
+            "1230870", -- zigzag 1
+            "1230871", -- zigzag 2
+            "1230872", -- zigzag 3
+            "1230873", -- roarpath 1
+            "1230874", -- roarpath 2
+            "1230875", -- roarpath 3
+        },
+        ["TREBLE"] = {
+            "1230785"
+        },
+        ["SILO"] = {
+            "1230768",
+            ["Exceptions"] = {}
+        },
+        ["STATIONBTN"] = "1230791"
+    },
+    [0x123] = { --TDL - Inside Chompa's Belly
+        ["JIGGIES"] = {
+            "1230641", -- Chompa
+        },
+    },
+    [0x116] = { --TDL - Inside the Mountain
+        ["JIGGIES"] = {
+            "1230636", -- Under Terry Nest
+        },
+        ["PAGES"] = {
+            "1230741", -- Mountain
+        }
+    },
+    [0x115] = { --TDL - Oogle Boogles' Cave
+        ["JIGGIES"] = {
+            "1230640", -- Oogle Boogle Tribe
+        },
+    },
+    [0x117] = { --TDL - River Passage
+        ["HONEYCOMB"] = {
+            "1230717" -- Riverside
+        },
+        ["NOTES"] = {
+            "1230876",
+            "1230877",
+            "1230878",
+            "1230879",
+        },
+        ["SILO"] = {
+            "1230769",
+            ["Exceptions"] = {}
+        },
+    },
+    [0x119] = { -- Unga Bunga Cave
+        ["SILO"] = {
+            "1230770",
+            ["Exceptions"] = {}
+        },
+    },
+    [0x11A] = { --TDL - Stomping Plains
+        ["JIGGIES"] = {
+            "1230643", -- Stomping
+        },
+        ["JINJOS"] = {
+            "1230575", -- Stomping
+        }
+    },
+    [0x118] =	{ --TDL - Styracosaurus Family Cave
+        ["JIGGIES"] = {
+            "1230638", -- Scrotty
+        },
+        ["HONEYCOMB"] = {
+            "1230716" -- Cave
+        }
+    },
+    [0x113] =	{ --TDL - Terry's Nest
+        ["JIGGIES"] = {
+            "1230639", -- Terry
+            "1230642", -- Terry's Kids
+        },
+    },
+    [0x114] =	{ --TDL - Train Station
+        ["JIGGIES"] = {
+            "1230644", -- Rocknut
+        }
+    },
+    --GRUNTY'S INDUSTRIES
+    [0x100] =	{ --GI
+        ["JIGGIES"] = {
+            "1230646", -- Skivvy
+        },
+        ["JINJOS"] = {
+            "1230580" -- Outside
+        },
+        ["HONEYCOMB"] = {
+            "1230720" -- Chimney
+        },
+        ["TREBLE"] = {
+            "1230786"
+        },
+        ["STATIONBTN"] = "1230790"
+    },
+    [0x10F] = { --GI - Basement
+        ["JIGGIES"] = {
+            "1230647", -- Weldar
+        },
+        ["NOTES"] = {
+            "1230892",
+            "1230893",
+        }
+    },
+    [0x110] =	{ --GI - Basement (Repair Depot)
+        ["PAGES"] = {
+            "1230745" -- Repair Depot
+        }
+    },
+    [0x111] =	{ --GI - Basement (Waste Disposal)
+        ["JIGGIES"] = {
+            "1230646", -- Underwater Waste Disposal
+            "1230655", -- Plant Box
+            "1230661", -- HFP Oil Drill
+        },
+        ["JINJOS"] = {
+            "1230578" -- Waste Disposal
+        },
+        ["NOTES"] = {
+            "1230890",
+            "1230891",
+        },
+        ["SILO"] = {
+            "1230771",
+            ["Exceptions"] = {}
+        },
+    },
+    [0x101] =	{ --GI - Floor 1
+        ["JIGGIES"] = {
+            "1230646", -- Skivvy
+            "1230652", -- Floor 1 Guarded
+        },
+        ["NOTES"] = {
+            "1230883",
+            "1230884",
+        },
+        ["SILO"] = {
+            "1230773",
+            ["Exceptions"] = {}
+        },
+    },
+    [0x106] =	{ --GI - Floor 2
+        ["JIGGIES"] = {
+            "1230646", -- Skivvy
+        },
+        ["JINJOS"] = {
+            "1230577" -- leg spring
+        },
+        ["PAGES"] = {
+            "1230743" -- Floor 2
+        },
+        ["GLOWBO"] = {
+            "1230696" -- near humba
+        },
+        ["NOTES"] = {
+            "1230885",
+            "1230886",
+            "1230887",
+            "1230888",
+            "1230889"
+        },
+        ["SILO"] = {
+            "1230772",
+            ["Exceptions"] = {}
+        },
+    },
+    [0x108] =	{ --GI - Floor 3
+        ["JIGGIES"] = {
+            "1230646", -- Skivvy
+        },
+        ["HONEYCOMB"] = {
+            "1230718" -- Floor 3
+        },
+        ["GLOWBO"] = {
+            "1230697" -- on boxes
+        },
+        ["NOTES"] = {
+            "1230894",
+            "1230895"
+        }
+    },
+    [0x109] =	{ --GI - Floor 3 (Boiler Plant)
+        ["JINJOS"] = {
+            "1230579" -- Top of Boiler
+        }
+    },
+    [0x10A] =	{ --GI - Floor 3 (Packing Room)
+        ["JIGGIES"] = {
+            "1230654", -- Twinkly Packing
+        },
+    },
+    [0x10B] =	{ --GI - Floor 4
 
+    },
+    [0x10D] =	{ --GI - Floor 4 (Quality Control)
+        ["JIGGIES"] = {
+            "1230651", -- Quality Control
+        },
+    },
+    [0x10E] =	{ --GI - Floor 5
+        ["JIGGIES"] = {
+            "1230646", -- Skivvy
+            "1230650", -- Floor 5
+        },
+        ["JINJOS"] = {
+            "1230576" -- 5 floor
+        }
+    },
+    [0x187] =	{ --GI - Sewer Entrance
+        ["JIGGIES"] = {
+            "1230648", -- Clinker
+        },
+    },
+    [0x102] =	{ --GI - Train Station
+        ["HONEYCOMB"] = {
+            "1230719" -- Train
+        },
+        ["NOTES"] = {
+            "1230880",
+            "1230881",
+            "1230882",
+        }
+    },
+    [0x104] =	{ --GI - Trash Compactor
+        ["JIGGIES"] = {
+            "1230653", -- Trash Compactor
+        },
+    },
+    [0x103] =	{ --GI - Workers' Quarters
+        ["JIGGIES"] = {
+            "1230646", -- Skivvy
+        },
+        ["PAGES"] = {
+            "1230743" -- Loggo
+        }
+    },
+    --HAILFIRE PEAKS
+    [0x131] =	{ --HFP - Boggy's Igloo
+        ["JIGGIES"] = {
+            "1230659", -- Boggy
+        },
+    },
+    [0x12B] =	{ --HFP - Chilli Billi
+        ["JIGGIES"] = {
+            "1230656", -- Brothers
+        },
+    },
+    [0x12C] =	{ --HFP - Chilly Willy
+        ["JIGGIES"] = {
+            "1230656", -- Brothers
+        },
+    },
+    [0x132] =	{ --HFP - Icicle Grotto
+        ["JINJOS"] = {
+            "1230584", -- Grotto
+        },
+        ["PAGES"] = {
+            "1230747" -- Icicle
+        },
+        ["TREBLE"] = {
+            "1230787"
+        }
+    },
+    [0x128] =	{ --HFP - Icy Side
+        ["JIGGIES"] = {
+            "1230660", -- Icy Train Station
+            "1230662", -- Stomping
+            "1230664", -- Aliens
+        },
+        ["JINJOS"] = {
+            "1230585", -- Mildred
+            "1230583" -- Windy Hole
+        },
+        ["PAGES"] = {
+            "1230748" -- Ice Pillar
+        },
+        ["GLOWBO"] = {
+            "1230699",
+            "1230046" -- Mega Glowbo
+        },
+        ["NOTES"] = {
+            "1230904",
+            "1230905",
+            "1230906",
+            "1230907",
+            "1230908",
+            "1230909",
+            "1230910",
+            "1230911",
+        },
+        ["SILO"] = {
+            "1230775",
+            ["Exceptions"] = {}
+        },
+        ["STATIONBTN"] = "1230793"
+    },
+    [0x133] =	{ --HFP - Inside the Volcano
+        ["JIGGIES"] = {
+            "1230657", -- Volcano
+        },
+        ["HONEYCOMB"] = {
+            "1230721" -- Volcano
+        }
+    },
+    [0x12D] =	{ --HFP - Kickball Stadium lobby
+        ["JIGGIES"] = {
+            "1230663", -- Kickball
+        },
+    },
+    [0x127] =	{ --HFP - Lava Side
+        ["JIGGIES"] = {
+            "1230658", -- Sabreman
+            "1230665", -- Lava waterfall
+        },
+        ["JINJOS"] = {
+            "1230581", -- Lava waterfall
+            "1230582" -- Boiling Pool
+        },
+        ["PAGES"] = {
+            "1230746" -- Lava Side
+        },
+        ["HONEYCOMB"] = {
+            "1230723" -- Lava Side
+        },
+        ["GLOWBO"] = {
+            "1230698"
+        },
+        ["NOTES"] = {
+            "1230896",
+            "1230897",
+            "1230898",
+            "1230899",
+            "1230900",
+            "1230901",
+            "1230902",
+            "1230903",
+        },
+        ["SILO"] = {
+            "1230774",
+            ["Exceptions"] = {}
+        },
+        ["STATIONBTN"] = "1230792"
+    },
+    [0x129] =	{ --HFP - Lava Train Station
+        ["HONEYCOMB"] = {
+            "1230721" -- Train Station
+        }
+    },
+    --CLOUD CUCKOOLAND
+    [0x136] =	{ --CCL
+        ["JIGGIES"] = {
+            "1230667", -- Mr Fit
+            "1230669", -- Canary Mary 3
+            "1230671", -- Jiggium Plant
+            "1230675", -- Jelly Castle
+        },
+        ["PAGES"] = {
+            "1230749" -- Canary Mary
+        },
+        ["HONEYCOMB"] = {
+            "1230724", -- Dirt Patch
+            "1230726" -- Pot O Gold
+        },
+        ["GLOWBO"] = {
+            "1230700"
+        }
+
+    },
+    [0x13A] =	{ --CCL - Central Cavern
+        ["JIGGIES"] = {
+            "1230674", -- Superstash
+        },
+        ["JINJOS"] = {
+            "1230588" -- Central
+        },
+        ["GLOWBO"] = {
+            "1230701"
+        },
+        ["NOTES"] = {
+            "1230912",
+            "1230913",
+            "1230914",
+            "1230915",
+            "1230916",
+            "1230917",
+            "1230918",
+            "1230919",
+            "1230920",
+            "1230921",
+            "1230922",
+            "1230923",
+            "1230924",
+            "1230925",
+            "1230926",
+            "1230927",
+        },
+        ["TREBLE"] = {
+            "1230788"
+        },
+        ["SILO"] = {
+            "1230776",
+            ["Exceptions"] = {}
+        }
+    },
+    [0x138] =	{ --CCL - Inside the Cheese Wedge
+        ["JIGGIES"] = {
+            "1230672", -- Cheese Wedge
+        },
+        ["JINJOS"] = {
+            "1230587" -- Cheese
+        }
+    },
+    [0x13D] =	{ --CCL - Inside the Pot o' Gold
+        ["JIGGIES"] = {
+            "1230668", -- pot o gold
+        },
+        ["PAGES"] = {
+            "1230750" -- O Gold
+        }
+    },
+    [0x137] =	{ --CCL - Inside the Trash Can
+        ["JIGGIES"] = {
+            "1230673", -- Trash Can
+        },
+        ["JINJOS"] = {
+            "1230586" -- Trash
+        },
+        ["HONEYCOMB"] = {
+            "1230725" -- Trash
+        }
+    },
+    [0x13F] =	{ --CCL - Mingy Jongo's Skull
+        ["JIGGIES"] = {
+            "1230666", -- Mingy Jongo
+        },
+        ["JINJOS"] = {
+            "1230589" -- Mumbo
+        }
+    },
+    [0x13E] =	{ --CCL - Mumbo's Skull
+        ["JIGGIES"] = {
+            "1230666", -- Mingy Jongo
+        },
+        ["JINJOS"] = {
+            "1230589" -- Mumbo
+        }
+    },
+    [0x140] =	{ --CCL - Wumba's Wigwam
+        ["JINJOS"] = {
+            "1230590" -- Balasters
+        }
+    },
+    [0x139] =	{ --CCL - Zubbas' Nest
+        ["JIGGIES"] = {
+            "1230670", -- Zubba
+        },
+        ["PAGES"] = {
+            "1230751" -- Zubba
+        }
+    },
+    --CAULDRON KEEP
+    [0x19A] =	{ --CK - HAG 1
+        ["H1"] = {
+            "1230027"
+        }
     }
 }
 
@@ -2083,8 +2082,8 @@ local AGI_JINJOS = {
 
 
 local BMM_JIGGIES = {}; -- BMM JIGGIES
-local BMM_NOTES = {};
-local BMM_TREBLE = {};
+local BMM_NOTES = {}; -- BMM Notes
+local BMM_TREBLE = {}; -- BMM Treble Clefs
 local BMM_JINJOS = {}; -- BMM JINJOS
 local BKM = {}; -- Banjo Tooie Movelist Table
 local BMM_STATIONS = {} -- Stations
@@ -5123,11 +5122,11 @@ function jiggy_check()
             end
             return BMM_JIGGIES
         end
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
         then
-            if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["JIGGIES"] ~= nil
+            if ASSET_MAP_CHECK[CURRENT_MAP]["JIGGIES"] ~= nil
             then
-                for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["JIGGIES"])
+                for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["JIGGIES"])
                 do
                     checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["JIGGIES"][locationId]['addr'], NON_AGI_MAP["JIGGIES"][locationId]['bit'])
                     if DEBUG_JIGGY == true
@@ -5137,7 +5136,7 @@ function jiggy_check()
                 end
             end
         end
-        for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"]["ALL"]["JIGGIES"])
+        for _,locationId in pairs(ASSET_MAP_CHECK["ALL"]["JIGGIES"])
         do
             checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["JIGGIES"][locationId]['addr'], NON_AGI_MAP["JIGGIES"][locationId]['bit'])
             -- if DEBUG_JIGGY == true
@@ -5363,11 +5362,11 @@ function treble_check()
             end
             return BMM_TREBLE
         end
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
         then
-            if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["TREBLE"] ~= nil
+            if ASSET_MAP_CHECK[CURRENT_MAP]["TREBLE"] ~= nil
             then
-                for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["TREBLE"])
+                for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["TREBLE"])
                 do
                     checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["TREBLE"][locationId]['addr'], NON_AGI_MAP["TREBLE"][locationId]['bit'])
                     if DEBUG == true
@@ -5575,11 +5574,11 @@ end
 
 function pages_check()
     local checks = {}
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["PAGES"] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP]["PAGES"] ~= nil
         then
-            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["PAGES"])
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["PAGES"])
             do
                 checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["PAGES"][locationId]['addr'], NON_AGI_MAP["PAGES"][locationId]['bit'])
                 if DEBUG == true
@@ -5667,11 +5666,11 @@ end
 
 function honeycomb_check()
     local checks = {}
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["HONEYCOMB"] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP]["HONEYCOMB"] ~= nil
         then
-            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["HONEYCOMB"])
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["HONEYCOMB"])
             do
                 checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["HONEYCOMB"][locationId]['addr'], NON_AGI_MAP["HONEYCOMB"][locationId]['bit'])
                 if DEBUG == true
@@ -5792,11 +5791,11 @@ end
 
 function glowbo_check()
     local checks = {}
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["GLOWBO"] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP]["GLOWBO"] ~= nil
         then
-            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["GLOWBO"])
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["GLOWBO"])
             do
                 checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["GLOWBO"][locationId]['addr'], NON_AGI_MAP["GLOWBO"][locationId]['bit'])
                 if DEBUG == true
@@ -5827,11 +5826,11 @@ end
 
 function doubloon_check()
     local checks = {}
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["DOUBLOON"] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP]["DOUBLOON"] ~= nil
         then
-            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["DOUBLOON"])
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["DOUBLOON"])
             do
                 checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["DOUBLOON"][locationId]['addr'], NON_AGI_MAP["DOUBLOON"][locationId]['bit'])
                 if DEBUG == true
@@ -6018,11 +6017,11 @@ function notes_check()
         then
             return BMM_NOTES
         end
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
         then
-            if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["NOTES"] ~= nil
+            if ASSET_MAP_CHECK[CURRENT_MAP]["NOTES"] ~= nil
             then
-                for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["NOTES"])
+                for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["NOTES"])
                 do
                     checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["NOTES"][locationId]['addr'], NON_AGI_MAP["NOTES"][locationId]['bit'])
                     if DEBUG_NOTES == true
@@ -6040,11 +6039,11 @@ end
 
 function hag1_check()
     local victory = false
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["H1"] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP]["H1"] ~= nil
         then
-            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["H1"])
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["H1"])
             do
                 victory = BTRAMOBJ:checkFlag(NON_AGI_MAP["H1"][locationId]['addr'], NON_AGI_MAP["H1"][locationId]['bit'])
                 if DEBUG == true
@@ -6088,10 +6087,8 @@ end
 function watchDinoFlags()
     if CURRENT_MAP == 0x118 then
         local scrut = BTRAMOBJ:checkFlag(0x0C, 2)
-
         local scrat_healed = BTRAMOBJ:checkFlag(0x26, 6)
         local scrat_train = BTRAMOBJ:checkFlag(0x2C, 1)
-
         local scrit_grow = BTRAMOBJ:checkFlag(0x26, 7)
 
         if scrut == true
@@ -6253,9 +6250,9 @@ function init_STOPNSWAP(type) -- Initialize BMK
 end
 
 function check_egg_mystery()
-    if ASSET_MAP_CHECK["AGI_ASSETS"][NEXT_MAP] ~= nil
+    if ASSET_MAP_CHECK[NEXT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][NEXT_MAP]["STOPNSWAP"] ~= nil
+        if ASSET_MAP_CHECK[NEXT_MAP]["STOPNSWAP"] ~= nil
         then
             if NEXT_MAP == 0x150 -- on Heggy map / Wooded Hollow, if you have eggs, enable flags
             then
@@ -6423,11 +6420,11 @@ function check_STOPNSWAPEGGS()
     then
         return
     end
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["STOPNSWAP"] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP]["STOPNSWAP"] ~= nil
         then
-            local eggLocId = ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["STOPNSWAP"];
+            local eggLocId = ASSET_MAP_CHECK[CURRENT_MAP]["STOPNSWAP"];
             if BMM_MYSTERY[eggLocId] == false
             then
                 local eggTable = NON_AGI_MAP['STOPNSWAP'][eggLocId]
@@ -6578,11 +6575,11 @@ function obtain_breegull_bash()
 end
 
 function check_local_icekey()
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["ICEKEY"] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP]["ICEKEY"] ~= nil
         then
-            local keyLocId = ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["ICEKEY"];
+            local keyLocId = ASSET_MAP_CHECK[CURRENT_MAP]["ICEKEY"];
             if BMM_MYSTERY[keyLocId] == false
             then
                 BTCONSUMEOBJ:changeConsumable("Ice Keys")
@@ -6715,11 +6712,11 @@ function init_STATIONS(type, getReceiveMap) -- Initialize BMK
 end
 
 function set_checked_STATIONS() --Only run transitioning maps
-    if ASSET_MAP_CHECK["AGI_ASSETS"][NEXT_MAP] ~= nil
+    if ASSET_MAP_CHECK[NEXT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][NEXT_MAP]["STATIONBTN"] ~= nil
+        if ASSET_MAP_CHECK[NEXT_MAP]["STATIONBTN"] ~= nil
         then
-            local stationId = ASSET_MAP_CHECK["AGI_ASSETS"][NEXT_MAP]["STATIONBTN"];
+            local stationId = ASSET_MAP_CHECK[NEXT_MAP]["STATIONBTN"];
             local get_addr = NON_AGI_MAP['STATIONS'][stationId];
             if BMM_STATIONS[stationId] == true
             then
@@ -6763,12 +6760,10 @@ function obtained_AP_STATIONS(itemId)
     BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
 end
 
-
-
 function check_STATION_BUTTONS()
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["STATIONBTN"] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP]["STATIONBTN"] ~= nil
         then
             STATION_BTN_TIMER = STATION_BTN_TIMER + 1
             if STATION_BTN_TIMER == 25
@@ -6786,9 +6781,9 @@ function check_STATION_BUTTONS()
 end
 
 function watchBtnAnimation()
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["STATIONBTN"] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP]["STATIONBTN"] ~= nil
         then
             BTMODELOBJ:changeName("Station Switch", false);
             local POS = BTMODELOBJ:getSingleModelCoords();
@@ -6804,7 +6799,7 @@ function watchBtnAnimation()
                 then
                     print("Detected Station Button got pressed")
                 end
-                BMM_STATIONS[ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["STATIONBTN"]] = true;
+                BMM_STATIONS[ASSET_MAP_CHECK[CURRENT_MAP]["STATIONBTN"]] = true;
                 --Removed the Stop Watch here as the Stations doesn't get set right away. this will cover it at least...
                 set_AP_STATIONS()
             end
@@ -6813,7 +6808,6 @@ function watchBtnAnimation()
 end
 
 ---------------------------------- Chuffy ------------------------------------
-
 
 function init_CHUFFY(type, getReceiveMap) -- Initialize Chuffy
     for locationId,v in pairs(NON_AGI_MAP['CHUFFY'])
@@ -6925,30 +6919,6 @@ function getChuffyMaps()
     end
 end
 
-function moveLevitatePad()
-    if ENABLE_AP_CHUFFY == true
-    then
-        if AGI_CHUFFY["1230796"] == false and CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false
-        then
-            BTMODELOBJ:changeName("Levitate Pad", false)
-            local model = BTMODELOBJ:checkModel();
-            if model == false
-            then
-                return false
-            end
-            BTMODELOBJ:moveModelObject(nil, nil, -100, nil)
-            LEVI_PAD_MOVED = true;
-            if DEBUG_CHUFFY == true
-            then
-                print("Lebitate Pads Moved")
-            end
-            return true
-        elseif AGI_CHUFFY["1230796"] == false and CURRENT_MAP ~= 0xD7 and LEVI_PAD_MOVED == true
-        then
-            LEVI_PAD_MOVED = false
-        end
-    end
-end
 
 ---------------------------------- JamJars MOVES -----------------------------------
 
@@ -6968,11 +6938,11 @@ function init_BMK(type) -- Initialize BMK
 end
 
 function update_BMK_MOVES_checks() --Only run when close to Silos
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["SILO"] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP]["SILO"] ~= nil
         then
-            for keys, locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["SILO"])
+            for keys, locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["SILO"])
             do
                 if keys ~= "Exceptions"
                 then
@@ -6998,7 +6968,7 @@ end
 
 function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND Close to Silo.
     --Only clear the moves that we need to clear
-    if ASSET_MAP_CHECK["AGI_ASSETS"][mapaddr] == nil or ASSET_MAP_CHECK["AGI_ASSETS"][mapaddr]["SILO"] == nil
+    if ASSET_MAP_CHECK[mapaddr] == nil or ASSET_MAP_CHECK[mapaddr]["SILO"] == nil
     then
         if DEBUG_SILO == true
         then
@@ -7006,7 +6976,7 @@ function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND 
         end
         return false
     end
-    for keys, locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][mapaddr]["SILO"])
+    for keys, locationId in pairs(ASSET_MAP_CHECK[mapaddr]["SILO"])
     do
         if keys ~= "Exceptions"
         then
@@ -7026,7 +6996,7 @@ function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND 
                 end
             end
         else
-            for _, disable_move in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][mapaddr]["SILO"][keys]) --Exception list, always disable
+            for _, disable_move in pairs(ASSET_MAP_CHECK[mapaddr]["SILO"][keys]) --Exception list, always disable
             do
                 local addr_info = NON_AGI_MAP["MOVES"][disable_move]
                 BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit'], "CLEAR_AMM_MOVES_EXCEPTION");
@@ -7037,9 +7007,9 @@ function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND 
 end
 
 function check_jamjar_silo()
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["SILO"] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP]["SILO"] ~= nil
         then
             SILO_TIMER = SILO_TIMER + 1
             if SILO_TIMER == 25
@@ -7073,9 +7043,9 @@ function set_AGI_MOVES_checks() -- SET AGI Moves into RAM AFTER BT/Silo Model is
 end
 
 function nearSilo()
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["SILO"] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP]["SILO"] ~= nil
         then
             BTMODELOBJ:changeName("Silo", false);
             local modelPOS = BTMODELOBJ:getMultipleModelCoords()
@@ -7191,37 +7161,6 @@ function nearSilo()
     end
 end
 
-function MoveWitchyPads()
-    BTMODELOBJ:changeName("Kazooie Split Pad", false)
-    local modelPOS = BTMODELOBJ:getMultipleModelCoords()
-    if modelPOS == false
-    then
-        return;
-    end
-    for modelObjPtr, POS in pairs(modelPOS) do
-
-        if (POS["Xpos"] == -125 and POS["Ypos"] == -163 and POS["Zpos"] == -1580)
-            and CURRENT_MAP == 0xD6
-        then
-            BTMODELOBJ:moveModelObject(modelObjPtr, -300, -163, -1855)
-            break
-        end
-    end
-    BTMODELOBJ:changeName("Banjo Split Pad", false)
-    local modelPOS = BTMODELOBJ:getMultipleModelCoords()
-    if modelPOS == false
-    then
-        return;
-    end
-    for modelObjPtr, POS in pairs(modelPOS) do
-        if (POS["Xpos"] == 125 and POS["Zpos"] == -1580)
-            and CURRENT_MAP == 0xD6
-        then
-            BTMODELOBJ:moveModelObject(modelObjPtr, 304, -163, -1855)
-            break
-        end
-    end
-end
 
 ------------------ Jinjos -------------------
 
@@ -7286,11 +7225,11 @@ function jinjo_check()
         end
         return BMM_JINJOS
     end
-    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["JINJOS"] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP]["JINJOS"] ~= nil
         then
-            for _,locationId in pairs(ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["JINJOS"])
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["JINJOS"])
             do
                 checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["JINJOS"][locationId]['addr'], NON_AGI_MAP["JINJOS"][locationId]['bit'])
                 if DEBUG == true
@@ -7561,6 +7500,93 @@ function getBanjoDeath()
     end
 end
 
+---------------------- MOVED ASSETS -------------------
+
+function MoveWitchyPads() -- Called from nearSilo Function
+    BTMODELOBJ:changeName("Kazooie Split Pad", false)
+    local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+    if modelPOS == false
+    then
+        return;
+    end
+    for modelObjPtr, POS in pairs(modelPOS) do
+
+        if (POS["Xpos"] == -125 and POS["Ypos"] == -163 and POS["Zpos"] == -1580)
+            and CURRENT_MAP == 0xD6
+        then
+            BTMODELOBJ:moveModelObject(modelObjPtr, -300, -163, -1855)
+            break
+        end
+    end
+    BTMODELOBJ:changeName("Banjo Split Pad", false)
+    local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+    if modelPOS == false
+    then
+        return;
+    end
+    for modelObjPtr, POS in pairs(modelPOS) do
+        if (POS["Xpos"] == 125 and POS["Zpos"] == -1580)
+            and CURRENT_MAP == 0xD6
+        then
+            BTMODELOBJ:moveModelObject(modelObjPtr, 304, -163, -1855)
+            break
+        end
+    end
+end
+
+function MoveBathPads()
+    if CURRENT_MAP == 0xF4 and BATH_PADS_QOL == false
+    then
+        BTMODELOBJ:changeName("Kazooie Split Pad", false)
+        POS = BTMODELOBJ:getSingleModelCoords(nil)
+        if POS == false
+        then
+            return
+        end
+
+        BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450 );
+        BTMODELOBJ:changeRotation(nil, nil, 0);
+
+        BTMODELOBJ:changeName("Banjo Split Pad", false)
+        POS = BTMODELOBJ:getSingleModelCoords(nil)
+        if POS == false
+        then
+            return
+        end
+        BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450);
+        BTMODELOBJ:changeRotation(nil, nil, 0)
+        BATH_PADS_QOL = true
+    elseif  CURRENT_MAP ~= 0xF4 and BATH_PADS_QOL == true
+    then
+        BATH_PADS_QOL = false
+    end
+end
+
+function moveLevitatePad()
+    if ENABLE_AP_CHUFFY == true
+    then
+        if AGI_CHUFFY["1230796"] == false and CURRENT_MAP == 0xD7 and LEVI_PAD_MOVED == false
+        then
+            BTMODELOBJ:changeName("Levitate Pad", false)
+            local model = BTMODELOBJ:checkModel();
+            if model == false
+            then
+                return false
+            end
+            BTMODELOBJ:moveModelObject(nil, nil, -100, nil)
+            LEVI_PAD_MOVED = true;
+            if DEBUG_CHUFFY == true
+            then
+                print("Lebitate Pads Moved")
+            end
+            return true
+        elseif AGI_CHUFFY["1230796"] == false and CURRENT_MAP ~= 0xD7 and LEVI_PAD_MOVED == true
+        then
+            LEVI_PAD_MOVED = false
+        end
+    end
+end
+
 ---------------------- MAP HANDLING -------------------
 
 function watchMapTransition()
@@ -7675,24 +7701,7 @@ function finishTransition()
     end
 end
 
-
-
-function checkConsumables(consumable_type, location_checks)
-    BTCONSUMEOBJ:changeConsumable(consumable_type)
-	for location_name, value in pairs(AGI[consumable_type])
-	do
-        if(USE_BMM_TBL == false and (value == false and location_checks[consumable_type][location_name] == true))
-        then
-            if(DEBUG == true)
-            then
-                print("Obtained local consumable. Remove from Inventory")
-            end
-            BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() - 1)
-			AGI[consumable_type][location_name] = true
-			savingAGI()
-		end
-	end
-end
+---------------------- GAME FUNCTIONS -------------------
 
 function loadGame(current_map)
     BTMODELOBJ:changeName("Player", false)
@@ -7792,33 +7801,539 @@ function loadGame(current_map)
     end
 end
 
-function MoveBathPads()
-    if CURRENT_MAP == 0xF4 and BATH_PADS_QOL == false
+function checkPause()
+    local pause_menu = mainmemory.readbyte(0x15961A);
+    if pause_menu == 1 and PAUSED == false
     then
-        BTMODELOBJ:changeName("Kazooie Split Pad", false)
-        POS = BTMODELOBJ:getSingleModelCoords(nil)
-        if POS == false
+        if DEBUG == true
         then
-            return
+            print("Game Paused");
         end
-
-        BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450 );
-        BTMODELOBJ:changeRotation(nil, nil, 0);
-
-        BTMODELOBJ:changeName("Banjo Split Pad", false)
-        POS = BTMODELOBJ:getSingleModelCoords(nil)
-        if POS == false
-        then
-            return
-        end
-        BTMODELOBJ:moveModelObject(nil, nil, POS["Ypos"] - 75, POS["Zpos"] + 450);
-        BTMODELOBJ:changeRotation(nil, nil, 0)
-        BATH_PADS_QOL = true
-    elseif  CURRENT_MAP ~= 0xF4 and BATH_PADS_QOL == true
+        DEMO_MODE = true -- SEND NO CHECKS
+        backup_BMM_JIGGIES()
+        backup_BMM_NOTES()
+        backup_BMM_TREBLE()
+        backup_BMM_JINJOS()
+        PAUSED = true;
+        savingBMM()
+    elseif pause_menu == 0 and PAUSED == true  -- unpaused
     then
-        BATH_PADS_QOL = false
+        PAUSED = false
+        if DEBUG == true
+        then
+            print("Game Unpaused");
+        end
+        if GAME_LOADED == true
+        then 
+            if SKIP_PUZZLES == false then
+                if CURRENT_MAP ~= 0x14F and CURRENT_MAP ~= 0x151  -- Don't want to restore while in WH zone
+                then
+                    restore_BMM_JIGGIES()
+                end
+            else
+                restore_BMM_JIGGIES()
+            end
+                restore_BMM_NOTES()
+                restore_BMM_TREBLE()
+                restore_BMM_JINJOS()
+                unpause_hide_AGI_key()
+                DEMO_MODE = false -- SEND NO CHECKS
+        end
+    elseif PAUSED == true and DEBUG == true
+    then
+        local check_controls = joypad.get()
+        if check_controls ~= nil and check_controls['P1 Z'] == true
+        then
+            print("AGI TABLE:");
+            for item_group, table in pairs(AGI)
+            do
+                for locationId, value in pairs(table)
+                do
+                    if(value == true)
+                    then
+                        print(AGI_MASTER_MAP[item_group][locationId]['name'] .. ":" .. tostring(value))
+                    end
+                end
+            end
+        elseif check_controls ~= nil and check_controls['P1 C Right'] == true
+        then
+            print("BMM TABLE:");
+            for item_group, table in pairs(BMM)
+            do
+                for locationId, value in pairs(table)
+                do
+                    if(value == true)
+                    then
+                        print(AGI_MASTER_MAP[item_group][locationId]['name'] .. ":" .. tostring(value))
+                    end
+                end
+            end
+        elseif check_controls ~= nil and check_controls['P1 C Left'] == true
+        then
+            print("AMM TABLE:");
+            for item_group, table in pairs(AMM)
+            do
+                for locationId, value in pairs(table)
+                do
+                    if(value == true)
+                    then
+                        print(AGI_MASTER_MAP[item_group][locationId]['name'] .. ":" .. tostring(value))
+                    end
+                end
+            end
+        elseif check_controls ~= nil and check_controls['P1 C Up'] == true
+        then
+            print("BKM TABLE + Actual:");
+            for locationId, values in pairs(NON_AGI_MAP["MOVES"])
+            do             
+                local res = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "PAUSE MOVE DEBUG");
+                print(NON_AGI_MAP["MOVES"][locationId]['name'] .. ":" .. tostring(res))
+                print("Checked? : " .. tostring(BKM[locationId]))
+                print("AGI? : " .. tostring(AGI_MOVES[locationId]))
+                print("------------------------");
+            end
+        end
     end
 end
+
+function checkTotalMenu()
+    if PAUSED == false
+    then
+        return
+    else
+        local total = mainmemory.readbyte(0x123C48);
+        if TOTALS_MENU == false and total == 1
+        then
+            if DEBUG == true
+            then
+                print("Checking Game Totals");
+            end
+            TOTALS_MENU = true;
+            BMMRestore();
+        elseif TOTALS_MENU == true and total ~= 1
+        then
+            if DEBUG == true
+            then
+                print("no longer checking Game Totals");
+            end
+            TOTALS_MENU = false;
+            BMMBackup();
+            useAGI();
+        end
+        
+        -- Object and Items 
+        total = mainmemory.readbyte(0x123A88);
+        if total == 1 and OBJ_TOTALS_MENU == false
+        then
+            OBJ_TOTALS_MENU = true
+            pause_show_AGI_key()
+        elseif total ~= 1 and OBJ_TOTALS_MENU == true
+        then
+            OBJ_TOTALS_MENU = false
+            unpause_hide_AGI_key()
+        end
+    end
+end
+
+function DPadStats()
+    if GAME_LOADED == true
+    then
+        local check_controls = joypad.get()
+        
+		if check_controls ~= nil and check_controls['P1 DPad U'] == true and SNEAK == false
+        then
+            joypad.setanalog({['P1 Y Axis'] = 18 })
+            SNEAK = true
+        elseif check_controls ~= nil and check_controls['P1 DPad U'] == false and SNEAK == true
+        then
+            joypad.setanalog({['P1 Y Axis'] = '' })
+            SNEAK = false
+        end
+		
+		if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == false
+        then
+            print(" ")
+            print(" ")
+            print("Unlocked Moves:")
+            if ENABLE_AP_BK_MOVES ~= 0 
+            then
+                for locationId, table in pairs(NON_AGI_MAP["BKMOVES"])
+                do
+                    if BTRAMOBJ:checkFlag(table['addr'], table['bit']) == true
+                    then
+                        print(table['name'])
+                    end
+                end
+            end
+            for locationId, values in pairs(NON_AGI_MAP["MOVES"])
+            do             
+                if AGI_MOVES[locationId] == true
+                then
+                    print(values['name'])
+                end
+            end
+            if AGI_MYSTERY["1230800"] == true
+            then
+                print("Breegull Bash");
+            end
+            if FAST_SWIM == true
+            then
+                print("Fast Swimming")
+            end
+            if DOUBLE_AIR == true
+            then
+                print("Double Air")
+            end
+            print(" ")
+            print(" ")
+            print("Unlocked Worlds")
+            for world, table in pairs(WORLD_ENTRANCE_MAP)
+            do
+                if table["opened"] == true
+                then
+                    print(table["defaultName"])
+                end
+            end
+		end
+		
+		if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == false
+        then
+            print(" ")
+            print(" ")
+            print("Unlocked Magic:")
+            for locationId, values in pairs(NON_AGI_MAP["MAGIC"])
+            do        
+                local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
+                if results == true then
+                    print(values['name'])
+                end
+            end
+        end
+		
+		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == false
+        then
+            print(" ")
+            print(" ")
+            print("Collected Treble Clefs:")
+            for locationId, values in pairs(NON_AGI_MAP["TREBLE"])
+            do        
+                local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
+                if results == true then
+                    print(values['name'])
+                end
+            end
+			print(" ")
+			print("Opened Train Stations:")
+            for locationId, values in pairs(NON_AGI_MAP["STATIONS"])
+            do        
+                local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
+                if results == true then
+                    print(values['name'])
+                end
+            end
+            if GOAL_TYPE ~= 0
+            then
+                local token_count = 0;
+                for id, itemId in pairs(receive_map)
+                do
+                    if itemId == "1230798"
+                    then
+                        token_count = token_count + 1
+                    end
+                end
+                print(" ")
+			    print("Collected Mumbo Tokens: "..token_count)
+            end
+        end
+		
+        if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 L'] == true
+        then
+			BTCONSUMEOBJ:changeConsumable("Red Feathers")
+			BTCONSUMEOBJ:setConsumable(100)
+			BTCONSUMEOBJ:changeConsumable("Gold Feathers")
+			BTCONSUMEOBJ:setConsumable(10)
+			BTCONSUMEOBJ:changeConsumable("BLUE EGGS")
+			BTCONSUMEOBJ:setConsumable(100)
+			BTCONSUMEOBJ:changeConsumable("FIRE EGGS")
+			BTCONSUMEOBJ:setConsumable(50)
+            BTCONSUMEOBJ:changeConsumable("GRENADE EGGS")
+            BTCONSUMEOBJ:setConsumable(25)
+            BTCONSUMEOBJ:changeConsumable("ICE EGGS")
+            BTCONSUMEOBJ:setConsumable(50)
+            BTCONSUMEOBJ:changeConsumable("CWK EGGS")
+            BTCONSUMEOBJ:setConsumable(10)
+			print(" ")
+			print("Eggs and Feathers Refilled")
+        end
+
+        if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == false
+        then
+           BTRAMOBJ:setFlag(0xA2, 2, "Super Banjo")
+           SUPERBANJO = true
+           print(" ")
+           print("Super Banjo Enabled")
+        elseif check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == true
+        then
+            BTRAMOBJ:clearFlag(0xA2, 2)
+            SUPERBANJO = false
+            print(" ")
+            print("Super Banjo Disabled")
+        end
+
+        if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == false
+        then
+            if ENABLE_AP_MYSTERY == true
+            then
+                if AGI_MYSTERY["1230802"] == true
+                then
+                    BTRAMOBJ:setFlag(0xAF, 3, "Aim Assist")
+                    AIMASSIST = true
+                    print(" ")
+                    print("Aim Assist Enabled")
+                else
+                    print("Homing Eggs not found")
+                end
+            else
+                BTRAMOBJ:setFlag(0xAF, 3, "Aim Assist")
+                AIMASSIST = true
+                print(" ")
+                print("Aim Assist Enabled")
+            end
+        elseif check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == true
+        then
+            BTRAMOBJ:clearFlag(0xAF, 3)
+            AIMASSIST = false
+            print(" ")
+            print("Aim Assist Disabled")
+        end
+		
+		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == false
+        and DEATH_LINK == false
+        then
+           BTRAMOBJ:setFlag(0xA1, 7, "Automatic Energy Regain")
+           REGEN = true
+           print(" ")
+           print("Automatic Energy Regain Enabled")
+        elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == true
+        and DEATH_LINK == false
+        then
+            BTRAMOBJ:clearFlag(0xA1, 7)
+            REGEN = false
+            print(" ")
+            print("Automatic Energy Regain Disabled")
+        end
+
+        if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == false
+        then
+            mainmemory.write_u8(0x07913F, 1)
+            print("Smooth Banjo Enabled")
+            FPS = true
+        elseif check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == true
+        then
+            mainmemory.write_u8(0x07913F, 2)
+            print("Smooth Banjo Disabled")
+            FPS = false
+        end
+    end
+end
+
+function initializeFlags()
+	-- Use Cutscene: "2 Years Have Passed..." to check for fresh save
+	local current_map = BTRAMOBJ:getMap(false);
+	if (current_map == 0xA1) then
+		-- First Time Pickup Text
+		for i = 0, 7 do
+			BTRAMOBJ:setFlag(0x00, i) -- Note, Glowbo, Eggs, Feathers, Treble Clef, Honeycomb
+		end	
+		BTRAMOBJ:setFlag(0x01, 2) -- Empty Honeycomb
+		BTRAMOBJ:setFlag(0x01, 5) -- Jinjo
+		BTRAMOBJ:setFlag(0x07, 7) -- Cheato Page
+		BTRAMOBJ:setFlag(0x27, 5) -- Doubloon
+		BTRAMOBJ:setFlag(0x2E, 7) -- Ticket
+		-- Character Introduction Text
+		for k,v in pairs(NON_AGI_MAP['SKIP']['INTRO'])
+        do
+            BTRAMOBJ:setFlag(v['addr'], v['bit'])
+        end
+		-- Cutscene Flags
+		for k,v in pairs(NON_AGI_MAP['SKIP']['CUTSCENE'])
+        do
+            BTRAMOBJ:setFlag(v['addr'], v['bit'])
+        end
+		-- Tutorial Dialogues
+		for k,v in pairs(NON_AGI_MAP['SKIP']['TUTORIAL'])
+        do
+            BTRAMOBJ:setFlag(v['addr'], v['bit'])
+        end
+		-- Minigame Doors
+		BTRAMOBJ:setFlag(0xA9, 6) -- MT Kickball
+		BTRAMOBJ:setFlag(0xA9, 7) -- HFP Kickball
+        if MINIGAMES == "skip"
+        then
+            BTRAMOBJ:setFlag(0x06, 6) -- MT Semifinal
+            BTRAMOBJ:setFlag(0x06, 7) -- MT Final
+            BTRAMOBJ:setFlag(0x68, 0) -- HFP Semifinal
+            BTRAMOBJ:setFlag(0x68, 1) -- HFP Final
+            BTRAMOBJ:setFlag(0x10, 1) -- Dodgems 1v1 Complete
+            BTRAMOBJ:setFlag(0x10, 2) -- Dodgems 2v1 Complete
+            BTRAMOBJ:setFlag(0x10, 3) -- Dodgems 1v1 Door
+            BTRAMOBJ:setFlag(0x10, 4) -- Dodgems 2v1 Door
+            BTRAMOBJ:setFlag(0x10, 5) -- Dodgems 3v1 Door
+        end
+        if ENABLE_AP_CHUFFY == true
+        then
+            BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
+        end
+        GAME_LOADED = true  -- We don't have a real BMM at this point.  
+        DEMO_MODE = false
+        init_BMK("BKM");
+        init_STATIONS("BMM", false);
+        init_CHUFFY("BMM");
+        init_JinjoFam();
+        init_STOPNSWAP("BMM")
+        init_roysten()
+        init_DINO_KIDS()
+        init_JIGGIES("BMM", false)
+        init_NOTES("BMM", false)
+        init_TREBLE("BMM", false);
+        init_JINJOS("BMM")
+
+        init_JIGGIES("AGI", false)
+        init_NOTES("AGI", false)
+        init_TREBLE("AGI", false)
+        init_CHUFFY("AGI", false)
+
+        AGI_MOVES = init_BMK("AGI");
+        init_STOPNSWAP("AGI");
+        init_STATIONS("AGI", false)
+        receive_map = { -- initialize incase suffered a hard crash and losing save file.
+            ["NA"] = "NA"
+        }
+		if (SKIP_TOT ~= "false") then -- ToT Misc Flags	
+			BTRAMOBJ:setFlag(0xAB, 2)
+			BTRAMOBJ:setFlag(0xAB, 3)
+			BTRAMOBJ:setFlag(0xAB, 4)
+			BTRAMOBJ:setFlag(0xAB, 5)
+			if (SKIP_TOT == "true") then -- ToT Complete Flags
+                BTRAMOBJ:setFlag(0x83, 0)
+                BTRAMOBJ:setFlag(0x83, 4)
+			else
+				BTRAMOBJ:setFlag(0x83, 2)
+				BTRAMOBJ:setFlag(0x83, 3)
+			end
+		end
+		INIT_COMPLETE = true
+        if SKIP_PUZZLES == true then
+            check_open_level(true) -- sanity check that level open flags are still set
+        end
+        hag1_open()
+
+        if ENABLE_AP_JINJO == true then
+            -- 129 is 1000 0001
+            -- 2 is   0000 0010
+            if DEBUG == true
+            then
+                print("Setting Jinjo Pattern")
+            end
+            BTRAMOBJ:setMultipleFlags(0x6A, 129, 2)
+        end
+        if SKIP_KLUNGO == true then
+            --{byte=0x5E, bit=0, name="Klungo 1 Defeated", type="Progress"},
+	        --{byte=0x5E, bit=1, name="Klungo 2 Defeated", type="Progress"},
+            BTRAMOBJ:setFlag(0x5E, 0, "Klungo 1 Defeated")
+            BTRAMOBJ:setFlag(0x5E, 1, "Klungo 2 Defeated")
+        end
+        if ENABLE_AP_BK_MOVES ~= 0 then
+            BTRAMOBJ:clearFlag(0x1A, 4) -- Dive
+            BTRAMOBJ:clearFlag(0x19, 6) -- Fly pad
+            BTRAMOBJ:clearFlag(0x19, 5) -- Flap Flip
+            BTRAMOBJ:clearFlag(0x19, 3) -- Can't Shoot or Poop Eggs
+            BTRAMOBJ:clearFlag(0x1A, 1) -- Roll
+
+            BTRAMOBJ:clearFlag(0x1A, 0) -- Air Rat-atat-rap
+            BTRAMOBJ:clearFlag(0x1A, 6) -- Turbo Trainers
+            BTRAMOBJ:clearFlag(0x18, 7) -- Beak Buster
+            if ENABLE_AP_BK_MOVES == 2 then
+                BTRAMOBJ:clearFlag(0x1A, 5) -- Talon Trot
+                BTRAMOBJ:clearFlag(0x19, 7) -- Full Jump
+            end
+            BTRAMOBJ:clearFlag(0x19, 2) -- Climb
+            BTRAMOBJ:clearFlag(0x19, 4) -- Feather Flap
+            BTRAMOBJ:clearFlag(0x1A, 7) -- Full Jump
+            BTRAMOBJ:clearFlag(0x1E, 6) -- Blue Eggs
+            BTRAMOBJ:clearFlag(0x19, 1) -- Ground Rat-a-tat rap
+            BTRAMOBJ:clearFlag(0x18, 5) -- Beak Barge
+            BTRAMOBJ:clearFlag(0x1A, 3) -- Stilt Stride
+            BTRAMOBJ:clearFlag(0x18, 6) -- Beak Bomb
+
+            if ENABLE_AP_WORLDS == true then -- Randomize Worlds - SILOS!!!
+                init_world_silos()
+            end
+        end
+        if ENABLE_AP_CHEATO_REWARDS == true then
+            init_CHEATO_REWARDS()
+        end
+        if ENABLE_AP_HONEYB_REWARDS == true then
+            init_HONEYB_REWARDS()
+        end
+        init_JIGGY_CHUNK()
+        BTCONSUMEOBJ:changeConsumable("Eggs")
+        BTCONSUMEOBJ:setConsumable(0)
+        BTCONSUMEOBJ:changeConsumable("Ice Keys")
+        BTCONSUMEOBJ:setConsumable(0)
+        BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star,moon, sun 
+
+        if SKIP_KING == true
+        then
+            BTRAMOBJ:setFlag(0xA7, 1)
+            BTRAMOBJ:setFlag(0x2F, 5)
+            BTRAMOBJ:setFlag(0x53, 6)
+            BTRAMOBJ:setFlag(0x50, 1)
+            BTRAMOBJ:setFlag(0x67, 0)
+
+        end
+        hag1_phase_skips()
+        
+	-- Otherwise, the flags were already set, so just stop checking
+	elseif (current_map == 0xAF or current_map == 0x142) then
+		INIT_COMPLETE = true
+    elseif current_map == 0x158 and INIT_COMPLETE == true
+    then
+        INIT_COMPLETE = false
+	end
+end
+
+function setToTComplete()
+	-- this fixes a bug that messes up game progression
+	if BTRAMOBJ:checkFlag(0x83, 1, "setTotComplete") == false and TOT_SET_COMPLETE == false then -- CK Klungo Boss Room
+		BTRAMOBJ:setFlag(0x83, 1);
+        TOT_SET_COMPLETE = true;
+	end
+end
+
+function gameSaving()
+    if PAUSED ~= true
+    then
+        return
+    else
+        local save_game = mainmemory.read_u8(0x044A81);
+        if save_game == 1
+        then
+            SAVE_GAME = true
+            if DEBUG == true
+            then
+                print("Game Entering Save State")
+            end
+        end
+    end
+end
+
+function saveGame()
+    GAME_LOADED = false;
+    SAVE_GAME = false;
+end
+
+---------------------- ARCHIPELAGO FUNCTIONS -------------
 
 function processMessages()
     if next(AP_MESSAGES) ~= nil
@@ -7832,28 +8347,28 @@ function processMessages()
 end
 
 function archipelago_msg_box(msg)
-        gui.use_surface("client")
-        bgcolor = "#590000"
-        fgcolor = "#ca0000"
-        local ratio = client.screenwidth() / client.screenheight()
-        if ratio > 1.35
-        then
-            textXpos = math.floor(client.screenwidth()*.41)
-            textYpos = math.floor(client.screenheight()*.70)
-            textSize = math.floor((client.screenheight()*.03)+.5)
-        else
-            textXpos = math.floor(client.screenwidth()*.41)
-            textYpos = math.floor(client.screenheight()*.65)
-            textSize = math.floor((client.screenheight()*.03)+.5)
-        end
+    gui.use_surface("client")
+    bgcolor = "#590000"
+    fgcolor = "#ca0000"
+    local ratio = client.screenwidth() / client.screenheight()
+    if ratio > 1.35
+    then
+        textXpos = math.floor(client.screenwidth()*.41)
+        textYpos = math.floor(client.screenheight()*.70)
+        textSize = math.floor((client.screenheight()*.03)+.5)
+    else
+        textXpos = math.floor(client.screenwidth()*.41)
+        textYpos = math.floor(client.screenheight()*.65)
+        textSize = math.floor((client.screenheight()*.03)+.5)
+    end
 
-        if TEXT_START == false
-        then
-            if DISABLE_TEXT_OVERLAY == false then
-                gui.drawText(textXpos, textYpos, msg, fgcolor, bgcolor, textSize, nil, nil, "center")
-            end
-            TEXT_START = true
+    if TEXT_START == false
+    then
+        if DISABLE_TEXT_OVERLAY == false then
+            gui.drawText(textXpos, textYpos, msg, fgcolor, bgcolor, textSize, nil, nil, "center")
         end
+        TEXT_START = true
+    end
 end
 
 function clearText()
@@ -8262,342 +8777,6 @@ function receive()
     end
 end
 
-function checkPause()
-    local pause_menu = mainmemory.readbyte(0x15961A);
-    if pause_menu == 1 and PAUSED == false
-    then
-        if DEBUG == true
-        then
-            print("Game Paused");
-        end
-        DEMO_MODE = true -- SEND NO CHECKS
-        backup_BMM_JIGGIES()
-        backup_BMM_NOTES()
-        backup_BMM_TREBLE()
-        backup_BMM_JINJOS()
-        PAUSED = true;
-        savingBMM()
-    elseif pause_menu == 0 and PAUSED == true  -- unpaused
-    then
-        PAUSED = false
-        if DEBUG == true
-        then
-            print("Game Unpaused");
-        end
-        if GAME_LOADED == true
-        then 
-            if SKIP_PUZZLES == false then
-                if CURRENT_MAP ~= 0x14F and CURRENT_MAP ~= 0x151  -- Don't want to restore while in WH zone
-                then
-                    restore_BMM_JIGGIES()
-                end
-            else
-                restore_BMM_JIGGIES()
-            end
-                restore_BMM_NOTES()
-                restore_BMM_TREBLE()
-                restore_BMM_JINJOS()
-                unpause_hide_AGI_key()
-                DEMO_MODE = false -- SEND NO CHECKS
-        end
-    elseif PAUSED == true and DEBUG == true
-    then
-        local check_controls = joypad.get()
-        if check_controls ~= nil and check_controls['P1 Z'] == true
-        then
-            print("AGI TABLE:");
-            for item_group, table in pairs(AGI)
-            do
-                for locationId, value in pairs(table)
-                do
-                    if(value == true)
-                    then
-                        print(AGI_MASTER_MAP[item_group][locationId]['name'] .. ":" .. tostring(value))
-                    end
-                end
-            end
-        elseif check_controls ~= nil and check_controls['P1 C Right'] == true
-        then
-            print("BMM TABLE:");
-            for item_group, table in pairs(BMM)
-            do
-                for locationId, value in pairs(table)
-                do
-                    if(value == true)
-                    then
-                        print(AGI_MASTER_MAP[item_group][locationId]['name'] .. ":" .. tostring(value))
-                    end
-                end
-            end
-        elseif check_controls ~= nil and check_controls['P1 C Left'] == true
-        then
-            print("AMM TABLE:");
-            for item_group, table in pairs(AMM)
-            do
-                for locationId, value in pairs(table)
-                do
-                    if(value == true)
-                    then
-                        print(AGI_MASTER_MAP[item_group][locationId]['name'] .. ":" .. tostring(value))
-                    end
-                end
-            end
-        elseif check_controls ~= nil and check_controls['P1 C Up'] == true
-        then
-            print("BKM TABLE + Actual:");
-            for locationId, values in pairs(NON_AGI_MAP["MOVES"])
-            do             
-                local res = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "PAUSE MOVE DEBUG");
-                print(NON_AGI_MAP["MOVES"][locationId]['name'] .. ":" .. tostring(res))
-                print("Checked? : " .. tostring(BKM[locationId]))
-                print("AGI? : " .. tostring(AGI_MOVES[locationId]))
-                print("------------------------");
-            end
-        end
-    end
-end
-
-function checkTotalMenu()
-    if PAUSED == false
-    then
-        return
-    else
-        local total = mainmemory.readbyte(0x123C48);
-        if TOTALS_MENU == false and total == 1
-        then
-            if DEBUG == true
-            then
-                print("Checking Game Totals");
-            end
-            TOTALS_MENU = true;
-            BMMRestore();
-        elseif TOTALS_MENU == true and total ~= 1
-        then
-            if DEBUG == true
-            then
-                print("no longer checking Game Totals");
-            end
-            TOTALS_MENU = false;
-            BMMBackup();
-            useAGI();
-        end
-        
-        -- Object and Items 
-        total = mainmemory.readbyte(0x123A88);
-        if total == 1 and OBJ_TOTALS_MENU == false
-        then
-            OBJ_TOTALS_MENU = true
-            pause_show_AGI_key()
-        elseif total ~= 1 and OBJ_TOTALS_MENU == true
-        then
-            OBJ_TOTALS_MENU = false
-            unpause_hide_AGI_key()
-        end
-    end
-end
-
-function DPadStats()
-    if GAME_LOADED == true
-    then
-        local check_controls = joypad.get()
-        
-		if check_controls ~= nil and check_controls['P1 DPad U'] == true and SNEAK == false
-        then
-            joypad.setanalog({['P1 Y Axis'] = 18 })
-            SNEAK = true
-        elseif check_controls ~= nil and check_controls['P1 DPad U'] == false and SNEAK == true
-        then
-            joypad.setanalog({['P1 Y Axis'] = '' })
-            SNEAK = false
-        end
-		
-		if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == false
-        then
-            print(" ")
-            print(" ")
-            print("Unlocked Moves:")
-            if ENABLE_AP_BK_MOVES ~= 0 
-            then
-                for locationId, table in pairs(NON_AGI_MAP["BKMOVES"])
-                do
-                    if BTRAMOBJ:checkFlag(table['addr'], table['bit']) == true
-                    then
-                        print(table['name'])
-                    end
-                end
-            end
-            for locationId, values in pairs(NON_AGI_MAP["MOVES"])
-            do             
-                if AGI_MOVES[locationId] == true
-                then
-                    print(values['name'])
-                end
-            end
-            if AGI_MYSTERY["1230800"] == true
-            then
-                print("Breegull Bash");
-            end
-            if FAST_SWIM == true
-            then
-                print("Fast Swimming")
-            end
-            if DOUBLE_AIR == true
-            then
-                print("Double Air")
-            end
-            print(" ")
-            print(" ")
-            print("Unlocked Worlds")
-            for world, table in pairs(WORLD_ENTRANCE_MAP)
-            do
-                if table["opened"] == true
-                then
-                    print(table["defaultName"])
-                end
-            end
-		end
-		
-		if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == false
-        then
-            print(" ")
-            print(" ")
-            print("Unlocked Magic:")
-            for locationId, values in pairs(NON_AGI_MAP["MAGIC"])
-            do        
-                local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
-                if results == true then
-                    print(values['name'])
-                end
-            end
-        end
-		
-		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == false
-        then
-            print(" ")
-            print(" ")
-            print("Collected Treble Clefs:")
-            for locationId, values in pairs(NON_AGI_MAP["TREBLE"])
-            do        
-                local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
-                if results == true then
-                    print(values['name'])
-                end
-            end
-			print(" ")
-			print("Opened Train Stations:")
-            for locationId, values in pairs(NON_AGI_MAP["STATIONS"])
-            do        
-                local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
-                if results == true then
-                    print(values['name'])
-                end
-            end
-            if GOAL_TYPE ~= 0
-            then
-                local token_count = 0;
-                for id, itemId in pairs(receive_map)
-                do
-                    if itemId == "1230798"
-                    then
-                        token_count = token_count + 1
-                    end
-                end
-                print(" ")
-			    print("Collected Mumbo Tokens: "..token_count)
-            end
-        end
-		
-        if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 L'] == true
-        then
-			BTCONSUMEOBJ:changeConsumable("Red Feathers")
-			BTCONSUMEOBJ:setConsumable(100)
-			BTCONSUMEOBJ:changeConsumable("Gold Feathers")
-			BTCONSUMEOBJ:setConsumable(10)
-			BTCONSUMEOBJ:changeConsumable("BLUE EGGS")
-			BTCONSUMEOBJ:setConsumable(100)
-			BTCONSUMEOBJ:changeConsumable("FIRE EGGS")
-			BTCONSUMEOBJ:setConsumable(50)
-            BTCONSUMEOBJ:changeConsumable("GRENADE EGGS")
-            BTCONSUMEOBJ:setConsumable(25)
-            BTCONSUMEOBJ:changeConsumable("ICE EGGS")
-            BTCONSUMEOBJ:setConsumable(50)
-            BTCONSUMEOBJ:changeConsumable("CWK EGGS")
-            BTCONSUMEOBJ:setConsumable(10)
-			print(" ")
-			print("Eggs and Feathers Refilled")
-        end
-
-        if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == false
-        then
-           BTRAMOBJ:setFlag(0xA2, 2, "Super Banjo")
-           SUPERBANJO = true
-           print(" ")
-           print("Super Banjo Enabled")
-        elseif check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == true
-        then
-            BTRAMOBJ:clearFlag(0xA2, 2)
-            SUPERBANJO = false
-            print(" ")
-            print("Super Banjo Disabled")
-        end
-
-        if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == false
-        then
-            if ENABLE_AP_MYSTERY == true
-            then
-                if AGI_MYSTERY["1230802"] == true
-                then
-                    BTRAMOBJ:setFlag(0xAF, 3, "Aim Assist")
-                    AIMASSIST = true
-                    print(" ")
-                    print("Aim Assist Enabled")
-                else
-                    print("Homing Eggs not found")
-                end
-            else
-                BTRAMOBJ:setFlag(0xAF, 3, "Aim Assist")
-                AIMASSIST = true
-                print(" ")
-                print("Aim Assist Enabled")
-            end
-        elseif check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == true
-        then
-            BTRAMOBJ:clearFlag(0xAF, 3)
-            AIMASSIST = false
-            print(" ")
-            print("Aim Assist Disabled")
-        end
-		
-		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == false
-        and DEATH_LINK == false
-        then
-           BTRAMOBJ:setFlag(0xA1, 7, "Automatic Energy Regain")
-           REGEN = true
-           print(" ")
-           print("Automatic Energy Regain Enabled")
-        elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == true
-        and DEATH_LINK == false
-        then
-            BTRAMOBJ:clearFlag(0xA1, 7)
-            REGEN = false
-            print(" ")
-            print("Automatic Energy Regain Disabled")
-        end
-
-        if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == false
-        then
-            mainmemory.write_u8(0x07913F, 1)
-            print("Smooth Banjo Enabled")
-            FPS = true
-        elseif check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == true
-        then
-            mainmemory.write_u8(0x07913F, 2)
-            print("Smooth Banjo Disabled")
-            FPS = false
-        end
-    end
-end
-
 function savingAGI()
     local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "w") --generate #BTplayer_seed.AGI
     if DEBUGLVL2 == true
@@ -8706,23 +8885,6 @@ function savingBMM()
         if DEBUG == true
         then
             print("BMM Table Saved");
-        end
-    end
-end
-
-function gameSaving()
-    if PAUSED ~= true
-    then
-        return
-    else
-        local save_game = mainmemory.read_u8(0x044A81);
-        if save_game == 1
-        then
-            SAVE_GAME = true
-            if DEBUG == true
-            then
-                print("Game Entering Save State")
-            end
         end
     end
 end
@@ -8925,7 +9087,6 @@ function process_slot(block)
     return true
 end
 
-
 function printGoalInfo()
     local randomEncouragment = ENCOURAGEMENT[math.random(1, #ENCOURAGEMENT)]["message"]
     if GOAL_TYPE ~= nil and MGH_LENGTH ~= nil and BH_LENGTH ~= nil and 
@@ -8957,186 +9118,7 @@ function printGoalInfo()
     end
 end
 
-
-function initializeFlags()
-	-- Use Cutscene: "2 Years Have Passed..." to check for fresh save
-	local current_map = BTRAMOBJ:getMap(false);
-	if (current_map == 0xA1) then
-		-- First Time Pickup Text
-		for i = 0, 7 do
-			BTRAMOBJ:setFlag(0x00, i) -- Note, Glowbo, Eggs, Feathers, Treble Clef, Honeycomb
-		end	
-		BTRAMOBJ:setFlag(0x01, 2) -- Empty Honeycomb
-		BTRAMOBJ:setFlag(0x01, 5) -- Jinjo
-		BTRAMOBJ:setFlag(0x07, 7) -- Cheato Page
-		BTRAMOBJ:setFlag(0x27, 5) -- Doubloon
-		BTRAMOBJ:setFlag(0x2E, 7) -- Ticket
-		-- Character Introduction Text
-		for k,v in pairs(NON_AGI_MAP['SKIP']['INTRO'])
-        do
-            BTRAMOBJ:setFlag(v['addr'], v['bit'])
-        end
-		-- Cutscene Flags
-		for k,v in pairs(NON_AGI_MAP['SKIP']['CUTSCENE'])
-        do
-            BTRAMOBJ:setFlag(v['addr'], v['bit'])
-        end
-		-- Tutorial Dialogues
-		for k,v in pairs(NON_AGI_MAP['SKIP']['TUTORIAL'])
-        do
-            BTRAMOBJ:setFlag(v['addr'], v['bit'])
-        end
-		-- Minigame Doors
-		BTRAMOBJ:setFlag(0xA9, 6) -- MT Kickball
-		BTRAMOBJ:setFlag(0xA9, 7) -- HFP Kickball
-        if MINIGAMES == "skip"
-        then
-            BTRAMOBJ:setFlag(0x06, 6) -- MT Semifinal
-            BTRAMOBJ:setFlag(0x06, 7) -- MT Final
-            BTRAMOBJ:setFlag(0x68, 0) -- HFP Semifinal
-            BTRAMOBJ:setFlag(0x68, 1) -- HFP Final
-            BTRAMOBJ:setFlag(0x10, 1) -- Dodgems 1v1 Complete
-            BTRAMOBJ:setFlag(0x10, 2) -- Dodgems 2v1 Complete
-            BTRAMOBJ:setFlag(0x10, 3) -- Dodgems 1v1 Door
-            BTRAMOBJ:setFlag(0x10, 4) -- Dodgems 2v1 Door
-            BTRAMOBJ:setFlag(0x10, 5) -- Dodgems 3v1 Door
-        end
-        if ENABLE_AP_CHUFFY == true
-        then
-            BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
-        end
-        GAME_LOADED = true  -- We don't have a real BMM at this point.  
-        DEMO_MODE = false
-        init_BMK("BKM");
-        init_STATIONS("BMM", false);
-        init_CHUFFY("BMM");
-        init_JinjoFam();
-        init_STOPNSWAP("BMM")
-        init_roysten()
-        init_DINO_KIDS()
-        init_JIGGIES("BMM", false)
-        init_NOTES("BMM", false)
-        init_TREBLE("BMM", false);
-        init_JINJOS("BMM")
-
-        init_JIGGIES("AGI", false)
-        init_NOTES("AGI", false)
-        init_TREBLE("AGI", false)
-        init_CHUFFY("AGI", false)
-
-        AGI_MOVES = init_BMK("AGI");
-        init_STOPNSWAP("AGI");
-        init_STATIONS("AGI", false)
-        receive_map = { -- initialize incase suffered a hard crash and losing save file.
-            ["NA"] = "NA"
-        }
-		if (SKIP_TOT ~= "false") then -- ToT Misc Flags	
-			BTRAMOBJ:setFlag(0xAB, 2)
-			BTRAMOBJ:setFlag(0xAB, 3)
-			BTRAMOBJ:setFlag(0xAB, 4)
-			BTRAMOBJ:setFlag(0xAB, 5)
-			if (SKIP_TOT == "true") then -- ToT Complete Flags
-                BTRAMOBJ:setFlag(0x83, 0)
-                BTRAMOBJ:setFlag(0x83, 4)
-			else
-				BTRAMOBJ:setFlag(0x83, 2)
-				BTRAMOBJ:setFlag(0x83, 3)
-			end
-		end
-		INIT_COMPLETE = true
-        if SKIP_PUZZLES == true then
-            check_open_level(true) -- sanity check that level open flags are still set
-        end
-        hag1_open()
-
-        if ENABLE_AP_JINJO == true then
-            -- 129 is 1000 0001
-            -- 2 is   0000 0010
-            if DEBUG == true
-            then
-                print("Setting Jinjo Pattern")
-            end
-            BTRAMOBJ:setMultipleFlags(0x6A, 129, 2)
-        end
-        if SKIP_KLUNGO == true then
-            --{byte=0x5E, bit=0, name="Klungo 1 Defeated", type="Progress"},
-	        --{byte=0x5E, bit=1, name="Klungo 2 Defeated", type="Progress"},
-            BTRAMOBJ:setFlag(0x5E, 0, "Klungo 1 Defeated")
-            BTRAMOBJ:setFlag(0x5E, 1, "Klungo 2 Defeated")
-        end
-        if ENABLE_AP_BK_MOVES ~= 0 then
-            BTRAMOBJ:clearFlag(0x1A, 4) -- Dive
-            BTRAMOBJ:clearFlag(0x19, 6) -- Fly pad
-            BTRAMOBJ:clearFlag(0x19, 5) -- Flap Flip
-            BTRAMOBJ:clearFlag(0x19, 3) -- Can't Shoot or Poop Eggs
-            BTRAMOBJ:clearFlag(0x1A, 1) -- Roll
-
-            BTRAMOBJ:clearFlag(0x1A, 0) -- Air Rat-atat-rap
-            BTRAMOBJ:clearFlag(0x1A, 6) -- Turbo Trainers
-            BTRAMOBJ:clearFlag(0x18, 7) -- Beak Buster
-            if ENABLE_AP_BK_MOVES == 2 then
-                BTRAMOBJ:clearFlag(0x1A, 5) -- Talon Trot
-                BTRAMOBJ:clearFlag(0x19, 7) -- Full Jump
-            end
-            BTRAMOBJ:clearFlag(0x19, 2) -- Climb
-            BTRAMOBJ:clearFlag(0x19, 4) -- Feather Flap
-            BTRAMOBJ:clearFlag(0x1A, 7) -- Full Jump
-            BTRAMOBJ:clearFlag(0x1E, 6) -- Blue Eggs
-            BTRAMOBJ:clearFlag(0x19, 1) -- Ground Rat-a-tat rap
-            BTRAMOBJ:clearFlag(0x18, 5) -- Beak Barge
-            BTRAMOBJ:clearFlag(0x1A, 3) -- Stilt Stride
-            BTRAMOBJ:clearFlag(0x18, 6) -- Beak Bomb
-
-            if ENABLE_AP_WORLDS == true then -- Randomize Worlds - SILOS!!!
-                init_world_silos()
-            end
-        end
-        if ENABLE_AP_CHEATO_REWARDS == true then
-            init_CHEATO_REWARDS()
-        end
-        if ENABLE_AP_HONEYB_REWARDS == true then
-            init_HONEYB_REWARDS()
-        end
-        init_JIGGY_CHUNK()
-        BTCONSUMEOBJ:changeConsumable("Eggs")
-        BTCONSUMEOBJ:setConsumable(0)
-        BTCONSUMEOBJ:changeConsumable("Ice Keys")
-        BTCONSUMEOBJ:setConsumable(0)
-        BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star,moon, sun 
-
-        if SKIP_KING == true
-        then
-            BTRAMOBJ:setFlag(0xA7, 1)
-            BTRAMOBJ:setFlag(0x2F, 5)
-            BTRAMOBJ:setFlag(0x53, 6)
-            BTRAMOBJ:setFlag(0x50, 1)
-            BTRAMOBJ:setFlag(0x67, 0)
-
-        end
-        hag1_phase_skips()
-        
-	-- Otherwise, the flags were already set, so just stop checking
-	elseif (current_map == 0xAF or current_map == 0x142) then
-		INIT_COMPLETE = true
-    elseif current_map == 0x158 and INIT_COMPLETE == true
-    then
-        INIT_COMPLETE = false
-	end
-end
-
-function setToTComplete()
-	-- this fixes a bug that messes up game progression
-	if BTRAMOBJ:checkFlag(0x83, 1, "setTotComplete") == false and TOT_SET_COMPLETE == false then -- CK Klungo Boss Room
-		BTRAMOBJ:setFlag(0x83, 1);
-        TOT_SET_COMPLETE = true;
-	end
-end
-
-function saveGame()
-    GAME_LOADED = false;
-    SAVE_GAME = false;
-end
-
+---------------------- MAIN LUA LOOP -------------------------
 
 function main()
     if not checkBizHawkVersion() then
