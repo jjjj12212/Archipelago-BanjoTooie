@@ -150,6 +150,8 @@ local CHECK_DEATH = false;
 ---------------- AMAZE-O-GAZE VARS ---------------
 local GOGGLES = false;
 
+---------------- D-PAD MENU CONTROL ---------------
+local DPAD_MENU = false;
 
 -------------- ENCOURAGEMENT MESSAGES ------------
 local ENCOURAGEMENT = {
@@ -7374,7 +7376,7 @@ function DPadStats()
             SNEAK = false
         end
 		
-		if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == false
+		if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == false and DPAD_MENU == false
         then
             print(" ")
             print(" ")
@@ -7418,9 +7420,10 @@ function DPadStats()
                     print(table["defaultName"])
                 end
             end
+            DPAD_MENU = true
 		end
 		
-		if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == false
+		if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == false and DPAD_MENU == false
         then
             print(" ")
             print(" ")
@@ -7432,9 +7435,10 @@ function DPadStats()
                     print(values['name'])
                 end
             end
+            DPAD_MENU = true
         end
 		
-		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == false
+		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == false and DPAD_MENU == false
         then
             print(" ")
             print(" ")
@@ -7468,9 +7472,10 @@ function DPadStats()
                 print(" ")
 			    print("Collected Mumbo Tokens: "..token_count)
             end
+            DPAD_MENU = true
         end
 		
-        if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 L'] == true
+        if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 L'] == true and DPAD_MENU == false
         then
 			BTCONSUMEOBJ:changeConsumable("Red Feathers")
 			BTCONSUMEOBJ:setConsumable(100)
@@ -7488,23 +7493,26 @@ function DPadStats()
             BTCONSUMEOBJ:setConsumable(10)
 			print(" ")
 			print("Eggs and Feathers Refilled")
+            DPAD_MENU = true
         end
 
-        if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == false
+        if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == false and DPAD_MENU == false
         then
            BTRAMOBJ:setFlag(0xA2, 2, "Super Banjo")
            SUPERBANJO = true
            print(" ")
            print("Super Banjo Enabled")
-        elseif check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == true
+           DPAD_MENU = true
+        elseif check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == true and DPAD_MENU == false
         then
             BTRAMOBJ:clearFlag(0xA2, 2)
             SUPERBANJO = false
             print(" ")
             print("Super Banjo Disabled")
+            DPAD_MENU = true
         end
 
-        if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == false
+        if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == false and DPAD_MENU == false
         then
             if ENABLE_AP_MYSTERY == true
             then
@@ -7523,40 +7531,46 @@ function DPadStats()
                 print(" ")
                 print("Aim Assist Enabled")
             end
-        elseif check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == true
+            DPAD_MENU = true
+        elseif check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == true and DPAD_MENU == false
         then
             BTRAMOBJ:clearFlag(0xAF, 3)
             AIMASSIST = false
             print(" ")
             print("Aim Assist Disabled")
+            DPAD_MENU = true
         end
 		
-		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == false
+		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == false and DPAD_MENU == false
         and DEATH_LINK == false
         then
            BTRAMOBJ:setFlag(0xA1, 7, "Automatic Energy Regain")
            REGEN = true
            print(" ")
            print("Automatic Energy Regain Enabled")
-        elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == true
+           DPAD_MENU = true
+        elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == true and DPAD_MENU == false
         and DEATH_LINK == false
         then
             BTRAMOBJ:clearFlag(0xA1, 7)
             REGEN = false
             print(" ")
             print("Automatic Energy Regain Disabled")
+            DPAD_MENU = true
         end
 
-        if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == false
+        if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == false and DPAD_MENU == false
         then
             mainmemory.write_u8(0x07913F, 1)
             print("Smooth Banjo Enabled")
             FPS = true
-        elseif check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == true
+            DPAD_MENU = true
+        elseif check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == true and DPAD_MENU == false
         then
             mainmemory.write_u8(0x07913F, 2)
             print("Smooth Banjo Disabled")
             FPS = false
+            DPAD_MENU = true
         end
     end
 end
@@ -8164,6 +8178,7 @@ function main()
                 end
                 getBanjoDeath()
                 killBT()
+                DPAD_MENU = false;
             elseif (FRAME % 10 == 1)
             then
                 checkPause();
