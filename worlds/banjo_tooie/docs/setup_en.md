@@ -8,7 +8,7 @@ As we are using BizHawk, this guide is only applicable to Windows and Linux syst
 ## Required Software/Files
 
 -   BizHawk:  [BizHawk Releases from TASVideos](https://tasvideos.org/BizHawk/ReleaseHistory)
-    -   Version 2.9.1 and later are supported.
+    -   Version <b>2.9.1</b> and later are supported.
     -   Detailed installation instructions for BizHawk can be found at the above link.
     -   Windows users must run the prereq installer first, which can also be found at the above link.
 -   Grab the latest release from https://github.com/jjjj12212/Archipelago-BanjoTooie
@@ -33,12 +33,12 @@ This will create some visual artifacts however, it should not affect gameplay.
 ## Prerequisite
 
 ## How to Install - Server Side
-- Copy banjo_tooie.apworld into the worlds folder in your existing Archipelago folder (\libs\worlds)
+- Install banjo_tooie.apworld
 
 ## How to install - Client Side
 
 - Copy data/lua/banjo_tooie_connector.lua into data/lua in your existing Archipelago
-- Copy banjo_tooie.apworld into the worlds folder in your existing Archipelago folder (\libs\worlds)
+- Install banjo_tooie.apworld
 - Run Launcher.exe and select Banjo-Tooie Client
 - Connect the Archipelago Client with the server.
 - Open Bizhawk (2.9.1+) and open your Banjo-Tooie (US) game.
