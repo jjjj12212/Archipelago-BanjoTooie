@@ -3,7 +3,9 @@ import json
 import os
 import multiprocessing
 import copy
+import random
 import subprocess
+import time
 from typing import Union
 import zipfile
 from asyncio import StreamReader, StreamWriter
@@ -113,6 +115,16 @@ class BanjoTooieContext(CommonContext):
         self.sendSlot = False
         self.sync_ready = False
         self.startup = False
+        self.death_messages = [
+            "Gruntilda:    Did you hear that lovely clack, \n                     My broomstick gave you such a whack!",
+            "Gruntilda:    AAAH! I see it makes you sad, \n                     To know your skills are really bad!",
+            "Gruntilda:    I hit that bird right on the beak, \n                     Let it be the end of her cheek!",
+            "Gruntilda:    My fiery blast you just tasted, \n                     Grunty's spells on you are wasted!",
+            "Gruntilda:    Hopeless bear runs to and fro, \n                     But takes a whack for being so slow!",
+            "Gruntilda:    So I got you there once more, \n                     I knew your skills were very poor!",
+            "Gruntilda:    Simply put I'm rather proud, \n                     Your yelps and screams I heard quite loud!",
+            "Gruntilda:    Grunty's fireball you did kiss, \n                     You're so slow I can hardly miss!"
+        ]
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -132,7 +144,25 @@ class BanjoTooieContext(CommonContext):
 
     def on_deathlink(self, data: dict):
         self.deathlink_pending = True
-        super().on_deathlink(data)
+        self.last_death_link = max(data["time"], self.last_death_link)
+        text = data.get("cause", "")
+        if text:
+            logger.info(f"DeathLink: {text}")
+        else:
+            logger.info(f"{random.choice(self.death_messages)} \n(DeathLink: Received from {data['source']})")
+
+    async def send_death(self, death_text: str = ""):
+        if self.server and self.server.socket:
+            logger.info(f"{random.choice(self.death_messages)} \n(DeathLink: Sending death to your friends...)")
+            self.last_death_link = time.time()
+            await self.send_msgs([{
+                "cmd": "Bounce", "tags": ["DeathLink"],
+                "data": {
+                    "time": self.last_death_link,
+                    "source": self.player_names[self.slot],
+                    "cause": death_text
+                }
+            }])
 
     def run_gui(self):
         from kvui import GameManager
@@ -520,6 +550,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             ctx.deathlink_pending = False
             if not ctx.deathlink_sent_this_death:
                 ctx.deathlink_sent_this_death = True
+                
                 await ctx.send_death()
         else: # Banjo is somehow still alive
             ctx.deathlink_sent_this_death = False
