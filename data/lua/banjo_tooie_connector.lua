@@ -58,13 +58,27 @@ local SAVE_GAME = false;
 
 local CLOSE_TO_ALTAR = false;
 
+-------- DPAD Vars -----------
 local SNEAK = false;
+
+local CHECK_MOVES_R = false;
+local CHECK_MOVES_L = false;
+local CHECK_MOVES_D = false;
+
 local AIMASSIST = false;
+local AIMASSIST_HOLD = false;
+
 local SUPERBANJO = false;
+local SUPERBANJO_HOLD = false;
+
 local REGEN = false;
+local REGEN_HOLD = false;
+
+local FPS = false;
+local FPS_HOLD = false;
+------------------------------
 local TEXT_TIMER = 2;
 local TEXT_START = false;
-local FPS = false
 
 local ENABLE_AP_BK_MOVES = 0; -- 0: disable 1: Talon Trot + Full Jump 2: ALL REMOVED
 local ENABLE_AP_CHEATO_REWARDS = false;
@@ -7940,6 +7954,7 @@ function DPadStats()
     then
         local check_controls = joypad.get()
         
+        -- SNEAK
 		if check_controls ~= nil and check_controls['P1 DPad U'] == true and SNEAK == false
         then
             joypad.setanalog({['P1 Y Axis'] = 18 })
@@ -7950,7 +7965,8 @@ function DPadStats()
             SNEAK = false
         end
 		
-		if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == false
+        -- Check Obtained Moves and Worlds
+		if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == false and CHECK_MOVES_R == false
         then
             print(" ")
             print(" ")
@@ -7987,16 +8003,21 @@ function DPadStats()
             print(" ")
             print(" ")
             print("Unlocked Worlds")
-            for world, table in pairs(WORLD_ENTRANCE_MAP)
-            do
-                if table["opened"] == true
-                then
-                    print(table["defaultName"])
-                end
-            end
+            -- for world, table in pairs(WORLD_ENTRANCE_MAP)
+            -- do
+            --     if table["opened"] == true
+            --     then
+            --         print(table["defaultName"])
+            --     end
+            -- end
+            CHECK_MOVES_R = true
+        elseif check_controls ~= nil and check_controls['P1 DPad R'] == false and check_controls['P1 L'] == false and CHECK_MOVES_R == true
+        then
+            print("RESET")
+            CHECK_MOVES_R = false
 		end
-		
-		if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == false
+		-- Check Magic
+		if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == false and CHECK_MOVES_L == false
         then
             print(" ")
             print(" ")
@@ -8008,9 +8029,13 @@ function DPadStats()
                     print(values['name'])
                 end
             end
+            CHECK_MOVES_L = true
+        elseif check_controls ~= nil and check_controls['P1 DPad L'] == false and check_controls['P1 L'] == false and CHECK_MOVES_L == true
+        then
+            CHECK_MOVES_L = false
         end
-		
-		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == false
+		-- Check Collected Treble and Victory Condition
+		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == false and CHECK_MOVES_D == false
         then
             print(" ")
             print(" ")
@@ -8044,8 +8069,13 @@ function DPadStats()
                 print(" ")
 			    print("Collected Mumbo Tokens: "..token_count)
             end
+            CHECK_MOVES_D = true
+        elseif check_controls ~= nil and check_controls['P1 DPad D'] == false and check_controls['P1 L'] == false and CHECK_MOVES_D == true
+        then
+            CHECK_MOVES_D = false
         end
 		
+        -- CHEAT: Refill
         if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 L'] == true
         then
 			BTCONSUMEOBJ:changeConsumable("Red Feathers")
@@ -8066,21 +8096,28 @@ function DPadStats()
 			print("Eggs and Feathers Refilled")
         end
 
-        if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == false
+        -- CHEAT: Super Banjo
+        if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == false and SUPERBANJO_HOLD == false
         then
            BTRAMOBJ:setFlag(0xA2, 2, "Super Banjo")
            SUPERBANJO = true
            print(" ")
            print("Super Banjo Enabled")
-        elseif check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == true
+           SUPERBANJO_HOLD = true
+        elseif check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == true and SUPERBANJO_HOLD == false
         then
             BTRAMOBJ:clearFlag(0xA2, 2)
             SUPERBANJO = false
             print(" ")
             print("Super Banjo Disabled")
+            SUPERBANJO_HOLD = true
+        elseif check_controls ~= nil and (check_controls['P1 DPad R'] == false or check_controls['P1 L'] == false)  and SUPERBANJO_HOLD == true
+        then
+            SUPERBANJO_HOLD = false
         end
 
-        if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == false
+        -- CHEAT / APFeature: Aim Assist
+        if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == false and AIMASSIST_HOLD == false
         then
             if ENABLE_AP_MYSTERY == true
             then
@@ -8099,40 +8136,57 @@ function DPadStats()
                 print(" ")
                 print("Aim Assist Enabled")
             end
-        elseif check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == true
+            AIMASSIST_HOLD = true
+        elseif check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == true and AIMASSIST_HOLD == false
         then
             BTRAMOBJ:clearFlag(0xAF, 3)
             AIMASSIST = false
             print(" ")
             print("Aim Assist Disabled")
+            AIMASSIST_HOLD = true
+        elseif check_controls ~= nil and (check_controls['P1 DPad L'] == false or check_controls['P1 L'] == false) and AIMASSIST_HOLD == true
+        then
+            AIMASSIST_HOLD = false
         end
 		
-		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == false
+        -- CHEAT: Health Regen
+		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == false and REGEN_HOLD == false
         and DEATH_LINK == false
         then
            BTRAMOBJ:setFlag(0xA1, 7, "Automatic Energy Regain")
            REGEN = true
            print(" ")
            print("Automatic Energy Regain Enabled")
-        elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == true
+           REGEN_HOLD = true
+        elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == true and REGEN_HOLD == false
         and DEATH_LINK == false
         then
             BTRAMOBJ:clearFlag(0xA1, 7)
             REGEN = false
             print(" ")
             print("Automatic Energy Regain Disabled")
+            REGEN_HOLD = true
+        elseif check_controls ~= nil and (check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true) and REGEN_HOLD == true
+        then 
+            REGEN_HOLD = false
         end
 
-        if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == false
+        -- APFeature 60 FPS
+        if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == false and FPS_HOLD == false
         then
             mainmemory.write_u8(0x07913F, 1)
             print("Smooth Banjo Enabled")
             FPS = true
-        elseif check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == true
+            FPS_HOLD = true
+        elseif check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == true and FPS_HOLD == false
         then
             mainmemory.write_u8(0x07913F, 2)
             print("Smooth Banjo Disabled")
             FPS = false
+            FPS_HOLD = true
+        elseif check_controls ~= nil and (check_controls['P1 L'] == false or check_controls['P1 Start'] == false) and FPS_HOLD == true
+        then
+            FPS_HOLD = false
         end
     end
 end
