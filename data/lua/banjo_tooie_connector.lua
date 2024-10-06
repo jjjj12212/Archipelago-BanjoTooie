@@ -6688,7 +6688,7 @@ function ap_icekey_glowbo_map()
     end
 end
 
----------------------------------- BKStation ---------------------------------
+---------------------------------- Station ---------------------------------
 
 function init_STATIONS(type, getReceiveMap) -- Initialize BMK
     for locationId,v in pairs(NON_AGI_MAP['STATIONS'])
@@ -6714,24 +6714,26 @@ function init_STATIONS(type, getReceiveMap) -- Initialize BMK
     end
 end
 
-function set_checked_BKSTATIONS() --Only run transitioning maps
-    if ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP] == nil --Happens when exiting map too quickly when entering a new map
+function set_checked_STATIONS() --Only run transitioning maps
+    if ASSET_MAP_CHECK["AGI_ASSETS"][NEXT_MAP] ~= nil
     then
-        if DEBUG == true 
+        if ASSET_MAP_CHECK["AGI_ASSETS"][NEXT_MAP]["STATIONBTN"] ~= nil
         then
-            print("Canceling Clearing of Stations")
+            local stationId = ASSET_MAP_CHECK["AGI_ASSETS"][NEXT_MAP]["STATIONBTN"];
+            local get_addr = NON_AGI_MAP['STATIONS'][stationId];
+            if BMM_STATIONS[stationId] == true
+            then
+                BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
+            else
+                BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+            end
+        else
+            if DEBUG_STATION == true
+            then
+                print("Canceling Clearing of Stations")
+            end
         end
-        return false
     end
-    local stationId = ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP];
-    local get_addr = NON_AGI_MAP['STATIONS'][stationId];
-    if BMM_STATIONS[stationId] == true
-    then
-        BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
-    else
-        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
-    end
-    return true;
 end
 
 function set_AP_STATIONS() -- Only run after Transistion
@@ -6753,82 +6755,82 @@ function obtained_AP_STATIONS(itemId)
     BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
 end
 
-function getStationBtnPlayerModel()
-    if STATION_BTN_TIMER <= 3
-    then
-        if DEBUG == true
-        then
-            print("Watching Station Btn")
-        end
-        STATION_BTN_TIMER = STATION_BTN_TIMER + 1
-        return
-    end
-    BTMODELOBJ:changeName("Station Switch", false)
-    local object = BTMODELOBJ:checkModel();
-    if object == false
-    then
-        BTMODELOBJ:changeName("Player", false)
-        local player = BTMODELOBJ:checkModel();
-        if player == false
-        then
-            return
-        end
-        if DEBUG == true
-        then
-            print("No Button on Map")
-            print("AP Stations enabled")
-        end
-        set_AP_STATIONS() --No Button on this map
-        CHECK_FOR_STATIONBTN = false
-        WATCH_LOADED_STATIONBTN = false
-        STATION_BTN_TIMER = 0
-        return
-    end
-    set_AP_STATIONS();
-    local currentAnimation = BTMODELOBJ:getObjectAnimation();
-    if DEBUG == true
-    then
-        print("Button Found")
-    end
-    if currentAnimation ~= 0x81 --Button Pressed
-    then
-        CHECK_FOR_STATIONBTN = false
-        WATCH_LOADED_STATIONBTN = true
-    else
-        CHECK_FOR_STATIONBTN = false
-    end
-end
+-- function getStationBtnPlayerModel()
+--     -- if STATION_BTN_TIMER <= 3
+--     -- then
+--     --     if DEBUG == true
+--     --     then
+--     --         print("Watching Station Btn")
+--     --     end
+--     --     STATION_BTN_TIMER = STATION_BTN_TIMER + 1
+--     --     return
+--     -- end
+--     if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
+--     then
+--         if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["STATIONBTN"] ~= nil
+--         then
+--             BTMODELOBJ:changeName("Station Switch", false)
+--             local object = BTMODELOBJ:checkModel();
+--             if object == false
+--             then
+--                 BTMODELOBJ:changeName("Player", false)
+--                 local player = BTMODELOBJ:checkModel();
+--                 if player == false
+--                 then
+--                     return
+--                 end
+--                 if DEBUG == true
+--                 then
+--                     print("No Button on Map")
+--                     print("AP Stations enabled")
+--                 end
+--                 set_AP_STATIONS() --No Button on this map
+--                 CHECK_FOR_STATIONBTN = false
+--                 WATCH_LOADED_STATIONBTN = false
+--                 STATION_BTN_TIMER = 0
+--                 return
+--             end
+--             set_AP_STATIONS();
+--             local currentAnimation = BTMODELOBJ:getObjectAnimation();
+--             if DEBUG == true
+--             then
+--                 print("Button Found")
+--             end
+--             if currentAnimation ~= 0x81 --Button Pressed
+--             then
+--                 CHECK_FOR_STATIONBTN = false
+--                 WATCH_LOADED_STATIONBTN = true
+--             else
+--                 CHECK_FOR_STATIONBTN = false
+--             end
+--         end
+--     end
+-- end
 
 function watchBtnAnimation()
-    BTMODELOBJ:changeName("Station Switch", false);
-    local POS = BTMODELOBJ:getSingleModelCoords();
-    if POS == false
+    if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP] ~= nil
     then
-        return false
-    end
-    if CURRENT_MAP == nil
-    then
-        return
-    end
-    if ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP] == nil or BMM_STATIONS[ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP]] == nil
-    then
-        return
-    end
-    local currentAnimation = BTMODELOBJ:getObjectAnimation();
-    if currentAnimation ~= 0x81 -- not yet pressed
-    then
-        if DEBUG == true
+        if ASSET_MAP_CHECK["AGI_ASSETS"][CURRENT_MAP]["STATIONBTN"] ~= nil
         then
-            print("Station Button not pressed")
+            BTMODELOBJ:changeName("Station Switch", false);
+            local POS = BTMODELOBJ:getSingleModelCoords();
+            local currentAnimation = BTMODELOBJ:getObjectAnimation();
+            if currentAnimation ~= 0x81 -- not yet pressed
+            then
+                if DEBUG == true
+                then
+                    print("Station Button not pressed")
+                end
+            else
+                if DEBUG == true
+                then
+                    print("Detected Station Button got pressed")
+                end
+                BMM_STATIONS[ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP]] = true;
+                --Removed the Stop Watch here as the Stations doesn't get set right away. this will cover it at least...
+                set_AP_STATIONS()
+            end
         end
-    else
-        if DEBUG == true
-        then
-            print("Detected Station Button got pressed")
-        end
-        BMM_STATIONS[ASSET_MAP_CHECK["STATIONBTN"][CURRENT_MAP]] = true;
-        --Removed the Stop Watch here as the Stations doesn't get set right away. this will cover it at least...
-        set_AP_STATIONS()
     end
 end
 
@@ -7599,7 +7601,7 @@ function watchMapTransition()
                 NEXT_MAP = BTRAMOBJ:getMap(true)
                 MAP_TRANSITION = true
                 SILO_TIMER = 0
-                BKAssetFound();
+                -- BKAssetFound();
                 if SKIP_PUZZLES == true
                 then
                     check_open_level(true)
@@ -7608,6 +7610,7 @@ function watchMapTransition()
                 clear_roysten()
                 check_egg_mystery()
                 obtain_breegull_bash()
+                set_checked_STATIONS()
             end
         else -- Runs Constantly while NOT transitioning (and runs while player not yet loaded)
             finishTransition()
@@ -7646,6 +7649,7 @@ function finishTransition()
             getChuffyMaps()
         end
         ap_icekey_glowbo_map()
+        set_AP_STATIONS()
     elseif mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == false and player == true -- constantly runs while NOT transitioning AND Player is loaded
     then
         -- Chuffy
@@ -7657,6 +7661,8 @@ function finishTransition()
             check_jamjar_silo()
         end
         nearSilo()
+        -- Stations
+        watchBtnAnimation();
         -- Roysten
         check_freed_roysten()
         -- StopNSwap
@@ -7756,8 +7762,8 @@ function loadGame(current_map)
             end
             -- set_AGI_MOVES_checks();
             -- set_AP_BKNOTES();
-            -- set_AP_STATIONS();
-            init_roysten()
+            set_AP_STATIONS();
+            init_roysten();
             if ENABLE_AP_CHUFFY == true -- Sanity Check
             then
                 if BTRAMOBJ:checkFlag(0x98, 5) == false and BTRAMOBJ:checkFlag(0x98, 6) == false and
@@ -7830,43 +7836,6 @@ function MoveBathPads()
     elseif  CURRENT_MAP ~= 0xF4 and BATH_PADS_QOL == true
     then
         BATH_PADS_QOL = false
-    end
-end
-
-function BKLogics(mapaddr)
-    BTMODELOBJ:changeName("Player", false)
-    local player = BTMODELOBJ:checkModel();
-
-    if ((CURRENT_MAP ~= mapaddr) or player == false)
-    then
-        set_checked_BKSTATIONS()
-        STATION_BTN_TIMER = 0
-        CHECK_FOR_STATIONBTN = true
-    end
-end
-
-function BKCheckAssetLogic()
-    if CHECK_FOR_STATIONBTN == true
-    then
-        if DEBUG == true
-        then
-            print("clearing all AP Stations")
-        end
-        local res = set_checked_BKSTATIONS()
-        if res == true
-        then
-            getStationBtnPlayerModel()
-        else
-            CHECK_FOR_STATIONBTN = false
-            set_AP_STATIONS()
-        end
-    end
-end
-
-function BKAssetFound()
-    if WATCH_LOADED_STATIONBTN == true --Don't need to watch every 10 frames
-    then
-        watchBtnAnimation()
     end
 end
 
