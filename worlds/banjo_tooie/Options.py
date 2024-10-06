@@ -50,15 +50,6 @@ class EnableMultiWorldJinjos(DefaultOnToggle):
     """Jinjos fled to other worlds. Other players need return them home."""
     display_name = "Randomize Jinjos"
 
-class ForbidMovesOnJinjoFamilyTreasure(Choice):
-    """If Jinjos are randomized, do not allow unlockable moves or magic behind Jinjo Families."""
-    display_name = "Forbid Unlockable Moves or Magic on Jinjo Family Treasure"
-    option_none = 0
-    option_moves_only = 1
-    option_moves_and_magic = 2
-    option_magic_only = 3
-    default = 1
-
 class ForbidJinjosOnJinjoFamilyTreasure(Toggle):
     """If Jinjos are randomized, do not allow other colour Jinjos behind Jinjo Families."""
     display_name = "Forbid Jinjos on Jinjo Family Treasure"
@@ -298,7 +289,6 @@ class BanjoTooieOptions(PerGameCommonOptions):
     progressive_water_training: ProgressiveSwimming
     progressive_bash_attack: ProgressiveBashAttack
     randomize_jinjos: EnableMultiWorldJinjos
-    forbid_on_jinjo_family: ForbidMovesOnJinjoFamilyTreasure
     forbid_jinjos_on_jinjo_family: ForbidJinjosOnJinjoFamilyTreasure
     randomize_doubloons: EnableMultiWorldDoubloons
     randomize_cheato: EnableMultiWorldCheatoPages
