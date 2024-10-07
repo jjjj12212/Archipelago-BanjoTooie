@@ -769,89 +769,6 @@ function BTModel:changeRotation(modelObjPtr, Yrot, Zrot)
     end
 end
 
-function getAltar()
-    BTMODELOBJ:changeName("Altar", false);
-    if SKIP_PUZZLES == false
-    then
-        local playerDist = BTMODELOBJ:getClosestModelDistance()
-        if playerDist == false
-        then
-            return
-        end
-        if playerDist <= 300 and (CLOSE_TO_ALTAR == false or USE_BMM_TBL == false)
-        then
-            CLOSE_TO_ALTAR = true;
-            BMMBackup();
-            useAGI();
-            if DEBUG == true
-            then
-                print("Altar Closeby");
-            end
-        elseif playerDist >=301 and CLOSE_TO_ALTAR == true
-        then
-            BMMRestore()
-            CLOSE_TO_ALTAR = false;
-            if DEBUG == true
-            then
-                print("Altar Away");
-            end
-        end
-    else -- Move Altar off the map 
-        local modelPOS = BTMODELOBJ:getMultipleModelCoords()
-        if modelPOS == false
-        then
-            return
-        end
-        for modelObjPtr, POS in pairs(modelPOS) do
-            if POS ~= false
-            then
-                BTMODELOBJ:moveModelObject(modelObjPtr, nil, -5000, nil)
-            end
-        end
-    end
-end
-
-function nearWHJinjo()
-    BTMODELOBJ:changeName("Jinjo", false);
-    local playerDist = BTMODELOBJ:getClosestModelDistance()
-    if playerDist == false
-    then
-        BMMBackup()
-        useAGI()
-        return;
-    end
-
-    if playerDist <= 400
-    then
-        if DEBUG == true
-        then
-            print("Near Jinjo");
-        end
-        BMMRestore();
-    end
-end
-
-function nearDisiple()
-    BTMODELOBJ:changeName("Jiggy Guy", false);
-    local playerDist = BTMODELOBJ:getClosestModelDistance()
-    if playerDist == false
-    then
-        BMMBackup()
-        useAGI()
-        return;
-    end
-    if playerDist <= 1500
-    then
-        if DEBUG == true
-        then
-            print("Near Disiple");
-        end
-        useAGINoJiggies();
-    elseif playerDist > 1500 and playerDist < 2000
-    then
-        useAGI()
-    end
-end
 
 
 -- Moves that needs to be checked Per Map. some silos NEEDS other moves as well to get to.
@@ -4992,15 +4909,6 @@ local WORLD_ENTRANCE_MAP = {
     },
 }
 
-function hag1_phase_skips()
-    local tmp_flg_pointer = 0x12C774
-    local beginning_phase_offset = 0x09
-    local ending_phase_offset = 0x0A
-
-    local pointer_addr = BTRAMOBJ:dereferencePointer(tmp_flg_pointer)
-    mainmemory.writebyte(pointer_addr + beginning_phase_offset, 255); -- Skips part 1
-    mainmemory.writebyte(pointer_addr + ending_phase_offset, 31); -- Skips Part 2
-end
 
 ---------------------------------- JIGGIES ---------------------------------
 
@@ -5262,6 +5170,74 @@ function SolvingPuzzle(mapaddr) -- Avoid false checks when working on puzzles --
         or mapaddr == 0x13A or mapaddr == 0x151 or mapaddr == 0x15D or mapaddr == 0x160
     then
         return true
+    end
+end
+
+function getAltar()
+    BTMODELOBJ:changeName("Altar", false);
+    if SKIP_PUZZLES == false
+    then
+        local playerDist = BTMODELOBJ:getClosestModelDistance()
+        if playerDist == false
+        then
+            return
+        end
+        if playerDist <= 300 and (CLOSE_TO_ALTAR == false)
+        then
+            CLOSE_TO_ALTAR = true;
+            if DEBUG == true
+            then
+                print("Altar Closeby");
+            end
+        elseif playerDist >=301 and CLOSE_TO_ALTAR == true
+        then
+            CLOSE_TO_ALTAR = false;
+            if DEBUG == true
+            then
+                print("Altar Away");
+            end
+        end
+    else -- Move Altar off the map 
+        local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+        if modelPOS == false
+        then
+            return
+        end
+        for modelObjPtr, POS in pairs(modelPOS) do
+            if POS ~= false
+            then
+                BTMODELOBJ:moveModelObject(modelObjPtr, nil, -5000, nil)
+            end
+        end
+    end
+end
+
+function nearDisiple()
+    if SKIP_PUZZLES == true
+    then
+        BTMODELOBJ:changeName("Jiggy Guy", false);
+        local playerDist = BTMODELOBJ:getClosestModelDistance()
+        if playerDist == false
+        then
+            return;
+        end
+        POS = BTMODELOBJ:getSingleModelCoords(nil)
+        if POS == false
+        then
+            return
+        end
+        BTMODELOBJ:moveModelObject(nil, -3117, 1500, -2219.08 );
+        if playerDist <= 1500
+        then
+            if DEBUG == true
+            then
+                print("Near Disiple");
+            end
+            backup_BMM_JIGGIES()
+        elseif playerDist > 1500 and playerDist < 2000
+        then
+            restore_BMM_JIGGIES()
+        end
     end
 end
 
@@ -7709,6 +7685,8 @@ function finishTransition()
         watchDinoFlags()
         -- Bath Pads
         MoveBathPads()
+        getAltar()
+        nearDisiple()
     end
 end
 
@@ -8379,6 +8357,16 @@ end
 function saveGame()
     GAME_LOADED = false;
     SAVE_GAME = false;
+end
+
+function hag1_phase_skips()
+    local tmp_flg_pointer = 0x12C774
+    local beginning_phase_offset = 0x09
+    local ending_phase_offset = 0x0A
+
+    local pointer_addr = BTRAMOBJ:dereferencePointer(tmp_flg_pointer)
+    mainmemory.writebyte(pointer_addr + beginning_phase_offset, 255); -- Skips part 1
+    mainmemory.writebyte(pointer_addr + ending_phase_offset, 31); -- Skips Part 2
 end
 
 ---------------------- ARCHIPELAGO FUNCTIONS -------------
