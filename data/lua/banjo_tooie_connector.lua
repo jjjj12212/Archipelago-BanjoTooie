@@ -5182,20 +5182,20 @@ function getAltar()
         then
             return
         end
-        if playerDist <= 300 and (CLOSE_TO_ALTAR == false)
+        if playerDist <= 300 and CURRENT_MAP ~= 0x14F
         then
-            CLOSE_TO_ALTAR = true;
             if DEBUG == true
             then
                 print("Altar Closeby");
             end
-        elseif playerDist >=301 and CLOSE_TO_ALTAR == true
+            backup_BMM_JIGGIES()
+        elseif playerDist >=301 and CURRENT_MAP ~= 0x14F
         then
-            CLOSE_TO_ALTAR = false;
             if DEBUG == true
             then
                 print("Altar Away");
             end
+            restore_BMM_JIGGIES()
         end
     else -- Move Altar off the map 
         local modelPOS = BTMODELOBJ:getMultipleModelCoords()
@@ -6998,11 +6998,11 @@ function check_jamjar_silo()
     then
         if ASSET_MAP_CHECK[CURRENT_MAP]["SILO"] ~= nil
         then
-            SILO_TIMER = SILO_TIMER + 1
             if SILO_TIMER == 25
             then
                 set_AGI_MOVES_checks()
             end
+            SILO_TIMER = SILO_TIMER + 1
         else
             set_AGI_MOVES_checks()
             SILO_TIMER = 25
@@ -8453,7 +8453,7 @@ function processAGIItem(item_list)
                 processMagicItem(memlocation)
             elseif(1230753 <= memlocation and memlocation <= 1230777)
             then
-                if DEBUG == true
+                if DEBUG_SILO == true
                 then
                     print("Move Obtained")
                 end
@@ -8479,10 +8479,9 @@ function processAGIItem(item_list)
                             BTCONSUMEOBJ:changeConsumable("CWK EGGS")
                             BTCONSUMEOBJ:setConsumable(10)
                         end
-                        check_jamjar_silo()
                     end
                 end
-
+                check_jamjar_silo()
             elseif memlocation == 1230516 -- Treble Clef
             then
                 obtained_AP_TREBLE()
