@@ -54,13 +54,13 @@ Banjo-Tooie:
   progressive_shoes: 'false'
 
   # Dive -> Double Air -> Fast Swimming
-  progressive_water_training: 'true'
+  progressive_water_training: 'false'
 
   # Ground Rat-a-tat Rap -> Breegull Bash
-  progressive_bash_attack: 'true'
+  progressive_bash_attack: 'false'
 
   randomize_jinjos: 'true'
-  
+
   # Completing a jinjo family may contain a jinjo for a different family
   forbid_jinjos_on_jinjo_family: 'true'
 
