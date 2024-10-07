@@ -5118,7 +5118,11 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
     end
     for _, values in pairs(WORLD_ENTRANCE_MAP)
     do
-        if values["opened"] == false
+        if GOAL_TYPE == 4 and values["defaultName"] == "HAG 1"
+        then
+            --Do nothing here
+            local a = 1
+        elseif values["opened"] == false
         then
             if JIGGY_COUNT >= values["defaultCost"]
             then
@@ -5147,7 +5151,7 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
                 end
             end
         else --Make sure its open regardless but no message
-            if JIGGY_COUNT >= values["defaultCost"] and values["opened"] == true
+            if JIGGY_COUNT >= values["defaultCost"] and values["opened"] == true and values["defaultName"] ~= "HAG 1"
             then
                 BTRAMOBJ:setFlag(values["addr"], values["bit"])
                 if ENABLE_AP_WORLDS == false
@@ -5155,7 +5159,7 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
                     BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
                 end
             end
-        end
+        end        
     end
 end
 
