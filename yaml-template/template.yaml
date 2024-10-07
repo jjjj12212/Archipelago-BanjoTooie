@@ -29,6 +29,11 @@ game: Banjo-Tooie
 Banjo-Tooie:
   death_link: 'false'
   disable_overlay_text: 'false'
+  # overlay_text_colour
+  # 0 - Red messages
+  # 1 - Blue messages
+  overlay_text_colour: 0
+
   randomize_moves: 'true'
   # Randomize Banjo-Kazooie Moves in Banjo-Tooie
   # 0: Don't randomize 
@@ -55,14 +60,10 @@ Banjo-Tooie:
   progressive_bash_attack: 'true'
 
   randomize_jinjos: 'true'
-
-  # Prevent item types from being shuffled onto jinjo checks
-  #   0: forbid nothing
-  #   1: forbid moves only
-  #   2: forbid moves and magic
-  #   3: forbid magic only
-  forbid_on_jinjo_family: 0
+  
+  # Completing a jinjo family may contain a jinjo for a different family
   forbid_jinjos_on_jinjo_family: 'true'
+
   randomize_doubloons: 'true'
   randomize_cheato: 'true'
   cheato_rewards: 'true'
