@@ -5159,7 +5159,7 @@ function check_open_level(show_message)  -- See if entrance conditions for a lev
                     BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
                 end
             end
-        end        
+        end
     end
 end
 
@@ -7152,7 +7152,6 @@ function nearSilo()
     end
 end
 
-
 ------------------ Jinjos -------------------
 
 function init_JINJOS(type) -- Initialize JINJOS
@@ -8270,7 +8269,7 @@ function initializeFlags()
         then
             print("Setting Jinjo Pattern")
         end
-        BTRAMOBJ:setMultipleFlags(0x6A, 129, 2)
+        BTRAMOBJ:setMultipleFlags(0x6A, 129, 2) -- Jinjo pattern
         if SKIP_KLUNGO == true then
             --{byte=0x5E, bit=0, name="Klungo 1 Defeated", type="Progress"},
 	        --{byte=0x5E, bit=1, name="Klungo 2 Defeated", type="Progress"},
