@@ -33,7 +33,7 @@ local CLIENT_VERSION = 0
 
 
 local DEBUG = false
-local DEBUG_SILO = false
+local DEBUG_SILO = true
 local DEBUG_JIGGY = false
 local DEBUG_NOTES = false
 local DEBUG_HONEY = false
@@ -7038,11 +7038,11 @@ function check_jamjar_silo()
     then
         if ASSET_MAP_CHECK[CURRENT_MAP]["SILO"] ~= nil
         then
+            SILO_TIMER = SILO_TIMER + 1
             if SILO_TIMER == 25
             then
                 set_AGI_MOVES_checks()
             end
-            SILO_TIMER = SILO_TIMER + 1
         else
             set_AGI_MOVES_checks()
             SILO_TIMER = 25
