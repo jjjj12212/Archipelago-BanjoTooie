@@ -370,6 +370,24 @@ function BTRAM:getBanjoPos()
     return pos;
 end
 
+function BTRAM:getBanjoSelectedEgg()
+    local banjo = BTRAM:banjoPTR()
+    if banjo == nil
+    then
+        return false;
+    end
+    return mainmemory.read_u16_be(banjo + 0x554)
+end
+
+function BTRAM:setBanjoSelectedEgg(egg)
+    local banjo = BTRAM:banjoPTR()
+    if banjo == nil
+    then
+        return false;
+    end
+    return mainmemory.write_u16_be(banjo + 0x554, egg)
+end
+
 function BTRAM:setBanjoPos(Xnew, Ynew, Znew, Yvel)
     local banjo = BTRAM:banjoPTR()
     if banjo == nil
@@ -7095,6 +7113,7 @@ function nearSilo()
         
             if siloPOS["Distance"] <= 650 -- and CURRENT_MAP ~= 0x1A7
             then
+               
                 if LOAD_BMK_MOVES == false
                 then
                     clear_AMM_MOVES_checks(CURRENT_MAP);
@@ -7121,6 +7140,11 @@ function nearSilo()
                     LOAD_BMK_MOVES = false;
                     SILOS_LOADED = false;
                 end
+            end
+
+            if siloPOS["Distance"] <= 800 and CURRENT_MAP == 0x152
+            then
+                    BTRAMOBJ:setBanjoSelectedEgg(0)
             end
 
             if siloPOS["Distance"] <= 410 and CURRENT_MAP ~= 0x13A -- Notes and not CCL
@@ -9235,6 +9259,10 @@ function main()
                 end
                 getBanjoDeath()
                 killBT()
+                if FPS == true
+                then
+                    mainmemory.write_u8(0x07913F, 1)
+                end
             elseif (FRAME % 5 == 1)
             then
                 watchMapTransition()
