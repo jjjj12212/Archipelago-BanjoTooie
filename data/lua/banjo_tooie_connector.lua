@@ -7639,6 +7639,8 @@ function watchMapTransition()
             note_ui_update()
             JinjoCounter()
             check_goggles()
+            -- Scrotty Kids
+            watchDinoFlags()
         end
     else
         loadGame(BTRAMOBJ:getMap(false))
@@ -7709,8 +7711,6 @@ function finishTransition()
         end
         -- Jiggy Chunks
         watchJChunk()
-        -- Scrotty Kids
-        watchDinoFlags()
         -- Bath Pads
         MoveBathPads()
         getAltar()
