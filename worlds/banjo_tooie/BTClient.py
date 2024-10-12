@@ -519,8 +519,6 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             for locationId, value in jinjofamlist.items():
                 if value == True:
                     locs1.append(int(locationId))
-                    if ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
-                        locs1 = mumbo_tokens_loc(locs1, int(locationId), ctx.slot_data["goal_type"])
         if ctx.cheatorewardslist_table != cheatorewardslist:
             ctx.cheatorewardslist_table = cheatorewardslist
             for locationId, value in cheatorewardslist.items():
@@ -537,12 +535,22 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 for locationId, value in worldslist.items():
                     if value == True:
                         locs1.append(int(locationId))
+        #Mumbo Tokens
+        if ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or \
+                    ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
+                    locs1 = mumbo_tokens_loc(locs1, ctx.slot_data["goal_type"])
+
         if len(locs1) > 0:
             await ctx.send_msgs([{
                 "cmd": "LocationChecks",
                 "locations": locs1
             }])
-            
+        
+            if len(locs1) > 0:
+                await ctx.send_msgs([{
+                    "cmd": "LocationChecks",
+                    "locations": locs1
+                }])
         #GAME VICTORY
         #Beat Hag-1
         if hag == True and (ctx.slot_data["goal_type"] == 0 or ctx.slot_data["goal_type"] == 4) and not ctx.finished_game:
@@ -599,74 +607,75 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         else: # Banjo is somehow still alive
             ctx.deathlink_sent_this_death = False
 
-def mumbo_tokens_loc(locs: list, locationId: int, goaltype: int) -> list:
-    if goaltype == 1 or goaltype == 4:
-        if locationId == 1230598: #MT
-            locs.append(1230968)
-        if locationId == 1230610: #GM
-            locs.append(1230969)
-        if locationId == 1230616: #WW
-            locs.append(1230970)
-        if locationId == 1230617: #WW
-            locs.append(1230971)
-        if locationId == 1230619: #WW
-            locs.append(1230972)
-        if locationId == 1230620: #WW
-            locs.append(1230973)
-        if locationId == 1230626: #JRL
-            locs.append(1230974)
-        if locationId == 1230641: #TDL
-            locs.append(1230975)
-        if locationId == 1230648: #GI
-            locs.append(1230976)
-        if locationId == 1230654: #GI
-            locs.append(1230977)
-        if locationId == 1230663: #HFP
-            locs.append(1230978)
-        if locationId == 1230668: #CCL
-            locs.append(1230979)
-        if locationId == 1230670: #CCL
-            locs.append(1230980)
-        if locationId == 1230673: #CCL
-            locs.append(1230981)
-        if locationId == 1230749: #CCL
-            locs.append(1230982)
-    if goaltype == 2 or goaltype == 4:
-        if locationId == 1230596: #MT
-            locs.append(1230960)
-        if locationId == 1230606: #GGM
-            locs.append(1230961)
-        if locationId == 1230618: #WW
-            locs.append(1230962)
-        if locationId == 1230632: #JRL
-            locs.append(1230963)
-        if locationId == 1230639: #TDL
-            locs.append(1230964)
-        if locationId == 1230745: #GI
-            locs.append(1230965)
-        if locationId == 1230656: #HFP
-            locs.append(1230966)
-        if locationId == 1230666: #CC
-            locs.append(1230967)
-    if goaltype == 3 or goaltype == 4:
-        if locationId == 1230676: #JINJOFAM
-            locs.append(1230983)
-        if locationId == 1230677: #JINJOFAM
-            locs.append(1230984)
-        if locationId == 1230678: #JINJOFAM
-            locs.append(1230985)
-        if locationId == 1230679: #JINJOFAM
-            locs.append(1230986)
-        if locationId == 1230680: #JINJOFAM
-            locs.append(1230987)
-        if locationId == 1230681: #JINJOFAM
-            locs.append(1230988)
-        if locationId == 1230682: #JINJOFAM
-            locs.append(1230989)
-        if locationId == 1230683: #JINJOFAM
-            locs.append(1230990)
-        if locationId == 1230684: #JINJOFAM
-            locs.append(1230991)
+def mumbo_tokens_loc(locs: list, goaltype: int) -> list:
+    for locationId in locs:
+        if goaltype == 1 or goaltype == 4:
+            if locationId == 1230598: #MT
+                locs.append(1230968)
+            if locationId == 1230610: #GM
+                locs.append(1230969)
+            if locationId == 1230616: #WW
+                locs.append(1230970)
+            if locationId == 1230617: #WW
+                locs.append(1230971)
+            if locationId == 1230619: #WW
+                locs.append(1230972)
+            if locationId == 1230620: #WW
+                locs.append(1230973)
+            if locationId == 1230626: #JRL
+                locs.append(1230974)
+            if locationId == 1230641: #TDL
+                locs.append(1230975)
+            if locationId == 1230648: #GI
+                locs.append(1230976)
+            if locationId == 1230654: #GI
+                locs.append(1230977)
+            if locationId == 1230663: #HFP
+                locs.append(1230978)
+            if locationId == 1230668: #CCL
+                locs.append(1230979)
+            if locationId == 1230670: #CCL
+                locs.append(1230980)
+            if locationId == 1230673: #CCL
+                locs.append(1230981)
+            if locationId == 1230749: #CCL
+                locs.append(1230982)
+        if goaltype == 2 or goaltype == 4:
+            if locationId == 1230596: #MT
+                locs.append(1230960)
+            if locationId == 1230606: #GGM
+                locs.append(1230961)
+            if locationId == 1230618: #WW
+                locs.append(1230962)
+            if locationId == 1230632: #JRL
+                locs.append(1230963)
+            if locationId == 1230639: #TDL
+                locs.append(1230964)
+            if locationId == 1230745: #GI
+                locs.append(1230965)
+            if locationId == 1230656: #HFP
+                locs.append(1230966)
+            if locationId == 1230666: #CC
+                locs.append(1230967)
+        if goaltype == 3 or goaltype == 4:
+            if locationId == 1230676: #JINJOFAM
+                locs.append(1230983)
+            if locationId == 1230677: #JINJOFAM
+                locs.append(1230984)
+            if locationId == 1230678: #JINJOFAM
+                locs.append(1230985)
+            if locationId == 1230679: #JINJOFAM
+                locs.append(1230986)
+            if locationId == 1230680: #JINJOFAM
+                locs.append(1230987)
+            if locationId == 1230681: #JINJOFAM
+                locs.append(1230988)
+            if locationId == 1230682: #JINJOFAM
+                locs.append(1230989)
+            if locationId == 1230683: #JINJOFAM
+                locs.append(1230990)
+            if locationId == 1230684: #JINJOFAM
+                locs.append(1230991)
     return locs
 
 async def n64_sync_task(ctx: BanjoTooieContext): 
