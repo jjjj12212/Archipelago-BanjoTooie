@@ -128,6 +128,7 @@ local MGH_LENGTH = nil;
 local BH_LENGTH = nil;
 local JFR_LENGTH = nil;
 local TH_LENGTH = nil;
+local TOKEN_ANNOUNCE = false;
 
 -------------- TRAP VARS ------------
 
@@ -5915,6 +5916,29 @@ function hag1_open()
 end
 
 
+function mumbo_announce()
+    if GOAL_TYPE == 5 and TOKEN_ANNOUNCE == false
+    then
+        local token_count = 0;
+        for id, itemId in pairs(receive_map)
+        do
+            if itemId == "1230798"
+            then
+                token_count = token_count + 1
+            end
+        end
+        if token_count >= TH_LENGTH
+        then
+            message = "You have found enough Mumbo Tokens! Time to head home!"
+            print(" ")
+            print(message)
+            table.insert(AP_MESSAGES, message);
+            TOKEN_ANNOUNCE = true
+        end
+    end
+end
+
+
 function check_open_level(show_message)  -- See if entrance conditions for a level have been met
     local jiggy_count = 0;
     for location, values in pairs(AGI_MASTER_MAP["JIGGY"])
@@ -7128,7 +7152,10 @@ function process_block(block)
     then
         for k, message in pairs(block['messages'])
         do
-            table.insert(AP_MESSAGES, message)
+            if not string.find(message, "%(found%)")
+            then
+                table.insert(AP_MESSAGES, message)
+            end
         end
     end
     if block['triggerDeath'] == true
@@ -8171,6 +8198,7 @@ function main()
                 BKCheckAssetLogic()
                 gameSaving();
                 hag1_open()
+                mumbo_announce()
                 if TEXT_START == true then
                     clearText()
                 elseif TEXT_START == false then
