@@ -58,10 +58,6 @@ class EnableMultiWorldJinjos(DefaultOnToggle):
     """Jinjos fled to other worlds. Other players need return them home."""
     display_name = "Randomize Jinjos"
 
-class ForbidJinjosOnJinjoFamilyTreasure(Toggle):
-    """If Jinjos are randomized, do not allow other colour Jinjos behind Jinjo Families."""
-    display_name = "Forbid Jinjos on Jinjo Family Treasure"
-
 class EnableMultiWorldDoubloons(Toggle):
     """Jolly Roger's Doubloons are scattered across the MultiWorld."""
     display_name = "Randomize Doubloons"
@@ -298,7 +294,6 @@ class BanjoTooieOptions(PerGameCommonOptions):
     progressive_water_training: ProgressiveSwimming
     progressive_bash_attack: ProgressiveBashAttack
     randomize_jinjos: EnableMultiWorldJinjos
-    forbid_jinjos_on_jinjo_family: ForbidJinjosOnJinjoFamilyTreasure
     randomize_doubloons: EnableMultiWorldDoubloons
     randomize_cheato: EnableMultiWorldCheatoPages
     cheato_rewards: EnableCheatoRewards

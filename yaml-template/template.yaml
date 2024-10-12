@@ -61,9 +61,6 @@ Banjo-Tooie:
 
   randomize_jinjos: 'true'
 
-  # Completing a jinjo family may contain a jinjo for a different family
-  forbid_jinjos_on_jinjo_family: 'true'
-
   randomize_doubloons: 'true'
   randomize_cheato: 'true'
   cheato_rewards: 'true'
