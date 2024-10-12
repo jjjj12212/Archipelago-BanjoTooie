@@ -36,6 +36,7 @@ local DEBUG = false
 local DEBUG_SILO = false
 local DEBUG_JIGGY = false
 local DEBUG_NOTES = false
+local DEBUG_HONEY = false
 local DEBUG_ROYSTEN = false
 local DEBUG_CHUFFY = false
 local DEBUG_STOPNSWAP = false
@@ -1799,7 +1800,7 @@ local ASSET_MAP_CHECK = {
     },
     [0x129] =	{ --HFP - Lava Train Station
         ["HONEYCOMB"] = {
-            "1230721" -- Train Station
+            "1230722" -- Train Station
         }
     },
     --CLOUD CUCKOOLAND
@@ -5665,7 +5666,7 @@ function honeycomb_check()
             for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["HONEYCOMB"])
             do
                 checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["HONEYCOMB"][locationId]['addr'], NON_AGI_MAP["HONEYCOMB"][locationId]['bit'])
-                if DEBUG == true
+                if DEBUG_HONEY == true
                 then
                     print(NON_AGI_MAP["HONEYCOMB"][locationId]['name']..":"..tostring(checks[locationId]))
                 end
