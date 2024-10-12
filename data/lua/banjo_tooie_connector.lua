@@ -507,7 +507,8 @@ BTModel = {
         ["Jiggy Guy"] = 0x937,
         ["Ice Key"] = 0x63B,
         ["Cartridge"] = 0x910,
-        ["Roysten"] = 0x6FA
+        ["Roysten"] = 0x6FA,
+        ["Chuffy Sign"] = 0x931
     };
     model_enemy_list = {
         ["Ugger"] = 0x671,
@@ -6718,6 +6719,7 @@ function set_checked_STATIONS() --Only run transitioning maps
             if DEBUG_STATION == true
             then
                 print("Clearing of Stations")
+                print(BMM_STATIONS[stationId])
             end
         else
             if DEBUG_STATION == true
@@ -6757,10 +6759,10 @@ function check_STATION_BUTTONS()
         if ASSET_MAP_CHECK[CURRENT_MAP]["STATIONBTN"] ~= nil
         then
             STATION_BTN_TIMER = STATION_BTN_TIMER + 1
-            if STATION_BTN_TIMER == 25
-            then
-                set_AP_STATIONS()
-            end
+            -- if STATION_BTN_TIMER == 25
+            -- then
+            --     set_AP_STATIONS()
+            -- end
         else
             set_AP_STATIONS()
             STATION_BTN_TIMER = 25
@@ -6791,10 +6793,25 @@ function watchBtnAnimation()
                     print("Detected Station Button got pressed")
                 end
                 BMM_STATIONS[ASSET_MAP_CHECK[CURRENT_MAP]["STATIONBTN"]] = true;
-                --Removed the Stop Watch here as the Stations doesn't get set right away. this will cover it at least...
-                set_AP_STATIONS()
             end
         end
+    end
+end
+
+function nearChuffySign()
+    BTMODELOBJ:changeName("Chuffy Sign", false);
+    local playerDist = BTMODELOBJ:getClosestModelDistance()
+    if playerDist == false
+    then
+        return;
+    end
+    if playerDist <= 700
+    then
+        if DEBUG_STATION == true
+        then
+            print("Near Chuffy Sign");
+        end
+        set_AP_STATIONS()
     end
 end
 
@@ -7596,7 +7613,6 @@ function watchMapTransition()
                 MAP_TRANSITION = true
                 SILO_TIMER = 0
                 STATION_BTN_TIMER = 0
-                -- BKAssetFound();
                 if SKIP_PUZZLES == true
                 then
                     check_open_level(true)
@@ -7664,6 +7680,10 @@ function finishTransition()
             check_STATION_BUTTONS()
         end
         watchBtnAnimation()
+        if STATION_BTN_TIMER == 25 --Silo greenlights sooner if not wait for timer
+        then
+            nearChuffySign()
+        end
         -- Roysten
         check_freed_roysten()
         -- StopNSwap
