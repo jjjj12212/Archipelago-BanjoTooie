@@ -5340,7 +5340,7 @@ class BanjoTooieRules:
                 set_rule(access, rules)
 
         if self.world.options.randomize_dino_roar:
-            set_rule(self.world.multiworld.get_location(locationName.ROARDINO, self.player), self.bargasaurus_roar)
+            set_rule(self.world.multiworld.get_location(locationName.ROARDINO, self.player), lambda state: self.bargasaurus_roar(state))
 
         for item in self.moves_forbid:
             #The Doubloons near Wing Wack Silo
