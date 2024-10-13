@@ -1,3 +1,25 @@
+# 2.1.5-beta
+  - Logic fixes:
+    - Starting attack: If not on beginner logic, wonderwing can be your starting attack.
+    - Jade Snake Grove jinjo: in glitched logic, you can kick the jinjo as the golden goliath.
+    - Treasure Chamber jiggy: you can shoot any egg, including clockworks, at the snake heads.
+    - Old King Coal: checks for different attacks based on logic. Beginners need eggs, normal needs a mobile attack, others need any working attack.
+    - GGM Entrance Honeycomb: you can get it by fluttering as you enter the level.
+    - Prospector honeycomb: If not on beginner logic, you don't need any moves to reach the boulder.
+    - GGM Mumbo Notes: Advanced and glitched logic can get the notes with beak buster.
+    - Generator Cavern jiggy: normal logic can jump from the sign to the ladder with solo Banjo, and can reach the jiggy with leg spring + fire eggs. So can advanced and glitched logics, but without fire eggs.
+    - Blubber jinjo: Beginner logic can get it with flap flip. All other logics can also get it with leg spring.
+    - TDL treble clef: glitched logic can get it with ground rat-a-tat rap.
+    - TDL Entrance Jinjo: talon trot can be gotten from shoes, if not on beginner logic.
+    - Lava side train switch: solo Kazooie can hit it with leg spring or tall jump, if not on beginner logic.
+    - Icy side train switch: checks that lower icy side is reachable.
+    - Boggy Igloo collectibles: reworked logic.
+    - HFP ice cubes: reworked logic for most of them. Can be broken with beak buster, wonderwing and the snowball. Also takes into account the fact that clockworks are not considered as explosives in beginner logic.
+    - CCL Humba Jinjo: can be gotten with leg spring, if not on beginner logic. Advanced and glitched logic can get it with a clockwork shot.
+    - Sack Race Exit Note: beginner logic needs some sort of elevation. The others don't.
+    - Cheese Wedge note: the item is now mapped to the correct logic.
+    - Top of HFP access: normal logic no longer can do it with split up.
+
 # 2.1.4-beta
   - Logic fixes:
     - TDL Boulder Cheato Page: Added missing Grip Grab. Advanced and Glitched logic can fall into the alcove from the top.
