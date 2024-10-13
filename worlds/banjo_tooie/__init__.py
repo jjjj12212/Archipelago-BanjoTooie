@@ -587,6 +587,7 @@ class BanjoTooieWorld(World):
         btoptions['pages'] = "true" if self.options.randomize_cheato.value == True else "false"
         btoptions['cheato_rewards'] = "true" if self.options.cheato_rewards == 1 else "false"
         btoptions['moves'] = "true" if self.options.randomize_moves == 1 else "false"
+        btoptions['roar'] = "true" if self.options.randomize_dino_roar == 1 else "false"
         btoptions['bk_moves'] = int(self.options.randomize_bk_moves.value)
         btoptions['doubloons'] = "true" if self.options.randomize_doubloons == 1 else "false"
         btoptions['magic'] = "true" if self.options.randomize_glowbos == 1 else "false"
