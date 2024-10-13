@@ -162,6 +162,8 @@ local ENCOURAGEMENT = {
          [4]  = {message = " YEEHAW!"},
          [5]  = {message = " JINJOO!!"},
          [6]  = {message = " WAHEY!!!"},
+         [7]  = {message = " ROOOOO!!!"},
+         [8]  = {message = " OOMANAKA!!!"},
 }
 
 
