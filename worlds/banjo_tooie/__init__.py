@@ -117,6 +117,8 @@ class BanjoTooieWorld(World):
                 self.notecounter += 1
             else:
                 item_classification = ItemClassification.progression
+        if banjoItem.type == 'progression_skip_balancing': #Mumbo Tokens
+            item_classification = ItemClassification.progression_skip_balancing
         if banjoItem.type == 'useful':
             if banjoItem.btid == 1230513 and self.use_cheato_filler == False: #pages
                 if self.options.cheato_rewards.value == True:
