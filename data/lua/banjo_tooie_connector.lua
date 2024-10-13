@@ -8912,10 +8912,6 @@ function receive()
         then
             print("Finish");
         end
-        -- if DETECT_DEATH == true
-        -- then
-        --     DETECT_DEATH = false;
-        -- end
     end
 end
 
@@ -8924,7 +8920,6 @@ function savingAGI()
     if DEBUGLVL2 == true
     then
         print("Writing AGI File from Saving");
-        print(AGI)
         print(receive_map)
     end
     f:write(json.encode(AGI_MOVES) .. "\n");
