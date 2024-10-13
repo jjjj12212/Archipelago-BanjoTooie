@@ -33,7 +33,7 @@ local CLIENT_VERSION = 0
 
 
 local DEBUG = false
-local DEBUG_SILO = true
+local DEBUG_SILO = false
 local DEBUG_JIGGY = false
 local DEBUG_NOTES = false
 local DEBUG_HONEY = false
