@@ -85,7 +85,7 @@ local ENABLE_AP_HONEYB_REWARDS = false;
 local ENABLE_AP_CHUFFY = false;
 local ENABLE_AP_WORLDS = false;
 local ENABLE_AP_MYSTERY = false;
-local DISABLE_TEXT_OVERLAY = false;
+local ACTIVATE_TEXT_OVERLAY = false;
 local AP_MESSAGES = {};
 local TEXT_COLOUR = 0;
 
@@ -8503,7 +8503,7 @@ function archipelago_msg_box(msg)
 
     if TEXT_START == false
     then
-        if DISABLE_TEXT_OVERLAY == false then
+        if ACTIVATE_TEXT_OVERLAY == true then
             gui.drawText(textXpos, textYpos, msg, fgcolor, bgcolor, textSize, nil, nil, "center")
         end
         TEXT_START = true
@@ -9079,9 +9079,9 @@ function process_slot(block)
     then
         DEATH_LINK = true
     end
-    if block['slot_disable_text'] ~= nil and block['slot_disable_text'] ~= "false"
+    if block['slot_activate_text'] ~= nil and block['slot_activate_text'] ~= "false"
     then
-        DISABLE_TEXT_OVERLAY = true
+        ACTIVATE_TEXT_OVERLAY = true
     end
     if block['slot_skip_tot'] ~= nil and block['slot_skip_tot'] ~= ""
     then

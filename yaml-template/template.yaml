@@ -28,7 +28,7 @@ game: Banjo-Tooie
 
 Banjo-Tooie:
   death_link: 'false'
-  disable_overlay_text: 'false'
+  activate_overlay_text: 'true'
   # overlay_text_colour
   # 0 - Red messages
   # 1 - Blue messages
@@ -74,6 +74,8 @@ Banjo-Tooie:
   randomize_chuffy: 'true'     # Chuffy as a AP Item
   randomize_notes: 'true'
   randomize_stop_n_swap: 'true' # Ice key + Eggs + Egg rewards are added to the item pool.
+
+  randomize_dino_roar: 'true'
 
   # Changes which levels are open; Recommended when doing multiworld seeds.
   randomize_worlds: 'false'

@@ -42,9 +42,9 @@ class EnableCheatoRewards(DefaultOnToggle):
     """Cheato rewards you a cheat + an additional randomized reward. Use Cheato Pages as Filler cannot be set if this is enabled."""
     display_name = "Cheato Rewards"
 
-class DisableOverlayText(Toggle):
-    """Disables the overlay text on screen. Useful if your already streaming/viewing the BT_Client."""
-    display_name = "Disable Overlay Text"
+class ActivateOverlayText(DefaultOnToggle):
+    """Activates the overlay text on screen. Useful if you are not streaming/viewing the BT_Client."""
+    display_name = "Activate Overlay Text"
 
 class OverlayTextColour(Choice):
     """Banjo-Kazooie Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves.
@@ -288,7 +288,7 @@ class ExceedingItemsFiller(Toggle):
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
-    disable_overlay_text:DisableOverlayText
+    activate_overlay_text:ActivateOverlayText
     overlay_text_colour:OverlayTextColour
     randomize_moves: EnableMultiWorldMoveList
     randomize_bk_moves: EnableMultiWorldBKMoveList
