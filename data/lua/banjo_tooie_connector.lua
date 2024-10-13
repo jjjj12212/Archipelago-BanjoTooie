@@ -57,8 +57,6 @@ local TOTALS_MENU = false;
 local OBJ_TOTALS_MENU = false;
 local SAVE_GAME = false;
 
-local CLOSE_TO_ALTAR = false;
-
 -------- DPAD Vars -----------
 local SNEAK = false;
 
@@ -178,6 +176,8 @@ local CHECK_DEATH = false;
 ---------------- AMAZE-O-GAZE VARS ---------------
 local GOGGLES = false;
 
+---------------- ROAR VARS ---------------
+local ROAR = false;
 
 -------------- ENCOURAGEMENT MESSAGES ------------
 local ENCOURAGEMENT = {
@@ -5567,6 +5567,46 @@ function check_real_goggles()
     end
 end
 
+---------------------------------- ROAR --------------------------------------------
+
+function check_roar()
+    check_real_roar()
+    if CURRENT_MAP == 0x112
+    then
+        local roarflg = BTRAMOBJ:checkFlag(0x17, 7, "CHECK_ROAR")
+        local roar_found = false
+        if roarflg == true then
+            ROAR = true
+            for apid, item in pairs(receive_map)
+            do
+                if "1230780" == item
+                then
+                    roar_found = true
+                    break
+                end
+            end
+            if roar_found == false
+            then
+                BTRAMOBJ:clearFlag(0x1C, 5, "CHECK_ROAR")
+            end
+        end
+    end
+end
+
+function check_real_roar()
+    if BTRAMOBJ:checkFlag(0x1C, 5) == false
+    then
+        for apid, item in pairs(receive_map)
+        do
+            if "1230780" == item
+            then
+                BTRAMOBJ:setFlag(0x1C, 5, "CHECK_ROAR")
+                break
+            end
+        end
+    end
+end
+
 ---------------------------------- PAGES ---------------------------------
 
 function obtained_AP_PAGES()
@@ -7663,6 +7703,7 @@ function watchMapTransition()
             note_ui_update()
             JinjoCounter()
             check_goggles()
+            check_roar()
             -- Scrotty Kids
             watchDinoFlags()
         end
@@ -8731,6 +8772,9 @@ function processAGIItem(item_list)
             elseif(memlocation == 1230779) --amaze-o-gaze
             then
                 BTRAMOBJ:setFlag(0x1E, 0, "AMAZE-O-GAZE")
+            elseif(memlocation == 1230780) --Roar
+            then
+                BTRAMOBJ:setFlag(0x1C, 5, "ROAR")
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
             savingAGI();
@@ -8794,6 +8838,7 @@ function SendToBTClient()
     retTable["honeyb_rewards"] = HONEYB_REWARDS;
     retTable["jiggy_chunks"] = JIGGY_CHUNKS;
     retTable["goggles"] = GOGGLES;
+    retTable["roar"] = ROAR;
     retTable["dino_kids"] = DINO_KIDS;
     retTable["DEMO"] = DEMO_MODE;
     

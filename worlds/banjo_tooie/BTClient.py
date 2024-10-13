@@ -110,6 +110,7 @@ class BanjoTooieContext(CommonContext):
         self.jiggychunks_table = {}
         self.goggles_table = False
         self.dino_kids_table = {}
+        self.roar = False
         self.jiggy_table = {}
         self.current_map = 0
         self.deathlink_enabled = False
@@ -378,6 +379,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     goggles = payload['goggles']
     jiggylist = payload['jiggies']
     dino_kids = payload['dino_kids']
+    roar_obtain = payload['roar']
     worldslist = payload['worlds']
     banjo_map = payload['banjo_map']
 
@@ -430,6 +432,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         noteslist = {}
     if isinstance(hag, bool) == False:
         hag = False
+    if isinstance(roar_obtain, bool) == False:
+        roar_obtain = False
 
     if demo == False and ctx.sync_ready == True:
         locs1 = []
@@ -474,6 +478,10 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             for locationId, value in dino_kids.items():
                 if value == True:
                     locs1.append(int(locationId))
+        if ctx.roar != roar_obtain:
+            ctx.roar = roar_obtain
+            if roar_obtain == True:
+                locs1.append(1231009)
         if ctx.jiggy_table != jiggylist:
             ctx.jiggy_table = jiggylist
             for locationId, value in jiggylist.items():
