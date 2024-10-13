@@ -98,13 +98,17 @@ class EnableMultiWorldNotes(Toggle):
     """Note Nests are scattered across the MultiWorld."""
     display_name = "Randomize Note Nests"
 
+class EnableMultiWorldDinoRoar(Toggle):
+    """Baby T-Rex Roar is lost across the MultiWorld. Other players need to help him learn to ROAR!"""
+    display_name = "Baby T-Rex Roar"
+
 class KingJingalingHasJiggy(DefaultOnToggle):
     """King Jingaling will always have a Jiggy to give you."""
     display_name = "King Jingaling Jiggy"
 
 class KingJingalingSkip(DefaultOnToggle):
     """Give King Jingaling's reward early and take a shortcut to Wooded Hollow"""
-    display_name = "King Jingaling Jiggy"
+    display_name = "King Jingaling Skip"
 
 class SkipPuzzles(DefaultOnToggle):
     """Open world entrances without having to go to Jiggywiggy."""
@@ -307,6 +311,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_chuffy: EnableMultiWorldChuffyTrain
     randomize_notes: EnableMultiWorldNotes
     randomize_stop_n_swap: RandomizeStopnSwap
+    randomize_dino_roar: EnableMultiWorldDinoRoar
     jingaling_jiggy: KingJingalingHasJiggy
     skip_jingaling:KingJingalingSkip
     skip_puzzles: SkipPuzzles

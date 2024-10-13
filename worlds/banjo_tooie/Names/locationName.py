@@ -453,6 +453,7 @@ GOGGLES     = "IoH: Amaze-O-Gaze Goggles"
 SCRUT       = "TDL: Scrut"
 SCRAT       = "TDL: Scrat"
 SCRIT       = "TDL: Scrit"
+ROARDINO    = "TDL: Baby T-Rex Roar"
 
 #Jiggy Chunks
 CHUNK1      = "GGM: Crushing Shed Jiggy Chunk 1"

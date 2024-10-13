@@ -67,6 +67,7 @@ class BanjoTooieWorld(World):
         "Stations": all_group_table["stations"],
         "StopnSwap": all_group_table["stopnswap"],
         "Access": all_group_table["levelaccess"],
+        "Dino": all_group_table["dino"]
     }
         
     options_dataclass =  BanjoTooieOptions
@@ -302,6 +303,9 @@ class BanjoTooieWorld(World):
             return False
         if item.code == 1230832 and self.options.progressive_bash_attack.value == False:
             return False
+        
+        if item.code == 1230780 and self.options.randomize_dino_roar.value == False:
+            return False
 
         if self.options.randomize_bk_moves.value != 0 and item.code == self.starting_attack: #Already has this attack in inventory
             return False
@@ -377,6 +381,9 @@ class BanjoTooieWorld(World):
 
         if self.options.randomize_moves.value == False:
             self.banjo_pre_fills("Moves", None, True)
+
+        if self.options.randomize_dino_roar.value == False:
+            self.banjo_pre_fills("Dino", None, True)
 
         if self.options.randomize_glowbos.value == False:
             self.banjo_pre_fills("Magic", None, True)

@@ -64,6 +64,10 @@ moves_table = {
     itemName.AMAZEOGAZE:    ItemData(1230779, 1, "progress", locationName.GOGGLES)
 }
 
+dino_table = {
+        itemName.ROAR:      ItemData(1230780, 1, "progress", locationName.ROARDINO)
+}
+
 bk_moves_table = {
     itemName.DIVE:          ItemData(1230810, 1, "progress", ""),
     itemName.FPAD:          ItemData(1230811, 1, "progress", ""),
@@ -133,7 +137,6 @@ stop_n_swap_table = {
     itemName.HOMINGEGGS:    ItemData(1230802, 1, "useful", locationName.BMEGGH),
     itemName.BMEGG:         ItemData(1230803, 1, "progress", locationName.BMEGG),
     itemName.PMEGG:         ItemData(1230804, 1, "progress", locationName.PMEGG)
-
 }
 
 stations_table = {
@@ -169,7 +172,8 @@ all_item_table = {
     **token_table,
     **stop_n_swap_table,
     **bk_moves_table,
-    **progressive_ability_table
+    **progressive_ability_table,
+    **dino_table
 }
 
 all_group_table = {
@@ -182,7 +186,8 @@ all_group_table = {
     'levelaccess': rando_key_table,
     'token': token_table,
     "stopnswap": stop_n_swap_table,
-    "bk_moves": bk_moves_table
+    "bk_moves": bk_moves_table,
+    "dino": dino_table
 }
 
 
