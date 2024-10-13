@@ -1,6 +1,7 @@
 # 2.1.5-beta
+  - Starting attack: If not on beginner logic, wonderwing can be your starting attack.
+  - Wonderwing challenge: if you can have wonderwing as your starting attack, you will get it!
   - Logic fixes:
-    - Starting attack: If not on beginner logic, wonderwing can be your starting attack.
     - Jade Snake Grove jinjo: in glitched logic, you can kick the jinjo as the golden goliath.
     - Treasure Chamber jiggy: you can shoot any egg, including clockworks, at the snake heads.
     - Old King Coal: checks for different attacks based on logic. Beginners need eggs, normal needs a mobile attack, others need any working attack.
