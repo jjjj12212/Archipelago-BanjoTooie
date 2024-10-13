@@ -7725,6 +7725,7 @@ function finishTransition()
         then
             CURRENT_MAP = mapaddr
             savingBMM()
+            client.saveram()
         end
         if ENABLE_AP_CHUFFY == true
         then
@@ -8401,6 +8402,7 @@ function initializeFlags()
         BTCONSUMEOBJ:changeConsumable("Ice Keys")
         BTCONSUMEOBJ:setConsumable(0)
         BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star,moon, sun 
+        BTRAMOBJ:setFlag(0x15, 5) --Just open the compound door...
 
         if SKIP_KING == true
         then
