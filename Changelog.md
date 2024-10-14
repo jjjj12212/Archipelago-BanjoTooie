@@ -1,4 +1,4 @@
-# 2.1.5-beta
+# 3.0-beta
   - Starting attack: If not on beginner logic, wonderwing can be your starting attack.
   - Wonderwing challenge: if you can have wonderwing as your starting attack, you will get it!
   - Logic fixes:
@@ -20,6 +20,24 @@
     - Sack Race Exit Note: beginner logic needs some sort of elevation. The others don't.
     - Cheese Wedge note: the item is now mapped to the correct logic.
     - Top of HFP access: normal logic no longer can do it with split up.
+  - Lua Framework rework:
+   - Seperates items to become their own functions and send to BTClient only the items on a given map (so not everything all the time!)
+   - Each item is mapped to a Banjo-Tooie Map on the Lua. So only a given map it will check for those flags instead of everything.
+   - Better code handling between map transitions
+   - Resolves outstanding bugs such as:
+    - Wrong Item Count. This is now accurate when collecting an item
+    - Train switches automatically getting switched. Fixed
+    - Roysten not behind boulder. Fixed
+    - Treble Clef at JV is still there after loading an existing game. Fixed
+    - Exploiting Fire Eggs in Plateau. Fixed
+    - WW Split up pads buggy. Fixed
+    - Dragon Brothers not giving jiggy. Fixed
+    - Heggy hardlocking. Fixed
+   - Baby T-Rex Roar is now in the Pool
+   - Smooth Banjo is fixed when entering a new map
+   - Remove Jinjo forbid options from Lua
+   - Change disable Text Overlay YAML Option to Enable Text Overlay
+   - Ability to change Text Overlay Colour
 
 # 2.1.4-beta
   - Logic fixes:
