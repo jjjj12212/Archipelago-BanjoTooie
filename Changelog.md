@@ -38,6 +38,7 @@
    - Remove Jinjo forbid options from Lua
    - Change disable Text Overlay YAML Option to Enable Text Overlay
    - Ability to change Text Overlay Colour
+   - If Deathlink enabled, Gruntilda will now mock you if you die in the BTClient for all to see!
 
 # 2.1.4-beta
   - Logic fixes:
