@@ -601,9 +601,9 @@ class BanjoTooieRules:
             locationName.NOTEJRL16:  lambda state: self.notes_jolly(state),
             
             locationName.NOTETDL1:  lambda state: self.small_elevation(state) or self.humbaTDL(state),
-            locationName.NOTETDL10:  lambda state: self.long_jump(state) or self.springy_step_shoes(state) or self.TDL_flight_pad(state) or self.humbaTDL(state),
-            locationName.NOTETDL11:  lambda state: self.long_jump(state) or self.springy_step_shoes(state) or self.TDL_flight_pad(state) or self.humbaTDL(state),
-            locationName.NOTETDL12:  lambda state: self.long_jump(state) or self.springy_step_shoes(state) or self.TDL_flight_pad(state) or self.humbaTDL(state),
+            locationName.NOTETDL10:  lambda state: self.long_jump(state) or self.springy_step_shoes(state) or self.TDL_flight_pad(state) or (self.humbaTDL(state) and self.roar(state)),
+            locationName.NOTETDL11:  lambda state: self.long_jump(state) or self.springy_step_shoes(state) or self.TDL_flight_pad(state) or (self.humbaTDL(state) and self.roar(state)),
+            locationName.NOTETDL12:  lambda state: self.long_jump(state) or self.springy_step_shoes(state) or self.TDL_flight_pad(state) or (self.humbaTDL(state) and self.roar(state)),
             locationName.NOTETDL13:  lambda state: self.notes_river_passage(state),
             locationName.NOTETDL14:  lambda state: self.notes_river_passage(state),
             locationName.NOTETDL15:  lambda state: self.notes_river_passage(state),
@@ -1422,13 +1422,14 @@ class BanjoTooieRules:
     def jiggy_roar_cage(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.humbaTDL(state)
+            logic = self.humbaTDL(state) and self.roar(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.humbaTDL(state)
+            logic = self.humbaTDL(state) and self.roar(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.humbaTDL(state)
+            logic = self.humbaTDL(state) and self.roar(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.humbaTDL(state) or (self.egg_aim(state) and self.clockwork_eggs(state))
+            logic = self.humbaTDL(state) and self.roar(state)\
+                    or self.clockwork_shot(state) and (self.springy_step_shoes(state) or self.long_jump(state) or self.split_up(state))
         return logic
     
     def jiggy_skivvy(self, state: CollectionState) -> bool:
@@ -2312,13 +2313,13 @@ class BanjoTooieRules:
     def cheato_trex(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.humbaTDL(state)
+            logic = self.humbaTDL(state) and self.roar(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.humbaTDL(state)
+            logic = self.humbaTDL(state) and self.roar(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.humbaTDL(state)
+            logic = self.humbaTDL(state) and self.roar(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.humbaTDL(state) or self.clockwork_eggs(state)
+            logic = self.humbaTDL(state) and self.roar(state) or self.clockwork_eggs(state)
         return logic
     
     def cheato_dippy_pool(self, state: CollectionState) -> bool:
@@ -5062,6 +5063,21 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 3: # glitched
             logic = state.has(itemName.HUMBATD, self.player)
         return logic
+
+    def bargasaurus_roar(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.humbaTDL(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.humbaTDL(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.humbaTDL(state)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.humbaTDL(state)
+        return logic
+    
+    def roar(self, state: CollectionState) -> bool:
+        return state.has(itemName.ROAR, self.player) or not self.world.options.randomize_dino_roar
     
     def TDL_flight_pad(self, state: CollectionState) -> bool:
         logic = True
@@ -5323,46 +5339,15 @@ class BanjoTooieRules:
                 access = self.world.multiworld.get_location(location, self.player)
                 set_rule(access, rules)
 
+        if self.world.options.randomize_dino_roar:
+            set_rule(self.world.multiworld.get_location(locationName.ROARDINO, self.player), lambda state: self.bargasaurus_roar(state))
+
         for item in self.moves_forbid:
             #The Doubloons near Wing Wack Silo
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB10, self.player), item, self.player)
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB9, self.player), item, self.player)
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB8, self.player), item, self.player)
             forbid_item(self.world.multiworld.get_location(locationName.JRLDB7, self.player), item, self.player)
-            if self.world.options.forbid_on_jinjo_family == 1 or self.world.options.forbid_on_jinjo_family == 2:
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH3, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH4, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH5, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH6, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH7, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH8, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
-        
-        if self.world.options.forbid_on_jinjo_family == 2 or self.world.options.forbid_on_jinjo_family == 3:
-            for item in self.magic_forbid:
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH3, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH4, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH5, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH6, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH7, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH8, self.player), item, self.player)
-                forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
-
-        if self.world.options.forbid_jinjos_on_jinjo_family == True:
-            for item in self.jinjo_forbid:
-                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH1, self.player), item, self.player)
-                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH2, self.player), item, self.player)
-                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH3, self.player), item, self.player)
-                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH4, self.player), item, self.player)
-                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH5, self.player), item, self.player)
-                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH6, self.player), item, self.player)
-                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH7, self.player), item, self.player)
-                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH8, self.player), item, self.player)
-                    forbid_item(self.world.multiworld.get_location(locationName.JIGGYIH9, self.player), item, self.player)
 
         if self.world.options.cheato_rewards.value == True:
             for location, rules in self.cheato_rewards_rules.items():

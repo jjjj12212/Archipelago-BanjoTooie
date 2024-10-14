@@ -7,7 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
     
 class LocationData(typing.NamedTuple):
-    #last good ID: 1231008
+    #last good ID: 1231009
     #12C770 pointer instead (1230704)
     btid: int = 0
     # Save + mem addr
@@ -341,6 +341,7 @@ TLLoc_table = {
     locationName.SCRUT:      LocationData(1231006, 0, 0), #Implement on Client Side
     locationName.SCRAT:      LocationData(1231007, 0, 0), #Implement on Client Side
     locationName.SCRIT:      LocationData(1231008, 0, 0), #Implement on Client Side
+    locationName.ROARDINO:   LocationData(1231009, 0x17, 7)
 }
 
 GILoc_table = {

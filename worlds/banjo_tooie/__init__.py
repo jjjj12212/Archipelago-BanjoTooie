@@ -67,6 +67,7 @@ class BanjoTooieWorld(World):
         "Stations": all_group_table["stations"],
         "StopnSwap": all_group_table["stopnswap"],
         "Access": all_group_table["levelaccess"],
+        "Dino": all_group_table["dino"]
     }
         
     options_dataclass =  BanjoTooieOptions
@@ -117,6 +118,8 @@ class BanjoTooieWorld(World):
                 self.notecounter += 1
             else:
                 item_classification = ItemClassification.progression
+        if banjoItem.type == 'progression_skip_balancing': #Mumbo Tokens
+            item_classification = ItemClassification.progression_skip_balancing
         if banjoItem.type == 'useful':
             if banjoItem.btid == 1230513 and self.use_cheato_filler == False: #pages
                 if self.options.cheato_rewards.value == True:
@@ -300,6 +303,9 @@ class BanjoTooieWorld(World):
             return False
         if item.code == 1230832 and self.options.progressive_bash_attack.value == False:
             return False
+        
+        if item.code == 1230780 and self.options.randomize_dino_roar.value == False:
+            return False
 
         if self.options.randomize_bk_moves.value != 0 and item.code == self.starting_attack: #Already has this attack in inventory
             return False
@@ -343,16 +349,22 @@ class BanjoTooieWorld(World):
             banjoItem = all_item_table.get(itemName.BEGGS)
             self.starting_egg = banjoItem.btid
         if self.options.randomize_bk_moves.value != 0:
-            base_attacks: list
-            if self.options.logic_type == 0:
-                base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
-            if self.options.logic_type == 1:
-                base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
+            chosen_attack: str
+            if self.options.victory_condition == 4 and not (self.options.logic_type == 0 and self.options.skip_klungo == 0): # Wonderwing challenge: you start with wonderwing if you can do it.
+                chosen_attack = itemName.WWING
+
             else:
-                base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
-                base_attacks.append(itemName.PBASH if self.options.progressive_bash_attack.value == 1 else itemName.GRAT)
-                base_attacks.append(itemName.PBBUST if self.options.progressive_beak_buster.value == True else itemName.BBUST)
-            chosen_attack = random.choice(base_attacks)
+                base_attacks: list
+                if self.options.logic_type == 0:
+                    base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
+                if self.options.logic_type == 1:
+                    base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
+                else:
+                    base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
+                    base_attacks.append(itemName.PBASH if self.options.progressive_bash_attack.value == 1 else itemName.GRAT)
+                    base_attacks.append(itemName.PBBUST if self.options.progressive_beak_buster.value == True else itemName.BBUST)
+                chosen_attack = random.choice(base_attacks)
+
             starting_attack = self.create_item(chosen_attack)
             self.multiworld.push_precollected(starting_attack)
             banjoItem = all_item_table.get(chosen_attack)
@@ -375,6 +387,9 @@ class BanjoTooieWorld(World):
 
         if self.options.randomize_moves.value == False:
             self.banjo_pre_fills("Moves", None, True)
+
+        if self.options.randomize_dino_roar.value == False:
+            self.banjo_pre_fills("Dino", None, True)
 
         if self.options.randomize_glowbos.value == False:
             self.banjo_pre_fills("Magic", None, True)
@@ -563,7 +578,9 @@ class BanjoTooieWorld(World):
         btoptions["player_name"] = self.multiworld.player_name[self.player]
         btoptions["seed"] = random.randint(12212, 69996)
         btoptions["deathlink"] = "true" if self.options.death_link.value == 1 else "false"
-        btoptions["disable_text"] = "true" if self.options.disable_overlay_text.value == 1 else "false"
+        btoptions["activate_text"] = "true" if self.options.activate_overlay_text.value == 1 else "false"
+        btoptions['text_colour'] = int(self.options.overlay_text_colour.value)
+
 
         if self.options.skip_tower_of_tragedy == 1:
             btoptions["skip_tot"] = "true"
@@ -576,6 +593,7 @@ class BanjoTooieWorld(World):
         btoptions['pages'] = "true" if self.options.randomize_cheato.value == True else "false"
         btoptions['cheato_rewards'] = "true" if self.options.cheato_rewards == 1 else "false"
         btoptions['moves'] = "true" if self.options.randomize_moves == 1 else "false"
+        btoptions['roar'] = "true" if self.options.randomize_dino_roar == 1 else "false"
         btoptions['bk_moves'] = int(self.options.randomize_bk_moves.value)
         btoptions['doubloons'] = "true" if self.options.randomize_doubloons == 1 else "false"
         btoptions['magic'] = "true" if self.options.randomize_glowbos == 1 else "false"
