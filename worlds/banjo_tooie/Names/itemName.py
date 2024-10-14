@@ -51,6 +51,7 @@ DAIR        = "Double Air"
 BBASH       = "Breegull Bash"
 HOMINGEGGS  = "Homing Eggs Toggle"
 AMAZEOGAZE  = "Amaze-O-Gaze"
+ROAR        = "Baby T-Rex Roar"
 
 DIVE        = "Dive"
 FPAD        = "Flight Pad"

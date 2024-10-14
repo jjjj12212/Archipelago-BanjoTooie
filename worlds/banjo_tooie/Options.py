@@ -42,26 +42,21 @@ class EnableCheatoRewards(DefaultOnToggle):
     """Cheato rewards you a cheat + an additional randomized reward. Use Cheato Pages as Filler cannot be set if this is enabled."""
     display_name = "Cheato Rewards"
 
-class DisableOverlayText(Toggle):
-    """Disables the overlay text on screen. Useful if your already streaming/viewing the BT_Client."""
-    display_name = "Disable Overlay Text"
+class ActivateOverlayText(DefaultOnToggle):
+    """Activates the overlay text on screen. Useful if you are not streaming/viewing the BT_Client."""
+    display_name = "Activate Overlay Text"
+
+class OverlayTextColour(Choice):
+    """Banjo-Kazooie Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves.
+    Mcjiggy Special - No Talon Trot and Tall Jump in the Pool """
+    display_name = "Text Overlay Colour"
+    option_chilli_billi = 0
+    option_chilly_willy = 1
+    default = 0
 
 class EnableMultiWorldJinjos(DefaultOnToggle):
     """Jinjos fled to other worlds. Other players need return them home."""
     display_name = "Randomize Jinjos"
-
-class ForbidMovesOnJinjoFamilyTreasure(Choice):
-    """If Jinjos are randomized, do not allow unlockable moves or magic behind Jinjo Families."""
-    display_name = "Forbid Unlockable Moves or Magic on Jinjo Family Treasure"
-    option_none = 0
-    option_moves_only = 1
-    option_moves_and_magic = 2
-    option_magic_only = 3
-    default = 1
-
-class ForbidJinjosOnJinjoFamilyTreasure(Toggle):
-    """If Jinjos are randomized, do not allow other colour Jinjos behind Jinjo Families."""
-    display_name = "Forbid Jinjos on Jinjo Family Treasure"
 
 class EnableMultiWorldDoubloons(Toggle):
     """Jolly Roger's Doubloons are scattered across the MultiWorld."""
@@ -103,13 +98,17 @@ class EnableMultiWorldNotes(Toggle):
     """Note Nests are scattered across the MultiWorld."""
     display_name = "Randomize Note Nests"
 
+class EnableMultiWorldDinoRoar(Toggle):
+    """Baby T-Rex Roar is lost across the MultiWorld. Other players need to help him learn to ROAR!"""
+    display_name = "Baby T-Rex Roar"
+
 class KingJingalingHasJiggy(DefaultOnToggle):
     """King Jingaling will always have a Jiggy to give you."""
     display_name = "King Jingaling Jiggy"
 
 class KingJingalingSkip(DefaultOnToggle):
     """Give King Jingaling's reward early and take a shortcut to Wooded Hollow"""
-    display_name = "King Jingaling Jiggy"
+    display_name = "King Jingaling Skip"
 
 class SkipPuzzles(DefaultOnToggle):
     """Open world entrances without having to go to Jiggywiggy."""
@@ -289,7 +288,8 @@ class ExceedingItemsFiller(Toggle):
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
-    disable_overlay_text:DisableOverlayText
+    activate_overlay_text:ActivateOverlayText
+    overlay_text_colour:OverlayTextColour
     randomize_moves: EnableMultiWorldMoveList
     randomize_bk_moves: EnableMultiWorldBKMoveList
     progressive_beak_buster: ProgressiveBeakBuster
@@ -298,8 +298,6 @@ class BanjoTooieOptions(PerGameCommonOptions):
     progressive_water_training: ProgressiveSwimming
     progressive_bash_attack: ProgressiveBashAttack
     randomize_jinjos: EnableMultiWorldJinjos
-    forbid_on_jinjo_family: ForbidMovesOnJinjoFamilyTreasure
-    forbid_jinjos_on_jinjo_family: ForbidJinjosOnJinjoFamilyTreasure
     randomize_doubloons: EnableMultiWorldDoubloons
     randomize_cheato: EnableMultiWorldCheatoPages
     cheato_rewards: EnableCheatoRewards
@@ -313,6 +311,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_chuffy: EnableMultiWorldChuffyTrain
     randomize_notes: EnableMultiWorldNotes
     randomize_stop_n_swap: RandomizeStopnSwap
+    randomize_dino_roar: EnableMultiWorldDinoRoar
     jingaling_jiggy: KingJingalingHasJiggy
     skip_jingaling:KingJingalingSkip
     skip_puzzles: SkipPuzzles

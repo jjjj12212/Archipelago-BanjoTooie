@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | 2.1.4-Beta
+# Archipelago Banjo-Tooie (US-Only) | 3.0-Beta
 Banjo Tooie for Archipelago 
 
 # Controller Shortcuts with this implementation
@@ -10,7 +10,6 @@ Banjo Tooie for Archipelago
  - Dpad right + L: Super Banjo
  - Dpad down + L: Health Regen
  - Dpad left + L: Aim Assist 
-
 
 # Current implementation
 - Death Link
@@ -30,12 +29,13 @@ Banjo Tooie for Archipelago
 - Skip Jiggywiggy puzzles to open levels
 - Option for worlds to open in random order. (requires certain amount of items randomized and puzzle skip)
 - Alternate Goals
-- Prison code is always set to: <b>Sun, Moon, Star, Moon, Sun</b>
+- Prison code door is always open
 - Cheato Rewards as an option (awards an additional randomized item)
 - Honey B Rewards as an option (awards an additional randomized item)
 - Randomize Original Banjo-Kazooie Moves (YAML Option)
 - Change how Eggs works (YAML Option)
 - Progressive Ability Upgrades
+- T-Rex Roar
 
 # Implemented Banjo-Kazooie Moves in Archipelago
 - Dive

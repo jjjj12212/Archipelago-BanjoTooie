@@ -361,7 +361,8 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTETDL16,
         locationName.SCRUT,
         locationName.SCRAT,
-        locationName.SCRIT
+        locationName.SCRIT,
+        locationName.ROARDINO
     ],
     regionName.TL_HATCH: [
         locationName.HATCH,

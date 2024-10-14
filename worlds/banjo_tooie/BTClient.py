@@ -3,7 +3,9 @@ import json
 import os
 import multiprocessing
 import copy
+import random
 import subprocess
+import time
 from typing import Union
 import zipfile
 from asyncio import StreamReader, StreamWriter
@@ -54,7 +56,7 @@ bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 
 script_version: int = 4
-version: str = "V2.1.4"
+version: str = "V3.0"
 
 def get_item_value(ap_id):
     return ap_id
@@ -92,9 +94,15 @@ class BanjoTooieContext(CommonContext):
         self.movelist_table = {}
         self.cheatorewardslist_table = {}
         self.honeybrewardslist_table = {}
-        self.notelist_table = {}
+        self.treblelist_table = {}
         self.stationlist_table = {}
         self.jinjofamlist_table = {}
+        self.jinjolist_table = {}
+        self.pages_table = {}
+        self.honeycomb_table = {}
+        self.glowbo_table = {}
+        self.doubloon_table = {}
+        self.notes_table = {}
         self.worldlist_table = {}
         self.chuffy_table = {}
         self.mystery_table = {}
@@ -102,6 +110,8 @@ class BanjoTooieContext(CommonContext):
         self.jiggychunks_table = {}
         self.goggles_table = False
         self.dino_kids_table = {}
+        self.roar = False
+        self.jiggy_table = {}
         self.current_map = 0
         self.deathlink_enabled = False
         self.deathlink_pending = False
@@ -113,6 +123,16 @@ class BanjoTooieContext(CommonContext):
         self.sendSlot = False
         self.sync_ready = False
         self.startup = False
+        self.death_messages = [
+            "Gruntilda:    Did you hear that lovely clack, \n                     My broomstick gave you such a whack!",
+            "Gruntilda:    AAAH! I see it makes you sad, \n                     To know your skills are really bad!",
+            "Gruntilda:    I hit that bird right on the beak, \n                     Let it be the end of her cheek!",
+            "Gruntilda:    My fiery blast you just tasted, \n                     Grunty's spells on you are wasted!",
+            "Gruntilda:    Hopeless bear runs to and fro, \n                     But takes a whack for being so slow!",
+            "Gruntilda:    So I got you there once more, \n                     I knew your skills were very poor!",
+            "Gruntilda:    Simply put I'm rather proud, \n                     Your yelps and screams I heard quite loud!",
+            "Gruntilda:    Grunty's fireball you did kiss, \n                     You're so slow I can hardly miss!"
+        ]
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -132,7 +152,25 @@ class BanjoTooieContext(CommonContext):
 
     def on_deathlink(self, data: dict):
         self.deathlink_pending = True
-        super().on_deathlink(data)
+        self.last_death_link = max(data["time"], self.last_death_link)
+        text = data.get("cause", "")
+        if text:
+            logger.info(f"DeathLink: {text}")
+        else:
+            logger.info(f"{random.choice(self.death_messages)} \n(DeathLink: Received from {data['source']})")
+
+    async def send_death(self, death_text: str = ""):
+        if self.server and self.server.socket:
+            logger.info(f"{random.choice(self.death_messages)} \n(DeathLink: Sending death to your friends...)")
+            self.last_death_link = time.time()
+            await self.send_msgs([{
+                "cmd": "Bounce", "tags": ["DeathLink"],
+                "data": {
+                    "time": self.last_death_link,
+                    "source": self.player_names[self.slot],
+                    "cause": death_text
+                }
+            }])
 
     def run_gui(self):
         from kvui import GameManager
@@ -261,7 +299,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_player": ctx.slot_data["player_name"],
             "slot_seed": ctx.slot_data["seed"],
             "slot_deathlink": ctx.deathlink_enabled,
-            "slot_disable_text": ctx.slot_data["disable_text"],
+            "slot_activate_text": ctx.slot_data["activate_text"],
             "slot_skip_tot": ctx.slot_data["skip_tot"],
             "slot_honeycomb": ctx.slot_data["honeycomb"],
             "slot_pages": ctx.slot_data["pages"],
@@ -289,7 +327,8 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_boss_hunt_length": ctx.slot_data["boss_hunt_length"],
             "slot_jinjo_family_rescue_length": ctx.slot_data["jinjo_family_rescue_length"],
             "slot_token_hunt_length": ctx.slot_data["token_hunt_length"],
-            "slot_version": version
+            "slot_version": version,
+            "slot_text_colour": ctx.slot_data["text_colour"]
         })
     ctx.sendSlot = False
     return payload
@@ -318,28 +357,39 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         ctx.deathlink_enabled = True
 
     # Locations handling
-    locations = payload['locations']
+    #locations = payload['locations']
+    demo = payload['DEMO']
     chuffy = payload['chuffy']
-    notelist = payload['treble']
+    treblelist = payload['treble']
     stationlist = payload['stations']
     mystery = payload['mystery']
     roystenlist = payload['roysten']
     jinjofamlist = payload['jinjofam']
+    jinjolist = payload['jinjos']
+    pageslist = payload['pages']
+    honeycomblist = payload['honeycomb']
+    glowbolist = payload['glowbo']
+    doubloonlist = payload['doubloon']
+    noteslist = payload['notes']
+    movelist = payload['unlocked_moves']
+    hag = payload['hag']
     cheatorewardslist = payload['cheato_rewards']
     honeybrewardslist = payload['honeyb_rewards']
     jiggychunklist = payload['jiggy_chunks']
     goggles = payload['goggles']
+    jiggylist = payload['jiggies']
     dino_kids = payload['dino_kids']
+    roar_obtain = payload['roar']
     worldslist = payload['worlds']
     banjo_map = payload['banjo_map']
 
     # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
-    if isinstance(locations, list):
-        locations = {}
+    # if isinstance(locations, list):
+    #     locations = {}
     if isinstance(chuffy, list):
         chuffy = {}
-    if isinstance(notelist, list):
-        notelist = {}
+    if isinstance(treblelist, list):
+        treblelist = {}
     if isinstance(stationlist, list):
         stationlist = {}
     if isinstance(mystery, list):
@@ -360,48 +410,41 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         dino_kids = {}
     if isinstance(goggles, bool) == False:
         goggles = False
+    if isinstance(demo, bool) == False:
+        demo = True
     if isinstance(banjo_map, int) == False:
         banjo_map = 0
+    if isinstance(jiggylist, list):
+        jiggylist = {}
+    if isinstance(jinjolist, list):
+        jinjolist = {}
+    if isinstance(movelist, list):
+        movelist = {}
+    if isinstance(pageslist, list):
+        pageslist = {}
+    if isinstance(honeycomblist, list):
+        honeycomblist = {}
+    if isinstance(glowbolist, list):
+        glowbolist = {}
+    if isinstance(doubloonlist, list):
+        doubloonlist = {}
+    if isinstance(noteslist, list):
+        noteslist = {}
+    if isinstance(hag, bool) == False:
+        hag = False
+    if isinstance(roar_obtain, bool) == False:
+        roar_obtain = False
 
-    if "DEMO" not in locations and ctx.sync_ready == True:
+    if demo == False and ctx.sync_ready == True:
         locs1 = []
-        if ctx.location_table != locations: 
-            for item_group, BTlocation_table in locations.items():
-                    if len(BTlocation_table) == 0:
-                        continue
-
-                    # Game completion handling
-                    if (("1230027" in BTlocation_table and BTlocation_table["1230027"] == True) 
-                    and (ctx.slot_data["goal_type"] == 0 or ctx.slot_data["goal_type"] == 4) and not ctx.finished_game):
-                        await ctx.send_msgs([{
-                            "cmd": "StatusUpdate",
-                            "status": 30
-                        }])
-                        ctx.finished_game = True
-
-                    else:
-                        for locationId, value in BTlocation_table.items():
-                            if value == True:
-                                if (locationId == "1230676" or locationId == "1230677" or locationId == "1230678" or
-                                    locationId == "1230679" or locationId == "1230680" or locationId == "1230681" or
-                                    locationId == "1230682" or locationId == "1230683" or locationId == "1230684") \
-                                    and ctx.slot_data["jinjo"] == "true":
-                                    continue
-                                if locationId not in ctx.location_table:
-                                    locs1.append(int(locationId))
-                                    if ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or \
-                                    ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
-                                       locs1 = mumbo_tokens_loc(locs1, int(locationId), ctx.slot_data["goal_type"])
-                                   
-            ctx.location_table = locations       
         if ctx.chuffy_table != chuffy:
             ctx.chuffy_table = chuffy
             for locationId, value in chuffy.items():
                 if value == True:
                     locs1.append(int(locationId))
-        if ctx.notelist_table != notelist:
-            ctx.notelist_table = notelist
-            for locationId, value in notelist.items():
+        if ctx.treblelist_table != treblelist:
+            ctx.treblelist_table = treblelist
+            for locationId, value in treblelist.items():
                 if value == True:
                     locs1.append(int(locationId))
         if ctx.stationlist_table != stationlist:
@@ -435,53 +478,98 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             for locationId, value in dino_kids.items():
                 if value == True:
                     locs1.append(int(locationId))
-
-        if ctx.slot_data["moves"] == "true":
-            # Locations handling
-            movelist = payload['unlocked_moves']
-            # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
-            if isinstance(movelist, list):
-                movelist = {}
-
-            if ctx.movelist_table != movelist:
-                ctx.movelist_table = movelist
-
-                for locationId, value in movelist.items():
-                    if value == True:
-                        locs1.append(int(locationId))
-        if ctx.slot_data["jinjo"] == "true":
-            if ctx.jinjofamlist_table != jinjofamlist:
-                ctx.jinjofamlist_table = jinjofamlist
-                for locationId, value in jinjofamlist.items():
-                    if value == True:
-                        locs1.append(int(locationId))
-                        if ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
-                            locs1 = mumbo_tokens_loc(locs1, int(locationId), ctx.slot_data["goal_type"])
-        if ctx.slot_data["cheato_rewards"] == "true":
-            if ctx.cheatorewardslist_table != cheatorewardslist:
-                ctx.cheatorewardslist_table = cheatorewardslist
-                for locationId, value in cheatorewardslist.items():
-                    if value == True:
-                        locs1.append(int(locationId))
-        if ctx.slot_data["honeyb_rewards"] == "true":
-            if ctx.honeybrewardslist_table != honeybrewardslist:
-                ctx.honeybrewardslist_table = honeybrewardslist
-                for locationId, value in honeybrewardslist.items():
-                    if value == True:
-                        locs1.append(int(locationId))
+        if ctx.roar != roar_obtain:
+            ctx.roar = roar_obtain
+            if roar_obtain == True:
+                locs1.append(1231009)
+        if ctx.jiggy_table != jiggylist:
+            ctx.jiggy_table = jiggylist
+            for locationId, value in jiggylist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.jinjolist_table != jinjolist:
+            ctx.jinjolist_table = jinjolist
+            for locationId, value in jinjolist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.pages_table != pageslist:
+            ctx.pages_table = pageslist
+            for locationId, value in pageslist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.honeycomb_table != honeycomblist:
+            ctx.honeycomb_table = honeycomblist
+            for locationId, value in honeycomblist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.glowbo_table != glowbolist:
+            ctx.glowbo_table = glowbolist
+            for locationId, value in glowbolist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.doubloon_table != doubloonlist:
+            ctx.doubloon_table = doubloonlist
+            for locationId, value in doubloonlist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.notes_table != noteslist:
+            ctx.notes_table = noteslist
+            for locationId, value in noteslist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.movelist_table != movelist:
+            ctx.movelist_table = movelist
+            for locationId, value in movelist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.jinjofamlist_table != jinjofamlist:
+            ctx.jinjofamlist_table = jinjofamlist
+            for locationId, value in jinjofamlist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.cheatorewardslist_table != cheatorewardslist:
+            ctx.cheatorewardslist_table = cheatorewardslist
+            for locationId, value in cheatorewardslist.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.honeybrewardslist_table != honeybrewardslist:
+            ctx.honeybrewardslist_table = honeybrewardslist
+            for locationId, value in honeybrewardslist.items():
+                if value == True:
+                    locs1.append(int(locationId))
         if ctx.slot_data["skip_puzzles"] == "true":
             if ctx.worldlist_table != worldslist:
                 ctx.worldlist_table = worldslist
                 for locationId, value in worldslist.items():
                     if value == True:
                         locs1.append(int(locationId))
+        #Mumbo Tokens
+        if ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or \
+                    ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 4:
+                    locs1 = mumbo_tokens_loc(locs1, ctx.slot_data["goal_type"])
+
         if len(locs1) > 0:
             await ctx.send_msgs([{
                 "cmd": "LocationChecks",
                 "locations": locs1
             }])
-            
+        
+            if len(locs1) > 0:
+                await ctx.send_msgs([{
+                    "cmd": "LocationChecks",
+                    "locations": locs1
+                }])
         #GAME VICTORY
+        #Beat Hag-1
+        if hag == True and (ctx.slot_data["goal_type"] == 0 or ctx.slot_data["goal_type"] == 4) and not ctx.finished_game:
+            await ctx.send_msgs([{
+                "cmd": "StatusUpdate",
+                "status": 30
+            }])
+            ctx.finished_game = True
+            ctx._set_message("You have completed your goal", None)
+
+        #Mumbo Tokens
         if (ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or 
             ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 5) and not ctx.finished_game:
             mumbo_tokens = 0
@@ -497,7 +585,9 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                             "status": 30
                         }])
                         ctx.finished_game = True
+                        ctx._set_message("You have completed your goal", None)
 
+        # Ozone Banjo-Tooie Tracker
         if ctx.current_map != banjo_map:
             ctx.current_map = banjo_map
             await ctx.send_msgs([{
@@ -520,78 +610,80 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             ctx.deathlink_pending = False
             if not ctx.deathlink_sent_this_death:
                 ctx.deathlink_sent_this_death = True
+                
                 await ctx.send_death()
         else: # Banjo is somehow still alive
             ctx.deathlink_sent_this_death = False
 
-def mumbo_tokens_loc(locs: list, locationId: int, goaltype: int) -> list:
-    if goaltype == 1 or goaltype == 4:
-        if locationId == 1230598: #MT
-            locs.append(1230968)
-        if locationId == 1230610: #GM
-            locs.append(1230969)
-        if locationId == 1230616: #WW
-            locs.append(1230970)
-        if locationId == 1230617: #WW
-            locs.append(1230971)
-        if locationId == 1230619: #WW
-            locs.append(1230972)
-        if locationId == 1230620: #WW
-            locs.append(1230973)
-        if locationId == 1230626: #JRL
-            locs.append(1230974)
-        if locationId == 1230641: #TDL
-            locs.append(1230975)
-        if locationId == 1230648: #GI
-            locs.append(1230976)
-        if locationId == 1230654: #GI
-            locs.append(1230977)
-        if locationId == 1230663: #HFP
-            locs.append(1230978)
-        if locationId == 1230668: #CCL
-            locs.append(1230979)
-        if locationId == 1230670: #CCL
-            locs.append(1230980)
-        if locationId == 1230673: #CCL
-            locs.append(1230981)
-        if locationId == 1230749: #CCL
-            locs.append(1230982)
-    if goaltype == 2 or goaltype == 4:
-        if locationId == 1230596: #MT
-            locs.append(1230960)
-        if locationId == 1230606: #GGM
-            locs.append(1230961)
-        if locationId == 1230618: #WW
-            locs.append(1230962)
-        if locationId == 1230632: #JRL
-            locs.append(1230963)
-        if locationId == 1230639: #TDL
-            locs.append(1230964)
-        if locationId == 1230745: #GI
-            locs.append(1230965)
-        if locationId == 1230656: #HFP
-            locs.append(1230966)
-        if locationId == 1230666: #CC
-            locs.append(1230967)
-    if goaltype == 3 or goaltype == 4:
-        if locationId == 1230676: #JINJOFAM
-            locs.append(1230983)
-        if locationId == 1230677: #JINJOFAM
-            locs.append(1230984)
-        if locationId == 1230678: #JINJOFAM
-            locs.append(1230985)
-        if locationId == 1230679: #JINJOFAM
-            locs.append(1230986)
-        if locationId == 1230680: #JINJOFAM
-            locs.append(1230987)
-        if locationId == 1230681: #JINJOFAM
-            locs.append(1230988)
-        if locationId == 1230682: #JINJOFAM
-            locs.append(1230989)
-        if locationId == 1230683: #JINJOFAM
-            locs.append(1230990)
-        if locationId == 1230684: #JINJOFAM
-            locs.append(1230991)
+def mumbo_tokens_loc(locs: list, goaltype: int) -> list:
+    for locationId in locs:
+        if goaltype == 1 or goaltype == 4:
+            if locationId == 1230598: #MT
+                locs.append(1230968)
+            if locationId == 1230610: #GM
+                locs.append(1230969)
+            if locationId == 1230616: #WW
+                locs.append(1230970)
+            if locationId == 1230617: #WW
+                locs.append(1230971)
+            if locationId == 1230619: #WW
+                locs.append(1230972)
+            if locationId == 1230620: #WW
+                locs.append(1230973)
+            if locationId == 1230626: #JRL
+                locs.append(1230974)
+            if locationId == 1230641: #TDL
+                locs.append(1230975)
+            if locationId == 1230648: #GI
+                locs.append(1230976)
+            if locationId == 1230654: #GI
+                locs.append(1230977)
+            if locationId == 1230663: #HFP
+                locs.append(1230978)
+            if locationId == 1230668: #CCL
+                locs.append(1230979)
+            if locationId == 1230670: #CCL
+                locs.append(1230980)
+            if locationId == 1230673: #CCL
+                locs.append(1230981)
+            if locationId == 1230749: #CCL
+                locs.append(1230982)
+        if goaltype == 2 or goaltype == 4:
+            if locationId == 1230596: #MT
+                locs.append(1230960)
+            if locationId == 1230606: #GGM
+                locs.append(1230961)
+            if locationId == 1230618: #WW
+                locs.append(1230962)
+            if locationId == 1230632: #JRL
+                locs.append(1230963)
+            if locationId == 1230639: #TDL
+                locs.append(1230964)
+            if locationId == 1230745: #GI
+                locs.append(1230965)
+            if locationId == 1230656: #HFP
+                locs.append(1230966)
+            if locationId == 1230666: #CC
+                locs.append(1230967)
+        if goaltype == 3 or goaltype == 4:
+            if locationId == 1230676: #JINJOFAM
+                locs.append(1230983)
+            if locationId == 1230677: #JINJOFAM
+                locs.append(1230984)
+            if locationId == 1230678: #JINJOFAM
+                locs.append(1230985)
+            if locationId == 1230679: #JINJOFAM
+                locs.append(1230986)
+            if locationId == 1230680: #JINJOFAM
+                locs.append(1230987)
+            if locationId == 1230681: #JINJOFAM
+                locs.append(1230988)
+            if locationId == 1230682: #JINJOFAM
+                locs.append(1230989)
+            if locationId == 1230683: #JINJOFAM
+                locs.append(1230990)
+            if locationId == 1230684: #JINJOFAM
+                locs.append(1230991)
     return locs
 
 async def n64_sync_task(ctx: BanjoTooieContext): 
@@ -616,7 +708,7 @@ async def n64_sync_task(ctx: BanjoTooieContext):
                     if getSlotData == True:
                         ctx.sendSlot = True
                     elif reported_version >= script_version:
-                        if ctx.game is not None and 'locations' in data_decoded:
+                        if ctx.game is not None and 'jiggies' in data_decoded:
                             # Not just a keep alive ping, parse
                             async_start(parse_payload(data_decoded, ctx, False))
                         if not ctx.auth:
