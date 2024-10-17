@@ -56,7 +56,7 @@ bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 
 script_version: int = 4
-version: str = "V3.0"
+version: str = "V3.1"
 
 def get_item_value(ap_id):
     return ap_id
@@ -321,7 +321,6 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_world_order": ctx.slot_data["world_order"],
             "slot_keys": ctx.slot_data['world_keys'],
             "slot_skip_klungo": ctx.slot_data["skip_klungo"],
-            "slot_skip_king": ctx.slot_data["skip_king"],
             "slot_goal_type": ctx.slot_data["goal_type"],
             "slot_minigame_hunt_length": ctx.slot_data["minigame_hunt_length"],
             "slot_boss_hunt_length": ctx.slot_data["boss_hunt_length"],
@@ -571,21 +570,32 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
 
         #Mumbo Tokens
         if (ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or 
-            ctx.slot_data["goal_type"] == 3 or ctx.slot_data["goal_type"] == 5) and not ctx.finished_game:
+            ctx.slot_data["goal_type"] == 3) and not ctx.finished_game:
             mumbo_tokens = 0
             for networkItem in ctx.items_received:
                 if networkItem.item == 1230798:
                     mumbo_tokens += 1
                     if ((ctx.slot_data["goal_type"] == 1 and mumbo_tokens >= ctx.slot_data["minigame_hunt_length"]) or
                         (ctx.slot_data["goal_type"] == 2 and mumbo_tokens >= ctx.slot_data["boss_hunt_length"]) or
-                        (ctx.slot_data["goal_type"] == 3 and mumbo_tokens >= ctx.slot_data["jinjo_family_rescue_length"]) or
-                        (ctx.slot_data["goal_type"] == 5 and mumbo_tokens >= ctx.slot_data["token_hunt_length"])): 
+                        (ctx.slot_data["goal_type"] == 3 and mumbo_tokens >= ctx.slot_data["jinjo_family_rescue_length"])): 
                         await ctx.send_msgs([{
                             "cmd": "StatusUpdate",
                             "status": 30
                         }])
                         ctx.finished_game = True
                         ctx._set_message("You have completed your goal", None)
+        
+        if (ctx.current_map == 371 and ctx.slot_data["goal_type"] == 5 and not ctx.finished_game):
+            mumbo_tokens = 0
+            for networkItem in ctx.items_received:
+                if networkItem.item == 1230798:
+                    mumbo_tokens += 1
+                    if (mumbo_tokens >= ctx.slot_data["token_hunt_length"]):
+                        await ctx.send_msgs([{
+                            "cmd": "StatusUpdate",
+                            "status": 30
+                        }])
+                        ctx.finished_game = True
 
         # Ozone Banjo-Tooie Tracker
         if ctx.current_map != banjo_map:

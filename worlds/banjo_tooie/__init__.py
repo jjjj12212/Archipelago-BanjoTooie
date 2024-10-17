@@ -74,7 +74,7 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
 
     def __init__(self, world, player):
-        self.version = "V3.0"
+        self.version = "V3.1"
         self.kingjingalingjiggy = False
         self.starting_egg: int = 0
         self.starting_attack: int = 0
@@ -605,7 +605,6 @@ class BanjoTooieWorld(World):
         btoptions['chuffy'] = "true" if self.options.randomize_chuffy == 1 else "false"
         btoptions['jinjo'] = "true" if self.options.randomize_jinjos == 1 else "false"
         btoptions['notes'] = "true" if self.options.randomize_notes == 1 else "false"
-        btoptions['skip_king'] = "true" if self.options.skip_jingaling == 1 else "false"
         btoptions['worlds'] = "true" if self.worlds_randomized else "false"
         btoptions['world_order'] = self.randomize_worlds
         btoptions['world_keys'] = self.randomize_order

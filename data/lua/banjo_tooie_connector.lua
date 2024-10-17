@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V3.0"
+local BT_VERSION = "V3.1"
 local PLAYER = ""
 local SEED = 0
 
@@ -33,7 +33,7 @@ local CLIENT_VERSION = 0
 
 
 local DEBUG = false
-local DEBUG_SILO = false
+local DEBUG_SILO = true
 local DEBUG_JIGGY = false
 local DEBUG_NOTES = false
 local DEBUG_HONEY = false
@@ -56,6 +56,7 @@ local PAUSED = false;
 local TOTALS_MENU = false;
 local OBJ_TOTALS_MENU = false;
 local SAVE_GAME = false;
+local TOKEN_ANNOUNCE = false;
 
 -------- DPAD Vars -----------
 local SNEAK = false;
@@ -123,7 +124,7 @@ local LOAD_SILO_NOTES = false;
 local OPEN_HAG1 = false;
 local SKIP_PUZZLES = false;
 local SKIP_KLUNGO = false;
-local SKIP_KING = false;
+local SKIP_KING = true;
 local TOT_SET_COMPLETE = false;
 
 -------------- MYSTERY VARS -----------
@@ -187,6 +188,8 @@ local ENCOURAGEMENT = {
          [4]  = {message = " YEEHAW!"},
          [5]  = {message = " JINJOO!!"},
          [6]  = {message = " WAHEY!!!"},
+         [7]  = {message = " ROOOOO!!!"},
+         [8]  = {message = " OOMANAKA!!!"}
 }
 
 
@@ -460,7 +463,7 @@ function BTRAM:checkFlag(byte, _bit, fromfuncDebug)
         return false
     end
     if byte == nil then
-        print("Null found in " .. fromfuncDebug)
+        print("Null found in byte " .. tostring(byte) .. " bit: " ..tostring(_bit))
     end
     local currentValue = mainmemory.readbyte(address + byte);
     if bit.check(currentValue, _bit) then
@@ -806,6 +809,7 @@ local ASSET_MAP_CHECK = {
             -- "1230683", --Jinjo
             -- "1230684", --Jinjo
             "1230685", --Jingaling
+            "1230638", -- Scrotty
 --                "1230629", -- Pig Pool
 --                "1230637" -- Dippy
         }
@@ -1534,9 +1538,6 @@ local ASSET_MAP_CHECK = {
         }
     },
     [0x118] =	{ --TDL - Styracosaurus Family Cave
-        ["JIGGIES"] = {
-            "1230638", -- Scrotty
-        },
         ["HONEYCOMB"] = {
             "1230716" -- Cave
         }
@@ -1587,6 +1588,7 @@ local ASSET_MAP_CHECK = {
             "1230646", -- Underwater Waste Disposal
             "1230655", -- Plant Box
             "1230661", -- HFP Oil Drill
+            "1230629", -- Pig Pool
         },
         ["JINJOS"] = {
             "1230578" -- Waste Disposal
@@ -1786,6 +1788,7 @@ local ASSET_MAP_CHECK = {
         ["JIGGIES"] = {
             "1230658", -- Sabreman
             "1230665", -- Lava waterfall
+            "1230629", -- Pig Pool
         },
         ["JINJOS"] = {
             "1230581", -- Lava waterfall
@@ -1828,6 +1831,7 @@ local ASSET_MAP_CHECK = {
             "1230669", -- Canary Mary 3
             "1230671", -- Jiggium Plant
             "1230675", -- Jelly Castle
+            "1230637", -- Dippy
         },
         ["PAGES"] = {
             "1230749" -- Canary Mary
@@ -1931,12 +1935,6 @@ local ASSET_MAP_CHECK = {
         },
         ["PAGES"] = {
             "1230751" -- Zubba
-        }
-    },
-    --CAULDRON KEEP
-    [0x19A] =	{ --CK - HAG 1
-        ["H1"] = {
-            "1230027"
         }
     }
 }
@@ -2047,7 +2045,7 @@ local DINO_KIDS = {} -- the 3 Dino Kids
 
 
 -- Address Map for Banjo-Tooie
-local NON_AGI_MAP = {
+local ADDRESS_MAP = {
     ["MOVES"] = {
         ["1230753"] = {
             ['addr'] = 0x1B,
@@ -4826,7 +4824,7 @@ local NON_AGI_MAP = {
             ['bit'] = 6,
         }
     },
-    ["H1"] = {
+    ['H1'] = {
         ["1230027"] = {
            ['addr'] = 0x03,
            ['bit'] = 3,
@@ -4933,7 +4931,7 @@ local WORLD_ENTRANCE_MAP = {
 ---------------------------------- JIGGIES ---------------------------------
 
 function init_JIGGIES(type, getReceiveMap) -- Initialize JIGGIES
-    for locationId,v in pairs(NON_AGI_MAP["JIGGIES"])
+    for locationId,v in pairs(ADDRESS_MAP["JIGGIES"])
     do
         if type == "BMM"
         then
@@ -4958,7 +4956,7 @@ end
 function restore_BMM_JIGGIES() --Only run while unpausing 
     if BMM_BACKUP_JIGGY == true and AGI_JIGGY_SET == true
     then
-        for locationId,v in pairs(NON_AGI_MAP["JIGGIES"]) do
+        for locationId,v in pairs(ADDRESS_MAP["JIGGIES"]) do
             if BMM_JIGGIES[locationId] == true
             then
                 BTRAMOBJ:setFlag(v['addr'], v['bit']);
@@ -4980,7 +4978,7 @@ function set_AP_JIGGIES() -- Only run while Pausing or Transistion to certain ma
     then
         for locationId, value in pairs(AGI_JIGGIES)
         do
-            local get_addr = NON_AGI_MAP["JIGGIES"][locationId]
+            local get_addr = ADDRESS_MAP["JIGGIES"][locationId]
             if value == true
             then
                 BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
@@ -5008,7 +5006,7 @@ function obtained_AP_JIGGY()
             AGI_JIGGIES[locationId] = true;
             if AGI_JIGGY_SET == true
             then
-                local get_addr = NON_AGI_MAP["JIGGIES"][tostring(locationId)]
+                local get_addr = ADDRESS_MAP["JIGGIES"][tostring(locationId)]
                 BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
             end
             break
@@ -5032,7 +5030,7 @@ end
 function backup_BMM_JIGGIES()
     if BMM_BACKUP_JIGGY == false
     then
-        for locationId,v in pairs(NON_AGI_MAP["JIGGIES"]) do
+        for locationId,v in pairs(ADDRESS_MAP["JIGGIES"]) do
             if BTRAMOBJ:checkFlag(v['addr'], v['bit']) == true
             then
                 BMM_JIGGIES[locationId] = true
@@ -5067,20 +5065,20 @@ function jiggy_check()
             then
                 for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["JIGGIES"])
                 do
-                    checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["JIGGIES"][locationId]['addr'], NON_AGI_MAP["JIGGIES"][locationId]['bit'])
+                    checks[locationId] = BTRAMOBJ:checkFlag(ADDRESS_MAP["JIGGIES"][locationId]['addr'], ADDRESS_MAP["JIGGIES"][locationId]['bit'])
                     if DEBUG_JIGGY == true
                     then
-                        print(NON_AGI_MAP["JIGGIES"][locationId]['name']..":"..tostring(checks[locationId]))
+                        print(ADDRESS_MAP["JIGGIES"][locationId]['name']..":"..tostring(checks[locationId]))
                     end
                 end
             end
         end
         for _,locationId in pairs(ASSET_MAP_CHECK["ALL"]["JIGGIES"])
         do
-            checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["JIGGIES"][locationId]['addr'], NON_AGI_MAP["JIGGIES"][locationId]['bit'])
+            checks[locationId] = BTRAMOBJ:checkFlag(ADDRESS_MAP["JIGGIES"][locationId]['addr'], ADDRESS_MAP["JIGGIES"][locationId]['bit'])
             -- if DEBUG_JIGGY == true
             -- then
-            --     print(NON_AGI_MAP["JIGGIES"][locationId]['name'] .. ":" .. tostring(checks[locationId]))
+            --     print(ADDRESS_MAP["JIGGIES"][locationId]['name'] .. ":" .. tostring(checks[locationId]))
             -- end
         end
     end
@@ -5105,7 +5103,7 @@ function hag1_open()
     then
         if GOAL_TYPE == 0
         then
-            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3) == false then
                 BTRAMOBJ:setFlag(0x6E, 3);
                 table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
                 print("HAG 1 is now unlocked!")
@@ -5122,7 +5120,7 @@ function hag1_open()
             end
             if token_count >= 32
             then
-                if BTRAMOBJ:checkFlag(0x6E, 3, "HAG_1_OPEN") == false then
+                if BTRAMOBJ:checkFlag(0x6E, 3) == false then
                     BTRAMOBJ:setFlag(0x6E, 3);
                     table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
                     print("HAG 1 is now unlocked!")
@@ -5268,7 +5266,7 @@ end
 ---------------------------------- TREBLE ---------------------------------
 
 function init_TREBLE(type, getReceiveMap) -- Initialize Notes
-    for locationId,v in pairs(NON_AGI_MAP["TREBLE"])
+    for locationId,v in pairs(ADDRESS_MAP["TREBLE"])
     do
         if type == "BMM"
         then
@@ -5293,7 +5291,7 @@ end
 function restore_BMM_TREBLE() --Only run while unpausing 
     if BMM_BACKUP_TREBLE == true and AGI_TREBLE_SET == true
     then
-        for locationId,v in pairs(NON_AGI_MAP["TREBLE"]) do
+        for locationId,v in pairs(ADDRESS_MAP["TREBLE"]) do
             if BMM_TREBLE[locationId] == true
             then
                 BTRAMOBJ:setFlag(v['addr'], v['bit']);
@@ -5313,7 +5311,7 @@ function set_AP_TREBLE() -- Only run while Pausing or Transistion to certain map
     then
         for locationId, value in pairs(AGI_TREBLE)
         do
-            local get_addr = NON_AGI_MAP["TREBLE"][locationId]
+            local get_addr = ADDRESS_MAP["TREBLE"][locationId]
             if value == true
             then
                 BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
@@ -5337,7 +5335,7 @@ function obtained_AP_TREBLE()
             AGI_TREBLE[locationId] = true;
             if AGI_TREBLE_SET == true
             then
-                local get_addr = NON_AGI_MAP["TREBLE"][tostring(locationId)]
+                local get_addr = ADDRESS_MAP["TREBLE"][tostring(locationId)]
                 BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
             end
             break
@@ -5348,7 +5346,7 @@ end
 function backup_BMM_TREBLE()
     if BMM_BACKUP_TREBLE == false
     then
-        for locationId,v in pairs(NON_AGI_MAP["TREBLE"]) do
+        for locationId,v in pairs(ADDRESS_MAP["TREBLE"]) do
             if BTRAMOBJ:checkFlag(v['addr'], v['bit']) == true
             then
                 BMM_TREBLE[locationId] = true
@@ -5379,10 +5377,10 @@ function treble_check()
             then
                 for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["TREBLE"])
                 do
-                    checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["TREBLE"][locationId]['addr'], NON_AGI_MAP["TREBLE"][locationId]['bit'])
+                    checks[locationId] = BTRAMOBJ:checkFlag(ADDRESS_MAP["TREBLE"][locationId]['addr'], ADDRESS_MAP["TREBLE"][locationId]['bit'])
                     if DEBUG == true
                     then
-                        print(NON_AGI_MAP["TREBLE"][locationId]['name'] .. ":" .. tostring(checks[locationId]))
+                        print(ADDRESS_MAP["TREBLE"][locationId]['name'] .. ":" .. tostring(checks[locationId]))
                     end
                     if locationId == "1230789" and checks[locationId] == true
                     then
@@ -5437,16 +5435,16 @@ end
 --------------------------------- Roysten --------------------------------
 
 function init_roysten()
-    for k,v in pairs(NON_AGI_MAP['ROYSTEN'])
+    for k,v in pairs(ADDRESS_MAP['ROYSTEN'])
     do
-        ROYSTEN[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_ROYSTEN")
+        ROYSTEN[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
     end
 end
 
 function clear_roysten()
     if NEXT_MAP == 0xAF
     then
-        for k,v in pairs(NON_AGI_MAP['ROYSTEN'])
+        for k,v in pairs(ADDRESS_MAP['ROYSTEN'])
         do
             if ROYSTEN[k] == false
             then
@@ -5489,7 +5487,7 @@ function check_freed_roysten() -- Roysten asset loads then deloads if abilities 
                 print("Roysten found")
             end
         end
-        for k,v in pairs(NON_AGI_MAP['ROYSTEN'])
+        for k,v in pairs(ADDRESS_MAP['ROYSTEN'])
         do
             if ROYSTEN[k] == false
             then
@@ -5533,7 +5531,7 @@ function check_goggles()
     check_real_goggles()
     if CURRENT_MAP == 0x143
     then
-        local gogglesflg = BTRAMOBJ:checkFlag(0x30, 1, "CHECK_GOOGLES")
+        local gogglesflg = BTRAMOBJ:checkFlag(0x30, 1)
         local goggles_found = false
         if gogglesflg == true then
             GOGGLES = true
@@ -5573,7 +5571,7 @@ function check_roar()
     check_real_roar()
     if CURRENT_MAP == 0x112
     then
-        local roarflg = BTRAMOBJ:checkFlag(0x17, 7, "CHECK_ROAR")
+        local roarflg = BTRAMOBJ:checkFlag(0x17, 7)
         local roar_found = false
         if roarflg == true then
             ROAR = true
@@ -5631,10 +5629,10 @@ function pages_check()
         then
             for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["PAGES"])
             do
-                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["PAGES"][locationId]['addr'], NON_AGI_MAP["PAGES"][locationId]['bit'])
+                checks[locationId] = BTRAMOBJ:checkFlag(ADDRESS_MAP["PAGES"][locationId]['addr'], ADDRESS_MAP["PAGES"][locationId]['bit'])
                 if DEBUG == true
                 then
-                    print(NON_AGI_MAP["PAGES"][locationId]['name']..":"..tostring(checks[locationId]))
+                    print(ADDRESS_MAP["PAGES"][locationId]['name']..":"..tostring(checks[locationId]))
                 end
             end
         end
@@ -5644,15 +5642,15 @@ end
 
 --------------------------------- CHEATO REWARDS ----------------------------------
 function init_CHEATO_REWARDS()
-    for k,v in pairs(NON_AGI_MAP['CHEATO'])
+    for k,v in pairs(ADDRESS_MAP['CHEATO'])
     do
-        CHEATO_REWARDS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_CHEATO")
+        CHEATO_REWARDS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
     end
 end
 
 function watchCheato()
     if CURRENT_MAP == 0xAD then
-        for k,v in pairs(NON_AGI_MAP['CHEATO'])
+        for k,v in pairs(ADDRESS_MAP['CHEATO'])
         do
             if CHEATO_REWARDS[k] == false
             then
@@ -5665,23 +5663,23 @@ end
 function cheato_math_check()
     BTCONSUMEOBJ:changeConsumable("CHEATO");
     local spent_counter = 0
-    local res = BTRAMOBJ:checkFlag(0x08, 4, "Cheato1")
+    local res = BTRAMOBJ:checkFlag(0x08, 4)
     if res == true then
         spent_counter = spent_counter + 1
     end
-    local res = BTRAMOBJ:checkFlag(0x08, 5, "Cheato2")
+    local res = BTRAMOBJ:checkFlag(0x08, 5)
     if res == true then
         spent_counter = spent_counter + 1
     end
-    local res = BTRAMOBJ:checkFlag(0x08, 6, "Cheato3")
+    local res = BTRAMOBJ:checkFlag(0x08, 6)
     if res == true then
         spent_counter = spent_counter + 1
     end
-    local res = BTRAMOBJ:checkFlag(0x08, 7, "Cheato4")
+    local res = BTRAMOBJ:checkFlag(0x08, 7)
     if res == true then
         spent_counter = spent_counter + 1
     end
-    local res = BTRAMOBJ:checkFlag(0x09, 0, "Cheato5")
+    local res = BTRAMOBJ:checkFlag(0x09, 0)
     if res == true then
         spent_counter = spent_counter + 1
     end
@@ -5723,10 +5721,10 @@ function honeycomb_check()
         then
             for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["HONEYCOMB"])
             do
-                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["HONEYCOMB"][locationId]['addr'], NON_AGI_MAP["HONEYCOMB"][locationId]['bit'])
+                checks[locationId] = BTRAMOBJ:checkFlag(ADDRESS_MAP["HONEYCOMB"][locationId]['addr'], ADDRESS_MAP["HONEYCOMB"][locationId]['bit'])
                 if DEBUG_HONEY == true
                 then
-                    print(NON_AGI_MAP["HONEYCOMB"][locationId]['name']..":"..tostring(checks[locationId]))
+                    print(ADDRESS_MAP["HONEYCOMB"][locationId]['name']..":"..tostring(checks[locationId]))
                 end
             end
         end
@@ -5737,7 +5735,7 @@ end
 --------------------------------- HONEY B REWARDS -----------------------------------
 
 function init_HONEYB_REWARDS()
-    for k,v in pairs(NON_AGI_MAP['HONEYB'])
+    for k,v in pairs(ADDRESS_MAP['HONEYB'])
     do
         HONEYB_REWARDS[k] = false
     end
@@ -5749,17 +5747,17 @@ function watchHoneyB()
         local bit1 = 0
         local bit2 = 0
         local bit3 = 0
-        local result = BTRAMOBJ:checkFlag(0x98, 2, "CHECK_HONEYB1")
+        local result = BTRAMOBJ:checkFlag(0x98, 2)
         if result == true
         then
             bit1 = 1
         end
-        local result = BTRAMOBJ:checkFlag(0x98, 3, "CHECK_HONEYB2")
+        local result = BTRAMOBJ:checkFlag(0x98, 3)
         if result == true
         then
             bit2 = 2
         end
-        local result = BTRAMOBJ:checkFlag(0x98, 4, "CHECK_HONEYB3")
+        local result = BTRAMOBJ:checkFlag(0x98, 4)
         if result == true
         then
             bit3 = 4
@@ -5777,17 +5775,17 @@ function honeycomb_math_check()
     local bit1 = 0
     local bit2 = 0
     local bit3 = 0
-    local result = BTRAMOBJ:checkFlag(0x98, 2, "CHECK_HONEYB1")
+    local result = BTRAMOBJ:checkFlag(0x98, 2)
     if result == true
     then
         bit1 = 1
     end
-    local result = BTRAMOBJ:checkFlag(0x98, 3, "CHECK_HONEYB2")
+    local result = BTRAMOBJ:checkFlag(0x98, 3)
     if result == true
     then
         bit2 = 2
     end
-    local result = BTRAMOBJ:checkFlag(0x98, 4, "CHECK_HONEYB3")
+    local result = BTRAMOBJ:checkFlag(0x98, 4)
     if result == true
     then
         bit3 = 4
@@ -5824,7 +5822,7 @@ end
 ---------------------------------- GLOWBO AND MAGIC ---------------------------------
 
 function processMagicItem(loc_ID)
-    for locationId, v in pairs(NON_AGI_MAP['MAGIC'])
+    for locationId, v in pairs(ADDRESS_MAP['MAGIC'])
     do
         if locationId == tostring(loc_ID)
         then
@@ -5848,10 +5846,10 @@ function glowbo_check()
         then
             for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["GLOWBO"])
             do
-                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["GLOWBO"][locationId]['addr'], NON_AGI_MAP["GLOWBO"][locationId]['bit'])
+                checks[locationId] = BTRAMOBJ:checkFlag(ADDRESS_MAP["GLOWBO"][locationId]['addr'], ADDRESS_MAP["GLOWBO"][locationId]['bit'])
                 if DEBUG == true
                 then
-                    print(NON_AGI_MAP["GLOWBO"][locationId]['name']..":"..tostring(checks[locationId]))
+                    print(ADDRESS_MAP["GLOWBO"][locationId]['name']..":"..tostring(checks[locationId]))
                 end
             end
         end
@@ -5883,10 +5881,10 @@ function doubloon_check()
         then
             for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["DOUBLOON"])
             do
-                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["DOUBLOON"][locationId]['addr'], NON_AGI_MAP["DOUBLOON"][locationId]['bit'])
+                checks[locationId] = BTRAMOBJ:checkFlag(ADDRESS_MAP["DOUBLOON"][locationId]['addr'], ADDRESS_MAP["DOUBLOON"][locationId]['bit'])
                 if DEBUG == true
                 then
-                    print(NON_AGI_MAP["DOUBLOON"][locationId]['name']..":"..tostring(checks[locationId]))
+                    print(ADDRESS_MAP["DOUBLOON"][locationId]['name']..":"..tostring(checks[locationId]))
                 end
             end
         end
@@ -5934,7 +5932,7 @@ end
 
 function init_NOTES(type, getReceiveMap) -- Initialize Notes
     local checks = {}
-    for locationId,v in pairs(NON_AGI_MAP["NOTES"])
+    for locationId,v in pairs(ADDRESS_MAP["NOTES"])
     do
         if type == "BMM"
         then
@@ -5959,7 +5957,7 @@ end
 function restore_BMM_NOTES() --Only run while unpausing 
     if BMM_BACKUP_NOTES == true and AGI_NOTES_SET == true
     then
-        for locationId,v in pairs(NON_AGI_MAP["NOTES"]) do
+        for locationId,v in pairs(ADDRESS_MAP["NOTES"]) do
             if BMM_NOTES[locationId] == true
             then
                 BTRAMOBJ:setFlag(v['addr'], v['bit']);
@@ -5981,7 +5979,7 @@ function set_AP_NOTES() -- Only run while Pausing or Transistion to certain maps
     then
         for locationId, value in pairs(AGI_NOTES)
         do
-            local get_addr = NON_AGI_MAP["NOTES"][locationId]
+            local get_addr = ADDRESS_MAP["NOTES"][locationId]
             if value == true
             then
                 BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
@@ -6009,7 +6007,7 @@ function obtained_AP_NOTES()
             AGI_NOTES[locationId] = true;
             if AGI_NOTES_SET == true
             then
-                local get_addr = NON_AGI_MAP["NOTES"][tostring(locationId)]
+                local get_addr = ADDRESS_MAP["NOTES"][tostring(locationId)]
                 BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
             end
             break
@@ -6043,7 +6041,7 @@ end
 function backup_BMM_NOTES()
     if BMM_BACKUP_NOTES == false
     then
-        for locationId,v in pairs(NON_AGI_MAP["NOTES"]) do
+        for locationId,v in pairs(ADDRESS_MAP["NOTES"]) do
             if BTRAMOBJ:checkFlag(v['addr'], v['bit']) == true
             then
                 BMM_NOTES[locationId] = true
@@ -6074,7 +6072,7 @@ function notes_check()
             then
                 for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["NOTES"])
                 do
-                    checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["NOTES"][locationId]['addr'], NON_AGI_MAP["NOTES"][locationId]['bit'])
+                    checks[locationId] = BTRAMOBJ:checkFlag(ADDRESS_MAP["NOTES"][locationId]['addr'], ADDRESS_MAP["NOTES"][locationId]['bit'])
                     if DEBUG_NOTES == true
                     then
                         print(locationId .. ":" .. tostring(checks[locationId]))
@@ -6086,42 +6084,21 @@ function notes_check()
     return checks
 end
 
--------------------------------- HAG-1 Victory ----------------------------------
-
-function hag1_check()
-    local victory = false
-    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
-    then
-        if ASSET_MAP_CHECK[CURRENT_MAP]["H1"] ~= nil
-        then
-            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["H1"])
-            do
-                victory = BTRAMOBJ:checkFlag(NON_AGI_MAP["H1"][locationId]['addr'], NON_AGI_MAP["H1"][locationId]['bit'])
-                if DEBUG == true
-                then
-                    print(NON_AGI_MAP["H1"][locationId]['name']..":"..tostring(victory))
-                end
-            end
-        end
-    end
-    return victory
-end
-
 --------------------------------- JIGGY CHUNKS ----------------------------------
 function init_JIGGY_CHUNK()
-    for k,v in pairs(NON_AGI_MAP['JCHUNKS'])
+    for k,v in pairs(ADDRESS_MAP['JCHUNKS'])
     do
-        JIGGY_CHUNKS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_JCHUNKS")
+        JIGGY_CHUNKS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
     end
 end
 
 function watchJChunk()
     if CURRENT_MAP == 0xC7 then
-        for k,v in pairs(NON_AGI_MAP['JCHUNKS'])
+        for k,v in pairs(ADDRESS_MAP['JCHUNKS'])
         do
             if JIGGY_CHUNKS[k] == false
             then
-                JIGGY_CHUNKS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "CHECK_JCHUNKS")
+                JIGGY_CHUNKS[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
             end
         end
     end
@@ -6136,20 +6113,28 @@ function init_DINO_KIDS()
 end
 
 function watchDinoFlags()
-    if CURRENT_MAP == 0x118 then
+    if DINO_KIDS["1231006"] == false
+    then
         local scrut = BTRAMOBJ:checkFlag(0x0C, 2)
-        local scrat_healed = BTRAMOBJ:checkFlag(0x26, 6)
-        local scrat_train = BTRAMOBJ:checkFlag(0x2C, 1)
-        local scrit_grow = BTRAMOBJ:checkFlag(0x26, 7)
-
         if scrut == true
         then
             DINO_KIDS["1231006"] = true
         end
+    end
+
+    if DINO_KIDS["1231007"] == false
+    then
+        local scrat_healed = BTRAMOBJ:checkFlag(0x26, 6)
+        local scrat_train = BTRAMOBJ:checkFlag(0x2C, 1)
         if scrat_healed == true and scrat_train == false
         then
             DINO_KIDS["1231007"] = true
         end
+    end
+
+    if DINO_KIDS["1231008"] == false
+    then
+        local scrit_grow = BTRAMOBJ:checkFlag(0x26, 7)
         if scrit_grow == true
         then
             DINO_KIDS["1231008"] = true
@@ -6159,9 +6144,9 @@ end
 
 --------------------------------- BK MOVES ----------------------------------------------
 function obtain_bkmove()
-    for itemId, data in pairs(NON_AGI_MAP["BKMOVES"])
+    for itemId, data in pairs(ADDRESS_MAP["BKMOVES"])
     do
-        local res = BTRAMOBJ:checkFlag(data['addr'], data['bit'], data['name'])
+        local res = BTRAMOBJ:checkFlag(data['addr'], data['bit'])
         if res == false
         then
             for apid, item in pairs(receive_map)
@@ -6283,7 +6268,7 @@ function init_STOPNSWAP(type) -- Initialize BMK
     if type == "BMM"
     then
         BMM_MYSTERY['REMOVE'] = {}
-        for k,v in pairs(NON_AGI_MAP['STOPNSWAP'])
+        for k,v in pairs(ADDRESS_MAP['STOPNSWAP'])
         do
             BMM_MYSTERY[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
             BMM_MYSTERY['REMOVE'][k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
@@ -6320,14 +6305,14 @@ function check_egg_mystery()
                         then
                             if value == true
                             then
-                                local hatched = NON_AGI_MAP['STOPNSWAP']["1230955"]
+                                local hatched = ADDRESS_MAP['STOPNSWAP']["1230955"]
                                 if BTRAMOBJ:checkFlag(hatched['addr'], hatched['bit']) == false -- Egg not hatched yet
                                 then
                                     if DEBUG_STOPNSWAP == true
                                     then
                                         print("Ready to hand in Blue Egg")
                                     end
-                                    local eggTable = NON_AGI_MAP['STOPNSWAP']["1230957"]
+                                    local eggTable = ADDRESS_MAP['STOPNSWAP']["1230957"]
                                     BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
                                     BTCONSUMEOBJ:changeConsumable("Eggs")
                                     local egg_amt = BTCONSUMEOBJ:getEggConsumable()
@@ -6343,7 +6328,7 @@ function check_egg_mystery()
                                 end
                                 if BMM_MYSTERY["1230957"] == true
                                 then
-                                    local eggTable = NON_AGI_MAP['STOPNSWAP']["1230957"]
+                                    local eggTable = ADDRESS_MAP['STOPNSWAP']["1230957"]
                                     BTRAMOBJ:clearFlag(eggTable['addr'], eggTable['bit'])
                                 end
                             end
@@ -6352,14 +6337,14 @@ function check_egg_mystery()
                         then
                             if value == true
                             then
-                                local hatched = NON_AGI_MAP['STOPNSWAP']["1230954"]
+                                local hatched = ADDRESS_MAP['STOPNSWAP']["1230954"]
                                 if BTRAMOBJ:checkFlag(hatched['addr'], hatched['bit']) == false -- Egg not hatched yet
                                 then
                                     if DEBUG_STOPNSWAP == true
                                     then
                                         print("Ready to hand in Pink Egg")
                                     end
-                                    local eggTable = NON_AGI_MAP['STOPNSWAP']["1230956"]
+                                    local eggTable = ADDRESS_MAP['STOPNSWAP']["1230956"]
                                     BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
                                     BTCONSUMEOBJ:changeConsumable("Eggs")
                                     local egg_amt = BTCONSUMEOBJ:getEggConsumable()
@@ -6375,7 +6360,7 @@ function check_egg_mystery()
                                 end
                                 if BMM_MYSTERY["1230956"] == true
                                 then
-                                    local eggTable = NON_AGI_MAP['STOPNSWAP']["1230956"]
+                                    local eggTable = ADDRESS_MAP['STOPNSWAP']["1230956"]
                                     BTRAMOBJ:clearFlag(eggTable['addr'], eggTable['bit'])
                                 end
                             end
@@ -6393,10 +6378,10 @@ function check_egg_mystery()
                     then
                         if value == true
                         then
-                            local hatched = NON_AGI_MAP['STOPNSWAP']["1230955"]
+                            local hatched = ADDRESS_MAP['STOPNSWAP']["1230955"]
                             if BTRAMOBJ:checkFlag(hatched['addr'], hatched['bit']) == false -- Egg not hatched yet
                             then
-                                local eggTable = NON_AGI_MAP['STOPNSWAP']["1230957"]
+                                local eggTable = ADDRESS_MAP['STOPNSWAP']["1230957"]
                                 if BMM_MYSTERY["1230957"] == true
                                 then
                                     if DEBUG_STOPNSWAP == true
@@ -6419,7 +6404,7 @@ function check_egg_mystery()
                             end
                             if BMM_MYSTERY["1230957"] == true
                             then
-                                local eggTable = NON_AGI_MAP['STOPNSWAP']["1230957"]
+                                local eggTable = ADDRESS_MAP['STOPNSWAP']["1230957"]
                                 BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
                             end
                         end
@@ -6427,10 +6412,10 @@ function check_egg_mystery()
                     then
                         if value == true
                         then
-                            local hatched = NON_AGI_MAP['STOPNSWAP']["1230954"]
+                            local hatched = ADDRESS_MAP['STOPNSWAP']["1230954"]
                             if BTRAMOBJ:checkFlag(hatched['addr'], hatched['bit']) == false -- Egg not hatched yet
                             then
-                                local eggTable = NON_AGI_MAP['STOPNSWAP']["1230956"]
+                                local eggTable = ADDRESS_MAP['STOPNSWAP']["1230956"]
                                 if BMM_MYSTERY["1230956"] == true
                                 then
                                     if DEBUG_STOPNSWAP == true
@@ -6453,7 +6438,7 @@ function check_egg_mystery()
                             end
                             if BMM_MYSTERY["1230956"] == true
                             then
-                                local eggTable = NON_AGI_MAP['STOPNSWAP']["1230956"]
+                                local eggTable = ADDRESS_MAP['STOPNSWAP']["1230956"]
                                 BTRAMOBJ:setFlag(eggTable['addr'], eggTable['bit'])
                             end
                         end
@@ -6478,7 +6463,7 @@ function check_STOPNSWAPEGGS()
             local eggLocId = ASSET_MAP_CHECK[CURRENT_MAP]["STOPNSWAP"];
             if BMM_MYSTERY[eggLocId] == false
             then
-                local eggTable = NON_AGI_MAP['STOPNSWAP'][eggLocId]
+                local eggTable = ADDRESS_MAP['STOPNSWAP'][eggLocId]
                 local got_egg = BTRAMOBJ:checkFlag(eggTable['addr'], eggTable['bit'])
                 BTCONSUMEOBJ:changeConsumable("Eggs")
                 local egg_amt = BTCONSUMEOBJ:getEggConsumable()
@@ -6508,12 +6493,12 @@ function check_hatched_mystery()
                 if DEBUG_STOPNSWAP == true then
                     print("Remove Bregull Bash")
                 end
-                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
+                local tbl = ADDRESS_MAP["STOPNSWAP"]["1230954"]
                 BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
                 BTRAMOBJ:clearFlag(0x1E, 7)
             elseif BMM_MYSTERY["1230954"] == true
             then
-                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
+                local tbl = ADDRESS_MAP["STOPNSWAP"]["1230954"]
                 BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
                 BTRAMOBJ:clearFlag(0x77, 5)
             end
@@ -6522,11 +6507,11 @@ function check_hatched_mystery()
                 if DEBUG_STOPNSWAP == true then
                     print("Remove Multi Jinjo")
                 end
-                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
+                local tbl = ADDRESS_MAP["STOPNSWAP"]["1230953"]
                 BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
             elseif BMM_MYSTERY["1230953"] == true
             then
-                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
+                local tbl = ADDRESS_MAP["STOPNSWAP"]["1230953"]
                 BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
             end
             if AGI_MYSTERY["1230802"] == true and BMM_MYSTERY["1230955"] == false -- homing eggs
@@ -6534,11 +6519,11 @@ function check_hatched_mystery()
                 if DEBUG_STOPNSWAP == true then
                     print("Remove Homing Eggs")
                 end
-                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
+                local tbl = ADDRESS_MAP["STOPNSWAP"]["1230955"]
                 BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
             elseif BMM_MYSTERY["1230955"] == true
             then
-                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
+                local tbl = ADDRESS_MAP["STOPNSWAP"]["1230955"]
                 BTRAMOBJ:clearFlag(0x77, 3)
                 BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
             end
@@ -6546,7 +6531,7 @@ function check_hatched_mystery()
         else -- Watch if Eggs are hatched
             if BMM_MYSTERY["1230954"] == false
             then
-                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
+                local tbl = ADDRESS_MAP["STOPNSWAP"]["1230954"]
                 if BTRAMOBJ:checkFlag(tbl['addr'], tbl['bit']) == true
                 then
                     BMM_MYSTERY["1230954"] = true
@@ -6555,7 +6540,7 @@ function check_hatched_mystery()
             end
             if BMM_MYSTERY["1230953"] == false
             then
-                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
+                local tbl = ADDRESS_MAP["STOPNSWAP"]["1230953"]
                 if BTRAMOBJ:checkFlag(tbl['addr'], tbl['bit']) == true
                 then
                     BMM_MYSTERY["1230953"] = true
@@ -6563,7 +6548,7 @@ function check_hatched_mystery()
             end
             if BMM_MYSTERY["1230955"] == false
             then
-                local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
+                local tbl = ADDRESS_MAP["STOPNSWAP"]["1230955"]
                 if BTRAMOBJ:checkFlag(tbl['addr'], tbl['bit']) == true
                 then
                     BMM_MYSTERY["1230955"] = true
@@ -6574,18 +6559,18 @@ function check_hatched_mystery()
     then
         if BMM_MYSTERY["1230954"] == true
         then
-            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
+            local tbl = ADDRESS_MAP["STOPNSWAP"]["1230954"]
             BTRAMOBJ:clearFlag(0x77, 5)
             BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         end
         if BMM_MYSTERY["1230953"] == true
         then
-            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230953"]
+            local tbl = ADDRESS_MAP["STOPNSWAP"]["1230953"]
             BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         end
         if BMM_MYSTERY["1230955"] == true
         then
-            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
+            local tbl = ADDRESS_MAP["STOPNSWAP"]["1230955"]
             BTRAMOBJ:clearFlag(0x77, 3)
             BTRAMOBJ:setFlag(tbl['addr'], tbl['bit'])
         end
@@ -6595,7 +6580,7 @@ function check_hatched_mystery()
             -- if DEBUG == true then
             --     print("reverse Hatch flag, Pink egg not yet obtained")
             -- end
-            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230954"]
+            local tbl = ADDRESS_MAP["STOPNSWAP"]["1230954"]
             BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
         end
         if AGI_MYSTERY["1230800"] == false
@@ -6607,7 +6592,7 @@ function check_hatched_mystery()
             -- if DEBUG == true then
             --     print("reverse Hatch flag, Blue egg not yet obtained")
             -- end
-            local tbl = NON_AGI_MAP["STOPNSWAP"]["1230955"]
+            local tbl = ADDRESS_MAP["STOPNSWAP"]["1230955"]
             BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
         end
         WAIT_FOR_HATCH = false
@@ -6739,7 +6724,7 @@ end
 ---------------------------------- Station ---------------------------------
 
 function init_STATIONS(type, getReceiveMap) -- Initialize BMK
-    for locationId,v in pairs(NON_AGI_MAP['STATIONS'])
+    for locationId,v in pairs(ADDRESS_MAP['STATIONS'])
     do
         if type == "BMM"
         then
@@ -6768,7 +6753,7 @@ function set_checked_STATIONS() --Only run transitioning maps
         if ASSET_MAP_CHECK[NEXT_MAP]["STATIONBTN"] ~= nil
         then
             local stationId = ASSET_MAP_CHECK[NEXT_MAP]["STATIONBTN"];
-            local get_addr = NON_AGI_MAP['STATIONS'][stationId];
+            local get_addr = ADDRESS_MAP['STATIONS'][stationId];
             if BMM_STATIONS[stationId] == true
             then
                 BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
@@ -6792,7 +6777,7 @@ end
 function set_AP_STATIONS() -- Only run after Transistion
     for stationId, value in pairs(AGI_STATIONS)
     do
-        local get_addr = NON_AGI_MAP['STATIONS'][stationId]
+        local get_addr = ADDRESS_MAP['STATIONS'][stationId]
         if value == true
         then
             BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
@@ -6808,7 +6793,7 @@ end
 
 function obtained_AP_STATIONS(itemId)
     AGI_STATIONS[tostring(itemId)] = true
-    local get_addr = NON_AGI_MAP['STATIONS'][tostring(itemId)]
+    local get_addr = ADDRESS_MAP['STATIONS'][tostring(itemId)]
     BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
 end
 
@@ -6877,7 +6862,7 @@ end
 ---------------------------------- Chuffy ------------------------------------
 
 function init_CHUFFY(type, getReceiveMap) -- Initialize Chuffy
-    for locationId,v in pairs(NON_AGI_MAP['CHUFFY'])
+    for locationId,v in pairs(ADDRESS_MAP['CHUFFY'])
     do
         if type == "BMM"
         then
@@ -6908,7 +6893,7 @@ function init_CHUFFY(type, getReceiveMap) -- Initialize Chuffy
 end
 
 function set_checked_CHUFFY() --Only when Inside Chuffy
-    local get_addr = NON_AGI_MAP['CHUFFY']["1230796"];
+    local get_addr = ADDRESS_MAP['CHUFFY']["1230796"];
     if BMM_CHUFFY["1230796"] == false and BMM_JIGGIES["1230606"] == false
     then
         BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
@@ -6942,7 +6927,7 @@ function watchChuffyFlag()
 end
 
 function set_AP_CHUFFY() -- Only run after Transistion
-    local get_addr = NON_AGI_MAP['CHUFFY']["1230796"];
+    local get_addr = ADDRESS_MAP['CHUFFY']["1230796"];
     if AGI_CHUFFY["1230796"] == true
     then
         BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
@@ -6965,7 +6950,7 @@ end
 function obtained_AP_CHUFFY()
     AGI_CHUFFY["1230796"] = true
     BTRAMOBJ:setFlag(0x0D, 5) -- Levitate
-    local get_addr = NON_AGI_MAP['CHUFFY']["1230796"]
+    local get_addr = ADDRESS_MAP['CHUFFY']["1230796"]
     if CURRENT_MAP == 0xD0 or CURRENT_MAP == 0xD1
     then
         return
@@ -6991,14 +6976,14 @@ end
 
 function init_BMK(type) -- Initialize BMK
     local checks = {}
-    for k,v in pairs(NON_AGI_MAP['MOVES'])
+    for k,v in pairs(ADDRESS_MAP['MOVES'])
     do
         if type == "BKM"
         then
-            BKM[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK")
+            BKM[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
         elseif type == "AGI"
         then
-            checks[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_BMK_AGI")
+            checks[k] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
         end
     end
     return checks
@@ -7013,10 +6998,10 @@ function update_BMK_MOVES_checks() --Only run when close to Silos
             do
                 if keys ~= "Exceptions"
                 then
-                    local get_addr = NON_AGI_MAP['MOVES'][locationId]
+                    local get_addr = ADDRESS_MAP['MOVES'][locationId]
                     if BKM[locationId] == false
                     then
-                        local res = BTRAMOBJ:checkFlag(get_addr['addr'], get_addr['bit'], "BMK_MOVES_CHECK")
+                        local res = BTRAMOBJ:checkFlag(get_addr['addr'], get_addr['bit'])
                         if res == true
                         then
                             if DEBUG_SILO == true
@@ -7047,7 +7032,7 @@ function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND 
     do
         if keys ~= "Exceptions"
         then
-            local addr_info = NON_AGI_MAP["MOVES"][locationId]
+            local addr_info = ADDRESS_MAP["MOVES"][locationId]
             if BKM[locationId] == true
             then
                 BTRAMOBJ:setFlag(addr_info['addr'], addr_info['bit'])
@@ -7065,7 +7050,7 @@ function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND 
         else
             for _, disable_move in pairs(ASSET_MAP_CHECK[mapaddr]["SILO"][keys]) --Exception list, always disable
             do
-                local addr_info = NON_AGI_MAP["MOVES"][disable_move]
+                local addr_info = ADDRESS_MAP["MOVES"][disable_move]
                 BTRAMOBJ:clearFlag(addr_info['addr'], addr_info['bit'], "CLEAR_AMM_MOVES_EXCEPTION");
             end
         end
@@ -7094,7 +7079,7 @@ function check_jamjar_silo()
 end
 
 function set_AGI_MOVES_checks() -- SET AGI Moves into RAM AFTER BT/Silo Model is loaded
-    for moveId, table in pairs(NON_AGI_MAP['MOVES'])
+    for moveId, table in pairs(ADDRESS_MAP['MOVES'])
     do
         if AGI_MOVES[moveId] == true
         then
@@ -7237,11 +7222,11 @@ end
 ------------------ Jinjos -------------------
 
 function init_JINJOS(type) -- Initialize JINJOS
-    for locationId,v in pairs(NON_AGI_MAP["JINJOS"])
+    for locationId,v in pairs(ADDRESS_MAP["JINJOS"])
     do
         if type == "BMM"
         then
-            BMM_JINJOS[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'], "INIT_JINJO_BMM")
+            BMM_JINJOS[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
         elseif type == "AGI"
         then
             AGI_JINJOS = {
@@ -7262,7 +7247,7 @@ end
 function restore_BMM_JINJOS() -- Not sure if we need this...
     if BMM_BACKUP_JINJO == true
     then
-        for locationId,v in pairs(NON_AGI_MAP["JINJOS"]) do
+        for locationId,v in pairs(ADDRESS_MAP["JINJOS"]) do
             if BMM_JINJOS[locationId] == true
             then
                 BTRAMOBJ:setFlag(v['addr'], v['bit']);
@@ -7303,10 +7288,10 @@ function jinjo_check()
         then
             for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["JINJOS"])
             do
-                checks[locationId] = BTRAMOBJ:checkFlag(NON_AGI_MAP["JINJOS"][locationId]['addr'], NON_AGI_MAP["JINJOS"][locationId]['bit'])
+                checks[locationId] = BTRAMOBJ:checkFlag(ADDRESS_MAP["JINJOS"][locationId]['addr'], ADDRESS_MAP["JINJOS"][locationId]['bit'])
                 if DEBUG == true
                 then
-                    print(NON_AGI_MAP["JINJOS"][locationId]['name']..":"..tostring(checks[locationId]))
+                    print(ADDRESS_MAP["JINJOS"][locationId]['name']..":"..tostring(checks[locationId]))
                 end
             end
         end
@@ -7317,7 +7302,7 @@ end
 function backup_BMM_JINJOS()
     if BMM_BACKUP_JINJO == false
     then
-        for locationId,v in pairs(NON_AGI_MAP["JINJOS"]) do
+        for locationId,v in pairs(ADDRESS_MAP["JINJOS"]) do
             if BTRAMOBJ:checkFlag(v['addr'], v['bit']) == true
             then
                 BMM_JINJOS[locationId] = true
@@ -7332,7 +7317,7 @@ end
 
 -- Family complete checks are stored in BKJINJOFAM
 function init_JinjoFam()
-    for locId, _ in pairs(NON_AGI_MAP["JINJOFAM"])
+    for locId, _ in pairs(ADDRESS_MAP["JINJOFAM"])
     do
         BKJINJOFAM[locId] = false
     end
@@ -7442,8 +7427,8 @@ function JinjoPause()
                 then
                     print("Setting Jinjo ID: " .. itemId .. " # " .. tostring(i))
                 end
-                BTRAMOBJ:setFlag(NON_AGI_MAP["JINJOS"][JINJO_PATTER_MAP[itemId][tostring(i)]]['addr'],
-                NON_AGI_MAP["JINJOS"][JINJO_PATTER_MAP[itemId][tostring(i)]]['bit'])
+                BTRAMOBJ:setFlag(ADDRESS_MAP["JINJOS"][JINJO_PATTER_MAP[itemId][tostring(i)]]['addr'],
+                ADDRESS_MAP["JINJOS"][JINJO_PATTER_MAP[itemId][tostring(i)]]['bit'])
             end
         end
     end
@@ -7781,6 +7766,8 @@ function finishTransition()
         MoveBathPads()
         getAltar()
         nearDisiple()
+        -- Token Announcement
+        mumbo_announce()
     end
 end
 
@@ -7879,7 +7866,6 @@ function loadGame(current_map)
             hag1_phase_skips()
             GAME_LOADED = true;
             DEMO_MODE = false;
-            print("GAME LOADED!")
         end
     end
 end
@@ -7967,10 +7953,10 @@ function checkPause()
         elseif check_controls ~= nil and check_controls['P1 C Up'] == true
         then
             print("BKM TABLE + Actual:");
-            for locationId, values in pairs(NON_AGI_MAP["MOVES"])
+            for locationId, values in pairs(ADDRESS_MAP["MOVES"])
             do             
-                local res = BTRAMOBJ:checkFlag(values['addr'], values['bit'], "PAUSE MOVE DEBUG");
-                print(NON_AGI_MAP["MOVES"][locationId]['name'] .. ":" .. tostring(res))
+                local res = BTRAMOBJ:checkFlag(values['addr'], values['bit']);
+                print(ADDRESS_MAP["MOVES"][locationId]['name'] .. ":" .. tostring(res))
                 print("Checked? : " .. tostring(BKM[locationId]))
                 print("AGI? : " .. tostring(AGI_MOVES[locationId]))
                 print("------------------------");
@@ -8042,7 +8028,7 @@ function DPadStats()
             print("Unlocked Moves:")
             if ENABLE_AP_BK_MOVES ~= 0 
             then
-                for locationId, table in pairs(NON_AGI_MAP["BKMOVES"])
+                for locationId, table in pairs(ADDRESS_MAP["BKMOVES"])
                 do
                     if BTRAMOBJ:checkFlag(table['addr'], table['bit']) == true
                     then
@@ -8050,7 +8036,7 @@ function DPadStats()
                     end
                 end
             end
-            for locationId, values in pairs(NON_AGI_MAP["MOVES"])
+            for locationId, values in pairs(ADDRESS_MAP["MOVES"])
             do             
                 if AGI_MOVES[locationId] == true
                 then
@@ -8090,7 +8076,7 @@ function DPadStats()
             print(" ")
             print(" ")
             print("Unlocked Magic:")
-            for locationId, values in pairs(NON_AGI_MAP["MAGIC"])
+            for locationId, values in pairs(ADDRESS_MAP["MAGIC"])
             do        
                 local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
                 if results == true then
@@ -8108,7 +8094,7 @@ function DPadStats()
             print(" ")
             print(" ")
             print("Collected Treble Clefs:")
-            for locationId, values in pairs(NON_AGI_MAP["TREBLE"])
+            for locationId, values in pairs(ADDRESS_MAP["TREBLE"])
             do        
                 local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
                 if results == true then
@@ -8117,7 +8103,7 @@ function DPadStats()
             end
 			print(" ")
 			print("Opened Train Stations:")
-            for locationId, values in pairs(NON_AGI_MAP["STATIONS"])
+            for locationId, values in pairs(ADDRESS_MAP["STATIONS"])
             do        
                 local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
                 if results == true then
@@ -8273,17 +8259,17 @@ function initializeFlags()
 		BTRAMOBJ:setFlag(0x27, 5) -- Doubloon
 		BTRAMOBJ:setFlag(0x2E, 7) -- Ticket
 		-- Character Introduction Text
-		for k,v in pairs(NON_AGI_MAP['SKIP']['INTRO'])
+		for k,v in pairs(ADDRESS_MAP['SKIP']['INTRO'])
         do
             BTRAMOBJ:setFlag(v['addr'], v['bit'])
         end
 		-- Cutscene Flags
-		for k,v in pairs(NON_AGI_MAP['SKIP']['CUTSCENE'])
+		for k,v in pairs(ADDRESS_MAP['SKIP']['CUTSCENE'])
         do
             BTRAMOBJ:setFlag(v['addr'], v['bit'])
         end
 		-- Tutorial Dialogues
-		for k,v in pairs(NON_AGI_MAP['SKIP']['TUTORIAL'])
+		for k,v in pairs(ADDRESS_MAP['SKIP']['TUTORIAL'])
         do
             BTRAMOBJ:setFlag(v['addr'], v['bit'])
         end
@@ -8426,7 +8412,7 @@ end
 
 function setToTComplete()
 	-- this fixes a bug that messes up game progression
-	if BTRAMOBJ:checkFlag(0x83, 1, "setTotComplete") == false and TOT_SET_COMPLETE == false then -- CK Klungo Boss Room
+	if BTRAMOBJ:checkFlag(0x83, 1) == false and TOT_SET_COMPLETE == false then -- CK Klungo Boss Room
 		BTRAMOBJ:setFlag(0x83, 1);
         TOT_SET_COMPLETE = true;
 	end
@@ -8465,6 +8451,29 @@ function hag1_phase_skips()
 end
 
 ---------------------- ARCHIPELAGO FUNCTIONS -------------
+
+function mumbo_announce()
+    if GOAL_TYPE == 5 and TOKEN_ANNOUNCE == false
+    then
+        local token_count = 0;
+        for id, itemId in pairs(receive_map)
+        do
+            if itemId == "1230798"
+            then
+                token_count = token_count + 1
+            end
+        end
+        if token_count >= TH_LENGTH
+        then
+            message = "You have found enough Mumbo Tokens! Time to head home!"
+            print(" ")
+            print(message)
+            table.insert(AP_MESSAGES, message);
+            TOKEN_ANNOUNCE = true
+        end
+    end
+end
+
 
 function processMessages()
     if next(AP_MESSAGES) ~= nil
@@ -8552,24 +8561,24 @@ function processAGIItem(item_list)
                 then
                     print("Move Obtained")
                 end
-                for location, values in pairs(NON_AGI_MAP["MOVES"])
+                for location, values in pairs(ADDRESS_MAP["MOVES"])
                 do
                     if AGI_MOVES[location] == false and location == tostring(memlocation)
                     then
                         AGI_MOVES[location] = true
-                        if NON_AGI_MAP["MOVES"][location]['name'] == ('Fire Eggs')
+                        if ADDRESS_MAP["MOVES"][location]['name'] == ('Fire Eggs')
                         then
                             BTCONSUMEOBJ:changeConsumable("FIRE EGGS")
                             BTCONSUMEOBJ:setConsumable(50)
-                        elseif NON_AGI_MAP["MOVES"][location]['name'] == ('Grenade Eggs')
+                        elseif ADDRESS_MAP["MOVES"][location]['name'] == ('Grenade Eggs')
                         then
                             BTCONSUMEOBJ:changeConsumable("GRENADE EGGS")
                             BTCONSUMEOBJ:setConsumable(25)
-                        elseif NON_AGI_MAP["MOVES"][location]['name'] == ('Ice Eggs')
+                        elseif ADDRESS_MAP["MOVES"][location]['name'] == ('Ice Eggs')
                         then
                             BTCONSUMEOBJ:changeConsumable("ICE EGGS")
                             BTCONSUMEOBJ:setConsumable(50)
-                        elseif NON_AGI_MAP["MOVES"][location]['name'] == ('Clockwork Kazooie Eggs')
+                        elseif ADDRESS_MAP["MOVES"][location]['name'] == ('Clockwork Kazooie Eggs')
                         then
                             BTCONSUMEOBJ:changeConsumable("CWK EGGS")
                             BTCONSUMEOBJ:setConsumable(10)
@@ -8801,7 +8810,10 @@ function process_block(block)
     then
         for k, message in pairs(block['messages'])
         do
-            table.insert(AP_MESSAGES, message)
+            if not string.find(message, "%(found%)")
+            then
+                table.insert(AP_MESSAGES, message)
+            end
         end
     end
     if block['triggerDeath'] == true
@@ -8826,7 +8838,7 @@ function SendToBTClient()
     retTable["glowbo"] = glowbo_check()
     retTable["doubloon"] = doubloon_check()
     retTable["notes"] = notes_check()
-    retTable["hag"] = hag1_check()
+    retTable["hag"] = BTRAMOBJ:checkFlag(ADDRESS_MAP["H1"]["1230027"]['addr'], ADDRESS_MAP["H1"]["1230027"]['bit'])
     retTable['unlocked_moves'] = BKM;
     retTable['treble'] = treble_check();
     retTable['stations'] = BMM_STATIONS;
@@ -9132,10 +9144,6 @@ function process_slot(block)
     if block['slot_skip_klungo'] ~= nil and block['slot_skip_klungo'] ~= "false"
     then
         SKIP_KLUNGO = true
-    end
-    if block['slot_skip_king'] ~= nil and block['slot_skip_king'] ~= "false"
-    then
-        SKIP_KING = true
     end
     if block['slot_open_hag1'] ~= nil and block['slot_open_hag1'] ~= "false"
     then
