@@ -1,3 +1,18 @@
+# 3.1-beta
+ - Lots of bug fixes:
+  - Fix Crashing when removing associated Egg near Silo + Crashing transitioning maps
+  - Fix Heggy 
+  - Fix Honeycomb CCL Location
+  - Fix Cutscene Jiggies
+  - Fix HAG1 Complete
+  - Fix Totals Menu + Unlocked Worlds Menu
+  - Fix Train Switches
+  - Modify Checking of Tranistioning to different Maps. (found in-game bug that we had to workaround)
+ - Jingaling skip is no longer an option. Its part of the randomizer
+ - If using Refill cheat, it will double your eggs and feather
+ - Must return to Banjo's House for handing in all Mumbo Tokens to complete the game.
+ - Enable all Totals Screen
+
 # 3.0-beta
   - Starting attack: If not on beginner logic, wonderwing can be your starting attack.
   - Wonderwing challenge: if you can have wonderwing as your starting attack, you will get it!

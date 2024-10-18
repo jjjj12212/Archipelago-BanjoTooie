@@ -8475,7 +8475,22 @@ function initializeFlags()
         BTCONSUMEOBJ:setConsumable(0)
         BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star,moon, sun 
         BTRAMOBJ:setFlag(0x15, 5) --Just open the compound door...
-        BTRAMOBJ:setFlag(0x9B, 1) --Glitter Gulch...
+        BTRAMOBJ:setFlag(0x9B, 1) --Glitter Gulch Gate
+
+        -- Totals Screen --
+        BTRAMOBJ:setFlag(0x37, 3)
+        BTRAMOBJ:setFlag(0x37, 4)
+        BTRAMOBJ:setFlag(0x37, 5)
+        BTRAMOBJ:setFlag(0x37, 6)
+        BTRAMOBJ:setFlag(0x37, 7)
+        BTRAMOBJ:setFlag(0x38, 0)
+        BTRAMOBJ:setFlag(0x38, 1)
+        BTRAMOBJ:setFlag(0x38, 2)
+        BTRAMOBJ:setFlag(0x38, 3)
+        BTRAMOBJ:setFlag(0x38, 4)
+        -- Totals Screen --
+
+        BTRAMOBJ:setMultipleFlags(0x6A, 129, 2) -- --totals menu
 
         if SKIP_KING == true
         then
