@@ -33,7 +33,7 @@ local CLIENT_VERSION = 0
 
 
 local DEBUG = false
-local DEBUG_SILO = true
+local DEBUG_SILO = false
 local DEBUG_JIGGY = false
 local DEBUG_NOTES = false
 local DEBUG_HONEY = false
@@ -119,6 +119,7 @@ local SILO_TIMER = 0;
 local LOAD_BMK_MOVES = false; -- If close to Silo
 local SILOS_LOADED = false; -- Handles if learned a move at Silo
 local LOAD_SILO_NOTES = false;
+local TEMP_EGGS = false; -- set if close to Silo IF no other eggs are given
 
 -------------- SKIP VARS ------------
 local OPEN_HAG1 = false;
@@ -7055,6 +7056,14 @@ function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND 
             end
         end
     end
+    if mapaddr == 0x152 or mapaddr == 0x155 or mapaddr == 0x15B or mapaddr == 0x15A
+    then
+        if receive_map["1230823"] == nil
+        then
+            BTRAMOBJ:setFlag(0x1E, 6, "Blue Eggs")
+            TEMP_EGGS = true
+        end
+    end
     return true
 end
 
@@ -7064,9 +7073,27 @@ function check_jamjar_silo()
         if ASSET_MAP_CHECK[CURRENT_MAP]["SILO"] ~= nil
         then
             SILO_TIMER = SILO_TIMER + 1
-            if SILO_TIMER == 25
+            if SILO_TIMER >= 25
             then
-                set_AGI_MOVES_checks()
+                SILO_TIMER = 25
+                BTMODELOBJ:changeName("Silo", false);
+                local modelPOS = BTMODELOBJ:getMultipleModelCoords()
+                if modelPOS == false
+                then
+                    set_AGI_MOVES_checks()
+                    return
+                end
+                local siloPOS = { ["Distance"] = 9999};
+                for modelObjPtr, POS in pairs(modelPOS) do
+                    if POS ~= false
+                    then
+                        siloPOS = POS
+                    end
+                end
+                if siloPOS["Distance"] >= 650
+                then
+                    set_AGI_MOVES_checks()
+                end
             end
         else
             set_AGI_MOVES_checks()
@@ -7087,6 +7114,11 @@ function set_AGI_MOVES_checks() -- SET AGI Moves into RAM AFTER BT/Silo Model is
         else
             BTRAMOBJ:clearFlag(table['addr'], table['bit'], "CLEAR_AGI_MOVES");
         end
+    end
+    if TEMP_EGGS == true
+    then
+        BTRAMOBJ:clearFlag(0x1E, 6)
+        TEMP_EGGS = false
     end
     if DEBUG_SILO == true
     then
@@ -7162,6 +7194,11 @@ function nearSilo()
                     set_AGI_MOVES_checks();
                     restore_BMM_NOTES()
                     restore_BMM_TREBLE()
+                    if TEMP_EGGS == true
+                    then
+                        BTRAMOBJ:clearFlag(0x1E, 6)
+                        TEMP_EGGS = false
+                    end
                     LOAD_BMK_MOVES = false;
                     SILOS_LOADED = false;
                 end
@@ -8660,6 +8697,7 @@ function processAGIItem(item_list)
                 BTRAMOBJ:setFlag(0x1E, 6, "Blue Eggs")
                 BTCONSUMEOBJ:changeConsumable("BLUE EGGS")
                 BTCONSUMEOBJ:setConsumable(100)
+                TEMP_EGGS = false
             elseif(memlocation == 1230828) -- Progressive Beak Bust
             then
                 local progressive_count = 0
