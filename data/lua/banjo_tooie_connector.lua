@@ -6835,12 +6835,18 @@ function watchBtnAnimation()
             then
                 if DEBUG_STATION == true
                 then
+                    mapaddr = BTRAMOBJ:getMap(false)
+                    tmapaddr = BTRAMOBJ:getMap(true)
                     print("Station Button not pressed")
+                    print("current map: " ..tostring(mapaddr) .. " nextmap:" .. tostring(tmapaddr))
                 end
             else
                 if DEBUG_STATION == true
                 then
+                    mapaddr = BTRAMOBJ:getMap(false)
+                    tmapaddr = BTRAMOBJ:getMap(true)
                     print("Detected Station Button got pressed")
+                    print("current map: " ..tostring(mapaddr) .. " nextmap:" .. tostring(tmapaddr))
                 end
                 BMM_STATIONS[ASSET_MAP_CHECK[CURRENT_MAP]["STATIONBTN"]] = true;
             end
@@ -6858,7 +6864,7 @@ function nearChuffySign()
         and banjo ~= 0x75 and banjo ~= 0x76 and banjo ~= 0x79 and banjo ~= 0x80 and banjo ~= 0x8F
         and banjo ~= 0x92 and banjo ~= 0x93 and banjo ~= 0x94 and banjo ~= 0x98 and banjo ~= 0x9A
         and banjo ~= 0xBB and banjo ~= 0xE5 and banjo ~= 0xF2 and banjo ~= 0xF5 and banjo ~= 0xF6
-        and banjo ~= 0x73
+        and banjo ~= 0x73 and banjo ~= 0x00
         then
             BTMODELOBJ:changeName("Chuffy Sign", false);
             local playerDist = BTMODELOBJ:getClosestModelDistance()
@@ -6871,7 +6877,7 @@ function nearChuffySign()
                 if DEBUG_STATION == true
                 then
                     print("Near Chuffy Sign");
-                    --print(banjo)
+                    print(banjo)
                 end
                 set_AP_STATIONS()
                 if CURRENT_MAP == 0x155 -- IoH
@@ -7088,7 +7094,7 @@ function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND 
     end
     if mapaddr == 0x152 or mapaddr == 0x155 or mapaddr == 0x15B or mapaddr == 0x15A
     then
-        if receive_map["1230823"] == nil
+        if receive_map["1230823"] == nil and ENABLE_AP_BK_MOVES ~= 0
         then
             BTRAMOBJ:setFlag(0x1E, 6, "Blue Eggs")
             TEMP_EGGS = true
@@ -7718,7 +7724,7 @@ function watchMapTransition()
             MAP_TRANSITION = false
             return
         end
-        if mainmemory.read_u8(0x127642) == 1
+        if mainmemory.read_u8(0x127642) == 1 or BTRAMOBJ:getMap(true) ~= 0
         then
             if MAP_TRANSITION == false then
                 NEXT_MAP = BTRAMOBJ:getMap(true)
@@ -8040,7 +8046,10 @@ function checkTotalMenu()
                 print("Checking Game Totals");
             end
             TOTALS_MENU = true;
-            BMMRestore();
+            restore_BMM_JIGGIES()
+            restore_BMM_NOTES()
+            restore_BMM_TREBLE()
+            restore_BMM_JINJOS()
         elseif TOTALS_MENU == true and total ~= 1
         then
             if DEBUG == true
@@ -8048,8 +8057,10 @@ function checkTotalMenu()
                 print("no longer checking Game Totals");
             end
             TOTALS_MENU = false;
-            BMMBackup();
-            useAGI();
+            backup_BMM_JIGGIES()
+            backup_BMM_NOTES()
+            backup_BMM_TREBLE()
+            backup_BMM_JINJOS()
         end
         
         -- Object and Items 
