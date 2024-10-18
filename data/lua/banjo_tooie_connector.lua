@@ -1,6 +1,6 @@
 -- Banjo Tooie Connector Lua
 -- Created by Mike Jackson (jjjj12212) 
--- with the help of Rose (Oktorose), the OOT Archipelago team, ScriptHawk BT.lua & kaptainkohl for BTrando.lua 
+-- with the help of Rose (Oktorose), the OOT Archipelago team, ScriptHawk BT.lua
 -- modifications from Unalive, HemiJackson & fhnnhf 
 
 -- local RDRAMBase = 0x80000000;
@@ -40,7 +40,7 @@ local DEBUG_HONEY = false
 local DEBUG_ROYSTEN = false
 local DEBUG_CHUFFY = false
 local DEBUG_STOPNSWAP = false
-local DEBUG_STATION = false
+local DEBUG_STATION = true
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
@@ -70,6 +70,8 @@ local AIMASSIST_HOLD = false;
 
 local SUPERBANJO = false;
 local SUPERBANJO_HOLD = false;
+
+local REFILL_HOLD = false;
 
 local REGEN = false;
 local REGEN_HOLD = false;
@@ -6848,20 +6850,45 @@ function watchBtnAnimation()
     end
 end
 
+
 function nearChuffySign()
-    BTMODELOBJ:changeName("Chuffy Sign", false);
-    local playerDist = BTMODELOBJ:getClosestModelDistance()
-    if playerDist == false
+    if mainmemory.readbyte(0x11B065) ~= 4
     then
-        return;
-    end
-    if playerDist <= 700
-    then
-        if DEBUG_STATION == true
+        banjo = BTRAM:getBanjoMovementState()
+        if banjo ~= 0x33 and banjo ~= 0x01 and banjo ~= 0x15 and banjo ~= 0x45 and banjo ~= 0x48
+        and banjo ~= 0x5E and banjo ~= 0x5F and banjo ~= 0x6E and banjo ~= 0x7E and banjo ~= 0x74
+        and banjo ~= 0x75 and banjo ~= 0x76 and banjo ~= 0x79 and banjo ~= 0x80 and banjo ~= 0x8F
+        and banjo ~= 0x92 and banjo ~= 0x93 and banjo ~= 0x94 and banjo ~= 0x98 and banjo ~= 0x9A
+        and banjo ~= 0xBB and banjo ~= 0xE5 and banjo ~= 0xF2 and banjo ~= 0xF5 and banjo ~= 0xF6
+        and banjo ~= 0x73
         then
-            print("Near Chuffy Sign");
+            BTMODELOBJ:changeName("Chuffy Sign", false);
+            local playerDist = BTMODELOBJ:getClosestModelDistance()
+            if playerDist == false
+            then
+                return;
+            end
+            if playerDist <= 700
+            then
+                if DEBUG_STATION == true
+                then
+                    print("Near Chuffy Sign");
+                    --print(banjo)
+                end
+                set_AP_STATIONS()
+                if CURRENT_MAP == 0x155 -- IoH
+                then
+                    -- unset WW due to switch may be pressed
+                    BTRAMOBJ:clearFlag(ADDRESS_MAP["STATIONS"]["1230795"]['addr'], ADDRESS_MAP["STATIONS"]["1230795"]['bit'], "button")
+                elseif CURRENT_MAP == 0xEC -- WW
+                then
+                    -- unset IoH due to switch may be pressed
+                    BTRAMOBJ:clearFlag(ADDRESS_MAP["STATIONS"]["1230794"]['addr'], ADDRESS_MAP["STATIONS"]["1230794"]['bit'], "button")
+                end
+            end
         end
-        set_AP_STATIONS()
+    else
+        set_checked_STATIONS()
     end
 end
 
@@ -8047,11 +8074,11 @@ function DPadStats()
         local check_controls = joypad.get()
         
         -- SNEAK
-		if check_controls ~= nil and check_controls['P1 DPad U'] == true and SNEAK == false
+        if check_controls ~= nil and check_controls['P1 DPad U'] == true and SNEAK == false and check_controls['P1 L'] == false
         then
             joypad.setanalog({['P1 Y Axis'] = 18 })
             SNEAK = true
-        elseif check_controls ~= nil and check_controls['P1 DPad U'] == false and SNEAK == true
+        elseif check_controls ~= nil and check_controls['P1 DPad U'] == false and SNEAK == true and check_controls['P1 L'] == false
         then
             joypad.setanalog({['P1 Y Axis'] = '' })
             SNEAK = false
@@ -8095,13 +8122,13 @@ function DPadStats()
             print(" ")
             print(" ")
             print("Unlocked Worlds")
-            -- for world, table in pairs(WORLD_ENTRANCE_MAP)
-            -- do
-            --     if table["opened"] == true
-            --     then
-            --         print(table["defaultName"])
-            --     end
-            -- end
+            for world, table in pairs(WORLD_ENTRANCE_MAP)
+            do
+                if table["opened"] == true
+                then
+                    print(table["defaultName"])
+                end
+            end
             CHECK_MOVES_R = true
         elseif check_controls ~= nil and check_controls['P1 DPad R'] == false and check_controls['P1 L'] == false and CHECK_MOVES_R == true
         then
@@ -8167,10 +8194,10 @@ function DPadStats()
         end
 		
         -- CHEAT: Refill & Double
-        if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 L'] == true
+        if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 L'] == true and REFILL_HOLD == false
         then
-            BTRAMOBJ:setFlag(0xA1, 4) -- Double Feathers
-            BTRAMOBJ:setFlag(0xA1, 5) -- Double Eggs
+            BTRAMOBJ:setFlag(0xA1, 4, "Double Feathers") -- Double Feathers
+            BTRAMOBJ:setFlag(0xA1, 5, "Double Eggs") -- Double Eggs
 			BTCONSUMEOBJ:changeConsumable("Red Feathers")
 			BTCONSUMEOBJ:setConsumable(200)
 			BTCONSUMEOBJ:changeConsumable("Gold Feathers")
@@ -8188,6 +8215,10 @@ function DPadStats()
 			print(" ")
             print("Eggs and Feathers Doubled")
 			print("Eggs and Feathers Refilled")
+            REFILL_HOLD = true
+        elseif check_controls ~= nil and (check_controls['P1 DPad U'] == false or check_controls['P1 L'] == false) and REFILL_HOLD == true
+        then
+            REFILL_HOLD = false
         end
 
         -- CHEAT: Super Banjo
