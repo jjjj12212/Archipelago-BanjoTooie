@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | 3.0-Beta
+# Archipelago Banjo-Tooie (US-Only) | 3.1-Beta
 Banjo Tooie for Archipelago 
 
 # Controller Shortcuts with this implementation
@@ -63,7 +63,7 @@ Banjo Tooie for Archipelago
 - World Bosses (Collect the Mumbo Tokens hidden behind world bosses)
 - Family Jinjo Hunt (Collect the Mumbo Tokens hidden behind Jinjo Families)
 - <b>Wonderwing Challenge!</b> (Collect all 32 Mumbo Tokens from Jinjo families, mini-games & World bosses and beat Hag-1)
-- Mumbo Token Hunt (Token are scattered all over the world, go find them.) 
+- Mumbo Token Hunt (Token are scattered all over the world, go find them.) You must hand them all in at Banjo's House
 
 
 # How to install

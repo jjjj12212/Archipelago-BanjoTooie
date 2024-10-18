@@ -74,7 +74,7 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
 
     def __init__(self, world, player):
-        self.version = "V3.0"
+        self.version = "V3.1"
         self.kingjingalingjiggy = False
         self.starting_egg: int = 0
         self.starting_attack: int = 0
@@ -163,7 +163,7 @@ class BanjoTooieWorld(World):
             if self.item_filter(item):
                 if item.code == 1230515 and self.kingjingalingjiggy == True:
                     for i in range(id.qty - 1): #note the -1 in the count here. King Took one already.
-                        if self.options.randomize_jinjos == False and self.jiggy_counter > 81:
+                        if self.options.randomize_jinjos == False and self.jiggy_counter > 80:
                             break
                         else:
                             itempool += [self.create_item(name)]
@@ -267,9 +267,9 @@ class BanjoTooieWorld(World):
         elif (item.code == 1230815 or item.code == 1230816) and self.options.randomize_bk_moves.value == 1: # talon trot and tall jump not in pool
             return False
         
-        if item.code == 1230888 and self.options.cheato_rewards.value == False and self.options.honeyb_rewards.value == False:
-            return False
-        elif item.code == 1230888 and self.options.randomize_bk_moves.value == 2:
+        # if item.code == 1230888 and self.options.cheato_rewards.value == False and self.options.honeyb_rewards.value == False:
+        #     return False
+        if item.code == 1230888 and self.options.randomize_bk_moves.value == 2:
             return False
         
         if self.options.progressive_beak_buster.value == True and (item.code == 1230820 or item.code == 1230757):
@@ -605,7 +605,6 @@ class BanjoTooieWorld(World):
         btoptions['chuffy'] = "true" if self.options.randomize_chuffy == 1 else "false"
         btoptions['jinjo'] = "true" if self.options.randomize_jinjos == 1 else "false"
         btoptions['notes'] = "true" if self.options.randomize_notes == 1 else "false"
-        btoptions['skip_king'] = "true" if self.options.skip_jingaling == 1 else "false"
         btoptions['worlds'] = "true" if self.worlds_randomized else "false"
         btoptions['world_order'] = self.randomize_worlds
         btoptions['world_keys'] = self.randomize_order

@@ -6,7 +6,7 @@ class EnableMultiWorldMoveList(DefaultOnToggle):
     display_name = "Jamjars' Movelist"
 
 class EnableMultiWorldBKMoveList(Choice):
-    """Banjo-Kazooie Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves.
+    """Banjo-Kazooie's Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves.
     Mcjiggy Special - No Talon Trot and Tall Jump in the Pool """
     display_name = "BK Original Movelist"
     option_none = 0
@@ -15,11 +15,11 @@ class EnableMultiWorldBKMoveList(Choice):
     default = 0
 
 class ProgressiveBeakBuster(Toggle):
-    """Beak Buster Progress to Bill Drill. Randomize Moves and Randomize BK Moves is required."""
+    """Beak Buster to Bill Drill. Randomize Moves and Randomize BK Moves are required."""
     display_name = "Progressive Beak Buster"
 
 class EggsBehaviour(Choice):
-    """Change the way how Eggs work in Banjo-Tooie. Randomize Moves and Randomize BK Moves is required."""
+    """Change the way Eggs work in Banjo-Tooie. Randomize Moves and Randomize BK Moves are required."""
     display_name = "Banjo-Tooie Eggs"
     option_start_with_blue_eggs = 0
     option_random_starting_egg = 1
@@ -27,19 +27,19 @@ class EggsBehaviour(Choice):
     default = 0
 
 class ProgressiveShoes(Toggle):
-    """Stilt Stride to Turbo Trainers to Spring Boots to Claw Climber Boots. Randomize Moves and Randomize BK Moves is required."""
+    """Stilt Stride to Turbo Trainers to Spring Boots to Claw Climber Boots. Randomize Moves and Randomize BK Moves are required."""
     display_name = "Progressive Kazooie Shoes"
 
 class ProgressiveSwimming(Toggle):
-    """Dive to Double Air to Faster Swimming. Randomize Moves and Randomize BK Moves is required."""
+    """Dive to Double Air to Faster Swimming. Randomize Moves and Randomize BK Moves are required."""
     display_name = "Progressive Water Training"
 
 class ProgressiveBashAttack(Toggle):
-    """Ground Rat-a-tat Rap to Breegull Bash. Randomize Stop N Swap and Randomize BK Moves is required"""
+    """Ground Rat-a-tat Rap to Breegull Bash. Randomize Stop N Swap and Randomize BK Moves are required"""
     display_name = "Progressive Bash Attack"
 
 class EnableCheatoRewards(DefaultOnToggle):
-    """Cheato rewards you a cheat + an additional randomized reward. Use Cheato Pages as Filler cannot be set if this is enabled."""
+    """Cheato rewards you with a cheat and an additional randomized reward. Use Cheato Pages as Filler cannot be set if this is enabled."""
     display_name = "Cheato Rewards"
 
 class ActivateOverlayText(DefaultOnToggle):
@@ -47,15 +47,14 @@ class ActivateOverlayText(DefaultOnToggle):
     display_name = "Activate Overlay Text"
 
 class OverlayTextColour(Choice):
-    """Banjo-Kazooie Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves.
-    Mcjiggy Special - No Talon Trot and Tall Jump in the Pool """
+    """Choose which colour the overlay text should display."""
     display_name = "Text Overlay Colour"
     option_chilli_billi = 0
     option_chilly_willy = 1
     default = 0
 
 class EnableMultiWorldJinjos(DefaultOnToggle):
-    """Jinjos fled to other worlds. Other players need return them home."""
+    """Jinjos have fled to other worlds. Other players need to return them home."""
     display_name = "Randomize Jinjos"
 
 class EnableMultiWorldDoubloons(Toggle):
@@ -67,7 +66,7 @@ class EnableMultiWorldCheatoPages(DefaultOnToggle):
     display_name = "Randomize Cheato Pages"
 
 class SetMultiWorldCheatoPagesFiller(Toggle):
-    """If Cheato pages are scattered, set to Cheato Items as filler."""
+    """If Cheato pages are scattered, sets Cheato Items as filler."""
     display_name = "Use Cheato Pages as Filler."
 
 class EnableMultiWorldHoneycombs(DefaultOnToggle):
@@ -75,7 +74,7 @@ class EnableMultiWorldHoneycombs(DefaultOnToggle):
     display_name = "Randomize Honeycombs"
 
 class EnableHoneyBRewards(DefaultOnToggle):
-    """Honey B gives you health + a additiona randomized reward"""
+    """Honey B gives you health and an additional randomized reward."""
     display_name = "Honey B Rewards"
 
 class EnableMultiWorldGlowbos(DefaultOnToggle):
@@ -91,7 +90,7 @@ class EnableMultiWorldTrainStationSwitches(Toggle):
     display_name = "Randomize Train Station Switches"
 
 class EnableMultiWorldChuffyTrain(Toggle):
-    """Chuffy is lost across the MultiWorld."""
+    """Chuffy is lost somewhere in the MultiWorld."""
     display_name = "Chuffy as a randomized AP Item."
 
 class EnableMultiWorldNotes(Toggle):
@@ -103,27 +102,23 @@ class EnableMultiWorldDinoRoar(Toggle):
     display_name = "Baby T-Rex Roar"
 
 class KingJingalingHasJiggy(DefaultOnToggle):
-    """King Jingaling will always have a Jiggy to give you."""
+    """King Jingaling will always have a Jiggy for you."""
     display_name = "King Jingaling Jiggy"
-
-class KingJingalingSkip(DefaultOnToggle):
-    """Give King Jingaling's reward early and take a shortcut to Wooded Hollow"""
-    display_name = "King Jingaling Skip"
 
 class SkipPuzzles(DefaultOnToggle):
     """Open world entrances without having to go to Jiggywiggy."""
     display_name = "Skip Puzzles"
 
 class OpenHag1(DefaultOnToggle):
-    """HAG 1 boss fight is opened when Cauldron Keep is. Only 55 jiggies are needed to win."""
+    """HAG 1 boss fight is opened when Cauldron Keep is opened. Only 55 jiggies are needed to win."""
     display_name = "HAG 1 Open"
 
 class RandomizeWorlds(Toggle):
-    """Worlds will open in a randomized order. Randomized Moves & Puzzle Skip Required."""
+    """Worlds will open in a randomized order. Randomized Moves and Puzzle Skip Required."""
     display_name = "Randomize Worlds"
 
 class RandomizeStopnSwap(Toggle):
-    """Mystery Eggs (and rewards) and Ice Key are scattered across the MultiWorld."""
+    """Mystery Eggs, their rewards, and the Ice Key are scattered across the MultiWorld."""
     display_name = "Randomize Stop n Swap"
 
 class SkipToT(Choice):
@@ -135,7 +130,7 @@ class SkipToT(Choice):
     default = 1
 
 class LogicType(Choice):
-    """Choose your logic difficulty if you are expected to perform tricks to reach certain areas."""
+    """Choose your logic difficulty and difficulty of tricks you are expected to perform to reach certain areas."""
     display_name = "Logic Type"
     option_beginner = 0
     option_normal = 1
@@ -144,7 +139,7 @@ class LogicType(Choice):
     default = 0
 
 class SpeedUpMinigames(DefaultOnToggle):
-    """Start 3-round minigames at Round 3"""
+    """Start 3-round minigames at Round 3."""
     display_name = "Speed Up Minigames"
 
 class VictoryCondition(Choice):
@@ -154,7 +149,7 @@ class VictoryCondition(Choice):
     Boss Hunt: Kill the 8 world bosses and collect their Mumbo Tokens
     Jinjo Family Rescue: Rescue Jinjo Families to collect their prized Mumbo Tokens
     Wonderwing Challenge: Collect all 32 Mumbo Tokens across all boss fights, mini games and every Jinjo family
-        to gain access to HAG1 and Defeat Grunty. The Ultimate Banjo Tooie experience!
+        to gain access to HAG1 and Defeat Grunty. The Ultimate Banjo Tooie experience!!
     Token Hunt: Mumbo's Tokens are scattered around the world. Help him find them"""
     display_name = "Victory Condition"
     option_hag1 = 0
@@ -166,7 +161,7 @@ class VictoryCondition(Choice):
     default = 0
 
 class MinigameHuntLength(Range):
-    """How many Mumbo Tokens are needed to clear the Minigame Hunt
+    """How many Mumbo Tokens are needed to clear the Minigame Hunt.
     Choose a value between 1 and 15"""
     display_name = "Minigame Hunt Length"
     range_start = 1
@@ -174,7 +169,7 @@ class MinigameHuntLength(Range):
     default = 14
 
 class BossHuntLength(Range):
-    """How many Mumbo Tokens are needed to clear the Boss Hunt
+    """How many Mumbo Tokens are needed to clear the Boss Hunt.
     Choose a value between 1 and 8"""
     display_name = "Boss Hunt Length"
     range_start = 1
@@ -182,96 +177,93 @@ class BossHuntLength(Range):
     default = 8
 
 class JinjoFamilyRescueLength(Range):
-    """How many Jinjo families' Mumbo Tokens are needed to clear the Jinjo family rescue
-    Choose a value between 1 and 9"""
+    """How many Jinjo families' Mumbo Tokens are needed to clear the Jinjo family rescue.
+    Choose a value between 1 and 9."""
     display_name = "Jinjo Family Rescue Length"
     range_start = 1
     range_end = 9
     default = 9
 
 class TokenHuntLength(Range):
-    """How many Mumbo Tokens of the 15 hidden throughout the world do you need to find
-    Choose a value between 1 and 15"""
+    """How many Mumbo Tokens of the 15 hidden throughout the world do you need to find.
+    Choose a value between 1 and 15."""
     display_name = "Token Hunt Length"
     range_start = 1
     range_end = 15
     default = 5
 
-# class WarpTraps(Choice):
-#     """Choose if you want warp traps enabled"""
-#     display_name = "Warp Traps"
-#     option_no_warp_traps = 0
-#     option_in_level_warp_traps = 1
-#     option_cross_level_warp_traps = 2
-#     default = 0
-
 class GameLength(Choice):
-    """Choose how quickly the worlds open between each over."""
+    """Choose how quickly the worlds open between each over.
+    quick: Worlds opens at 1, 3, 6, 10, 15, 21, 28, 36, and 44 Jiggys
+    normal: Worlds opens at 1, 4, 8, 14, 20, 28, 36, 45, and 55 Jiggys
+    long: Worlds opens at 1, 8, 16, 25, 34, 43, 52, 61, and 70 Jiggys
+    custom: You pick when they open
+    """
     display_name = "World Requirements"
-    option_quick = 0  #1,3,6,10,15,21,28,36,44 
-    option_normal = 1 #1,4,8,14,20,28,36,45,55
-    option_long = 2   #1,8,16,25,34,43,52,61,70
-    option_custom = 3 #you pick
+    option_quick = 0 
+    option_normal = 1
+    option_long = 2
+    option_custom = 3
     default = 1
 
 class World1(Range):
-    """If you picked custom, what is the jiggy requirement for World 1."""
+    """If you picked custom, what is the jiggy requirement for World 1?"""
     display_name = "World 1 Jiggy requirement"
     range_start = 1
     range_end = 3
     default = 1
 
 class World2(Range):
-    """If you picked custom, what is the jiggy requirement for World 2."""
+    """If you picked custom, what is the jiggy requirement for World 2?"""
     display_name = "World 2 Jiggy requirement"
     range_start = 2
     range_end = 20
     default = 4
 
 class World3(Range):
-    """If you picked custom, what is the jiggy requirement for World 3."""
+    """If you picked custom, what is the jiggy requirement for World 3?"""
     display_name = "World 3 Jiggy requirement"
     range_start = 3
     range_end = 30
     default = 8
 
 class World4(Range):
-    """If you picked custom, what is the jiggy requirement for World 4."""
+    """If you picked custom, what is the jiggy requirement for World 4?"""
     display_name = "World 4 Jiggy requirement"
     range_start = 4
     range_end = 40
     default = 14
 
 class World5(Range):
-    """If you picked custom, what is the jiggy requirement for World 5."""
+    """If you picked custom, what is the jiggy requirement for World 5?"""
     display_name = "World 5 Jiggy requirement"
     range_start = 5
     range_end = 50
     default = 20
 
 class World6(Range):
-    """If you picked custom, what is the jiggy requirement for World 6."""
+    """If you picked custom, what is the jiggy requirement for World 6?"""
     display_name = "World 6 Jiggy requirement"
     range_start = 6
     range_end = 60
     default = 28
 
 class World7(Range):
-    """If you picked custom, what is the jiggy requirement for World 7."""
+    """If you picked custom, what is the jiggy requirement for World 7?"""
     display_name = "World 7 Jiggy requirement"
     range_start = 7
     range_end = 70
     default = 36
 
 class World8(Range):
-    """If you picked custom, what is the jiggy requirement for World 8."""
+    """If you picked custom, what is the jiggy requirement for World 8?"""
     display_name = "World 8 Jiggy requirement"
     range_start = 8
     range_end = 90
     default = 45
 
 class World9(Range):
-    """If you picked custom, what is the jiggy requirement for Cauldon Keep."""
+    """If you picked custom, what is the jiggy requirement for Cauldon Keep?"""
     display_name = "Cauldon Keep Jiggy requirement"
     range_start = 9
     range_end = 90
@@ -282,7 +274,7 @@ class SkipKlungo(Toggle):
     display_name = "Skip Klungo"
 
 class ExceedingItemsFiller(Toggle):
-    """Progressive Items that exceeds the required amounts are marked as junk"""
+    """Progressive Items that exceeds the required amounts are marked as junk."""
     display_name = "Exceeding Progressive Items marked as junk items"
 
 @dataclass
@@ -313,7 +305,6 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_stop_n_swap: RandomizeStopnSwap
     randomize_dino_roar: EnableMultiWorldDinoRoar
     jingaling_jiggy: KingJingalingHasJiggy
-    skip_jingaling:KingJingalingSkip
     skip_puzzles: SkipPuzzles
     skip_klungo: SkipKlungo
     skip_tower_of_tragedy: SkipToT
