@@ -1846,7 +1846,8 @@ local ASSET_MAP_CHECK = {
         },
         ["HONEYCOMB"] = {
             "1230724", -- Dirt Patch
-            "1230726" -- Pot O Gold
+            "1230726", -- Pot O Gold
+            "1230725" -- Trash
         },
         ["GLOWBO"] = {
             "1230700"
@@ -1911,9 +1912,6 @@ local ASSET_MAP_CHECK = {
         },
         ["JINJOS"] = {
             "1230586" -- Trash
-        },
-        ["HONEYCOMB"] = {
-            "1230725" -- Trash
         }
     },
     [0x13F] =	{ --CCL - Mingy Jongo's Skull
