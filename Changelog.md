@@ -7,7 +7,7 @@
   - Fix HAG1 Complete
   - Fix Totals Menu + Unlocked Worlds Menu
   - Fix Train Switches
-  - Modify Checking of Tranistioning to different Maps. (found in-game bug that we had to workaround)
+  - Modify Checking of Transitioning to different Maps. (found in-game bug that we had to workaround)
  - Jingaling skip is no longer an option. Its part of the randomizer
  - If using Refill cheat, it will double your eggs and feather
  - Must return to Banjo's House for handing in all Mumbo Tokens to complete the game.
