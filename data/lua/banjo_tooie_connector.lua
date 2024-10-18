@@ -40,7 +40,7 @@ local DEBUG_HONEY = false
 local DEBUG_ROYSTEN = false
 local DEBUG_CHUFFY = false
 local DEBUG_STOPNSWAP = false
-local DEBUG_STATION = true
+local DEBUG_STATION = false
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
