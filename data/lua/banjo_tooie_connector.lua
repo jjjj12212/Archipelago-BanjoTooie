@@ -8166,24 +8166,27 @@ function DPadStats()
             CHECK_MOVES_D = false
         end
 		
-        -- CHEAT: Refill
+        -- CHEAT: Refill & Double
         if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 L'] == true
         then
+            BTRAMOBJ:setFlag(0xA1, 4) -- Double Feathers
+            BTRAMOBJ:setFlag(0xA1, 5) -- Double Eggs
 			BTCONSUMEOBJ:changeConsumable("Red Feathers")
-			BTCONSUMEOBJ:setConsumable(100)
+			BTCONSUMEOBJ:setConsumable(200)
 			BTCONSUMEOBJ:changeConsumable("Gold Feathers")
-			BTCONSUMEOBJ:setConsumable(10)
+			BTCONSUMEOBJ:setConsumable(20)
 			BTCONSUMEOBJ:changeConsumable("BLUE EGGS")
-			BTCONSUMEOBJ:setConsumable(100)
+			BTCONSUMEOBJ:setConsumable(200)
 			BTCONSUMEOBJ:changeConsumable("FIRE EGGS")
-			BTCONSUMEOBJ:setConsumable(50)
+			BTCONSUMEOBJ:setConsumable(100)
             BTCONSUMEOBJ:changeConsumable("GRENADE EGGS")
-            BTCONSUMEOBJ:setConsumable(25)
-            BTCONSUMEOBJ:changeConsumable("ICE EGGS")
             BTCONSUMEOBJ:setConsumable(50)
+            BTCONSUMEOBJ:changeConsumable("ICE EGGS")
+            BTCONSUMEOBJ:setConsumable(100)
             BTCONSUMEOBJ:changeConsumable("CWK EGGS")
-            BTCONSUMEOBJ:setConsumable(10)
+            BTCONSUMEOBJ:setConsumable(20)
 			print(" ")
+            print("Eggs and Feathers Doubled")
 			print("Eggs and Feathers Refilled")
         end
 
@@ -8426,6 +8429,7 @@ function initializeFlags()
         BTCONSUMEOBJ:setConsumable(0)
         BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star,moon, sun 
         BTRAMOBJ:setFlag(0x15, 5) --Just open the compound door...
+        BTRAMOBJ:setFlag(0x9B, 1) --Glitter Gulch...
 
         if SKIP_KING == true
         then
