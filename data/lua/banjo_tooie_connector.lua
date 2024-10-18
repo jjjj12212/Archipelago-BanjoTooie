@@ -8285,13 +8285,19 @@ function DPadStats()
 		
         -- CHEAT: Health Regen
 		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == false and REGEN_HOLD == false
-        and DEATH_LINK == false
         then
-           BTRAMOBJ:setFlag(0xA1, 7, "Automatic Energy Regain")
-           REGEN = true
-           print(" ")
-           print("Automatic Energy Regain Enabled")
-           REGEN_HOLD = true
+            if DEATH_LINK == true
+            then
+                print(" ")
+                print("Regen can't be enable with Deathlink.")
+                REGEN_HOLD = true
+            else
+                BTRAMOBJ:setFlag(0xA1, 7, "Automatic Energy Regain")
+                REGEN = true
+                print(" ")
+                print("Automatic Energy Regain Enabled")
+                REGEN_HOLD = true
+            end
         elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == true and REGEN_HOLD == false
         and DEATH_LINK == false
         then
