@@ -922,6 +922,11 @@ local ASSET_MAP_CHECK = {
     [0x14F] = { --IoH - Wooded Hollow
         ["JINJOS"] = {
             "1230591" -- Wooded Hollow Jinjo
+        },
+        ["STOPNSWAP"] = {
+            "1230953", -- Yellow Egg Hatch
+            "1230954", -- Pink Egg Hatch
+            "1230955" -- Blue Egg Hatch
         }
     },
     --MAYAHEM TEMPLE
@@ -6291,7 +6296,7 @@ function check_egg_mystery()
     then
         if ASSET_MAP_CHECK[NEXT_MAP]["STOPNSWAP"] ~= nil
         then
-            if NEXT_MAP == 0x150 -- on Heggy map / Wooded Hollow, if you have eggs, enable flags
+            if NEXT_MAP == 0x150 -- on Heggy map if you have eggs, enable flags
             then
                 if EGGS_CLEARED == true
                 then
@@ -6578,9 +6583,9 @@ function check_hatched_mystery()
     else
         if BMM_MYSTERY["1230956"] == false
         then
-            -- if DEBUG == true then
-            --     print("reverse Hatch flag, Pink egg not yet obtained")
-            -- end
+            if DEBUG_STOPNSWAP == true then
+                print("reverse Hatch flag, Pink egg not yet obtained")
+            end
             local tbl = ADDRESS_MAP["STOPNSWAP"]["1230954"]
             BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
         end
@@ -6590,9 +6595,9 @@ function check_hatched_mystery()
         end
         if BMM_MYSTERY["1230957"] == false
         then
-            -- if DEBUG == true then
-            --     print("reverse Hatch flag, Blue egg not yet obtained")
-            -- end
+            if DEBUG_STOPNSWAP == true then
+                print("reverse Hatch flag, Blue egg not yet obtained")
+            end
             local tbl = ADDRESS_MAP["STOPNSWAP"]["1230955"]
             BTRAMOBJ:clearFlag(tbl['addr'], tbl['bit'])
         end
@@ -7194,11 +7199,6 @@ function nearSilo()
                     set_AGI_MOVES_checks();
                     restore_BMM_NOTES()
                     restore_BMM_TREBLE()
-                    if TEMP_EGGS == true
-                    then
-                        BTRAMOBJ:clearFlag(0x1E, 6)
-                        TEMP_EGGS = false
-                    end
                     LOAD_BMK_MOVES = false;
                     SILOS_LOADED = false;
                 end
