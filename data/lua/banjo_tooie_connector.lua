@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V3.1"
+local BT_VERSION = "V3.1.1"
 local PLAYER = ""
 local SEED = 0
 
@@ -1632,7 +1632,7 @@ local ASSET_MAP_CHECK = {
             "1230577" -- leg spring
         },
         ["PAGES"] = {
-            "1230743" -- Floor 2
+            "1230744" -- Floor 2
         },
         ["GLOWBO"] = {
             "1230696" -- near humba
