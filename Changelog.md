@@ -1,3 +1,6 @@
+# 3.1.1-beta
+ - Fix Cheato page on Second Floor
+
 # 3.1-beta
  - Lots of bug fixes:
   - Fix Crashing when removing associated Egg near Silo + Crashing transitioning maps
