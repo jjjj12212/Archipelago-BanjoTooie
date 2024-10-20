@@ -56,7 +56,7 @@ bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 
 script_version: int = 4
-version: str = "V3.1.1"
+version: str = "V3.1.2"
 
 def get_item_value(ap_id):
     return ap_id

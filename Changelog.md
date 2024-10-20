@@ -1,3 +1,6 @@
+# 3.1.2-beta
+ - Fix Blue Eggs getting removed permanently
+
 # 3.1.1-beta
  - Fix Cheato page on Second Floor
 

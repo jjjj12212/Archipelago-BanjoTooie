@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V3.1.1"
+local BT_VERSION = "V3.1.2"
 local PLAYER = ""
 local SEED = 0
 
@@ -7094,10 +7094,22 @@ function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND 
     end
     if mapaddr == 0x152 or mapaddr == 0x155 or mapaddr == 0x15B or mapaddr == 0x15A
     then
-        if receive_map["1230823"] == nil and ENABLE_AP_BK_MOVES ~= 0
+        if ENABLE_AP_BK_MOVES ~= 0
         then
-            BTRAMOBJ:setFlag(0x1E, 6, "Blue Eggs")
-            TEMP_EGGS = true
+            local egg_found = false
+            for apid, itemId in pairs(receive_map)
+            do
+                if itemId == "1230823"
+                then
+                    egg_found = true
+                    break
+                end
+            end
+            if egg_found == false
+            then
+                BTRAMOBJ:setFlag(0x1E, 6, "Blue Eggs")
+                TEMP_EGGS = true
+            end
         end
     end
     return true
