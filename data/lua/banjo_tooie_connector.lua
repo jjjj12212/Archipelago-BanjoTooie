@@ -6783,8 +6783,10 @@ function set_checked_STATIONS() --Only run transitioning maps
         else
             if CURRENT_MAP == 0x155 or CURRENT_MAP == 0xD7 or CURRENT_MAP == 0x12A or CURRENT_MAP == 0xEC
             or CURRENT_MAP == 0x114 or CURRENT_MAP == 0x102 or CURRENT_MAP == 0x129 or CURRENT_MAP == 0xD0
+            or CURRENT_MAP == 0x127 or CURRENT_MAP == 0x128 or CURRENT_MAP == 0x100 or CURRENT_MAP == 0x112
             or NEXT_MAP == 0x155 or NEXT_MAP == 0xD7 or NEXT_MAP == 0x12A or NEXT_MAP == 0xEC
             or NEXT_MAP == 0x114 or NEXT_MAP == 0x102 or NEXT_MAP == 0x129 or NEXT_MAP == 0xD0
+            or NEXT_MAP == 0x100 or NEXT_MAP == 0x112
             then
                 for locationId, get_addr in pairs(ADDRESS_MAP['STATIONS'])
                 do
@@ -6804,7 +6806,7 @@ function set_checked_STATIONS() --Only run transitioning maps
 end
 
 function set_AP_STATIONS() -- Only run after Transition
-    if mainmemory.readbyte(0x11B065) ~= 4 -- Not During Cutscene
+    if mainmemory.readbyte(0x11B065) ~= 4
     then
         for stationId, value in pairs(AGI_STATIONS)
         do
@@ -6832,11 +6834,12 @@ end
 function check_STATION_BUTTONS()
     if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        -- Hard code ALL Stations to Not set the AGI UNTIL close to sign 
         if CURRENT_MAP == 0x155 or CURRENT_MAP == 0xD7 or CURRENT_MAP == 0x12A or CURRENT_MAP == 0xEC
-            or CURRENT_MAP == 0x114 or CURRENT_MAP == 0x102 or CURRENT_MAP == 0x129
+            or CURRENT_MAP == 0x114 or CURRENT_MAP == 0x102 or CURRENT_MAP == 0x129 or CURRENT_MAP == 0x127
+            or CURRENT_MAP == 0x128 or CURRENT_MAP == 0x100 or CURRENT_MAP == 0x112
             or NEXT_MAP == 0x155 or NEXT_MAP == 0xD7 or NEXT_MAP == 0x12A or NEXT_MAP == 0xEC
-            or NEXT_MAP == 0x114 or NEXT_MAP == 0x102 or NEXT_MAP == 0x129
+            or NEXT_MAP == 0x114 or NEXT_MAP == 0x102 or NEXT_MAP == 0x129 or NEXT_MAP == 0x127
+            or NEXT_MAP == 0x128 or NEXT_MAP == 0x100 or NEXT_MAP == 0x112
         then
             STATION_BTN_TIMER = STATION_BTN_TIMER + 1
             -- if STATION_BTN_TIMER == 25
@@ -8203,7 +8206,7 @@ function DPadStats()
         then
             CHECK_MOVES_L = false
         end
-		-- Check Collected Treble and Victory Condition
+		-- Check Collected Treble, Stations and Victory Condition
 		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == false and CHECK_MOVES_D == false
         then
             print(" ")
@@ -8217,12 +8220,23 @@ function DPadStats()
                 end
             end
 			print(" ")
-			print("Opened Train Stations:")
-            for locationId, values in pairs(ADDRESS_MAP["STATIONS"])
-            do        
-                local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
-                if results == true then
-                    print(values['name'])
+            if DEBUG_STATION == true
+            then
+                print("DEBUGGING Opened Train Stations:")
+                for locationId, values in pairs(ADDRESS_MAP["STATIONS"])
+                do        
+                    local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
+                    if results == true then
+                        print(values['name'])
+                    end
+                end
+            end
+            print("Open Train Stations:")
+            for apId, itemId in pairs(receive_map)
+            do 
+                if ADDRESS_MAP["STATIONS"][itemId] ~= nil
+                then 
+                    print(ADDRESS_MAP["STATIONS"][itemId]['name'])
                 end
             end
             if GOAL_TYPE ~= 0
@@ -8337,7 +8351,7 @@ function DPadStats()
                 BTRAMOBJ:setFlag(0xA1, 7, "Automatic Energy Regain")
                 REGEN = true
                 print(" ")
-                print("Automatic Energy Regain Enabled")
+                print("Energy Regen Enabled")
                 REGEN_HOLD = true
             end
         elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == true and REGEN_HOLD == false
@@ -8346,9 +8360,9 @@ function DPadStats()
             BTRAMOBJ:clearFlag(0xA1, 7)
             REGEN = false
             print(" ")
-            print("Automatic Energy Regain Disabled")
+            print("Energy Regen Disabled")
             REGEN_HOLD = true
-        elseif check_controls ~= nil and (check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true) and REGEN_HOLD == true
+        elseif check_controls ~= nil and (check_controls['P1 DPad D'] == false or check_controls['P1 L'] == false) and REGEN_HOLD == true
         then 
             REGEN_HOLD = false
         end
