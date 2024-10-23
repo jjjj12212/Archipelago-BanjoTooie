@@ -1,4 +1,4 @@
-# 3.1.3-beta
+# 3.3-beta
  - Logic fixes:
   - Atlantis access: fixed dumb mistake that required egg aim or third person egg shooting to reach atlantis, in beginner and normal logic.
   - JRL Pipe Honeycomb: if using leg spring, wing whack is no longer required. Advanced and glitched logic can shoot a clockwork to the honeycomb.
@@ -10,6 +10,12 @@
   - Sack Race Note: reworked logic.
   - Central Cavern jinjo: can be gotten with the bee.
   - Pot of Gold honeycomb: can be gotten with the bee.
+ - Framework Core modification
+  - 2 RAM addresses are checked on every frame due to Chuffy.
+  - This Fixes Train Station giving free Checks and game stopped sending Checks.
+ - More Gruntilda Insults on Deathlink
+ - Custom Jiggy amounts, Minimium for all worlds to open is 1 Jiggy.
+ - Minor change with Roysten Flags
 
 # 3.1.2-beta
  - Fix Blue Eggs getting removed permanently
