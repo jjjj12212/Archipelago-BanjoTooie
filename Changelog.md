@@ -1,3 +1,16 @@
+# 3.1.3-beta
+ - Logic fixes:
+  - Atlantis access: fixed dumb mistake that required egg aim or third person egg shooting to reach atlantis, in beginner and normal logic.
+  - JRL Pipe Honeycomb: if using leg spring, wing whack is no longer required. Advanced and glitched logic can shoot a clockwork to the honeycomb.
+  - HFP to JRL: Shack Pack can be used to dive in the pool, in HFP.
+  - Icicle Grotto Jinjo: needs tall jump for beginner logic.
+  - HFP: the access to lower icy side and the top of HFP now use the same logic, since there's the tunnel behind the icy side train switch that was overlooked. Also, split up is no longer an option to reach the top of HFP in beginner logic.
+  - Volcano honeycomb: if going through icicle grotto from the bottom, requires talon trot. Added missing tall jump requirement for beginner logic.
+  - Icy side Pillar Cheato page: added talon trot requirement if going through icicle grotto as BK, in advanced and glitched logic.
+  - Sack Race Note: reworked logic.
+  - Central Cavern jinjo: can be gotten with the bee.
+  - Pot of Gold honeycomb: can be gotten with the bee.
+
 # 3.1.2-beta
  - Fix Blue Eggs getting removed permanently
 
