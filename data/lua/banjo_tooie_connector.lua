@@ -2937,8 +2937,8 @@ local ADDRESS_MAP = {
     },
     ['ROYSTEN'] = {
         ["1230777"] = {
-            ['addr'] = 0x36,
-            ['bit'] = 2,
+            ['addr'] = 0x9E,
+            ['bit'] = 6,
             ['name'] = "SM: Roysten Reward 1"
         },
         ["1230778"] = {
@@ -5481,7 +5481,7 @@ end
 function check_freed_roysten() -- Roysten asset loads then deloads if abilities are set.
     if (CURRENT_MAP == 0xAF or NEXT_MAP == 0xAF) and (ROYSTEN["1230778"] == false or ROYSTEN["1230777"] == false)
     then
-        if ROYSTEN_TIMER <= 30 then -- Enough time for deloading Roysten to pass
+        if ROYSTEN_TIMER <= 40 then -- Enough time for deloading Roysten to pass
             if DEBUG_ROYSTEN == true
             then
                 print("Roysten timer")
@@ -8232,11 +8232,16 @@ function DPadStats()
                 end
             end
             print("Open Train Stations:")
+            local TRAIN_TBL = {}
             for apId, itemId in pairs(receive_map)
-            do 
+            do
                 if ADDRESS_MAP["STATIONS"][itemId] ~= nil
-                then 
-                    print(ADDRESS_MAP["STATIONS"][itemId]['name'])
+                then
+                    if TRAIN_TBL[itemId] == nil
+                    then
+                        print(ADDRESS_MAP["STATIONS"][itemId]['name'])
+                        TRAIN_TBL[itemId] = "Y"
+                    end
                 end
             end
             if GOAL_TYPE ~= 0
