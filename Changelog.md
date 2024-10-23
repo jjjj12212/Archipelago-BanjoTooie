@@ -1,4 +1,4 @@
-# 3.3-beta
+# 3.2-beta
  - Logic fixes:
   - Atlantis access: fixed dumb mistake that required egg aim or third person egg shooting to reach atlantis, in beginner and normal logic.
   - JRL Pipe Honeycomb: if using leg spring, wing whack is no longer required. Advanced and glitched logic can shoot a clockwork to the honeycomb.
