@@ -10,6 +10,7 @@ from typing import Union
 import zipfile
 from asyncio import StreamReader, StreamWriter
 
+
 # CommonClient import first to trigger ModuleUpdater
 from CommonClient import CommonContext, server_loop, gui_enabled, \
     ClientCommandProcessor, logger, get_base_parser
@@ -56,7 +57,7 @@ bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 
 script_version: int = 4
-version: str = "V3.1.2"
+version: str = "V3.2"
 
 def get_item_value(ap_id):
     return ap_id
@@ -123,6 +124,7 @@ class BanjoTooieContext(CommonContext):
         self.sendSlot = False
         self.sync_ready = False
         self.startup = False
+        # AquaPhoenix Contributed with the Gruntilda Insults
         self.death_messages = [
             "Gruntilda:    Did you hear that lovely clack, \n                     My broomstick gave you such a whack!",
             "Gruntilda:    AAAH! I see it makes you sad, \n                     To know your skills are really bad!",
@@ -131,7 +133,13 @@ class BanjoTooieContext(CommonContext):
             "Gruntilda:    Hopeless bear runs to and fro, \n                     But takes a whack for being so slow!",
             "Gruntilda:    So I got you there once more, \n                     I knew your skills were very poor!",
             "Gruntilda:    Simply put I'm rather proud, \n                     Your yelps and screams I heard quite loud!",
-            "Gruntilda:    Grunty's fireball you did kiss, \n                     You're so slow I can hardly miss!"
+            "Gruntilda:    Grunty's fireball you did kiss, \n                     You're so slow I can hardly miss!",
+            "Gruntilda:    In this world you breathe your last,\n                     Now your friends had better think fast!",
+            "Gruntilda:    This is fun it's quite a treat, \n                     To see you suffer in defeat",
+            "Gruntilda:    That death just now, I saw coming, \n                Your skill issues are rather stunning!",
+            "Gruntilda:    Seeing this pathetic display, \n                Is serotonin in my day",
+            "Gruntilda:    What a selfish thing to do,\n                Your friends just died because of you!",
+            "Gruntilda:    You tried something rather stupid,\n                I hope no one will try what you did"
         ]
 
     async def server_auth(self, password_requested: bool = False):

@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V3.1.2"
+local BT_VERSION = "V3.2"
 local PLAYER = ""
 local SEED = 0
 
@@ -96,6 +96,7 @@ local GAME_LOADED = false;
 
 -------------- MAP VARS -------------
 local MAP_TRANSITION = false;
+local TRANSITION_SET = false;
 local CURRENT_MAP = nil;
 local NEXT_MAP = nil;
 
@@ -247,6 +248,10 @@ function BTConsumable:setConsumable(value)
     --     print("Setting Consumable value to :" .. tostring(value))
     -- end
     local addr = self.banjoRAM:dereferencePointer(self.CONSUME_PTR);
+    if addr == nil
+    then
+        return
+    end
     if self.consumeIndex == 59
     then
         mainmemory.write_u16_be(addr + 19 * 2, value ~ self.consumeKey);
@@ -1155,6 +1160,7 @@ local ASSET_MAP_CHECK = {
             "1230609" -- Waterfall Cavern
         },
     },
+    [0xD0] = {}, -- GGM - Chuffy Cabin
     --WITCHYWORLD
     [0xD6] = { --WW
         ["JIGGIES"] = {
@@ -1831,6 +1837,9 @@ local ASSET_MAP_CHECK = {
         ["HONEYCOMB"] = {
             "1230722" -- Train Station
         }
+    },
+    [0x12A] = { -- HFP - Icy Side Station
+
     },
     --CLOUD CUCKOOLAND
     [0x136] =	{ --CCL
@@ -2928,8 +2937,8 @@ local ADDRESS_MAP = {
     },
     ['ROYSTEN'] = {
         ["1230777"] = {
-            ['addr'] = 0x36,
-            ['bit'] = 2,
+            ['addr'] = 0x9E,
+            ['bit'] = 6,
             ['name'] = "SM: Roysten Reward 1"
         },
         ["1230778"] = {
@@ -5472,7 +5481,7 @@ end
 function check_freed_roysten() -- Roysten asset loads then deloads if abilities are set.
     if (CURRENT_MAP == 0xAF or NEXT_MAP == 0xAF) and (ROYSTEN["1230778"] == false or ROYSTEN["1230777"] == false)
     then
-        if ROYSTEN_TIMER <= 30 then -- Enough time for deloading Roysten to pass
+        if ROYSTEN_TIMER <= 40 then -- Enough time for deloading Roysten to pass
             if DEBUG_ROYSTEN == true
             then
                 print("Roysten timer")
@@ -6756,7 +6765,7 @@ end
 function set_checked_STATIONS() --Only run transitioning maps
     if ASSET_MAP_CHECK[NEXT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK[NEXT_MAP]["STATIONBTN"] ~= nil
+        if ASSET_MAP_CHECK[NEXT_MAP]["STATIONBTN"] ~= nil and mainmemory.readbyte(0x11B065) ~= 4
         then
             local stationId = ASSET_MAP_CHECK[NEXT_MAP]["STATIONBTN"];
             local get_addr = ADDRESS_MAP['STATIONS'][stationId];
@@ -6772,6 +6781,22 @@ function set_checked_STATIONS() --Only run transitioning maps
                 print(BMM_STATIONS[stationId])
             end
         else
+            if CURRENT_MAP == 0x155 or CURRENT_MAP == 0xD7 or CURRENT_MAP == 0x12A or CURRENT_MAP == 0xEC
+            or CURRENT_MAP == 0x114 or CURRENT_MAP == 0x102 or CURRENT_MAP == 0x129 or CURRENT_MAP == 0xD0
+            or CURRENT_MAP == 0x127 or CURRENT_MAP == 0x128 or CURRENT_MAP == 0x100 or CURRENT_MAP == 0x112
+            or NEXT_MAP == 0x155 or NEXT_MAP == 0xD7 or NEXT_MAP == 0x12A or NEXT_MAP == 0xEC
+            or NEXT_MAP == 0x114 or NEXT_MAP == 0x102 or NEXT_MAP == 0x129 or NEXT_MAP == 0xD0
+            or NEXT_MAP == 0x100 or NEXT_MAP == 0x112
+            then
+                for locationId, get_addr in pairs(ADDRESS_MAP['STATIONS'])
+                do
+                    BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+                end
+                if DEBUG_STATION == true
+                then
+                    print("Clearing ALL Stations")
+                end
+            end
             if DEBUG_STATION == true
             then
                 print("Canceling Clearing of Stations")
@@ -6780,20 +6805,23 @@ function set_checked_STATIONS() --Only run transitioning maps
     end
 end
 
-function set_AP_STATIONS() -- Only run after Transistion
-    for stationId, value in pairs(AGI_STATIONS)
-    do
-        local get_addr = ADDRESS_MAP['STATIONS'][stationId]
-        if value == true
-        then
-            BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
-        else
-            BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
-        end
-    end
-    if DEBUG_STATION == true
+function set_AP_STATIONS() -- Only run after Transition
+    if mainmemory.readbyte(0x11B065) ~= 4
     then
-        print("Setting AGI Stations")
+        for stationId, value in pairs(AGI_STATIONS)
+        do
+            local get_addr = ADDRESS_MAP['STATIONS'][stationId]
+            if value == true
+            then
+                BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
+            else
+                BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+            end
+        end
+        if DEBUG_STATION == true
+        then
+            print("Setting AGI Stations")
+        end
     end
 end
 
@@ -6806,7 +6834,12 @@ end
 function check_STATION_BUTTONS()
     if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK[CURRENT_MAP]["STATIONBTN"] ~= nil
+        if CURRENT_MAP == 0x155 or CURRENT_MAP == 0xD7 or CURRENT_MAP == 0x12A or CURRENT_MAP == 0xEC
+            or CURRENT_MAP == 0x114 or CURRENT_MAP == 0x102 or CURRENT_MAP == 0x129 or CURRENT_MAP == 0x127
+            or CURRENT_MAP == 0x128 or CURRENT_MAP == 0x100 or CURRENT_MAP == 0x112
+            or NEXT_MAP == 0x155 or NEXT_MAP == 0xD7 or NEXT_MAP == 0x12A or NEXT_MAP == 0xEC
+            or NEXT_MAP == 0x114 or NEXT_MAP == 0x102 or NEXT_MAP == 0x129 or NEXT_MAP == 0x127
+            or NEXT_MAP == 0x128 or NEXT_MAP == 0x100 or NEXT_MAP == 0x112
         then
             STATION_BTN_TIMER = STATION_BTN_TIMER + 1
             -- if STATION_BTN_TIMER == 25
@@ -7736,10 +7769,9 @@ function watchMapTransition()
             MAP_TRANSITION = false
             return
         end
-        if mainmemory.read_u8(0x127642) == 1 or BTRAMOBJ:getMap(true) ~= 0
+        if TRANSITION_SET == true
         then
             if MAP_TRANSITION == false then
-                NEXT_MAP = BTRAMOBJ:getMap(true)
                 MAP_TRANSITION = true
                 SILO_TIMER = 0
                 STATION_BTN_TIMER = 0
@@ -7757,6 +7789,7 @@ function watchMapTransition()
                     hag1_open()
                 end
             end
+            TRANSITION_SET = false
         else -- Runs Constantly while NOT transitioning (and runs while player not yet loaded)
             finishTransition()
             jiggy_ui_update()
@@ -7780,7 +7813,7 @@ end
 function finishTransition()
     BTMODELOBJ:changeName("Player", false)
     local player = BTMODELOBJ:checkModel();
-    local mapaddr = BTRAMOBJ:getMap(false)
+    local mapaddr = BTRAMOBJ:getMap(false);
     if mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == true and player == true and mapaddr == NEXT_MAP -- runs once
     then
         MAP_TRANSITION = false
@@ -8111,7 +8144,7 @@ function DPadStats()
             print(" ")
             print(" ")
             print("Unlocked Moves:")
-            if ENABLE_AP_BK_MOVES ~= 0 
+            if ENABLE_AP_BK_MOVES ~= 0
             then
                 for locationId, table in pairs(ADDRESS_MAP["BKMOVES"])
                 do
@@ -8173,7 +8206,7 @@ function DPadStats()
         then
             CHECK_MOVES_L = false
         end
-		-- Check Collected Treble and Victory Condition
+		-- Check Collected Treble, Stations and Victory Condition
 		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == false and CHECK_MOVES_D == false
         then
             print(" ")
@@ -8187,12 +8220,28 @@ function DPadStats()
                 end
             end
 			print(" ")
-			print("Opened Train Stations:")
-            for locationId, values in pairs(ADDRESS_MAP["STATIONS"])
-            do        
-                local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
-                if results == true then
-                    print(values['name'])
+            if DEBUG_STATION == true
+            then
+                print("DEBUGGING Opened Train Stations:")
+                for locationId, values in pairs(ADDRESS_MAP["STATIONS"])
+                do        
+                    local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
+                    if results == true then
+                        print(values['name'])
+                    end
+                end
+            end
+            print("Open Train Stations:")
+            local TRAIN_TBL = {}
+            for apId, itemId in pairs(receive_map)
+            do
+                if ADDRESS_MAP["STATIONS"][itemId] ~= nil
+                then
+                    if TRAIN_TBL[itemId] == nil
+                    then
+                        print(ADDRESS_MAP["STATIONS"][itemId]['name'])
+                        TRAIN_TBL[itemId] = "Y"
+                    end
                 end
             end
             if GOAL_TYPE ~= 0
@@ -8307,7 +8356,7 @@ function DPadStats()
                 BTRAMOBJ:setFlag(0xA1, 7, "Automatic Energy Regain")
                 REGEN = true
                 print(" ")
-                print("Automatic Energy Regain Enabled")
+                print("Energy Regen Enabled")
                 REGEN_HOLD = true
             end
         elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == true and REGEN_HOLD == false
@@ -8316,9 +8365,9 @@ function DPadStats()
             BTRAMOBJ:clearFlag(0xA1, 7)
             REGEN = false
             print(" ")
-            print("Automatic Energy Regain Disabled")
+            print("Energy Regen Disabled")
             REGEN_HOLD = true
-        elseif check_controls ~= nil and (check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true) and REGEN_HOLD == true
+        elseif check_controls ~= nil and (check_controls['P1 DPad D'] == false or check_controls['P1 L'] == false) and REGEN_HOLD == true
         then 
             REGEN_HOLD = false
         end
@@ -9441,6 +9490,11 @@ function main()
 					initializeFlags();
 				end
                 DPadStats();
+            end
+            if mainmemory.read_u8(0x127642) == 1 or BTRAMOBJ:getMap(true) ~= 0
+            then
+                TRANSITION_SET = true
+                NEXT_MAP = BTRAMOBJ:getMap(true)
             end
         elseif (CUR_STATE == STATE_UNINITIALIZED) then
             if  (FRAME % 60 == 1) then
