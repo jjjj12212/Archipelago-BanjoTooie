@@ -335,7 +335,8 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_jinjo_family_rescue_length": ctx.slot_data["jinjo_family_rescue_length"],
             "slot_token_hunt_length": ctx.slot_data["token_hunt_length"],
             "slot_version": version,
-            "slot_text_colour": ctx.slot_data["text_colour"]
+            "slot_text_colour": ctx.slot_data["text_colour"],
+            "slot_open_silo": ctx.slot_data["first_silo"]
         })
     ctx.sendSlot = False
     return payload

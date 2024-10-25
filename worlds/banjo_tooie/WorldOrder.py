@@ -21,6 +21,7 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
             world.worlds_randomized = bool(passthrough['worlds'] == 'true') 
             world.starting_egg = passthrough['starting_egg']
             world.starting_attack = passthrough['starting_attack']
+            world.single_silo = passthrough['first_silo']
     else:
         if world.options.randomize_worlds and world.options.randomize_moves == True and \
         world.options.skip_puzzles == True:
@@ -248,7 +249,24 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
 
             first_level = list(world.randomize_worlds.keys())[0]
             second_level = list(world.randomize_worlds.keys())[1]
-            if world.options.randomize_bk_moves == 0:
+            #Silos
+            if world.options.open_silos.value == 1:
+                if  first_level == regionName.TL or first_level == regionName.CC:
+                    world.single_silo = regionName.IOHWL
+                if first_level == regionName.GM:
+                    world.single_silo = regionName.IOHPL
+                if  first_level == regionName.WW:
+                    world.single_silo = regionName.IOHPG
+                if first_level == regionName.JR or first_level == regionName.HP:
+                    world.single_silo = regionName.IOHCT
+                if first_level == regionName.GIO:
+                    world.single_silo = regionName.IOHCT
+            elif world.options.open_silos.value == 2:
+                world.single_silo = "ALL"
+            else:
+                world.single_silo = "NONE"
+            #EO Silos
+            if world.options.randomize_bk_moves != 2:
                 if  first_level != regionName.MT and world.options.logic_type != 2:
                     world.multiworld.early_items[world.player][itemName.GGRAB] = 1
                 if  first_level == regionName.WW:
@@ -261,7 +279,22 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
                 if first_level == regionName.GIO:
                     world.multiworld.early_items[world.player][itemName.FEGGS] = 1
                     world.multiworld.early_items[world.player][itemName.TTORP] = 1
-            if world.options.randomize_bk_moves == 2:
+            else: # All BK Moves shuffled
+                #Silos
+                if world.options.open_silos.value != 2:
+                    #if world.options.open_silos.value == 0:
+                        #world.options.open_silos.value = 1 #Override
+                    if  first_level == regionName.TL or first_level == regionName.CC:
+                        world.single_silo = regionName.IOHWL
+                    if first_level == regionName.GM:
+                        world.single_silo = regionName.IOHPL
+                    if  first_level == regionName.WW:
+                        world.single_silo = regionName.IOHPG
+                    if first_level == regionName.JR or first_level == regionName.HP:
+                        world.single_silo = regionName.IOHCT
+                    if first_level == regionName.GIO:
+                        world.single_silo = regionName.IOHCT
+                #EOSilos
                 if  first_level == regionName.WW:
                     world.multiworld.early_items[world.player][itemName.SPLITUP] = 1
                 if first_level == regionName.JR and world.options.randomize_doubloons.value == False \
@@ -357,14 +390,23 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
                 regionName.CC:  1230951,
                 regionName.CK:  1230952 
             }
-            # order = sorted(world.randomize_worlds.items(), key=lambda x: x[1])
-            # world.randomize_worlds = {}
-            # i = 1
-            # for location, jiggyamt in order:
-            #     world.randomize_worlds.update({location: jiggyamt})
-            #     world.randomize_order.update({i: location})
-            #     i = i + 1
-
             world.worlds_randomized = False
+            #Silos
+            if world.options.open_silos.value == 0:
+                world.single_silo = "NONE"
+            elif world.options.open_silos.value == 2:
+                world.single_silo = "ALL"
+            else:
+                silo_rando = [
+                    regionName.IOHWL,
+                    regionName.IOHPL,
+                    regionName.IOHPG,
+                    regionName.IOHCT,
+                    regionName.IOHQM
+                ]
+                random.shuffle(silo_rando)
+                world.single_silo = silo_rando[0]
+
+
 
     

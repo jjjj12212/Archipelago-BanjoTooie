@@ -117,6 +117,10 @@ class RandomizeWorlds(Toggle):
     """Worlds will open in a randomized order. Randomized Moves and Puzzle Skip Required."""
     display_name = "Randomize Worlds"
 
+class RandomizeWorldZones(Toggle):
+    """World Entrances will warp you to a different world. This does not affect Chuffy."""
+    display_name = "Randomize World Entrances"
+
 class RandomizeStopnSwap(Toggle):
     """Mystery Eggs, their rewards, and the Ice Key are scattered across the MultiWorld."""
     display_name = "Randomize Stop n Swap"
@@ -136,6 +140,15 @@ class LogicType(Choice):
     option_normal = 1
     option_advanced = 2
     option_glitched = 3
+    default = 0
+
+class Silos(Choice):
+    """Choose if you want IoH Silos to be closed, randomly open 1 or enable all. If you enabled Randomized Worlds with BK Moves randomized and
+       silos set to none, it will be enforced to one."""
+    display_name = "Logic Type"
+    option_none = 0
+    option_one = 1
+    option_all = 2
     default = 0
 
 class SpeedUpMinigames(DefaultOnToggle):
@@ -316,6 +329,8 @@ class BanjoTooieOptions(PerGameCommonOptions):
     jinjo_family_rescue_length: JinjoFamilyRescueLength
     token_hunt_length: TokenHuntLength
     randomize_worlds: RandomizeWorlds
+    randomize_world_loading_zone: RandomizeWorldZones
+    open_silos: Silos
     game_length: GameLength
     open_hag1: OpenHag1
     world_1: World1

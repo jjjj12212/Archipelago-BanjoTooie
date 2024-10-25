@@ -98,6 +98,7 @@ class BanjoTooieWorld(World):
         self.world_sphere_2 = [
         ]
         self.worlds_randomized = False
+        self.single_silo = ""
         super(BanjoTooieWorld, self).__init__(world, player)
 
     def create_item(self, itemname: str) -> Item:
@@ -626,6 +627,8 @@ class BanjoTooieWorld(World):
 
         btoptions['starting_egg'] = int(self.starting_egg)
         btoptions['starting_attack'] = int(self.starting_attack)
+        btoptions['first_silo'] = self.single_silo
+        btoptions['silo_option'] = int(self.options.open_silos.value)
         btoptions['version'] = self.version
 
         return btoptions
