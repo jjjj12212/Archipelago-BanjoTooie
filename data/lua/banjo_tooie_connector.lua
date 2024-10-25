@@ -159,7 +159,6 @@ LEVI_PAD_MOVED = false;
 
 local BATH_PADS_QOL = false
 
-
 -------------- GOAL TYPE VARS ------------
 local GOAL_TYPE = nil;
 local MGH_LENGTH = nil;
@@ -183,6 +182,9 @@ local GOGGLES = false;
 
 ---------------- ROAR VARS ---------------
 local ROAR = false;
+
+---------------- IOH SILO VARS -------------
+local OPEN_SILO = "NONE"
 
 -------------- ENCOURAGEMENT MESSAGES ------------
 local ENCOURAGEMENT = {
@@ -5419,32 +5421,60 @@ function collected_JV_TREBLE()
     return true
 end
 
---------------- Randomize Worlds with BK Moves ---------------------------
+--------------- IOH SILO ---------------------------
 
 function init_world_silos()
-    for worlds, tbl in pairs(WORLD_ENTRANCE_MAP)
-    do
-        if tbl["locationId"] == "1230944"
-        then
-            if tbl["defaultName"] == "Glitter Gulch Mine"
-            then
-                BTRAMOBJ:setFlag(0x60, 7)
-            end
-            if tbl["defaultName"] == "Witchyworld"
-            then
-                BTRAMOBJ:setFlag(0x61, 0)
-            end
-            if tbl["defaultName"] == "Cloud Cuckooland" or tbl["defaultName"] == "Terrydactyland"
-            then
-                BTRAMOBJ:setFlag(0x61, 2)
-            end
-            if tbl["defaultName"] == "Jolly Roger's Lagoon" or tbl["defaultName"] == "Hailfire Peaks" or tbl["defaultName"] == "Grunty Industries"
-            then
-                BTRAMOBJ:setFlag(0x61, 1)
-            end
-        end
+    -- for worlds, tbl in pairs(WORLD_ENTRANCE_MAP)
+    -- do
+    --     if tbl["locationId"] == "1230944"
+    --     then
+    --         if tbl["defaultName"] == "Glitter Gulch Mine"
+    --         then
+    --             BTRAMOBJ:setFlag(0x60, 7)
+    --         end
+    --         if tbl["defaultName"] == "Witchyworld"
+    --         then
+    --             BTRAMOBJ:setFlag(0x61, 0)
+    --         end
+    --         if tbl["defaultName"] == "Cloud Cuckooland" or tbl["defaultName"] == "Terrydactyland"
+    --         then
+    --             BTRAMOBJ:setFlag(0x61, 2)
+    --         end
+    --         if tbl["defaultName"] == "Jolly Roger's Lagoon" or tbl["defaultName"] == "Hailfire Peaks" or tbl["defaultName"] == "Grunty Industries"
+    --         then
+    --             BTRAMOBJ:setFlag(0x61, 1)
+    --         end
+    --     end
+    -- end
+    -- archipelago_msg_box("Warp Silo to your first world is now open")
+    if OPEN_SILO == "NONE"
+    then
+        return
+    elseif OPEN_SILO == "ALL"
+    then
+        BTRAMOBJ:setFlag(0x60, 5) -- JV
+        BTRAMOBJ:setFlag(0x60, 6) -- WH
+        BTRAMOBJ:setFlag(0x60, 7) -- PL
+        BTRAMOBJ:setFlag(0x61, 0) -- PG
+        BTRAMOBJ:setFlag(0x61, 1) -- CT
+        BTRAMOBJ:setFlag(0x61, 2) -- WL
+        BTRAMOBJ:setFlag(0x61, 3) -- QM
+    elseif string.find(OPEN_SILO, "Wasteland") ~= nil then
+        BTRAMOBJ:setFlag(0x60, 5)
+        BTRAMOBJ:setFlag(0x61, 2) -- WL
+    elseif string.find(OPEN_SILO, "Quagmire") ~= nil then
+        BTRAMOBJ:setFlag(0x60, 5) -- JV
+        BTRAMOBJ:setFlag(0x61, 3) -- QM
+    elseif string.find(OPEN_SILO, "Plateau") ~= nil then
+        BTRAMOBJ:setFlag(0x60, 5) -- JV
+        BTRAMOBJ:setFlag(0x60, 7) -- PL
+    elseif string.find(OPEN_SILO, "Pine Grove") ~= nil then
+        BTRAMOBJ:setFlag(0x60, 5) -- JV
+        BTRAMOBJ:setFlag(0x61, 0) -- PG
+    elseif string.find(OPEN_SILO, "Cliff Top") ~= nil then
+        BTRAMOBJ:setFlag(0x60, 5) -- JV
+        BTRAMOBJ:setFlag(0x61, 1) -- CT
     end
-    archipelago_msg_box("Warp Silo to your first world is now open")
 end
 
 --------------------------------- Roysten --------------------------------
@@ -8519,9 +8549,7 @@ function initializeFlags()
             BTRAMOBJ:clearFlag(0x1A, 3) -- Stilt Stride
             BTRAMOBJ:clearFlag(0x18, 6) -- Beak Bomb
 
-            if ENABLE_AP_WORLDS == true then -- Randomize Worlds - SILOS!!!
-                init_world_silos()
-            end
+            init_world_silos()
         end
         if ENABLE_AP_CHEATO_REWARDS == true then
             init_CHEATO_REWARDS()
@@ -9374,6 +9402,10 @@ function process_slot(block)
                 end
             end
         end
+    end
+    if block['slot_open_silo'] ~= nil
+    then
+        OPEN_SILO = block['slot_open_silo']
     end
     if block['slot_version'] ~= nil and block['slot_version'] ~= ""
     then
