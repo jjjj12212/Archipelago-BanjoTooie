@@ -22,7 +22,19 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
             world.starting_egg = passthrough['starting_egg']
             world.starting_attack = passthrough['starting_attack']
             world.single_silo = passthrough['first_silo']
+            world.loading_zones = passthrough['loading_zones']
     else:
+        worlds = [
+            regionName.MT,
+            regionName.GM,
+            regionName.WW,
+            regionName.JR,
+            regionName.TL,
+            regionName.GIO,
+            regionName.HP,
+            regionName.CC,
+            regionName.CK
+        ]
         if world.options.randomize_worlds and world.options.randomize_moves == True and \
         world.options.skip_puzzles == True:
             random.shuffle(world.world_sphere_1)
@@ -407,6 +419,35 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
                 random.shuffle(silo_rando)
                 world.single_silo = silo_rando[0]
 
+        if world.options.randomize_world_loading_zone.value == True:
+            gen_res = False
+            while(gen_res == False):
+                random.shuffle(worlds)
+                if worlds[0] != regionName.CK and worlds[0] != regionName.GIO:
+                    gen_res = True
+            world.loading_zones = {
+                regionName.MT : worlds[0],
+                regionName.GM : worlds[1],
+                regionName.WW : worlds[2],
+                regionName.JR : worlds[3],
+                regionName.TL : worlds[4],
+                regionName.GIO: worlds[5],
+                regionName.HP : worlds[6],
+                regionName.CC : worlds[7],
+                regionName.CK : worlds[8]
+            }
+        else:
+            world.loading_zones = {
+                regionName.MT : regionName.MT,
+                regionName.GM : regionName.GM,
+                regionName.WW : regionName.WW,
+                regionName.JR : regionName.JR,
+                regionName.TL : regionName.TL,
+                regionName.GIO: regionName.GIO,
+                regionName.HP : regionName.HP,
+                regionName.CC : regionName.CC,
+                regionName.CK : regionName.CK
+            }
 
 
     
