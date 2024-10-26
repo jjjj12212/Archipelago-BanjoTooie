@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | 3.1.2-Beta
+# Archipelago Banjo-Tooie (US-Only) | 3.3-Beta
 Banjo Tooie for Archipelago 
 
 # Controller Shortcuts with this implementation
@@ -36,26 +36,8 @@ Banjo Tooie for Archipelago
 - Change how Eggs works (YAML Option)
 - Progressive Ability Upgrades
 - T-Rex Roar
-
-# Implemented Banjo-Kazooie Moves in Archipelago
-- Dive
-- Flight Pad
-- Flap Flip
-- Egg Shoot
-- Roll
-- Talon Trot (if set to ALL)
-- Tall Jimp (if set to ALL)
-- Climb
-- Flutter
-- Wonderwing
-- Air Rat-a-tat Rap
-- Beak Buster
-- Turbo Trainers
-- Blue Eggs
-- Ground Rat-a-tat Rap
-- Stilt Stride
-- Beak Barge
-- Beak Bomb
+- Option to open IoH silos
+- Option to open World Entrance Loading Zone
 
 # Possible Win Conditions
 - Beating Hag-1 (Vanilla)
@@ -78,6 +60,7 @@ Go to worlds/banjo_tooie/docs/setup_en.md for detailed instructions how to setup
  - @Cyb3RGER (AP Launcher)
  - @g0goTAS (g0goTBC) - help with logic fixes
  - GDO - Tester
+ - AquaPhoenix - Tester
  - @fhnnhf (coder)
  - @Auztin (HAG-1 Flags and Misc)
 
