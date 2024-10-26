@@ -425,17 +425,23 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
                 random.shuffle(worlds)
                 if worlds[0] != regionName.CK and worlds[0] != regionName.GIO:
                     gen_res = True
-            world.loading_zones = {
-                regionName.MT : worlds[0],
-                regionName.GM : worlds[1],
-                regionName.WW : worlds[2],
-                regionName.JR : worlds[3],
-                regionName.TL : worlds[4],
-                regionName.GIO: worlds[5],
-                regionName.HP : worlds[6],
-                regionName.CC : worlds[7],
-                regionName.CK : worlds[8]
-            }
+            if world.worlds_randomized == True:
+                i = 0
+                for location, jiggy in world.randomize_worlds.items():
+                    world.loading_zones[location] = worlds[i]
+                    i = i+1
+            else:
+                world.loading_zones = {
+                    regionName.MT : worlds[0],
+                    regionName.GM : worlds[1],
+                    regionName.WW : worlds[2],
+                    regionName.JR : worlds[3],
+                    regionName.TL : worlds[4],
+                    regionName.GIO: worlds[5],
+                    regionName.HP : worlds[6],
+                    regionName.CC : worlds[7],
+                    regionName.CK : worlds[8]
+                }
         else:
             world.loading_zones = {
                 regionName.MT : regionName.MT,
