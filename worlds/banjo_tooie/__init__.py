@@ -554,7 +554,8 @@ class BanjoTooieWorld(World):
             self.multiworld.get_location(locationName.JINJOCC4, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JINJOGI3, self.player).place_locked_item(item)
 
-
+    def get_filler_item_name(self) -> str:
+        return itemName.NONE
 
     def banjo_pre_fills(self, itemNameOrGroup: str, locationFindCriteria: str, useGroup: bool ) -> None:
         if useGroup:

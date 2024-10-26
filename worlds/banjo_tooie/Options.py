@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import Toggle, DeathLink, PerGameCommonOptions, Choice, DefaultOnToggle, Range
+from Options import Toggle, DeathLink, PerGameCommonOptions, Choice, DefaultOnToggle, Range, StartInventoryPool
 
 class EnableMultiWorldMoveList(DefaultOnToggle):
     """Jamjars' Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves."""
@@ -292,6 +292,7 @@ class ExceedingItemsFiller(Toggle):
 
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
+    start_inventory_from_pool: StartInventoryPool
     death_link: DeathLink
     activate_overlay_text:ActivateOverlayText
     overlay_text_colour:OverlayTextColour
