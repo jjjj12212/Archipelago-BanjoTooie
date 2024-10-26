@@ -9554,7 +9554,6 @@ function process_slot(block)
     end
     if block['slot_zones'] ~= nil
     then
-        print(block['slot_zones'])
         AP_LOADING_ZONES = block['slot_zones']
     end
     printGoalInfo();

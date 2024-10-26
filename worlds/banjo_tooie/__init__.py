@@ -575,6 +575,26 @@ class BanjoTooieWorld(World):
                     location = self.multiworld.get_location(name, self.player)
                     location.place_locked_item(item)
 
+    @classmethod
+    def stage_write_spoiler(cls, world, spoiler_handle):
+        entrance_hags = {
+            regionName.MT: regionName.IOHWH,
+            regionName.GM: regionName.IOHPL,
+            regionName.WW: regionName.IOHPG,
+            regionName.JR: regionName.IOHCT + " (Jolly Rogers Lagoon Entrance)",
+            regionName.TL: regionName.IOHWL + " (Terrydactyland Entrance)",
+            regionName.GIO: regionName.IOHQM + " (Grunty's Industries Entrance)",
+            regionName.HP: regionName.IOHCT_HFP_ENTRANCE,
+            regionName.CC: regionName.IOHWL + " (Cloud Cuckooland Entrance)",
+            regionName.CK: regionName.IOHQM + " (Caudron Keep Entrance)"
+        }
+        bt_players = world.get_game_players(cls.game)
+        spoiler_handle.write('\n\nBanjo-Tooie Loading Zones:')
+        for player in bt_players:
+            name = world.get_player_name(player)
+            spoiler_handle.write(f"\n\n({name})")
+            for starting_zone, actual_world in world.worlds[player].loading_zones.items():
+                    spoiler_handle.write(f"\n{entrance_hags[starting_zone]} -> {actual_world}")
 
     def fill_slot_data(self) -> Dict[str, Any]:
         btoptions = {}
