@@ -6,6 +6,7 @@
 - Randomize World Entrance loading zones
  - This also includes Caudron Keep's entrance
  - Grunty's Industries and Caudron Keep cannot appear in Mayahem Temple's loading zone. 
+- Deathlink now works under water.
 
 # 3.2-beta
  - Logic fixes:

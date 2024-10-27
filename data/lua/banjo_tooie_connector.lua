@@ -7739,6 +7739,9 @@ function killBT()
                 mainmemory.write_u16_be(0x12b062, 0x0100)--max air and suffocation flag?
                 mainmemory.write_u16_be(0x12b068, 0x800C)--max air and suffocation flag?
                 mainmemory.write_u16_be(0x12b06A, 0xF734)--max air and suffocation flag?
+
+                mainmemory.write_u32_be(0x12b050, 0x00)-- kill in water
+                mainmemory.write_u32_be(0x12b054, 0x00)-- kill in water
                 local kill_animation = 0x01 -- funny drowning death
                 if tranformation ~= 0x01
                 then
