@@ -8029,7 +8029,7 @@ function zoneWarp()
             end
         elseif MAP_ENTRANCES[CURRENT_MAP] ~= nil -- Exiting a world
         then
-            if MAP_ENTRANCES[CURRENT_MAP]['exitId'] == zone -- leaving world
+            if MAP_ENTRANCES[CURRENT_MAP]['exitId'] == zone and IOH_MAPS[NEXT_MAP] ~= nil -- leaving world
             then
                 local leaving_level = MAP_ENTRANCES[CURRENT_MAP]['name']
                 local starting_entrance = ""
