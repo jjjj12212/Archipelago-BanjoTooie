@@ -5016,6 +5016,14 @@ local MAP_ENTRANCES = {
         ['exitMap'] = 0x15C
     }
 }
+local IOH_MAPS = {
+    [0x14F] = 'value', -- WH
+    [0x152] = 'value', --  PL
+    [0x154] = 'value', -- PG
+    [0x155] = 'value', -- CT
+    [0x15A] = 'value', -- WL
+    [0x15C] = 'value', -- QM
+}
 
 
 ---------------------------------- JIGGIES ---------------------------------
@@ -7998,8 +8006,9 @@ function zoneWarp()
         local zone = BTRAMOBJ:getEntranceId()
         if MAP_ENTRANCES[NEXT_MAP] ~= nil -- Entering a world
         then
-            if MAP_ENTRANCES[NEXT_MAP]['entranceId'] == zone or -- Entering Main front door
-            (MAP_ENTRANCES[NEXT_MAP]['name'] == "Glitter Gulch Mine" and zone == 16) --GGM fall bug
+            if (MAP_ENTRANCES[NEXT_MAP]['entranceId'] == zone or -- Entering Main front door
+            (MAP_ENTRANCES[NEXT_MAP]['name'] == "Glitter Gulch Mine" and zone == 16)) --GGM fall bug
+            and IOH_MAPS[CURRENT_MAP] ~= nil -- Avoids death warps to wrong level
             then
                 local level_name = MAP_ENTRANCES[NEXT_MAP]['name']
                 local warp_to_name = AP_LOADING_ZONES[level_name]
