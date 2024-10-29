@@ -4,12 +4,19 @@
     - Targitzan Jiggy: Ice Eggs + Beak Bayonet is one way to do the boss fight. Also, now checking for suitable eggs in advanced and glitched logic.
     - Bovina jiggy: Beak Bombs are back in advanced and glitched logic, after being accidentally removed many versions ago.
     - Defeating Old King Coal: Beak Buster removed as an attack for advanced and glitched logic.
+    - Flooded Caves jiggy: removed impossible jumps. Also, advanced and glitched logic can shoot a clockwork to the jiggy.
+    - Water Storage Cheato page: checks for accesss to split up pads if doing the leg spring dive glitch.
     - Dive of Death notes: for normal logic, requires dive or tall jump.
     - JRL Pipe Honeycomb: the clockwork shot is now in the glitched logic. You can reach the spot for the shot with solo Kazooie, in advanced and glitched logic.
+    - Seeweed Sanctum jinjo: in normal logic: you can get the jinjo with flap flip + beak buster. Every logic except beginner: pack whack + grip grab is one way to do it.
+    - TDL Right Train Station Note: T-rex no longer part of beginner logic. All other logics can get it with split up, turbo trainers or springy step shoes. Advanced and glitched logic can get it with a clockwork shot.
     - TDL Entrance Jinjo: for normal logic, requires flutter, air rat-a-tat rap, split up, or beak buster to reach the alcove if you can't fly in. All logics except beginner: split up can be used to poop a grenade on the switch.
+    - TDL Train Switch: can be pressed with split up.
     - River Passage Honeycomb: You can use split up for it, if not on beginner logic.
     - Roar Cage notes: if not on beginner logic, you can use split up.
+    - GI Trebleclef: using the flight pad is now in logic.
     - Mega-Glowbo: you can use flutter or air rat-a-tat rap to reach the mega-glowbo, if not on beginner logic.
+    - CCL Entrance Jinjo: Can be gotten with split up + flight pad, if not on beginner logic.
 
 # 3.2-beta
  - Logic fixes:
