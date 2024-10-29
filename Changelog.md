@@ -1,5 +1,9 @@
 # 3.3-beta
-  - Added the rest of the general Archipelago settings in the yaml.
+  - Readme update
+  - Added the rest of the general Archipelago settings in the yaml
+  - Renamings:
+    - Note and doubloon locations: remade the numbering so that reading the names is more fluid.
+    - Tall jump -> Tall Jump
   - Logic fixes:
     - Targitzan Jiggy: Ice Eggs + Beak Bayonet is one way to do the boss fight. Also, now checking for suitable eggs in advanced and glitched logic.
     - Bovina jiggy: Beak Bombs are back in advanced and glitched logic, after being accidentally removed many versions ago.
