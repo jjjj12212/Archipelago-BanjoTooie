@@ -124,3 +124,22 @@ Banjo-Tooie:
 
   # if cheato_as_filler is true, add locations you don't want to deal with... like Scrotty.
   # exclude_locations: {}
+
+  # Forces these items to be in your world.
+  # local_items: []
+
+  # Forces these items to not be in your world.
+  # non_local_items: []
+
+  # Start with these item's locations prefilled into the ``!hint`` command. These hints are free.
+  # start_hints: []
+
+  # Start with these locations and their item prefilled into the ``!hint`` command. These hints are free.
+  # start_location_hints: []
+
+  # These locations will have an important item.
+  # priority_locations: []
+
+  # Items shared with other people.
+  # item_links: []
+

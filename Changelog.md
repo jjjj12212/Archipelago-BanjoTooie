@@ -1,3 +1,16 @@
+# 3.3-beta
+  - Added the rest of the general Archipelago settings in the yaml.
+  - Logic fixes:
+    - Targitzan Jiggy: Ice Eggs + Beak Bayonet is one way to do the boss fight. Also, now checking for suitable eggs in advanced and glitched logic.
+    - Bovina jiggy: Beak Bombs are back in advanced and glitched logic, after being accidentally removed many versions ago.
+    - Defeating Old King Coal: Beak Buster removed as an attack for advanced and glitched logic.
+    - Dive of Death notes: for normal logic, requires dive or tall jump.
+    - JRL Pipe Honeycomb: the clockwork shot is now in the glitched logic. You can reach the spot for the shot with solo Kazooie, in advanced and glitched logic.
+    - TDL Entrance Jinjo: for normal logic, requires flutter, air rat-a-tat rap, split up, or beak buster to reach the alcove if you can't fly in. All logics except beginner: split up can be used to poop a grenade on the switch.
+    - River Passage Honeycomb: You can use split up for it, if not on beginner logic.
+    - Roar Cage notes: if not on beginner logic, you can use split up.
+    - Mega-Glowbo: you can use flutter or air rat-a-tat rap to reach the mega-glowbo, if not on beginner logic.
+
 # 3.2-beta
  - Logic fixes:
   - Atlantis access: fixed dumb mistake that required egg aim or third person egg shooting to reach atlantis, in beginner and normal logic.
