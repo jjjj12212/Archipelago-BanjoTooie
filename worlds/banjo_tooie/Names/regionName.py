@@ -24,6 +24,17 @@ IOHCTS = "Isle O Hags - Cliff Top Station"
 IOHCT_HFP_ENTRANCE = "Isle O Hags - Cliff Top (Across Bridge)"
 IOHDC  = "Isle O Hags - Another Digger Tunnel"
 
+# These are the loading zones to each level, as seen from OUTSIDE the level. For example, MTE is the loading zone in Wooded Hollow, that normally leads to MT.
+MTE = "Mayahem Temple - Main Entrance"
+GGME = "Glitter Gulch Mine - Main Entrance"
+WWE = "Witchyworld - Main Entrance"
+JRLE = "Jolly Roger's Lagoon - Main Entrance"
+TDLE = "Terrydactyland - Main Entrance"
+GIE = "Grunty's Industries - Main Entrance"
+HFPE = "Grunty's Industries - Main Entrance"
+CCLE = "Cloud Cuckooland - Main Entrance"
+CKE = "Cauldron Keep - Main Entrance"
+
 SMBH = "Spiral Mountain - Banjo's House"
 SMGL = "Spiral Mountain - Grunty's Lair"
 SMBW = "Spiral Mountain - Behind Waterfall"
