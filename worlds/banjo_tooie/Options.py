@@ -145,7 +145,7 @@ class LogicType(Choice):
 class Silos(Choice):
     """Choose if you want IoH Silos to be closed, randomly open 1 or enable all. If you enabled Randomized Worlds with BK Moves randomized and
        silos set to none, it will be enforced to one."""
-    display_name = "Logic Type"
+    display_name = "Open Silos"
     option_none = 0
     option_one = 1
     option_all = 2

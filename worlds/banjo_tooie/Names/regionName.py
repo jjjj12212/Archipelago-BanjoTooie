@@ -31,7 +31,7 @@ WWE = "Witchyworld - Main Entrance"
 JRLE = "Jolly Roger's Lagoon - Main Entrance"
 TDLE = "Terrydactyland - Main Entrance"
 GIE = "Grunty's Industries - Main Entrance"
-HFPE = "Grunty's Industries - Main Entrance"
+HFPE = "Hailfire Peaks - Main Entrance"
 CCLE = "Cloud Cuckooland - Main Entrance"
 CKE = "Cauldron Keep - Main Entrance"
 
