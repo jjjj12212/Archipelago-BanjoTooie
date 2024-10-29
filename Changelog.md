@@ -6,8 +6,9 @@
    - Open All Silos.
 - Randomize World Entrance loading zones
  - This also includes Caudron Keep's entrance
- - Grunty's Industries and Caudron Keep cannot appear in Mayahem Temple's loading zone. 
+ - Grunty's Industries and Caudron Keep cannot appear your first loading zone. 
 - Deathlink now works under water and in toxic caves, and kills much faster.
+- Implement Inventory Items from Item Pool
 
 # 3.2-beta
  - Logic fixes:
