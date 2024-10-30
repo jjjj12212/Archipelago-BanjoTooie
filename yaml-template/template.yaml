@@ -79,8 +79,6 @@ Banjo-Tooie:
 
   # Changes which levels are open; Recommended when doing multiworld seeds.
   randomize_worlds: 'false'
-  randomize_world_loading_zone: 'false' # Randomize Entrance Loading Zones
-  
 
   logic_type: 0                # 0: Beginner, 1: Normal, 2: Advanced, 3: glitched
   jingaling_jiggy: 'true'      # True: Always get Jiggy from Jingaling; recommended when playing Multiworld.
@@ -89,7 +87,6 @@ Banjo-Tooie:
   speed_up_minigames: 'true'   # skip to round 3 of kickball, dodgems
   skip_puzzles: 'true'
   skip_klungo: 'true'          # Skips Klungo 1 & 2
-  open_silos: 0                # 0: None, 1: 1 Random Silo, 2: All Silos
 
 
   # Victory Conditions

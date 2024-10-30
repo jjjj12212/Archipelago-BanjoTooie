@@ -4161,18 +4161,6 @@ class BanjoTooieRules:
         else:
             amt = self.world.randomize_worlds[regionName.MT]
             return state.has(itemName.JIGGY, self.player, amt)
-
-    def MT_to_WH(self, state: CollectionState) -> bool: #1
-        logic = True
-        if self.world.options.logic_type == 0: # beginner
-            logic = self.mt_jiggy(state)
-        elif self.world.options.logic_type == 1: # normal
-            logic = True
-        elif self.world.options.logic_type == 2: # advanced
-            logic = True
-        elif self.world.options.logic_type == 3: # glitched
-            logic = True
-        return logic
     
     def WH_to_PL(self, state: CollectionState) -> bool:
         logic = True
@@ -4196,18 +4184,6 @@ class BanjoTooieRules:
             logic = self.climb(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.climb(state)
-        return logic
-
-    def escape_ggm_loading_zone(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == 0: # beginner
-            logic = self.gm_jiggy(state) and self.climb(state)
-        elif self.world.options.logic_type == 1: # normal
-            logic = self.climb(state) or self.beak_buster(state) or self.flutter(state) or self.air_rat_a_tat_rap(state)
-        elif self.world.options.logic_type == 2: # advanced
-            logic = self.climb(state) or self.beak_buster(state) or self.flutter(state) or self.air_rat_a_tat_rap(state)
-        elif self.world.options.logic_type == 3: # glitched
-            logic = self.climb(state) or self.beak_buster(state) or self.flutter(state) or self.air_rat_a_tat_rap(state)
         return logic
 
     def PG_to_PL(self, state: CollectionState) -> bool:
