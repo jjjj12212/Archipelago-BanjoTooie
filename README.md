@@ -19,7 +19,7 @@ Banjo Tooie for Archipelago
 - Moves from Banjo-Kazooie
 - T-Rex Roar
 
-\*: Jiggies are the only collectibles that are forced to be randomised.
+\*: Jiggies are the only collectibles that are forced to be randomized.
 
 ## Goals
 - Beating Hag-1
