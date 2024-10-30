@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V3.2"
+local BT_VERSION = "V3.3"
 local PLAYER = ""
 local SEED = 0
 
@@ -41,6 +41,7 @@ local DEBUG_ROYSTEN = false
 local DEBUG_CHUFFY = false
 local DEBUG_STOPNSWAP = false
 local DEBUG_STATION = false
+local DEBUG_LEVEL = false
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
@@ -99,6 +100,8 @@ local MAP_TRANSITION = false;
 local TRANSITION_SET = false;
 local CURRENT_MAP = nil;
 local NEXT_MAP = nil;
+local AP_LOADING_ZONES = {};
+local ZONE_SET = false;
 
 
 -------------- JIGGY VARS -----------
@@ -159,7 +162,6 @@ LEVI_PAD_MOVED = false;
 
 local BATH_PADS_QOL = false
 
-
 -------------- GOAL TYPE VARS ------------
 local GOAL_TYPE = nil;
 local MGH_LENGTH = nil;
@@ -183,6 +185,9 @@ local GOGGLES = false;
 
 ---------------- ROAR VARS ---------------
 local ROAR = false;
+
+---------------- IOH SILO VARS -------------
+local OPEN_SILO = "NONE"
 
 -------------- ENCOURAGEMENT MESSAGES ------------
 local ENCOURAGEMENT = {
@@ -458,6 +463,18 @@ function BTRAM:getMap(nextmap)
         local map = mainmemory.read_u16_be(self.next_map);
         return map;
     end
+end
+
+function BTRAM:setNextMap(nextmap)
+    mainmemory.write_u16_be(self.next_map, nextmap);
+end
+
+function BTRAM:getEntranceId()
+    return mainmemory.read_u8(self.entrance_id);
+end
+
+function BTRAM:setEntranceId(entranceId)
+    mainmemory.write_u8(self.entrance_id, entranceId);
 end
 
 function BTRAM:checkFlag(byte, _bit, fromfuncDebug)
@@ -4942,6 +4959,72 @@ local WORLD_ENTRANCE_MAP = {
     },
 }
 
+-- Used for randomized maps
+local MAP_ENTRANCES = {
+    [0xB8] = {
+        ['name'] = "Mayahem Temple",
+        ['entranceId'] = 10,
+        ['exitId'] = 2,
+        ['exitMap'] = 0x14F
+    },
+    [0xC7] = {
+        ['name'] = "Glitter Gulch Mine",
+        ['entranceId'] = 17,
+        ['exitId'] = 2,
+        ['exitMap'] = 0x152
+    },
+    [0xD6] = {
+        ['name'] = "Witchyworld",
+        ['entranceId'] = 18,
+        ['exitId'] = 2,
+        ['exitMap'] = 0x154
+    },
+    [0x1A7] = {
+        ['name'] = "Jolly Roger's Lagoon - Town Center",
+        ['entranceId'] = 3,
+        ['exitId'] = 5,
+        ['exitMap'] = 0x155
+    },
+    [0x112] = {
+        ['name'] = "Terrydactyland",
+        ['entranceId'] = 23,
+        ['exitId'] = 2,
+        ['exitMap'] = 0x15A
+    },
+    [0x100] = {
+        ['name'] = "Outside Grunty's Industries",
+        ['entranceId'] = 9,
+        ['exitId'] = 2,
+        ['exitMap'] = 0x15C
+    },
+    [0x127] = {
+        ['name'] = "Hailfire Peaks",
+        ['entranceId'] = 21,
+        ['exitId'] = 6,
+        ['exitMap'] = 0x155
+    },
+    [0x136] = {
+        ['name'] = "Cloud Cuckooland",
+        ['entranceId'] = 20,
+        ['exitId'] = 5,
+        ['exitMap'] = 0x15A
+    },
+    [0x15D] = {
+        ['name'] = "Cauldron Keep",
+        ['entranceId'] = 1,
+        ['exitId'] = 3,
+        ['exitMap'] = 0x15C
+    }
+}
+local IOH_MAPS = {
+    [0x14F] = 'value', -- WH
+    [0x152] = 'value', --  PL
+    [0x154] = 'value', -- PG
+    [0x155] = 'value', -- CT
+    [0x15A] = 'value', -- WL
+    [0x15C] = 'value', -- QM
+}
+
 
 ---------------------------------- JIGGIES ---------------------------------
 
@@ -5419,32 +5502,60 @@ function collected_JV_TREBLE()
     return true
 end
 
---------------- Randomize Worlds with BK Moves ---------------------------
+--------------- IOH SILO ---------------------------
 
 function init_world_silos()
-    for worlds, tbl in pairs(WORLD_ENTRANCE_MAP)
-    do
-        if tbl["locationId"] == "1230944"
-        then
-            if tbl["defaultName"] == "Glitter Gulch Mine"
-            then
-                BTRAMOBJ:setFlag(0x60, 7)
-            end
-            if tbl["defaultName"] == "Witchyworld"
-            then
-                BTRAMOBJ:setFlag(0x61, 0)
-            end
-            if tbl["defaultName"] == "Cloud Cuckooland" or tbl["defaultName"] == "Terrydactyland"
-            then
-                BTRAMOBJ:setFlag(0x61, 2)
-            end
-            if tbl["defaultName"] == "Jolly Roger's Lagoon" or tbl["defaultName"] == "Hailfire Peaks" or tbl["defaultName"] == "Grunty Industries"
-            then
-                BTRAMOBJ:setFlag(0x61, 1)
-            end
-        end
+    -- for worlds, tbl in pairs(WORLD_ENTRANCE_MAP)
+    -- do
+    --     if tbl["locationId"] == "1230944"
+    --     then
+    --         if tbl["defaultName"] == "Glitter Gulch Mine"
+    --         then
+    --             BTRAMOBJ:setFlag(0x60, 7)
+    --         end
+    --         if tbl["defaultName"] == "Witchyworld"
+    --         then
+    --             BTRAMOBJ:setFlag(0x61, 0)
+    --         end
+    --         if tbl["defaultName"] == "Cloud Cuckooland" or tbl["defaultName"] == "Terrydactyland"
+    --         then
+    --             BTRAMOBJ:setFlag(0x61, 2)
+    --         end
+    --         if tbl["defaultName"] == "Jolly Roger's Lagoon" or tbl["defaultName"] == "Hailfire Peaks" or tbl["defaultName"] == "Grunty Industries"
+    --         then
+    --             BTRAMOBJ:setFlag(0x61, 1)
+    --         end
+    --     end
+    -- end
+    -- archipelago_msg_box("Warp Silo to your first world is now open")
+    if OPEN_SILO == "NONE"
+    then
+        return
+    elseif OPEN_SILO == "ALL"
+    then
+        BTRAMOBJ:setFlag(0x60, 5) -- JV
+        BTRAMOBJ:setFlag(0x60, 6) -- WH
+        BTRAMOBJ:setFlag(0x60, 7) -- PL
+        BTRAMOBJ:setFlag(0x61, 0) -- PG
+        BTRAMOBJ:setFlag(0x61, 1) -- CT
+        BTRAMOBJ:setFlag(0x61, 2) -- WL
+        BTRAMOBJ:setFlag(0x61, 3) -- QM
+    elseif string.find(OPEN_SILO, "Wasteland") ~= nil then
+        BTRAMOBJ:setFlag(0x60, 5)
+        BTRAMOBJ:setFlag(0x61, 2) -- WL
+    elseif string.find(OPEN_SILO, "Quagmire") ~= nil then
+        BTRAMOBJ:setFlag(0x60, 5) -- JV
+        BTRAMOBJ:setFlag(0x61, 3) -- QM
+    elseif string.find(OPEN_SILO, "Plateau") ~= nil then
+        BTRAMOBJ:setFlag(0x60, 5) -- JV
+        BTRAMOBJ:setFlag(0x60, 7) -- PL
+    elseif string.find(OPEN_SILO, "Pine Grove") ~= nil then
+        BTRAMOBJ:setFlag(0x60, 5) -- JV
+        BTRAMOBJ:setFlag(0x61, 0) -- PG
+    elseif string.find(OPEN_SILO, "Cliff Top") ~= nil then
+        BTRAMOBJ:setFlag(0x60, 5) -- JV
+        BTRAMOBJ:setFlag(0x61, 1) -- CT
     end
-    archipelago_msg_box("Warp Silo to your first world is now open")
 end
 
 --------------------------------- Roysten --------------------------------
@@ -7636,6 +7747,9 @@ function killBT()
                 mainmemory.write_u16_be(0x12b062, 0x0100)--max air and suffocation flag?
                 mainmemory.write_u16_be(0x12b068, 0x800C)--max air and suffocation flag?
                 mainmemory.write_u16_be(0x12b06A, 0xF734)--max air and suffocation flag?
+
+                mainmemory.write_u32_be(0x12b050, 0x00)-- kill in water
+                mainmemory.write_u32_be(0x12b054, 0x00)-- kill in water
                 local kill_animation = 0x01 -- funny drowning death
                 if tranformation ~= 0x01
                 then
@@ -7885,6 +7999,66 @@ function finishTransition()
 end
 
 ---------------------- GAME FUNCTIONS -------------------
+
+function zoneWarp()
+    if ZONE_SET == false
+    then
+        local zone = BTRAMOBJ:getEntranceId()
+        if MAP_ENTRANCES[NEXT_MAP] ~= nil -- Entering a world
+        then
+            if (MAP_ENTRANCES[NEXT_MAP]['entranceId'] == zone or -- Entering Main front door
+            (MAP_ENTRANCES[NEXT_MAP]['name'] == "Glitter Gulch Mine" and zone == 16)) --GGM fall bug
+            and IOH_MAPS[CURRENT_MAP] ~= nil -- Avoids death warps to wrong level
+            then
+                local level_name = MAP_ENTRANCES[NEXT_MAP]['name']
+                local warp_to_name = AP_LOADING_ZONES[level_name]
+                if DEBUG_LEVEL == true
+                then
+                    print("Entering ".. warp_to_name)
+                end
+                for map, table in pairs(MAP_ENTRANCES)
+                do
+                    if table['name'] == warp_to_name -- Warp to this level instead
+                    then
+                        BTRAMOBJ:setNextMap(map)
+                        BTRAMOBJ:setEntranceId(table['entranceId'])
+                        ZONE_SET = true
+                        return
+                    end
+                end
+            end
+        elseif MAP_ENTRANCES[CURRENT_MAP] ~= nil -- Exiting a world
+        then
+            if MAP_ENTRANCES[CURRENT_MAP]['exitId'] == zone and IOH_MAPS[NEXT_MAP] ~= nil -- leaving world
+            then
+                local leaving_level = MAP_ENTRANCES[CURRENT_MAP]['name']
+                local starting_entrance = ""
+                for entrance, level in pairs(AP_LOADING_ZONES)
+                do
+                    if leaving_level == level -- Get the original warp
+                    then
+                        starting_entrance = entrance
+                        if DEBUG_LEVEL == true
+                        then
+                            print("Leaving ".. starting_entrance .. " Area")
+                        end
+                        break
+                    end
+                end
+                for map, table in pairs(MAP_ENTRANCES)
+                do
+                    if table['name'] == starting_entrance -- Warp to this level instead
+                    then
+                        BTRAMOBJ:setNextMap(table['exitMap'])
+                        BTRAMOBJ:setEntranceId(table['exitId'])
+                        ZONE_SET = true
+                        return
+                    end
+                end
+            end
+        end
+    end
+end
 
 function loadGame(current_map)
     BTMODELOBJ:changeName("Player", false)
@@ -8519,9 +8693,7 @@ function initializeFlags()
             BTRAMOBJ:clearFlag(0x1A, 3) -- Stilt Stride
             BTRAMOBJ:clearFlag(0x18, 6) -- Beak Bomb
 
-            if ENABLE_AP_WORLDS == true then -- Randomize Worlds - SILOS!!!
-                init_world_silos()
-            end
+            init_world_silos()
         end
         if ENABLE_AP_CHEATO_REWARDS == true then
             init_CHEATO_REWARDS()
@@ -9375,6 +9547,10 @@ function process_slot(block)
             end
         end
     end
+    if block['slot_open_silo'] ~= nil
+    then
+        OPEN_SILO = block['slot_open_silo']
+    end
     if block['slot_version'] ~= nil and block['slot_version'] ~= ""
     then
         CLIENT_VERSION = block['slot_version']
@@ -9387,6 +9563,10 @@ function process_slot(block)
     if block['slot_text_colour'] ~= nil and block['slot_text_colour'] ~= ""
     then
         TEXT_COLOUR = tonumber(block['slot_text_colour'])
+    end
+    if block['slot_zones'] ~= nil
+    then
+        AP_LOADING_ZONES = block['slot_zones']
     end
     printGoalInfo();
     if SEED ~= 0
@@ -9491,6 +9671,16 @@ function main()
 				end
                 DPadStats();
             end
+            -- Zone Warp
+            if BTRAMOBJ:getMap(true) ~= 0
+            then
+                NEXT_MAP = BTRAMOBJ:getMap(true)
+                zoneWarp()
+            elseif BTRAMOBJ:getMap(true) == 0
+            then
+                ZONE_SET = false
+            end
+            -- EO Zone Warp
             if mainmemory.read_u8(0x127642) == 1 or BTRAMOBJ:getMap(true) ~= 0
             then
                 TRANSITION_SET = true
