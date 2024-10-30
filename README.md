@@ -51,23 +51,7 @@ Banjo Tooie for Archipelago
 - Auto skip dialogs and cutscenes
 - Skippable Tower of Tragedy
 - Prison code door is always open
-- Cheato Rewards as an option (awards an additional randomized item)
-- Honey B Rewards as an option (awards an additional randomized item)
-- Randomize Original Banjo-Kazooie Moves (YAML Option)
-- Change how Eggs works (YAML Option)
-- Progressive Ability Upgrades
-- T-Rex Roar
-- Option to open IoH silos
-- Option to open World Entrance Loading Zone
 - Skip rounds of the longer minigames
-
-# Possible Win Conditions
-- Beating Hag-1 (Vanilla)
-- Mini-games (Collect the Mumbo Tokens hidden behind mini-games)
-- World Bosses (Collect the Mumbo Tokens hidden behind world bosses)
-- Family Jinjo Hunt (Collect the Mumbo Tokens hidden behind Jinjo Families)
-- <b>Wonderwing Challenge!</b> (Collect all 32 Mumbo Tokens from Jinjo families, mini-games & World bosses and beat Hag-1)
-- Mumbo Token Hunt (Token are scattered all over the world, go find them.) You must hand them all in at Banjo's House
 
 ## Others
 - Death Link
@@ -82,11 +66,6 @@ Go to worlds/banjo_tooie/docs/setup_en.md for detailed instructions how to setup
 - Console support
 
 # Contributors
- - @oohnahleevay Unalive (coder)
- - Beebaleen (Previous Doc Maintainer)
- - @Cyb3RGER (AP Launcher)
- - GDO - Tester
- - AquaPhoenix - Tester
  - @g0goTAS (g0goTBC) - Logic Programmer
  - @oohnahleevay Unalive - Coder
  - @fhnnhf Coder
