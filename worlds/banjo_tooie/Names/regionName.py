@@ -65,7 +65,7 @@ TL_HATCH = "Terrydactyland - Hatch Cave"
 GIO = "Outside Grunty's Industries"
 GI1 = "Grunty's Industries 1st Floor"
 GI2 = "Grunty's Industries 2nd Floor"
-GI3ALL = "Grunty's Industries 3rd Floor Onwords"
+GI3ALL = "Grunty's Industries 3rd Floor Onwards"
 GIS = "Grunty's Industries Station"
 
 HP = "Hailfire Peaks"

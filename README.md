@@ -1,9 +1,44 @@
 # Archipelago Banjo-Tooie (US-Only) | 3.3-Beta
 Banjo Tooie for Archipelago 
 
-# Controller Shortcuts with this implementation
+# Current Implementation
+## Randomized Collectibles
+- Jiggies*
+- Notes
+- Empty Honeycombs
+- Cheato Pages
+- Jinjos
+- Glowbos
+- Moves from Jamjars
+- Doubloons
+- Treble Clef
+- Train Switches
+- Chuffy
+- Cheato Rewards
+- Honey B Rewards
+- Moves from Banjo-Kazooie
+- T-Rex Roar
+
+\*: Jiggies are the only collectibles that are forced to be randomized.
+
+## Goals
+- Beating Hag-1
+- Winning Mini-games
+- Defeating World Bosses
+- Completing Jinjo Families
+- <b>Wonderwing Challenge!</b>: Collect all 32 Mumbo Tokens from Jinjo families, mini-games, and World bosses, then beat Hag-1.
+- Mumbo Token Hunt: 15 tokens are scattered all over the world, go find them, then hand them all in at Banjo's House.
+
+## Progressive Abilities
+- Eggs (Blue -> Fire -> Grenade -> Ice -> Clockworks)
+- Beak Buster (Beak Buster -> Bill Drill)
+- Water Training (Dive -> Faster Swimming -> Double Air)
+- Shoes (Stilt Stride -> Turbo Trainers -> Springy Step Shoes -> Claw Clamber Boots)
+- Breegull Bash (Ground Rat-a-tat Rap -> Breegull Bash)
+
+## Controller Shortcuts
  - Dpad up: Banjo Tiptoes
- - Dpad right: display unlocked moves and world unlocks in lua console 
+ - Dpad right: display unlocked moves and world unlocks in lua console
  - Dpad down: display collected Treble Clefs
  - Dpad left: display unlocked Magic
  - Dpad up + L: Refill Consumables
@@ -11,24 +46,10 @@ Banjo Tooie for Archipelago
  - Dpad down + L: Health Regen
  - Dpad left + L: Aim Assist 
 
-# Current implementation
-- Death Link
-- Jiggies
-- Empty Honeycombs (YAML Option) 
-- Skippable Tower of Tragedy
-- Cheato Pages (YAML Option)
-- Glowbos activates magic automatically (YAML Option)
-- Banjo Advanced Jamjar Moves (YAML Option)
-- Auto skip certain dialogs and cutscenes
-- Doubloons (YAML Option)
-- Treble Clef (YAML Option)
-- Train Station (YAML Option)
-- Chuffy as an AP Item (YAML Option) 
-- Jinjos (YAML Option)
-- Notes (YAML Option)
+## Quality of life
 - Skip Jiggywiggy puzzles to open levels
-- Option for worlds to open in random order. (requires certain amount of items randomized and puzzle skip)
-- Alternate Goals
+- Auto skip dialogs and cutscenes
+- Skippable Tower of Tragedy
 - Prison code door is always open
 - Cheato Rewards as an option (awards an additional randomized item)
 - Honey B Rewards as an option (awards an additional randomized item)
@@ -38,6 +59,7 @@ Banjo Tooie for Archipelago
 - T-Rex Roar
 - Option to open IoH silos
 - Option to open World Entrance Loading Zone
+- Skip rounds of the longer minigames
 
 # Possible Win Conditions
 - Beating Hag-1 (Vanilla)
@@ -47,27 +69,37 @@ Banjo Tooie for Archipelago
 - <b>Wonderwing Challenge!</b> (Collect all 32 Mumbo Tokens from Jinjo families, mini-games & World bosses and beat Hag-1)
 - Mumbo Token Hunt (Token are scattered all over the world, go find them.) You must hand them all in at Banjo's House
 
+## Others
+- Death Link
+- Random level Order (requires some items randomized and puzzle skips)
+- Change how Eggs works (YAML Option)
 
 # How to install
 Go to worlds/banjo_tooie/docs/setup_en.md for detailed instructions how to setup this APWorld.
 
 # Future goals for this project
 - Make this project a official release for Archipelago 
+- Console support
 
 # Contributors
  - @oohnahleevay Unalive (coder)
  - Beebaleen (Previous Doc Maintainer)
  - @Cyb3RGER (AP Launcher)
- - @g0goTAS (g0goTBC) - help with logic fixes
  - GDO - Tester
  - AquaPhoenix - Tester
- - @fhnnhf (coder)
+ - @g0goTAS (g0goTBC) - Logic Programmer
+ - @oohnahleevay Unalive - Coder
+ - @fhnnhf Coder
  - @Auztin (HAG-1 Flags and Misc)
+ - GDO - Tester
+ - @Cyb3RGER - AP Launcher
+ - Beebaleen - Previous Doc Maintainer
 
 # Shoutouts
 Huge thank you for the following individuals / teams. Without them, this project would not have gotten this far:
  -  OktoRose
  - <a href='https://github.com/Isotarge/ScriptHawk'>ScriptHawk</a>
  - @Icebound777
+ - The people who have made bug reports and have made suggestions for this randomizer
  - **Of course, the people who brought Banjo Kazooie to the world**
     - Rareware
