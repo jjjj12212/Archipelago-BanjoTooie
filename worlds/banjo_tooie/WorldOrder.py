@@ -35,6 +35,42 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
             regionName.CC,
             regionName.CK
         ]
+        if world.options.randomize_world_loading_zone.value == True:
+            gen_res = False
+            while(gen_res == False):
+                random.shuffle(worlds)
+                if worlds[0] != regionName.CK and worlds[0] != regionName.GIO:
+                    gen_res = True
+            if world.worlds_randomized == True:
+                i = 0
+                for location, jiggy in world.randomize_worlds.items():
+                    world.loading_zones[location] = worlds[i]
+                    i = i+1
+            else:
+                world.loading_zones = {
+                    regionName.MT : worlds[0],
+                    regionName.GM : worlds[1],
+                    regionName.WW : worlds[2],
+                    regionName.JR : worlds[3],
+                    regionName.TL : worlds[4],
+                    regionName.GIO: worlds[5],
+                    regionName.HP : worlds[6],
+                    regionName.CC : worlds[7],
+                    regionName.CK : worlds[8]
+                }
+        else:
+            world.loading_zones = {
+                regionName.MT : regionName.MT,
+                regionName.GM : regionName.GM,
+                regionName.WW : regionName.WW,
+                regionName.JR : regionName.JR,
+                regionName.TL : regionName.TL,
+                regionName.GIO: regionName.GIO,
+                regionName.HP : regionName.HP,
+                regionName.CC : regionName.CC,
+                regionName.CK : regionName.CK
+            }
+
         if world.options.randomize_worlds and world.options.randomize_moves == True and \
         world.options.skip_puzzles == True:
             random.shuffle(world.world_sphere_1)
@@ -260,6 +296,7 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
 
 
             first_level = list(world.randomize_worlds.keys())[0]
+            actual_first_level = world.loading_zones[first_level]
             second_level = list(world.randomize_worlds.keys())[1]
             #Silos
             if world.options.open_silos.value == 1:
@@ -272,12 +309,16 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
                 if first_level == regionName.JR or first_level == regionName.HP:
                     world.single_silo = regionName.IOHCT
                 if first_level == regionName.GIO:
-                    world.single_silo = regionName.IOHCT
+                    if world.options.randomize_world_loading_zone.value == True:
+                        world.single_silo = regionName.IOHQM # Entry through main entrance.
+                    else:
+                        world.single_silo = regionName.IOHCT # Entry via the train in Cliff Top
             elif world.options.open_silos.value == 2:
                 world.single_silo = "ALL"
             else:
                 world.single_silo = "NONE"
             #EO Silos
+            # TODO: change for silo logic instead of BK moves.
             if world.options.randomize_bk_moves != 2:
                 if  first_level != regionName.MT and world.options.logic_type != 2:
                     world.multiworld.early_items[world.player][itemName.GGRAB] = 1
@@ -305,29 +346,35 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
                     if first_level == regionName.JR or first_level == regionName.HP:
                         world.single_silo = regionName.IOHCT
                     if first_level == regionName.GIO:
-                        world.single_silo = regionName.IOHCT
+                        if world.options.randomize_world_loading_zone.value == True:
+                            world.single_silo = regionName.IOHQM # Entry through main entrance.
+                        else:
+                            world.single_silo = regionName.IOHCT # Entry via the train in Cliff Top
                 #EOSilos
-                if  first_level == regionName.WW:
+                if actual_first_level == regionName.WW:
                     world.multiworld.early_items[world.player][itemName.SPLITUP] = 1
-                if first_level == regionName.JR and world.options.randomize_doubloons.value == False \
+                if actual_first_level == regionName.JR and world.options.randomize_doubloons.value == False \
                     and second_level == regionName.HP:
-                    move_lst = [itemName.TJUMP, itemName.FFLIP, itemName.SPLITUP, itemName.TTROT]
+                    move_lst = [itemName.TJUMP, itemName.FFLIP, itemName.TTROT]
                     move = random.choice(move_lst)
                     world.multiworld.early_items[world.player][move] = 1
-                if first_level == regionName.HP:
-                    move_lst = [itemName.TJUMP, itemName.FFLIP, itemName.SPLITUP, itemName.TTROT]
+                if actual_first_level == regionName.HP:
+                    move_lst = [itemName.TJUMP, itemName.FFLIP, itemName.TTROT]
                     move = random.choice(move_lst)
                     world.multiworld.early_items[world.player][move] = 1
-                if first_level == regionName.CC:
-                    move_lst = [itemName.TJUMP, itemName.FFLIP, itemName.TTROT, itemName.FPAD]
+                if actual_first_level == regionName.CC:
+                    move_lst = [itemName.SPLITUP, itemName.FPAD]
                     move = random.choice(move_lst)
                     world.multiworld.early_items[world.player][move] = 1
+
                 if first_level == regionName.GIO:
-                    world.multiworld.early_items[world.player][itemName.CHUFFY] = 1
-                    world.multiworld.early_items[world.player][itemName.TRAINSWGI] = 1
-                    world.multiworld.early_items[world.player][itemName.CLIMB] = 1
-                    world.multiworld.early_items[world.player][itemName.TRAINSWIH] = 1
-                    world.multiworld.early_items[world.player][itemName.FFLIP] = 1
+                    if world.options.randomize_world_loading_zone.value == False: # Moves to enter the train.
+                        world.multiworld.early_items[world.player][itemName.CHUFFY] = 1
+                        world.multiworld.early_items[world.player][itemName.TRAINSWGI] = 1
+                        world.multiworld.early_items[world.player][itemName.CLIMB] = 1
+                        world.multiworld.early_items[world.player][itemName.TRAINSWIH] = 1
+                        world.multiworld.early_items[world.player][random.choice([itemName.FFLIP, itemName.TTROT, itemName.TJUMP])] = 1
+
             world.worlds_randomized = True
         else:
             world1_jiggy = 0
@@ -418,42 +465,3 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
                 ]
                 random.shuffle(silo_rando)
                 world.single_silo = silo_rando[0]
-
-        if world.options.randomize_world_loading_zone.value == True:
-            gen_res = False
-            while(gen_res == False):
-                random.shuffle(worlds)
-                if worlds[0] != regionName.CK and worlds[0] != regionName.GIO:
-                    gen_res = True
-            if world.worlds_randomized == True:
-                i = 0
-                for location, jiggy in world.randomize_worlds.items():
-                    world.loading_zones[location] = worlds[i]
-                    i = i+1
-            else:
-                world.loading_zones = {
-                    regionName.MT : worlds[0],
-                    regionName.GM : worlds[1],
-                    regionName.WW : worlds[2],
-                    regionName.JR : worlds[3],
-                    regionName.TL : worlds[4],
-                    regionName.GIO: worlds[5],
-                    regionName.HP : worlds[6],
-                    regionName.CC : worlds[7],
-                    regionName.CK : worlds[8]
-                }
-        else:
-            world.loading_zones = {
-                regionName.MT : regionName.MT,
-                regionName.GM : regionName.GM,
-                regionName.WW : regionName.WW,
-                regionName.JR : regionName.JR,
-                regionName.TL : regionName.TL,
-                regionName.GIO: regionName.GIO,
-                regionName.HP : regionName.HP,
-                regionName.CC : regionName.CC,
-                regionName.CK : regionName.CK
-            }
-
-
-    

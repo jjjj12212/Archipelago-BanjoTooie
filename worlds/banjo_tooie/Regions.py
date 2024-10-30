@@ -797,20 +797,8 @@ def connect_regions(self):
 
     # Silos
     silo = self.single_silo
-    if silo == "NONE" and self.worlds_randomized == True:
-        ioh_lookup = {
-            regionName.MT: regionName.IOHWH,
-            regionName.GM: regionName.IOHPL,
-            regionName.WW: regionName.IOHPG,
-            regionName.JR: regionName.IOHCT,
-            regionName.TL: regionName.IOHWL,
-            regionName.GIO: regionName.IOHQM,
-            regionName.HP: regionName.IOHCT,
-            regionName.CC: regionName.IOHWL,
-            regionName.CK: regionName.IOHWL,
-        }
-        first_silo = ioh_lookup[list(self.randomize_worlds.keys())[0]]
-        region_JV.add_exits({first_silo})
+    if silo == "NONE":
+        pass
     elif silo == "ALL":
         region_JV.add_exits({regionName.IOHPL, regionName.IOHCT, regionName.IOHPG, regionName.IOHWL, regionName.IOHQM})
     else: # The value is a region name of the overworld.
