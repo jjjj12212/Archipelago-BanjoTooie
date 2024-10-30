@@ -1,15 +1,3 @@
-# 3.3-beta
-- Open Silo Option
- - Choice between:
-   - Opening 0 IoH silos. Note this does not apply if you are randomizing BK moves and Worlds.
-   - Open 1 Random Silo. Note that if randomizing BK moves and Worlds, this will go to your first world.
-   - Open All Silos.
-- Randomize World Entrance loading zones
- - This also includes Caudron Keep's entrance
- - Grunty's Industries and Caudron Keep cannot appear your first loading zone. 
-- Deathlink now works under water and in toxic caves, and kills much faster.
-- Implement Inventory Items from Item Pool
-
 # 3.2-beta
  - Logic fixes:
   - Atlantis access: fixed dumb mistake that required egg aim or third person egg shooting to reach atlantis, in beginner and normal logic.
