@@ -119,7 +119,7 @@ def set_level_costs(world: BanjoTooieWorld) -> None:
 
 
 def randomize_entrance_loading_zones(world: BanjoTooieWorld) -> None:
-    randomizable_levels = [regionName.MT,regionName.GM,regionName.WW,regionName.JR,regionName.TL,regionName.GIO,regionName.HP,regionName.CC,regionName.CK]
+    randomizable_levels = list(world.randomize_worlds.keys()) # Gives the levels in the order that they open.
     if not world.options.randomize_world_loading_zone:
         world.loading_zones = {level: level for level in randomizable_levels}
     else:

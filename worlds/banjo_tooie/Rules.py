@@ -1707,9 +1707,10 @@ class BanjoTooieRules:
     def jiggy_mingy(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.mobile_attack(state) and self.talon_trot(state)
+            logic = (self.can_shoot_linear_egg(state) or self.beak_barge(state) or self.air_rat_a_tat_rap(state) or self.wonderwing(state))\
+                    and self.talon_trot(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.mobile_attack(state)
+            logic = self.can_shoot_linear_egg(state) or self.beak_barge(state) or self.air_rat_a_tat_rap(state) or self.wonderwing(state)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.ground_attack(state)
         elif self.world.options.logic_type == 3: # glitched
@@ -2568,11 +2569,11 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.small_elevation(state) and self.dive(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.small_elevation(state) and self.dive(state)
+            logic = self.dive(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.small_elevation(state) and self.dive(state)
+            logic = self.dive(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.small_elevation(state) and self.dive(state)
+            logic = self.dive(state)
         return logic
     
     def glowbo_cliff(self, state: CollectionState) -> bool:

@@ -32,6 +32,8 @@
   - GI Trebleclef: using the flight pad is now in logic.
   - Mega-Glowbo: you can use flutter or air rat-a-tat rap to reach the mega-glowbo, if not on beginner logic.
   - CCL Entrance Jinjo: Can be gotten with split up + flight pad, if not on beginner logic.
+  - Mingy Jongo Jiggy: Removed clockwork eggs and roll for beginner and normal logic, due to their difficulty.
+  - CCL Indoors Glowbo: Removed elevation requirement for logics other than beginner, since you can reach the footrace track from the red skull.
 
 
 # 3.2-beta
