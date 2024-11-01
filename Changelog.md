@@ -1,5 +1,4 @@
 # 3.3-beta
-
 - Open Silo Option
  - Choice between:
    - Opening 0 IoH silos. Note this does not apply if you are randomizing BK moves and Worlds.
