@@ -573,6 +573,11 @@ class BanjoTooieWorld(World):
                     location.place_locked_item(item)
 
 
+        spoiler_handle.write('\n\nBanjo-Tooie Silo:\n\n')
+        for player in bt_players:
+            name = world.get_player_name(player)
+            spoiler_handle.write("{}: {}\n".format(name, world.worlds[player].single_silo))
+
     def fill_slot_data(self) -> Dict[str, Any]:
         btoptions = {}
         btoptions["player_name"] = self.multiworld.player_name[self.player]

@@ -740,15 +740,66 @@ def connect_regions(self):
                          regionName.GI1: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWGI, player),
                          regionName.HP: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, player)
                          })
-    # Randomize Worlds + BK Moves handling
-    if self.worlds_randomized == True and self.options.randomize_bk_moves.value:
-        first_level = list(self.randomize_worlds.keys())[0]
-        jinjo_village_silo = multiworld.get_region(regionName.IOHJV, player)
-        if first_level == regionName.GM:
-            jinjo_village_silo.add_exits({regionName.IOHPL})
-        if first_level == regionName.WW:
-            jinjo_village_silo.add_exits({regionName.IOHPG})
-        if first_level == regionName.JR or first_level == regionName.HP or first_level == regionName.GIO:
-            jinjo_village_silo.add_exits({regionName.IOHCT})
-        if first_level == regionName.TL or first_level == regionName.CC:
-            jinjo_village_silo.add_exits({regionName.IOHWL})
+    
+    region_mt_entrance = multiworld.get_region(regionName.MTE, player)
+    region_mt_entrance.add_exits({regionName.IOHWH}, {regionName.IOHWH: lambda state: rules.MT_to_WH(state)})
+
+    region_ggm_entrance = multiworld.get_region(regionName.GGME, player)
+    region_ggm_entrance.add_exits({regionName.IOHPL}, {regionName.IOHPL: lambda state: rules.escape_ggm_loading_zone(state)})
+
+    region_ww_entrance = multiworld.get_region(regionName.WWE, player)
+    region_ww_entrance.add_exits({regionName.IOHPG}, {regionName.IOHPG: lambda state: rules.ww_jiggy(state)})
+
+    region_jrl_entrance = multiworld.get_region(regionName.JRLE, player)
+    region_jrl_entrance.add_exits({regionName.IOHCT}, {regionName.IOHCT: lambda state: rules.JRL_to_CT(state)})
+
+    region_tdl_entrance = multiworld.get_region(regionName.TDLE, player)
+    region_tdl_entrance.add_exits({regionName.IOHWL}, {regionName.IOHWL: lambda state: rules.TDL_to_IOHWL(state)})
+
+    region_gi_entrance = multiworld.get_region(regionName.GIE, player)
+    region_gi_entrance.add_exits({regionName.IOHQM}, {regionName.IOHQM: lambda state: rules.gi_jiggy(state)})
+
+    region_hfp_entrance = multiworld.get_region(regionName.HFPE, player)
+    region_hfp_entrance.add_exits({regionName.IOHCT_HFP_ENTRANCE}, {regionName.IOHCT_HFP_ENTRANCE: lambda state: rules.HFP_to_CTHFP(state)})
+
+    region_ccl_entrance = multiworld.get_region(regionName.CCLE, player)
+    region_ccl_entrance.add_exits({regionName.IOHWL}, {regionName.IOHWL: lambda state: rules.CCL_to_WL(state)})
+
+    region_ck_entrance = multiworld.get_region(regionName.CKE, player)
+    region_ck_entrance.add_exits({regionName.IOHWL}, {regionName.IOHWL: lambda state: rules.CK_to_Quag(state)})
+
+    # World entrance randomisation (and exits)
+    entrance_lookup = {
+            regionName.MT: regionName.MTE,
+            regionName.GM: regionName.GGME,
+            regionName.WW: regionName.WWE,
+            regionName.JR: regionName.JRLE,
+            regionName.TL: regionName.TDLE,
+            regionName.GIO: regionName.GIE,
+            regionName.HP: regionName.HFPE,
+            regionName.CC: regionName.CCLE,
+            regionName.CK: regionName.CKE,
+        }
+    for starting_zone, actual_world in self.loading_zones.items():
+        overworld_entrance = entrance_lookup[starting_zone]
+
+        region_overworld_entrance = multiworld.get_region(overworld_entrance, player)
+        region_overworld_entrance.add_exits({actual_world})
+
+        region_actual_world_entrance = multiworld.get_region(actual_world, player)
+
+        if actual_world == regionName.GM:
+            region_actual_world_entrance.add_exits({overworld_entrance}, {overworld_entrance: lambda state: rules.GGM_to_PL(state)})
+        else:
+            region_actual_world_entrance.add_exits({overworld_entrance})
+            
+
+    # Silos
+    silo = self.single_silo
+    if silo == "NONE":
+        pass
+    elif silo == "ALL":
+        region_JV.add_exits({regionName.IOHPL, regionName.IOHCT, regionName.IOHPG, regionName.IOHWL, regionName.IOHQM})
+    else: # The value is a region name of the overworld.
+        region_JV.add_exits({silo})
+    
