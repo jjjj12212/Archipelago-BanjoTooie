@@ -74,7 +74,7 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
 
     def __init__(self, world, player):
-        self.version = "V3.2"
+        self.version = "V3.3"
         self.kingjingalingjiggy = False
         self.starting_egg: int = 0
         self.starting_attack: int = 0
@@ -98,6 +98,8 @@ class BanjoTooieWorld(World):
         self.world_sphere_2 = [
         ]
         self.worlds_randomized = False
+        self.single_silo = ""
+        self.loading_zones = {}
         super(BanjoTooieWorld, self).__init__(world, player)
 
     def create_item(self, itemname: str) -> Item:
@@ -552,7 +554,8 @@ class BanjoTooieWorld(World):
             self.multiworld.get_location(locationName.JINJOCC4, self.player).place_locked_item(item)
             self.multiworld.get_location(locationName.JINJOGI3, self.player).place_locked_item(item)
 
-
+    def get_filler_item_name(self) -> str:
+        return itemName.NONE
 
     def banjo_pre_fills(self, itemNameOrGroup: str, locationFindCriteria: str, useGroup: bool ) -> None:
         if useGroup:
@@ -572,6 +575,26 @@ class BanjoTooieWorld(World):
                     location = self.multiworld.get_location(name, self.player)
                     location.place_locked_item(item)
 
+    @classmethod
+    def stage_write_spoiler(cls, world, spoiler_handle):
+        entrance_hags = {
+            regionName.MT: regionName.IOHWH,
+            regionName.GM: regionName.IOHPL,
+            regionName.WW: regionName.IOHPG,
+            regionName.JR: regionName.IOHCT + " (Jolly Rogers Lagoon Entrance)",
+            regionName.TL: regionName.IOHWL + " (Terrydactyland Entrance)",
+            regionName.GIO: regionName.IOHQM + " (Grunty's Industries Entrance)",
+            regionName.HP: regionName.IOHCT_HFP_ENTRANCE,
+            regionName.CC: regionName.IOHWL + " (Cloud Cuckooland Entrance)",
+            regionName.CK: regionName.IOHQM + " (Caudron Keep Entrance)"
+        }
+        bt_players = world.get_game_players(cls.game)
+        spoiler_handle.write('\n\nBanjo-Tooie Loading Zones:')
+        for player in bt_players:
+            name = world.get_player_name(player)
+            spoiler_handle.write(f"\n\n({name})")
+            for starting_zone, actual_world in world.worlds[player].loading_zones.items():
+                    spoiler_handle.write(f"\n{entrance_hags[starting_zone]} -> {actual_world}")
 
         spoiler_handle.write('\n\nBanjo-Tooie Silo:\n\n')
         for player in bt_players:
@@ -631,6 +654,9 @@ class BanjoTooieWorld(World):
 
         btoptions['starting_egg'] = int(self.starting_egg)
         btoptions['starting_attack'] = int(self.starting_attack)
+        btoptions['first_silo'] = self.single_silo
+        btoptions['loading_zones'] = self.loading_zones
+        btoptions['silo_option'] = int(self.options.open_silos.value)
         btoptions['version'] = self.version
 
         return btoptions

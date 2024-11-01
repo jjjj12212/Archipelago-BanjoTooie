@@ -21,6 +21,8 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
             world.worlds_randomized = bool(passthrough['worlds'] == 'true') 
             world.starting_egg = passthrough['starting_egg']
             world.starting_attack = passthrough['starting_attack']
+            world.single_silo = passthrough['first_silo']
+            world.loading_zones = passthrough['loading_zones']
     else:
         randomize_level_order(world)
         set_level_costs(world)
