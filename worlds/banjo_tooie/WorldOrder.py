@@ -67,7 +67,7 @@ def generate_world_order(world: BanjoTooieWorld, worlds: List[str]) -> List[str]
             good_order = False
 
         # Not enough collectibles in the overworld to get to Quag
-        if world.options.randomize_bk_moves.value != 2 and world.options.open_silos.value == 0 and worlds[0] in [regionName.GI, regionName.CK]:
+        if world.options.randomize_bk_moves.value != 2 and world.options.open_silos.value == 0 and worlds[0] in [regionName.GIO, regionName.CK]:
             good_order = False
 
         # The 2nd world needs to be not too hard to access from the first world.
