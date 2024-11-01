@@ -48,7 +48,7 @@ class BanjoTooieWorld(World):
     
     game: str = "Banjo-Tooie"
     web = BanjoTooieWeb()
-    topology_preset = True
+    topology_present = True
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
     item_name_to_id = {}
 
