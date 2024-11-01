@@ -134,6 +134,9 @@ def choose_unlocked_silos(world: BanjoTooieWorld) -> None:
     if not world.options.randomize_bk_moves.value == 2 and world.options.open_silos.value == 0:
         world.single_silo = "NONE"
 
+    elif world.options.randomize_bk_moves.value == 2 and world.options.open_silos.value == 0 and world.options.randomize_worlds.value == 0:
+        world.single_silo = "NONE"
+        
     elif world.options.open_silos.value == 2:
         world.single_silo = "ALL"
 
