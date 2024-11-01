@@ -703,7 +703,7 @@ def connect_regions(self):
                          })
     
     region_QM = multiworld.get_region(regionName.IOHQM, player)
-    region_QM.add_exits({regionName.GIE, regionName.IOHWL, regionName.CK},
+    region_QM.add_exits({regionName.GIE, regionName.IOHWL, regionName.CKE},
                         {regionName.GIE: lambda state: rules.gi_jiggy(state),
                          regionName.IOHWL: lambda state: rules.QM_to_WL(state),
                          regionName.CKE: lambda state: rules.quag_to_CK(state)})

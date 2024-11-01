@@ -164,7 +164,7 @@ def choose_unlocked_silos(world: BanjoTooieWorld) -> None:
         world.single_silo = random.choice([regionName.IOHPL, regionName.IOHPG, regionName.IOHCT, regionName.IOHQM])
 
     else:
-        raise ValueError("What are your settings? g0goTBC did not think of such a combination when randomizing the loading zones!")
+        raise ValueError("These settings were not considered when randomizing loading zones. Please give us your settings so that we fix it.")
 
 def handle_early_moves(world: BanjoTooieWorld) -> None:
     first_level = list(world.randomize_worlds.keys())[0]
