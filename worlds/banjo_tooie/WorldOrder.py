@@ -60,7 +60,7 @@ def generate_world_order(world: BanjoTooieWorld, worlds: List[str]) -> List[str]
     good_order = False
     while not good_order:
         good_order = True
-        random.shuffle(worlds)
+        world.random.shuffle(worlds)
 
         # Fewer than 4 collectibles to get progressive Claw Clambers.
         if world.options.progressive_shoes.value and worlds[0] == regionName.CK:
@@ -124,9 +124,9 @@ def randomize_entrance_loading_zones(world: BanjoTooieWorld) -> None:
         world.loading_zones = {level: level for level in randomizable_levels}
     else:
         randomized_levels = randomizable_levels[::]
-        random.shuffle(randomized_levels)
+        world.random.shuffle(randomized_levels)
         while randomized_levels[0] in [regionName.CK, regionName.GIO]:
-            random.shuffle(randomized_levels)
+            world.random.shuffle(randomized_levels)
         world.loading_zones = {randomizable_levels[i]: randomized_levels[i] for i in range(len(randomizable_levels))}
 
 
@@ -148,7 +148,7 @@ def choose_unlocked_silos(world: BanjoTooieWorld) -> None:
             world.single_silo = regionName.IOHQM if world.options.randomize_world_loading_zone else regionName.IOHCT
         else:
             overworld_lookup = {
-                regionName.MT: random.choice([regionName.IOHPL, regionName.IOHPG, regionName.IOHCT, regionName.IOHQM]), # You can already get there, so you get a bonus silo! (Nobody likes Mayahell anyway.)
+                regionName.MT: world.random.choice([regionName.IOHPL, regionName.IOHPG, regionName.IOHCT, regionName.IOHQM]), # You can already get there, so you get a bonus silo! (Nobody likes Mayahell anyway.)
                 regionName.GM: regionName.IOHPL,
                 regionName.WW: regionName.IOHPG,
                 regionName.JR: regionName.IOHCT,
@@ -161,10 +161,10 @@ def choose_unlocked_silos(world: BanjoTooieWorld) -> None:
 
     elif not (world.options.randomize_worlds.value == 1 and world.options.randomize_bk_moves.value == 2) and world.options.open_silos.value == 1:
         # No requirement for a specific silo, and the player wants one, so we pick one at random.
-        world.single_silo = random.choice([regionName.IOHPL, regionName.IOHPG, regionName.IOHCT, regionName.IOHQM])
+        world.single_silo = world.random.choice([regionName.IOHPL, regionName.IOHPG, regionName.IOHCT, regionName.IOHQM])
 
     else:
-        raise ValueError("What are your settings? g0goTBC did not think of such a combination when randomizing the loading zones!")
+        raise ValueError("These settings were not considered when randomizing loading zones. Please give us your settings so that we fix it.")
 
 def handle_early_moves(world: BanjoTooieWorld) -> None:
     first_level = list(world.randomize_worlds.keys())[0]
@@ -189,7 +189,7 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
 
         if actual_first_level == regionName.JR and world.options.randomize_doubloons.value == False:
             move_lst = [itemName.TJUMP, itemName.FFLIP, itemName.TTROT]
-            move = random.choice(move_lst)
+            move = world.random.choice(move_lst)
             world.multiworld.early_items[world.player][move] = 1
 
         # TDL Easy
@@ -203,12 +203,12 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
 
         if actual_first_level == regionName.HP:
             move_lst = [itemName.TJUMP, itemName.FFLIP, itemName.TTROT]
-            move = random.choice(move_lst)
+            move = world.random.choice(move_lst)
             world.multiworld.early_items[world.player][move] = 1
 
         if actual_first_level == regionName.CC:
             move_lst = [itemName.SPLITUP, itemName.FPAD]
-            move = random.choice(move_lst)
+            move = world.random.choice(move_lst)
             world.multiworld.early_items[world.player][move] = 1
 
 def early_fire_eggs(world: BanjoTooieWorld) -> None:

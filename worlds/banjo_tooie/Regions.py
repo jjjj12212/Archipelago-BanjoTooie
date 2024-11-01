@@ -672,9 +672,8 @@ def connect_regions(self):
          regionName.IOHPL: lambda state: rules.PG_to_PL(state)})
   
     region_JR = multiworld.get_region(regionName.JR, player)
-    region_JR.add_exits({regionName.JRU, regionName.IOHCT},
-                        {regionName.JRU: lambda state: rules.can_dive_in_JRL(state), 
-                         regionName.IOHCT: lambda state: rules.JRL_to_CT(state)})
+    region_JR.add_exits({regionName.JRU},
+                        {regionName.JRU: lambda state: rules.can_dive_in_JRL(state)})
     
     region_JRU = multiworld.get_region(regionName.JRU, player)
     region_JRU.add_exits({regionName.JRU2},
@@ -704,7 +703,7 @@ def connect_regions(self):
                          })
     
     region_QM = multiworld.get_region(regionName.IOHQM, player)
-    region_QM.add_exits({regionName.GIE, regionName.IOHWL, regionName.CK},
+    region_QM.add_exits({regionName.GIE, regionName.IOHWL, regionName.CKE},
                         {regionName.GIE: lambda state: rules.gi_jiggy(state),
                          regionName.IOHWL: lambda state: rules.QM_to_WL(state),
                          regionName.CKE: lambda state: rules.quag_to_CK(state)})

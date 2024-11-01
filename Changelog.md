@@ -1,3 +1,8 @@
+# 3.3.1-beta
+ - Logic fixes:
+   - JRL to Cliff Top: removed transition if randomized.
+   - Quagmire to Cauldron Keep: Now goes by the entrance first.
+
 # 3.3-beta
 - Open Silo Option
  - Choice between:
