@@ -340,7 +340,7 @@ class BanjoTooieWorld(World):
             raise ValueError("You cannot have progressive bash attack without randomizing Stop N Swap and randomizing BK moves")
         if self.options.egg_behaviour.value == 1:
             eggs = list([itemName.BEGGS, itemName.FEGGS, itemName.GEGGS, itemName.IEGGS, itemName.CEGGS])
-            random.shuffle(eggs)
+            self.random.shuffle(eggs)
             starting_egg = self.create_item(eggs[0])
             self.multiworld.push_precollected(starting_egg)
             banjoItem = all_item_table.get(eggs[0])
@@ -365,7 +365,7 @@ class BanjoTooieWorld(World):
                     base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
                     base_attacks.append(itemName.PBASH if self.options.progressive_bash_attack.value == 1 else itemName.GRAT)
                     base_attacks.append(itemName.PBBUST if self.options.progressive_beak_buster.value == True else itemName.BBUST)
-                chosen_attack = random.choice(base_attacks)
+                chosen_attack = self.random.choice(base_attacks)
 
             starting_attack = self.create_item(chosen_attack)
             self.multiworld.push_precollected(starting_attack)
@@ -604,7 +604,7 @@ class BanjoTooieWorld(World):
     def fill_slot_data(self) -> Dict[str, Any]:
         btoptions = {}
         btoptions["player_name"] = self.multiworld.player_name[self.player]
-        btoptions["seed"] = random.randint(12212, 69996)
+        btoptions["seed"] = self.random.randint(12212, 69996)
         btoptions["deathlink"] = "true" if self.options.death_link.value == 1 else "false"
         btoptions["activate_text"] = "true" if self.options.activate_overlay_text.value == 1 else "false"
         btoptions['text_colour'] = int(self.options.overlay_text_colour.value)
