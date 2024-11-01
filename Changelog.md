@@ -5,8 +5,8 @@
    - Open 1 Random Silo. Note that if randomizing BK moves and Worlds, this will go to your first world.
    - Open All Silos.
 - Randomize World Entrance loading zones
- - This also includes Caudron Keep's entrance
- - Grunty's Industries and Caudron Keep cannot appear your first loading zone. 
+ - This also includes Cauldron Keep's entrance
+ - Grunty's Industries and Cauldron Keep cannot appear your first loading zone. 
 - Deathlink now works under water and in toxic caves, and kills much faster.
 - Implement Inventory Items from Item Pool
 - Readme update
