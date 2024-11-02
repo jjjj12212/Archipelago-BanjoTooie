@@ -80,6 +80,18 @@ Banjo-Tooie:
   # Changes which levels are open; Recommended when doing multiworld seeds.
   randomize_worlds: 'false'
 
+  # World Entrances will warp you to a different world. This only affects main entrances.
+  randomize_world_loading_zone:
+    'false': 50
+    'true': 0
+
+  # Choose if you want IoH Silos to be closed, randomly open 1 or enable all. If you enabled Randomized Worlds with BK Moves randomized and
+  #    silos set to none, it will be enforced to one.
+  open_silos:
+    none: 50
+    one: 0
+    all: 0
+
   logic_type: 0                # 0: Beginner, 1: Normal, 2: Advanced, 3: glitched
   jingaling_jiggy: 'true'      # True: Always get Jiggy from Jingaling; recommended when playing Multiworld.
   skip_jingaling: 'true'       # Get Jingaling's reward early and head straight to Bottle's home.
