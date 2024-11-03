@@ -8692,8 +8692,6 @@ function initializeFlags()
             BTRAMOBJ:clearFlag(0x18, 5) -- Beak Barge
             BTRAMOBJ:clearFlag(0x1A, 3) -- Stilt Stride
             BTRAMOBJ:clearFlag(0x18, 6) -- Beak Bomb
-
-            init_world_silos()
         end
         if ENABLE_AP_CHEATO_REWARDS == true then
             init_CHEATO_REWARDS()
@@ -8701,6 +8699,7 @@ function initializeFlags()
         if ENABLE_AP_HONEYB_REWARDS == true then
             init_HONEYB_REWARDS()
         end
+        init_world_silos()
         init_JIGGY_CHUNK()
         BTCONSUMEOBJ:changeConsumable("Eggs")
         BTCONSUMEOBJ:setConsumable(0)

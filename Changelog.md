@@ -1,5 +1,6 @@
 # 3.3.2-beta
  - Fix Skivvy Jiggy
+ - Fix Open Silos if BK Moves is not randomized.
 
 # 3.3.1-beta
  - Logic fixes:
