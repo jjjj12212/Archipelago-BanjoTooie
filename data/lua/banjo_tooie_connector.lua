@@ -7152,6 +7152,19 @@ function getChuffyMaps()
     end
 end
 
+function ChuffyTDLFix()
+    if NEXT_MAP == 0x114 and AGI_CHUFFY["1230796"] == true
+    then
+        BTRAMOBJ:clearFlag(0x98, 5)
+        BTRAMOBJ:clearFlag(0x98, 6)
+        BTRAMOBJ:clearFlag(0x98, 7)
+        BTRAMOBJ:setFlag(0x99, 0)
+        BTRAMOBJ:clearFlag(0x99, 1)
+        BTRAMOBJ:clearFlag(0x99, 2)
+        BTRAMOBJ:clearFlag(0x99, 3)
+    end
+end
+
 
 ---------------------------------- JamJars MOVES -----------------------------------
 
@@ -7898,6 +7911,7 @@ function watchMapTransition()
                 check_egg_mystery()
                 obtain_breegull_bash()
                 set_checked_STATIONS()
+                ChuffyTDLFix()
                 if GOAL_TYPE == 4
                 then
                     hag1_open()
