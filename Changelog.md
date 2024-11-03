@@ -1,3 +1,6 @@
+# 3.3.2-beta
+ - Fix Skivvy Jiggy
+
 # 3.3.1-beta
  - Logic fixes:
    - JRL to Cliff Top: removed transition if randomized.

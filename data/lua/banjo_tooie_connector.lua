@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V3.3.1"
+local BT_VERSION = "V3.3.2"
 local PLAYER = ""
 local SEED = 0
 
@@ -1587,7 +1587,7 @@ local ASSET_MAP_CHECK = {
     --GRUNTY'S INDUSTRIES
     [0x100] =	{ --GI
         ["JIGGIES"] = {
-            "1230646", -- Skivvy
+            "1230649", -- Skivvy
         },
         ["JINJOS"] = {
             "1230580" -- Outside
@@ -1635,7 +1635,7 @@ local ASSET_MAP_CHECK = {
     },
     [0x101] =	{ --GI - Floor 1
         ["JIGGIES"] = {
-            "1230646", -- Skivvy
+            "1230649", -- Skivvy
             "1230652", -- Floor 1 Guarded
         },
         ["NOTES"] = {
@@ -1649,7 +1649,7 @@ local ASSET_MAP_CHECK = {
     },
     [0x106] =	{ --GI - Floor 2
         ["JIGGIES"] = {
-            "1230646", -- Skivvy
+            "1230649", -- Skivvy
         },
         ["JINJOS"] = {
             "1230577" -- leg spring
@@ -1674,7 +1674,7 @@ local ASSET_MAP_CHECK = {
     },
     [0x108] =	{ --GI - Floor 3
         ["JIGGIES"] = {
-            "1230646", -- Skivvy
+            "1230649", -- Skivvy
         },
         ["HONEYCOMB"] = {
             "1230718" -- Floor 3
@@ -1707,7 +1707,7 @@ local ASSET_MAP_CHECK = {
     },
     [0x10E] =	{ --GI - Floor 5
         ["JIGGIES"] = {
-            "1230646", -- Skivvy
+            "1230649", -- Skivvy
             "1230650", -- Floor 5
         },
         ["JINJOS"] = {
@@ -1736,7 +1736,7 @@ local ASSET_MAP_CHECK = {
     },
     [0x103] =	{ --GI - Workers' Quarters
         ["JIGGIES"] = {
-            "1230646", -- Skivvy
+            "1230649", -- Skivvy
         },
         ["PAGES"] = {
             "1230743" -- Loggo
