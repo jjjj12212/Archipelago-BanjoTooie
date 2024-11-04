@@ -7912,6 +7912,7 @@ function watchMapTransition()
                 obtain_breegull_bash()
                 set_checked_STATIONS()
                 ChuffyTDLFix()
+                ccl_cutscene_skip()
                 if GOAL_TYPE == 4
                 then
                     hag1_open()
@@ -8796,6 +8797,12 @@ function hag1_phase_skips()
     local pointer_addr = BTRAMOBJ:dereferencePointer(tmp_flg_pointer)
     mainmemory.writebyte(pointer_addr + beginning_phase_offset, 255); -- Skips part 1
     mainmemory.writebyte(pointer_addr + ending_phase_offset, 31); -- Skips Part 2
+end
+
+function ccl_cutscene_skip()
+    local tmp_flg_pointer = 0x12C774
+    local pointer_addr = BTRAMOBJ:dereferencePointer(tmp_flg_pointer)
+    mainmemory.write_u8(pointer_addr + 0x11, 0)
 end
 
 ---------------------- ARCHIPELAGO FUNCTIONS -------------
