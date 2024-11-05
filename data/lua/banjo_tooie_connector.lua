@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V3.3.1"
+local BT_VERSION = "V3.3.2"
 local PLAYER = ""
 local SEED = 0
 
@@ -322,6 +322,7 @@ BTRAM = {
     current_state = 0x4,
     map_dest = 0x045702,
     character_state = 0x136F63,
+    tmp_flg_ptr = 0x12C774
 }
 
 function BTRAM:new(t)
@@ -1587,7 +1588,7 @@ local ASSET_MAP_CHECK = {
     --GRUNTY'S INDUSTRIES
     [0x100] =	{ --GI
         ["JIGGIES"] = {
-            "1230646", -- Skivvy
+            "1230649", -- Skivvy
         },
         ["JINJOS"] = {
             "1230580" -- Outside
@@ -1635,7 +1636,7 @@ local ASSET_MAP_CHECK = {
     },
     [0x101] =	{ --GI - Floor 1
         ["JIGGIES"] = {
-            "1230646", -- Skivvy
+            "1230649", -- Skivvy
             "1230652", -- Floor 1 Guarded
         },
         ["NOTES"] = {
@@ -1649,7 +1650,7 @@ local ASSET_MAP_CHECK = {
     },
     [0x106] =	{ --GI - Floor 2
         ["JIGGIES"] = {
-            "1230646", -- Skivvy
+            "1230649", -- Skivvy
         },
         ["JINJOS"] = {
             "1230577" -- leg spring
@@ -1674,7 +1675,7 @@ local ASSET_MAP_CHECK = {
     },
     [0x108] =	{ --GI - Floor 3
         ["JIGGIES"] = {
-            "1230646", -- Skivvy
+            "1230649", -- Skivvy
         },
         ["HONEYCOMB"] = {
             "1230718" -- Floor 3
@@ -1707,7 +1708,7 @@ local ASSET_MAP_CHECK = {
     },
     [0x10E] =	{ --GI - Floor 5
         ["JIGGIES"] = {
-            "1230646", -- Skivvy
+            "1230649", -- Skivvy
             "1230650", -- Floor 5
         },
         ["JINJOS"] = {
@@ -1736,7 +1737,7 @@ local ASSET_MAP_CHECK = {
     },
     [0x103] =	{ --GI - Workers' Quarters
         ["JIGGIES"] = {
-            "1230646", -- Skivvy
+            "1230649", -- Skivvy
         },
         ["PAGES"] = {
             "1230743" -- Loggo
@@ -6892,25 +6893,24 @@ function set_checked_STATIONS() --Only run transitioning maps
                 print(BMM_STATIONS[stationId])
             end
         else
-            if CURRENT_MAP == 0x155 or CURRENT_MAP == 0xD7 or CURRENT_MAP == 0x12A or CURRENT_MAP == 0xEC
-            or CURRENT_MAP == 0x114 or CURRENT_MAP == 0x102 or CURRENT_MAP == 0x129 or CURRENT_MAP == 0xD0
-            or CURRENT_MAP == 0x127 or CURRENT_MAP == 0x128 or CURRENT_MAP == 0x100 or CURRENT_MAP == 0x112
-            or NEXT_MAP == 0x155 or NEXT_MAP == 0xD7 or NEXT_MAP == 0x12A or NEXT_MAP == 0xEC
-            or NEXT_MAP == 0x114 or NEXT_MAP == 0x102 or NEXT_MAP == 0x129 or NEXT_MAP == 0xD0
+            if CURRENT_MAP == 0x155 or CURRENT_MAP == 0xD7 or CURRENT_MAP == 0x12A or CURRENT_MAP == 0xEC or CURRENT_MAP == 0x102
+            or CURRENT_MAP == 0x129 or CURRENT_MAP == 0xD0 or CURRENT_MAP == 0x127 or CURRENT_MAP == 0x128 or CURRENT_MAP == 0x100
+            or NEXT_MAP == 0x155 or NEXT_MAP == 0xD7 or NEXT_MAP == 0x12A or NEXT_MAP == 0xEC or NEXT_MAP == 0x102 or NEXT_MAP == 0x129 or NEXT_MAP == 0xD0
             or NEXT_MAP == 0x100 or NEXT_MAP == 0x112
-            then
+            then           
                 for locationId, get_addr in pairs(ADDRESS_MAP['STATIONS'])
                 do
-                    BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+                        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
                 end
                 if DEBUG_STATION == true
                 then
                     print("Clearing ALL Stations")
                 end
-            end
-            if DEBUG_STATION == true
-            then
-                print("Canceling Clearing of Stations")
+            else
+                if DEBUG_STATION == true
+                then
+                    print("Canceling Clearing of Stations")
+                end
             end
         end
     end
@@ -7149,6 +7149,17 @@ function getChuffyMaps()
         set_checked_CHUFFY()
     else
         set_AP_CHUFFY()
+    end
+end
+
+function ChuffyTDLFix()
+    if (NEXT_MAP == 0x114 or CURRENT_MAP == 0x114) and AGI_STATIONS["1230791"] == true
+    then
+        BTRAMOBJ:setFlag(ADDRESS_MAP['STATIONS']["1230791"]['addr'], ADDRESS_MAP['STATIONS']["1230791"]['bit'])
+        if DEBUG_STATION == true
+        then
+            print("TDL Station Set")
+        end
     end
 end
 
@@ -7898,6 +7909,8 @@ function watchMapTransition()
                 check_egg_mystery()
                 obtain_breegull_bash()
                 set_checked_STATIONS()
+                ChuffyTDLFix()
+                ccl_cutscene_skip()
                 if GOAL_TYPE == 4
                 then
                     hag1_open()
@@ -8692,8 +8705,6 @@ function initializeFlags()
             BTRAMOBJ:clearFlag(0x18, 5) -- Beak Barge
             BTRAMOBJ:clearFlag(0x1A, 3) -- Stilt Stride
             BTRAMOBJ:clearFlag(0x18, 6) -- Beak Bomb
-
-            init_world_silos()
         end
         if ENABLE_AP_CHEATO_REWARDS == true then
             init_CHEATO_REWARDS()
@@ -8701,6 +8712,7 @@ function initializeFlags()
         if ENABLE_AP_HONEYB_REWARDS == true then
             init_HONEYB_REWARDS()
         end
+        init_world_silos()
         init_JIGGY_CHUNK()
         BTCONSUMEOBJ:changeConsumable("Eggs")
         BTCONSUMEOBJ:setConsumable(0)
@@ -8784,6 +8796,16 @@ function hag1_phase_skips()
     mainmemory.writebyte(pointer_addr + beginning_phase_offset, 255); -- Skips part 1
     mainmemory.writebyte(pointer_addr + ending_phase_offset, 31); -- Skips Part 2
 end
+
+function ccl_cutscene_skip()
+    local tmp_flg_pointer = 0x12C774
+    local pointer_addr = BTRAMOBJ:dereferencePointer(tmp_flg_pointer)
+    play_cutscene = mainmemory.read_u8(pointer_addr + 0x11)
+    if play_cutscene == 0x04
+    then
+        mainmemory.write_u8(pointer_addr + 0x11, 0)
+    end
+end 
 
 ---------------------- ARCHIPELAGO FUNCTIONS -------------
 

@@ -1,3 +1,9 @@
+# 3.3.2-beta
+ - Fix Skivvy Jiggy
+ - Fix Open Silos if BK Moves is not randomized.
+ - Fix Canary Mary Cutscene (also made CCL Transitioning Faster)
+ - Fix TDL Train Station softlock
+
 # 3.3.1-beta
  - Logic fixes:
    - JRL to Cliff Top: removed transition if randomized.
