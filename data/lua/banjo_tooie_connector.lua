@@ -322,6 +322,7 @@ BTRAM = {
     current_state = 0x4,
     map_dest = 0x045702,
     character_state = 0x136F63,
+    tmp_flg_ptr = 0x12C774
 }
 
 function BTRAM:new(t)
@@ -6892,25 +6893,24 @@ function set_checked_STATIONS() --Only run transitioning maps
                 print(BMM_STATIONS[stationId])
             end
         else
-            if CURRENT_MAP == 0x155 or CURRENT_MAP == 0xD7 or CURRENT_MAP == 0x12A or CURRENT_MAP == 0xEC
-            or CURRENT_MAP == 0x114 or CURRENT_MAP == 0x102 or CURRENT_MAP == 0x129 or CURRENT_MAP == 0xD0
-            or CURRENT_MAP == 0x127 or CURRENT_MAP == 0x128 or CURRENT_MAP == 0x100 or CURRENT_MAP == 0x112
-            or NEXT_MAP == 0x155 or NEXT_MAP == 0xD7 or NEXT_MAP == 0x12A or NEXT_MAP == 0xEC
-            or NEXT_MAP == 0x114 or NEXT_MAP == 0x102 or NEXT_MAP == 0x129 or NEXT_MAP == 0xD0
+            if CURRENT_MAP == 0x155 or CURRENT_MAP == 0xD7 or CURRENT_MAP == 0x12A or CURRENT_MAP == 0xEC or CURRENT_MAP == 0x102
+            or CURRENT_MAP == 0x129 or CURRENT_MAP == 0xD0 or CURRENT_MAP == 0x127 or CURRENT_MAP == 0x128 or CURRENT_MAP == 0x100
+            or NEXT_MAP == 0x155 or NEXT_MAP == 0xD7 or NEXT_MAP == 0x12A or NEXT_MAP == 0xEC or NEXT_MAP == 0x102 or NEXT_MAP == 0x129 or NEXT_MAP == 0xD0
             or NEXT_MAP == 0x100 or NEXT_MAP == 0x112
-            then
+            then           
                 for locationId, get_addr in pairs(ADDRESS_MAP['STATIONS'])
                 do
-                    BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
+                        BTRAMOBJ:clearFlag(get_addr['addr'], get_addr['bit']);
                 end
                 if DEBUG_STATION == true
                 then
                     print("Clearing ALL Stations")
                 end
-            end
-            if DEBUG_STATION == true
-            then
-                print("Canceling Clearing of Stations")
+            else
+                if DEBUG_STATION == true
+                then
+                    print("Canceling Clearing of Stations")
+                end
             end
         end
     end
@@ -7153,15 +7153,13 @@ function getChuffyMaps()
 end
 
 function ChuffyTDLFix()
-    if NEXT_MAP == 0x114 and AGI_CHUFFY["1230796"] == true
+    if (NEXT_MAP == 0x114 or CURRENT_MAP == 0x114) and AGI_STATIONS["1230791"] == true
     then
-        BTRAMOBJ:clearFlag(0x98, 5)
-        BTRAMOBJ:clearFlag(0x98, 6)
-        BTRAMOBJ:clearFlag(0x98, 7)
-        BTRAMOBJ:setFlag(0x99, 0)
-        BTRAMOBJ:clearFlag(0x99, 1)
-        BTRAMOBJ:clearFlag(0x99, 2)
-        BTRAMOBJ:clearFlag(0x99, 3)
+        BTRAMOBJ:setFlag(ADDRESS_MAP['STATIONS']["1230791"]['addr'], ADDRESS_MAP['STATIONS']["1230791"]['bit'])
+        if DEBUG_STATION == true
+        then
+            print("TDL Station Set")
+        end
     end
 end
 
@@ -8802,8 +8800,12 @@ end
 function ccl_cutscene_skip()
     local tmp_flg_pointer = 0x12C774
     local pointer_addr = BTRAMOBJ:dereferencePointer(tmp_flg_pointer)
-    mainmemory.write_u8(pointer_addr + 0x11, 0)
-end
+    play_cutscene = mainmemory.read_u8(pointer_addr + 0x11)
+    if play_cutscene == 0x04
+    then
+        mainmemory.write_u8(pointer_addr + 0x11, 0)
+    end
+end 
 
 ---------------------- ARCHIPELAGO FUNCTIONS -------------
 
