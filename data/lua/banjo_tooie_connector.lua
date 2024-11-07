@@ -103,7 +103,10 @@ local NEXT_MAP = nil;
 local AP_LOADING_ZONES = {};
 local ZONE_SET = false;
 
-
+-------------- TRANSFORM VARS -----
+local SET_BANJO = false;
+local MUMBO = false;
+local SET_MUMBO = false;
 -------------- JIGGY VARS -----------
 local JIGGY_COUNT = 0; -- Used for UI and skip puzzles
 local BMM_BACKUP_JIGGY = false;
@@ -443,9 +446,16 @@ function BTRAM:getBanjoTState()
 end
 
 function BTRAM:setBanjoTState(Tstate)
-    print("writing banjos new state: " .. Tstate)
-    mainmemory.write_u8(self.character_state, Tstate)
-    return mainmemory.write_u8(self.character_change, Tstate);
+    return mainmemory.writebyte(self.character_state, Tstate);
+end
+
+function BTRAM:getTransformation()
+    return mainmemory.read_u8(self.character_change);
+end
+
+function BTRAM:setTransformation(Tstate)
+    print("Transforming Banjo: " .. Tstate)
+    mainmemory.write_u8(self.character_change, Tstate)
 end
 
 function BTRAM:getBanjoMovementState()
@@ -2114,13 +2124,14 @@ local TRANSFORM_SWAP_MAP = {
     },
     --MAYAHEM TEMPLE
     [0xB8] = { --MT
+        ["mumbo"] = "1230855"
     },
     [0xC4] = { --MT - Jade Snake Grove
     },
     [0xBB] = { --MT - Mayan Kickball Stadium (Lobby)
     },
-    [0xB7] = { --MT - Mumbo's Skull
-    },
+    -- [0xB7] = { --MT - Mumbo's Skull
+    -- },
     [0xB9] = { --MT - Prison Compound
     },
     [0x17A] =	{ --MT - Targitzan's Really Sacred Chamber
@@ -7505,28 +7516,30 @@ end
 
 function transform_swap(mapaddr) --Only run when transitioning Maps
     local check_controls = joypad.get()
-    currentState = BTRAM:getBanjoTState()
+    currentState = BTRAM:getTransformation()
     
     print(currentState)
-
+    if TRANSFORM_SWAP_MAP[mapaddr] == nil or BTRAMOBJ == nil
+    then
+        print("becoming Banjo")
+        SET_BANJO = true
+        return false
+    end
     if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == false
     then
-        if TRANSFORM_SWAP_MAP[mapaddr] == nil or BTRAMOBJ == nil
-        then
-            return false
-        end
         if currentState == 1 -- Banjo
         then
             for apid, itemId in pairs(receive_map)
             do
                 if itemId == TRANSFORM_SWAP_MAP[mapaddr]["mumbo"]
                 then
-                    BTRAM:setBanjoTState(13) -- Mumbo
+                    SET_MUMBO = true
+                    -- BTRAM:setTransformation(13) -- Mumbo
                 end
             end
         elseif currentState == 2 or currentState == 6 or currentState == 8 or currentState == 13 or currentState == 15 or currentState == 16
         then
-            BTRAM:setBanjoTState(1) -- Banjo
+            BTRAM:setTransformation(1) -- Banjo
         end
     elseif check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 L'] == false
     then
@@ -7544,32 +7557,32 @@ function transform_swap(mapaddr) --Only run when transitioning Maps
                 then
                     if itemId == 1230174 -- MT Humba Item
                     then
-                        BTRAM:setBanjoTState(8) --Stony
+                        BTRAM:setTransformation(8) --Stony
                     elseif itemId == 1230175 -- GGM Humba Item
                     then
-                        BTRAM:setBanjoTState(15) -- Detonator
+                        BTRAM:setTransformation(15) -- Detonator
                     elseif itemId == 1230176 -- WW Humba Item
                     then
-                        BTRAM:setBanjoTState(16) -- Van
+                        BTRAM:setTransformation(16) -- Van
                     elseif itemId == 1230177 -- JRL Humba Item
                     then
-                        BTRAM:setBanjoTState(12) -- Submarine
+                        BTRAM:setTransformation(12) -- Submarine
                     elseif itemId == 1230179 -- GI Humba Item
                     then
-                        BTRAM:setBanjoTState(7) -- Washing Machine
+                        BTRAM:setTransformation(7) -- Washing Machine
                     elseif itemId == 1230180 -- HFP Humba Item
                     then
-                        BTRAM:setBanjoTState(2) -- Snowball
+                        BTRAM:setTransformation(2) -- Snowball
                     elseif itemId == 1230181 -- CCL Humba Item
                     then
-                        BTRAM:setBanjoTState(6) -- Bee
+                        BTRAM:setTransformation(6) -- Bee
                     end
                 end
             end
         elseif currentState == 2 or currentState == 6 or currentState == 8 or currentState == 13 or currentState == 15 or currentState == 16
         then
             print("in detransform check")
-            BTRAM:setBanjoTState(1) -- Banjo
+            BTRAM:setTransformation(1) -- Banjo
         end
     end
     currentState = BTRAM:getBanjoTState()
@@ -9988,7 +10001,8 @@ function main()
                 then
                     mainmemory.write_u8(0x07913F, 1)
                 end
-            elseif (FRAME % 5 == 1)
+            end
+            if (FRAME % 5 == 1)
             then
                 watchMapTransition()
                 if SKIP_PUZZLES == false
@@ -10016,6 +10030,17 @@ function main()
             then
                 TRANSITION_SET = true
                 NEXT_MAP = BTRAMOBJ:getMap(true)
+            end
+            if MAP_TRANSITION == true and SET_MUMBO == true and MUMBO == false then
+                BTRAMOBJ:setTransformation(13)
+            elseif MAP_TRANSITION == true and SET_BANJO == true then
+                MUMBO = false
+                BTRAMOBJ:setTransformation(1)
+            elseif MAP_TRANSITION == false and SET_MUMBO == true then
+                SET_MUMBO = false
+                MUMBO = true
+            elseif MAP_TRANSITION == false and SET_BANJO == true then
+                SET_BANJO = false
             end
         elseif (CUR_STATE == STATE_UNINITIALIZED) then
             if  (FRAME % 60 == 1) then
