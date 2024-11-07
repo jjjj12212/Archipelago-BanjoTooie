@@ -317,6 +317,7 @@ class BanjoTooieWorld(World):
     def create_regions(self) -> None:
         create_regions(self)
         connect_regions(self)
+        self.pre_fill_me()
 
     def generate_early(self) -> None:
         if self.options.cheato_as_filler.value == True and self.options.cheato_rewards == True:
@@ -377,7 +378,7 @@ class BanjoTooieWorld(World):
         rules = Rules.BanjoTooieRules(self)
         return rules.set_rules()
     
-    def pre_fill(self) -> None:
+    def pre_fill_me(self) -> None:
         if self.options.randomize_honeycombs.value == False:
             self.banjo_pre_fills(itemName.HONEY, "Honeycomb", False)
                     
