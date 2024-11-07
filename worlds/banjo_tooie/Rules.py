@@ -1786,11 +1786,11 @@ class BanjoTooieRules:
                     and (self.wing_whack(state) or self.blue_eggs(state) or self.fire_eggs(state) or self.ice_eggs(state))
         elif self.world.options.logic_type == 2: # advanced
             logic = self.split_up(state)\
-                    and (self.flight_pad(state) or self.glide(state) or (self.tall_jump(state) and self.wing_whack(state)))\
+                    and (self.flight_pad(state) or self.glide(state) or ((self.tall_jump(state) or self.leg_spring(state)) and self.wing_whack(state)))\
                     and (self.wing_whack(state) or self.blue_eggs(state) or self.fire_eggs(state) or self.ice_eggs(state))
         elif self.world.options.logic_type == 3: # glitched
             logic = self.split_up(state)\
-                    and (self.flight_pad(state) or self.glide(state) or (self.tall_jump(state) and self.wing_whack(state)))\
+                    and (self.flight_pad(state) or self.glide(state) or ((self.tall_jump(state) or self.leg_spring(state)) and self.wing_whack(state)))\
                     and (self.wing_whack(state) or self.blue_eggs(state) or self.fire_eggs(state) or self.ice_eggs(state))
         return logic
     
@@ -3049,7 +3049,7 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.wonderwing(state) and self.flap_flip(state) and self.long_jump(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = True
+            logic = self.wonderwing(state) and self.flap_flip(state) and self.long_jump(state)
         elif self.world.options.logic_type == 2: # advanced
             logic = True
         elif self.world.options.logic_type == 3: # glitched
@@ -3118,12 +3118,12 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = self.shack_pack(state) and self.climb(state) and (self.tall_jump(state) or self.pack_whack(state))\
                     or self.split_up(state)\
-                        and (self.flight_pad(state) or self.glide(state) or (self.wing_whack(state) and self.tall_jump(state)))\
+                        and (self.flight_pad(state) or self.glide(state) or ((self.tall_jump(state) or self.leg_spring(state)) and self.wing_whack(state)))\
                         and (self.leg_spring(state) or (self.glide(state) and self.tall_jump(state) or self.clockwork_shot(state)))
         elif self.world.options.logic_type == 3: # glitched
             logic = self.shack_pack(state) and self.climb(state) and (self.tall_jump(state) or self.pack_whack(state))\
                     or self.split_up(state)\
-                        and (self.flight_pad(state) or self.glide(state) or (self.wing_whack(state) and self.tall_jump(state)))\
+                        and (self.flight_pad(state) or self.glide(state) or ((self.tall_jump(state) or self.leg_spring(state)) and self.wing_whack(state)))\
                         and (self.leg_spring(state) or (self.glide(state) and self.tall_jump(state) or self.clockwork_shot(state)))
         return logic
 
@@ -3822,7 +3822,6 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.flight_pad(state)\
                     or self.climb(state) and (self.long_jump(state) or self.grip_grab(state) or self.pack_whack(state) or self.sack_pack(state))\
-                    or self.leg_spring(state) and (self.glide(state) or self.wing_whack(state))\
                     or state.has(itemName.HUMBACC, self.player)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.flight_pad(state)\
