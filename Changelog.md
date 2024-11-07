@@ -1,4 +1,5 @@
 # 3.3.3-beta
+ - If you choose to have 1 silo open, your first silo will now always lead to the first level (unless Mayahem Temple is your first level. In which case, The silo is randomly selected).
  - Logic Fixes:
    - Prison Compound Cheato Page: For beginner logic, you need tall jump to jump from the water to the platforms.
    - Prison Compound Jiggy: For beginner logic, you need tall jump to jump from the water to the platforms.
