@@ -6,6 +6,7 @@
    - MT Pillars Jiggy: For beginner logic, you need tall jump to jump from the water to the platforms, if going through the top of Prison Compound.
    - GGM Entrance Glowbo: for advanced and glitched logic, can be gotten with a clockwork.
    - Back-left Fuel Depot Note: for advanced and glitched logic, can be gotten with a clockwork.
+   - TDL to Wasteland: fixed the broken transition.
    - Hot Waterfall Jinjo: removed the damage boost from normal logic.
    - Sack Race Note: removed Leg Spring + (Wing Whack or glide) from normal logic.
    - Trash Can Jiggy and Jinjo: Added Leg Spring + Wing Whack as an option to reach the Trash Can, in advanced and glitched logic.
