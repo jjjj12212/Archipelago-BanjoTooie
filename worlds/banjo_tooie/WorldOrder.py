@@ -199,7 +199,7 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
             world.multiworld.early_items[world.player][itemName.TRAINSWGI] = 1
             world.multiworld.early_items[world.player][itemName.CLIMB] = 1
             world.multiworld.early_items[world.player][itemName.TRAINSWIH] = 1
-            world.multiworld.early_items[world.player][random.choice([itemName.FFLIP, itemName.TTROT, itemName.TJUMP])] = 1
+            world.multiworld.early_items[world.player][world.random.choice([itemName.FFLIP, itemName.TTROT, itemName.TJUMP])] = 1
 
         if actual_first_level == regionName.HP:
             move_lst = [itemName.TJUMP, itemName.FFLIP, itemName.TTROT]
@@ -214,7 +214,7 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
 def early_fire_eggs(world: BanjoTooieWorld) -> None:
     world.multiworld.early_items[world.player][itemName.PBEGGS if world.options.egg_behaviour.value == 2 else itemName.FEGGS] = 1
     if world.options.randomize_bk_moves != 0:
-        world.multiworld.early_items[world.player][random.choice([itemName.EGGAIM, itemName.EGGSHOOT])] = 1
+        world.multiworld.early_items[world.player][world.random.choice([itemName.EGGAIM, itemName.EGGSHOOT])] = 1
 
 def early_torpedo(world: BanjoTooieWorld) -> None:
     if world.options.randomize_bk_moves != 0:

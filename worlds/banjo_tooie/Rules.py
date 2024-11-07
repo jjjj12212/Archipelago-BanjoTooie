@@ -413,7 +413,7 @@ class BanjoTooieRules:
         self.glowbo_rules = {
             locationName.GLOWBOMT2: lambda state: self.can_access_JSG(state),
 
-            locationName.GLOWBOGM1: lambda state: self.GGM_slope(state),
+            locationName.GLOWBOGM1: lambda state: self.glowbo_entrance_ggm(state),
 
             locationName.GLOWBOWW1: lambda state: self.glowbo_inferno(state),
             locationName.GLOWBOWW2: lambda state: self.glowbo_wigwam(state),
@@ -761,7 +761,7 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = self.slightly_elevated_ledge(state)\
-                  and self.stiltStride(state) and self.prison_compound_open(state)
+                  and self.stiltStride(state) and self.prison_compound_open(state) and self.tall_jump(state)
         elif self.world.options.logic_type == 1: # normal
             logic = self.slightly_elevated_ledge(state)\
                   and self.stiltStride(state) and self.prison_compound_open(state)
@@ -776,7 +776,7 @@ class BanjoTooieRules:
     def jiggy_pillars(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.bill_drill(state) and (self.dive(state) or self.slightly_elevated_ledge(state))\
+            logic = self.bill_drill(state) and (self.dive(state) or self.slightly_elevated_ledge(state) and self.tall_jump(state))\
                     and self.small_elevation(state) and self.prison_compound_open(state)
         elif self.world.options.logic_type == 1: # normal
             logic = self.bill_drill(state) and self.small_elevation(state) and self.prison_compound_open(state)\
@@ -2165,7 +2165,7 @@ class BanjoTooieRules:
     def cheato_prison(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.prison_compound_open(state) and self.slightly_elevated_ledge(state)
+            logic = self.prison_compound_open(state) and self.slightly_elevated_ledge(state) and self.tall_jump(state)
         elif self.world.options.logic_type == 1: # normal
             logic = self.prison_compound_open(state) and self.slightly_elevated_ledge(state)
         elif self.world.options.logic_type == 2: # advanced
@@ -2494,6 +2494,18 @@ class BanjoTooieRules:
             logic = self.check_mumbo_magic(state, itemName.MUMBOMT)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.glitchedJSGAccess(state)
+        return logic
+    
+    def glowbo_entrance_ggm(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.GGM_slope(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.GGM_slope(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.GGM_slope(state) or self.clockwork_shot(state)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.GGM_slope(state) or self.clockwork_shot(state)
         return logic
 
     def glowbo_inferno(self, state: CollectionState) -> bool:
@@ -3542,9 +3554,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.small_elevation(state) or self.ggm_trot(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.small_elevation(state) or self.ggm_trot(state)
+            logic = self.small_elevation(state) or self.ggm_trot(state) or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.small_elevation(state) or self.ggm_trot(state)
+            logic = self.small_elevation(state) or self.ggm_trot(state) or self.clockwork_shot(state)
         return logic
 
     
@@ -4821,6 +4833,7 @@ class BanjoTooieRules:
                 self.shack_pack(state)) and \
                 self.breegull_blaster(state) and \
                 self.clockwork_eggs(state)\
+                and self.can_shoot_linear_egg(state)\
                 and (self.talon_trot(state) and self.tall_jump(state))
         elif self.world.options.logic_type == 1: # normal
             return enough_jiggies and \
@@ -4828,6 +4841,7 @@ class BanjoTooieRules:
                 self.shack_pack(state)) and \
                 self.breegull_blaster(state) and \
                 self.clockwork_eggs(state)\
+                and self.can_shoot_linear_egg(state)\
                 and (self.talon_trot(state) or self.tall_jump(state))
         elif self.world.options.logic_type == 2: # advanced
             return enough_jiggies and \

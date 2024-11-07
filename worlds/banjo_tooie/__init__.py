@@ -604,7 +604,7 @@ class BanjoTooieWorld(World):
     def fill_slot_data(self) -> Dict[str, Any]:
         btoptions = {}
         btoptions["player_name"] = self.multiworld.player_name[self.player]
-        btoptions["seed"] = self.random.randint(12212, 69996)
+        btoptions["seed"] = self.random.randint(12212, 9090763)
         btoptions["deathlink"] = "true" if self.options.death_link.value == 1 else "false"
         btoptions["activate_text"] = "true" if self.options.activate_overlay_text.value == 1 else "false"
         btoptions['text_colour'] = int(self.options.overlay_text_colour.value)

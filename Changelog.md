@@ -1,3 +1,12 @@
+# 3.3.3-beta
+ - Logic Fixes:
+   - Prison Compound Cheato Page: For beginner logic, you need tall jump to jump from the water to the platforms.
+   - Prison Compound Jiggy: For beginner logic, you need tall jump to jump from the water to the platforms.
+   - MT Pillars Jiggy: For beginner logic, you need tall jump to jump from the water to the platforms, if going through the top of Prison Compound.
+   - GGM Entrance Glowbo: for advanced and glitched logic, can be gotten with a clockwork.
+   - Back-left Fuel Depot Note: for advanced and glitched logic, can be gotten with a clockwork.
+   - Defeating Hag 1: beginner and normal logic get a 2nd type of egg to help with damaging.
+
 # 3.3.2-beta
  - Fix Skivvy Jiggy
  - Fix Open Silos if BK Moves is not randomized.
