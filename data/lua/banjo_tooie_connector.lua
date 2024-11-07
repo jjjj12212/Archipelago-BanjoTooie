@@ -322,6 +322,7 @@ BTRAM = {
     current_state = 0x4,
     map_dest = 0x045702,
     character_state = 0x136F63,
+    character_change = 0x12704C,
     tmp_flg_ptr = 0x12C774
 }
 
@@ -439,6 +440,12 @@ end
 
 function BTRAM:getBanjoTState()
     return mainmemory.readbyte(self.character_state);
+end
+
+function BTRAM:setBanjoTState(Tstate)
+    print("writing banjos new state: " .. Tstate)
+    mainmemory.write_u8(self.character_state, Tstate)
+    return mainmemory.write_u8(self.character_change, Tstate);
 end
 
 function BTRAM:getBanjoMovementState()
@@ -2076,6 +2083,232 @@ local HONEYB_REWARDS = {} -- Honey B Check Locations
 local JIGGY_CHUNKS = {} -- Jiggy Chunky Check Locations
 local DINO_KIDS = {} -- the 3 Dino Kids
 
+
+local TRANSFORM_SWAP_MAP = {
+    [0xAF]  = { --SM - Spiral Mountain
+    },
+    [0xAE]  =	{ --SM - Behind the waterfall
+    },
+    [0xAD]  =	{ --SM - Grunty's Lair
+    },
+    --JINJO VILLAGE
+    [0x142] = { -- JV
+    },
+    [0x143] = { --JV - Bottles' House
+        --Amaze-O-Gaze should be here
+    },
+    --ISLE O' HAGS
+    [0x155] = { --IoH - Cliff Top
+    },
+    [0x150] = { --IoH - Heggy's Egg Shed
+    },
+    [0x154] = { --IoH - Pine Grove
+    },
+    [0x152] = { --IoH - Plateau
+    },
+    -- ["0x153"] =	{"Isle O' Hags", "Plateau"},            --IoH - Plateau - Honey B's Hive
+    
+    [0x15A] = { --IoH - Wasteland
+    },
+    [0x14F] = { --IoH - Wooded Hollow
+    },
+    --MAYAHEM TEMPLE
+    [0xB8] = { --MT
+    },
+    [0xC4] = { --MT - Jade Snake Grove
+    },
+    [0xBB] = { --MT - Mayan Kickball Stadium (Lobby)
+    },
+    [0xB7] = { --MT - Mumbo's Skull
+    },
+    [0xB9] = { --MT - Prison Compound
+    },
+    [0x17A] =	{ --MT - Targitzan's Really Sacred Chamber
+    },
+    [0x177] =	{ --MT - Targitzan's Slightly Sacred Chamber
+    },
+    [0xC5] = { --MT - Treasure Chamber
+    },
+    [0x178] = { --MT - Inside Tatgitzan's Temple
+    },
+    --GLITTER GULCH MINE
+    
+    [0xC7] ={ --GGM
+    },
+    [0xCC] ={ --GGM - Flooded Caves
+    },
+    [0xCA] ={ --GGM - Fuel Depot
+    },
+    [0xD3] = { --GGM - Generator Cavern
+    },
+    [0xD2] = { --GGM - Gloomy Caverns
+    },
+    [0xD1] = { --GGM - Inside Chuffy's Boiler
+    },
+    [0x163] =	{ --GGM - Ordnance Storage Entrance
+    },
+    [0xCF] = { --GGM - Power Hut Basement
+    },
+    [0xD8] = { --GGM - Prospector's Hut
+    },
+    [0xDA] = { --GGM - Toxic Gas Cave
+    },
+    [0xD7] = { --GGM - Train Station
+    },
+    [0xCD] = { --GGM - Water Storage
+    },
+    [0xCE] = { --GGM - Waterfall Cavern
+    },
+    [0xD0] = {}, -- GGM - Chuffy Cabin
+    --WITCHYWORLD
+    [0xD6] = { --WW
+    },
+    [0xEA] = { --WW - Cave of Horrors
+    },
+    [0xE1] = { --WW - Crazy Castle Stockade
+    },
+    [0xDD] = { --WW - Dodgem Dome Lobby
+    },
+    [0xEB] = { --WW - Haunted Cavern
+    },
+    [0xF9] = { --WW - Mr. Patch
+    },
+    [0xE6] = { --WW - Star Spinner
+    },
+    [0xE7] = { --WW - The Inferno
+    },
+    [0x176] = { -- WW - Mumbo Skull
+    },
+    [0xD5] = { --WW - Wumba's Wigwam
+    },
+    [0xEC] = { -- WW - Train Station
+    },
+    --JOLLY ROGER'S LAGOON
+    [0x1A7] = { --JRL
+    },
+    [0xF4] = { --JRL - Ancient Swimming Baths
+    },
+    [0x1A8] =	{ --JRL - Atlantis
+    },
+    [0xFF] = { --JRL - Blubber's Wave Race Hire
+    },
+    [0xF6] = {  --JRL - Electric Eel's lair
+    },
+    [0xF8] = { --JRL - Inside the Big Fish
+    },
+    [0xED] =	{ --JRL - Jolly's
+    },
+    [0xFC] =	{ --JRL - Lord Woo Fak Fak
+    },      
+    [0xEE] =	{ --JRL - Pawno's Emporium
+    },
+    [0x1A9] =	{ --JRL - Sea Bottom
+    },
+    [0x181] =	{ --JRL - Sea Botom Cavern
+    },
+    [0xF7] = { --JRL - Seaweed Sanctum
+    },
+    [0x1A6] =	{ --JRL - Smuggler's cavern
+    },
+    [0xFA] = { --JRL - Temple of the Fishes
+    },
+    [0xEF] = { --JRL - Mumbo's Skull
+    },
+    --TERRYDACTYLAND
+    [0x112] =	{ --TDL
+    },
+    [0x123] = { --TDL - Inside Chompa's Belly
+    },
+    [0x116] = { --TDL - Inside the Mountain
+    },
+    [0x115] = { --TDL - Oogle Boogles' Cave
+    },
+    [0x117] = { --TDL - River Passage
+    },
+    [0x119] = { -- Unga Bunga Cave
+    },
+    [0x11A] = { --TDL - Stomping Plains
+    },
+    [0x118] =	{ --TDL - Styracosaurus Family Cave
+    },
+    [0x113] =	{ --TDL - Terry's Nest
+    },
+    [0x114] =	{ --TDL - Train Station
+    },
+    --GRUNTY'S INDUSTRIES
+    [0x100] =	{ --GI
+    },
+    [0x10F] = { --GI - Basement
+    },
+    [0x110] =	{ --GI - Basement (Repair Depot)
+    },
+    [0x111] =	{ --GI - Basement (Waste Disposal)
+    },
+    [0x101] =	{ --GI - Floor 1
+    },
+    [0x106] =	{ --GI - Floor 2
+    },
+    [0x108] =	{ --GI - Floor 3
+    },
+    [0x109] =	{ --GI - Floor 3 (Boiler Plant)
+    },
+    [0x10A] =	{ --GI - Floor 3 (Packing Room)
+    },
+    [0x10B] =	{ --GI - Floor 4
+    },
+    [0x10D] =	{ --GI - Floor 4 (Quality Control)
+    },
+    [0x10E] =	{ --GI - Floor 5
+    },
+    [0x187] =	{ --GI - Sewer Entrance
+    },
+    [0x102] =	{ --GI - Train Station
+    },
+    [0x104] =	{ --GI - Trash Compactor
+    },
+    [0x103] =	{ --GI - Workers' Quarters
+    },
+    --HAILFIRE PEAKS
+    [0x131] =	{ --HFP - Boggy's Igloo
+    },
+    [0x12B] =	{ --HFP - Chilli Billi
+    },
+    [0x12C] =	{ --HFP - Chilly Willy
+    },
+    [0x132] =	{ --HFP - Icicle Grotto
+    },
+    [0x128] =	{ --HFP - Icy Side
+    },
+    [0x133] =	{ --HFP - Inside the Volcano
+    },
+    [0x12D] =	{ --HFP - Kickball Stadium lobby
+    },
+    [0x127] =	{ --HFP - Lava Side
+    },
+    [0x129] =	{ --HFP - Lava Train Station
+    },
+    [0x12A] = { -- HFP - Icy Side Station
+    },
+    --CLOUD CUCKOOLAND
+    [0x136] =	{ --CCL
+    },
+    [0x13A] =	{ --CCL - Central Cavern
+    },
+    [0x138] =	{ --CCL - Inside the Cheese Wedge
+    },
+    [0x13D] =	{ --CCL - Inside the Pot o' Gold
+    },
+    [0x137] =	{ --CCL - Inside the Trash Can
+    },
+    [0x13F] =	{ --CCL - Mingy Jongo's Skull
+    },
+    [0x13E] =	{ --CCL - Mumbo's Skull
+    },
+    [0x140] =	{ --CCL - Wumba's Wigwam
+    },
+    [0x139] =	{ --CCL - Zubbas' Nest
+    }
+}
 
 -- Address Map for Banjo-Tooie
 local ADDRESS_MAP = {
@@ -7270,6 +7503,81 @@ function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND 
     return true
 end
 
+function transform_swap(mapaddr) --Only run when transitioning Maps
+    local check_controls = joypad.get()
+    currentState = BTRAM:getBanjoTState()
+    
+    print(currentState)
+
+    if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == false
+    then
+        if TRANSFORM_SWAP_MAP[mapaddr] == nil or BTRAMOBJ == nil
+        then
+            return false
+        end
+        if currentState == 1 -- Banjo
+        then
+            for apid, itemId in pairs(receive_map)
+            do
+                if itemId == TRANSFORM_SWAP_MAP[mapaddr]["mumbo"]
+                then
+                    BTRAM:setBanjoTState(13) -- Mumbo
+                end
+            end
+        elseif currentState == 2 or currentState == 6 or currentState == 8 or currentState == 13 or currentState == 15 or currentState == 16
+        then
+            BTRAM:setBanjoTState(1) -- Banjo
+        end
+    elseif check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 L'] == false
+    then
+        print("in R check")
+        if TRANSFORM_SWAP_MAP[mapaddr] == nil or BTRAMOBJ == nil
+        then
+            return false
+        end
+        if currentState == 1 -- Banjo
+        then
+            print("in banjo transform check")
+            for apid, itemId in pairs(receive_map)
+            do
+                if itemId == TRANSFORM_SWAP_MAP[mapaddr]["humba"]
+                then
+                    if itemId == 1230174 -- MT Humba Item
+                    then
+                        BTRAM:setBanjoTState(8) --Stony
+                    elseif itemId == 1230175 -- GGM Humba Item
+                    then
+                        BTRAM:setBanjoTState(15) -- Detonator
+                    elseif itemId == 1230176 -- WW Humba Item
+                    then
+                        BTRAM:setBanjoTState(16) -- Van
+                    elseif itemId == 1230177 -- JRL Humba Item
+                    then
+                        BTRAM:setBanjoTState(12) -- Submarine
+                    elseif itemId == 1230179 -- GI Humba Item
+                    then
+                        BTRAM:setBanjoTState(7) -- Washing Machine
+                    elseif itemId == 1230180 -- HFP Humba Item
+                    then
+                        BTRAM:setBanjoTState(2) -- Snowball
+                    elseif itemId == 1230181 -- CCL Humba Item
+                    then
+                        BTRAM:setBanjoTState(6) -- Bee
+                    end
+                end
+            end
+        elseif currentState == 2 or currentState == 6 or currentState == 8 or currentState == 13 or currentState == 15 or currentState == 16
+        then
+            print("in detransform check")
+            BTRAM:setBanjoTState(1) -- Banjo
+        end
+    end
+    currentState = BTRAM:getBanjoTState()
+    print(currentState)
+end
+
+
+
 function check_jamjar_silo()
     if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
@@ -7911,6 +8219,7 @@ function watchMapTransition()
                 set_checked_STATIONS()
                 ChuffyTDLFix()
                 ccl_cutscene_skip()
+                transform_swap(NEXT_MAP)
                 if GOAL_TYPE == 4
                 then
                     hag1_open()
@@ -8926,19 +9235,19 @@ function processAGIItem(item_list)
                         if ADDRESS_MAP["MOVES"][location]['name'] == ('Fire Eggs')
                         then
                             BTCONSUMEOBJ:changeConsumable("FIRE EGGS")
-                            BTCONSUMEOBJ:setConsumable(50)
+                            BTCONSUMEOBJ:setConsumable(100)
                         elseif ADDRESS_MAP["MOVES"][location]['name'] == ('Grenade Eggs')
                         then
                             BTCONSUMEOBJ:changeConsumable("GRENADE EGGS")
-                            BTCONSUMEOBJ:setConsumable(25)
+                            BTCONSUMEOBJ:setConsumable(50)
                         elseif ADDRESS_MAP["MOVES"][location]['name'] == ('Ice Eggs')
                         then
                             BTCONSUMEOBJ:changeConsumable("ICE EGGS")
-                            BTCONSUMEOBJ:setConsumable(50)
+                            BTCONSUMEOBJ:setConsumable(100)
                         elseif ADDRESS_MAP["MOVES"][location]['name'] == ('Clockwork Kazooie Eggs')
                         then
                             BTCONSUMEOBJ:changeConsumable("CWK EGGS")
-                            BTCONSUMEOBJ:setConsumable(10)
+                            BTCONSUMEOBJ:setConsumable(20)
                         end
                     end
                 end
