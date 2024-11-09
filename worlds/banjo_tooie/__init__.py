@@ -74,7 +74,7 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
 
     def __init__(self, world, player):
-        self.version = "V3.3.2"
+        self.version = "V3.3.3"
         self.kingjingalingjiggy = False
         self.starting_egg: int = 0
         self.starting_attack: int = 0
@@ -317,6 +317,7 @@ class BanjoTooieWorld(World):
     def create_regions(self) -> None:
         create_regions(self)
         connect_regions(self)
+        self.pre_fill_me()
 
     def generate_early(self) -> None:
         if self.options.cheato_as_filler.value == True and self.options.cheato_rewards == True:
@@ -377,7 +378,7 @@ class BanjoTooieWorld(World):
         rules = Rules.BanjoTooieRules(self)
         return rules.set_rules()
     
-    def pre_fill(self) -> None:
+    def pre_fill_me(self) -> None:
         if self.options.randomize_honeycombs.value == False:
             self.banjo_pre_fills(itemName.HONEY, "Honeycomb", False)
                     
@@ -589,22 +590,21 @@ class BanjoTooieWorld(World):
             regionName.CK: regionName.IOHQM + " (Caudron Keep Entrance)"
         }
         bt_players = world.get_game_players(cls.game)
-        spoiler_handle.write('\n\nBanjo-Tooie Loading Zones:')
+        # spoiler_handle.write('\n\nBanjo-Tooie')
         for player in bt_players:
             name = world.get_player_name(player)
-            spoiler_handle.write(f"\n\n({name})")
+            spoiler_handle.write(f"\n\nBanjo-Tooie ({name}):")
+            spoiler_handle.write('\n\tVersion: ' + world.worlds[player].version)
+            spoiler_handle.write('\n\tLoading Zones:')
             for starting_zone, actual_world in world.worlds[player].loading_zones.items():
-                    spoiler_handle.write(f"\n{entrance_hags[starting_zone]} -> {actual_world}")
-
-        spoiler_handle.write('\n\nBanjo-Tooie Silo:\n\n')
-        for player in bt_players:
-            name = world.get_player_name(player)
-            spoiler_handle.write("{}: {}\n".format(name, world.worlds[player].single_silo))
+                    spoiler_handle.write(f"\n\t\t{entrance_hags[starting_zone]} -> {actual_world}")
+            spoiler_handle.write('\n\tBanjo-Tooie Silo:\n')
+            spoiler_handle.write("\t\t"+world.worlds[player].single_silo)
 
     def fill_slot_data(self) -> Dict[str, Any]:
         btoptions = {}
         btoptions["player_name"] = self.multiworld.player_name[self.player]
-        btoptions["seed"] = self.random.randint(12212, 69996)
+        btoptions["seed"] = self.random.randint(12212, 9090763)
         btoptions["deathlink"] = "true" if self.options.death_link.value == 1 else "false"
         btoptions["activate_text"] = "true" if self.options.activate_overlay_text.value == 1 else "false"
         btoptions['text_colour'] = int(self.options.overlay_text_colour.value)

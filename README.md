@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | 3.3.2-Beta
+# Archipelago Banjo-Tooie (US-Only) | 3.3.3-Beta
 Banjo Tooie for Archipelago 
 
 # Current Implementation
@@ -9,7 +9,7 @@ Banjo Tooie for Archipelago
 - Cheato Pages
 - Jinjos
 - Glowbos
-- Moves from Jamjars
+- Moves from Jamjars, Roysten & Amaze-O-Gaze
 - Doubloons
 - Treble Clef
 - Train Switches
@@ -45,6 +45,7 @@ Banjo Tooie for Archipelago
  - Dpad right + L: Super Banjo
  - Dpad down + L: Health Regen
  - Dpad left + L: Aim Assist 
+ - L + Start: Smooth Banjo (increases in-game fps)
 
 ## Quality of life
 - Skip Jiggywiggy puzzles to open levels
@@ -52,10 +53,12 @@ Banjo Tooie for Archipelago
 - Skippable Tower of Tragedy
 - Prison code door is always open
 - Skip rounds of the longer minigames
+- Skip Klungo 1 & 2
 
 ## Others
 - Death Link
 - Random level Order (requires some items randomized and puzzle skips)
+- Random level Entrances
 - Change how Eggs works (YAML Option)
 
 # How to install
