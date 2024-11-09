@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from Options import Toggle, DeathLink, PerGameCommonOptions, Choice, DefaultOnToggle, Range, StartInventoryPool
 
 class EnableMultiWorldMoveList(DefaultOnToggle):
-    """Jamjars' Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves."""
+    """Jamjars & Roysten Movelist are locked between the MultiWorld. Other players need to unlock Banjo's Moves."""
     display_name = "Jamjars' Movelist"
 
 class EnableMultiWorldBKMoveList(Choice):
@@ -136,10 +136,10 @@ class SkipToT(Choice):
 class LogicType(Choice):
     """Choose your logic difficulty and difficulty of tricks you are expected to perform to reach certain areas."""
     display_name = "Logic Type"
-    option_beginner = 0
-    option_normal = 1
-    option_advanced = 2
-    option_glitched = 3
+    option_intended = 0
+    option_easy_tricks = 1
+    option_hard_tricks = 2
+    option_glitches = 3
     default = 0
 
 class Silos(Choice):
