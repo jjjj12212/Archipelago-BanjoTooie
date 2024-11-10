@@ -74,7 +74,7 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
 
     def __init__(self, world, player):
-        self.version = "V3.3.2"
+        self.version = "V3.3.3"
         self.kingjingalingjiggy = False
         self.starting_egg: int = 0
         self.starting_attack: int = 0
@@ -590,17 +590,16 @@ class BanjoTooieWorld(World):
             regionName.CK: regionName.IOHQM + " (Caudron Keep Entrance)"
         }
         bt_players = world.get_game_players(cls.game)
-        spoiler_handle.write('\n\nBanjo-Tooie Loading Zones:')
+        # spoiler_handle.write('\n\nBanjo-Tooie')
         for player in bt_players:
             name = world.get_player_name(player)
-            spoiler_handle.write(f"\n\n({name})")
+            spoiler_handle.write(f"\n\nBanjo-Tooie ({name}):")
+            spoiler_handle.write('\n\tVersion: ' + world.worlds[player].version)
+            spoiler_handle.write('\n\tLoading Zones:')
             for starting_zone, actual_world in world.worlds[player].loading_zones.items():
-                    spoiler_handle.write(f"\n{entrance_hags[starting_zone]} -> {actual_world}")
-
-        spoiler_handle.write('\n\nBanjo-Tooie Silo:\n\n')
-        for player in bt_players:
-            name = world.get_player_name(player)
-            spoiler_handle.write("{}: {}\n".format(name, world.worlds[player].single_silo))
+                    spoiler_handle.write(f"\n\t\t{entrance_hags[starting_zone]} -> {actual_world}")
+            spoiler_handle.write('\n\tBanjo-Tooie Silo:\n')
+            spoiler_handle.write("\t\t"+world.worlds[player].single_silo)
 
     def fill_slot_data(self) -> Dict[str, Any]:
         btoptions = {}

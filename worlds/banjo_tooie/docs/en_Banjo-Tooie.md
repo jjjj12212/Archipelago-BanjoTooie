@@ -15,7 +15,7 @@ Use the Dpad to display unlocked elements that the Pause Menu doesn't display (M
 
 - Jiggies
 - Treble Clefs
-- Jamjar Moves + Amaze-O-Gaze
+- Jamjar Moves + Amaze-O-Gaze + Roysten
 - Empty Honeycombs
 - Cheato Pages
 - Glowbos

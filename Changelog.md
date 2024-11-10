@@ -14,6 +14,7 @@
    - Sack Race Note: removed Leg Spring + (Wing Whack or glide) from normal logic.
    - Trash Can Jiggy and Jinjo: Added Leg Spring + Wing Whack as an option to reach the Trash Can, in advanced and glitched logic.
    - Defeating Hag 1: beginner and normal logic get a 2nd type of egg to help with damaging.
+  - Logic names are now: Intended / Easy Tricks / Hard Tricks / Glitches
 
 # 3.3.2-beta
  - Fix Skivvy Jiggy
