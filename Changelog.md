@@ -1,3 +1,6 @@
+# 3.3.4-beta
+ - Hints show the entrance to a level if loading zones are randomized.
+
 # 3.3.3-beta
  - If you choose to have 1 silo open, your first silo will now always lead to the first level (unless Mayahem Temple is your first level. In which case, The silo is randomly selected).
  - Logic Fixes:

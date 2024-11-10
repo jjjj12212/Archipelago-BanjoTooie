@@ -5,7 +5,7 @@ import typing
 from jinja2 import Environment, FileSystemLoader
 from typing import Dict, Any
 from .Items import BanjoTooieItem, all_item_table, all_group_table
-from .Locations import BanjoTooieLocation, all_location_table
+from .Locations import BanjoTooieLocation, LocationData, all_location_table, MTLoc_Table, GMLoc_table, WWLoc_table, JRLoc_table, TLLoc_table, GILoc_table, HPLoc_table, CCLoc_table
 from .Regions import create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
@@ -668,4 +668,44 @@ class BanjoTooieWorld(World):
         # returning slot_data so it regens, giving it back in multiworld.re_gen_passthrough
         return slot_data
 
-    
+    def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]):
+        # For hints, we choose to hint the level for which the collectible would count.
+        # For example, Dippy Jiggy would hint to TDL.
+
+        def add_loading_zone_information(hint_information: Dict[int, str], locations: Dict[str, LocationData], entrance: str):
+            for data in locations.values():
+                hint_information.update({data.btid: entrance})
+
+        def get_entrance(level: str):
+            # TODO: make this a global constant somewhere or handle randomized loading zones by entrances directly. This is declared in multiple places.
+            # TODO: decide if we want to keep the " - Main Entrance". It feels redundant when shown in the hint list.
+            entrance_lookup = {
+                regionName.MT: regionName.MTE,
+                regionName.GM: regionName.GGME,
+                regionName.WW: regionName.WWE,
+                regionName.JR: regionName.JRLE,
+                regionName.TL: regionName.TDLE,
+                regionName.GIO: regionName.GIE,
+                regionName.HP: regionName.HFPE,
+                regionName.CC: regionName.CCLE,
+                regionName.CK: regionName.CKE,
+            }
+            level = list(self.loading_zones.keys())[list(self.loading_zones.values()).index(level)]
+            return entrance_lookup[level]
+        
+        # Only randomized entrances get custom hints.
+        if self.options.randomize_world_loading_zone.value == False:
+            return
+
+        hints = {}
+
+        add_loading_zone_information(hints, MTLoc_Table, get_entrance(regionName.MT))
+        add_loading_zone_information(hints, GMLoc_table, get_entrance(regionName.GM))
+        add_loading_zone_information(hints, WWLoc_table, get_entrance(regionName.WW))
+        add_loading_zone_information(hints, JRLoc_table, get_entrance(regionName.JR))
+        add_loading_zone_information(hints, TLLoc_table, get_entrance(regionName.TL))
+        add_loading_zone_information(hints, GILoc_table, get_entrance(regionName.GIO))
+        add_loading_zone_information(hints, HPLoc_table, get_entrance(regionName.HP))
+        add_loading_zone_information(hints, CCLoc_table, get_entrance(regionName.CC))
+        
+        hint_data.update({self.player: hints})
