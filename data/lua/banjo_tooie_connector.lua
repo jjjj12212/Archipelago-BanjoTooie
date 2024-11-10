@@ -1585,7 +1585,7 @@ local ASSET_MAP_CHECK = {
             "1230644", -- Rocknut
         }
     },
-    --GRUNTY'S INDUSTRIES
+    --GRUNTY INDUSTRIES
     [0x100] =	{ --GI
         ["JIGGIES"] = {
             "1230649", -- Skivvy
@@ -4993,7 +4993,7 @@ local MAP_ENTRANCES = {
         ['exitMap'] = 0x15A
     },
     [0x100] = {
-        ['name'] = "Outside Grunty's Industries",
+        ['name'] = "Outside Grunty Industries",
         ['entranceId'] = 9,
         ['exitId'] = 2,
         ['exitMap'] = 0x15C
@@ -9552,7 +9552,7 @@ function process_slot(block)
         for level, jiggy_amt in pairs(block['slot_world_order'])
         do
             local locationId = block['slot_keys'][level]
-            if level == "Outside Grunty's Industries"
+            if level == "Outside Grunty Industries"
             then
                 level = "Grunty Industries"
             elseif  level == "Jolly Roger's Lagoon - Town Center"

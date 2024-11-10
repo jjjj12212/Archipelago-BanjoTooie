@@ -1,5 +1,6 @@
 # 3.3.4-beta
  - Hints show the entrance to a level if loading zones are randomized.
+ - Grunty's Industries -> Grunty Industries
 
 # 3.3.3-beta
  - If you choose to have 1 silo open, your first silo will now always lead to the first level (unless Mayahem Temple is your first level. In which case, The silo is randomly selected).
@@ -35,7 +36,7 @@
    - Open All Silos.
 - Randomize World Entrance loading zones
  - This also includes Cauldron Keep's entrance
- - Grunty's Industries and Cauldron Keep cannot appear your first loading zone. 
+ - Grunty Industries and Cauldron Keep cannot appear your first loading zone. 
 - Deathlink now works under water and in toxic caves, and kills much faster.
 - Implement Inventory Items from Item Pool
 - Readme update

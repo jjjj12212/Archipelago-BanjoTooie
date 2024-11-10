@@ -584,7 +584,7 @@ class BanjoTooieWorld(World):
             regionName.WW: regionName.IOHPG,
             regionName.JR: regionName.IOHCT + " (Jolly Rogers Lagoon Entrance)",
             regionName.TL: regionName.IOHWL + " (Terrydactyland Entrance)",
-            regionName.GIO: regionName.IOHQM + " (Grunty's Industries Entrance)",
+            regionName.GIO: regionName.IOHQM + " (Grunty Industries Entrance)",
             regionName.HP: regionName.IOHCT_HFP_ENTRANCE,
             regionName.CC: regionName.IOHWL + " (Cloud Cuckooland Entrance)",
             regionName.CK: regionName.IOHQM + " (Caudron Keep Entrance)"
@@ -681,11 +681,11 @@ class BanjoTooieWorld(World):
             if level == regionName.JR:
                 return "Jolly Roger's Lagoon"
             elif level == regionName.GIO:
-                return "Grunty's Industries"
+                return "Grunty Industries"
             else:
                 return level
+
         
-        # Only randomized entrances get custom hints.
         if self.options.randomize_world_loading_zone.value == False:
             return
 
