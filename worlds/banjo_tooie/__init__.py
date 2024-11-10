@@ -676,21 +676,14 @@ class BanjoTooieWorld(World):
                 hint_information.update({data.btid: entrance})
 
         def get_entrance(level: str):
-            # TODO: make this a global constant somewhere or handle randomized loading zones by entrances directly. This is declared in multiple places.
-            # TODO: decide if we want to keep the " - Main Entrance". It feels redundant when shown in the hint list.
-            entrance_lookup = {
-                regionName.MT: regionName.MTE,
-                regionName.GM: regionName.GGME,
-                regionName.WW: regionName.WWE,
-                regionName.JR: regionName.JRLE,
-                regionName.TL: regionName.TDLE,
-                regionName.GIO: regionName.GIE,
-                regionName.HP: regionName.HFPE,
-                regionName.CC: regionName.CCLE,
-                regionName.CK: regionName.CKE,
-            }
+            # TODO: Fix level names here too
             level = list(self.loading_zones.keys())[list(self.loading_zones.values()).index(level)]
-            return entrance_lookup[level]
+            if level == regionName.JR:
+                return "Jolly Roger's Lagoon"
+            elif level == regionName.GIO:
+                return "Grunty's Industries"
+            else:
+                return level
         
         # Only randomized entrances get custom hints.
         if self.options.randomize_world_loading_zone.value == False:
