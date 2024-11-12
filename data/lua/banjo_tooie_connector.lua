@@ -2109,6 +2109,30 @@ local JIGGY_CHUNKS = {} -- Jiggy Chunky Check Locations
 local DINO_KIDS = {} -- the 3 Dino Kids
 
 
+local MAGIC_MAP = {
+    ["1230501"] = false,
+    ["1230855"] = false,
+    ["1230856"] = false,
+    ["1230857"] = false,
+    ["1230858"] = false,
+    ["1230859"] = false,
+    ["1230860"] = false,
+    ["1230861"] = false,
+    ["1230862"] = false,
+    ["1230863"] = false,
+
+    ["1230174"] = false,
+    ["1230175"] = false,
+    ["1230176"] = false,
+    ["1230177"] = false,
+    ["1230178"] = false,
+    ["1230179"] = false,
+    ["1230180"] = false,
+    ["1230181"] = false,
+    ["1230182"] = false
+}
+
+
 local TRANSFORM_SWAP_MAP = {
     --ISLE O' HAGS
     [0x155] = { --IoH - Cliff Top
@@ -7689,9 +7713,31 @@ function transform_logic_flags() -- Checks receive map for items need to calcula
     end
 end
 
+function updateMagic()
+    for apid, itemId in pairs(receive_map)
+    do
+        if itemId == MAGIC_MAP
+        then
+            MAGIC_MAP[itemId] = true
+        end
+    end
+end
+
+
 
 function transform_swap(mapaddr, currentState) --Only run when transitioning Maps
     local check_controls = joypad.get()
+    local death_flg = mainmemory.read_u8(0x1354F9)
+    BTMODELOBJ:changeName("Player", false)
+    local check = BTMODELOBJ:checkModel();
+    
+    if death_flg  == 1 and (currentState == 8 or currentState == 15 or currentState == 16 or 
+    currentState == 12 or currentState == 18 or currentState == 7 or currentState == 2 or currentState == 6
+    or currentState == 13) --mumbo or any transformation except big t-rex, respawns in JV if transformation not done properly
+    then
+        setCurrentHealth(10) -- sets transformation health to max plus 1 so when banjo returns to that form he wont be on 0 health
+        return BTRAM:setTransformation(1) -- Banjo
+    end
     
     if TRANSFORM_SWAP_MAP[mapaddr] == nil or BTRAMOBJ == nil
     then
@@ -7703,7 +7749,8 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
     end
     if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == false
     then
-        if currentState == 1 or currentState == 2 or currentState == 6 or currentState == 8 or currentState == 15 or currentState == 16 or currentState == 18 -- Any safe non-mumbo
+        if currentState == 1 or currentState == 8 or currentState == 15 or currentState == 16 or currentState == 12 or 
+        currentState == 18 or currentState == 7 or currentState == 2 or currentState == 6 -- Any safe non-mumbo or banjo
         then
             for apid, itemId in pairs(receive_map)
             do
@@ -7739,11 +7786,13 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
                     then
                         return BTRAM:setTransformation(13) -- Mumbo
                     end
+                else
+                    BTRAM:setTransformation(1) -- Banjo
                 end
             end
         elseif currentState == 13
         then
-            return BTRAM:setTransformation(1) -- Banjo
+            BTRAM:setTransformation(1) -- Banjo
         end
     elseif check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 L'] == false
     then
@@ -7780,11 +7829,14 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
                     then
                         return BTRAM:setTransformation(6) -- Bee
                     end
+                else
+                    BTRAM:setTransformation(1) -- Banjo
                 end
             end
-        elseif currentState == 2 or currentState == 6 or currentState == 8 or currentState == 15 or currentState == 16
+        elseif currentState == 8 or currentState == 15 or currentState == 16 or currentState == 12 or 
+        currentState == 18 or currentState == 7 or currentState == 2 or currentState == 6
         then
-            return BTRAM:setTransformation(1) -- Banjo
+            BTRAM:setTransformation(1) -- Banjo
         end
     end
 end
