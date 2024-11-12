@@ -1,3 +1,22 @@
+# 3.3.4-beta
+ - Hints show the entrance to a level if loading zones are randomized.
+ - Grunty's Industries -> Grunty Industries
+
+# 3.3.3-beta
+ - If you choose to have 1 silo open, your first silo will now always lead to the first level (unless Mayahem Temple is your first level. In which case, The silo is randomly selected).
+ - Logic Fixes:
+   - Prison Compound Cheato Page: For beginner logic, you need tall jump to jump from the water to the platforms.
+   - Prison Compound Jiggy: For beginner logic, you need tall jump to jump from the water to the platforms.
+   - MT Pillars Jiggy: For beginner logic, you need tall jump to jump from the water to the platforms, if going through the top of Prison Compound.
+   - GGM Entrance Glowbo: for advanced and glitched logic, can be gotten with a clockwork.
+   - Back-left Fuel Depot Note: for advanced and glitched logic, can be gotten with a clockwork.
+   - TDL to Wasteland: fixed the broken transition.
+   - Hot Waterfall Jinjo: removed the damage boost from normal logic.
+   - Sack Race Note: removed Leg Spring + (Wing Whack or glide) from normal logic.
+   - Trash Can Jiggy and Jinjo: Added Leg Spring + Wing Whack as an option to reach the Trash Can, in advanced and glitched logic.
+   - Defeating Hag 1: beginner and normal logic get a 2nd type of egg to help with damaging.
+  - Logic names are now: Intended / Easy Tricks / Hard Tricks / Glitches
+
 # 3.3.2-beta
  - Fix Skivvy Jiggy
  - Fix Open Silos if BK Moves is not randomized.
@@ -17,7 +36,7 @@
    - Open All Silos.
 - Randomize World Entrance loading zones
  - This also includes Cauldron Keep's entrance
- - Grunty's Industries and Cauldron Keep cannot appear your first loading zone. 
+ - Grunty Industries and Cauldron Keep cannot appear your first loading zone. 
 - Deathlink now works under water and in toxic caves, and kills much faster.
 - Implement Inventory Items from Item Pool
 - Readme update

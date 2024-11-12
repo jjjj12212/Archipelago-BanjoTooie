@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V3.3.2"
+local BT_VERSION = "V3.3.3"
 local PLAYER = ""
 local SEED = 0
 
@@ -1617,7 +1617,7 @@ local ASSET_MAP_CHECK = {
             "1230644", -- Rocknut
         }
     },
-    --GRUNTY'S INDUSTRIES
+    --GRUNTY INDUSTRIES
     [0x100] =	{ --GI
         ["JIGGIES"] = {
             "1230649", -- Skivvy
@@ -5377,7 +5377,7 @@ local MAP_ENTRANCES = {
         ['exitMap'] = 0x15A
     },
     [0x100] = {
-        ['name'] = "Outside Grunty's Industries",
+        ['name'] = "Outside Grunty Industries",
         ['entranceId'] = 9,
         ['exitId'] = 2,
         ['exitMap'] = 0x15C
@@ -7213,6 +7213,7 @@ function unpause_hide_AGI_key()
 end
 
 function ap_icekey_glowbo_map()
+    local vault_open = BTRAMOBJ:checkFlag(0x77, 2)
     if AGI_MYSTERY["1230799"] == true and BMM_MYSTERY["1230958"] == false and CURRENT_MAP == 0x128 --Icy Side
     then
         if DEBUG_STOPNSWAP == true
@@ -7229,7 +7230,11 @@ function ap_icekey_glowbo_map()
         end
         BTCONSUMEOBJ:changeConsumable("Ice Keys")
         BTCONSUMEOBJ:setConsumable(0)
+    elseif  CURRENT_MAP ~= 0x128 and vault_open == true --Not on Icy Side
+    then
+        BTRAMOBJ:clearFlag(0x77, 2)
     end
+
 end
 
 ---------------------------------- Station ---------------------------------
@@ -10131,7 +10136,7 @@ function process_slot(block)
         for level, jiggy_amt in pairs(block['slot_world_order'])
         do
             local locationId = block['slot_keys'][level]
-            if level == "Outside Grunty's Industries"
+            if level == "Outside Grunty Industries"
             then
                 level = "Grunty Industries"
             elseif  level == "Jolly Roger's Lagoon - Town Center"

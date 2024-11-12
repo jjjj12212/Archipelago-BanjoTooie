@@ -134,14 +134,14 @@ def choose_unlocked_silos(world: BanjoTooieWorld) -> None:
     if not world.options.randomize_bk_moves.value == 2 and world.options.open_silos.value == 0:
         world.single_silo = "NONE"
 
-    elif world.options.randomize_bk_moves.value == 2 and world.options.open_silos.value == 0 and world.options.randomize_worlds.value == 0:
+    elif world.options.randomize_bk_moves.value == 2 and world.options.randomize_worlds.value == 0 and world.options.open_silos.value == 0:
         world.single_silo = "NONE"
         
     elif world.options.open_silos.value == 2:
         world.single_silo = "ALL"
 
-    elif world.options.randomize_bk_moves.value == 2 and world.options.randomize_worlds.value == 1:
-        # One silo is necessary to make decent progress in the overworld, so we pick the one that's the closest to the first world.
+    elif world.options.randomize_bk_moves.value == 2 and world.options.randomize_worlds.value == 1 or world.options.open_silos.value == 1:
+        # One silo chosen or imposed.
 
         if list(world.randomize_order.keys())[0] == regionName.GIO:
             # GI is special. If loading zones are not randomized, the only way to make progress in the level is by riding the train into the level from Cliff Top.
@@ -158,11 +158,6 @@ def choose_unlocked_silos(world: BanjoTooieWorld) -> None:
                 regionName.CK: regionName.IOHQM,
             }
             world.single_silo = overworld_lookup[list(world.randomize_order.keys())[0]]
-
-    elif not (world.options.randomize_worlds.value == 1 and world.options.randomize_bk_moves.value == 2) and world.options.open_silos.value == 1:
-        # No requirement for a specific silo, and the player wants one, so we pick one at random.
-        world.single_silo = world.random.choice([regionName.IOHPL, regionName.IOHPG, regionName.IOHCT, regionName.IOHQM])
-
     else:
         raise ValueError("These settings were not considered when randomizing loading zones. Please give us your settings so that we fix it.")
 
@@ -170,19 +165,20 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
     first_level = list(world.randomize_worlds.keys())[0]
     actual_first_level = world.loading_zones[first_level]
 
-    # A silo to the first world is not guaranteed.
-    if world.options.randomize_bk_moves != 2 and world.single_silo != "ALL":
+    # A silo to the first world is not given.
+    if world.options.randomize_bk_moves != 2 and world.single_silo == "NONE":
         if  first_level != regionName.MT and world.options.logic_type != 2:
             world.multiworld.early_items[world.player][itemName.GGRAB] = 1
-        if  first_level == regionName.WW:
-            early_fire_eggs(world)
-        if  first_level == regionName.JR or first_level == regionName.HP:
-            world.multiworld.early_items[world.player][itemName.SPLITUP] = 1
-        if first_level == regionName.TL or first_level == regionName.CC:
-            early_fire_eggs(world)
-            early_torpedo(world)
-        if first_level == regionName.CK: # CK can't be first if progressive shoes.
-            world.multiworld.early_items[world.player][itemName.CLAWBTS] = 1
+
+            if  first_level == regionName.WW:
+                early_fire_eggs(world)
+            if  first_level == regionName.JR or first_level == regionName.HP:
+                world.multiworld.early_items[world.player][itemName.SPLITUP] = 1
+            if first_level == regionName.TL or first_level == regionName.CC:
+                early_fire_eggs(world)
+                early_torpedo(world)
+            if first_level == regionName.CK: # CK can't be first if progressive shoes.
+                world.multiworld.early_items[world.player][itemName.CLAWBTS] = 1
 
     if world.options.randomize_bk_moves == 2: # Guaranteed silo to first level, but getting enough stuff in levels is still hard sometimes.
         # MT, GGM, WW Easy
@@ -199,7 +195,7 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
             world.multiworld.early_items[world.player][itemName.TRAINSWGI] = 1
             world.multiworld.early_items[world.player][itemName.CLIMB] = 1
             world.multiworld.early_items[world.player][itemName.TRAINSWIH] = 1
-            world.multiworld.early_items[world.player][random.choice([itemName.FFLIP, itemName.TTROT, itemName.TJUMP])] = 1
+            world.multiworld.early_items[world.player][world.random.choice([itemName.FFLIP, itemName.TTROT, itemName.TJUMP])] = 1
 
         if actual_first_level == regionName.HP:
             move_lst = [itemName.TJUMP, itemName.FFLIP, itemName.TTROT]
@@ -214,7 +210,7 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
 def early_fire_eggs(world: BanjoTooieWorld) -> None:
     world.multiworld.early_items[world.player][itemName.PBEGGS if world.options.egg_behaviour.value == 2 else itemName.FEGGS] = 1
     if world.options.randomize_bk_moves != 0:
-        world.multiworld.early_items[world.player][random.choice([itemName.EGGAIM, itemName.EGGSHOOT])] = 1
+        world.multiworld.early_items[world.player][world.random.choice([itemName.EGGAIM, itemName.EGGSHOOT])] = 1
 
 def early_torpedo(world: BanjoTooieWorld) -> None:
     if world.options.randomize_bk_moves != 0:
