@@ -107,6 +107,21 @@ local ZONE_SET = false;
 local SET_BANJO = false;
 local MUMBO = false;
 local SET_MUMBO = false;
+local LOGIC = ""
+local GOLIATH = false
+local VAN = false
+local SPLITUP = false
+local TALONTROT = false
+local TALLJUMP = false
+local TURBOTRAINERS = false
+local SPRINGYSTEPSHOES = false
+local FLAPFLIP = false
+local LEGSPRING = false
+local GRIPGRAB = false
+local CLIMB = false
+local AIRRATATATRAP = false
+local FLUTTER = false
+
 -------------- JIGGY VARS -----------
 local JIGGY_COUNT = 0; -- Used for UI and skip puzzles
 local BMM_BACKUP_JIGGY = false;
@@ -191,6 +206,7 @@ local ROAR = false;
 
 ---------------- IOH SILO VARS -------------
 local OPEN_SILO = "NONE"
+
 
 -------------- ENCOURAGEMENT MESSAGES ------------
 local ENCOURAGEMENT = {
@@ -2099,7 +2115,7 @@ local TRANSFORM_SWAP_MAP = {
     ["mumbo"] = "1230863"
     },
     [0x156] = { --IoH - Cliff Top Skull
-    ["mumbo"] = "1230863",
+    ["skull"] = true,
     },
     --MAYAHEM TEMPLE
     [0xB8] = { --MT
@@ -2114,8 +2130,9 @@ local TRANSFORM_SWAP_MAP = {
     ["mumbo"] = "1230855",
     ["humba"] = "1230174",
     },
-    -- [0xB7] = { --MT - Mumbo's Skull
-    -- },
+    [0xB7] = { --MT - Mumbo's Skull
+    ["skull"] = true,
+    },
     [0xB9] = { --MT - Prison Compound
     ["mumbo"] = "1230855",
     ["humba"] = "1230174",
@@ -2135,6 +2152,9 @@ local TRANSFORM_SWAP_MAP = {
     [0xC7] ={ --GGM
     ["mumbo"] = "1230856",
     ["humba"] = "1230175",
+    },
+    [0xD9] = { --GGM - Mumbo's Skull
+    ["skull"] = true,
     },
     [0xCC] ={ --GGM - Flooded Caves
     },
@@ -2211,7 +2231,7 @@ local TRANSFORM_SWAP_MAP = {
     ["humba"] = "1230176",
     },
     [0x176] = { -- WW - Mumbo Skull
-    ["mumbo"] = "1230857",
+    ["skull"] = true,
     ["humba"] = "1230176",
     },
     [0xD5] = { --WW - Wumba's Wigwam
@@ -2261,11 +2281,14 @@ local TRANSFORM_SWAP_MAP = {
     [0xFA] = { --JRL - Temple of the Fishes
     },
     [0xEF] = { --JRL - Mumbo's Skull
-    ["mumbo"] = "1230858",
+    ["skull"] = true,
     },
     --TERRYDACTYLAND
     [0x112] =	{ --TDL
     ["mumbo"] = "1230859",
+    },
+    [0x171] = { --TDL - Mumbo's Skull
+    ["skull"] = true,
     },
     [0x123] = { --TDL - Inside Chompa's Belly
     },
@@ -2292,6 +2315,9 @@ local TRANSFORM_SWAP_MAP = {
     [0x100] =	{ --GI
     ["mumbo"] = "1230860",
     ["humba"] = "1230179",
+    },
+    [0x172] = { --GI - Mumbo's Skull
+    ["skull"] = true,
     },
     [0x10F] = { --GI - Basement
     ["mumbo"] = "1230860",
@@ -2344,6 +2370,9 @@ local TRANSFORM_SWAP_MAP = {
     ["humba"] = "1230179",
     },
     --HAILFIRE PEAKS
+    [0x134] = { --HFP - Mumbo's Skull
+    ["skull"] = true,
+    },
     [0x131] =	{ --HFP - Boggy's Igloo
     ["mumbo"] = "1230861",
     },
@@ -2393,11 +2422,11 @@ local TRANSFORM_SWAP_MAP = {
     [0x137] =	{ --CCL - Inside the Trash Can
     },
     [0x13F] =	{ --CCL - Mingy Jongo's Skull
-    ["mumbo"] = "1230862",
+    ["skull"] = true,
     ["humba"] = "1230181",
     },
     [0x13E] =	{ --CCL - Mumbo's Skull
-    ["mumbo"] = "1230862",
+    ["skull"] = true,
     ["humba"] = "1230181",
     },
     [0x140] =	{ --CCL - Wumba's Wigwam
@@ -7601,6 +7630,66 @@ function clear_AMM_MOVES_checks(mapaddr) --Only run when transitioning Maps AND 
     return true
 end
 
+function transform_logic_flags() -- Checks receive map for items need to calculate transformation logic
+    for apid, itemId in pairs(receive_map)
+    do
+        if ENABLE_AP_BK_MOVES ~= 2
+        then
+            TALONTROT = true
+            TALLJUMP = true
+        end
+        if ENABLE_AP_BK_MOVES == 0
+        then
+            AIRRATATATRAP = true
+            FLAPFLIP = true
+            CLIMB = true
+            FLUTTER = true
+            TURBOTRAINERS = true
+        end
+        if itemId == "1230855"
+        then
+            GOLIATH = true
+        elseif itemId == "1230176"
+        then
+            VAN = true
+        elseif itemId == "1230761"
+        then
+            SPLITUP = true
+        elseif itemId == "1230815"
+        then
+            TALONTROT = true
+        elseif itemId == "1230816"
+        then
+            TALLJUMP = true
+        elseif itemId == "1230821"
+        then
+            TURBOTRAINERS = true
+        elseif itemId == "1230768"
+        then
+            SPRINGYSTEPSHOES = true
+        elseif itemId == "1230812"
+        then
+            FLAPFLIP = true
+        elseif itemId == "1230772"
+        then
+            LEGSPRING = true
+        elseif itemId == "1230753"
+        then
+            GRIPGRAB = true
+        elseif itemId == "1230817"
+        then
+            CLIMB = true
+        elseif itemId == "1230822"
+        then
+            AIRRATATATRAP = true
+        elseif itemId == "1230818"
+        then
+            FLUTTER = true
+        end
+    end
+end
+
+
 function transform_swap(mapaddr, currentState) --Only run when transitioning Maps
     local check_controls = joypad.get()
     
@@ -7608,60 +7697,94 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
     then
         return false
     end
+    if TRANSFORM_SWAP_MAP[mapaddr]["skull"] ~= nil and currentState == 13 -- panic detransform mumbo going into mumbos hut
+    then
+        return BTRAM:setTransformation(1) -- Banjo
+    end
     if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == false
     then
-        if currentState == 1 -- Banjo
+        if currentState == 1 or currentState == 2 or currentState == 6 or currentState == 8 or currentState == 15 or currentState == 16 or currentState == 18 -- Any safe non-mumbo
         then
             for apid, itemId in pairs(receive_map)
             do
                 if itemId == TRANSFORM_SWAP_MAP[mapaddr]["mumbo"]
                 then
-                    BTRAM:setTransformation(13) -- Mumbo
+                    if itemId == "1230855"  -- MT Mumbo Item
+                    then
+                        return BTRAM:setTransformation(13) -- Mumbo
+                    elseif itemId == "1230856" and (TURBOTRAINERS == true or SPRINGYSTEPSHOES == true or TALONTROT == true)-- GGM Humba Item
+                    then
+                        return BTRAM:setTransformation(13) -- Mumbo
+                    elseif itemId == "1230857" and VAN == true and ((FLAPFLIP == true and GRIPGRAB == true) or
+                    (CLIMB == true and FLAPFLIP == true and TALONTROT == true and (FLUTTER == true or AIRRATATATRAP ==true)) or 
+                    (SPLITUP == true and LEGSPRING == true))-- WW Mumbo Item
+                    then
+                        return BTRAM:setTransformation(13) -- Mumbo
+                    elseif itemId == "1230858" -- JRL Mumbo Item
+                    then
+                        return BTRAM:setTransformation(13)-- Mumbo
+                    elseif itemId == "1230859" -- TDL Mumbo Item
+                    then
+                        return BTRAM:setTransformation(13) -- Mumbo
+                    elseif itemId == "1230860" -- GI Mumbo Item
+                    then
+                        return BTRAM:setTransformation(13) -- Mumbo
+                    elseif itemId == "1230861" -- HFP Mumbo Item
+                    then
+                        return BTRAM:setTransformation(13) -- Mumbo
+                    elseif itemId == "1230862" -- CCL Mumbo Item
+                    then
+                        return BTRAM:setTransformation(13) -- Mumbo
+                    elseif itemId == "1230863" -- IOH Mumbo Item
+                    then
+                        return BTRAM:setTransformation(13) -- Mumbo
+                    end
                 end
             end
-        elseif currentState == 2 or currentState == 6 or currentState == 8 or currentState == 13 or currentState == 15 or currentState == 16
+        elseif currentState == 13
         then
-            BTRAM:setTransformation(1) -- Banjo
+            return BTRAM:setTransformation(1) -- Banjo
         end
     elseif check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 L'] == false
     then
-        if TRANSFORM_SWAP_MAP[mapaddr] == nil or BTRAMOBJ == nil
-        then
-            return false
-        end
-        if currentState == 1 -- Banjo
+        if currentState == 1 or currentState == 13 -- Banjo or Mumbo
         then
             for apid, itemId in pairs(receive_map)
             do
                 if itemId == TRANSFORM_SWAP_MAP[mapaddr]["humba"]
                 then
-                    if itemId == "1230174" -- MT Humba Item
+                    if itemId == "1230174" and GOLIATH == true -- MT Humba Item
                     then
-                        BTRAM:setTransformation(8) --Stony
-                    elseif itemId == "1230175" -- GGM Humba Item
+                        return BTRAM:setTransformation(8) --Stony
+                    elseif itemId == "1230175" and (TURBOTRAINERS == true or SPRINGYSTEPSHOES == true or TALONTROT == true)-- GGM Humba Item
                     then
-                        BTRAM:setTransformation(15) -- Detonator
-                    elseif itemId == "1230176" -- WW Humba Item
+                        return BTRAM:setTransformation(15) -- Detonator
+                    elseif itemId == "1230176" and ((FLAPFLIP == true and GRIPGRAB == true) or
+                    (CLIMB == true and FLAPFLIP == true and TALONTROT == true and (FLUTTER == true or AIRRATATATRAP ==true)) or 
+                    (SPLITUP == true and LEGSPRING == true))-- WW Humba Item
                     then
-                        BTRAM:setTransformation(16) -- Van
+                        return BTRAM:setTransformation(16) -- Van
                     elseif itemId == "1230177" -- JRL Humba Item
                     then
-                        BTRAM:setTransformation(12) -- Submarine
+                        return BTRAM:setTransformation(12) -- Submarine
+                    elseif itemId == "1230178" -- TDL Humba Item
+                    then
+                        return BTRAM:setTransformation(18) -- Small T-rex
                     elseif itemId == "1230179" -- GI Humba Item
                     then
-                        BTRAM:setTransformation(7) -- Washing Machine
+                        return BTRAM:setTransformation(7) -- Washing Machine
                     elseif itemId == "1230180" -- HFP Humba Item
                     then
-                        BTRAM:setTransformation(2) -- Snowball
+                        return BTRAM:setTransformation(2) -- Snowball
                     elseif itemId == "1230181" -- CCL Humba Item
                     then
-                        BTRAM:setTransformation(6) -- Bee
+                        return BTRAM:setTransformation(6) -- Bee
                     end
                 end
             end
-        elseif currentState == 2 or currentState == 6 or currentState == 8 or currentState == 13 or currentState == 15 or currentState == 16
+        elseif currentState == 2 or currentState == 6 or currentState == 8 or currentState == 15 or currentState == 16
         then
-            BTRAM:setTransformation(1) -- Banjo
+            return BTRAM:setTransformation(1) -- Banjo
         end
     end
 end
@@ -9487,10 +9610,12 @@ function processAGIItem(item_list)
                 end
                 if progressive_count == 1 then
                     BTRAMOBJ:setFlag(0x1A, 6, "Turbo Trainers")
+                    TURBOTRAINERS = true -- for transformation logic
                 end
                 if progressive_count == 2 then
                     local location = "1230768"
                     AGI_MOVES[location] = true
+                    SPRINGYSTEPSHOES = true -- for transformation logic
                     check_jamjar_silo()
                 end
                 if progressive_count == 3 then
@@ -9849,6 +9974,10 @@ function process_slot(block)
     then
         DEATH_LINK = true
     end
+    if block['slot_logic_type'] ~= nil and block['slot_logic_type'] ~= "false"
+    then
+        LOGIC = block['slot_logic_type']
+    end
     if block['slot_activate_text'] ~= nil and block['slot_activate_text'] ~= "false"
     then
         ACTIVATE_TEXT_OVERLAY = true
@@ -10071,6 +10200,7 @@ function main()
                 elseif TEXT_START == false then
                     processMessages()
                 end
+                transform_logic_flags()
                 getBanjoDeath()
                 killBT()
                 if FPS == true
