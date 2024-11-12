@@ -6829,6 +6829,7 @@ function unpause_hide_AGI_key()
 end
 
 function ap_icekey_glowbo_map()
+    local vault_open = BTRAMOBJ:checkFlag(0x77, 2)
     if AGI_MYSTERY["1230799"] == true and BMM_MYSTERY["1230958"] == false and CURRENT_MAP == 0x128 --Icy Side
     then
         if DEBUG_STOPNSWAP == true
@@ -6845,7 +6846,11 @@ function ap_icekey_glowbo_map()
         end
         BTCONSUMEOBJ:changeConsumable("Ice Keys")
         BTCONSUMEOBJ:setConsumable(0)
+    elseif  CURRENT_MAP ~= 0x128 and vault_open == true --Not on Icy Side
+    then
+        BTRAMOBJ:clearFlag(0x77, 2)
     end
+
 end
 
 ---------------------------------- Station ---------------------------------
