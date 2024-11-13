@@ -106,7 +106,7 @@ local ZONE_SET = false;
 -------------- TRANSFORM VARS -----
 local SET_BANJO = false;
 local MUMBO = false;
-local SET_MUMBO = false;
+local UNSET_MUMBO = false;
 local LOGIC = ""
 local GOLIATH = false
 local VAN = false
@@ -7741,15 +7741,21 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
     or currentState == 13) --mumbo or any transformation except big t-rex, respawns in JV if transformation not done properly
     then
         setCurrentHealth(10) -- sets transformation health to max plus 1 so when banjo returns to that form he wont be on 0 health
+        MUMBO = false
         return BTRAM:setTransformation(1) -- Banjo
     end
-    
     if TRANSFORM_SWAP_MAP[mapaddr] == nil or BTRAMOBJ == nil
     then
         return false
     end
-    if TRANSFORM_SWAP_MAP[mapaddr]["skull"] ~= nil and currentState == 13 -- panic detransform mumbo going into mumbos hut
+    if UNSET_MUMBO == true -- Part of Panic! uninit in finishTransition()
     then
+        return BTRAM:setTransformation(1) -- Banjo
+    end
+    if TRANSFORM_SWAP_MAP[mapaddr]["skull"] ~= nil and currentState == 13 and MUMBO == true -- panic detransform mumbo going into mumbos hut
+    then
+        MUMBO = false
+        UNSET_MUMBO = true
         return BTRAM:setTransformation(1) -- Banjo
     end
     if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == false
@@ -7763,40 +7769,51 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
                 then
                     if itemId == "1230855"  -- MT Mumbo Item
                     then
+                        MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230856" and (TURBOTRAINERS == true or SPRINGYSTEPSHOES == true or TALONTROT == true)-- GGM Humba Item
                     then
+                        MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230857" and VAN == true and ((FLAPFLIP == true and GRIPGRAB == true) or
                     (CLIMB == true and FLAPFLIP == true and TALONTROT == true and (FLUTTER == true or AIRRATATATRAP ==true)) or 
                     (SPLITUP == true and LEGSPRING == true))-- WW Mumbo Item
                     then
+                        MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230858" -- JRL Mumbo Item
                     then
+                        MUMBO = true
                         return BTRAM:setTransformation(13)-- Mumbo
                     elseif itemId == "1230859" -- TDL Mumbo Item
                     then
+                        MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230860" -- GI Mumbo Item
                     then
+                        MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230861" -- HFP Mumbo Item
                     then
+                        MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230862" -- CCL Mumbo Item
                     then
+                        MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230863" -- IOH Mumbo Item
                     then
+                        MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     end
                 else
+                    MUMBO = false
                     BTRAM:setTransformation(1) -- Banjo
                 end
             end
         elseif currentState == 13
         then
+            MUMBO = false
             BTRAM:setTransformation(1) -- Banjo
         end
     elseif check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 L'] == false
@@ -7809,38 +7826,48 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
                 then
                     if itemId == "1230174" and GOLIATH == true -- MT Humba Item
                     then
+                        MUMBO = false
                         return BTRAM:setTransformation(8) --Stony
                     elseif itemId == "1230175" and (TURBOTRAINERS == true or SPRINGYSTEPSHOES == true or TALONTROT == true)-- GGM Humba Item
                     then
+                        MUMBO = false
                         return BTRAM:setTransformation(15) -- Detonator
                     elseif itemId == "1230176" and ((FLAPFLIP == true and GRIPGRAB == true) or
                     (CLIMB == true and FLAPFLIP == true and TALONTROT == true and (FLUTTER == true or AIRRATATATRAP ==true)) or 
                     (SPLITUP == true and LEGSPRING == true))-- WW Humba Item
                     then
+                        MUMBO = false
                         return BTRAM:setTransformation(16) -- Van
                     elseif itemId == "1230177" -- JRL Humba Item
                     then
+                        MUMBO = false
                         return BTRAM:setTransformation(12) -- Submarine
                     elseif itemId == "1230178" -- TDL Humba Item
                     then
+                        MUMBO = false
                         return BTRAM:setTransformation(18) -- Small T-rex
                     elseif itemId == "1230179" -- GI Humba Item
                     then
+                        MUMBO = false
                         return BTRAM:setTransformation(7) -- Washing Machine
                     elseif itemId == "1230180" -- HFP Humba Item
                     then
+                        MUMBO = false
                         return BTRAM:setTransformation(2) -- Snowball
                     elseif itemId == "1230181" -- CCL Humba Item
                     then
+                        MUMBO = false
                         return BTRAM:setTransformation(6) -- Bee
                     end
                 else
+                    MUMBO = false
                     BTRAM:setTransformation(1) -- Banjo
                 end
             end
         elseif currentState == 8 or currentState == 15 or currentState == 16 or currentState == 12 or 
         currentState == 18 or currentState == 7 or currentState == 2 or currentState == 6
         then
+            MUMBO = false
             BTRAM:setTransformation(1) -- Banjo
         end
     end
@@ -8535,6 +8562,10 @@ function finishTransition()
             getChuffyMaps()
         end
         ap_icekey_glowbo_map()
+        if UNSET_MUMBO == true
+        then
+            UNSET_MUMBO = false
+        end
     elseif mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == false and player == true -- constantly runs while NOT transitioning AND Player is loaded
     then
         -- Chuffy
