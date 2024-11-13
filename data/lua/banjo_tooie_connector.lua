@@ -104,7 +104,8 @@ local AP_LOADING_ZONES = {};
 local ZONE_SET = false;
 
 -------------- TRANSFORM VARS -----
-local FAKEMUMBO = false;
+local FAKE_MUMBO = false;
+local REVERTING_MUMBO = false
 local LOGIC = ""
 local GOLIATH = false
 local VAN = false
@@ -2154,6 +2155,7 @@ local TRANSFORM_SWAP_MAP = {
     },
     [0xB7] = { --MT - Mumbo's Skull
     ["skull"] = true,
+    ["humba"] = "1230174",
     },
     [0xB9] = { --MT - Prison Compound
     ["mumbo"] = "1230855",
@@ -2308,123 +2310,99 @@ local TRANSFORM_SWAP_MAP = {
     --TERRYDACTYLAND
     [0x112] =	{ --TDL
     ["mumbo"] = "1230859",
+    ["humba"] = "1230178"
     },
     [0x171] = { --TDL - Mumbo's Skull
     ["skull"] = true,
     },
     [0x123] = { --TDL - Inside Chompa's Belly
     },
-    [0x116] = { --TDL - Inside the Mountain
-    ["mumbo"] = "1230859",
-    },
+    --[0x116] = { --TDL - Inside the Mountain (soft lock in dino cage?)
+    --["mumbo"] = "1230859",
+    --},
     [0x115] = { --TDL - Oogle Boogles' Cave
     ["mumbo"] = "1230859",
     },
     [0x117] = { --TDL - River Passage
+    ["mumbo"] = "1230859",
+    ["humba"] = "1230178"
     },
     [0x119] = { -- Unga Bunga Cave
     },
     [0x11A] = { --TDL - Stomping Plains
     },
     [0x118] =	{ --TDL - Styracosaurus Family Cave
+    ["mumbo"] = "1230859",
     },
     [0x113] =	{ --TDL - Terry's Nest
     },
     [0x114] =	{ --TDL - Train Station
     ["mumbo"] = "1230859",
+    ["humba"] = "1230178"
     },
     --GRUNTY'S INDUSTRIES
     [0x100] =	{ --GI
-    ["mumbo"] = "1230860",
-    ["humba"] = "1230179",
     },
     [0x172] = { --GI - Mumbo's Skull
     ["skull"] = true,
     },
     [0x10F] = { --GI - Basement
-    ["mumbo"] = "1230860",
-    ["humba"] = "1230179",
     },
     [0x110] =	{ --GI - Basement (Repair Depot)
     },
     [0x111] =	{ --GI - Basement (Waste Disposal)
-    ["mumbo"] = "1230860",
-    ["humba"] = "1230179",
     },
     [0x101] =	{ --GI - Floor 1
-    ["mumbo"] = "1230860",
-    ["humba"] = "1230179",
     },
     [0x106] =	{ --GI - Floor 2
-    ["mumbo"] = "1230860",
-    ["humba"] = "",
+    ["humba"] = "1230179",
     },
     [0x108] =	{ --GI - Floor 3
-    ["mumbo"] = "1230860",
     ["humba"] = "1230179",
     },
     [0x109] =	{ --GI - Floor 3 (Boiler Plant)
-    ["mumbo"] = "1230860",
-    ["humba"] = "1230179",
     },
     [0x10A] =	{ --GI - Floor 3 (Packing Room)
     },
     [0x10B] =	{ --GI - Floor 4
-    ["mumbo"] = "1230860",
-    ["humba"] = "1230179",
     },
     [0x10D] =	{ --GI - Floor 4 (Quality Control)
     },
     [0x10E] =	{ --GI - Floor 5
-    ["mumbo"] = "1230860",
-    ["humba"] = "1230179",
     },
     [0x187] =	{ --GI - Sewer Entrance
     },
     [0x102] =	{ --GI - Train Station
-    ["mumbo"] = "1230860",
-    ["humba"] = "1230179",
     },
     [0x104] =	{ --GI - Trash Compactor
     },
     [0x103] =	{ --GI - Workers' Quarters
-    ["mumbo"] = "1230860",
-    ["humba"] = "1230179",
     },
     --HAILFIRE PEAKS
     [0x134] = { --HFP - Mumbo's Skull
     ["skull"] = true,
     },
     [0x131] =	{ --HFP - Boggy's Igloo
-    ["mumbo"] = "1230861",
     },
     [0x12B] =	{ --HFP - Chilli Billi
     },
     [0x12C] =	{ --HFP - Chilly Willy
     },
     [0x132] =	{ --HFP - Icicle Grotto
-    ["mumbo"] = "1230861",
-    ["humba"] = "1230180",
     },
     [0x128] =	{ --HFP - Icy Side
     ["mumbo"] = "1230861",
     ["humba"] = "1230180",
     },
     [0x133] =	{ --HFP - Inside the Volcano
-    ["mumbo"] = "1230861",
-    ["humba"] = "1230180",
     },
     [0x12D] =	{ --HFP - Kickball Stadium lobby
-    ["mumbo"] = "1230861",
-    ["humba"] = "1230180",
+    ["mumbo"] = "1230861",    
     },
     [0x127] =	{ --HFP - Lava Side
     ["mumbo"] = "1230861",
-    ["humba"] = "1230180",
     },
     [0x129] =	{ --HFP - Lava Train Station
-    ["mumbo"] = "1230861",
-    ["humba"] = "1230180",
     },
     [0x12A] = { -- HFP - Icy Side Station
     },
@@ -7734,9 +7712,9 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
     BTMODELOBJ:changeName("Player", false)
     local check = BTMODELOBJ:checkModel();
 
-    if mapaddr == 0x158
+    if mapaddr == 0x142
     then
-        FAKEMUMBO = false
+        REVERTING_MUMBO = true
         return
     end
     
@@ -7745,17 +7723,21 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
     or currentState == 13) --mumbo or any transformation except big t-rex, respawns in JV if transformation not done properly
     then
         setCurrentHealth(10) -- sets transformation health to max plus 1 so when banjo returns to that form he wont be on 0 health
-        FAKEMUMBO = false
+        REVERTING_MUMBO = true
         return BTRAM:setTransformation(1) -- Banjo
     end
     if TRANSFORM_SWAP_MAP[mapaddr] == nil or BTRAMOBJ == nil
     then
         return false
     end
-    if TRANSFORM_SWAP_MAP[mapaddr]["skull"] ~= nil and currentState == 13 and FAKEMUMBO == true -- panic detransform mumbo going into mumbos hut
+    if TRANSFORM_SWAP_MAP[mapaddr]["skull"] ~= nil and currentState == 13 and FAKE_MUMBO == true -- panic detransform mumbo going into mumbos hut
     then
-        FAKEMUMBO = false
+        REVERTING_MUMBO = true
         return BTRAM:setTransformation(1) -- Banjo
+    end
+    if TRANSFORM_SWAP_MAP[mapaddr]["skull"] ~= nil and currentState == 13 and FAKE_MUMBO == false -- panic detransform mumbo going into mumbos hut
+    then
+        return -- panic option wont allow any action if true mumbo returns home
     end
     if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == false
     then
@@ -7768,55 +7750,55 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
                 then
                     if itemId == "1230855"  -- MT Mumbo Item
                     then
-                        FAKEMUMBO = true
+                        FAKE_MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230856" and (TURBOTRAINERS == true or SPRINGYSTEPSHOES == true or TALONTROT == true)-- GGM Humba Item
                     then
-                        FAKEMUMBO = true
+                        FAKE_MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230857" and VAN == true and ((FLAPFLIP == true and GRIPGRAB == true) or
                     (CLIMB == true and FLAPFLIP == true and TALONTROT == true and (FLUTTER == true or AIRRATATATRAP ==true)) or 
                     (SPLITUP == true and LEGSPRING == true))-- WW Mumbo Item
                     then
-                        FAKEMUMBO = true
+                        FAKE_MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230858" -- JRL Mumbo Item
                     then
-                        FAKEMUMBO = true
+                        FAKE_MUMBO = true
                         return BTRAM:setTransformation(13)-- Mumbo
                     elseif itemId == "1230859" -- TDL Mumbo Item
                     then
-                        FAKEMUMBO = true
+                        FAKE_MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230860" -- GI Mumbo Item
                     then
-                        FAKEMUMBO = true
+                        FAKE_MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230861" -- HFP Mumbo Item
                     then
-                        FAKEMUMBO = true
+                        FAKE_MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230862" -- CCL Mumbo Item
                     then
-                        FAKEMUMBO = true
+                        FAKE_MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230863" -- IOH Mumbo Item
                     then
-                        FAKEMUMBO = true
+                        FAKE_MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     end
                 else
                     BTRAM:setTransformation(1) -- Banjo
                 end
             end
-        elseif currentState == 13 and FAKEMUMBO == true
+        elseif currentState == 13 and FAKE_MUMBO == true
         then
-            FAKEMUMBO = false
+            REVERTING_MUMBO = true
             BTRAM:setTransformation(1) -- Banjo
         end
     elseif check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 L'] == false
     then
-        if currentState == 1 or (currentState == 13 and FAKEMUMBO == true) -- Banjo or Mumbo
+        if currentState == 1 or (currentState == 13 and FAKE_MUMBO == true) -- Banjo or Mumbo
         then
             for apid, itemId in pairs(receive_map)
             do
@@ -7855,9 +7837,9 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
             end
         elseif currentState == 8 or currentState == 15 or currentState == 16 or currentState == 12 or 
         currentState == 18 or currentState == 7 or currentState == 2 or currentState == 6 or 
-        (currentState == 13 and FAKEMUMBO == true)
+        (currentState == 13 and FAKE_MUMBO == true)
         then
-            FAKEMUMBO = false
+            REVERTING_MUMBO = true
             BTRAM:setTransformation(1) -- Banjo
         end
     end
@@ -10314,6 +10296,11 @@ function main()
             if MAP_TRANSITION == false
             then
                 currentState = BTRAM:getTransformation()
+                if REVERTING_MUMBO == true
+                then
+                    FAKE_MUMBO = false
+                    REVERTING_MUMBO = false
+                end
             end
             if MAP_TRANSITION == true
             then
