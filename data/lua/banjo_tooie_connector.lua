@@ -7748,7 +7748,6 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
         FAKEMUMBO = false
         return BTRAM:setTransformation(1) -- Banjo
     end
-    
     if TRANSFORM_SWAP_MAP[mapaddr] == nil or BTRAMOBJ == nil
     then
         return false
