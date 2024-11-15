@@ -2928,7 +2928,7 @@ class BanjoTooieRules:
             logic = (self.TDL_flight_pad(state) and self.beak_bomb(state))\
                     or self.grenade_eggs(state)\
                         and (self.egg_aim(state) or self.long_jump(state) or self.TDL_flight_pad(state) or self.turbo_trainers(state) or self.stiltStride(state))\
-                        and (self.flutter(state) or self.air_rat_a_tat_rap(state) or self.split_up(state) or self.beak_buster(state) or self.TDL_flight_pad(state))
+                        and (self.flutter(state) or self.air_rat_a_tat_rap(state) or self.split_up(state) or self.TDL_flight_pad(state))
         elif self.world.options.logic_type == 2: # advanced
             logic = (self.TDL_flight_pad(state) and self.beak_bomb(state)) or (self.grenade_eggs(state)\
                     and (self.egg_aim(state) or self.long_jump(state) or self.TDL_flight_pad(state) or self.turbo_trainers(state) or self.stiltStride(state) or self.split_up(state)))
@@ -3790,12 +3790,12 @@ class BanjoTooieRules:
             logic = (self.climb(state) and self.sack_pack(state))\
                     or self.notes_ccl_high(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (self.climb(state) and self.sack_pack(state))\
+            logic = self.climb(state)\
                     or (self.springy_step_shoes(state))\
                     or self.notes_ccl_high(state)\
                     or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (self.climb(state) and self.sack_pack(state))\
+            logic = self.climb(state)\
                     or (self.springy_step_shoes(state))\
                     or self.notes_ccl_high(state)\
                     or self.clockwork_shot(state)

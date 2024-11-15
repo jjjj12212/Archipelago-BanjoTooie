@@ -1,6 +1,15 @@
-# 3.3.4-beta
- - Hints show the entrance to a level if loading zones are randomized.
+# 3.4-beta
+ - Hints show the entrance to a level if loading zones are randomized
+ - Fixed the ice key that despawns if you get the mega glowbo first
  - Grunty's Industries -> Grunty Industries
+ - exceeding_items_filler option removed
+   - The generation now works as if this action is always active
+   - Filler items are now useful instead of normal
+ - Cheato pages: if Cheato rewards are not randomized, they are always a normal item
+ - Logic fixes:
+   - TDL Entrance Jinjo: removed beak buster to enter the alcove in easy tricks logic
+   - CCL Cheese Wedge Note: in tricks and glitches logic, can be gotten with just climb
+   - Fixed Cauldron Keep's broken entrance in logic
 
 # 3.3.3-beta
  - If you choose to have 1 silo open, your first silo will now always lead to the first level (unless Mayahem Temple is your first level. In which case, The silo is randomly selected).

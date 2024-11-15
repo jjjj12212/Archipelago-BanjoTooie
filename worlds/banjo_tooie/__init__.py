@@ -107,14 +107,14 @@ class BanjoTooieWorld(World):
         if banjoItem.type == 'progress':
             if banjoItem.btid == 1230515:
                 maxJiggy = max(self.randomize_worlds.values()) if self.randomize_worlds else 70
-                if self.jiggy_counter > maxJiggy and self.options.exceeding_items_filler.value == True:
-                    item_classification = ItemClassification.filler
+                if self.jiggy_counter > maxJiggy:
+                    item_classification = ItemClassification.useful
                 else:
                     item_classification = ItemClassification.progression
                 self.jiggy_counter += 1
             elif banjoItem.btid == 1230797 and self.options.randomize_notes.value == True:
-                if self.notecounter > 124 and self.options.exceeding_items_filler.value == True:
-                    item_classification = ItemClassification.filler
+                if self.notecounter > 124:
+                    item_classification = ItemClassification.useful
                 else:
                     item_classification = ItemClassification.progression
                 self.notecounter += 1
@@ -123,12 +123,7 @@ class BanjoTooieWorld(World):
         if banjoItem.type == 'progression_skip_balancing': #Mumbo Tokens
             item_classification = ItemClassification.progression_skip_balancing
         if banjoItem.type == 'useful':
-            if banjoItem.btid == 1230513 and self.use_cheato_filler == False: #pages
-                if self.options.cheato_rewards.value == True:
-                    item_classification = ItemClassification.progression
-                else:
-                    item_classification = ItemClassification.useful
-            elif banjoItem.btid == 1230513 and self.use_cheato_filler == True: #pages
+            if banjoItem.btid == 1230513: # Cheato pages
                 if self.options.cheato_rewards.value == True:
                     item_classification = ItemClassification.progression
                 else:
