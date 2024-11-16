@@ -80,16 +80,11 @@ Banjo-Tooie:
   randomize_worlds: 'false'
 
   # World Entrances will warp you to a different world. This only affects main entrances.
-  randomize_world_loading_zone:
-    'false': 50
-    'true': 0
+  randomize_world_loading_zone: 'false'
 
   # Choose if you want IoH Silos to be closed, randomly open 1 or enable all. If you enabled Randomized Worlds with BK Moves randomized and
   #    silos set to none, it will be enforced to one.
-  open_silos:
-    none: 50
-    one: 0
-    all: 0
+  open_silos: 0
 
   logic_type: 0                # 0: Beginner, 1: Normal, 2: Advanced, 3: glitched
   jingaling_jiggy: 'true'      # True: Always get Jiggy from Jingaling; recommended when playing Multiworld.
