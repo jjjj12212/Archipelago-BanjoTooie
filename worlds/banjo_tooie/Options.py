@@ -286,10 +286,6 @@ class SkipKlungo(Toggle):
     """Make it so you can skip Klungo 1 and 2."""
     display_name = "Skip Klungo"
 
-class ExceedingItemsFiller(Toggle):
-    """Progressive Items that exceeds the required amounts are marked as junk."""
-    display_name = "Exceeding Progressive Items marked as junk items"
-
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     start_inventory_from_pool: StartInventoryPool
@@ -308,7 +304,6 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_cheato: EnableMultiWorldCheatoPages
     cheato_rewards: EnableCheatoRewards
     cheato_as_filler: SetMultiWorldCheatoPagesFiller
-    exceeding_items_filler: ExceedingItemsFiller
     randomize_honeycombs: EnableMultiWorldHoneycombs
     honeyb_rewards: EnableHoneyBRewards
     randomize_glowbos: EnableMultiWorldGlowbos

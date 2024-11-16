@@ -769,7 +769,7 @@ def connect_regions(self):
     region_ccl_entrance.add_exits({regionName.IOHWL}, {regionName.IOHWL: lambda state: rules.CCL_to_WL(state)})
 
     region_ck_entrance = multiworld.get_region(regionName.CKE, player)
-    region_ck_entrance.add_exits({regionName.IOHWL}, {regionName.IOHWL: lambda state: rules.CK_to_Quag(state)})
+    region_ck_entrance.add_exits({regionName.IOHQM}, {regionName.IOHQM: lambda state: rules.CK_to_Quag(state)})
 
     # World entrance randomisation (and exits)
     entrance_lookup = {

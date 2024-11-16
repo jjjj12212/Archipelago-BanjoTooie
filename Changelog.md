@@ -1,3 +1,23 @@
+# 3.4-beta
+ - Hints show the entrance to a level if loading zones are randomized
+ - Fixed the ice key that despawns if you get the mega glowbo first
+ - Grunty's Industries -> Grunty Industries
+ - exceeding_items_filler option removed
+   - The generation now works as if this action is always active
+   - Filler items are now useful instead of normal
+ - Cheato pages: if Cheato rewards are not randomized, they are always a normal item
+ - Logic fixes:
+   - TDL Entrance Jinjo: removed beak buster to enter the alcove in easy tricks logic
+   - CCL Cheese Wedge Note: in tricks and glitches logic, can be gotten with just climb
+   - Fixed Cauldron Keep's broken entrance in logic
+ - *Experimental: Hold L before entering a loading screen to transform as Mumbo
+    - Only if you have logical access to Mumbo and Mumbo unlocked for a world.
+    - Hold L again to transform back to Banjo
+    - Enter Mumbo's hut will transform you back to Banjo to avoid Softlocking
+ - *Experimental: Hold R before entering a loading screen to tranform into Humba transformation
+    - Only if you have logical access to Humba and Humba is unlocked for a world.
+    - Hold R again to transform back to Banjo
+
 # 3.3.3-beta
  - If you choose to have 1 silo open, your first silo will now always lead to the first level (unless Mayahem Temple is your first level. In which case, The silo is randomly selected).
  - Logic Fixes:
@@ -32,7 +52,7 @@
    - Open All Silos.
 - Randomize World Entrance loading zones
  - This also includes Cauldron Keep's entrance
- - Grunty's Industries and Cauldron Keep cannot appear your first loading zone. 
+ - Grunty Industries and Cauldron Keep cannot appear your first loading zone. 
 - Deathlink now works under water and in toxic caves, and kills much faster.
 - Implement Inventory Items from Item Pool
 - Readme update

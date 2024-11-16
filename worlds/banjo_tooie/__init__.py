@@ -5,7 +5,7 @@ import typing
 from jinja2 import Environment, FileSystemLoader
 from typing import Dict, Any
 from .Items import BanjoTooieItem, all_item_table, all_group_table
-from .Locations import BanjoTooieLocation, all_location_table
+from .Locations import BanjoTooieLocation, LocationData, all_location_table, MTLoc_Table, GMLoc_table, WWLoc_table, JRLoc_table, TLLoc_table, GILoc_table, HPLoc_table, CCLoc_table
 from .Regions import create_regions, connect_regions
 from .Options import BanjoTooieOptions
 from .Rules import BanjoTooieRules
@@ -74,7 +74,7 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
 
     def __init__(self, world, player):
-        self.version = "V3.3.3"
+        self.version = "V3.4"
         self.kingjingalingjiggy = False
         self.starting_egg: int = 0
         self.starting_attack: int = 0
@@ -107,14 +107,14 @@ class BanjoTooieWorld(World):
         if banjoItem.type == 'progress':
             if banjoItem.btid == 1230515:
                 maxJiggy = max(self.randomize_worlds.values()) if self.randomize_worlds else 70
-                if self.jiggy_counter > maxJiggy and self.options.exceeding_items_filler.value == True:
-                    item_classification = ItemClassification.filler
+                if self.jiggy_counter > maxJiggy:
+                    item_classification = ItemClassification.useful
                 else:
                     item_classification = ItemClassification.progression
                 self.jiggy_counter += 1
             elif banjoItem.btid == 1230797 and self.options.randomize_notes.value == True:
-                if self.notecounter > 124 and self.options.exceeding_items_filler.value == True:
-                    item_classification = ItemClassification.filler
+                if self.notecounter > 124:
+                    item_classification = ItemClassification.useful
                 else:
                     item_classification = ItemClassification.progression
                 self.notecounter += 1
@@ -123,12 +123,7 @@ class BanjoTooieWorld(World):
         if banjoItem.type == 'progression_skip_balancing': #Mumbo Tokens
             item_classification = ItemClassification.progression_skip_balancing
         if banjoItem.type == 'useful':
-            if banjoItem.btid == 1230513 and self.use_cheato_filler == False: #pages
-                if self.options.cheato_rewards.value == True:
-                    item_classification = ItemClassification.progression
-                else:
-                    item_classification = ItemClassification.useful
-            elif banjoItem.btid == 1230513 and self.use_cheato_filler == True: #pages
+            if banjoItem.btid == 1230513: # Cheato pages
                 if self.options.cheato_rewards.value == True:
                     item_classification = ItemClassification.progression
                 else:
@@ -584,7 +579,7 @@ class BanjoTooieWorld(World):
             regionName.WW: regionName.IOHPG,
             regionName.JR: regionName.IOHCT + " (Jolly Rogers Lagoon Entrance)",
             regionName.TL: regionName.IOHWL + " (Terrydactyland Entrance)",
-            regionName.GIO: regionName.IOHQM + " (Grunty's Industries Entrance)",
+            regionName.GIO: regionName.IOHQM + " (Grunty Industries Entrance)",
             regionName.HP: regionName.IOHCT_HFP_ENTRANCE,
             regionName.CC: regionName.IOHWL + " (Cloud Cuckooland Entrance)",
             regionName.CK: regionName.IOHQM + " (Caudron Keep Entrance)"
@@ -667,4 +662,37 @@ class BanjoTooieWorld(World):
         # returning slot_data so it regens, giving it back in multiworld.re_gen_passthrough
         return slot_data
 
-    
+    def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]):
+        # For hints, we choose to hint the level for which the collectible would count.
+        # For example, Dippy Jiggy would hint to TDL.
+
+        def add_loading_zone_information(hint_information: Dict[int, str], locations: Dict[str, LocationData], entrance: str):
+            for data in locations.values():
+                hint_information.update({data.btid: entrance})
+
+        def get_entrance(level: str):
+            # TODO: Fix level names here too
+            level = list(self.loading_zones.keys())[list(self.loading_zones.values()).index(level)]
+            if level == regionName.JR:
+                return "Jolly Roger's Lagoon"
+            elif level == regionName.GIO:
+                return "Grunty Industries"
+            else:
+                return level
+
+        
+        if self.options.randomize_world_loading_zone.value == False:
+            return
+
+        hints = {}
+
+        add_loading_zone_information(hints, MTLoc_Table, get_entrance(regionName.MT))
+        add_loading_zone_information(hints, GMLoc_table, get_entrance(regionName.GM))
+        add_loading_zone_information(hints, WWLoc_table, get_entrance(regionName.WW))
+        add_loading_zone_information(hints, JRLoc_table, get_entrance(regionName.JR))
+        add_loading_zone_information(hints, TLLoc_table, get_entrance(regionName.TL))
+        add_loading_zone_information(hints, GILoc_table, get_entrance(regionName.GIO))
+        add_loading_zone_information(hints, HPLoc_table, get_entrance(regionName.HP))
+        add_loading_zone_information(hints, CCLoc_table, get_entrance(regionName.CC))
+        
+        hint_data.update({self.player: hints})
