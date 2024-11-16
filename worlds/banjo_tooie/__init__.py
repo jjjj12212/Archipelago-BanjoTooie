@@ -74,7 +74,7 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
 
     def __init__(self, world, player):
-        self.version = "V3.3.3"
+        self.version = "V3.4"
         self.kingjingalingjiggy = False
         self.starting_egg: int = 0
         self.starting_attack: int = 0
