@@ -83,10 +83,10 @@ Banjo-Tooie:
   randomize_world_loading_zone: 'false'
 
   # Choose if you want IoH Silos to be closed, randomly open 1 or enable all. If you enabled Randomized Worlds with BK Moves randomized and
-  #    silos set to none, it will be enforced to one.
-  open_silos: 0
+  # silos set to none, it will be enforced to one.
+  open_silos: 0               # 0: None, 1: one random silo, 2: All Silos Open
 
-  logic_type: 0                # 0: Beginner, 1: Normal, 2: Advanced, 3: glitched
+  logic_type: 0                # 0: Intended, 1: Easy Tricks, 2: Hard Tricks, 3: glitches
   jingaling_jiggy: 'true'      # True: Always get Jiggy from Jingaling; recommended when playing Multiworld.
   skip_jingaling: 'true'       # Get Jingaling's reward early and head straight to Bottle's home.
   skip_tower_of_tragedy: 1     # 0: no skip, 1: skip completely, 2: play 3rd round only
