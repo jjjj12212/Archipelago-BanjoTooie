@@ -1,4 +1,5 @@
 import asyncio
+import hashlib
 import json
 import os
 import multiprocessing
@@ -9,6 +10,7 @@ import time
 from typing import Union
 import zipfile
 from asyncio import StreamReader, StreamWriter
+import bsdiff4
 
 
 # CommonClient import first to trigger ModuleUpdater
@@ -192,6 +194,35 @@ class BanjoTooieContext(CommonContext):
         self.ui = BanjoTooieManager(self)
         self.ui_task = asyncio.create_task(self.ui.async_run(), name="UI")
 
+    def read_file(self, path):
+        with open(path, 'rb') as fi:
+            data = fi.read()
+        return data
+
+    def write_file(self, path, data):
+        with open(path, 'wb') as fi:
+            fi.write(data)
+
+    def swap(self, data):
+        swapped_data = bytearray(b'\0'*len(data))
+        for i in range(0, len(data), 2):
+            swapped_data[i] = data[i+1]
+            swapped_data[i+1] = data[i]
+        return bytes(swapped_data)
+
+    def patch_rom(self, romPath, dstPath, patchPath):
+        rom = self.read_file(romPath)
+        md5 = hashlib.md5(rom).hexdigest()
+        if (md5 == "ca0df738ae6a16bfb4b46d3860c159d9"): # byte swapped
+            rom = self.swap(rom)
+        elif (md5 != "40e98faa24ac3ebe1d25cb5e5ddf49e4"):
+            print("Unknown ROM!")
+            return
+        patch = self.read_file(patchPath)
+        self.write_file(dstPath, bsdiff4.patch(rom, patch))
+
+        # self.patch_rom("banjo-tooie.n64", "banjo-tooie-romhack.n64", "banjo-tooie.patch")
+
     def on_package(self, cmd, args):
         if cmd == 'Connected':
             self.slot_data = args.get('slot_data', None)
@@ -203,6 +234,7 @@ class BanjoTooieContext(CommonContext):
                                 "Your version: "+version+" | Generated version: "+self.slot_data["version"])
             self.deathlink_enabled = self.slot_data["deathlink"]
             logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
+            self.patch_rom("C:/Users/Mike Jackson/Desktop/BizHawk/Banjo-Tooie (USA).n64", "C:/Users/Mike Jackson/Desktop/BizHawk/banjo-tooie-romhack.n64", "C:/Users/Mike Jackson/Desktop/BizHawk/banjo-tooie.patch")
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
         elif cmd == 'Print':
             msg = args['text']

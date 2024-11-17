@@ -324,6 +324,120 @@ function BTConsumable:changeConsumable(itemName)
 end
 -- EO Consumable Class
 
+BTHACK = {
+    RDRAMBase = 0x80000000,
+    RDRAMSize = 0x800000,
+    base_index = 0x400000,
+    pc_settings = 0x4,
+    setting_seed = 0x0,
+    setting_chuffy = 0x4,
+    setting_puzzle = 0x5,
+    setting_klungo = 0x6,
+    setting_tot = 0x7,
+    setting_minigames = 0x8,
+    setting_jiggy_requirements = 0x9,
+    setting_open_silos = 0x10,
+    pc_items = 0x8,
+    pc_exit_map = 0xC,
+    n64 = 0x10,
+    real_flags = 0x14,
+    fake_flags = 0x18
+}
+
+function BTHACK:new(t)
+    t = t or {}
+    setmetatable(t, self)
+    self.__index = self
+   return self
+end
+
+function BTHACK:isPointer(value)
+    return type(value) == "number" and value >= self.RDRAMBase and value < self.RDRAMBase + self.RDRAMSize;
+end
+
+function BTHACK:dereferencePointer(addr)
+    if type(addr) == "number" and addr >= 0 and addr < (self.RDRAMSize - 4) then
+        local address = mainmemory.read_u32_be(addr);
+        if BTRAM:isPointer(address) then
+            return address - self.RDRAMBase;
+        else
+            if DEBUGLVL3 == true
+            then
+                print("Failed to Defref:")
+                print(address)
+            end
+            return nil;
+        end
+    else
+        if DEBUGLVL3 == true
+        then
+            print("Number too big or not number:")
+            print(tostring(addr))
+        end
+    end
+end
+
+function BTHACK:checkFakeFlag(offset, byte)
+    local hackPointerIndex = mainmemory.read_u32_be(self.base_index);
+	local fakeptr = BTHACK:dereferencePointer(self.fake_flags + hackPointerIndex);
+    
+    local currentValue = mainmemory.readbyte(fakeptr + offset);
+    if bit.check(currentValue, byte) then
+        return true;
+    end
+    return false;
+end
+
+function BTHACK:checkRealFlag(offset, byte)
+    local hackPointerIndex = mainmemory.read_u32_be(self.base_index);
+	local fakeptr = BTHACK:dereferencePointer(self.real_flags + hackPointerIndex);
+    
+    local currentValue = mainmemory.readbyte(fakeptr + offset);
+    if bit.check(currentValue, byte) then
+        return true;
+    end
+    return false;
+end
+
+function BTHACK:getSettingPointer()
+    local hackPointerIndex = BTHACK:dereferencePointer(self.base_index);
+	return BTHACK:dereferencePointer(self.pc_settings + hackPointerIndex);
+end
+
+function BTHACK:setSettingSeed(seed)
+    mainmemory.write_u32_be(self.setting_seed + BTHACK:getSettingPointer(), seed);
+end
+
+function BTHACK:setSettingChuffy(chuffy)
+    mainmemory.writebyte(self.setting_chuffy + BTHACK:getSettingPointer(), chuffy);
+end
+
+function BTHACK:setSettingPuzzle(puzzle)
+    mainmemory.writebyte(self.setting_puzzle + BTHACK:getSettingPointer(), puzzle);
+end
+
+function BTHACK:setSettingKlungo(klungo)
+    mainmemory.writebyte(self.setting_klungo + BTHACK:getSettingPointer(), klungo);
+end
+
+function BTHACK:setSettingToT(tot)
+    mainmemory.writebyte(self.setting_tot + BTHACK:getSettingPointer(), tot);
+end
+
+function BTHACK:setSettingMinigames(minigames)
+    mainmemory.writebyte(self.setting_minigames + BTHACK:getSettingPointer(), minigames);
+end
+
+function BTHACK:setSettingJiggyRequirements(index, jiggy_requirements)
+    mainmemory.writebyte(self.setting_jiggy_requirements + index + BTHACK:getSettingPointer() , jiggy_requirements);
+end
+
+function BTHACK:setSettingOpenSilos(index, open)
+    mainmemory.writebyte(self.setting_open_silos + index + BTHACK:getSettingPointer(), open);
+end
+
+
+
 -- Class that requires RAM reading and writing
 BTRAM = {
     RDRAMBase = 0x80000000;
@@ -341,7 +455,7 @@ BTRAM = {
     map_dest = 0x045702,
     character_state = 0x136F63,
     character_change = 0x12704C,
-    tmp_flg_ptr = 0x12C774
+    tmp_flg_ptr = 0x12C774,
 }
 
 function BTRAM:new(t)
@@ -5863,62 +5977,6 @@ function collected_JV_TREBLE()
     return true
 end
 
---------------- IOH SILO ---------------------------
-
-function init_world_silos()
-    -- for worlds, tbl in pairs(WORLD_ENTRANCE_MAP)
-    -- do
-    --     if tbl["locationId"] == "1230944"
-    --     then
-    --         if tbl["defaultName"] == "Glitter Gulch Mine"
-    --         then
-    --             BTRAMOBJ:setFlag(0x60, 7)
-    --         end
-    --         if tbl["defaultName"] == "Witchyworld"
-    --         then
-    --             BTRAMOBJ:setFlag(0x61, 0)
-    --         end
-    --         if tbl["defaultName"] == "Cloud Cuckooland" or tbl["defaultName"] == "Terrydactyland"
-    --         then
-    --             BTRAMOBJ:setFlag(0x61, 2)
-    --         end
-    --         if tbl["defaultName"] == "Jolly Roger's Lagoon" or tbl["defaultName"] == "Hailfire Peaks" or tbl["defaultName"] == "Grunty Industries"
-    --         then
-    --             BTRAMOBJ:setFlag(0x61, 1)
-    --         end
-    --     end
-    -- end
-    -- archipelago_msg_box("Warp Silo to your first world is now open")
-    if OPEN_SILO == "NONE"
-    then
-        return
-    elseif OPEN_SILO == "ALL"
-    then
-        BTRAMOBJ:setFlag(0x60, 5) -- JV
-        BTRAMOBJ:setFlag(0x60, 6) -- WH
-        BTRAMOBJ:setFlag(0x60, 7) -- PL
-        BTRAMOBJ:setFlag(0x61, 0) -- PG
-        BTRAMOBJ:setFlag(0x61, 1) -- CT
-        BTRAMOBJ:setFlag(0x61, 2) -- WL
-        BTRAMOBJ:setFlag(0x61, 3) -- QM
-    elseif string.find(OPEN_SILO, "Wasteland") ~= nil then
-        BTRAMOBJ:setFlag(0x60, 5)
-        BTRAMOBJ:setFlag(0x61, 2) -- WL
-    elseif string.find(OPEN_SILO, "Quagmire") ~= nil then
-        BTRAMOBJ:setFlag(0x60, 5) -- JV
-        BTRAMOBJ:setFlag(0x61, 3) -- QM
-    elseif string.find(OPEN_SILO, "Plateau") ~= nil then
-        BTRAMOBJ:setFlag(0x60, 5) -- JV
-        BTRAMOBJ:setFlag(0x60, 7) -- PL
-    elseif string.find(OPEN_SILO, "Pine Grove") ~= nil then
-        BTRAMOBJ:setFlag(0x60, 5) -- JV
-        BTRAMOBJ:setFlag(0x61, 0) -- PG
-    elseif string.find(OPEN_SILO, "Cliff Top") ~= nil then
-        BTRAMOBJ:setFlag(0x60, 5) -- JV
-        BTRAMOBJ:setFlag(0x61, 1) -- CT
-    end
-end
-
 --------------------------------- Roysten --------------------------------
 
 function init_roysten()
@@ -9289,7 +9347,6 @@ function initializeFlags()
         if ENABLE_AP_HONEYB_REWARDS == true then
             init_HONEYB_REWARDS()
         end
-        init_world_silos()
         init_JIGGY_CHUNK()
         BTCONSUMEOBJ:changeConsumable("Eggs")
         BTCONSUMEOBJ:setConsumable(0)
@@ -10025,6 +10082,7 @@ function process_slot(block)
     if block['slot_seed'] ~= nil and block['slot_seed'] ~= ""
     then
         SEED = block['slot_seed']
+        BTH:setSettingSeed(SEED)
     end
     if block['slot_deathlink'] ~= nil and block['slot_deathlink'] ~= "false"
     then
@@ -10041,6 +10099,14 @@ function process_slot(block)
     if block['slot_skip_tot'] ~= nil and block['slot_skip_tot'] ~= ""
     then
         SKIP_TOT = block['slot_skip_tot']
+        if block['slot_skip_tot'] == "false"
+        then
+            BTH:setSettingToT(0)
+        elseif block['slot_skip_tot'] == "false"  then
+            BTH:setSettingToT(1)
+        else
+            BTH:setSettingToT(2)
+        end
     end
     if block['slot_honeycomb'] ~= nil and block['slot_honeycomb'] ~= "false"
     then
@@ -10073,6 +10139,10 @@ function process_slot(block)
     if block['slot_minigames'] ~= nil and block['slot_minigames'] ~= ""
     then
         MINIGAMES = block['slot_minigames']
+        if MINIGAMES == "skip"
+        then
+            BTH:setSettingMinigames(1)
+        end
     end
     if block['slot_treble'] ~= nil and block['slot_treble'] ~= "false"
     then
@@ -10081,10 +10151,12 @@ function process_slot(block)
     if block['slot_skip_puzzles'] ~= nil and block['slot_skip_puzzles'] ~= "false"
     then
         SKIP_PUZZLES = true
+        BTH:setSettingPuzzle(1)
     end
     if block['slot_skip_klungo'] ~= nil and block['slot_skip_klungo'] ~= "false"
     then
         SKIP_KLUNGO = true
+        BTH:setSettingKlungo(1)
     end
     if block['slot_open_hag1'] ~= nil and block['slot_open_hag1'] ~= "false"
     then
@@ -10097,6 +10169,7 @@ function process_slot(block)
     if block['slot_chuffy'] ~= nil and block['slot_chuffy'] ~= "false"
     then
         ENABLE_AP_CHUFFY = true
+        BTH:setSettingChuffy(1)
     end
     if block['slot_worlds'] ~= nil and block['slot_worlds'] ~= "false"
     then
@@ -10135,12 +10208,42 @@ function process_slot(block)
         for level, jiggy_amt in pairs(block['slot_world_order'])
         do
             local locationId = block['slot_keys'][level]
-            if level == "Outside Grunty Industries"
+            if(level == "Mayahem Temple")
             then
-                level = "Grunty Industries"
-            elseif  level == "Jolly Roger's Lagoon - Town Center"
+                BTH:setSettingJiggyRequirements(0, jiggy_amt)
+            elseif(level == "Glitter Gulch Mine")
+            then
+                BTH:setSettingJiggyRequirements(1, jiggy_amt)
+            
+            elseif(level == "Witchyworld")
+            then
+                BTH:setSettingJiggyRequirements(2, jiggy_amt)
+            
+            elseif(level == "Jolly Roger's Lagoon - Town Center")
             then
                 level = "Jolly Roger's Lagoon"
+                BTH:setSettingJiggyRequirements(3, jiggy_amt)
+            
+            elseif(level == "Terrydactyland")
+            then
+                BTH:setSettingJiggyRequirements(4, jiggy_amt)
+            
+            elseif(level == "Outside Grunty Industries")
+            then
+                level = "Grunty Industries"
+                BTH:setSettingJiggyRequirements(5, jiggy_amt)
+            
+            elseif(level == "Hailfire Peaks")
+            then
+                BTH:setSettingJiggyRequirements(6, jiggy_amt)
+            
+            elseif(level == "Cloud Cuckooland")
+            then
+                BTH:setSettingJiggyRequirements(7, jiggy_amt)
+            
+            elseif(level == "Cauldron Keep")
+            then
+                BTH:setSettingJiggyRequirements(8, jiggy_amt)
             end
             for worlds, t in pairs(WORLD_ENTRANCE_MAP)
             do
@@ -10155,6 +10258,32 @@ function process_slot(block)
     if block['slot_open_silo'] ~= nil
     then
         OPEN_SILO = block['slot_open_silo']
+        print(OPEN_SILO)
+        if OPEN_SILO == "ALL"
+        then
+            BTH:setSettingOpenSilos(0, 1) -- JV
+            BTH:setSettingOpenSilos(1, 1) -- WH
+            BTH:setSettingOpenSilos(2, 1) -- PL
+            BTH:setSettingOpenSilos(3, 1) -- PG
+            BTH:setSettingOpenSilos(4, 1) -- CT
+            BTH:setSettingOpenSilos(5, 1) -- WL
+            BTH:setSettingOpenSilos(6, 1) -- QM
+        elseif string.find(OPEN_SILO, "Wasteland") ~= nil then
+            BTH:setSettingOpenSilos(0, 1)
+            BTH:setSettingOpenSilos(5, 1) -- WL
+        elseif string.find(OPEN_SILO, "Quagmire") ~= nil then
+            BTH:setSettingOpenSilos(0, 1)
+            BTH:setSettingOpenSilos(6, 1) -- QM
+        elseif string.find(OPEN_SILO, "Plateau") ~= nil then
+            BTH:setSettingOpenSilos(0, 1)
+            BTH:setSettingOpenSilos(2, 1) -- PL
+        elseif string.find(OPEN_SILO, "Pine Grove") ~= nil then
+            BTH:setSettingOpenSilos(0, 1)
+            BTH:setSettingOpenSilos(3, 1) -- PG
+        elseif string.find(OPEN_SILO, "Cliff Top") ~= nil then
+            BTH:setSettingOpenSilos(0, 1)
+            BTH:setSettingOpenSilos(4, 1) -- CT
+        end
     end
     if block['slot_version'] ~= nil and block['slot_version'] ~= ""
     then
@@ -10226,7 +10355,7 @@ function main()
     BTRAMOBJ = BTRAM:new(nil);
     BTMODELOBJ = BTModel:new(BTRAMOBJ, "Player", false);
     BTCONSUMEOBJ = BTConsumable:new(BTRAMOBJ, "HONEYCOMB");
-
+    BTH = BTHACK:new(nil) 
     while true do
         FRAME = FRAME + 1
         if not (CUR_STATE == PREV_STATE) then
