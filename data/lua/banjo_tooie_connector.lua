@@ -42,6 +42,7 @@ local DEBUG_CHUFFY = false
 local DEBUG_STOPNSWAP = false
 local DEBUG_STATION = false
 local DEBUG_LEVEL = false
+local DEBUG_HONEYCOMB = false
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
@@ -96,12 +97,8 @@ local TEXT_COLOUR = 0;
 local GAME_LOADED = false;
 
 -------------- MAP VARS -------------
-local MAP_TRANSITION = false;
-local TRANSITION_SET = false;
 local CURRENT_MAP = nil;
-local NEXT_MAP = nil;
-local AP_LOADING_ZONES = {};
-local ZONE_SET = false;
+
 
 -------------- TRANSFORM VARS -----
 local FAKE_MUMBO = false;
@@ -121,10 +118,11 @@ local CLIMB = false
 local AIRRATATATRAP = false
 local FLUTTER = false
 
--------------- JIGGY VARS -----------
-local JIGGY_COUNT = 0; -- Used for UI and skip puzzles
-local BMM_BACKUP_JIGGY = false;
-local AGI_JIGGY_SET = false;
+-------------- TOTALS VARS -----------
+local TOTAL_HONEYCOMBS = 0;
+local TOTAL_JIGGY = 0;
+local TOTAL_MUMBO_TOKENS = 0;
+
 
 -------------- TREBLE VARS -----------
 local BMM_BACKUP_TREBLE = false;
@@ -224,105 +222,6 @@ local receive_map = { -- [ap_id] = item_id; --  Required for Async Items
     ["NA"] = "NA"
 }
 
--- Consumable Class
-BTConsumable = {
-    banjoRAM = nil;
-    CONSUME_PTR = 0x12B250;
-    CONSUME_IDX = 0x11B080;
-    consumeTable = {
-        [0]  = {key=0x27BD, name="BLUE EGGS", max=100},
-        [1]  = {key=0x0C03, name="FIRE EGGS", max=50},
-        [2]  = {key=0x0002, name="ICE EGGS", max=50},
-        [3]  = {key=0x01EE, name="GRENADE EGGS", max=25},
-        [4]  = {key=0x2401, name="CWK EGGS", max=10},
-        [5]  = {key=0x15E0, name="Proximity Eggs"},
-        [6]  = {key=0x1000, name="Red Feathers", max=100},
-        [7]  = {key=0x3C18, name="Gold Feathers", max=10},
-        [8]  = {key=0x0003, name="GLOWBO",max=16},
-        [9]  = {key=0x3C0C, name="HONEYCOMB",max=25},
-        [10] = {key=0x0319, name="CHEATO",max=25},
-        [11] = {key=0x858C, name="Burgers"},
-        [12] = {key=0x03E0, name="Fries"},
-        [13] = {key=0x27BD, name="Tickets"},
-        [14] = {key=0x0C03, name="DOUBLOON",max=30},
-        [15] = {key=0x3C05, name="Gold Idols"},
-        [16] = {key=0x0002, name="Beans"}, -- CCL
-        [17] = {key=0x85E3, name="Fish"}, -- HFP
-        [18] = {key=0x0040, name="Eggs", max=2}, -- Stop'n'Swop
-        [59] = {key=0x8FBF, name="Ice Keys", max=1}, -- Stop'n'Swop  -- read key is 59
-        [20] = {key=0x1461, name="MEGA GLOWBO",max=1}
-    };
-    consumeIndex = nil;
-    consumeKey = nil;
-    consumeName = nil;
-}
-
-function BTConsumable:new(BTRAM, itemName)
-    setmetatable({}, self)
-    self.__index = self
-    BTConsumable:changeConsumable(itemName)
-    self.banjoRAM = BTRAM;
-   return self
-end
-
-function BTConsumable:setConsumable(value)
-    -- if DEBUG == true
-    -- then
-    --     print("Setting Consumable value to :" .. tostring(value))
-    -- end
-    local addr = self.banjoRAM:dereferencePointer(self.CONSUME_PTR);
-    if addr == nil
-    then
-        return
-    end
-    if self.consumeIndex == 59
-    then
-        mainmemory.write_u16_be(addr + 19 * 2, value ~ self.consumeKey);
-    else
-        mainmemory.write_u16_be(addr + self.consumeIndex * 2, value ~ self.consumeKey);
-    end
-    mainmemory.write_u16_be(self.CONSUME_IDX + self.consumeIndex * 0x0C, value);
-    -- if DEBUG == true
-    -- then
-    --     print(self.consumeName .. " has been modified")
-    -- end
-end
-
-function BTConsumable:getConsumable()
-    local amount = mainmemory.read_u16_be(self.CONSUME_IDX + self.consumeIndex * 0x0C);
-	return amount;
-end
-
-function BTConsumable:getEggConsumable()
-    local addr = self.banjoRAM:dereferencePointer(self.CONSUME_PTR);
-    local amount = mainmemory.read_u16_be(addr + 18 * 2)
-    newamt = amount ~ 0x0040
-	return newamt;
-end
-
-function BTConsumable:getConsumableMax()
-    return self.consumeTable[self.consumeIndex]["max"]
-end
-
-function BTConsumable:changeConsumable(itemName)
-    self.consumeIndex = nil;
-    for index, table in pairs(self.consumeTable)
-    do
-        if itemName == table["name"]
-        then
-            self.consumeIndex = index
-            self.consumeKey = table["key"]
-            self.consumeName = itemName
-        end
-    end
-    if self.consumeIndex == nil
-    then
-        print("Could not find Consumeable name" + itemName)
-        print("Please Correct and restart the Banjo Tooie Connector")
-        return nil;
-    end
-end
--- EO Consumable Class
 
 BTHACK = {
     RDRAMBase = 0x80000000,
@@ -336,12 +235,19 @@ BTHACK = {
     setting_tot = 0x7,
     setting_minigames = 0x8,
     setting_jiggy_requirements = 0x9,
-    setting_open_silos = 0x10,
+    setting_open_silos = 0x14,
     pc_items = 0x8,
     pc_exit_map = 0xC,
+    exit_on_map = 0x0,
+    exit_og_map = 0x2,
+    exit_to_map = 0x4,
+    exit_og_exit = 0x6,
+    exit_to_exit = 0x7,
+    exit_map_struct_size = 0x8,
     n64 = 0x10,
     real_flags = 0x14,
-    fake_flags = 0x18
+    fake_flags = 0x18,
+    world_index = 0
 }
 
 function BTHACK:new(t)
@@ -378,9 +284,12 @@ function BTHACK:dereferencePointer(addr)
 end
 
 function BTHACK:checkFakeFlag(offset, byte)
-    local hackPointerIndex = mainmemory.read_u32_be(self.base_index);
+    local hackPointerIndex = BTHACK:dereferencePointer(self.base_index);
 	local fakeptr = BTHACK:dereferencePointer(self.fake_flags + hackPointerIndex);
-    
+    if fakeptr == nil
+    then
+        return false
+    end
     local currentValue = mainmemory.readbyte(fakeptr + offset);
     if bit.check(currentValue, byte) then
         return true;
@@ -389,10 +298,13 @@ function BTHACK:checkFakeFlag(offset, byte)
 end
 
 function BTHACK:checkRealFlag(offset, byte)
-    local hackPointerIndex = mainmemory.read_u32_be(self.base_index);
-	local fakeptr = BTHACK:dereferencePointer(self.real_flags + hackPointerIndex);
-    
-    local currentValue = mainmemory.readbyte(fakeptr + offset);
+    local hackPointerIndex = BTHACK:dereferencePointer(self.base_index);
+	local realptr = BTHACK:dereferencePointer(self.real_flags + hackPointerIndex);
+    -- if realptr == nil
+    -- then
+    --     return false
+    -- end
+    local currentValue = mainmemory.readbyte(realptr + offset);
     if bit.check(currentValue, byte) then
         return true;
     end
@@ -436,6 +348,45 @@ function BTHACK:setSettingOpenSilos(index, open)
     mainmemory.writebyte(self.setting_open_silos + index + BTHACK:getSettingPointer(), open);
 end
 
+function BTHACK:getItemsPointer()
+    local hackPointerIndex = BTHACK:dereferencePointer(self.base_index);
+	return BTHACK:dereferencePointer(self.pc_items + hackPointerIndex);
+end
+
+function BTHACK:setItem(index, value)
+    mainmemory.writebyte(index + self:getItemsPointer(), value);
+end
+
+function BTHACK:getMap()
+    local hackPointerIndex = BTHACK:dereferencePointer(self.base_index);
+    if hackPointerIndex == nil
+    then
+        return 0x0
+    end
+	local n64_ptr = BTHACK:dereferencePointer(self.n64 + hackPointerIndex);
+    return mainmemory.read_u16_be(n64_ptr + 4)
+end
+
+function BTHACK:setWorldEntrance(currentWorldId, newWorldId, entranceId, currentMap, newEntanceId)
+    local hackPointerIndex = BTHACK:dereferencePointer(self.base_index);
+    if hackPointerIndex == nil
+    then
+        return false
+    end
+    local exit_maps_ptr = BTHACK:dereferencePointer(self.pc_exit_map + hackPointerIndex);
+    if exit_maps_ptr == nil
+    then
+        return false
+    end
+    local world_index = self.world_index * self.exit_map_struct_size
+    self.world_index = self.world_index + 1
+    mainmemory.write_u16_be(exit_maps_ptr + world_index + self.exit_on_map, currentMap)
+    mainmemory.write_u16_be(exit_maps_ptr + world_index + self.exit_og_map, currentWorldId)
+    mainmemory.write_u16_be(exit_maps_ptr + world_index + self.exit_to_map, newWorldId)
+    mainmemory.writebyte(exit_maps_ptr + world_index + self.exit_to_exit, newEntanceId)
+    mainmemory.writebyte(exit_maps_ptr + world_index + self.exit_og_exit, entranceId)
+    return true
+end
 
 
 -- Class that requires RAM reading and writing
@@ -669,298 +620,6 @@ function BTRAM:setMultipleFlags(byte, mask, flags)
         local currentValue = mainmemory.readbyte(address + byte);
         mainmemory.writebyte(address + byte, (currentValue & mask) | flags);
 	end
-end
-
-BTModel = {
-    banjoRAM = nil;
-    OBJ_ARR_PTR = 0x136EE0;
-    model_name = nil;
-    enemy = false;
-    obj_model1_slot_base = 0x10;
-    obj_model1_slot_size = 0x9C;
-    pos = { 
-        ["Xpos"] = 0, 
-        ["Ypos"] = 0, 
-        ["Zpos"] = 0
-    };
-    model_list = {
-        ["Altar"] = 0x977,
-        ["Jinjo"] = 0x643,
-        ["Silo"] = 0x7D7,
-        ["Player"] = 0xFFFF,
-        ["Kazooie Split Pad"] = 0x7E1,
-        ["Banjo Split Pad"] = 0x7E2,
-        ["Doubloon"] = 0x7C0,
-        ["Treble Clef"] = 0x6ED,
-        ["Station Switch"] = 0x86D,
-        ["Levitate Pad"] = 0x7D8,
-        ["Jiggy"] = 0x610,
-        ["Breakable Door"] = 0x651,
-        ["Sign Post"] = 0x7A2,
-        ["Jiggy Guy"] = 0x937,
-        ["Ice Key"] = 0x63B,
-        ["Cartridge"] = 0x910,
-        ["Roysten"] = 0x6FA,
-        ["Chuffy Sign"] = 0x931
-    };
-    model_enemy_list = {
-        ["Ugger"] = 0x671,
-        ["Mingy Jongo"] = 0x816,
-    };
-    singleModelPointer = nil;
-    modelObjectList = {};
-    animation_index = 0x8C,
-    animationPointer = nil;
-}
-
-function BTModel:new(BTRAM, modelName, isEnemy)
-    t = t or {}
-    setmetatable({}, self)
-    self.__index = self
-    self.model_name = modelName
-    self.enemy = isEnemy
-    self.banjoRAM = BTRAM
-
-   return self
-end
-
-function BTModel:getModelSlotBase(index)
-	return self.obj_model1_slot_base + index * self.obj_model1_slot_size;
-end
-
-function BTModel:getModelCount()
-	local objects = self.banjoRAM:dereferencePointer(self.OBJ_ARR_PTR);
-    if objects == nil
-    then
-        return
-    end
-    local firstObject = self.banjoRAM:dereferencePointer(objects + 0x04);
-    local lastObject = self.banjoRAM:dereferencePointer(objects + 0x08);
-	if lastObject == nil or firstObject == nil
-	then
-		return
-	end
-    return math.floor((lastObject - firstObject) / self.obj_model1_slot_size) + 1;
-end
-
-function BTModel:getModelPointers()
-    local modelTable = {}
-	local objectArray = self.banjoRAM:dereferencePointer(self.OBJ_ARR_PTR);
-	local num_slots = self:getModelCount();
-    if num_slots == nil
-    then
-        return nil
-    end
-    for i = 0, num_slots - 1
-    do
-        table.insert(modelTable, objectArray + self:getModelSlotBase(i));
-	end
-
-    return modelTable
-end
-
-function BTModel:getObjectAnimation()
-    self.animationPointer = mainmemory.read_u16_be(self.singleModelPointer + self.animation_index)
-    local defref = self.banjoRAM:dereferencePointer(self.banjoRAM.animationPointer)
-    if defref ~= nil
-    then
-        return mainmemory.read_u16_be(defref + 0x38 + (0x3C * self.animationPointer))
-    end
-    return false
-end
-
-function BTModel:setObjectAnimation(animation2Bytes)
-    self.animationPointer = mainmemory.read_u16_be(self.singleModelPointer + self.animation_index)
-    local defref = self.banjoRAM:dereferencePointer(self.banjoRAM.animationPointer)
-    if defref ~= nil
-    then
-        print("writing to Mem")
-        print(defref + 0x38 + (0x3C * self.animationPointer))
-        mainmemory.write_u16_be(defref + 0x38 + (0x3C * self.animationPointer), animation2Bytes)
-        return true;
-    end
-    return false;
-end
-
-function BTModel:getAnimationType(modelPtr)
-	local objectIDPointer = self.banjoRAM:dereferencePointer(modelPtr + 0x0);
-    if objectIDPointer == nil
-    then
-        return nil
-    end
-    self.singleModelIndex = mainmemory.read_u16_be(objectIDPointer + 0x14);
-    return self.singleModelIndex;
-end
-
-function BTModel:checkModel()
-    local pointer_list = self:getModelPointers()
-    if pointer_list == nil
-    then
-        return false
-    end
-
-    for k, modelptr in pairs(pointer_list)
-    do
-        local ObjectAddr = self:getAnimationType(modelptr); -- Required for special data
-        if ObjectAddr == nil
-        then
-            return false
-        end
-
-        if self.enemy == true
-        then
-            for k, enemyval in pairs(self.model_enemy_list)
-            do
-                if ObjectAddr == enemyval
-                then
-                    self.singleModelPointer = modelptr;
-                    return true;
-                end
-            end
-        elseif ObjectAddr == self.model_list[self.model_name]
-        then
-            self.singleModelPointer = modelptr;
-            return true;
-        end
-    end
-    return false;
-end
-
-function BTModel:getModels() -- returns list
-    self.modelObjectList = {}
-    local pointer_list = self:getModelPointers()
-    if pointer_list == nil
-    then
-        return false
-    end
-    local i = 0
-    for k, objptr in pairs(pointer_list)
-    do
-        local currentObjectName = self:getAnimationType(objptr); -- Required for special data
-        if currentObjectName == nil and i == 0
-        then
-            return false
-        end
-        i = i + 1
-        if currentObjectName == self.model_list[self.model_name]
-        then
-           self.modelObjectList[i] = objptr;
-        end
-    end
-    return self.modelObjectList;
-end
-
-function BTModel:changeName(modelName, isEnemy)
-    self.model_name = modelName;
-    self.enemy = isEnemy;
-end
-
-function BTModel:getSingleModelCoords(modelObjPtr)
-    local POS = { 
-        ["Xpos"] = 0, 
-        ["Ypos"] = 0, 
-        ["Zpos"] = 0,
-        ["Hdist"] = 0;
-        ["Distance"] = 9999;
-    };
-    local banjoPOS = self.banjoRAM:getBanjoPos();
-    if banjoPOS == false
-    then
-        return false;
-    end
-
-    if modelObjPtr == nil
-    then
-        local result = self:checkModel();
-        if result == false
-        then
-            return false
-        end
-        POS["Xpos"] = mainmemory.readfloat(self.singleModelPointer + 0x04, true);
-        POS["Ypos"] = mainmemory.readfloat(self.singleModelPointer + 0x08, true);
-        POS["Zpos"] = mainmemory.readfloat(self.singleModelPointer + 0x0C, true);
-        POS["Hdist"] = math.sqrt(((POS["Xpos"] - banjoPOS["Xpos"]) ^ 2) + ((POS["Zpos"] - banjoPOS["Zpos"]) ^ 2));
-        POS["Distance"] = math.floor(math.sqrt(((POS["Ypos"] - banjoPOS["Ypos"]) ^ 2) + (POS["Hdist"] ^ 2)));
-    else
-        POS["Xpos"] = mainmemory.readfloat(modelObjPtr + 0x04, true);
-        POS["Ypos"] = mainmemory.readfloat(modelObjPtr + 0x08, true);
-        POS["Zpos"] = mainmemory.readfloat(modelObjPtr + 0x0C, true);
-        POS["Hdist"] = math.sqrt(((POS["Xpos"] - banjoPOS["Xpos"]) ^ 2) + ((POS["Zpos"] - banjoPOS["Zpos"]) ^ 2));
-        POS["Distance"] = math.floor(math.sqrt(((POS["Ypos"] - banjoPOS["Ypos"]) ^ 2) + (POS["Hdist"] ^ 2)));
-    end
-    return POS;
-end
-
-function BTModel:getClosestModelDistance()
-    self:getModels();
-    local closest = nil;
-    closest = 999999;
-    for index, modelObjPtr in pairs(self.modelObjectList)
-    do
-        local checkdistance = self:getSingleModelCoords(modelObjPtr)
-
-        if checkdistance ~= nil and checkdistance ~= false and checkdistance["Distance"] < closest
-        then
-            closest = checkdistance["Distance"]
-        end
-    end
-
-    if closest == nil or closest == 999999
-    then
-        return false;
-    end
-    return closest
-end
-
-function BTModel:getMultipleModelCoords()
-    local modelPOS_table = {}
-    BTModel:getModels();
-    local i = 0;
-    for index, modelObjPtr in pairs(self.modelObjectList)
-    do
-        local objPOS = BTModel:getSingleModelCoords(modelObjPtr);
-        if objPOS == false
-        then
-            return false
-        end
-        modelPOS_table[modelObjPtr] = objPOS
-        i = i + 1
-    end
-    return modelPOS_table
-end
-
-function BTModel:moveModelObject(modelObjPtr, Xnew, Ynew, Znew)
-    if modelObjPtr == nil
-    then
-        modelObjPtr = self.singleModelPointer;
-    end
-    if Xnew ~= nil
-    then
-        mainmemory.writefloat(modelObjPtr + 0x04, Xnew, true);
-    end
-    if Ynew ~= nil
-    then
-        mainmemory.writefloat(modelObjPtr + 0x08, Ynew, true);
-    end
-    if Znew ~= nil
-    then
-        mainmemory.writefloat(modelObjPtr + 0x0C, Znew, true);
-    end
-end
-
-function BTModel:changeRotation(modelObjPtr, Yrot, Zrot)
-    if modelObjPtr == nil
-    then
-        modelObjPtr = self.singleModelPointer;
-    end
-    if Yrot ~= nil
-    then
-        mainmemory.writefloat(modelObjPtr + 0x48, Yrot, true);
-    end
-    if Zrot ~= nil
-    then
-        mainmemory.writefloat(modelObjPtr + 0x4C, Zrot, true);
-    end
 end
 
 
@@ -2203,6 +1862,111 @@ local AGI_JINJOS = {
     ["1230508"] = 0, -- purple
     ["1230509"] = 0, -- black
 };
+local ITEM_TABLE = {}; -- reverses ROM_ITEM so the key is the Item
+local ROM_ITEM_TABLE = {
+    "AP_ITEM_PAGES",
+    "AP_ITEM_HONEY",
+    "AP_ITEM_WJINJO",
+    "AP_ITEM_OJINJO",
+    "AP_ITEM_YJINJO",
+    "AP_ITEM_BRJINJO",
+    "AP_ITEM_GJINJO",
+    "AP_ITEM_RJINJO",
+    "AP_ITEM_BLJINJO",
+    "AP_ITEM_PJINJO",
+    "AP_ITEM_BKJINJO",
+    "AP_ITEM_DOUBLOON",
+    "AP_ITEM_JIGGY",
+    "AP_ITEM_TREBLE",
+    "AP_ITEM_NOTE",
+    "AP_ITEM_MUMBOTOKEN",
+    "AP_ITEM_IKEY",
+    "AP_ITEM_PMEGG",
+    "AP_ITEM_BMEGG",
+    "AP_ITEM_GGRAB",
+    "AP_ITEM_BBLASTER",
+    "AP_ITEM_EGGAIM",
+    "AP_ITEM_BDRILL",
+    "AP_ITEM_BBAYONET",
+    "AP_ITEM_AIREAIM",
+    "AP_ITEM_SPLITUP",
+    "AP_ITEM_WWHACK",
+    "AP_ITEM_TTORP",
+    "AP_ITEM_AUQAIM",
+    "AP_ITEM_SHPACK",
+    "AP_ITEM_GLIDE",
+    "AP_ITEM_SNPACK",
+    "AP_ITEM_LSPRING",
+    "AP_ITEM_CLAWBTS",
+    "AP_ITEM_SPRINGB",
+    "AP_ITEM_TAXPACK",
+    "AP_ITEM_HATCH",
+    "AP_ITEM_PACKWH",
+    "AP_ITEM_SAPACK",
+    "AP_ITEM_FEGGS",
+    "AP_ITEM_GEGGS",
+    "AP_ITEM_CEGGS",
+    "AP_ITEM_IEGGS",
+    "AP_ITEM_FSWIM",
+    "AP_ITEM_DAIR",
+    "AP_ITEM_BBASH",
+    "AP_ITEM_HOMINGEGGS",
+    "AP_ITEM_AMAZEOGAZE",
+    "AP_ITEM_ROAR",
+    "AP_ITEM_DIVE",
+    "AP_ITEM_FPAD",
+    "AP_ITEM_GRAT",
+    "AP_ITEM_ROLL",
+    "AP_ITEM_ARAT",
+    "AP_ITEM_BBARGE",
+    "AP_ITEM_TJUMP",
+    "AP_ITEM_FLUTTER",
+    "AP_ITEM_FFLIP",
+    "AP_ITEM_CLIMB",
+    "AP_ITEM_BEGGS",
+    "AP_ITEM_TTROT",
+    "AP_ITEM_BBUST",
+    "AP_ITEM_WWING",
+    "AP_ITEM_SSTRIDE",
+    "AP_ITEM_TTRAIN",
+    "AP_ITEM_BBOMB",
+    "AP_ITEM_EGGSHOOT",
+    "AP_ITEM_MUMBOMT",
+    "AP_ITEM_MUMBOGM",
+    "AP_ITEM_MUMBOWW",
+    "AP_ITEM_MUMBOJR",
+    "AP_ITEM_MUMBOTD",
+    "AP_ITEM_MUMBOGI",
+    "AP_ITEM_MUMBOHP",
+    "AP_ITEM_MUMBOCC",
+    "AP_ITEM_MUMBOIH",
+    "AP_ITEM_HUMBAMT",
+    "AP_ITEM_HUMBAGM",
+    "AP_ITEM_HUMBAWW",
+    "AP_ITEM_HUMBAJR",
+    "AP_ITEM_HUMBATD",
+    "AP_ITEM_HUMBAGI",
+    "AP_ITEM_HUMBAHP",
+    "AP_ITEM_HUMBACC",
+    "AP_ITEM_HUMBAIH",
+    "AP_ITEM_TRAINSWIH",
+    "AP_ITEM_TRAINSWTD",
+    "AP_ITEM_TRAINSWGI",
+    "AP_ITEM_TRAINSWHP1",
+    "AP_ITEM_TRAINSWHP2",
+    "AP_ITEM_TRAINSWWW",
+    "AP_ITEM_CHUFFY",
+    "AP_ITEM_MTA",
+    "AP_ITEM_GGA",
+    "AP_ITEM_WWA",
+    "AP_ITEM_JRA",
+    "AP_ITEM_TDA",
+    "AP_ITEM_GIA",
+    "AP_ITEM_HFA",
+    "AP_ITEM_CCA",
+    "AP_ITEM_CKA",
+    "AP_ITEM_H1A",
+};
 
 
 local BMM_JIGGIES = {}; -- BMM JIGGIES
@@ -2220,30 +1984,6 @@ local CHEATO_REWARDS = {} -- Cheato Check Locations
 local HONEYB_REWARDS = {} -- Honey B Check Locations
 local JIGGY_CHUNKS = {} -- Jiggy Chunky Check Locations
 local DINO_KIDS = {} -- the 3 Dino Kids
-
-
--- local MAGIC_MAP = {
---     ["1230501"] = false,
---     ["1230855"] = false,
---     ["1230856"] = false,
---     ["1230857"] = false,
---     ["1230858"] = false,
---     ["1230859"] = false,
---     ["1230860"] = false,
---     ["1230861"] = false,
---     ["1230862"] = false,
---     ["1230863"] = false,
-
---     ["1230174"] = false,
---     ["1230175"] = false,
---     ["1230176"] = false,
---     ["1230177"] = false,
---     ["1230178"] = false,
---     ["1230179"] = false,
---     ["1230180"] = false,
---     ["1230181"] = false,
---     ["1230182"] = false
--- }
 
 
 local TRANSFORM_SWAP_MAP = {
@@ -3465,94 +3205,6 @@ local ADDRESS_MAP = {
             ['bit'] = 0,
             ['name'] = "SM: Cheato Reward 5"
         },
-    },
-    ["BKMOVES"] = {
-        ["1230810"] = {
-            ['addr'] = 0x1A,
-            ['bit'] = 4,
-            ['name'] = "Dive"
-        },
-        ["1230811"] = {
-            ['addr'] = 0x19,
-            ['bit'] = 6,
-            ['name'] = "Flight Pad"
-        },
-        ["1230812"] = {
-            ['addr'] = 0x19,
-            ['bit'] = 5,
-            ['name'] = "Flap Flip"
-        },
-        ["1230813"] = {
-            ['addr'] = 0x19,
-            ['bit'] = 3,
-            ['name'] = "Third Person Egg Shooting"
-        },
-        ["1230814"] = {
-            ['addr'] = 0x1A,
-            ['bit'] = 1,
-            ['name'] = "Roll"
-        },
-        ["1230815"] = {
-            ['addr'] = 0x1A,
-            ['bit'] = 5,
-            ['name'] = "Talon Trot"
-        },
-        ["1230816"] = {
-            ['addr'] = 0x19,
-            ['bit'] = 7,
-            ['name'] = "Tall Jump"
-        },
-        ["1230817"] = {
-            ['addr'] = 0x19,
-            ['bit'] = 2,
-            ['name'] = "Climb"
-        },
-        ["1230818"] = {
-            ['addr'] = 0x19,
-            ['bit'] = 4,
-            ['name'] = "Flutter"
-        },
-        ["1230819"] = {
-            ['addr'] = 0x1A,
-            ['bit'] = 7,
-            ['name'] = "Wonderwing"
-        },
-        ["1230820"] = {
-            ['addr'] = 0x18,
-            ['bit'] = 7,
-            ['name'] = "Beak Buster"
-        },
-        ["1230821"] = {
-            ['addr'] = 0x1A,
-            ['bit'] = 6,
-            ['name'] = "Turbo Trainers"
-        },
-        ["1230822"] = {
-            ['addr'] = 0x1A,
-            ['bit'] = 0,
-            ['name'] = "Air Rat-a-tat Rap"
-        },
-        ["1230824"] = {
-            ['addr'] = 0x19,
-            ['bit'] = 1,
-            ['name'] = "Ground Rat-a-tat Rap"
-        },
-        ["1230825"] = {
-            ['addr'] = 0x18,
-            ['bit'] = 5,
-            ['name'] = "Beak Barge"
-        },
-        ["1230826"] = {
-            ['addr'] = 0x1A,
-            ['bit'] = 3,
-            ['name'] = "Stilt Stride"
-        },
-        ["1230827"] = {
-            ['addr'] = 0x18,
-            ['bit'] = 6,
-            ['name'] = "Beak Bomb"
-        },
-
     },
     ["HONEYB"] = {
         ["1230997"] = {
@@ -5345,93 +4997,48 @@ local WORLD_ENTRANCE_MAP = {
     ["WORLD 1"] = {
         ["defaultName"] = "Mayahem Temple",
         ["defaultCost"] = 1,
-        ["addr"] = 0x6D,
-        ["bit"] = 2,
-        ["puzzleFlags"] = 0x10, -- 0b00010000
-        ["opened"] = false,
         ["locationId"] = "0"
     },
     ["WORLD 2"] = {
         ["defaultName"] = "Glitter Gulch Mine",
         ["defaultCost"] = 4,
-        ["addr"] = 0x6D,
-        ["bit"] = 3,
-        ["puzzleFlags"] = 0x20, -- 0b00100000
-        ["opened"] = false,
         ["locationId"] = "0"
     },
     ["WORLD 3"] = {
         ["defaultName"] = "Witchyworld",
         ["defaultCost"] = 8,
-        ["addr"] = 0x6D,
-        ["bit"] = 4,
-        ["puzzleFlags"] = 0x30, -- 0b00110000
-        ["opened"] = false,
         ["locationId"] = "0"
     },
     ["WORLD 4"] = {
         ["defaultName"] = "Jolly Roger's Lagoon",
         ["defaultCost"] = 14,
-        ["addr"] = 0x6D,
-        ["bit"] = 5,
-        ["puzzleFlags"] = 0x40, -- 0b01000000
-        ["opened"] = false,
         ["locationId"] = "0"
     },
     ["WORLD 5"] = {
         ["defaultName"] = "Terrydactyland",
         ["defaultCost"] = 20,
-        ["addr"] = 0x6D,
-        ["bit"] = 6,
-        ["puzzleFlags"] = 0x50, -- 0b01010000
-        ["opened"] = false,
         ["locationId"] = "0"
     },
     ["WORLD 6"] = {
         ["defaultName"] = "Grunty Industries",
         ["defaultCost"] = 28,
-        ["addr"] = 0x6D,
-        ["bit"] = 7,
-        ["puzzleFlags"] = 0x60, -- 0b01100000
-        ["opened"] = false,
         ["locationId"] = "0"
     },
     ["WORLD 7"] = {
         ["defaultName"] = "Hailfire Peaks",
         ["defaultCost"] = 36,
-        ["addr"] = 0x6E,
-        ["bit"] = 0,
-        ["puzzleFlags"] = 0x70, -- 0b01110000
-        ["opened"] = false,
         ["locationId"] = "0"
     },
     ["WORLD 8"] = {
         ["defaultName"] = "Cloud Cuckooland",
         ["defaultCost"] = 45,
-        ["addr"] = 0x6E,
-        ["bit"] = 1,
-        ["puzzleFlags"] = 0x80, -- 0b10000000
-        ["opened"] = false,
         ["locationId"] = "0"
     },
     ["WORLD 9"] = {
         ["defaultName"] = "Cauldron Keep",
         ["defaultCost"] = 55,
-        ["addr"] = 0x6E,
-        ["bit"] = 2,
-        ["puzzleFlags"] = 0x90, -- 0b10010000
-        ["opened"] = false,
         ["locationId"] = "0"
-    },
-    ["HAG 1"] = {
-        ["defaultName"] = "HAG 1",
-        ["defaultCost"] = 70,
-        ["addr"] = 0x6E,
-        ["bit"] = 3,
-        ["puzzleFlags"] = 0xA0, -- 0b10100000
-        ["opened"] = false,
-        ["locationId"] = "0"
-    },
+    }
 }
 
 -- Used for randomized maps
@@ -5491,60 +5098,11 @@ local MAP_ENTRANCES = {
         ['exitMap'] = 0x15C
     }
 }
-local IOH_MAPS = {
-    [0x14F] = 'value', -- WH
-    [0x152] = 'value', --  PL
-    [0x154] = 'value', -- PG
-    [0x155] = 'value', -- CT
-    [0x15A] = 'value', -- WL
-    [0x15C] = 'value', -- QM
-}
+
 
 
 ---------------------------------- JIGGIES ---------------------------------
 
-function init_JIGGIES(type, getReceiveMap) -- Initialize JIGGIES
-    for locationId,v in pairs(ADDRESS_MAP["JIGGIES"])
-    do
-        if type == "BMM"
-        then
-            BMM_JIGGIES[locationId] = BTRAMOBJ:checkFlag(v['addr'], v['bit'])
-        elseif type == "AGI"
-        then
-            AGI_JIGGIES[locationId] = false
-        end
-    end
-    if type == "AGI" and getReceiveMap == true
-    then
-        for _, locationId in pairs(receive_map)
-        do
-            if locationId == "1230515"
-            then
-                obtained_AP_JIGGY()
-            end
-        end
-    end
-end
-
-function restore_BMM_JIGGIES() --Only run while unpausing 
-    if BMM_BACKUP_JIGGY == true and AGI_JIGGY_SET == true
-    then
-        for locationId,v in pairs(ADDRESS_MAP["JIGGIES"]) do
-            if BMM_JIGGIES[locationId] == true
-            then
-                BTRAMOBJ:setFlag(v['addr'], v['bit']);
-            else
-                BTRAMOBJ:clearFlag(v['addr'], v['bit']);
-            end
-        end
-        BMM_BACKUP_JIGGY = false
-        AGI_JIGGY_SET = false
-        if DEBUG_JIGGY == true
-        then
-            print("JIGGY BMM RESTORED")
-        end
-    end
-end
 
 function set_AP_JIGGIES() -- Only run while Pausing or Transistion to certain maps
     if BMM_BACKUP_JIGGY == true and AGI_JIGGY_SET == false
@@ -5572,73 +5130,20 @@ function obtained_AP_JIGGY()
     then
         print("Jiggy Obtained")
     end
-    for locationId, value in pairs(AGI_JIGGIES)
-    do
-        if value == false
-        then
-            AGI_JIGGIES[locationId] = true;
-            if AGI_JIGGY_SET == true
-            then
-                local get_addr = ADDRESS_MAP["JIGGIES"][tostring(locationId)]
-                BTRAMOBJ:setFlag(get_addr['addr'], get_addr['bit']);
-            end
-            break
-        end
-    end
-    JIGGY_COUNT = JIGGY_COUNT + 1
-end
-
-function jiggy_ui_update()
-    JIGGY_COUNT = 0
-    for _, value in pairs(AGI_JIGGIES)
-    do
-        if value == true
-        then
-            JIGGY_COUNT = JIGGY_COUNT + 1
-        end
-    end
-    mainmemory.write_u16_be(0x11B0BC, JIGGY_COUNT)
-end
-
-function backup_BMM_JIGGIES()
-    if BMM_BACKUP_JIGGY == false
-    then
-        for locationId,v in pairs(ADDRESS_MAP["JIGGIES"]) do
-            if BTRAMOBJ:checkFlag(v['addr'], v['bit']) == true
-            then
-                BMM_JIGGIES[locationId] = true
-            else
-                BMM_JIGGIES[locationId] = false
-            end
-        end
-        BMM_BACKUP_JIGGY = true
-        if DEBUG_JIGGY == true
-        then
-            print("JIGGY BMM SET")
-        end
-        set_AP_JIGGIES()
-    end
+    TOTAL_JIGGY = TOTAL_JIGGY + 1
+    BTH:setItem(ITEM_TABLE["AP_ITEM_JIGGY"], TOTAL_JIGGY)
+    check_open_level()
 end
 
 function jiggy_check()
     local checks = {}
-    if GAME_LOADED == true
-    then
-        if BMM_BACKUP_JIGGY == true
-        then
-            if DEBUG == true
-            then
-                print("Setting BMM Jiggies")
-            end
-            return BMM_JIGGIES
-        end
         if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
         then
             if ASSET_MAP_CHECK[CURRENT_MAP]["JIGGIES"] ~= nil
             then
                 for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["JIGGIES"])
                 do
-                    checks[locationId] = BTRAMOBJ:checkFlag(ADDRESS_MAP["JIGGIES"][locationId]['addr'], ADDRESS_MAP["JIGGIES"][locationId]['bit'])
+                    checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["JIGGIES"][locationId]['addr'], ADDRESS_MAP["JIGGIES"][locationId]['bit'])
                     if DEBUG_JIGGY == true
                     then
                         print(ADDRESS_MAP["JIGGIES"][locationId]['name']..":"..tostring(checks[locationId]))
@@ -5648,193 +5153,12 @@ function jiggy_check()
         end
         for _,locationId in pairs(ASSET_MAP_CHECK["ALL"]["JIGGIES"])
         do
-            checks[locationId] = BTRAMOBJ:checkFlag(ADDRESS_MAP["JIGGIES"][locationId]['addr'], ADDRESS_MAP["JIGGIES"][locationId]['bit'])
-            -- if DEBUG_JIGGY == true
-            -- then
-            --     print(ADDRESS_MAP["JIGGIES"][locationId]['name'] .. ":" .. tostring(checks[locationId]))
-            -- end
+            checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["JIGGIES"][locationId]['addr'], ADDRESS_MAP["JIGGIES"][locationId]['bit'])
         end
-    end
     return checks
 end
 
-function no_puzzle_skip()
-    if MAP_TRANSITION == true and NEXT_MAP == 0x14F and BMM_BACKUP_JIGGY == false --Wooded Hollow
-    then
-        backup_BMM_JIGGIES()
-    elseif MAP_TRANSITION == true and NEXT_MAP == 0x151 and BMM_BACKUP_JIGGY == false -- Jiggywiggy Temple
-    then
-        backup_BMM_JIGGIES()
-    elseif MAP_TRANSITION == true and BMM_BACKUP_JIGGY == true and NEXT_MAP ~= 0x14F and NEXT_MAP ~= 0x151  --Exiting Wooded Hollow
-    then
-        restore_BMM_JIGGIES()
-    end
-end
 
-function hag1_open()
-    if GAME_LOADED == true
-    then
-        if GOAL_TYPE == 0
-        then
-            if OPEN_HAG1 == true and BTRAMOBJ:checkFlag(0x6E, 3) == false then
-                BTRAMOBJ:setFlag(0x6E, 3);
-                table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                print("HAG 1 is now unlocked!")
-            end
-        elseif GOAL_TYPE == 4
-        then
-            local token_count = 0;
-            for id, itemId in pairs(receive_map)
-            do
-                if itemId == "1230798"
-                then
-                    token_count = token_count + 1
-                end
-            end
-            if token_count >= 32
-            then
-                if BTRAMOBJ:checkFlag(0x6E, 3) == false then
-                    BTRAMOBJ:setFlag(0x6E, 3);
-                    table.insert(AP_MESSAGES, "HAG 1 is now unlocked!")
-                    print("HAG 1 is now unlocked!")
-                end
-            end
-        end
-    end
-end
-
-function check_open_level(show_message)  -- See if entrance conditions for a level have been met    
-    if DEBUG == true then
-        print(JIGGY_COUNT)
-    end
-    for _, values in pairs(WORLD_ENTRANCE_MAP)
-    do
-        if GOAL_TYPE == 4 and values["defaultName"] == "HAG 1"
-        then
-            --Do nothing here
-            local a = 1
-        elseif values["opened"] == false
-        then
-            if JIGGY_COUNT >= values["defaultCost"]
-            then
-                if DEBUG == true
-                then
-                    print(values["defaultName"] .. tostring(values["defaultCost"]))
-                end
-                BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                if values["locationId"] ~= "0"
-                then
-                    UNLOCKED_WORLDS[values["locationId"]] = true
-                end
-                if ENABLE_AP_WORLDS == false
-                then
-                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
-                end
-                values["opened"] = true
-                if (OPEN_HAG1 == true and values["defaultName"] ~= "HAG 1") or OPEN_HAG1 == false
-                    and show_message == true
-                then
-                    if ENABLE_AP_WORLDS == false
-                    then
-                        table.insert(AP_MESSAGES, values["defaultName"] .. " is now unlocked!")
-                        print(values["defaultName"] .. " is now unlocked!")
-                    end
-                end
-            end
-        else --Make sure its open regardless but no message
-            if JIGGY_COUNT >= values["defaultCost"] and values["opened"] == true and values["defaultName"] ~= "HAG 1"
-            then
-                BTRAMOBJ:setFlag(values["addr"], values["bit"])
-                if ENABLE_AP_WORLDS == false
-                then
-                    BTRAMOBJ:setMultipleFlags(0x66, 0xF, values["puzzleFlags"])
-                end
-            end
-        end
-    end
-end
-
-function SolvingPuzzle(mapaddr) -- Avoid false checks when working on puzzles -- Not Used?
-    if CURRENT_MAP ~= 0x151 --The Temple
-    then
-        return false
-    end
-    if mapaddr == 0xC5 or mapaddr == 0xD8 or mapaddr == 0x152 or mapaddr == 0xE1
-        or mapaddr == 0x154 or mapaddr == 0xF4 or mapaddr == 0x155 or mapaddr == 0x114
-        or mapaddr == 0x15A or mapaddr == 0x107 or mapaddr == 0x15C or mapaddr == 0x129
-        or mapaddr == 0x13A or mapaddr == 0x151 or mapaddr == 0x15D or mapaddr == 0x160
-    then
-        return true
-    end
-end
-
-function getAltar()
-    BTMODELOBJ:changeName("Altar", false);
-    if SKIP_PUZZLES == false
-    then
-        local playerDist = BTMODELOBJ:getClosestModelDistance()
-        if playerDist == false
-        then
-            return
-        end
-        if playerDist <= 300 and CURRENT_MAP ~= 0x14F
-        then
-            if DEBUG == true
-            then
-                print("Altar Closeby");
-            end
-            backup_BMM_JIGGIES()
-        elseif playerDist >=301 and CURRENT_MAP ~= 0x14F
-        then
-            if DEBUG == true
-            then
-                print("Altar Away");
-            end
-            restore_BMM_JIGGIES()
-        end
-    else -- Move Altar off the map 
-        local modelPOS = BTMODELOBJ:getMultipleModelCoords()
-        if modelPOS == false
-        then
-            return
-        end
-        for modelObjPtr, POS in pairs(modelPOS) do
-            if POS ~= false
-            then
-                BTMODELOBJ:moveModelObject(modelObjPtr, nil, -5000, nil)
-            end
-        end
-    end
-end
-
-function nearDisiple()
-    if SKIP_PUZZLES == true
-    then
-        BTMODELOBJ:changeName("Jiggy Guy", false);
-        local playerDist = BTMODELOBJ:getClosestModelDistance()
-        if playerDist == false
-        then
-            return;
-        end
-        POS = BTMODELOBJ:getSingleModelCoords(nil)
-        if POS == false
-        then
-            return
-        end
-        BTMODELOBJ:moveModelObject(nil, -3117, 1500, -2219.08 );
-        if playerDist <= 1500
-        then
-            if DEBUG == true
-            then
-                print("Near Disiple");
-            end
-            backup_BMM_JIGGIES()
-        elseif playerDist > 1500 and playerDist < 2000
-        then
-            restore_BMM_JIGGIES()
-        end
-    end
-end
 
 ---------------------------------- TREBLE ---------------------------------
 
@@ -6245,12 +5569,13 @@ end
 ---------------------------------- HONEYCOMBS ---------------------------------
 
 function obtained_AP_HONEYCOMB()
-    if DEBUG == true
+    -- Send Total to RAM
+    if DEBUG_HONEYCOMB == true
     then
-        print("HC Obtained")
+        print("Obtain HC")
     end
-    BTCONSUMEOBJ:changeConsumable("HONEYCOMB");
-    BTCONSUMEOBJ:setConsumable(BTCONSUMEOBJ:getConsumable() + 1);
+    TOTAL_HONEYCOMBS = TOTAL_HONEYCOMBS + 1
+    BTH:setItem(ITEM_TABLE["AP_ITEM_HONEY"], TOTAL_HONEYCOMBS)
 end
 
 function honeycomb_ui_update()
@@ -6688,24 +6013,43 @@ function watchDinoFlags()
 end
 
 --------------------------------- BK MOVES ----------------------------------------------
-function obtain_bkmove()
-    for itemId, data in pairs(ADDRESS_MAP["BKMOVES"])
-    do
-        local res = BTRAMOBJ:checkFlag(data['addr'], data['bit'])
-        if res == false
-        then
-            for apid, item in pairs(receive_map)
-            do
-                if itemId == item
-                then
-                    if DEBUG == true
-                    then
-                        print("Found ".. data['name'])
-                    end
-                    BTRAMOBJ:setFlag(data['addr'], data['bit'])
-                end
-            end
-        end
+function obtain_bkmove(itemId)
+    if itemId == 1230810 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_DIVE"], 1)
+    elseif itemId == 1230811 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_FPAD"], 1)
+    elseif itemId == 1230812 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_FFLIP"], 1)
+    elseif itemId == 1230813 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_EGGSHOOT"], 1)
+    elseif itemId == 1230814 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_ROLL"], 1)
+    elseif itemId == 1230815 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_TTROT"], 1)
+    elseif itemId == 1230816 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_TJUMP"], 1)
+    elseif itemId == 1230817 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_CLIMB"], 1)
+    elseif itemId == 1230818 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_FLUTTER"], 1)
+    elseif itemId == 1230819 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WWING"], 1)
+    elseif itemId == 1230820 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_BBUST"], 1)
+    elseif itemId == 1230821 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_TTRAIN"], 1)
+    elseif itemId == 1230822 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_ARAT"], 1)
+    elseif itemId == 1230823 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_BEGGS"], 1)
+    elseif itemId == 1230824 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_GRAT"], 1)
+    elseif itemId == 1230825 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_BBARGE"], 1)
+    elseif itemId == 1230826 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_SSTRIDE"], 1)
+    elseif itemId == 1230827 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_BBOMB"], 1)
     end
 end
 
@@ -8517,430 +7861,94 @@ function moveLevitatePad()
     end
 end
 
----------------------- MAP HANDLING -------------------
-
-function watchMapTransition()
-    if GAME_LOADED == true then
-        local mapaddr = BTRAMOBJ:getMap(false)
-        if mapaddr == 0x158 or mapaddr == 0x18B -- main menu / select screen
-        then
-            GAME_LOADED = false
-            DEMO_MODE = true
-            MAP_TRANSITION = false
-            return
-        end
-        if TRANSITION_SET == true
-        then
-            if MAP_TRANSITION == false then
-                MAP_TRANSITION = true
-                SILO_TIMER = 0
-                STATION_BTN_TIMER = 0
-                if SKIP_PUZZLES == true
-                then
-                    check_open_level(true)
-                end
-                clear_AMM_MOVES_checks(NEXT_MAP)
-                clear_roysten()
-                check_egg_mystery()
-                obtain_breegull_bash()
-                set_checked_STATIONS()
-                ChuffyTDLFix()
-                ccl_cutscene_skip()
-                if GOAL_TYPE == 4
-                then
-                    hag1_open()
-                end
-            end
-            TRANSITION_SET = false
-        else -- Runs Constantly while NOT transitioning (and runs while player not yet loaded)
-            finishTransition()
-            jiggy_ui_update()
-            jinjo_ui_update()
-            pages_ui_update()
-            honeycomb_ui_update()
-            glowbo_ui_update()
-            doubloon_ui_update()
-            note_ui_update()
-            JinjoCounter()
-            check_goggles()
-            check_roar()
-            -- Scrotty Kids
-            watchDinoFlags()
-        end
-    else
-        loadGame(BTRAMOBJ:getMap(false))
-    end
-end
-
-function finishTransition()
-    BTMODELOBJ:changeName("Player", false)
-    local player = BTMODELOBJ:checkModel();
-    local mapaddr = BTRAMOBJ:getMap(false);
-    if mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == true and player == true and mapaddr == NEXT_MAP -- runs once
-    then
-        MAP_TRANSITION = false
-        local mapaddr = BTRAMOBJ:getMap(false)
-        -- BKLogics(mapaddr)
-        if mapaddr ~= CURRENT_MAP
-        then
-            CURRENT_MAP = mapaddr
-            savingBMM()
-            client.saveram()
-        end
-        if ENABLE_AP_CHUFFY == true
-        then
-            getChuffyMaps()
-        end
-        ap_icekey_glowbo_map()
-    elseif mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == false and player == true -- constantly runs while NOT transitioning AND Player is loaded
-    then
-        -- Chuffy
-        moveLevitatePad()
-        watchChuffyFlag()
-        -- Advance Moves
-        if SILO_TIMER ~= 25 --Silo greenlights sooner if not wait for timer
-        then
-            check_jamjar_silo()
-        end
-        nearSilo()
-        -- Stations
-        if STATION_BTN_TIMER ~= 25 --Silo greenlights sooner if not wait for timer
-        then
-            check_STATION_BUTTONS()
-        end
-        watchBtnAnimation()
-        if STATION_BTN_TIMER == 25 --Silo greenlights sooner if not wait for timer
-        then
-            nearChuffySign()
-        end
-        -- Roysten
-        check_freed_roysten()
-        -- StopNSwap
-        check_STOPNSWAPEGGS()
-        check_hatched_mystery()
-        check_local_icekey()
-        -- BK Moves
-        if ENABLE_AP_BK_MOVES ~= 0
-        then
-            obtain_bkmove()
-            check_progressive()
-        end
-        -- Honey B
-        if ENABLE_AP_HONEYB_REWARDS == true
-        then
-            watchHoneyB()
-        end
-        --Cheato 
-        if ENABLE_AP_CHEATO_REWARDS == true
-        then
-            watchCheato()
-        end
-        -- Jiggy Chunks
-        watchJChunk()
-        -- Bath Pads
-        MoveBathPads()
-        getAltar()
-        nearDisiple()
-        -- Token Announcement
-        mumbo_announce()
-    end
-end
-
 ---------------------- GAME FUNCTIONS -------------------
 
-function zoneWarp()
-    if ZONE_SET == false
-    then
-        local zone = BTRAMOBJ:getEntranceId()
-        if MAP_ENTRANCES[NEXT_MAP] ~= nil -- Entering a world
-        then
-            if (MAP_ENTRANCES[NEXT_MAP]['entranceId'] == zone or -- Entering Main front door
-            (MAP_ENTRANCES[NEXT_MAP]['name'] == "Glitter Gulch Mine" and zone == 16)) --GGM fall bug
-            and IOH_MAPS[CURRENT_MAP] ~= nil -- Avoids death warps to wrong level
+function zoneWarp(zone_table)
+    -- from name -> to name
+    print(zone_table)
+    for orig_world, new_world in pairs(zone_table)
+    do
+        local success = false
+        local orig_table = {}
+        local orig_map = 0x0
+        local new_table = {}
+        local new_map = 0x0;
+       for world_id, world_table in pairs(MAP_ENTRANCES)
+       do
+            if world_table["name"] == orig_world
             then
-                local level_name = MAP_ENTRANCES[NEXT_MAP]['name']
-                local warp_to_name = AP_LOADING_ZONES[level_name]
-                if DEBUG_LEVEL == true
-                then
-                    print("Entering ".. warp_to_name)
-                end
-                for map, table in pairs(MAP_ENTRANCES)
-                do
-                    if table['name'] == warp_to_name -- Warp to this level instead
-                    then
-                        BTRAMOBJ:setNextMap(map)
-                        BTRAMOBJ:setEntranceId(table['entranceId'])
-                        ZONE_SET = true
-                        return
-                    end
-                end
+                orig_table = world_table
+                orig_map = world_id
             end
-        elseif MAP_ENTRANCES[CURRENT_MAP] ~= nil -- Exiting a world
-        then
-            if MAP_ENTRANCES[CURRENT_MAP]['exitId'] == zone and IOH_MAPS[NEXT_MAP] ~= nil -- leaving world
+            if world_table["name"] == new_world
             then
-                local leaving_level = MAP_ENTRANCES[CURRENT_MAP]['name']
-                local starting_entrance = ""
-                for entrance, level in pairs(AP_LOADING_ZONES)
-                do
-                    if leaving_level == level -- Get the original warp
-                    then
-                        starting_entrance = entrance
-                        if DEBUG_LEVEL == true
-                        then
-                            print("Leaving ".. starting_entrance .. " Area")
-                        end
-                        break
-                    end
-                end
-                for map, table in pairs(MAP_ENTRANCES)
-                do
-                    if table['name'] == starting_entrance -- Warp to this level instead
-                    then
-                        BTRAMOBJ:setNextMap(table['exitMap'])
-                        BTRAMOBJ:setEntranceId(table['exitId'])
-                        ZONE_SET = true
-                        return
-                    end
-                end
+                new_table = world_table
+                new_map = world_id
             end
-        end
+       end
+       while success == false do
+            BTH:setWorldEntrance(orig_map, new_map, orig_table['entranceId'], orig_table['exitMap'], new_table['entranceId'])
+            success = BTH:setWorldEntrance(new_table['exitMap'], orig_table['exitMap'], new_table['exitId'], new_map, orig_table['exitId'])
+            if orig_map == 0xC7 -- Glitter Gulch Mine 
+            then
+                BTH:setWorldEntrance(orig_map, new_map, 16, orig_table['exitMap'], new_table['entranceId'])
+            end
+            emu.frameadvance()
+       end
     end
 end
 
-function loadGame(current_map)
-    BTMODELOBJ:changeName("Player", false)
-    local player = BTMODELOBJ:checkModel();
-    if(current_map == 0x142 or current_map == 0xAF or current_map == 0x160)
+function hag1_open()
+    if GOAL_TYPE == 0 and OPEN_HAG1 == false and TOTAL_JIGGY >= 70
     then
-        JIGGY_COUNT = 0
-        CURRENT_MAP = current_map
-        local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".BMM", "r") -- get #BTplayer_seed.BMM
-        if f==nil then
-           return false
-        else
-            if DEBUGLVL2 == true
-            then
-                print("Loading BMM Files");
-            end
-            init_JinjoFam()
-            init_JIGGIES("BMM", false)
-            init_JIGGIES("AGI", true)
-            backup_BMM_JIGGIES()
-            init_NOTES("BMM", false)
-            init_NOTES("AGI", true)
-            backup_BMM_NOTES()
-            init_TREBLE("BMM", false)
-            init_TREBLE("AGI", true)
-            backup_BMM_TREBLE()
-            init_JINJOS("BMM")
-            backup_BMM_JINJOS()
-            BMM_JIGGIES = json.decode(f:read("l"));
-            BMM_NOTES = json.decode(f:read("l"));
-            BMM_TREBLE = json.decode(f:read("l"));
-            BMM_JINJOS = json.decode(f:read("l"));
-            BKM = json.decode(f:read("l"));
-            BMM_STATIONS = json.decode(f:read("l"));
-            init_STATIONS("AGI", true)
-            BMM_CHUFFY = json.decode(f:read("l"));
-            init_CHUFFY("AGI", true)
-            BMM_MYSTERY = json.decode(f:read("l"));
-
-            restore_BMM_JIGGIES()
-            restore_BMM_NOTES()
-            restore_BMM_TREBLE()
-            restore_BMM_JINJOS()
-            f:close();
-            if DEBUG == true
-            then
-                print("Restoring from Load Game")
-            end
-            -- set_AGI_MOVES_checks();
-            -- set_AP_BKNOTES();
-            set_AP_STATIONS();
-            init_roysten();
-            if ENABLE_AP_CHUFFY == true -- Sanity Check
-            then
-                if BTRAMOBJ:checkFlag(0x98, 5) == false and BTRAMOBJ:checkFlag(0x98, 6) == false and
-                BTRAMOBJ:checkFlag(0x98, 7) == false and BTRAMOBJ:checkFlag(0x99, 0) == false and
-                BTRAMOBJ:checkFlag(0x99, 1) == false and BTRAMOBJ:checkFlag(0x99, 2) == false and
-                BTRAMOBJ:checkFlag(0x99, 3) == false
-                then
-                    if DEBUG_CHUFFY == true
-                    then
-                        print("Moving Chuffy to GGM")
-                    end
-                    BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
-                else
-                    if DEBUG_CHUFFY == true
-                    then
-                        print("Sorry, but Chuffy is at a different Station")
-                    end
-                end
-            end
-            for ap_id, itemId in pairs(receive_map) -- Sanity Check
-            do
-                if itemId ~= "NA"
-                then
-                    if (1230855 <= tonumber(itemId) and tonumber(itemId) <= 1230863) or (1230174 <= tonumber(itemId) and tonumber(itemId) <= 1230182)
-                    then
-                        processMagicItem(itemId);
-                    end
-                end
-            end
-            if SKIP_PUZZLES == true
-            then
-                check_open_level(true)
-            end
-            if ENABLE_AP_CHEATO_REWARDS == true then
-                init_CHEATO_REWARDS()
-            end
-            init_JIGGY_CHUNK()
-            init_DINO_KIDS()
-            hag1_open()
-            hag1_phase_skips()
-            GAME_LOADED = true;
-            DEMO_MODE = false;
-        end
+        BTH:setItem(ITEM_TABLE["AP_ITEM_H1A"], 1)
+    elseif GOAL_TYPE == 4 and TOTAL_MUMBO_TOKENS >= 32
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_H1A"], 1)
     end
 end
 
-function checkPause()
-    local pause_menu = mainmemory.readbyte(0x15961A);
-    if pause_menu == 1 and PAUSED == false
-    then
-        if DEBUG == true
+function check_open_level(show_message)  -- See if entrance conditions for a level have been met    
+    if DEBUG == true then
+        print(JIGGY_COUNT)
+    end
+    for _, values in pairs(WORLD_ENTRANCE_MAP)
+    do
+        if TOTAL_JIGGY >= values["defaultCost"]
         then
-            print("Game Paused");
-        end
-        DEMO_MODE = true -- SEND NO CHECKS
-        backup_BMM_JIGGIES()
-        backup_BMM_NOTES()
-        backup_BMM_TREBLE()
-        backup_BMM_JINJOS()
-        PAUSED = true;
-        savingBMM()
-    elseif pause_menu == 0 and PAUSED == true  -- unpaused
-    then
-        PAUSED = false
-        if DEBUG == true
-        then
-            print("Game Unpaused");
-        end
-        if GAME_LOADED == true
-        then 
-            if SKIP_PUZZLES == false then
-                if CURRENT_MAP ~= 0x14F and CURRENT_MAP ~= 0x151  -- Don't want to restore while in WH zone
-                then
-                    restore_BMM_JIGGIES()
-                end
-            else
-                restore_BMM_JIGGIES()
-            end
-                restore_BMM_NOTES()
-                restore_BMM_TREBLE()
-                restore_BMM_JINJOS()
-                unpause_hide_AGI_key()
-                DEMO_MODE = false -- SEND NO CHECKS
-        end
-    elseif PAUSED == true and DEBUG == true
-    then
-        local check_controls = joypad.get()
-        if check_controls ~= nil and check_controls['P1 Z'] == true
-        then
-            print("AGI TABLE:");
-            for item_group, table in pairs(AGI)
-            do
-                for locationId, value in pairs(table)
-                do
-                    if(value == true)
-                    then
-                        print(AGI_MASTER_MAP[item_group][locationId]['name'] .. ":" .. tostring(value))
-                    end
-                end
-            end
-        elseif check_controls ~= nil and check_controls['P1 C Right'] == true
-        then
-            print("BMM TABLE:");
-            for item_group, table in pairs(BMM)
-            do
-                for locationId, value in pairs(table)
-                do
-                    if(value == true)
-                    then
-                        print(AGI_MASTER_MAP[item_group][locationId]['name'] .. ":" .. tostring(value))
-                    end
-                end
-            end
-        elseif check_controls ~= nil and check_controls['P1 C Left'] == true
-        then
-            print("AMM TABLE:");
-            for item_group, table in pairs(AMM)
-            do
-                for locationId, value in pairs(table)
-                do
-                    if(value == true)
-                    then
-                        print(AGI_MASTER_MAP[item_group][locationId]['name'] .. ":" .. tostring(value))
-                    end
-                end
-            end
-        elseif check_controls ~= nil and check_controls['P1 C Up'] == true
-        then
-            print("BKM TABLE + Actual:");
-            for locationId, values in pairs(ADDRESS_MAP["MOVES"])
-            do             
-                local res = BTRAMOBJ:checkFlag(values['addr'], values['bit']);
-                print(ADDRESS_MAP["MOVES"][locationId]['name'] .. ":" .. tostring(res))
-                print("Checked? : " .. tostring(BKM[locationId]))
-                print("AGI? : " .. tostring(AGI_MOVES[locationId]))
-                print("------------------------");
-            end
+            UNLOCKED_WORLDS[values["locationId"]] = true
         end
     end
+    hag1_open()
 end
 
-function checkTotalMenu()
-    if PAUSED == false
-    then
-        return
-    else
-        local total = mainmemory.readbyte(0x123C48);
-        if TOTALS_MENU == false and total == 1
-        then
-            if DEBUG == true
-            then
-                print("Checking Game Totals");
-            end
-            TOTALS_MENU = true;
-            restore_BMM_JIGGIES()
-            restore_BMM_NOTES()
-            restore_BMM_TREBLE()
-            restore_BMM_JINJOS()
-        elseif TOTALS_MENU == true and total ~= 1
-        then
-            if DEBUG == true
-            then
-                print("no longer checking Game Totals");
-            end
-            TOTALS_MENU = false;
-            backup_BMM_JIGGIES()
-            backup_BMM_NOTES()
-            backup_BMM_TREBLE()
-            backup_BMM_JINJOS()
-        end
-        
-        -- Object and Items 
-        total = mainmemory.readbyte(0x123A88);
-        if total == 1 and OBJ_TOTALS_MENU == false
-        then
-            OBJ_TOTALS_MENU = true
-            pause_show_AGI_key()
-        elseif total ~= 1 and OBJ_TOTALS_MENU == true
-        then
-            OBJ_TOTALS_MENU = false
-            unpause_hide_AGI_key()
-        end
+function unlock_worlds(itemId)
+    if itemId == 1230944 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_MTA"], 1)
+    end
+    if itemId == 1230945 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_GGA"], 1)
+    end
+    if itemId == 1230946 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WWA"], 1)
+    end
+    if itemId == 1230947 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_JRA"], 1)
+    end
+    if itemId == 1230948 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_TDA"], 1)
+    end
+    if itemId == 1230949 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_GIA"], 1)
+    end
+    if itemId == 1230950 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_HFA"], 1)
+    end
+    if itemId == 1230951 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_CCA"], 1)
+    end
+    if itemId == 1230952 then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_CKA"], 1)
     end
 end
 
@@ -9214,182 +8222,6 @@ function DPadStats()
     end
 end
 
-function initializeFlags()
-	-- Use Cutscene: "2 Years Have Passed..." to check for fresh save
-	local current_map = BTRAMOBJ:getMap(false);
-	if (current_map == 0xA1) then
-		-- First Time Pickup Text
-		for i = 0, 7 do
-			BTRAMOBJ:setFlag(0x00, i) -- Note, Glowbo, Eggs, Feathers, Treble Clef, Honeycomb
-		end	
-		BTRAMOBJ:setFlag(0x01, 2) -- Empty Honeycomb
-		BTRAMOBJ:setFlag(0x01, 5) -- Jinjo
-		BTRAMOBJ:setFlag(0x07, 7) -- Cheato Page
-		BTRAMOBJ:setFlag(0x27, 5) -- Doubloon
-		BTRAMOBJ:setFlag(0x2E, 7) -- Ticket
-		-- Character Introduction Text
-		for k,v in pairs(ADDRESS_MAP['SKIP']['INTRO'])
-        do
-            BTRAMOBJ:setFlag(v['addr'], v['bit'])
-        end
-		-- Cutscene Flags
-		for k,v in pairs(ADDRESS_MAP['SKIP']['CUTSCENE'])
-        do
-            BTRAMOBJ:setFlag(v['addr'], v['bit'])
-        end
-		-- Tutorial Dialogues
-		for k,v in pairs(ADDRESS_MAP['SKIP']['TUTORIAL'])
-        do
-            BTRAMOBJ:setFlag(v['addr'], v['bit'])
-        end
-		-- Minigame Doors
-		BTRAMOBJ:setFlag(0xA9, 6) -- MT Kickball
-		BTRAMOBJ:setFlag(0xA9, 7) -- HFP Kickball
-        if MINIGAMES == "skip"
-        then
-            BTRAMOBJ:setFlag(0x06, 6) -- MT Semifinal
-            BTRAMOBJ:setFlag(0x06, 7) -- MT Final
-            BTRAMOBJ:setFlag(0x68, 0) -- HFP Semifinal
-            BTRAMOBJ:setFlag(0x68, 1) -- HFP Final
-            BTRAMOBJ:setFlag(0x10, 1) -- Dodgems 1v1 Complete
-            BTRAMOBJ:setFlag(0x10, 2) -- Dodgems 2v1 Complete
-            BTRAMOBJ:setFlag(0x10, 3) -- Dodgems 1v1 Door
-            BTRAMOBJ:setFlag(0x10, 4) -- Dodgems 2v1 Door
-            BTRAMOBJ:setFlag(0x10, 5) -- Dodgems 3v1 Door
-        end
-        if ENABLE_AP_CHUFFY == true
-        then
-            BTRAMOBJ:setFlag(0x98, 5) -- Set Chuffy at GGM Station
-        end
-        GAME_LOADED = true  -- We don't have a real BMM at this point.  
-        DEMO_MODE = false
-        init_BMK("BKM");
-        init_STATIONS("BMM", false);
-        init_CHUFFY("BMM");
-        init_JinjoFam();
-        init_STOPNSWAP("BMM")
-        init_roysten()
-        init_DINO_KIDS()
-        init_JIGGIES("BMM", false)
-        init_NOTES("BMM", false)
-        init_TREBLE("BMM", false);
-        init_JINJOS("BMM")
-
-        init_JIGGIES("AGI", false)
-        init_NOTES("AGI", false)
-        init_TREBLE("AGI", false)
-        init_CHUFFY("AGI", false)
-
-        AGI_MOVES = init_BMK("AGI");
-        init_STOPNSWAP("AGI");
-        init_STATIONS("AGI", false)
-        receive_map = { -- initialize incase suffered a hard crash and losing save file.
-            ["NA"] = "NA"
-        }
-		if (SKIP_TOT ~= "false") then -- ToT Misc Flags	
-			BTRAMOBJ:setFlag(0xAB, 2)
-			BTRAMOBJ:setFlag(0xAB, 3)
-			BTRAMOBJ:setFlag(0xAB, 4)
-			BTRAMOBJ:setFlag(0xAB, 5)
-			if (SKIP_TOT == "true") then -- ToT Complete Flags
-                BTRAMOBJ:setFlag(0x83, 0)
-                BTRAMOBJ:setFlag(0x83, 4)
-			else
-				BTRAMOBJ:setFlag(0x83, 2)
-				BTRAMOBJ:setFlag(0x83, 3)
-			end
-		end
-		INIT_COMPLETE = true
-        if SKIP_PUZZLES == true then
-            check_open_level(true) -- sanity check that level open flags are still set
-        end
-        hag1_open()
-
-        -- 129 is 1000 0001
-        -- 2 is   0000 0010
-        if DEBUG == true
-        then
-            print("Setting Jinjo Pattern")
-        end
-        BTRAMOBJ:setMultipleFlags(0x6A, 129, 2) -- Jinjo pattern
-        if SKIP_KLUNGO == true then
-            --{byte=0x5E, bit=0, name="Klungo 1 Defeated", type="Progress"},
-	        --{byte=0x5E, bit=1, name="Klungo 2 Defeated", type="Progress"},
-            BTRAMOBJ:setFlag(0x5E, 0, "Klungo 1 Defeated")
-            BTRAMOBJ:setFlag(0x5E, 1, "Klungo 2 Defeated")
-        end
-        if ENABLE_AP_BK_MOVES ~= 0 then
-            BTRAMOBJ:clearFlag(0x1A, 4) -- Dive
-            BTRAMOBJ:clearFlag(0x19, 6) -- Fly pad
-            BTRAMOBJ:clearFlag(0x19, 5) -- Flap Flip
-            BTRAMOBJ:clearFlag(0x19, 3) -- Can't Shoot or Poop Eggs
-            BTRAMOBJ:clearFlag(0x1A, 1) -- Roll
-
-            BTRAMOBJ:clearFlag(0x1A, 0) -- Air Rat-atat-rap
-            BTRAMOBJ:clearFlag(0x1A, 6) -- Turbo Trainers
-            BTRAMOBJ:clearFlag(0x18, 7) -- Beak Buster
-            if ENABLE_AP_BK_MOVES == 2 then
-                BTRAMOBJ:clearFlag(0x1A, 5) -- Talon Trot
-                BTRAMOBJ:clearFlag(0x19, 7) -- Full Jump
-            end
-            BTRAMOBJ:clearFlag(0x19, 2) -- Climb
-            BTRAMOBJ:clearFlag(0x19, 4) -- Feather Flap
-            BTRAMOBJ:clearFlag(0x1A, 7) -- Full Jump
-            BTRAMOBJ:clearFlag(0x1E, 6) -- Blue Eggs
-            BTRAMOBJ:clearFlag(0x19, 1) -- Ground Rat-a-tat rap
-            BTRAMOBJ:clearFlag(0x18, 5) -- Beak Barge
-            BTRAMOBJ:clearFlag(0x1A, 3) -- Stilt Stride
-            BTRAMOBJ:clearFlag(0x18, 6) -- Beak Bomb
-        end
-        if ENABLE_AP_CHEATO_REWARDS == true then
-            init_CHEATO_REWARDS()
-        end
-        if ENABLE_AP_HONEYB_REWARDS == true then
-            init_HONEYB_REWARDS()
-        end
-        init_JIGGY_CHUNK()
-        BTCONSUMEOBJ:changeConsumable("Eggs")
-        BTCONSUMEOBJ:setConsumable(0)
-        BTCONSUMEOBJ:changeConsumable("Ice Keys")
-        BTCONSUMEOBJ:setConsumable(0)
-        BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star,moon, sun 
-        BTRAMOBJ:setFlag(0x15, 5) --Just open the compound door...
-        BTRAMOBJ:setFlag(0x9B, 1) --Glitter Gulch Gate
-
-        -- Totals Screen --
-        BTRAMOBJ:setFlag(0x37, 3)
-        BTRAMOBJ:setFlag(0x37, 4)
-        BTRAMOBJ:setFlag(0x37, 5)
-        BTRAMOBJ:setFlag(0x37, 6)
-        BTRAMOBJ:setFlag(0x37, 7)
-        BTRAMOBJ:setFlag(0x38, 0)
-        BTRAMOBJ:setFlag(0x38, 1)
-        BTRAMOBJ:setFlag(0x38, 2)
-        BTRAMOBJ:setFlag(0x38, 3)
-        BTRAMOBJ:setFlag(0x38, 4)
-        -- Totals Screen --
-
-        BTRAMOBJ:setMultipleFlags(0x6A, 129, 2) -- --totals menu
-
-        if SKIP_KING == true
-        then
-            BTRAMOBJ:setFlag(0xA7, 1)
-            BTRAMOBJ:setFlag(0x2F, 5)
-            BTRAMOBJ:setFlag(0x53, 6)
-            BTRAMOBJ:setFlag(0x50, 1)
-            BTRAMOBJ:setFlag(0x67, 0)
-
-        end
-        hag1_phase_skips()
-        
-	-- Otherwise, the flags were already set, so just stop checking
-	elseif (current_map == 0xAF or current_map == 0x142) then
-		INIT_COMPLETE = true
-    elseif current_map == 0x158 and INIT_COMPLETE == true
-    then
-        INIT_COMPLETE = false
-	end
-end
 
 function setToTComplete()
 	-- this fixes a bug that messes up game progression
@@ -9531,6 +8363,12 @@ function processAGIItem(item_list)
             if(memlocation == 1230512)  -- Honeycomb Item
             then
                 obtained_AP_HONEYCOMB()
+            elseif( 1230944 <= memlocation and memlocation <= 1230952) -- Worlds
+            then
+                unlock_worlds(memlocation)
+            elseif( 1230810 <= memlocation and memlocation <= 1230827) -- BK Moves
+            then
+                obtain_bkmove(memlocation)
             elseif(memlocation == 1230513) -- Cheato Item
             then
                 obtained_AP_PAGES()
@@ -9540,9 +8378,7 @@ function processAGIItem(item_list)
             elseif(memlocation == 1230515) -- Jiggy
             then
                 obtained_AP_JIGGY()
-                if SKIP_PUZZLES == true then
-                    check_open_level(true) -- check if the current jiggy count opens a new level
-                end
+                check_open_level(true) -- check if the current jiggy count opens a new level
             elseif((1230855 <= memlocation and memlocation <= 1230863) or (1230174 <= memlocation and memlocation <= 1230182))
             then
                 processMagicItem(memlocation)
@@ -9796,7 +8632,7 @@ function process_block(block)
     then
         return
     end
-    if next(block['items']) ~= nil and INIT_COMPLETE
+    if next(block['items']) ~= nil
     then
         processAGIItem(block['items'])
     end
@@ -9848,20 +8684,15 @@ function SendToBTClient()
     retTable["goggles"] = GOGGLES;
     retTable["roar"] = ROAR;
     retTable["dino_kids"] = DINO_KIDS;
-    retTable["DEMO"] = DEMO_MODE;
-    
+    retTable["DEMO"] = false;
+    retTable["sync_ready"] = "true"
+
     if CURRENT_MAP == nil
     then
         retTable["banjo_map"] = 0x0;
     else
         retTable["banjo_map"] = CURRENT_MAP;
     end 
-    if GAME_LOADED == false
-    then
-        retTable["sync_ready"] = "false"
-    else
-        retTable["sync_ready"] = "true"
-    end
     if DEBUGLVL3 == true
     then
         print("Send Data")
@@ -9951,9 +8782,6 @@ end
 function loadAGI()
     local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".AGI", "r") --generate #BTplayer_seed.AGI
     if f==nil then
-        if next(AGI_JIGGIES) == nil then
-            init_JIGGIES("AGI", false)
-        end
         if next(AGI_NOTES) == nil then
             init_NOTES("AGI", false)
         end
@@ -9990,47 +8818,6 @@ function loadAGI()
         AGI_MYSTERY = json.decode(f:read("l"));
         receive_map = json.decode(f:read("l"));
         f:close();
-    end
-end
-
-function savingBMM()
-    if GAME_LOADED == true 
-    then
-        local f = io.open("BT" .. PLAYER .. "_" .. SEED .. ".BMM", "w") --generate #BTplayer_seed.AGI
-        if DEBUGLVL2 == true
-        then
-            print("Saving BMM File");
-        end
-        backup_BMM_JIGGIES()
-        backup_BMM_NOTES()
-        backup_BMM_TREBLE()
-        backup_BMM_JINJOS()
-        f:write(json.encode(BMM_JIGGIES) .. "\n");
-        f:write(json.encode(BMM_NOTES) .. "\n");
-        f:write(json.encode(BMM_TREBLE) .. "\n");
-        f:write(json.encode(BMM_JINJOS) .. "\n");
-        f:write(json.encode(BKM) .. "\n");
-        f:write(json.encode(BMM_STATIONS) .. "\n");
-        f:write(json.encode(BMM_CHUFFY) .. "\n");
-        f:write(json.encode(BMM_MYSTERY));
-        f:close()
-        if PAUSED == false then
-            if SKIP_PUZZLES == false then
-                if CURRENT_MAP ~= 0x14F and CURRENT_MAP ~= 0x151  -- Don't want to restore while in WH zone
-                then
-                    restore_BMM_JIGGIES()
-                end
-            else
-                restore_BMM_JIGGIES()
-            end
-            restore_BMM_NOTES()
-            restore_BMM_TREBLE()
-            restore_BMM_JINJOS()
-        end
-        if DEBUG == true
-        then
-            print("BMM Table Saved");
-        end
     end
 end
 
@@ -10075,6 +8862,10 @@ function process_slot(block)
         print("EO_slot_data")
     end
 
+    for index, item in pairs(ROM_ITEM_TABLE)
+    do
+        ITEM_TABLE[item] = index - 1
+    end
     if block['slot_player'] ~= nil and block['slot_player'] ~= ""
     then
         PLAYER = block['slot_player']
@@ -10132,10 +8923,7 @@ function process_slot(block)
     then
         ENABLE_AP_HONEYB_REWARDS = true
     end
-    if block['slot_doubloon'] ~= nil and block['slot_doubloon'] ~= "false"
-    then
-        ENABLE_AP_DOUBLOONS = true
-    end
+
     if block['slot_minigames'] ~= nil and block['slot_minigames'] ~= ""
     then
         MINIGAMES = block['slot_minigames']
@@ -10143,10 +8931,6 @@ function process_slot(block)
         then
             BTH:setSettingMinigames(1)
         end
-    end
-    if block['slot_treble'] ~= nil and block['slot_treble'] ~= "false"
-    then
-        ENABLE_AP_TREBLE = true
     end
     if block['slot_skip_puzzles'] ~= nil and block['slot_skip_puzzles'] ~= "false"
     then
@@ -10161,10 +8945,10 @@ function process_slot(block)
     if block['slot_open_hag1'] ~= nil and block['slot_open_hag1'] ~= "false"
     then
         OPEN_HAG1 = true
-    end
-    if block['slot_stations'] ~= nil and block['slot_stations'] ~= "false"
-    then
-        ENABLE_AP_STATIONS = true
+        if block['slot_goal_type'] == 0
+        then
+            BTH:setItem(ITEM_TABLE["AP_ITEM_H1A"], 1)
+        end
     end
     if block['slot_chuffy'] ~= nil and block['slot_chuffy'] ~= "false"
     then
@@ -10175,14 +8959,14 @@ function process_slot(block)
     then
         ENABLE_AP_WORLDS = true
     end
-    if block['slot_notes'] ~= nil and block['slot_notes'] ~= "false"
-    then
-        ENABLE_AP_NOTES = true
-    end
-    if block['slot_mystery'] ~= nil and block['slot_mystery'] ~= "false"
-    then
-        ENABLE_AP_MYSTERY = true
-    end
+
+    -- if block['slot_mystery'] ~= nil
+    -- then
+    --     if ENABLE_AP_MYSTERY == false
+    --     then
+            
+    --     end
+    -- end
     if block['slot_goal_type'] ~= nil and block['slot_goal_type'] ~= ""
     then
         GOAL_TYPE = block['slot_goal_type']
@@ -10294,21 +9078,12 @@ function process_slot(block)
             return false
         end
     end
-    if block['slot_text_colour'] ~= nil and block['slot_text_colour'] ~= ""
-    then
-        TEXT_COLOUR = tonumber(block['slot_text_colour'])
-    end
+
     if block['slot_zones'] ~= nil
     then
-        AP_LOADING_ZONES = block['slot_zones']
+        zoneWarp(block['slot_zones'])
     end
     printGoalInfo();
-    if SEED ~= 0
-    then
-        loadAGI()
-    else
-        return false
-    end
     return true
 end
 
@@ -10353,8 +9128,6 @@ function main()
     print("Banjo-Tooie Archipelago Version " .. BT_VERSION)
     server, error = socket.bind('localhost', 21221)
     BTRAMOBJ = BTRAM:new(nil);
-    BTMODELOBJ = BTModel:new(BTRAMOBJ, "Player", false);
-    BTCONSUMEOBJ = BTConsumable:new(BTRAMOBJ, "HONEYCOMB");
     BTH = BTHACK:new(nil) 
     while true do
         FRAME = FRAME + 1
@@ -10363,7 +9136,7 @@ function main()
         end
         if (CUR_STATE == STATE_OK) or (CUR_STATE == STATE_INITIAL_CONNECTION_MADE) or (CUR_STATE == STATE_TENTATIVELY_CONNECTED) then
             if (FRAME % 30 == 1) then
-                BTRAM:banjoPTR()
+                CURRENT_MAP = BTH:getMap()
                 receive();
                 if VERROR == true
                 then
@@ -10372,68 +9145,6 @@ function main()
                     print("Client Version: " .. CLIENT_VERSION)
                     return
                 end
-                if SKIP_TOT == "true" and CURRENT_MAP == 0x15E then
-					setToTComplete();
-				end
-                if SAVE_GAME == true and GAME_LOADED == false
-                then
-                    saveGame();
-                end
-                gameSaving();
-                if TEXT_START == true then
-                    clearText()
-                elseif TEXT_START == false then
-                    processMessages()
-                end
-                transform_logic_flags()
-                getBanjoDeath()
-                killBT()
-                if FPS == true
-                then
-                    mainmemory.write_u8(0x07913F, 1)
-                end
-            end
-            if (FRAME % 5 == 1)
-            then
-                watchMapTransition()
-                if SKIP_PUZZLES == false
-                then
-                    no_puzzle_skip()
-                end
-                checkPause();
-                checkTotalMenu();
-                if not (INIT_COMPLETE) or CURRENT_MAP == 0x158 then
-					initializeFlags();
-				end
-                DPadStats();
-            end
-            -- Zone Warp
-            if BTRAMOBJ:getMap(true) ~= 0
-            then
-                NEXT_MAP = BTRAMOBJ:getMap(true)
-                zoneWarp()
-            elseif BTRAMOBJ:getMap(true) == 0
-            then
-                ZONE_SET = false
-            end
-            -- EO Zone Warp
-            if mainmemory.read_u8(0x127642) == 1 or BTRAMOBJ:getMap(true) ~= 0
-            then
-                TRANSITION_SET = true
-                NEXT_MAP = BTRAMOBJ:getMap(true)
-            end
-            if MAP_TRANSITION == false
-            then
-                currentState = BTRAM:getTransformation()
-                if REVERTING_MUMBO == true
-                then
-                    FAKE_MUMBO = false
-                    REVERTING_MUMBO = false
-                end
-            end
-            if MAP_TRANSITION == true
-            then
-                transform_swap(NEXT_MAP, currentState)
             end
 
         elseif (CUR_STATE == STATE_UNINITIALIZED) then
