@@ -7716,7 +7716,6 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
     then
         REVERTING_MUMBO = true
         BTRAM:setTransformation(1)
-        return
     end
 
     if death_flg  == 1 and (currentState == 8 or currentState == 15 or currentState == 16 or 
