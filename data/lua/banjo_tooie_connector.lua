@@ -465,11 +465,11 @@ function BTRAM:setBanjoTState(Tstate)
 end
 
 function BTRAM:getTransformation()
-    return mainmemory.read_u8(self.character_change);
+    return mainmemory.read_u16_be(self.character_change);
 end
 
 function BTRAM:setTransformation(Tstate)
-    mainmemory.write_u8(self.character_change, Tstate)
+    mainmemory.write_u16_be(self.character_change, Tstate)
 end
 
 function BTRAM:getBanjoMovementState()
