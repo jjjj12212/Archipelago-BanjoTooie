@@ -7715,9 +7715,10 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
     if mapaddr == 0x142
     then
         REVERTING_MUMBO = true
+        BTRAM:setTransformation(1)
         return
     end
-    
+
     if death_flg  == 1 and (currentState == 8 or currentState == 15 or currentState == 16 or 
     currentState == 12 or currentState == 18 or currentState == 7 or currentState == 2 or currentState == 6
     or currentState == 13) --mumbo or any transformation except big t-rex, respawns in JV if transformation not done properly
