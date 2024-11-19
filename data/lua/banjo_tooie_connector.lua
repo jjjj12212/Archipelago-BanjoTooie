@@ -7771,7 +7771,7 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
             REVERTING_MUMBO = true
             BTRAM:setTransformation(1) -- Banjo
         end
-    elseif check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 L'] == false
+    elseif check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 L'] == true
     then
         if currentState == 1 or (currentState == 13 and FAKE_MUMBO == true) -- Banjo or Mumbo
         then
