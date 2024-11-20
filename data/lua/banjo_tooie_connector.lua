@@ -36,7 +36,7 @@ local DEBUG = false
 local DEBUG_SILO = false
 local DEBUG_JIGGY = false
 local DEBUG_TREBLE = false
-local DEBUG_NOTES = false
+local DEBUG_NOTES = true
 local DEBUG_HONEY = false
 local DEBUG_GLOWBO = false
 local DEBUG_ROYSTEN = false
@@ -195,7 +195,6 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230763",
-            ["Exceptions"] = {}
         },
         ["STATIONBTN"] = {"1230794"}
     },
@@ -216,7 +215,6 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230759",
-            ["Exceptions"] = {}
         },
     },
     [0x152] = { --IoH - Plateau
@@ -233,10 +231,7 @@ local ASSET_MAP_CHECK = {
             "1230931", -- Bee 2
         },
         ["SILO"] = {
-            "1230756",
-            ["Exceptions"] = {
-                "1230755"
-            }
+            "1230756"
         },
     },
     [0x153] = { --IoH - Plateau - Honey B's Hive
@@ -260,7 +255,6 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230767",
-            ["Exceptions"] = {}
         },
     },
     [0x14F] = { --IoH - Wooded Hollow
@@ -309,8 +303,7 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230754",
-            "1230755",
-            ["Exceptions"] = {}
+            "1230755"
         },
     },
     [0xC4] = { --MT - Jade Snake Grove
@@ -329,7 +322,6 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230753",
-            ["Exceptions"] = {}
         },
     },
     [0xBB] = { --MT - Mayan Kickball Stadium (Lobby)
@@ -413,7 +405,6 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230757",
-            ["Exceptions"] = {}
         },
         ["JCHUNKS"] = {
             "1231002",
@@ -457,8 +448,7 @@ local ASSET_MAP_CHECK = {
             "1230610" -- Ordnance Storage
         },
         ["SILO"] = {
-            "1230758",
-            ["Exceptions"] = {}
+            "1230758"
         },
     },
     [0xCF] = { --GGM - Power Hut Basement
@@ -544,8 +534,7 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230761",
-            "1230760",
-            ["Exceptions"] = {}
+            "1230760"
         },
     },
     [0xEA] = { --WW - Cave of Horrors
@@ -563,7 +552,6 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230762",
-            ["Exceptions"] = {}
         },
     },
     [0xDD] = { --WW - Dodgem Dome Lobby
@@ -658,7 +646,6 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230764",
-            ["Exceptions"] = {}
         },
     },
     [0xF4] = { --JRL - Ancient Swimming Baths
@@ -704,7 +691,6 @@ local ASSET_MAP_CHECK = {
     [0xF6] = {  --JRL - Electric Eel's lair
         ["SILO"] = {
             "1230765",
-            ["Exceptions"] = {}
         },
     },
     [0xF8] = { --JRL - Inside the Big Fish
@@ -727,7 +713,6 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230766",
-            ["Exceptions"] = {}
         },
     },
     [0xFC] =	{ --JRL - Lord Woo Fak Fak
@@ -840,7 +825,6 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230768",
-            ["Exceptions"] = {}
         },
         ["STATIONBTN"] = {"1230791"},
         ["ROAR"] = {"1231009"}
@@ -875,13 +859,11 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230769",
-            ["Exceptions"] = {}
         },
     },
     [0x119] = { -- Unga Bunga Cave
         ["SILO"] = {
             "1230770",
-            ["Exceptions"] = {}
         },
     },
     [0x11A] = { --TDL - Stomping Plains
@@ -954,7 +936,6 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230771",
-            ["Exceptions"] = {}
         },
     },
     [0x101] =	{ --GI - Floor 1
@@ -968,7 +949,6 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230773",
-            ["Exceptions"] = {}
         },
     },
     [0x106] =	{ --GI - Floor 2
@@ -993,7 +973,6 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230772",
-            ["Exceptions"] = {}
         },
     },
     [0x108] =	{ --GI - Floor 3
@@ -1122,7 +1101,6 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230775",
-            ["Exceptions"] = {}
         },
         ["STATIONBTN"] = {"1230793"}
     },
@@ -1170,7 +1148,6 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230774",
-            ["Exceptions"] = {}
         },
         ["STATIONBTN"] = {"1230792"}
     },
@@ -1237,7 +1214,6 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230776",
-            ["Exceptions"] = {}
         }
     },
     [0x138] =	{ --CCL - Inside the Cheese Wedge
@@ -1404,7 +1380,7 @@ local UNLOCKED_WORLDS = {} -- Worlds unlocked
 
 -- Address Map for Banjo-Tooie
 local ADDRESS_MAP = {
-    ["MOVES"] = {
+    ["SILO"] = {
         ["1230753"] = {
             ['addr'] = 0x1B,
             ['bit'] = 1,
@@ -1526,506 +1502,6 @@ local ADDRESS_MAP = {
             ['name'] = 'Sack Pack'
         },
 	},
-	["SKIP"] = {
-		['CUTSCENE'] = {
-			['Klungo Flyover'] = {
-				['addr'] = 0x02,
-				['bit'] = 4
-			},
-			['Jiggywiggy Flyover'] = {
-				['addr'] = 0x67,
-				['bit'] = 7
-			},
-			['Jinjo First Time'] = {
-				['addr'] = 0x6E,
-				['bit'] = 6
-			},
-            ['Dodgems 1v1 Flyover'] = {
-				['addr'] = 0x7E,
-				['bit'] = 1
-			},
-            ['Dodgems 2v1 Flyover'] = {
-				['addr'] = 0x7E,
-				['bit'] = 2
-			},
-            ['Dodgems 3v1 Flyover'] = {
-				['addr'] = 0x7E,
-				['bit'] = 3
-			},
-            ['MT Kickball Quarterfinal Flyover'] = {
-				['addr'] = 0x7E,
-				['bit'] = 4
-			},
-            ['MT Kickball Semifinal Flyover'] = {
-				['addr'] = 0x7E,
-				['bit'] = 5
-			},
-            ['MT Kickball Final Flyover'] = {
-				['addr'] = 0x7E,
-				['bit'] = 6
-			},
-            ['HFP Kickball Quarterfinal Flyover'] = {
-				['addr'] = 0x7E,
-				['bit'] = 7
-			},
-            ['HFP Kickball Semifinal Flyover'] = {
-				['addr'] = 0x7F,
-				['bit'] = 0
-			},
-            ['HFP Kickball Final Flyover'] = {
-				['addr'] = 0x7F,
-				['bit'] = 1
-			},
-			['Jinjo Flyover'] = {
-				['addr'] = 0x82,
-				['bit'] = 4
-			},
-			['Jinjo Flyover - Jiggy'] = {
-				['addr'] = 0x82,
-				['bit'] = 5
-			},
-			['Jamjars Flyover'] = {
-				['addr'] = 0x9B,
-				['bit'] = 6
-			},
-			['Jiggywiggy Laser'] = {
-				['addr'] = 0xAC,
-				['bit'] = 2
-			},
-            ['Targitzan'] = {
-                ['addr'] = 0x0C,
-                ['bit'] = 7
-            },
-            ['Klungo 3'] = {
-                ['addr'] = 0x11,
-                ['bit'] = 7
-            },
-            ['Klungo 2'] = {
-                ['addr'] = 0x32,
-                ['bit'] = 2
-            },
-            ['Klungo 1'] = {
-                ['addr'] = 0x13,
-                ['bit'] = 1
-            },
-            ['Terry'] = {
-                ['addr'] = 0x29,
-                ['bit'] = 2
-            },
-            ['Weldar'] = {
-                ['addr'] = 0x29,
-                ['bit'] = 4
-            },
-            ['King Coal'] = {
-                ['addr'] = 0x2A,
-                ['bit'] = 1
-            },
-            -- ['Patches'] = {
-            --     ['addr'] = 0x2A,
-            --     ['bit'] = 7
-            -- },
-            ['Woo Fak Fak'] = {
-                ['addr'] = 0x30,
-                ['bit'] = 7
-            },
-            ['Chilly Willy'] = {
-                ['addr'] = 0x35,
-                ['bit'] = 3
-            },
-            ['Chilly Billi'] = {
-                ['addr'] = 0x35,
-                ['bit'] = 4
-            },
-            ['HAG1'] = {
-                ['addr'] = 0x03,
-                ['bit'] = 4
-            }
-		},
-		['INTRO'] = {
-			['Bovina'] = {
-				['addr'] = 0x04,
-				['bit'] = 5
-			},
-			['Unogopaz'] = {
-				['addr'] = 0x06,
-				['bit'] = 1
-			},
-			['Unogopaz - Stony'] = {
-				['addr'] = 0x06,
-				['bit'] = 1
-			},
-			['Dilberta'] = {
-				['addr'] = 0x06,
-				['bit'] = 3
-			},
-			['Kickball Coach'] = {
-				['addr'] = 0x07,
-				['bit'] = 4
-			},
-			['Cheato'] = {
-				['addr'] = 0x08,
-				['bit'] = 0
-			},
-			['Mumbo'] = {
-				['addr'] = 0x0A,
-				['bit'] = 5
-			},
-			['Bullion Bill'] = {
-				['addr'] = 0x0B,
-				['bit'] = 2
-			},
-			['Mrs. Boggy'] = {
-				['addr'] = 0x0C,
-				['bit'] = 3
-			},
-			['Humba Wumba'] = {
-				['addr'] = 0x0C,
-				['bit'] = 7
-			},
-			['Big Al'] = {
-				['addr'] = 0x0E,
-				['bit'] = 5
-			},
-			['Salty Joe'] = {
-				['addr'] = 0x0E,
-				['bit'] = 6
-			},
-			['Conga'] = {
-				['addr'] = 0x0F,
-				['bit'] = 1
-			},
-			['Moggy'] = {
-				['addr'] = 0x12,
-				['bit'] = 0
-			},
-			['Soggy'] = {
-				['addr'] = 0x12,
-				['bit'] = 1
-			},
-			['Groggy'] = {
-				['addr'] = 0x12,
-				['bit'] = 2
-			},
-			['Tiptup'] = {
-				['addr'] = 0x12,
-				['bit'] = 4
-			},
-			['Jolly'] = {
-				['addr'] = 0x13,
-				['bit'] = 3
-			},
-			['Maggie - After Rescue'] = {
-				['addr'] = 0x13,
-				['bit'] = 4
-			},
-			['Blubber'] = {
-				['addr'] = 0x16,
-				['bit'] = 7
-			},
-			['Scrotty'] = {
-				['addr'] = 0x26,
-				['bit'] = 5
-			},
-			['Floatie Pig'] = {
-				['addr'] = 0x28,
-				['bit'] = 0
-			},
-			['Loggo'] = {
-				['addr'] = 0x28,
-				['bit'] = 1
-			},
-			['Oogle Boogle'] = {
-				['addr'] = 0x28,
-				['bit'] = 7
-			},
-			-- ['King Jingaling'] = {
-			-- 	 ['addr'] = 0x2F,
-			--	 ['bit'] = 5
-			-- },
-			['Mrs. Bottles'] = {
-				['addr'] = 0x2F,
-				['bit'] = 7
-			},
-			['Speccy'] = {
-				['addr'] = 0x30,
-				['bit'] = 0
-			},
-			['Dingpot'] = {
-				['addr'] = 0x30,
-				['bit'] = 4
-			},
-			['Mildred'] = {
-				['addr'] = 0x33,
-				['bit'] = 5
-			},
-			['Biggafoot'] = {
-				['addr'] = 0x33,
-				['bit'] = 7
-			},
-			['George'] = {
-				['addr'] = 0x34,
-				['bit'] = 1
-			},
-			-- ['Three-Armed Pig'] = {
-			-- 	['addr'] = 0x34,
-			-- 	['bit'] = 6
-			-- },
-			['Oogle Boogle Guard'] = {
-				['addr'] = 0x5F,
-				['bit'] = 3
-			},
-			['Dippy'] = {
-				['addr'] = 0x60,
-				['bit'] = 0
-			},
-			['Roysten'] = {
-				['addr'] = 0x62,
-				['bit'] = 7
-			},
-			['Jiggywiggy'] = {
-				['addr'] = 0x66,
-				['bit'] = 3
-			},
-			['Colosseum Kickball Coach'] = {
-				['addr'] = 0x68,
-				['bit'] = 6
-			},
-			['Gamette'] = {
-				['addr'] = 0x69,
-				['bit'] = 1
-			},
-			['Superstash'] = {
-				['addr'] = 0x6C,
-				['bit'] = 0
-			},
-			['Mr. Fit'] = {
-				['addr'] = 0x76,
-				['bit'] = 1
-			},
-			['Heggy'] = {
-				['addr'] = 0x78,
-				['bit'] = 0
-			},
-			['Jiggywiggy Disciple'] = {
-				['addr'] = 0x78,
-				['bit'] = 5
-			},
-			['Jamjars'] = {
-				['addr'] = 0x7C,
-				['bit'] = 4
-			},
-			['Canary Mary - GGM'] = {
-				['addr'] = 0x80,
-				['bit'] = 2
-			},
-			['Canary Mary - CCL'] = {
-				['addr'] = 0x80,
-				['bit'] = 3
-			},
-			['Honey B'] = {
-				['addr'] = 0x98,
-				['bit'] = 1
-			},
-		},
-		['TUTORIAL'] = {
-			['Sign'] = {
-				['addr'] = 0x02,
-				['bit'] = 2
-			},
-			['Springy-Step Shoes Not Learned'] = {
-				['addr'] = 0x04,
-				['bit'] = 6
-			},
-			['Claw Clamber Boots Not Learned'] = {
-				['addr'] = 0x04,
-				['bit'] = 7
-			},
-			['Golden Goliath'] = {
-				['addr'] = 0x05,
-				['bit'] = 0
-			},
-			['Golden Goliath - Time Up'] = {
-				['addr'] = 0x05,
-				['bit'] = 1
-			},
-			['Wumba - Pine Grove'] = {
-				['addr'] = 0x05,
-				['bit'] = 5
-			},
-			['Minjo'] = {
-				['addr'] = 0x05,
-				['bit'] = 7
-			},
-			['Cheato Code List'] = {
-				['addr'] = 0x08,
-				['bit'] = 1
-			},
-			['Code Chamber'] = {
-				['addr'] = 0x08,
-				['bit'] = 2
-			},
-			['Code Entry'] = {
-				['addr'] = 0x08,
-				['bit'] = 3
-			},
-			['Mumbo Pad'] = {
-				['addr'] = 0x0E,
-				['bit'] = 2
-			},
-			['Use Mumbo Pad'] = {
-				['addr'] = 0x0E,
-				['bit'] = 3
-			},
-			['Cheat Menu'] = {
-				['addr'] = 0x15,
-				['bit'] = 3
-			},
-			['Detransform'] = {
-				['addr'] = 0x17,
-				['bit'] = 2
-			},
-			['Clockwork Kazooie'] = {
-				['addr'] = 0x18,
-				['bit'] = 0
-			},
-			['Hoop Hurry'] = {
-				['addr'] = 0x30,
-				['bit'] = 5
-			},
-			['Balloon Burst'] = {
-				['addr'] = 0x30,
-				['bit'] = 6
-			},
-			['Twinkly Packing'] = {
-				['addr'] = 0x34,
-				['bit'] = 0
-			},
-			['Glowbo Paid'] = {
-				['addr'] = 0x35,
-				['bit'] = 1
-			},
-			['Chilly Willy - Wrong Egg'] = {
-				['addr'] = 0x35,
-				['bit'] = 7
-			},
-			['Chilli Billi - Wrong Egg'] = {
-				['addr'] = 0x36,
-				['bit'] = 0
-			},
-			['Pot O Gold'] = {
-				['addr'] = 0x37,
-				['bit'] = 2
-			},
-			['Warp Silo'] = {
-				['addr'] = 0x61,
-				['bit'] = 4
-			},
-			['Floatus Floatium'] = {
-				['addr'] = 0x63,
-				['bit'] = 0
-			},
-			['BK Game Pak'] = {
-				['addr'] = 0x63,
-				['bit'] = 2
-			},
-			['GI Battery Door'] = {
-				['addr'] = 0x63,
-				['bit'] = 3
-			},
-			['Broken Jukebox'] = {
-				['addr'] = 0x63,
-				['bit'] = 4
-			},
-			['Daddy T-Rex'] = {
-				['addr'] = 0x63,
-				['bit'] = 6
-			},
-			['Stony'] = {
-				['addr'] = 0x63,
-				['bit'] = 7
-			},
-			['Detonator'] = {
-				['addr'] = 0x64,
-				['bit'] = 0
-			},
-			['Van'] = {
-				['addr'] = 0x64,
-				['bit'] = 1
-			},
-			['Sub'] = {
-				['addr'] = 0x64,
-				['bit'] = 2
-			},
-			['T-Rex'] = {
-				['addr'] = 0x64,
-				['bit'] = 3
-			},
-			['Washing Machine'] = {
-				['addr'] = 0x64,
-				['bit'] = 4
-			},
-			['Snowball'] = {
-				['addr'] = 0x64,
-				['bit'] = 5
-			},
-			['Bee'] = {
-				['addr'] = 0x64,
-				['bit'] = 6
-			},
-			['Dragon Kazooie'] = {
-				['addr'] = 0x64,
-				['bit'] = 7
-			},
-			['Puzzle Complete'] = {
-				['addr'] = 0x78,
-				['bit'] = 1
-			},
-			['Warp Pad'] = {
-				['addr'] = 0x78,
-				['bit'] = 6
-			},
-			['Random Stop Honeycomb'] = {
-				['addr'] = 0x7C,
-				['bit'] = 5
-			},
-			['Skill Stop Honeycomb'] = {
-				['addr'] = 0x7C,
-				['bit'] = 6
-			},
-			['Saucer of Peril Fixed'] = {
-				['addr'] = 0x7D,
-				['bit'] = 4
-			},
-			['Saucer of Peril'] = {
-				['addr'] = 0x7D,
-				['bit'] = 7
-			},
-			['Mumbo'] = {
-				['addr'] = 0x80,
-				['bit'] = 1
-			},
-			['Jiggywiggy Altar'] = {
-				['addr'] = 0x98,
-				['bit'] = 0
-			},
-			['Split Up Not Learned'] = {
-				['addr'] = 0x99,
-				['bit'] = 4
-			},
-			['Split Up'] = {
-				['addr'] = 0x99,
-				['bit'] = 5
-			},
-			['Canary Mary Race'] = {
-				['addr'] = 0x9C,
-				['bit'] = 0
-			},
-			['Puzzle'] = {
-				['addr'] = 0xA1,
-				['bit'] = 3
-			},
-		}
-    },
     ["TREBLE"] = {
         ["1230781"] = {
             ['addr'] = 0x86,
@@ -4077,6 +3553,8 @@ local WORLD_ENTRANCE_MAP = {
     }
 }
 
+local MESSAGE_TABLE = {}
+
 -- Used for randomized maps
 local MAP_ENTRANCES = {
     [0xB8] = {
@@ -4168,7 +3646,8 @@ BTHACK = {
         n64_death_us = 0x1,
         n64_death_ap = 0x2,
     real_flags = 0x18,
-    fake_flags = 0x1C
+    fake_flags = 0x1C,
+    txt_queue = 0
 }
 
 function BTHACK:new(t)
@@ -4185,7 +3664,7 @@ end
 function BTHACK:dereferencePointer(addr)
     if type(addr) == "number" and addr >= 0 and addr < (self.RDRAMSize - 4) then
         local address = mainmemory.read_u32_be(addr);
-        if BTRAM:isPointer(address) then
+        if BTHACK:isPointer(address) then
             return address - self.RDRAMBase;
         else
             if DEBUGLVL3 == true
@@ -4336,12 +3815,59 @@ end
 
 function BTHACK:getNPointer()
     local hackPointerIndex = BTHACK:dereferencePointer(self.base_index);
+    if hackPointerIndex == nil
+    then
+        return
+    end
 	return BTHACK:dereferencePointer(self.n64 + hackPointerIndex);
 end
 
 function BTHACK:getNLocalDeath()
     mainmemory.readbyte(self:getPCPointer() + self.n64_death_us);
 end
+
+function BTHACK:setTextQueue()
+    self.txt_queue = self.txt_queue + 1
+    mainmemory.writebyte(self:getPCPointer() + self.pc_show_txt, self.txt_queue);
+end
+
+function BTHACK:getCurrentQueue()
+    local ptr = self:getNPointer()
+    if ptr == nil
+    then
+        return 0
+    end
+    return mainmemory.readbyte(ptr + self.n64_show_text);
+end
+
+function BTHACK:getPCQueue()
+    return self.txt_queue
+end
+
+function BTHACK:setDialog(message)
+    uppcase_text = string.upper(message)
+    local overflow = false
+    local last_char = 0
+    for idx = 0, string.len(uppcase_text)-1 do
+        if idx == 76
+        then
+            overflow = true
+            mainmemory.writebyte(self:getPCPointer() + self.pc_txt + idx, 0);
+            break;
+        end
+        last_char = last_char + 1;
+        mainmemory.writebyte(self:getPCPointer() + self.pc_txt + idx, uppcase_text:byte(idx + 1));
+    end
+    if overflow == false
+    then
+        mainmemory.writebyte(self:getPCPointer() + self.pc_txt + last_char, 0);
+    end
+    self:setTextQueue()
+end
+
+
+
+
 
 ---------------------------------- JIGGIES ---------------------------------
 
@@ -5202,7 +4728,6 @@ end
 
 function zoneWarp(zone_table)
     -- from name -> to name
-    print(zone_table)
     for orig_world, new_world in pairs(zone_table)
     do
         local success = false
@@ -5591,7 +5116,7 @@ function processAGIItem(item_list)
             elseif( 1230501 <= memlocation and memlocation <= 1230509) -- Jinjos
             then
                 obtain_jinjo(memlocation)
-            elseif( 1230777 <= memlocation and memlocation <= 12307778) -- Roysten Moves
+            elseif( 1230777 <= memlocation and memlocation <= 1230778) -- Roysten Moves
             then
                 obtain_roysten_moves(memlocation)
             elseif( 1230828 <= memlocation and memlocation <= 1230832) -- Progressive Moves
@@ -5659,13 +5184,14 @@ function process_block(block)
         do
             if not string.find(message, "%(found%)")
             then
-                print(message)
+                local split_message = message:gsub("%(.*%)", "") -- remove locations in dialog
+                table.insert(MESSAGE_TABLE, split_message)
             end
         end
     end
     if block['triggerDeath'] == true and DEATH_LINK == true
     then
-        death = BTH:getAPDeath()
+        local death = BTH:getAPDeath()
         BTH:setAPDeath(death + 1)
     end
 
@@ -5677,7 +5203,7 @@ end
 function SendToBTClient()
     local retTable = {}
     local detect_death = false
-    if BTH:getLocalDeath() ~= BTH:getNLocalDeath() and DEATH_LINK == true and DEATH_LINK_TRIGGERED == false
+    if BTH:getPCDeath() ~= BTH:getNLocalDeath() and DEATH_LINK == true and DEATH_LINK_TRIGGERED == false
     then
         detect_death = true
         local died = BTH:getPCDeath()
@@ -5733,7 +5259,7 @@ function SendToBTClient()
     elseif CUR_STATE == STATE_INITIAL_CONNECTION_MADE then
         CUR_STATE = STATE_TENTATIVELY_CONNECTED
     elseif CUR_STATE == STATE_TENTATIVELY_CONNECTED then
-        archipelago_msg_box("Connected to the Banjo Tooie Client!");
+        table.insert(MESSAGE_TABLE, "Connected to the Banjo Tooie Client!")
         print("Connected!")
         PRINT_GOAL = true;
         CUR_STATE = STATE_OK
@@ -5994,7 +5520,6 @@ function process_slot(block)
     if block['slot_open_silo'] ~= nil
     then
         OPEN_SILO = block['slot_open_silo']
-        print(OPEN_SILO)
         if OPEN_SILO == "ALL"
         then
             BTH:setSettingOpenSilos(0, 1) -- JV
@@ -6045,27 +5570,45 @@ function printGoalInfo()
     JFR_LENGTH ~= nil and TH_LENGTH ~= nil then
         local message = ""
         if GOAL_TYPE == 0 then
-            message = "You need to hunt down Grunty in her HAG1 \nand put her back in the ground!"..randomEncouragment;
+            message = "You need to hunt down Grunty in her HAG1 and put her back in the ground!";
         elseif GOAL_TYPE == 1 and MGH_LENGTH == 15 then
-            message = "You are hunting down all 15 of the Mumbo Tokens \nfound in Grunty's dastardly minigames! Good luck and"..randomEncouragment;
+            message = "You are hunting 15 Mumbo Tokens found in Grunty's dastardly minigames!";
         elseif GOAL_TYPE == 1 and MGH_LENGTH < 15 then
-            message = "You are hunting for "..MGH_LENGTH.." Mumbo Tokens from \nGrunty's dastardly minigames! Good Luck and"..randomEncouragment;
+            message = "You are hunting "..MGH_LENGTH.." Mumbo Tokens from Grunty's dastardly minigames!";
         elseif GOAL_TYPE == 2 and BH_LENGTH == 8 then
-            message = "You are hunting down all 8 Mumbo Tokens from \neach world boss! Good Luck and"..randomEncouragment;
+            message = "You are hunting down all 8 Mumbo Tokens from each world boss!";
         elseif GOAL_TYPE == 2 and BH_LENGTH < 8 then
-            message = "You are hunting for "..BH_LENGTH.." Mumbo Tokens from \nthe 8 world bosses! Good Luck and"..randomEncouragment;
+            message = "You are hunting for "..BH_LENGTH.." Mumbo Tokens from the 8 world bosses!";
         elseif GOAL_TYPE == 3 and JFR_LENGTH == 9 then
-            message ="You are trying to rescue all 9 Jinjo families and \nretrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
+            message ="You are trying to rescue 9 Jinjo families and retrieve their Mumbo Tokens!";
         elseif GOAL_TYPE == 3 and JFR_LENGTH < 9 then
-            message = "You are trying to rescue "..JFR_LENGTH.." of the 9 Jinjo families \nand retrieve their Mumbo Tokens! Good Luck and"..randomEncouragment;
+            message = "You are trying to rescue "..JFR_LENGTH.."/9 Jinjo families and retrieve their Mumbo Tokens!";
         elseif GOAL_TYPE == 4 then
-            message ="You absolute mad lad! You're doing the Wonder Wing Challenge! Good Luck and"..randomEncouragment;
+            message ="You absolute mad lad! You're doing the Wonder Wing Challenge!"
         elseif GOAL_TYPE == 5 and TH_LENGTH == 15 then
-            message ="You are trying to find all 15 of Mumbo's Tokens scattered \nthroughout the Isle of Hags! Good Luck and"..randomEncouragment;
+            message ="You are trying to find 15 Mumbo Tokens scattered throughout the Isle O Hags!";
         elseif GOAL_TYPE == 5 and TH_LENGTH < 15 then
-            message = "You are trying to find "..TH_LENGTH.." of the 15 of Mumbo Tokens \nscattered throughout the Isle of Hags! Good Luck and"..randomEncouragment;
+            message = "You are trying to find "..TH_LENGTH.." Mumbo Tokens scattered throughout the Isle O Hags!";
         end
-        print(message)
+        table.insert(MESSAGE_TABLE, message)
+        table.insert(MESSAGE_TABLE, "Good luck and " .. randomEncouragment)
+    end
+end
+
+function messageQueue()
+    local processed = -1;
+    if BTH:getCurrentQueue() == BTH:getPCQueue()
+    then
+        for id, message in pairs(MESSAGE_TABLE)
+        do
+            BTH:setDialog(message)
+            processed = id
+            break
+        end
+        if processed ~= -1
+        then
+            table.remove(MESSAGE_TABLE, processed)
+        end
     end
 end
 
@@ -6087,6 +5630,7 @@ function main()
             if (FRAME % 30 == 1) then
                 CURRENT_MAP = BTH:getMap()
                 receive();
+                messageQueue();
                 if VERROR == true
                 then
                     print("ERROR: Banjo_Tooie_connector Mismatch. Please obtain the correct version")
