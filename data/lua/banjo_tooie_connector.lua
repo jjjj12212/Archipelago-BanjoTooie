@@ -3754,7 +3754,7 @@ function BTHACK:getItemsPointer()
 end
 
 function BTHACK:getItem(index)
-    mainmemory.readbyte(index + self:getItemsPointer());
+    return mainmemory.readbyte(index + self:getItemsPointer());
 end
 
 function BTHACK:setItem(index, value)
