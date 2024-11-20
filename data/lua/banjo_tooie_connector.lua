@@ -3802,7 +3802,7 @@ function BTHACK:getPCDeath()
 end
 
 function BTHACK:setPCDeath(DEATH_COUNT)
-    mainmemory.readbyte(self:getPCPointer(), DEATH_COUNT);
+    mainmemory.writebyte(self:getPCPointer(), DEATH_COUNT);
 end
 
 function BTHACK:getAPDeath()
