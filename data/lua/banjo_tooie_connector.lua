@@ -7710,7 +7710,7 @@ function backDoors()
     then
         if CURRENT_MAP == 0x115
         then
-            BTRAMOBJ:setFlag(0x2b, 6)
+            BTRAMOBJ:setFlag(0x2b, 6) -- removes oogle boogles guard if you enter their room from the backside
         end
     end
 end
