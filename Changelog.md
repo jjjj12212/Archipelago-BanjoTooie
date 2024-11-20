@@ -1,3 +1,8 @@
+# 3.4.1-beta
+  - Logic Fixes:
+    - Dilberta Jiggy moved to MT region.
+  - Additional fixes for Instant Transformation
+
 # 3.4-beta
  - Hints show the entrance to a level if loading zones are randomized
  - Fixed the ice key that despawns if you get the mega glowbo first
