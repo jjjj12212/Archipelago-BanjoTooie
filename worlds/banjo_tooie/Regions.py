@@ -630,9 +630,11 @@ def connect_regions(self):
                          regionName.IOHPL: lambda state: rules.WH_to_PL(state)})
 
     region_MT = multiworld.get_region(regionName.MT, player)
-    region_MT.add_exits({regionName.TL_HATCH, regionName.GM},
+    region_MT.add_exits({regionName.TL_HATCH, regionName.GM, regionName.TL, regionName.HP},
                         {regionName.TL_HATCH: lambda state: rules.jiggy_treasure_chamber(state),\
-                        regionName.GM: lambda state: rules.dilberta_free(state)})
+                        regionName.GM: lambda state: rules.dilberta_free(state),
+                        regionName.TL: lambda state: rules.mt_tdl_backdoor(state),
+                        regionName.HP: lambda state: rules.mt_hfp_backdoor(state)})
     
     region_HATCH = multiworld.get_region(regionName.TL_HATCH, player)
     region_HATCH.add_exits({regionName.TL},
@@ -662,8 +664,9 @@ def connect_regions(self):
      regionName.IOHWL: lambda state: state.has(itemName.TTORP, player)})
     
     region_WW = multiworld.get_region(regionName.WW, player)
-    region_WW.add_exits({regionName.CHUFFY},
-    {regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ww_to_chuffy(state)})
+    region_WW.add_exits({regionName.CHUFFY, regionName.TL},
+    {regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ww_to_chuffy(state),
+     regionName.TL: lambda state: rules.ww_tdl_backdoor(state)})
 
     region_IOHCT = multiworld.get_region(regionName.IOHCT, player)
     region_IOHCT.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.HFPE, regionName.JRLE, regionName.CHUFFY, regionName.IOHPL},

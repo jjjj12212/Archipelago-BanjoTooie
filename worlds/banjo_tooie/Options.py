@@ -109,6 +109,13 @@ class SkipPuzzles(DefaultOnToggle):
     """Open world entrances without having to go to Jiggywiggy."""
     display_name = "Skip Puzzles"
 
+class Backdoors(Toggle):
+    """Opens many one way switches on game start, allowing for more backdoor access to levels.
+    The following gates are preopened: MT>TDL, MT>HFP, GGM>WW, WW>TDL
+    For MT>TDL only the gate accessed from TDL's side is opened and for GGM>WW the boulders are still unexploded
+    George is also predropped to make HFP>JRL more accessible"""
+    display_name = "Open Backdoors"
+
 class OpenHag1(DefaultOnToggle):
     """HAG 1 boss fight is opened when Cauldron Keep is opened. Only 55 jiggies are needed to win."""
     display_name = "HAG 1 Open"
@@ -315,6 +322,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_dino_roar: EnableMultiWorldDinoRoar
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
+    backdoors:Backdoors
     skip_klungo: SkipKlungo
     skip_tower_of_tragedy: SkipToT
     speed_up_minigames: SpeedUpMinigames

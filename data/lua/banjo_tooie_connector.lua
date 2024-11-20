@@ -150,6 +150,7 @@ local SKIP_PUZZLES = false;
 local SKIP_KLUNGO = false;
 local SKIP_KING = true;
 local TOT_SET_COMPLETE = false;
+local BACKDOORS = false;
 
 -------------- MYSTERY VARS -----------
 local EGGS_CLEARED = true;
@@ -7704,6 +7705,16 @@ function updateMagic()
     end
 end
 
+function backDoors()
+    if BACKDOORS == true
+    then
+        if CURRENT_MAP == 0x115
+        then
+            BTRAMOBJ:setFlag(0x2b, 6)
+        end
+    end
+end
+
 
 
 function transform_swap(mapaddr, currentState) --Only run when transitioning Maps
@@ -9274,6 +9285,14 @@ function initializeFlags()
         BTRAMOBJ:setFlag(0x15, 5) --Just open the compound door...
         BTRAMOBJ:setFlag(0x9B, 1) --Glitter Gulch Gate
 
+        if BACKDOORS == true then
+            BTRAMOBJ:setFlag(0x11, 3) -- WW Saucer Door
+            BTRAMOBJ:setFlag(0x17, 3) -- MT treasure Chamber to TDL door
+            BTRAMOBJ:setFlag(0x2B, 2) -- MT Kickball to HFP door
+            BTRAMOBJ:setFlag(0x28, 2) -- TDL Oogle Boogle's cave to WW door
+            BTRAMOBJ:setFlag(0x54, 3) -- HFP Water Cooled
+        end
+
         -- Totals Screen --
         BTRAMOBJ:setFlag(0x37, 3)
         BTRAMOBJ:setFlag(0x37, 4)
@@ -10057,6 +10076,10 @@ function process_slot(block)
     then
         SKIP_PUZZLES = true
     end
+    if block['slot_backdoors'] ~= nil and block['slot_backdoors'] ~= "false"
+    then
+        BACKDOORS = true
+    end
     if block['slot_skip_klungo'] ~= nil and block['slot_skip_klungo'] ~= "false"
     then
         SKIP_KLUNGO = true
@@ -10212,6 +10235,7 @@ function main()
                 BTRAM:banjoPTR()
                 receive();
                 updateMagic()
+                backDoors()
                 if VERROR == true
                 then
                     print("ERROR: Banjo_Tooie_connector Mismatch. Please obtain the correct version")

@@ -623,6 +623,7 @@ class BanjoTooieWorld(World):
         btoptions['minigames'] = 'skip' if self.options.speed_up_minigames == 1 else "full"
         btoptions['trebleclef'] = "true" if self.options.randomize_treble == 1 else "false"
         btoptions['skip_puzzles'] = "true" if self.options.skip_puzzles == 1 else "false"
+        btoptions['backdoors'] = "true" if self.options.backdoors == 1 else "false"
         btoptions['open_hag1'] = "true" if self.options.open_hag1 == 1 else "false"
         btoptions['stations'] = "true" if self.options.randomize_stations == 1 else "false"
         btoptions['chuffy'] = "true" if self.options.randomize_chuffy == 1 else "false"
