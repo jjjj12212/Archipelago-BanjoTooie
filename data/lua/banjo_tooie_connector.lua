@@ -3798,7 +3798,7 @@ function BTHACK:getPCPointer()
 end
 
 function BTHACK:getPCDeath()
-    mainmemory.readbyte(self:getPCPointer());
+    return mainmemory.readbyte(self:getPCPointer());
 end
 
 function BTHACK:setPCDeath(DEATH_COUNT)
@@ -3806,7 +3806,7 @@ function BTHACK:setPCDeath(DEATH_COUNT)
 end
 
 function BTHACK:getAPDeath()
-    mainmemory.writebyte(self:getPCPointer() + self.pc_death_ap);
+   return mainmemory.readbyte(self:getPCPointer() + self.pc_death_ap);
 end
 
 function BTHACK:setAPDeath(DEATH_COUNT)
@@ -3823,7 +3823,7 @@ function BTHACK:getNPointer()
 end
 
 function BTHACK:getNLocalDeath()
-    mainmemory.readbyte(self:getPCPointer() + self.n64_death_us);
+   return mainmemory.readbyte(self:getPCPointer() + self.n64_death_us);
 end
 
 function BTHACK:setTextQueue()
