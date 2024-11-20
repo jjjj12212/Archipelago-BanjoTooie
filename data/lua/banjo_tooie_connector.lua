@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V3.4"
+local BT_VERSION = "V3.4.1"
 local PLAYER = ""
 local SEED = 0
 
@@ -465,7 +465,7 @@ function BTRAM:setBanjoTState(Tstate)
 end
 
 function BTRAM:getTransformation()
-    return mainmemory.read_u8(self.character_change);
+    return mainmemory.read_u8(self.character_state);
 end
 
 function BTRAM:setTransformation(Tstate)
@@ -2108,28 +2108,28 @@ local JIGGY_CHUNKS = {} -- Jiggy Chunky Check Locations
 local DINO_KIDS = {} -- the 3 Dino Kids
 
 
--- local MAGIC_MAP = {
---     ["1230501"] = false,
---     ["1230855"] = false,
---     ["1230856"] = false,
---     ["1230857"] = false,
---     ["1230858"] = false,
---     ["1230859"] = false,
---     ["1230860"] = false,
---     ["1230861"] = false,
---     ["1230862"] = false,
---     ["1230863"] = false,
+local MAGIC_MAP = {
+    ["1230501"] = false,
+    ["1230855"] = false,
+    ["1230856"] = false,
+    ["1230857"] = false,
+    ["1230858"] = false,
+    ["1230859"] = false,
+    ["1230860"] = false,
+    ["1230861"] = false,
+    ["1230862"] = false,
+    ["1230863"] = false,
 
---     ["1230174"] = false,
---     ["1230175"] = false,
---     ["1230176"] = false,
---     ["1230177"] = false,
---     ["1230178"] = false,
---     ["1230179"] = false,
---     ["1230180"] = false,
---     ["1230181"] = false,
---     ["1230182"] = false
--- }
+    ["1230174"] = false,
+    ["1230175"] = false,
+    ["1230176"] = false,
+    ["1230177"] = false,
+    ["1230178"] = false,
+    ["1230179"] = false,
+    ["1230180"] = false,
+    ["1230181"] = false,
+    ["1230182"] = false
+}
 
 
 local TRANSFORM_SWAP_MAP = {
@@ -7694,15 +7694,15 @@ function transform_logic_flags() -- Checks receive map for items need to calcula
     end
 end
 
--- function updateMagic()
---     for apid, itemId in pairs(receive_map)
---     do
---         if itemId == MAGIC_MAP
---         then
---             MAGIC_MAP[itemId] = true
---         end
---     end
--- end
+function updateMagic()
+    for apid, itemId in pairs(receive_map)
+    do
+        if MAGIC_MAP[itemId] ~= nil
+        then
+            MAGIC_MAP[itemId] = true
+        end
+    end
+end
 
 
 
@@ -7715,9 +7715,9 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
     if mapaddr == 0x142
     then
         REVERTING_MUMBO = true
-        return
+        BTRAM:setTransformation(1)
     end
-    
+
     if death_flg  == 1 and (currentState == 8 or currentState == 15 or currentState == 16 or 
     currentState == 12 or currentState == 18 or currentState == 7 or currentState == 2 or currentState == 6
     or currentState == 13) --mumbo or any transformation except big t-rex, respawns in JV if transformation not done properly
@@ -7744,15 +7744,11 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
         if currentState == 1 or currentState == 8 or currentState == 15 or currentState == 16 or 
         currentState == 12 or currentState == 18 or currentState == 7 or currentState == 2 or currentState == 6 -- banjo or non-mumbo transforms
         then
-            for apid, itemId in pairs(receive_map)
+            for itemId, value in pairs(MAGIC_MAP)
             do
-                if itemId == TRANSFORM_SWAP_MAP[mapaddr]["mumbo"]
+                if itemId == TRANSFORM_SWAP_MAP[mapaddr]["mumbo"] and value == true
                 then
-                    if itemId == "1230855"  -- MT Mumbo Item
-                    then
-                        FAKE_MUMBO = true
-                        return BTRAM:setTransformation(13) -- Mumbo
-                    elseif itemId == "1230856" and (TURBOTRAINERS == true or SPRINGYSTEPSHOES == true or TALONTROT == true)-- GGM Humba Item
+                   if itemId == "1230856" and (TURBOTRAINERS == true or SPRINGYSTEPSHOES == true or TALONTROT == true)-- GGM Humba Item
                     then
                         FAKE_MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
@@ -7762,28 +7758,7 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
                     then
                         FAKE_MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
-                    elseif itemId == "1230858" -- JRL Mumbo Item
-                    then
-                        FAKE_MUMBO = true
-                        return BTRAM:setTransformation(13)-- Mumbo
-                    elseif itemId == "1230859" -- TDL Mumbo Item
-                    then
-                        FAKE_MUMBO = true
-                        return BTRAM:setTransformation(13) -- Mumbo
-                    elseif itemId == "1230860" -- GI Mumbo Item
-                    then
-                        FAKE_MUMBO = true
-                        return BTRAM:setTransformation(13) -- Mumbo
-                    elseif itemId == "1230861" -- HFP Mumbo Item
-                    then
-                        FAKE_MUMBO = true
-                        return BTRAM:setTransformation(13) -- Mumbo
-                    elseif itemId == "1230862" -- CCL Mumbo Item
-                    then
-                        FAKE_MUMBO = true
-                        return BTRAM:setTransformation(13) -- Mumbo
-                    elseif itemId == "1230863" -- IOH Mumbo Item
-                    then
+                    else
                         FAKE_MUMBO = true
                         return BTRAM:setTransformation(13) -- Mumbo
                     end
@@ -7796,7 +7771,7 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
             REVERTING_MUMBO = true
             BTRAM:setTransformation(1) -- Banjo
         end
-    elseif check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 L'] == false
+    elseif check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 L'] == true
     then
         if currentState == 1 or (currentState == 13 and FAKE_MUMBO == true) -- Banjo or Mumbo
         then
@@ -10236,6 +10211,7 @@ function main()
             if (FRAME % 30 == 1) then
                 BTRAM:banjoPTR()
                 receive();
+                updateMagic()
                 if VERROR == true
                 then
                     print("ERROR: Banjo_Tooie_connector Mismatch. Please obtain the correct version")
