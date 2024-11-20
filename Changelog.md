@@ -1,6 +1,7 @@
 # 3.4.1-beta
   - Logic Fixes:
     - Dilberta Jiggy moved to MT region.
+  - Additional fixes for Instant Transformation
 
 # 3.4-beta
  - Hints show the entrance to a level if loading zones are randomized
