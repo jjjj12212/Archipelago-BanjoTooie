@@ -3617,7 +3617,7 @@ BTHACK = {
     RDRAMBase = 0x80000000,
     RDRAMSize = 0x800000,
     base_index = 0x400000,
-    version = 0x0,
+        version = 0x0,
     pc = 0x4,
         pc_death_us = 0x0,
         pc_death_ap = 0x1,
@@ -3863,6 +3863,23 @@ function BTHACK:setDialog(message)
         mainmemory.writebyte(self:getPCPointer() + self.pc_txt + last_char, 0);
     end
     self:setTextQueue()
+end
+
+function BTHACK:getRomVersion()
+    local hackPointerIndex = BTHACK:dereferencePointer(self.base_index);
+    if hackPointerIndex == nil
+    then
+        return "0"
+    end
+	major = mainmemory.read_u16_be(self.version + hackPointerIndex);
+    minor = mainmemory.readbyte(self.version + 2 + hackPointerIndex);
+    patch = mainmemory.readbyte(self.version + 3 + hackPointerIndex);
+    if patch == 0
+    then
+        return "V"..tostring(major).."."..tostring(minor)
+    else
+        return "V"..tostring(major).."."..tostring(minor).."."..tostring(patch)
+    end
 end
 
 
@@ -5553,6 +5570,23 @@ function process_slot(block)
         then
             VERROR = true
             return false
+        end
+        local checked = false
+        while(checked == false)
+        do
+            local ROMversion = BTH:getRomVersion()
+            if ROMversion ~= "0"
+            then
+                if ROMversion ~= CLIENT_VERSION
+                then
+                    print(ROMversion)
+                    VERROR = true
+                    print("ROM VERSION DOES NOT MATCH")
+                    return false
+                end
+                checked = true
+            end
+            emu.frameadvance()
         end
     end
 
