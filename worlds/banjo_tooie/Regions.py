@@ -766,7 +766,9 @@ def connect_regions(self):
     region_gi_entrance.add_exits({regionName.IOHQM}, {regionName.IOHQM: lambda state: rules.gi_jiggy(state)})
 
     region_hfp_entrance = multiworld.get_region(regionName.HFPE, player)
-    region_hfp_entrance.add_exits({regionName.IOHCT_HFP_ENTRANCE}, {regionName.IOHCT_HFP_ENTRANCE: lambda state: rules.HFP_to_CTHFP(state)})
+    region_hfp_entrance.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.IOHCT},
+                                  {regionName.IOHCT_HFP_ENTRANCE: lambda state: rules.HFP_to_CTHFP(state),
+                                   regionName.IOHCT: lambda state: rules.backdoors_enabled(state)})
 
     region_ccl_entrance = multiworld.get_region(regionName.CCLE, player)
     region_ccl_entrance.add_exits({regionName.IOHWL}, {regionName.IOHWL: lambda state: rules.CCL_to_WL(state)})

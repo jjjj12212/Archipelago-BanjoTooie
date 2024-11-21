@@ -9287,10 +9287,11 @@ function initializeFlags()
 
         if BACKDOORS == true then
             BTRAMOBJ:setFlag(0x11, 3) -- WW Saucer Door
-            BTRAMOBJ:setFlag(0x17, 3) -- MT treasure Chamber to TDL door
+            BTRAMOBJ:setFlag(0x2B, 4) -- Door from TDL Hatch to rest of TDL
             BTRAMOBJ:setFlag(0x2B, 2) -- MT Kickball to HFP door
             BTRAMOBJ:setFlag(0x28, 2) -- TDL Oogle Boogle's cave to WW door
-            BTRAMOBJ:setFlag(0x54, 3) -- HFP Water Cooled
+            BTRAMOBJ:setFlag(0x5E, 3) -- HFP Water Cooled
+            BTRAMOBJ:setFlag(0x6d, 1) -- HFP Bridge to Clifftop
         end
 
         -- Totals Screen --

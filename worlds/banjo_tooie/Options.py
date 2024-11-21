@@ -113,7 +113,8 @@ class Backdoors(Toggle):
     """Opens many one way switches on game start, allowing for more backdoor access to levels.
     The following gates are preopened: MT>TDL, MT>HFP, GGM>WW, WW>TDL
     For MT>TDL only the gate accessed from TDL's side is opened and for GGM>WW the boulders are still unexploded
-    George is also predropped to make HFP>JRL more accessible"""
+    The bridge from HFPs entrance is pre-moved to allow secondary access to clifftop
+    George is also pre-dropped to make HFP>JRL more accessible"""
     display_name = "Open Backdoors"
 
 class OpenHag1(DefaultOnToggle):
