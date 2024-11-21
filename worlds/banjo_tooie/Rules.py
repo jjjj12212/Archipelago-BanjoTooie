@@ -4407,13 +4407,13 @@ class BanjoTooieRules:
     def hatch_to_TDL(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = False
+            logic = self.backdoors_enabled(state)
         elif self.world.options.logic_type == 1 : # normal
-            logic = False
+            logic = self.backdoors_enabled(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = False
+            logic = self.backdoors_enabled(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.clockwork_eggs(state) and self.egg_aim(state)
+            logic = (self.clockwork_eggs(state) and self.egg_aim(state)) or self.backdoors_enabled(state)
         return logic
     
     def ww_jiggy(self, state: CollectionState) -> bool: #8

@@ -630,10 +630,9 @@ def connect_regions(self):
                          regionName.IOHPL: lambda state: rules.WH_to_PL(state)})
 
     region_MT = multiworld.get_region(regionName.MT, player)
-    region_MT.add_exits({regionName.TL_HATCH, regionName.GM, regionName.TL, regionName.HP},
+    region_MT.add_exits({regionName.TL_HATCH, regionName.GM, regionName.HP},
                         {regionName.TL_HATCH: lambda state: rules.jiggy_treasure_chamber(state),\
                         regionName.GM: lambda state: rules.dilberta_free(state),
-                        regionName.TL: lambda state: rules.mt_tdl_backdoor(state),
                         regionName.HP: lambda state: rules.mt_hfp_backdoor(state)})
     
     region_HATCH = multiworld.get_region(regionName.TL_HATCH, player)
