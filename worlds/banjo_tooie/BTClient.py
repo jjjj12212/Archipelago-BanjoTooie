@@ -1,12 +1,16 @@
 import asyncio
 import hashlib
+import io
 import json
 import os
 import multiprocessing
 import copy
+import pathlib
 import random
 import subprocess
+import sys
 import time
+from tkinter import filedialog
 from typing import Union
 import zipfile
 from asyncio import StreamReader, StreamWriter
@@ -57,7 +61,6 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 
 bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_to_id"]
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
-
 script_version: int = 4
 version: str = "V3.4.1"
 
@@ -216,10 +219,25 @@ class BanjoTooieContext(CommonContext):
         if (md5 == "ca0df738ae6a16bfb4b46d3860c159d9"): # byte swapped
             rom = self.swap(rom)
         elif (md5 != "40e98faa24ac3ebe1d25cb5e5ddf49e4"):
-            print("Unknown ROM!")
+            logger.error("Unknown ROM!")
             return
-        patch = self.read_file(patchPath)
+        patch = self.openFile(patchPath).read()
         self.write_file(dstPath, bsdiff4.patch(rom, patch))
+
+    def openFile(self, resource: str, mode: str = "rb", encoding: str = None):
+        filename = sys.modules[__name__].__file__
+        apworldExt = ".apworld"
+        game = "banjo_tooie/"
+        if apworldExt in filename:
+            zip_path = pathlib.Path(filename[:filename.index(apworldExt) + len(apworldExt)])
+            with zipfile.ZipFile(zip_path) as zf:
+                zipFilePath = game + resource
+                if mode == 'rb':
+                    return zf.open(zipFilePath, 'r')
+                else:
+                    return io.TextIOWrapper(zf.open(zipFilePath, 'r'), encoding)
+        else:
+            return open(os.path.join(pathlib.Path(__file__).parent, resource), mode, encoding=encoding)
 
         # self.patch_rom("banjo-tooie.n64", "banjo-tooie-romhack.n64", "banjo-tooie.patch")
 
@@ -234,7 +252,9 @@ class BanjoTooieContext(CommonContext):
                                 "Your version: "+version+" | Generated version: "+self.slot_data["version"])
             self.deathlink_enabled = self.slot_data["deathlink"]
             logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
-            self.patch_rom("C:/Users/Mike Jackson/Desktop/BizHawk/Banjo-Tooie (USA).n64", "C:/Users/Mike Jackson/Desktop/BizHawk/banjo-tooie-romhack.n64", "C:/Users/Mike Jackson/Desktop/BizHawk/banjo-tooie.patch")
+            rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")])
+            file_path = os.path.split(rom)
+            self.patch_rom(rom, file_path[0] + "/banjo-tooie-romhack.n64", "banjo-tooie.patch")
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
         # elif cmd == 'Print':
             # msg = args['text']
