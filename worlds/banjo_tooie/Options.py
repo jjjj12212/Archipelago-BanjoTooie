@@ -67,7 +67,7 @@ class EnableMultiWorldCheatoPages(DefaultOnToggle):
 
 class SetMultiWorldCheatoPagesFiller(Toggle):
     """If Cheato pages are scattered, sets Cheato Items as filler."""
-    display_name = "Use Cheato Pages as Filler."
+    display_name = "Use Cheato Pages as Filler"
 
 class EnableMultiWorldHoneycombs(DefaultOnToggle):
     """Honeycombs are scattered across the MultiWorld."""
@@ -91,7 +91,7 @@ class EnableMultiWorldTrainStationSwitches(Toggle):
 
 class EnableMultiWorldChuffyTrain(Toggle):
     """Chuffy is lost somewhere in the MultiWorld."""
-    display_name = "Chuffy as a randomized AP Item."
+    display_name = "Chuffy as a randomized AP Item"
 
 class EnableMultiWorldNotes(Toggle):
     """Note Nests are scattered across the MultiWorld."""
