@@ -1376,6 +1376,122 @@ local ROM_ITEM_TABLE = {
     "AP_ITEM_CKA",
     "AP_ITEM_H1A",
 };
+
+local CURRENT_DIALOG_CHARACTER = nil
+local DIALOG_CHARACTER_TABLE = {}
+local DAILOG_KEY_TABLE = {
+    "ICON_GLOWBO",
+    "ICON_JIGGY",
+    "ICON_HONEYCOMB",
+    "ICON_SUB",
+    "ICON_WASHER",
+    "ICON_BANJO",
+    "ICON_KAZOOIE",
+    "ICON_BOTTLES",
+    "ICON_MUMBO",
+    "ICON_JINJO_YELLOW",
+    "ICON_JINJO_GREEN",
+    "ICON_JINJO_BLUE",
+    "ICON_JINJO_PURPLE",
+    "ICON_JINJO_ORANGE",
+    "ICON_BEEHIVE",
+    "ICON_GRUNTY",
+    "ICON_ZUBBA",
+    "ICON_JAMJARS",
+    "ICON_BOVINA",
+    "ICON_MINGO_WHITE",
+    "ICON_MINGO_ORANGE",
+    "ICON_MINGO_YELLOW",
+    "ICON_MINGO_BROWN",
+    "ICON_UNOGOPAZ",
+    "ICON_CHIEF_BLOATAZIN",
+    "ICON_DILBERTA",
+    "ICON_STONIES1",
+    "ICON_CANARY_MARY",
+    "ICON_CHEATO",
+    "ICON_GOBI",
+    "ICON_DINO_KID1",
+    "ICON_MR_PATCH",
+    "ICON_MOGGY",
+    "ICON_SOGGY",
+    "ICON_GROGGY",
+    "ICON_MRS_BOGGY",
+    "ICON_PROSPECTOR",
+    "ICON_HUMBA",
+    "ICON_UFO",
+    "ICON_OLD_KING_COAL",
+    "ICON_SSSLUMBER",
+    "ICON_BOGGY",
+    "ICON_BIG_AL",
+    "ICON_SALTY_JOE",
+    "ICON_CONGA",
+    "ICON_PAWNO",
+    "ICON_TIPTUP",
+    "ICON_JOLLY",
+    "ICON_MERRY_MAGGIE",
+    "ICON_TERRY",
+    "ICON_BARGASAURUS",
+    "ICON_YELLOW_STONY",
+    "ICON_ALIEN",
+    "ICON_CHRIS_P_BACON",
+    "ICON_CAPTAIN_BLUBBER",
+    "ICON_STYRACOSAURUS_MOM",
+    "ICON_ROYSTEN",
+    "ICON_SAFE",
+    "ICON_GUFFO",
+    "ICON_MR_FIT",
+    "ICON_CAPTAIN_BLACKEYE",
+    "ICON_JINJO_RED",
+    "ICON_JINJO_WHITE",
+    "ICON_JINJO_BLACK",
+    "ICON_JINJO_BROWN",
+    "ICON_CHILLY_WILLY",
+    "ICON_CHILLI_BILLI",
+    "ICON_MINGY_JONGO",
+    "ICON_YELLOW_DODGEM",
+    "ICON_MINGELLA",
+    "ICON_BLOBBELDA",
+    "ICON_KLUNGO",
+    "ICON_BOTTLES_DEAD",
+    "ICON_MINGO_GREEN",
+    "ICON_MINGO_RED",
+    "ICON_MINGO_BLUE",
+    "ICON_MINGO_PURPLE",
+    "ICON_MINGO_BLACK",
+    "ICON_RABBIT_WORKER1",
+    "ICON_UNGA_BUNGA",
+    "ICON_JIGGYWIGGY",
+    "ICON_JIGGYWIGGY_DISCIPLE",
+    "ICON_HONEY_B",
+    "ICON_BANJO_KAZOOIE",
+    "ICON_PIG1",
+    "ICON_OOGLE_BOOGLE",
+    "ICON_GI_ANNOUNCER",
+    "ICON_DINGPOT",
+    "ICON_KING_JINGALING_DEAD",
+    "ICON_ROCKNUT",
+    "ICON_MILDRED",
+    "ICON_BIGGA_FOOT",
+    "ICON_GEORGE",
+    "ICON_SABREMAN",
+    "ICON_DIPPY",
+    "ICON_LOGGO",
+    "ICON_KING_JINGALING",
+    "ICON_MRS_BOTTLES",
+    "ICON_SPECCY",
+    "ICON_GOGGLES",
+    "ICON_TARGITZAN",
+    "ICON_CHOMPA",
+    "ICON_LORD_WOO_FAK_FAK",
+    "ICON_WELDAR",
+    "ICON_ALIEN_CHILD",
+    "ICON_EVIL_BOTTLES",
+    "ICON_DINO_KID2",
+    "ICON_DINO_SCRIT_SMALL",
+    "ICON_DINO_SCRIT_BIG",
+    "ICON_HEGGY",
+}
+
 local UNLOCKED_WORLDS = {} -- Worlds unlocked
 
 -- Address Map for Banjo-Tooie
@@ -3622,18 +3738,19 @@ BTHACK = {
         pc_death_us = 0x0,
         pc_death_ap = 0x1,
         pc_show_txt = 0x2,
-        pc_txt = 0x3,
-    pc_settings = 0x8,
+    pc_messages = 0x8,
+    pc_settings = 0xC,
         setting_seed = 0x0,
         setting_chuffy = 0x4,
         setting_puzzle = 0x5,
         setting_klungo = 0x6,
         setting_tot = 0x7,
         setting_minigames = 0x8,
-        setting_jiggy_requirements = 0x9,
-        setting_open_silos = 0x14,
-    pc_items = 0xC,
-    pc_exit_map = 0x10,
+        setting_dialog_character = 0x9,
+        setting_jiggy_requirements = 0xA,
+        setting_open_silos = 0x15,
+    pc_items = 0x10,
+    pc_exit_map = 0x14,
         exit_on_map = 0x0,
         exit_og_map = 0x2,
         exit_to_map = 0x4,
@@ -3641,12 +3758,12 @@ BTHACK = {
         exit_to_exit = 0x7,
         exit_map_struct_size = 0x8,
         world_index = 0,
-    n64 = 0x14,
+    n64 = 0x18,
         n64_show_text = 0x0,
         n64_death_us = 0x1,
         n64_death_ap = 0x2,
-    real_flags = 0x18,
-    fake_flags = 0x1C,
+    real_flags = 0x1C,
+    fake_flags = 0x20,
     txt_queue = 0
 }
 
@@ -3740,6 +3857,10 @@ function BTHACK:setSettingMinigames(minigames)
     mainmemory.writebyte(self.setting_minigames + BTHACK:getSettingPointer(), minigames);
 end
 
+function BTHACK:setSettingDialogCharacter(character)
+    mainmemory.writebyte(self.setting_dialog_character + BTHACK:getSettingPointer(), character);
+end
+
 function BTHACK:setSettingJiggyRequirements(index, jiggy_requirements)
     mainmemory.writebyte(self.setting_jiggy_requirements + index + BTHACK:getSettingPointer() , jiggy_requirements);
 end
@@ -3794,7 +3915,20 @@ end
 
 function BTHACK:getPCPointer()
     local hackPointerIndex = BTHACK:dereferencePointer(self.base_index);
+    if hackPointerIndex == nil
+    then
+        return nil
+    end
 	return BTHACK:dereferencePointer(self.pc + hackPointerIndex);
+end
+
+function BTHACK:getPCMsgPointer()
+    local hackPointerIndex = BTHACK:dereferencePointer(self.base_index);
+    if hackPointerIndex == nil
+    then
+        return nil
+    end
+	return BTHACK:dereferencePointer(self.pc_messages + hackPointerIndex);
 end
 
 function BTHACK:getPCDeath()
@@ -3826,8 +3960,9 @@ function BTHACK:getNLocalDeath()
    return mainmemory.readbyte(self:getPCPointer() + self.n64_death_us);
 end
 
-function BTHACK:setTextQueue()
+function BTHACK:setTextQueue(icon_id)
     self.txt_queue = self.txt_queue + 1
+    BTHACK:setSettingDialogCharacter(icon_id)
     mainmemory.writebyte(self:getPCPointer() + self.pc_show_txt, self.txt_queue);
 end
 
@@ -3844,25 +3979,25 @@ function BTHACK:getPCQueue()
     return self.txt_queue
 end
 
-function BTHACK:setDialog(message)
+function BTHACK:setDialog(message, icon_id)
     uppcase_text = string.upper(message)
     local overflow = false
     local last_char = 0
     for idx = 0, string.len(uppcase_text)-1 do
-        if idx == 76
+        if idx == 507
         then
             overflow = true
-            mainmemory.writebyte(self:getPCPointer() + self.pc_txt + idx, 0);
+            mainmemory.writebyte(self:getPCMsgPointer() + idx, 0);
             break;
         end
         last_char = last_char + 1;
-        mainmemory.writebyte(self:getPCPointer() + self.pc_txt + idx, uppcase_text:byte(idx + 1));
+        mainmemory.writebyte(self:getPCMsgPointer() + idx, uppcase_text:byte(idx + 1));
     end
     if overflow == false
     then
-        mainmemory.writebyte(self:getPCPointer() + self.pc_txt + last_char, 0);
+        mainmemory.writebyte(self:getPCMsgPointer() + last_char, 0);
     end
-    self:setTextQueue()
+    self:setTextQueue(icon_id)
 end
 
 function BTHACK:getRomVersion()
@@ -5197,13 +5332,16 @@ function process_block(block)
     end
     if next(block['messages']) ~= nil
     then
-        for k, message in pairs(block['messages'])
+        local msg = ""
+        for k, msg_table in pairs(block['messages'])
         do
-            if not string.find(message, "%(found%)")
+            if msg_table["player"] == PLAYER
             then
-                local split_message = message:gsub("%(.*%)", "") -- remove locations in dialog
-                table.insert(MESSAGE_TABLE, split_message)
+                msg = "You have found your " .. msg_table["item"]
+            else
+                msg = msg_table["player"] .. " sent your " .. msg_table["item"]
             end
+                table.insert(MESSAGE_TABLE, {msg, 1})
         end
     end
     if block['triggerDeath'] == true and DEATH_LINK == true
@@ -5276,7 +5414,7 @@ function SendToBTClient()
     elseif CUR_STATE == STATE_INITIAL_CONNECTION_MADE then
         CUR_STATE = STATE_TENTATIVELY_CONNECTED
     elseif CUR_STATE == STATE_TENTATIVELY_CONNECTED then
-        table.insert(MESSAGE_TABLE, "Connected to the Banjo Tooie Client!")
+        table.insert(MESSAGE_TABLE, {"Connected to the Banjo Tooie Client!", 1})
         print("Connected!")
         PRINT_GOAL = true;
         CUR_STATE = STATE_OK
@@ -5369,6 +5507,10 @@ function process_slot(block)
     for index, item in pairs(ROM_ITEM_TABLE)
     do
         ITEM_TABLE[item] = index - 1
+    end
+    for index, item in pairs(DAILOG_KEY_TABLE)
+    do
+        DIALOG_CHARACTER_TABLE[item] = index - 1
     end
     if block['slot_player'] ~= nil and block['slot_player'] ~= ""
     then
@@ -5604,28 +5746,27 @@ function printGoalInfo()
     JFR_LENGTH ~= nil and TH_LENGTH ~= nil then
         local message = ""
         if GOAL_TYPE == 0 then
-            message = "You need to hunt down Grunty in her HAG1 and put her back in the ground!";
+            message = "You need to hunt down Grunty in her HAG1 and put her back in the ground!\nGood Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 1 and MGH_LENGTH == 15 then
-            message = "You are hunting 15 Mumbo Tokens found in Grunty's dastardly minigames!";
+            message = "You are hunting down all 15 of the Mumbo Tokens found in Grunty's dastardly minigames!\n Good luck and"..randomEncouragment;
         elseif GOAL_TYPE == 1 and MGH_LENGTH < 15 then
-            message = "You are hunting "..MGH_LENGTH.." Mumbo Tokens from Grunty's dastardly minigames!";
+            message = "You are hunting for "..MGH_LENGTH.." Mumbo Tokens from Grunty's dastardly minigames!\n Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 2 and BH_LENGTH == 8 then
-            message = "You are hunting down all 8 Mumbo Tokens from each world boss!";
+            message = "You are hunting down all 8 Mumbo Tokens from each world boss!\n Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 2 and BH_LENGTH < 8 then
-            message = "You are hunting for "..BH_LENGTH.." Mumbo Tokens from the 8 world bosses!";
+            message = "You are hunting for "..BH_LENGTH.." Mumbo Tokens from the 8 world bosses!\n Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 3 and JFR_LENGTH == 9 then
-            message ="You are trying to rescue 9 Jinjo families and retrieve their Mumbo Tokens!";
+            message ="You are trying to rescue all 9 Jinjo families and retrieve their Mumbo Tokens!\nGood Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 3 and JFR_LENGTH < 9 then
-            message = "You are trying to rescue "..JFR_LENGTH.."/9 Jinjo families and retrieve their Mumbo Tokens!";
+            message = "You are trying to rescue "..JFR_LENGTH.." of the 9 Jinjo families and retrieve their Mumbo Tokens!\n Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 4 then
-            message ="You absolute mad lad! You're doing the Wonder Wing Challenge!"
+            message ="You absolute mad lad! You're doing the Wonder Wing Challenge!\nGood Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 5 and TH_LENGTH == 15 then
-            message ="You are trying to find 15 Mumbo Tokens scattered throughout the Isle O Hags!";
+            message ="You are trying to find all 15 of Mumbo's Tokens scattered throughout the Isle of Hags!\n Good Luck and"..randomEncouragment;
         elseif GOAL_TYPE == 5 and TH_LENGTH < 15 then
-            message = "You are trying to find "..TH_LENGTH.." Mumbo Tokens scattered throughout the Isle O Hags!";
+            message = "You are trying to find "..TH_LENGTH.." of the 15 of Mumbo Tokens scattered throughout the Isle of Hags!\nGood Luck and"..randomEncouragment;
         end
-        table.insert(MESSAGE_TABLE, message)
-        table.insert(MESSAGE_TABLE, "Good luck and " .. randomEncouragment)
+        table.insert(MESSAGE_TABLE, {message, 69});
     end
 end
 
@@ -5635,7 +5776,8 @@ function messageQueue()
     then
         for id, message in pairs(MESSAGE_TABLE)
         do
-            BTH:setDialog(message)
+            print(message)
+            BTH:setDialog(message[1], message[2])
             processed = id
             break
         end

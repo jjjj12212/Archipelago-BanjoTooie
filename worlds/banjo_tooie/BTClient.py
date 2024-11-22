@@ -154,7 +154,7 @@ class BanjoTooieContext(CommonContext):
             return
         return
 
-    def _set_message(self, msg: str, msg_id: Union[int, None]):
+    def _set_message(self, msg: dict[str, str, int], msg_id: Union[int, None]):
         if msg_id == None:
             self.messages.update({len(self.messages)+1: msg })
         else:
@@ -236,10 +236,10 @@ class BanjoTooieContext(CommonContext):
             logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
             self.patch_rom("C:/Users/Mike Jackson/Desktop/BizHawk/Banjo-Tooie (USA).n64", "C:/Users/Mike Jackson/Desktop/BizHawk/banjo-tooie-romhack.n64", "C:/Users/Mike Jackson/Desktop/BizHawk/banjo-tooie.patch")
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
-        elif cmd == 'Print':
-            msg = args['text']
-            if ': !' not in msg:
-                self._set_message(msg, SYSTEM_MESSAGE_ID)
+        # elif cmd == 'Print':
+            # msg = args['text']
+            # if ': !' not in msg:
+            #     self._set_message(msg, SYSTEM_MESSAGE_ID)
         elif cmd == "ReceivedItems":
             if self.startup == False:
                 for item in args["items"]:
@@ -260,7 +260,7 @@ class BanjoTooieContext(CommonContext):
     def on_print_json(self, args: dict):
         if self.ui:
             self.ui.print_json(copy.deepcopy(args["data"]))
-            relevant = args.get("type", None) in {"Hint", "ItemSend"}
+            relevant = args.get("type", None) in {"ItemSend"}
             if relevant:
                 relevant = False
                 item = args["item"]
@@ -271,34 +271,20 @@ class BanjoTooieContext(CommonContext):
 
                 if relevant == True:
                     msg = self.raw_text_parser(copy.deepcopy(args["data"]))
-                    self._set_message(msg, None)
+                    player = self.player_names[int(args["data"][0]["text"])]
+                    item_name = self.item_names.lookup_in_slot(int(args["data"][2]["text"]))
+                    # self._set_message(msg, None)
+                    self._set_message({"player":player, "item":item_name, "item_id":int(args["data"][2]["text"])}, None)
         else:
             text = self.jsontotextparser(copy.deepcopy(args["data"]))
             logger.info(text)
-            relevant = args.get("type", None) in {"Hint", "ItemSend"}
+            relevant = args.get("type", None) in {"ItemSend"}
             if relevant:
                 msg = self.raw_text_parser(copy.deepcopy(args["data"]))
-                self._set_message(msg, None)
-
-        # if relevant:
-        #     getitem = False
-        #     item = args["item"]
-        #     # found in this world
-        #     if self.slot_concerns_self(args["receiving"]):
-        #         relevant = True 
-        #         if args.get("type", None) != "Hint":    
-        #             getitem = True
-        #     # goes in this world
-        #     elif self.slot_concerns_self(item.player):
-        #         relevant = True
-        #     # not related
-        #     else:
-        #         relevant = False
-        #         item = args["item"]
-        #         if getitem:
-        #             self.items_received.append(item)
-
-
+                player = self.player_names[int(args["data"][0]["text"])]
+                item_name = self.item_names.lookup_in_slot(int(args["data"][2]["text"]))
+                # self._set_message(msg, None)
+                self._set_message({"player":player, "item":item_name, "item_id":int(args["data"][2]["text"])}, None)
 
 def get_payload(ctx: BanjoTooieContext):
     if ctx.deathlink_enabled and ctx.deathlink_pending:
