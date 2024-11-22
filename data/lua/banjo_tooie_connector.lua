@@ -7710,7 +7710,11 @@ function backDoors()
     then
         if CURRENT_MAP == 0x115
         then
-            BTRAMOBJ:setFlag(0x2b, 6) -- removes oogle boogles guard if you enter their room from the backside
+            BTRAMOBJ:setFlag(0x2B, 6) -- removes oogle boogles guard if you enter their room from the backside
+        end
+        if CURRENT_MAP == 0xBB
+        then
+            BTRAMOBJ:setFlag(0x04, 0) -- removes stone wall if you enter the room from MT -- Texture glitch
         end
     end
 end
@@ -8520,6 +8524,7 @@ function finishTransition()
             getChuffyMaps()
         end
         ap_icekey_glowbo_map()
+        backDoors()
     elseif mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == false and player == true -- constantly runs while NOT transitioning AND Player is loaded
     then
         -- Chuffy
@@ -9291,7 +9296,7 @@ function initializeFlags()
             BTRAMOBJ:setFlag(0x2B, 2) -- MT Kickball to HFP door
             BTRAMOBJ:setFlag(0x28, 2) -- TDL Oogle Boogle's cave to WW door
             BTRAMOBJ:setFlag(0x5E, 3) -- HFP Water Cooled
-            BTRAMOBJ:setFlag(0x6d, 1) -- HFP Bridge to Clifftop
+            BTRAMOBJ:setFlag(0x6D, 1) -- HFP Bridge to Clifftop
         end
 
         -- Totals Screen --
@@ -10236,7 +10241,6 @@ function main()
                 BTRAM:banjoPTR()
                 receive();
                 updateMagic()
-                backDoors()
                 if VERROR == true
                 then
                     print("ERROR: Banjo_Tooie_connector Mismatch. Please obtain the correct version")
