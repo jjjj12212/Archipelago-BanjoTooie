@@ -3,6 +3,7 @@
     - Oogle Boogle Jiggy: Requires talon trot to reach the Claw Clamber Boots, as well as a way to pass the Area 51 gate.
     - TDL Train Switch: Can be gotten with tall jump + grip grab. If not on intended logic, can be gotten with tall jump + air rat-a-tat-rap, or springy step shoes.
     - Loggo Cheato page: If using the intended logic, unblocking Loggo with bill drill is required. Other logics can also use grenades, beak barge, breegull bash, or Pack Whack.
+    - Twinklies Packaging Jiggy: considers bringing Kazooie to the boiler plant into the logic. Intended logic requires turbo trainers. Other logics require turbo trainers if doing it as BK is in logic.
     - Boggy Jiggy: sliding into the water as you poop a clockwork for invincibility is in glitched logic.
     - Hot Pool Jinjo: same as above.
     - HFP Trebleclef: if you climb Icicle Grotto as Banjo-Kazooie, it will require moves for you to be able to cross the last gaps on the icicles. Also, the clockwork shot in tricks and glitches logics now require egg aim.

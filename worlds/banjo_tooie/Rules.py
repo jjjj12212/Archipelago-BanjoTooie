@@ -1524,13 +1524,26 @@ class BanjoTooieRules:
     def jiggy_twinkly(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.can_use_battery(state) and self.grip_grab(state)
+            logic = self.can_use_battery(state) and self.grip_grab(state)\
+                    and (self.leg_spring(state) or self.flap_flip(state)) and self.turbo_trainers(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.can_use_battery(state) and (self.tall_jump(state) or self.grip_grab(state))
+            logic = self.can_use_battery(state) and (self.tall_jump(state) or self.grip_grab(state))\
+                    and (self.leg_spring(state)\
+                        or (self.glide(state) or self.wing_whack(state)) and self.tall_jump(state)
+                        or self.flight_pad(state) and (self.egg_aim(state) or self.airborne_egg_aiming(state)) and self.has_explosives(state)
+                        or self.flap_flip(state) and self.turbo_trainers(state))
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.can_use_battery(state) and (self.tall_jump(state) or self.grip_grab(state))
+            logic = self.can_use_battery(state) and (self.tall_jump(state) or self.grip_grab(state))\
+                    and (self.leg_spring(state)\
+                        or (self.glide(state) or self.wing_whack(state)) and self.tall_jump(state)
+                        or self.flight_pad(state) and (self.egg_aim(state) or self.airborne_egg_aiming(state)) and self.has_explosives(state)
+                        or self.flap_flip(state) and self.turbo_trainers(state))
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.can_use_battery(state) and (self.tall_jump(state) or self.grip_grab(state))
+            logic = self.can_use_battery(state) and (self.tall_jump(state) or self.grip_grab(state))\
+                    and (self.leg_spring(state)\
+                        or (self.glide(state) or self.wing_whack(state)) and self.tall_jump(state)
+                        or self.flight_pad(state) and (self.egg_aim(state) or self.airborne_egg_aiming(state)) and self.has_explosives(state)
+                        or self.flap_flip(state) and self.turbo_trainers(state))
         return logic
     
     def jiggy_waste_disposal_box(self, state: CollectionState) -> bool:
