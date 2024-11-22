@@ -108,13 +108,13 @@ class BanjoTooieWorld(World):
             if banjoItem.btid == 1230515:
                 maxJiggy = max(self.randomize_worlds.values()) if self.randomize_worlds else 70
                 if self.jiggy_counter > maxJiggy:
-                    item_classification = ItemClassification.useful
+                    item_classification = ItemClassification.filler
                 else:
                     item_classification = ItemClassification.progression
                 self.jiggy_counter += 1
             elif banjoItem.btid == 1230797 and self.options.randomize_notes.value == True:
                 if self.notecounter > 124:
-                    item_classification = ItemClassification.useful
+                    item_classification = ItemClassification.filler
                 else:
                     item_classification = ItemClassification.progression
                 self.notecounter += 1
