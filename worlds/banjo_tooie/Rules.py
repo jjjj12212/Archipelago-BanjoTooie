@@ -2245,18 +2245,17 @@ class BanjoTooieRules:
     def cheato_water_storage(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.grip_grab(state) and self.flap_flip(state)\
-                    and self.dive(state) and self.climb(state)
+            logic = self.grip_grab(state) and self.flap_flip(state) and self.dive(state) and self.climb(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = (self.grip_grab(state) or self.beak_buster(state))\
-                    and self.flap_flip(state) and self.dive(state) and self.climb(state)
+            logic = (self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state) and self.dive(state) and self.climb(state)\
+                    or self.GM_boulders(state) and self.pack_whack(state) and self.tall_jump(state) and self.dive(state) and self.climb(state) and self.grip_grab(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (self.grip_grab(state) or self.beak_buster(state))\
-                    and self.flap_flip(state) and self.dive(state) and self.climb(state)
+            logic = (self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state) and self.dive(state) and self.climb(state)\
+                    or self.GM_boulders(state) and self.pack_whack(state) and self.tall_jump(state) and self.dive(state) and self.climb(state) and self.grip_grab(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (self.grip_grab(state) or self.beak_buster(state))\
-                    and self.flap_flip(state) and self.dive(state) and self.climb(state)\
-                    or self.leg_spring(state) and self.glide(state) and self.GM_boulders(state)
+            logic = (self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state) and self.dive(state) and self.climb(state)\
+                    or self.leg_spring(state) and self.glide(state) and self.GM_boulders(state)\
+                    or self.GM_boulders(state) and self.pack_whack(state) and self.tall_jump(state) and self.dive(state) and self.climb(state) and self.grip_grab(state)
         return logic
     
     def cheato_haunted_cavern(self, state: CollectionState) -> bool:
@@ -3510,13 +3509,20 @@ class BanjoTooieRules:
             logic = ((self.grip_grab(state) and self.flap_flip(state)) or self.climb(state)) and self.dive(state)
         elif self.world.options.logic_type == 1: # normal
             logic = ((self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state) or self.climb(state))\
-                    and (self.tall_jump(state) or self.dive(state))
+                    and (self.tall_jump(state) or self.dive(state))\
+                    or (self.leg_spring(state) or self.glide(state)) and self.tall_jump(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state) or self.climb(state)
+            logic = (self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state)\
+                    or self.climb(state)\
+                    or self.leg_spring(state)\
+                    or self.glide(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state) or self.climb(state)\
+            logic = (self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state)\
+                    or self.climb(state)\
                     or self.ground_rat_a_tat_rap(state)\
-                    or self.beak_barge(state)
+                    or self.beak_barge(state)\
+                    or self.leg_spring(state)\
+                    or self.glide(state)
         return logic
     
     def notes_bottom_clockwork(self, state: CollectionState) -> bool:

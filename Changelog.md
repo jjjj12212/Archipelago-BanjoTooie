@@ -1,5 +1,7 @@
 # 3.4.2-beta
   - Logic fixes:
+    - Water Storage Cheato page: if not on intended logic, solo Banjo can get it with tall jump, pack whack, grip grab, climb, and dive.
+    - Dive of Death Notes: hard tricks logic and glitches logic get to get them with glide or leg spring. Easy tricks gets tall jump to make retrying easier.
     - Oogle Boogle Jiggy: Requires talon trot to reach the Claw Clamber Boots, as well as a way to pass the Area 51 gate.
     - TDL Train Switch: Can be gotten with tall jump + grip grab. If not on intended logic, can be gotten with tall jump + air rat-a-tat-rap, or springy step shoes.
     - T-Rex Roar: fixed bug that caused the check to always be in logic.
