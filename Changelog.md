@@ -13,6 +13,8 @@
     - HFP Trebleclef: if you climb Icicle Grotto as Banjo-Kazooie, it will require moves for you to be able to cross the last gaps on the icicles. Also, the clockwork shot in tricks and glitches logics now require egg aim.
   - Open Backdoor YAML Option
     - Makes side entrances easier to tranverse...if you got the right moves.
+  - Kill banjo if you get stuck using L+R+C Down (Doesn't trigger deathlink)
+  - D-pad right will show which level as on which entrance.
 
 # 3.4.1-beta
   - Logic Fixes:
