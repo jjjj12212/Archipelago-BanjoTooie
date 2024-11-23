@@ -1,4 +1,4 @@
-# 3.4.2-beta
+# 3.5-beta
   - Logic fixes:
     - Oogle Boogle Jiggy: Requires talon trot to reach the Claw Clamber Boots, as well as a way to pass the Area 51 gate.
     - TDL Train Switch: Can be gotten with tall jump + grip grab. If not on intended logic, can be gotten with tall jump + air rat-a-tat-rap, or springy step shoes.
@@ -9,6 +9,8 @@
     - Boggy Jiggy: sliding into the water as you poop a clockwork for invincibility is in glitched logic.
     - Hot Pool Jinjo: same as above.
     - HFP Trebleclef: if you climb Icicle Grotto as Banjo-Kazooie, it will require moves for you to be able to cross the last gaps on the icicles. Also, the clockwork shot in tricks and glitches logics now require egg aim.
+  - Open Backdoor YAML Option
+    - Makes side entrances easier to tranverse...if you got the right moves.
 
 # 3.4.1-beta
   - Logic Fixes:
