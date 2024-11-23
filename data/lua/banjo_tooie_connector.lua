@@ -79,6 +79,7 @@ local REGEN_HOLD = false;
 
 local FPS = false;
 local FPS_HOLD = false;
+local KILL_ME = false;
 ------------------------------
 local TEXT_TIMER = 2;
 local TEXT_START = false;
@@ -8920,6 +8921,10 @@ function DPadStats()
             then
                 print("Breegull Bash");
             end
+            if AGI_CHUFFY["1230796"] == true
+            then
+                print("Chuffy");
+            end
             if FAST_SWIM == true
             then
                 print("Fast Swimming")
@@ -8935,7 +8940,35 @@ function DPadStats()
             do
                 if table["opened"] == true
                 then
-                    print(table["defaultName"])
+                    for orig_world, new_world in pairs(AP_LOADING_ZONES)
+                    do
+                        local level = new_world
+                        local level_orig = orig_world
+                        if level == "Outside Grunty Industries"
+                        then
+                            level = "Grunty Industries"
+                        end
+                        if  level == "Jolly Roger's Lagoon - Town Center"
+                        then
+                            level = "Jolly Roger's Lagoon"
+                        end
+                        local level_orig = orig_world
+                        if level_orig == "Outside Grunty Industries"
+                        then
+                            level_orig = "Grunty Industries"
+                        end
+                        if  level_orig == "Jolly Roger's Lagoon - Town Center"
+                        then
+                            level_orig = "Jolly Roger's Lagoon"
+                        end
+                        if level == table["defaultName"] and level_orig ~= level
+                        then
+                            print(level_orig .. " -> " .." Entrance" .. table["defaultName"])
+                        elseif level == table["defaultName"]
+                        then
+                            print(table["defaultName"])
+                        end
+                    end
                 end
             end
             CHECK_MOVES_R = true
@@ -9016,6 +9049,16 @@ function DPadStats()
         elseif check_controls ~= nil and check_controls['P1 DPad D'] == false and check_controls['P1 L'] == false and CHECK_MOVES_D == true
         then
             CHECK_MOVES_D = false
+        end
+
+        if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == true and check_controls['P1 C Down'] == true and KILL_ME == false
+        then
+            KILL_BANJO = true 
+            killBT()
+            KILL_ME = true
+        elseif check_controls ~= nil and (check_controls['P1 L'] == true or check_controls['P1 R'] == true or check_controls['P1 C Down'] == true) and KILL_ME == true
+        then
+            KILL_ME = false
         end
 		
         -- CHEAT: Refill & Double
