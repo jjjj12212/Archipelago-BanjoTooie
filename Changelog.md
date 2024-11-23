@@ -2,6 +2,7 @@
   - Logic fixes:
     - Oogle Boogle Jiggy: Requires talon trot to reach the Claw Clamber Boots, as well as a way to pass the Area 51 gate.
     - TDL Train Switch: Can be gotten with tall jump + grip grab. If not on intended logic, can be gotten with tall jump + air rat-a-tat-rap, or springy step shoes.
+    - T-Rex Roar: fixed bug that caused the check to always be in logic.
     - Loggo Cheato page: If using the intended logic, unblocking Loggo with bill drill is required. Other logics can also use grenades, beak barge, breegull bash, or Pack Whack.
     - Twinklies Packaging Jiggy: considers bringing Kazooie to the boiler plant into the logic. Intended logic requires turbo trainers. Other logics require turbo trainers if doing it as BK is in logic.
     - Floor 2 to Floor 3: checks for the flight pad if using the washing machine for the flight pad switch. Hard tricks and glitches logic can damage boost as the washing machine to the floor 4 warp pad then escape as BK with springy step shoes.
