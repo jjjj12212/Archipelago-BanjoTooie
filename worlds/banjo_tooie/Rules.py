@@ -4705,38 +4705,24 @@ class BanjoTooieRules:
             logic = (self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state)
         return logic
     
-    #TODO check
-    def can_access_gi_fl2_2fl3all(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == 0: # beginner
-            logic = (self.grip_grab(state) and self.claw_clamber_boots(state)) or self.check_humba_magic(state, itemName.HUMBAGI)
-        elif self.world.options.logic_type == 1: # normal
-            logic = (self.check_humba_magic(state, itemName.HUMBAGI) and self.claw_clamber_boots(state))\
-                or self.leg_spring(state)
-        elif self.world.options.logic_type == 2: # advanced
-            logic = (self.check_humba_magic(state, itemName.HUMBAGI) and self.claw_clamber_boots(state))\
-                or self.leg_spring(state)
-        elif self.world.options.logic_type == 3: # glitched
-            logic = (self.check_humba_magic(state, itemName.HUMBAGI) and self.claw_clamber_boots(state))\
-                or self.leg_spring(state)
-        return logic
-    
     def F2_to_F3(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = (self.flap_flip(state) and self.grip_grab(state) and self.claw_clamber_boots(state) and self.climb(state))\
-                    or self.check_humba_magic(state, itemName.HUMBAGI)
+                    or self.check_humba_magic(state, itemName.HUMBAGI) and self.roof_access(state)
         elif self.world.options.logic_type == 1: # normal
             logic = ((self.flap_flip(state) and self.grip_grab(state) or self.veryLongJump(state)) and self.claw_clamber_boots(state) and self.climb(state))\
-                    or self.check_humba_magic(state, itemName.HUMBAGI) or self.leg_spring(state)
+                    or self.check_humba_magic(state, itemName.HUMBAGI) and self.roof_access(state)\
+                    or self.leg_spring(state)
         elif self.world.options.logic_type == 2: # advanced
             logic = ((self.flap_flip(state) and self.grip_grab(state) or self.veryLongJump(state)) and self.claw_clamber_boots(state) and self.climb(state))\
-                    or self.check_humba_magic(state, itemName.HUMBAGI) or self.leg_spring(state)
+                    or self.check_humba_magic(state, itemName.HUMBAGI) and (self.roof_access(state) or self.springy_step_shoes(state))\
+                    or self.leg_spring(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = ((self.flap_flip(state) and self.grip_grab(state) or self.veryLongJump(state))\
                         and self.claw_clamber_boots(state)\
                         and (self.climb(state) or (self.grenade_eggs(state) and self.third_person_egg_shooting(state) and self.flap_flip(state) and self.beak_buster(state))))\
-                    or self.check_humba_magic(state, itemName.HUMBAGI)\
+                    or self.check_humba_magic(state, itemName.HUMBAGI) and (self.roof_access(state) or self.springy_step_shoes(state))\
                     or self.leg_spring(state)
         return logic
     
