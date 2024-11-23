@@ -1,4 +1,4 @@
-# 3.4.2-beta
+# 3.5-beta
   - Logic fixes:
     - Water Storage Cheato page: if not on intended logic, solo Banjo can get it with tall jump, pack whack, grip grab, climb, and dive.
     - Dive of Death Notes: hard tricks logic and glitches logic get to get them with glide or leg spring. Easy tricks gets tall jump to make retrying easier.
@@ -11,6 +11,8 @@
     - Boggy Jiggy: sliding into the water as you poop a clockwork for invincibility is in glitched logic.
     - Hot Pool Jinjo: same as above.
     - HFP Trebleclef: if you climb Icicle Grotto as Banjo-Kazooie, it will require moves for you to be able to cross the last gaps on the icicles. Also, the clockwork shot in tricks and glitches logics now require egg aim.
+  - Open Backdoor YAML Option
+    - Makes side entrances easier to tranverse...if you got the right moves.
 
 # 3.4.1-beta
   - Logic Fixes:
