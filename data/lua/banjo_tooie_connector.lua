@@ -79,6 +79,7 @@ local REGEN_HOLD = false;
 
 local FPS = false;
 local FPS_HOLD = false;
+local KILL_ME = false;
 ------------------------------
 local TEXT_TIMER = 2;
 local TEXT_START = false;
@@ -150,6 +151,7 @@ local SKIP_PUZZLES = false;
 local SKIP_KLUNGO = false;
 local SKIP_KING = true;
 local TOT_SET_COMPLETE = false;
+local BACKDOORS = false;
 
 -------------- MYSTERY VARS -----------
 local EGGS_CLEARED = true;
@@ -7704,6 +7706,20 @@ function updateMagic()
     end
 end
 
+function backDoors()
+    if BACKDOORS == true
+    then
+        if CURRENT_MAP == 0x115
+        then
+            BTRAMOBJ:setFlag(0x2B, 6) -- removes oogle boogles guard if you enter their room from the backside
+        end
+        if CURRENT_MAP == 0xBB
+        then
+            BTRAMOBJ:setFlag(0x04, 0) -- removes stone wall if you enter the room from MT -- Texture glitch
+        end
+    end
+end
+
 
 
 function transform_swap(mapaddr, currentState) --Only run when transitioning Maps
@@ -8509,6 +8525,7 @@ function finishTransition()
             getChuffyMaps()
         end
         ap_icekey_glowbo_map()
+        backDoors()
     elseif mainmemory.read_u8(0x127642) == 0 and MAP_TRANSITION == false and player == true -- constantly runs while NOT transitioning AND Player is loaded
     then
         -- Chuffy
@@ -8904,6 +8921,10 @@ function DPadStats()
             then
                 print("Breegull Bash");
             end
+            if AGI_CHUFFY["1230796"] == true
+            then
+                print("Chuffy");
+            end
             if FAST_SWIM == true
             then
                 print("Fast Swimming")
@@ -8919,7 +8940,35 @@ function DPadStats()
             do
                 if table["opened"] == true
                 then
-                    print(table["defaultName"])
+                    for orig_world, new_world in pairs(AP_LOADING_ZONES)
+                    do
+                        local level = new_world
+                        local level_orig = orig_world
+                        if level == "Outside Grunty Industries"
+                        then
+                            level = "Grunty Industries"
+                        end
+                        if  level == "Jolly Roger's Lagoon - Town Center"
+                        then
+                            level = "Jolly Roger's Lagoon"
+                        end
+                        local level_orig = orig_world
+                        if level_orig == "Outside Grunty Industries"
+                        then
+                            level_orig = "Grunty Industries"
+                        end
+                        if  level_orig == "Jolly Roger's Lagoon - Town Center"
+                        then
+                            level_orig = "Jolly Roger's Lagoon"
+                        end
+                        if level == table["defaultName"] and level_orig ~= level
+                        then
+                            print(level_orig .. " -> " .." Entrance" .. table["defaultName"])
+                        elseif level == table["defaultName"]
+                        then
+                            print(table["defaultName"])
+                        end
+                    end
                 end
             end
             CHECK_MOVES_R = true
@@ -9000,6 +9049,16 @@ function DPadStats()
         elseif check_controls ~= nil and check_controls['P1 DPad D'] == false and check_controls['P1 L'] == false and CHECK_MOVES_D == true
         then
             CHECK_MOVES_D = false
+        end
+
+        if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == true and check_controls['P1 C Down'] == true and KILL_ME == false
+        then
+            KILL_BANJO = true 
+            killBT()
+            KILL_ME = true
+        elseif check_controls ~= nil and (check_controls['P1 L'] == true or check_controls['P1 R'] == true or check_controls['P1 C Down'] == true) and KILL_ME == true
+        then
+            KILL_ME = false
         end
 		
         -- CHEAT: Refill & Double
@@ -9273,6 +9332,15 @@ function initializeFlags()
         BTRAMOBJ:setFlag(0x60, 3) --sets prison compound code to sun, moon, star,moon, sun 
         BTRAMOBJ:setFlag(0x15, 5) --Just open the compound door...
         BTRAMOBJ:setFlag(0x9B, 1) --Glitter Gulch Gate
+
+        if BACKDOORS == true then
+            BTRAMOBJ:setFlag(0x11, 3) -- WW Saucer Door
+            BTRAMOBJ:setFlag(0x2B, 4) -- Door from TDL Hatch to rest of TDL
+            BTRAMOBJ:setFlag(0x2B, 2) -- MT Kickball to HFP door
+            BTRAMOBJ:setFlag(0x28, 2) -- TDL Oogle Boogle's cave to WW door
+            BTRAMOBJ:setFlag(0x5E, 3) -- HFP Water Cooled
+            BTRAMOBJ:setFlag(0x6D, 1) -- HFP Bridge to Clifftop
+        end
 
         -- Totals Screen --
         BTRAMOBJ:setFlag(0x37, 3)
@@ -10056,6 +10124,10 @@ function process_slot(block)
     if block['slot_skip_puzzles'] ~= nil and block['slot_skip_puzzles'] ~= "false"
     then
         SKIP_PUZZLES = true
+    end
+    if block['slot_backdoors'] ~= nil and block['slot_backdoors'] ~= "false"
+    then
+        BACKDOORS = true
     end
     if block['slot_skip_klungo'] ~= nil and block['slot_skip_klungo'] ~= "false"
     then

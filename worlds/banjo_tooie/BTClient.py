@@ -57,7 +57,7 @@ bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 
 script_version: int = 4
-version: str = "V3.4.1"
+version: str = "V3.5"
 
 def get_item_value(ap_id):
     return ap_id
@@ -319,6 +319,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_minigames": ctx.slot_data["minigames"],
             "slot_treble": ctx.slot_data["trebleclef"],
             "slot_skip_puzzles": ctx.slot_data["skip_puzzles"],
+            "slot_backdoors": ctx.slot_data["backdoors"],
             "slot_open_hag1": ctx.slot_data["open_hag1"],
             "slot_stations": ctx.slot_data["stations"],
             "slot_chuffy": ctx.slot_data["chuffy"],
