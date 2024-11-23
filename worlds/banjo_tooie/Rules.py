@@ -745,6 +745,8 @@ class BanjoTooieRules:
                     or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state)))
         return logic
     
+
+    
     def jiggy_golden_goliath(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -1683,6 +1685,8 @@ class BanjoTooieRules:
             logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
                     (self.has_explosives(state) or self.check_mumbo_magic(state, itemName.MUMBOHP))
         return logic
+    
+
     
     def jiggy_aliens(self, state: CollectionState) -> bool:
         logic = True
@@ -3498,6 +3502,7 @@ class BanjoTooieRules:
                     or self.leg_spring(state)\
                     or self.clockwork_shot(state)
         return logic
+
     
     def notes_dive_of_death(self, state: CollectionState) -> bool:
         logic = True
@@ -4116,19 +4121,23 @@ class BanjoTooieRules:
     def saucer_door_open(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
             return self.longJumpToGripGrab(state) and self.flap_flip(state) and self.climb(state)\
-                  and (self.has_explosives(state) or self.beak_barge(state))
+                  and (self.has_explosives(state) or self.beak_barge(state)) or\
+                  self.backdoors_enabled(state)
         elif self.world.options.logic_type == 1: # normal
             return (self.longJumpToGripGrab(state) and self.flap_flip(state) and self.climb(state) and (self.has_explosives(state) or self.beak_barge(state)))\
                 or (self.egg_aim(state) and self.grenade_eggs(state) and self.amaze_o_gaze(state) and self.climb(state))\
-                or (self.has_explosives(state) and self.leg_spring(state) and self.glide(state))
+                or (self.has_explosives(state) and self.leg_spring(state) and self.glide(state))\
+                or self.backdoors_enabled(state)
         elif self.world.options.logic_type == 2: # advanced
             return (self.longJumpToGripGrab(state) and self.flap_flip(state) and self.climb(state) and (self.has_explosives(state) or self.beak_barge(state)))\
                 or (self.egg_aim(state) and self.grenade_eggs(state) and self.amaze_o_gaze(state))\
-                or (self.has_explosives(state) and self.leg_spring(state) and self.glide(state))
+                or (self.has_explosives(state) and self.leg_spring(state) and self.glide(state))\
+                or self.backdoors_enabled(state)
         elif self.world.options.logic_type == 3: # glitched
             return (self.longJumpToGripGrab(state) and self.flap_flip(state) and self.climb(state) and (self.has_explosives(state) or self.beak_barge(state)))\
                 or (self.egg_aim(state) and self.grenade_eggs(state) and self.amaze_o_gaze(state))\
                 or (self.has_explosives(state) and self.leg_spring(state) and self.glide(state))\
+                or self.backdoors_enabled(state)\
                 or (state.can_reach_region(regionName.GM, self.player) and self.humbaGGM(state) and self.small_elevation(state) and self.clockwork_eggs(state)) # You can shoot a clockwork through the door from GGM.
 
 
@@ -4285,6 +4294,8 @@ class BanjoTooieRules:
             logic = self.has_explosives(state) or \
                     self.check_mumbo_magic(state, itemName.MUMBOHP)
         return logic
+    
+
     
     def HFP_to_JRL(self, state: CollectionState) -> bool:
         logic = True
@@ -4454,13 +4465,13 @@ class BanjoTooieRules:
     def hatch_to_TDL(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = False
+            logic = self.backdoors_enabled(state)
         elif self.world.options.logic_type == 1 : # normal
-            logic = False
+            logic = self.backdoors_enabled(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = False
+            logic = self.backdoors_enabled(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.clockwork_eggs(state) and self.egg_aim(state)
+            logic = (self.clockwork_eggs(state) and self.egg_aim(state)) or self.backdoors_enabled(state)
         return logic
     
     def ww_jiggy(self, state: CollectionState) -> bool: #8
@@ -4512,17 +4523,78 @@ class BanjoTooieRules:
                     and (self.ck_jiggy(state) or (self.climb(state) and self.tall_jump(state) and self.beak_buster(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state))))
         return logic
 
+    def mt_tdl_backdoor(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.egg_aim(state) and\
+                (self.flap_flip(state) or self.slightly_elevated_ledge(state)) and\
+                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state)) or self.MT_flight_pad(state)) and\
+                   self.backdoors_enabled(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = (self.flap_flip(state) or self.slightly_elevated_ledge(state)) and\
+                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state))\
+                    or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state))) and\
+                   self.backdoors_enabled(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = (self.flap_flip(state) or self.slightly_elevated_ledge(state)) and\
+                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state))\
+                    or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state))) and\
+                   self.backdoors_enabled(state)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = (self.flap_flip(state) or self.slightly_elevated_ledge(state)) and\
+                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state))\
+                    or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state))) and\
+                   self.backdoors_enabled(state)
+        return logic
+
+    def mt_hfp_backdoor(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and self.has_explosives(state) and\
+                   self.backdoors_enabled(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
+                    (self.has_explosives(state) or \
+                    self.check_mumbo_magic(state, itemName.MUMBOHP)) and\
+                   self.backdoors_enabled(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
+                    (self.has_explosives(state) or self.check_mumbo_magic(state, itemName.MUMBOHP)) and\
+                   self.backdoors_enabled(state)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
+                    (self.has_explosives(state) or self.check_mumbo_magic(state, itemName.MUMBOHP)) and\
+                   self.backdoors_enabled(state)
+        return logic
+
+
+    def ww_tdl_backdoor(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.has_explosives(state) and self.claw_clamber_boots(state) and self.backdoors_enabled(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.has_explosives(state) and self.claw_clamber_boots(state) and self.backdoors_enabled(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.has_explosives(state) and self.claw_clamber_boots(state) and self.backdoors_enabled(state)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.has_explosives(state) and self.claw_clamber_boots(state) and self.backdoors_enabled(state)
+        return logic
+
+
     def ggm_to_ww(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = False
+            logic = self.humbaGGM(state) and self.backdoors_enabled(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = False
+            logic = self.humbaGGM(state) and self.backdoors_enabled(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = False
+            logic = self.humbaGGM(state) and self.backdoors_enabled(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.humbaGGM(state) and self.clockwork_eggs(state)
+            logic = self.humbaGGM(state) and (self.clockwork_eggs(state) or self.backdoors_enabled(state))
         return logic
+
+    def backdoors_enabled(self, state: CollectionState) -> bool:
+        return self.world.options.backdoors.value
     
     def ggm_to_chuffy(self, state: CollectionState) -> bool:
         logic = True
@@ -4856,7 +4928,12 @@ class BanjoTooieRules:
                self.claw_clamber_boots(state))
 
     def HFP_hot_water_cooled(self, state) -> bool:
-        return state.can_reach_region(regionName.HP, self.player) and\
+        if self.world.options.backdoors.value == True:
+            return state.can_reach_region(regionName.HP, self.player) and\
+               self.split_up(state) and\
+               (self.dive(state) or self.shack_pack(state))
+        else:
+            return state.can_reach_region(regionName.HP, self.player) and\
                state.can_reach_region(regionName.CC, self.player) and \
                self.split_up(state) and\
                self.ground_attack(state) and\
@@ -5478,7 +5555,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 3: # glitched
             logic = self.tall_jump(state) or self.leg_spring(state) or self.glide(state)
         return logic
-
+        
     def set_rules(self) -> None:
 
         for location, rules in self.jiggy_rules.items():

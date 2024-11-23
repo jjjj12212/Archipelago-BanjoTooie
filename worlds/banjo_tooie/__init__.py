@@ -107,13 +107,18 @@ class BanjoTooieWorld(World):
         if banjoItem.type == 'progress':
             if banjoItem.btid == 1230515:
                 maxJiggy = max(self.randomize_worlds.values()) if self.randomize_worlds else 70
-                if self.jiggy_counter > maxJiggy:
+                extraJiggys = (90 - maxJiggy)/2
+                if self.jiggy_counter > (maxJiggy+extraJiggys):
+                    item_classification = ItemClassification.filler
+                elif self.jiggy_counter > maxJiggy:
                     item_classification = ItemClassification.useful
                 else:
                     item_classification = ItemClassification.progression
                 self.jiggy_counter += 1
             elif banjoItem.btid == 1230797 and self.options.randomize_notes.value == True:
-                if self.notecounter > 124:
+                if self.notecounter > 130:
+                    item_classification = ItemClassification.filler
+                elif self.notecounter > 117:
                     item_classification = ItemClassification.useful
                 else:
                     item_classification = ItemClassification.progression
@@ -623,6 +628,7 @@ class BanjoTooieWorld(World):
         btoptions['minigames'] = 'skip' if self.options.speed_up_minigames == 1 else "full"
         btoptions['trebleclef'] = "true" if self.options.randomize_treble == 1 else "false"
         btoptions['skip_puzzles'] = "true" if self.options.skip_puzzles == 1 else "false"
+        btoptions['backdoors'] = "true" if self.options.backdoors == 1 else "false"
         btoptions['open_hag1'] = "true" if self.options.open_hag1 == 1 else "false"
         btoptions['stations'] = "true" if self.options.randomize_stations == 1 else "false"
         btoptions['chuffy'] = "true" if self.options.randomize_chuffy == 1 else "false"

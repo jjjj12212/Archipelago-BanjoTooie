@@ -67,7 +67,7 @@ class EnableMultiWorldCheatoPages(DefaultOnToggle):
 
 class SetMultiWorldCheatoPagesFiller(Toggle):
     """If Cheato pages are scattered, sets Cheato Items as filler."""
-    display_name = "Use Cheato Pages as Filler."
+    display_name = "Use Cheato Pages as Filler"
 
 class EnableMultiWorldHoneycombs(DefaultOnToggle):
     """Honeycombs are scattered across the MultiWorld."""
@@ -91,7 +91,7 @@ class EnableMultiWorldTrainStationSwitches(Toggle):
 
 class EnableMultiWorldChuffyTrain(Toggle):
     """Chuffy is lost somewhere in the MultiWorld."""
-    display_name = "Chuffy as a randomized AP Item."
+    display_name = "Chuffy as a randomized AP Item"
 
 class EnableMultiWorldNotes(Toggle):
     """Note Nests are scattered across the MultiWorld."""
@@ -108,6 +108,14 @@ class KingJingalingHasJiggy(DefaultOnToggle):
 class SkipPuzzles(DefaultOnToggle):
     """Open world entrances without having to go to Jiggywiggy."""
     display_name = "Skip Puzzles"
+
+class Backdoors(Toggle):
+    """Opens many one way switches on game start, allowing for more backdoor access to levels.
+    The following gates are preopened: MT>TDL, MT>HFP, GGM>WW, WW>TDL
+    For MT>TDL only the gate accessed from TDL's side is opened and for GGM>WW the boulders are still unexploded
+    The bridge from HFPs entrance is pre-moved to allow secondary access to clifftop
+    George is also pre-dropped to make HFP>JRL more accessible"""
+    display_name = "Open Backdoors"
 
 class OpenHag1(DefaultOnToggle):
     """HAG 1 boss fight is opened when Cauldron Keep is opened. Only 55 jiggies are needed to win."""
@@ -315,6 +323,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_dino_roar: EnableMultiWorldDinoRoar
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
+    backdoors:Backdoors
     skip_klungo: SkipKlungo
     skip_tower_of_tragedy: SkipToT
     speed_up_minigames: SpeedUpMinigames
