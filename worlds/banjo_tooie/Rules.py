@@ -2222,24 +2222,24 @@ class BanjoTooieRules:
             logic = self.springy_step_shoes(state) or \
                     (self.climb(state) and (self.flutter(state) or (self.air_rat_a_tat_rap(state) and self.tall_jump(state))))\
                     or (self.GM_boulders(state) and self.leg_spring(state))\
-                    or (self.GM_boulders(state) and self.glide(state) and self.tall_jump(state))\
-                    or state.can_reach_region(regionName.IOHPL, self.player) and self.PL_to_GGM(state) and self.flutter(state) and (self.grip_grab(state) or self.beak_buster(state)) # Flutter right as you enter the level.
+                    or (self.GM_boulders(state) and self.glide(state) and self.tall_jump(state))
+                    # or state.can_reach_region(regionName.IOHPL, self.player) and self.PL_to_GGM(state) and self.flutter(state) and (self.grip_grab(state) or self.beak_buster(state)) # Flutter right as you enter the level.
         elif self.world.options.logic_type == 2: # advanced
             logic = self.springy_step_shoes(state) or \
                     (self.climb(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state)))\
                     or (self.clockwork_shot(state))\
                     or (self.GM_boulders(state) and self.leg_spring(state))\
                     or (self.GM_boulders(state) and self.glide(state) and self.tall_jump(state))\
-                    or (self.GM_boulders(state) and self.tall_jump(state) and self.turbo_trainers(state) and (self.wing_whack(state) or self.glide(state)))\
-                    or state.can_reach_region(regionName.IOHPL, self.player) and self.PL_to_GGM(state) and self.flutter(state) and (self.grip_grab(state) or self.beak_buster(state))
+                    or (self.GM_boulders(state) and self.tall_jump(state) and self.turbo_trainers(state) and (self.wing_whack(state) or self.glide(state)))
+                    # or state.can_reach_region(regionName.IOHPL, self.player) and self.PL_to_GGM(state) and self.flutter(state) and (self.grip_grab(state) or self.beak_buster(state))
         elif self.world.options.logic_type == 3: # glitched
             logic = self.springy_step_shoes(state) or \
                     (self.climb(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state)))\
                     or (self.clockwork_shot(state))\
                     or (self.GM_boulders(state) and self.leg_spring(state))\
                     or (self.GM_boulders(state) and self.glide(state) and self.tall_jump(state))\
-                    or (self.GM_boulders(state) and self.tall_jump(state) and self.turbo_trainers(state) and (self.wing_whack(state) or self.glide(state)))\
-                    or state.can_reach_region(regionName.IOHPL, self.player) and self.PL_to_GGM(state) and self.flutter(state) and (self.grip_grab(state) or self.beak_buster(state))
+                    or (self.GM_boulders(state) and self.tall_jump(state) and self.turbo_trainers(state) and (self.wing_whack(state) or self.glide(state)))
+                    # or state.can_reach_region(regionName.IOHPL, self.player) and self.PL_to_GGM(state) and self.flutter(state) and (self.grip_grab(state) or self.beak_buster(state))
         return logic
     
     def cheato_water_storage(self, state: CollectionState) -> bool:
@@ -3486,15 +3486,27 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.grip_grab(state) and self.flap_flip(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = (self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state) or self.leg_spring(state)
+            logic = (self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state)\
+                    or self.leg_spring(state)\
+                    or self.split_up(state) and self.grip_grab(state)\
+                    or self.wing_whack(state) and self.tall_jump(state)\
+                    or self.glide(state)
         elif self.world.options.logic_type == 2: # advanced
             logic = ((self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state))\
-                        or self.clockwork_shot(state)\
-                         or self.leg_spring(state)
+                    or self.clockwork_shot(state)\
+                    or self.leg_spring(state)\
+                    or self.pack_whack(state) and self.tall_jump(state)\
+                    or self.split_up(state) and self.grip_grab(state)\
+                    or self.wing_whack(state) and self.tall_jump(state)\
+                    or self.glide(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = ((self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state))\
-                        or self.clockwork_shot(state)\
-                         or self.leg_spring(state)
+                    or self.clockwork_shot(state)\
+                    or self.leg_spring(state)\
+                    or self.pack_whack(state) and self.tall_jump(state)\
+                    or self.split_up(state) and self.grip_grab(state)\
+                    or self.wing_whack(state) and self.tall_jump(state)\
+                    or self.glide(state)
         return logic
     
     def notes_ww_area51(self, state: CollectionState) -> bool:
@@ -4477,9 +4489,8 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = self.gm_jiggy(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.gm_jiggy(state) or (self.beak_buster(state) and\
-                    (self.flap_flip(state) or self.tall_jump(state)\
-                        or (self.talon_trot(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state)))))
+            logic = self.gm_jiggy(state)\
+                    or (self.beak_buster(state) and (self.flap_flip(state) or self.tall_jump(state) or (self.talon_trot(state) and self.flutter(state) )))
         return logic
     
     def hatch_to_TDL(self, state: CollectionState) -> bool:
