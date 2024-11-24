@@ -1,3 +1,11 @@
+# 3.5.1-beta
+  -Logic fixes:
+    -Mumbo in TDL: can be reached with no moves. Intended logic still requires stilt stride.
+    -Mumbo Glowbo in TD: Same as a above.
+    -TDL Entrance Jinjo: removed stilt stride as a way to get talon trot.
+    -TDL Unga Bunga Glowbo: If not on intended logic, can be gotten with the T-rex.
+    -Saucer of peril: the door can be open with a clockwork shot, in hard tricks and glitches logics.
+
 # 3.5-beta
   - Logic fixes:
     - Water Storage Cheato page: if not on intended logic, solo Banjo can get it with tall jump, pack whack, grip grab, climb, and dive.
