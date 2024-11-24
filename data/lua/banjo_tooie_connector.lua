@@ -8940,33 +8940,39 @@ function DPadStats()
             do
                 if wtable["opened"] == true
                 then
+                    local level_orig = ""
+                    local level = ""
                     for orig_world, new_world in pairs(AP_LOADING_ZONES)
                     do
-                        local level = new_world
-                        if level == "Outside Grunty Industries"
+                        local orig = orig_world
+                        if orig == "Outside Grunty Industries"
                         then
-                            level = "Grunty Industries"
+                            orig = "Grunty Industries"
                         end
-                        if  level == "Jolly Roger's Lagoon - Town Center"
+                        if  orig == "Jolly Roger's Lagoon - Town Center"
                         then
-                            level = "Jolly Roger's Lagoon"
+                            orig = "Jolly Roger's Lagoon"
                         end
-                        local level_orig = orig_world
-                        if level_orig == "Outside Grunty Industries"
-                        then
-                            level_orig = "Grunty Industries"
+
+                        if orig == wtable["defaultName"] then
+                            level_orig = orig
+                            level = new_world
+                            if level == "Outside Grunty Industries"
+                            then
+                                level = "Grunty Industries"
+                            end
+                            if  level == "Jolly Roger's Lagoon - Town Center"
+                            then
+                                level = "Jolly Roger's Lagoon"
+                            end
+                            break
                         end
-                        if  level_orig == "Jolly Roger's Lagoon - Town Center"
-                        then
-                            level_orig = "Jolly Roger's Lagoon"
-                        end
-                        if level == wtable["defaultName"] and level_orig == level
-                        then
-                            print(wtable["defaultName"])
-                        elseif level == wtable["defaultName"]
-                        then
-                            print(level_orig .. " -> " .. wtable["defaultName"] .." Entrance")
-                        end
+                    end
+                    if level_orig == level
+                    then
+                        print(wtable["defaultName"])
+                    else
+                        print(level .. " -> " .. level_orig .." Entrance")
                     end
                 end
             end
