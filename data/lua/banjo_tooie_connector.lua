@@ -8972,7 +8972,7 @@ function DPadStats()
                     then
                         print(wtable["defaultName"])
                     else
-                        print(level .. " -> " .. level_orig .." Entrance")
+                        print( level_orig .." Entrance" .. " -> " ..  level)
                     end
                 end
             end
