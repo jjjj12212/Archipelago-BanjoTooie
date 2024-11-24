@@ -8935,15 +8935,14 @@ function DPadStats()
             end
             print(" ")
             print(" ")
-            print("Unlocked Worlds")
-            for world, table in pairs(WORLD_ENTRANCE_MAP)
+            print("Unlocked Worlds:")
+            for world, wtable in pairs(WORLD_ENTRANCE_MAP)
             do
-                if table["opened"] == true
+                if wtable["opened"] == true
                 then
                     for orig_world, new_world in pairs(AP_LOADING_ZONES)
                     do
                         local level = new_world
-                        local level_orig = orig_world
                         if level == "Outside Grunty Industries"
                         then
                             level = "Grunty Industries"
@@ -8961,12 +8960,12 @@ function DPadStats()
                         then
                             level_orig = "Jolly Roger's Lagoon"
                         end
-                        if level == table["defaultName"] and level_orig ~= level
+                        if level == wtable["defaultName"] and level_orig == level
                         then
-                            print(level_orig .. " -> " .." Entrance" .. table["defaultName"])
-                        elseif level == table["defaultName"]
+                            print(wtable["defaultName"])
+                        elseif level == wtable["defaultName"]
                         then
-                            print(table["defaultName"])
+                            print(level_orig .. " -> " .. wtable["defaultName"] .." Entrance")
                         end
                     end
                 end
