@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V3.4.1"
+local BT_VERSION = "V3.5"
 local PLAYER = ""
 local SEED = 0
 
@@ -4876,6 +4876,19 @@ function obtain_mumbo_token()
     BTH:setItem(ITEM_TABLE["AP_ITEM_MUMBOTOKEN"], TOTAL_MUMBO_TOKENS)
 end
 
+function tempCCLOpen()
+    if WORLD_ENTRANCE_MAP["WORLD 8"]["opened"] == false and CCL_OPEN_TEMP == false and (NEXT_MAP == 0x136 or CURRENT_MAP == 0x136 )
+    then
+        BTRAMOBJ:setFlag(WORLD_ENTRANCE_MAP["WORLD 8"]['addr'], WORLD_ENTRANCE_MAP["WORLD 8"]['bit'])
+        CCL_OPEN_TEMP = true
+    elseif WORLD_ENTRANCE_MAP["WORLD 8"]["opened"] == false and CCL_OPEN_TEMP == true and (NEXT_MAP ~= 0x136)
+    then
+        print("Closing World")
+        BTRAMOBJ:clearFlag(WORLD_ENTRANCE_MAP["WORLD 8"]['addr'], WORLD_ENTRANCE_MAP["WORLD 8"]['bit'])
+        CCL_OPEN_TEMP = false
+    end
+end
+
 ---------------------- GAME FUNCTIONS -------------------
 
 function zoneWarp(zone_table)
@@ -5581,6 +5594,10 @@ function process_slot(block)
     then
         SKIP_PUZZLES = true
         BTH:setSettingPuzzle(1)
+    end
+    if block['slot_backdoors'] ~= nil and block['slot_backdoors'] ~= "false"
+    then
+        BACKDOORS = true
     end
     if block['slot_skip_klungo'] ~= nil and block['slot_skip_klungo'] ~= "false"
     then

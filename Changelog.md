@@ -1,3 +1,37 @@
+# 3.5.1-beta
+  -Logic fixes:
+    -Plateau to GGM: For GGM early, doing it with talon trot + air rat-a-tat rap + beak buster is no longer in logic.
+    -GGM Entrance Cheato page: going for it as you enter the level is no longer in logic, due to technical reasons.
+    -Plateau Sign notes: if not on intended logic, can be gotten with
+      - split up + pack whack + tall jump (hard trick)
+      - split up + glide
+      - split up + grip grab
+      - split up + wing whack + tall jump
+    -Mumbo in TDL: can be reached with no moves. Intended logic still requires stilt stride.
+    -Mumbo Glowbo in TDL: Same as a above.
+    -TDL Entrance Jinjo: removed stilt stride as a way to get talon trot.
+    -TDL Unga Bunga Glowbo: If not on intended logic, can be gotten with the T-rex.
+    -Saucer of peril: the door can be open with a clockwork shot, in hard tricks and glitches logics.
+  - CCL exit Bubble will appear even though CCL is closed. (no more save+quit)
+
+# 3.5-beta
+  - Logic fixes:
+    - Water Storage Cheato page: if not on intended logic, solo Banjo can get it with tall jump, pack whack, grip grab, climb, and dive.
+    - Dive of Death Notes: hard tricks logic and glitches logic get to get them with glide or leg spring. Easy tricks gets tall jump to make retrying easier.
+    - Oogle Boogle Jiggy: Requires talon trot to reach the Claw Clamber Boots, as well as a way to pass the Area 51 gate.
+    - TDL Train Switch: Can be gotten with tall jump + grip grab. If not on intended logic, can be gotten with tall jump + air rat-a-tat-rap, or springy step shoes.
+    - T-Rex Roar: fixed bug that caused the check to always be in logic.
+    - Loggo Cheato page: If using the intended logic, unblocking Loggo with bill drill is required. Other logics can also use grenades, beak barge, breegull bash, or Pack Whack.
+    - Twinklies Packaging Jiggy: considers bringing Kazooie to the boiler plant into the logic. Intended logic requires turbo trainers. Other logics require turbo trainers if doing it as BK is in logic.
+    - Floor 2 to Floor 3: checks for the flight pad if using the washing machine for the flight pad switch. Hard tricks and glitches logic can damage boost as the washing machine to the floor 4 warp pad then escape as BK with springy step shoes.
+    - Boggy Jiggy: sliding into the water as you poop a clockwork for invincibility is in glitched logic.
+    - Hot Pool Jinjo: same as above.
+    - HFP Trebleclef: if you climb Icicle Grotto as Banjo-Kazooie, it will require moves for you to be able to cross the last gaps on the icicles. Also, the clockwork shot in tricks and glitches logics now require egg aim.
+  - Open Backdoor YAML Option
+    - Makes side entrances easier to tranverse...if you got the right moves.
+  - Kill banjo if you get stuck using L+R+C Down (Doesn't trigger deathlink)
+  - D-pad right will show which level as on which entrance.
+
 # 3.4.1-beta
   - Logic Fixes:
     - Dilberta Jiggy moved to MT region.

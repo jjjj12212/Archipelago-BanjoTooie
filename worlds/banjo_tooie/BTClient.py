@@ -62,7 +62,7 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_to_id"]
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 script_version: int = 4
-version: str = "V3.4.1"
+version: str = "V3.5"
 
 def get_item_value(ap_id):
     return ap_id
@@ -141,10 +141,10 @@ class BanjoTooieContext(CommonContext):
             "Gruntilda:    Grunty's fireball you did kiss, \n                     You're so slow I can hardly miss!",
             "Gruntilda:    In this world you breathe your last,\n                     Now your friends had better think fast!",
             "Gruntilda:    This is fun it's quite a treat, \n                     To see you suffer in defeat",
-            "Gruntilda:    That death just now, I saw coming, \n                Your skill issues are rather stunning!",
-            "Gruntilda:    Seeing this pathetic display, \n                Is serotonin in my day",
-            "Gruntilda:    What a selfish thing to do,\n                Your friends just died because of you!",
-            "Gruntilda:    You tried something rather stupid,\n                I hope no one will try what you did"
+            "Gruntilda:    That death just now, I saw coming, \n                     Your skill issues are rather stunning!",
+            "Gruntilda:    Seeing this pathetic display, \n                     Is serotonin in my day",
+            "Gruntilda:    What a selfish thing to do,\n                     Your friends just died because of you!",
+            "Gruntilda:    You tried something rather stupid,\n                     I hope no one will try what you did"
         ]
 
     async def server_auth(self, password_requested: bool = False):
@@ -357,6 +357,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_minigames": ctx.slot_data["minigames"],
             "slot_treble": ctx.slot_data["trebleclef"],
             "slot_skip_puzzles": ctx.slot_data["skip_puzzles"],
+            "slot_backdoors": ctx.slot_data["backdoors"],
             "slot_open_hag1": ctx.slot_data["open_hag1"],
             "slot_stations": ctx.slot_data["stations"],
             "slot_chuffy": ctx.slot_data["chuffy"],
