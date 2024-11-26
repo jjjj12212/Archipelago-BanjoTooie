@@ -103,6 +103,7 @@ local CURRENT_MAP = nil;
 local NEXT_MAP = nil;
 local AP_LOADING_ZONES = {};
 local ZONE_SET = false;
+local CCL_OPEN_TEMP = false;
 
 -------------- TRANSFORM VARS -----
 local FAKE_MUMBO = false;
@@ -8572,6 +8573,7 @@ function watchMapTransition()
                 set_checked_STATIONS()
                 ChuffyTDLFix()
                 ccl_cutscene_skip()
+                tempCCLOpen()
                 if GOAL_TYPE == 4
                 then
                     hag1_open()
@@ -8670,6 +8672,19 @@ function finishTransition()
         nearDisiple()
         -- Token Announcement
         mumbo_announce()
+    end
+end
+
+function tempCCLOpen()
+    if WORLD_ENTRANCE_MAP["WORLD 8"]["opened"] == false and CCL_OPEN_TEMP == false and (NEXT_MAP == 0x136 or CURRENT_MAP == 0x136 )
+    then
+        BTRAMOBJ:setFlag(WORLD_ENTRANCE_MAP["WORLD 8"]['addr'], WORLD_ENTRANCE_MAP["WORLD 8"]['bit'])
+        CCL_OPEN_TEMP = true
+    elseif WORLD_ENTRANCE_MAP["WORLD 8"]["opened"] == false and CCL_OPEN_TEMP == true and (NEXT_MAP ~= 0x136)
+    then
+        print("Closing World")
+        BTRAMOBJ:clearFlag(WORLD_ENTRANCE_MAP["WORLD 8"]['addr'], WORLD_ENTRANCE_MAP["WORLD 8"]['bit'])
+        CCL_OPEN_TEMP = false
     end
 end
 

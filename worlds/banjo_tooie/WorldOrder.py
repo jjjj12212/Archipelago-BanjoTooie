@@ -127,6 +127,10 @@ def randomize_entrance_loading_zones(world: BanjoTooieWorld) -> None:
         world.random.shuffle(randomized_levels)
         while randomized_levels[0] in [regionName.CK, regionName.GIO]:
             world.random.shuffle(randomized_levels)
+        #rigged the lottery
+        # while randomized_levels[0] != regionName.CC:
+        #     world.random.shuffle(randomized_levels)
+        #EO rig
         world.loading_zones = {randomizable_levels[i]: randomized_levels[i] for i in range(len(randomizable_levels))}
 
 
