@@ -5606,6 +5606,7 @@ function main()
     print("Banjo-Tooie Archipelago Version " .. BT_VERSION)
     server, error = socket.bind('localhost', 21221)
     BTH = BTHACK:new(nil)
+    local changed_map = 0x0
     while true do
         FRAME = FRAME + 1
         if not (CUR_STATE == PREV_STATE) then
@@ -5630,6 +5631,11 @@ function main()
                 if CURRENT_MAP == 0x158 and GOAL_PRINTED == false
                 then
                     printGoalInfo()
+                end
+                if changed_map ~= CURRENT_MAP
+                then
+                    client.saveram()
+                    changed_map = CURRENT_MAP
                 end
             end
         elseif (CUR_STATE == STATE_UNINITIALIZED) then
