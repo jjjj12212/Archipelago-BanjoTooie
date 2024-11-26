@@ -29,7 +29,8 @@ local PREV_STATE = ""
 local CUR_STATE =  STATE_UNINITIALIZED
 local FRAME = 0
 local VERROR = false
-local CLIENT_VERSION = 0
+local CLIENT_VERSION = false
+local GOAL_PRINTED = false
 
 
 local DEBUG = false
@@ -235,11 +236,12 @@ local ASSET_MAP_CHECK = {
         },
     },
     [0x153] = { --IoH - Plateau - Honey B's Hive
-        "1230997",
-        "1230998",
-        "1230999",
-        "1231000",
-        "1231001"
+        ["HONEYB"] = {
+            "1230997",
+            "1230998",
+            "1230999",
+            "1231000",
+            "1231001"}
     },
     
     [0x15A] = { --IoH - Wasteland
@@ -4270,7 +4272,7 @@ function honey_b_check()
     local base_location_id = 1230996
     if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
     then
-        if ASSET_MAP_CHECK[CURRENT_MAP]["HONEYCOMB"] ~= nil
+        if ASSET_MAP_CHECK[CURRENT_MAP]["HONEYB"] ~= nil
         then
             local result_bit1 = BTH:checkRealFlag(0x98, 2)
             local result_bit2 = BTH:checkRealFlag(0x98, 3)
@@ -5783,7 +5785,11 @@ function printGoalInfo()
         elseif GOAL_TYPE == 5 and TH_LENGTH < 15 then
             message = "You are trying to find "..TH_LENGTH.." of the 15 of Mumbo Tokens scattered throughout the Isle of Hags!\nGood Luck and"..randomEncouragment;
         end
-        table.insert(MESSAGE_TABLE, {message, 69});
+        if GOAL_PRINTED == false
+        then
+            table.insert(MESSAGE_TABLE, {message, 69});
+            GOAL_PRINTED =true
+        end
     end
 end
 
@@ -5830,6 +5836,18 @@ function main()
                     print("Connector Version: " .. BT_VERSION)
                     print("Client Version: " .. CLIENT_VERSION)
                     return
+                end
+                if (CURRENT_MAP ~= 0x158 and CURRENT_MAP ~= 0x18B and CURRENT_MAP ~= 0x0) and GOAL_PRINTED == true
+                then
+                    print(CURRENT_MAP)
+                    GOAL_PRINTED = false
+                    print("Goal is set to False")
+                end
+                if CURRENT_MAP == 0x158 and GOAL_PRINTED == false
+                then
+                    print(CURRENT_MAP)
+                    print("replay Goal")
+                    printGoalInfo()
                 end
             end
         elseif (CUR_STATE == STATE_UNINITIALIZED) then

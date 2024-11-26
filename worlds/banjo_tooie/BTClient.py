@@ -252,9 +252,9 @@ class BanjoTooieContext(CommonContext):
                                 "Your version: "+version+" | Generated version: "+self.slot_data["version"])
             self.deathlink_enabled = self.slot_data["deathlink"]
             logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
-            rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")])
+            rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")], title="Open your Banjo-Tooie US ROM")
             file_path = os.path.split(rom)
-            self.patch_rom(rom, file_path[0] + "/banjo-tooie-romhack.n64", "banjo-tooie.patch")
+            self.patch_rom(rom, file_path[0] + "/Banjo-Tooie-AP.n64", "banjo-tooie.patch")
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
         # elif cmd == 'Print':
             # msg = args['text']
