@@ -63,9 +63,19 @@ bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 script_version: int = 4
 version: str = "V3.5"
+patch_md5: str = "9d870a5ecccd21e764776f0c929a2f41"
 
 def get_item_value(ap_id):
     return ap_id
+
+async def run_game(romfile):
+        auto_start = Utils.get_options()["banjo-tooie_options"].get("rom_start", True)
+        if auto_start is True:
+            import webbrowser
+            webbrowser.open(romfile)
+        elif os.path.isfile(auto_start):
+            subprocess.Popen([auto_start, romfile],
+                            stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
 class BanjoTooieCommandProcessor(ClientCommandProcessor):
@@ -212,6 +222,14 @@ class BanjoTooieContext(CommonContext):
             swapped_data[i] = data[i+1]
             swapped_data[i+1] = data[i]
         return bytes(swapped_data)
+    
+    def check_rom(self, patchedRom):
+        if os.path.isfile(patchedRom):
+            rom = self.read_file(patchedRom)
+            md5 = hashlib.md5(rom).hexdigest()
+            return md5
+        else:
+            return "00000"
 
     def patch_rom(self, romPath, dstPath, patchPath):
         rom = self.read_file(romPath)
@@ -223,6 +241,9 @@ class BanjoTooieContext(CommonContext):
             return
         patch = self.openFile(patchPath).read()
         self.write_file(dstPath, bsdiff4.patch(rom, patch))
+        # newrom = self.read_file(dstPath)
+        # md5 = hashlib.md5(newrom).hexdigest()
+        # print(md5)
 
     def openFile(self, resource: str, mode: str = "rb", encoding: str = None):
         filename = sys.modules[__name__].__file__
@@ -241,6 +262,7 @@ class BanjoTooieContext(CommonContext):
 
         # self.patch_rom("banjo-tooie.n64", "banjo-tooie-romhack.n64", "banjo-tooie.patch")
 
+
     def on_package(self, cmd, args):
         if cmd == 'Connected':
             self.slot_data = args.get('slot_data', None)
@@ -251,10 +273,25 @@ class BanjoTooieContext(CommonContext):
                 raise Exception("Your Banjo-Tooie AP does not match with the generated world.\n" +
                                 "Your version: "+version+" | Generated version: "+self.slot_data["version"])
             self.deathlink_enabled = self.slot_data["deathlink"]
-            logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
-            rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")], title="Open your Banjo-Tooie US ROM")
-            file_path = os.path.split(rom)
-            self.patch_rom(rom, file_path[0] + "/Banjo-Tooie-AP.n64", "banjo-tooie.patch")
+            fpath = pathlib.Path(__file__)
+            archipelago_root = None
+            for i in range(0, 5,+1) :
+                if fpath.parents[i].stem == "Archipelago":
+                    archipelago_root = pathlib.Path(__file__).parents[i]
+                    break
+            if archipelago_root != None:
+                if self.check_rom(os.path.join(archipelago_root, "Banjo-Tooie-AP.n64")) != patch_md5:
+                    logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
+                    rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")], title="Open your Banjo-Tooie US ROM")
+                    self.patch_rom(rom, os.path.join(archipelago_root, "Banjo-Tooie-AP.n64"), "banjo-tooie.patch")
+                async_start(run_game(os.path.join(archipelago_root, "Banjo-Tooie-AP.n64")))
+            else:
+                logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
+                rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")], title="Open your Banjo-Tooie US ROM")
+                file_path = os.path.split(rom)
+                self.patch_rom(rom, file_path + "/Banjo-Tooie-AP.n64", "banjo-tooie.patch")
+                async_start(run_game(os.path.join(file_path, "Banjo-Tooie-AP.n64")))
+
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
         # elif cmd == 'Print':
             # msg = args['text']
