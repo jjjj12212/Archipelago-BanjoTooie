@@ -53,13 +53,11 @@ local DEBUG_AMAZE = false
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
-
 local MINIGAMES = ""
 local TOKEN_ANNOUNCE = false;
 
 -------------- MAP VARS -------------
 local CURRENT_MAP = nil;
-
 
 -------------- TOTALS VARS -----------
 local TOTAL_HONEYCOMBS = 0;
@@ -107,6 +105,23 @@ local ENCOURAGEMENT = {
          [6]  = {message = " WAHEY!!!"},
          [7]  = {message = " ROOOOO!!!"},
          [8]  = {message = " OOMANAKA!!!"}
+}
+
+local DEATH_MESSAGES = {
+    [1]  = {message = "Did you hear that lovely clack,\nMy broomstick gave you such a whack!"},
+    [2]  = {message = "AAAH! I see it makes you sad,\nTo know your skills are really bad!"},
+    [3]  = {message = "I hit that bird right on the beak,\nLet it be the end of her cheek!"},
+    [4]  = {message = "My fiery blast you just tasted,\nGrunty's spells on you are wasted!"},
+    [5]  = {message = "Hopeless bear runs to and fro,\nBut takes a whack for being so slow!"},
+    [6]  = {message = "So I got you there once more,\nI knew your skills were very poor!"},
+    [7]  = {message = "Simply put I'm rather proud,\nYour yelps and screams I heard quite loud!"},
+    [8]  = {message = "Grunty's fireball you did kiss,\nYou're so slow I can hardly miss!"},
+    [9]  = {message = "In this world you breathe your last,\nNow your friends had better think fast!"},
+    [10] = {message = "This is fun it's quite a treat,\nTo see you suffer in defeat"},
+    [11] = {message = "That death just now, I saw coming,\nYour skill issues are rather stunning!"},
+    [12] = {message = "Seeing this pathetic display,\nIs serotonin in my day"},
+    [13] = {message = "What a selfish thing to do,\nYour friends just died because of you!"},
+    [14] = {message = "You tried something rather stupid,\nI hope no one will try what you did"}
 }
 
 local receive_map = { -- [ap_id] = item_id; --  Required for Async Items
@@ -1392,7 +1407,7 @@ local DAILOG_KEY_TABLE = {
     "ICON_BOTTLES",
     "ICON_MUMBO",
     "ICON_JINJO_YELLOW",
-    "ICON_JINJO_GREEN",
+    "ICON_JINJO_GREEN", -- 10
     "ICON_JINJO_BLUE",
     "ICON_JINJO_PURPLE",
     "ICON_JINJO_ORANGE",
@@ -1402,7 +1417,7 @@ local DAILOG_KEY_TABLE = {
     "ICON_JAMJARS",
     "ICON_BOVINA",
     "ICON_MINGO_WHITE",
-    "ICON_MINGO_ORANGE",
+    "ICON_MINGO_ORANGE", --20
     "ICON_MINGO_YELLOW",
     "ICON_MINGO_BROWN",
     "ICON_UNOGOPAZ",
@@ -1412,7 +1427,7 @@ local DAILOG_KEY_TABLE = {
     "ICON_CANARY_MARY",
     "ICON_CHEATO",
     "ICON_GOBI",
-    "ICON_DINO_KID1",
+    "ICON_DINO_KID1", --30
     "ICON_MR_PATCH",
     "ICON_MOGGY",
     "ICON_SOGGY",
@@ -1422,7 +1437,7 @@ local DAILOG_KEY_TABLE = {
     "ICON_HUMBA",
     "ICON_UFO",
     "ICON_OLD_KING_COAL",
-    "ICON_SSSLUMBER",
+    "ICON_SSSLUMBER", --40
     "ICON_BOGGY",
     "ICON_BIG_AL",
     "ICON_SALTY_JOE",
@@ -1432,7 +1447,7 @@ local DAILOG_KEY_TABLE = {
     "ICON_JOLLY",
     "ICON_MERRY_MAGGIE",
     "ICON_TERRY",
-    "ICON_BARGASAURUS",
+    "ICON_BARGASAURUS", --50
     "ICON_YELLOW_STONY",
     "ICON_ALIEN",
     "ICON_CHRIS_P_BACON",
@@ -1442,7 +1457,7 @@ local DAILOG_KEY_TABLE = {
     "ICON_SAFE",
     "ICON_GUFFO",
     "ICON_MR_FIT",
-    "ICON_CAPTAIN_BLACKEYE",
+    "ICON_CAPTAIN_BLACKEYE", --60
     "ICON_JINJO_RED",
     "ICON_JINJO_WHITE",
     "ICON_JINJO_BLACK",
@@ -1452,7 +1467,7 @@ local DAILOG_KEY_TABLE = {
     "ICON_MINGY_JONGO",
     "ICON_YELLOW_DODGEM",
     "ICON_MINGELLA",
-    "ICON_BLOBBELDA",
+    "ICON_BLOBBELDA", --70
     "ICON_KLUNGO",
     "ICON_BOTTLES_DEAD",
     "ICON_MINGO_GREEN",
@@ -1462,7 +1477,7 @@ local DAILOG_KEY_TABLE = {
     "ICON_MINGO_BLACK",
     "ICON_RABBIT_WORKER1",
     "ICON_UNGA_BUNGA",
-    "ICON_JIGGYWIGGY",
+    "ICON_JIGGYWIGGY", --80
     "ICON_JIGGYWIGGY_DISCIPLE",
     "ICON_HONEY_B",
     "ICON_BANJO_KAZOOIE",
@@ -1472,7 +1487,7 @@ local DAILOG_KEY_TABLE = {
     "ICON_DINGPOT",
     "ICON_KING_JINGALING_DEAD",
     "ICON_ROCKNUT",
-    "ICON_MILDRED",
+    "ICON_MILDRED", --90
     "ICON_BIGGA_FOOT",
     "ICON_GEORGE",
     "ICON_SABREMAN",
@@ -1482,7 +1497,7 @@ local DAILOG_KEY_TABLE = {
     "ICON_MRS_BOTTLES",
     "ICON_SPECCY",
     "ICON_GOGGLES",
-    "ICON_TARGITZAN",
+    "ICON_TARGITZAN", --100
     "ICON_CHOMPA",
     "ICON_LORD_WOO_FAK_FAK",
     "ICON_WELDAR",
@@ -1491,7 +1506,7 @@ local DAILOG_KEY_TABLE = {
     "ICON_DINO_KID2",
     "ICON_DINO_SCRIT_SMALL",
     "ICON_DINO_SCRIT_BIG",
-    "ICON_HEGGY",
+    "ICON_HEGGY", --109
 }
 
 local UNLOCKED_WORLDS = {} -- Worlds unlocked
@@ -3959,7 +3974,7 @@ function BTHACK:getNPointer()
 end
 
 function BTHACK:getNLocalDeath()
-   return mainmemory.readbyte(self:getPCPointer() + self.n64_death_us);
+   return mainmemory.readbyte(BTHACK:getNPointer() + self.n64_death_us);
 end
 
 function BTHACK:setTextQueue(icon_id)
@@ -4018,10 +4033,6 @@ function BTHACK:getRomVersion()
         return "V"..tostring(major).."."..tostring(minor).."."..tostring(patch)
     end
 end
-
-
-
-
 
 ---------------------------------- JIGGIES ---------------------------------
 
@@ -4854,20 +4865,15 @@ end
 
 function jinjo_family_check() -- counts AP jinjos and Marks as Completed if true
     local checks = {}
-    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
-    then
-        if ASSET_MAP_CHECK[CURRENT_MAP]["JINJO_FAMILY"] ~= nil
+    for _,locationId in pairs(ASSET_MAP_CHECK["ALL"]["JINJO_FAMILY"])
+    do
+        checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["JINJO_FAMILY"][locationId]['addr'], ADDRESS_MAP["JINJO_FAMILY"][locationId]['bit'])
+        if DEBUG_JINJO == true
         then
-            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["JINJO_FAMILY"])
-            do
-                checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["JINJO_FAMILY"][locationId]['addr'], ADDRESS_MAP["JINJO_FAMILY"][locationId]['bit'])
-                if DEBUG_JINJO == true
-                then
-                    print(ADDRESS_MAP["JINJO_FAMILY"][locationId]['name']..":"..tostring(checks[locationId]))
-                end
-            end
+            print(ADDRESS_MAP["JINJO_FAMILY"][locationId]['name']..":"..tostring(checks[locationId]))
         end
     end
+
     return checks
 end
 
@@ -4981,269 +4987,6 @@ function unlock_worlds(itemId)
     end
 end
 
--- function DPadStats()
---     if GAME_LOADED == true
---     then
---         local check_controls = joypad.get()
-        
---         -- SNEAK
---         if check_controls ~= nil and check_controls['P1 DPad U'] == true and SNEAK == false and check_controls['P1 L'] == false
---         then
---             joypad.setanalog({['P1 Y Axis'] = 18 })
---             SNEAK = true
---         elseif check_controls ~= nil and check_controls['P1 DPad U'] == false and SNEAK == true and check_controls['P1 L'] == false
---         then
---             joypad.setanalog({['P1 Y Axis'] = '' })
---             SNEAK = false
---         end
-		
---         -- Check Obtained Moves and Worlds
--- 		if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == false and CHECK_MOVES_R == false
---         then
---             print(" ")
---             print(" ")
---             print("Unlocked Moves:")
---             if ENABLE_AP_BK_MOVES ~= 0
---             then
---                 for locationId, table in pairs(ADDRESS_MAP["BKMOVES"])
---                 do
---                     if BTRAMOBJ:checkFlag(table['addr'], table['bit']) == true
---                     then
---                         print(table['name'])
---                     end
---                 end
---             end
---             for locationId, values in pairs(ADDRESS_MAP["MOVES"])
---             do             
---                 if AGI_MOVES[locationId] == true
---                 then
---                     print(values['name'])
---                 end
---             end
---             if AGI_MYSTERY["1230800"] == true
---             then
---                 print("Breegull Bash");
---             end
---             if FAST_SWIM == true
---             then
---                 print("Fast Swimming")
---             end
---             if DOUBLE_AIR == true
---             then
---                 print("Double Air")
---             end
---             print(" ")
---             print(" ")
---             print("Unlocked Worlds")
---             for world, table in pairs(WORLD_ENTRANCE_MAP)
---             do
---                 if table["opened"] == true
---                 then
---                     print(table["defaultName"])
---                 end
---             end
---             CHECK_MOVES_R = true
---         elseif check_controls ~= nil and check_controls['P1 DPad R'] == false and check_controls['P1 L'] == false and CHECK_MOVES_R == true
---         then
---             CHECK_MOVES_R = false
--- 		end
--- 		-- Check Magic
--- 		if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == false and CHECK_MOVES_L == false
---         then
---             print(" ")
---             print(" ")
---             print("Unlocked Magic:")
---             CHECK_MOVES_L = true
---         elseif check_controls ~= nil and check_controls['P1 DPad L'] == false and check_controls['P1 L'] == false and CHECK_MOVES_L == true
---         then
---             CHECK_MOVES_L = false
---         end
--- 		-- Check Collected Treble, Stations and Victory Condition
--- 		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == false and CHECK_MOVES_D == false
---         then
---             print(" ")
---             print(" ")
---             print("Collected Treble Clefs:")
---             for locationId, values in pairs(ADDRESS_MAP["TREBLE"])
---             do        
---                 local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
---                 if results == true then
---                     print(values['name'])
---                 end
---             end
--- 			print(" ")
---             if DEBUG_STATION == true
---             then
---                 print("DEBUGGING Opened Train Stations:")
---                 for locationId, values in pairs(ADDRESS_MAP["STATIONS"])
---                 do        
---                     local results = BTRAMOBJ:checkFlag(values['addr'], values['bit'])
---                     if results == true then
---                         print(values['name'])
---                     end
---                 end
---             end
---             print("Open Train Stations:")
---             local TRAIN_TBL = {}
---             for apId, itemId in pairs(receive_map)
---             do
---                 if ADDRESS_MAP["STATIONS"][itemId] ~= nil
---                 then
---                     if TRAIN_TBL[itemId] == nil
---                     then
---                         print(ADDRESS_MAP["STATIONS"][itemId]['name'])
---                         TRAIN_TBL[itemId] = "Y"
---                     end
---                 end
---             end
---             if GOAL_TYPE ~= 0
---             then
---                 local token_count = 0;
---                 for id, itemId in pairs(receive_map)
---                 do
---                     if itemId == "1230798"
---                     then
---                         token_count = token_count + 1
---                     end
---                 end
---                 print(" ")
--- 			    print("Collected Mumbo Tokens: "..token_count)
---             end
---             CHECK_MOVES_D = true
---         elseif check_controls ~= nil and check_controls['P1 DPad D'] == false and check_controls['P1 L'] == false and CHECK_MOVES_D == true
---         then
---             CHECK_MOVES_D = false
---         end
-		
---         -- CHEAT: Refill & Double
---         if check_controls ~= nil and check_controls['P1 DPad U'] == true and check_controls['P1 L'] == true and REFILL_HOLD == false
---         then
---             BTRAMOBJ:setFlag(0xA1, 4, "Double Feathers") -- Double Feathers
---             BTRAMOBJ:setFlag(0xA1, 5, "Double Eggs") -- Double Eggs
--- 			BTCONSUMEOBJ:changeConsumable("Red Feathers")
--- 			BTCONSUMEOBJ:setConsumable(200)
--- 			BTCONSUMEOBJ:changeConsumable("Gold Feathers")
--- 			BTCONSUMEOBJ:setConsumable(20)
--- 			BTCONSUMEOBJ:changeConsumable("BLUE EGGS")
--- 			BTCONSUMEOBJ:setConsumable(200)
--- 			BTCONSUMEOBJ:changeConsumable("FIRE EGGS")
--- 			BTCONSUMEOBJ:setConsumable(100)
---             BTCONSUMEOBJ:changeConsumable("GRENADE EGGS")
---             BTCONSUMEOBJ:setConsumable(50)
---             BTCONSUMEOBJ:changeConsumable("ICE EGGS")
---             BTCONSUMEOBJ:setConsumable(100)
---             BTCONSUMEOBJ:changeConsumable("CWK EGGS")
---             BTCONSUMEOBJ:setConsumable(20)
--- 			print(" ")
---             print("Eggs and Feathers Doubled")
--- 			print("Eggs and Feathers Refilled")
---             REFILL_HOLD = true
---         elseif check_controls ~= nil and (check_controls['P1 DPad U'] == false or check_controls['P1 L'] == false) and REFILL_HOLD == true
---         then
---             REFILL_HOLD = false
---         end
-
---         -- CHEAT: Super Banjo
---         if check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == false and SUPERBANJO_HOLD == false
---         then
---            BTRAMOBJ:setFlag(0xA2, 2, "Super Banjo")
---            SUPERBANJO = true
---            print(" ")
---            print("Super Banjo Enabled")
---            SUPERBANJO_HOLD = true
---         elseif check_controls ~= nil and check_controls['P1 DPad R'] == true and check_controls['P1 L'] == true and SUPERBANJO == true and SUPERBANJO_HOLD == false
---         then
---             BTRAMOBJ:clearFlag(0xA2, 2)
---             SUPERBANJO = false
---             print(" ")
---             print("Super Banjo Disabled")
---             SUPERBANJO_HOLD = true
---         elseif check_controls ~= nil and (check_controls['P1 DPad R'] == false or check_controls['P1 L'] == false)  and SUPERBANJO_HOLD == true
---         then
---             SUPERBANJO_HOLD = false
---         end
-
---         -- CHEAT / APFeature: Aim Assist
---         if check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == false and AIMASSIST_HOLD == false
---         then
---             if ENABLE_AP_MYSTERY == true
---             then
---                 if AGI_MYSTERY["1230802"] == true
---                 then
---                     BTRAMOBJ:setFlag(0xAF, 3, "Aim Assist")
---                     AIMASSIST = true
---                     print(" ")
---                     print("Aim Assist Enabled")
---                 else
---                     print("Homing Eggs not found")
---                 end
---             else
---                 BTRAMOBJ:setFlag(0xAF, 3, "Aim Assist")
---                 AIMASSIST = true
---                 print(" ")
---                 print("Aim Assist Enabled")
---             end
---             AIMASSIST_HOLD = true
---         elseif check_controls ~= nil and check_controls['P1 DPad L'] == true and check_controls['P1 L'] == true and AIMASSIST == true and AIMASSIST_HOLD == false
---         then
---             BTRAMOBJ:clearFlag(0xAF, 3)
---             AIMASSIST = false
---             print(" ")
---             print("Aim Assist Disabled")
---             AIMASSIST_HOLD = true
---         elseif check_controls ~= nil and (check_controls['P1 DPad L'] == false or check_controls['P1 L'] == false) and AIMASSIST_HOLD == true
---         then
---             AIMASSIST_HOLD = false
---         end
-		
---         -- CHEAT: Health Regen
--- 		if check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == false and REGEN_HOLD == false
---         then
---             if DEATH_LINK == true
---             then
---                 print(" ")
---                 print("Regen can't be enable with Deathlink.")
---                 REGEN_HOLD = true
---             else
---                 BTRAMOBJ:setFlag(0xA1, 7, "Automatic Energy Regain")
---                 REGEN = true
---                 print(" ")
---                 print("Energy Regen Enabled")
---                 REGEN_HOLD = true
---             end
---         elseif check_controls ~= nil and check_controls['P1 DPad D'] == true and check_controls['P1 L'] == true and REGEN == true and REGEN_HOLD == false
---         and DEATH_LINK == false
---         then
---             BTRAMOBJ:clearFlag(0xA1, 7)
---             REGEN = false
---             print(" ")
---             print("Energy Regen Disabled")
---             REGEN_HOLD = true
---         elseif check_controls ~= nil and (check_controls['P1 DPad D'] == false or check_controls['P1 L'] == false) and REGEN_HOLD == true
---         then 
---             REGEN_HOLD = false
---         end
-
---         -- APFeature 60 FPS
---         if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == false and FPS_HOLD == false
---         then
---             mainmemory.write_u8(0x07913F, 1)
---             print("Smooth Banjo Enabled")
---             FPS = true
---             FPS_HOLD = true
---         elseif check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 Start'] == true and FPS == true and FPS_HOLD == false
---         then
---             mainmemory.write_u8(0x07913F, 2)
---             print("Smooth Banjo Disabled")
---             FPS = false
---             FPS_HOLD = true
---         elseif check_controls ~= nil and (check_controls['P1 L'] == false or check_controls['P1 Start'] == false) and FPS_HOLD == true
---         then
---             FPS_HOLD = false
---         end
---     end
--- end
-
 ---------------------- ARCHIPELAGO FUNCTIONS -------------
 
 function mumbo_announce()
@@ -5323,7 +5066,7 @@ function processAGIItem(item_list)
             elseif(memlocation == 1230780) --Roar
             then
                 obtain_roar()
-            elseif(memlocation == 1230798) --Roar
+            elseif(memlocation == 1230798) --Mumbo Token
             then
                 obtain_mumbo_token()
             end
@@ -5356,13 +5099,50 @@ function process_block(block)
             else
                 msg = msg_table["player"] .. " sent your " .. msg_table["item"]
             end
-                table.insert(MESSAGE_TABLE, {msg, 1})
+            if 1230753 <= msg_table["item_id"] and msg_table["item_id"] <= 1230776 -- Jamjars
+            then
+                table.insert(MESSAGE_TABLE, {msg, 17})
+            end
+            if 1230779 <= msg_table["item_id"] and msg_table["item_id"] <= 1230780 -- Amaze + Roar
+            then
+                table.insert(MESSAGE_TABLE, {msg, 17})
+            end
+            if 1230810 <= msg_table["item_id"] and msg_table["item_id"] <= 1230827 -- BK Moves
+            then
+                table.insert(MESSAGE_TABLE, {msg, 7})
+            end
+            if 1230790 <= msg_table["item_id"] and msg_table["item_id"] <= 1230796 --Stations + Chuffy
+            then
+                table.insert(MESSAGE_TABLE, {msg, 39})
+            end
+            if (1230777 <= msg_table["item_id"] and msg_table["item_id"] <= 1230778) or msg_table["item_id"] == 1230831 -- Roysten
+            then
+                table.insert(MESSAGE_TABLE, {msg, 56})
+            end
+            if 1230828 <= msg_table["item_id"] and msg_table["item_id"] <= 1230832 -- Progressive Moves
+            then
+                table.insert(MESSAGE_TABLE, {msg, 7})
+            end
+            if 1230944 <= msg_table["item_id"] and msg_table["item_id"] <= 1230952 -- Worlds
+            then
+                table.insert(MESSAGE_TABLE, {msg, 27})
+            end
+            if 1230855 <= msg_table["item_id"] and msg_table["item_id"] <= 1230863 -- Mumbo
+            then
+                table.insert(MESSAGE_TABLE, {msg, 8})
+            end
+            if 1230174 <= msg_table["item_id"] and msg_table["item_id"] <= 1230182 -- Humba
+            then
+                table.insert(MESSAGE_TABLE, {msg, 37})
+            end
         end
     end
     if block['triggerDeath'] == true and DEATH_LINK == true
     then
         local death = BTH:getAPDeath()
         BTH:setAPDeath(death + 1)
+        local randomDeathMsg = DEATH_MESSAGES[math.random(1, #DEATH_MESSAGES)]["message"]
+        table.insert(MESSAGE_TABLE, {randomDeathMsg, 15})
     end
 
     if DEBUGLVL3 == true then
@@ -5373,12 +5153,21 @@ end
 function SendToBTClient()
     local retTable = {}
     local detect_death = false
+    if BTH:getPCDeath() ~= BTH:getNLocalDeath() and DEATH_LINK == false
+    then
+        local randomDeathMsg = DEATH_MESSAGES[math.random(1, #DEATH_MESSAGES)]["message"]
+        table.insert(MESSAGE_TABLE, {randomDeathMsg, 15})
+        local died = BTH:getPCDeath()
+        BTH:setPCDeath(died + 1)
+    end
     if BTH:getPCDeath() ~= BTH:getNLocalDeath() and DEATH_LINK == true and DEATH_LINK_TRIGGERED == false
     then
         detect_death = true
         local died = BTH:getPCDeath()
         BTH:setPCDeath(died + 1)
         DEATH_LINK_TRIGGERED = true
+        local randomDeathMsg = DEATH_MESSAGES[math.random(1, #DEATH_MESSAGES)]["message"]
+        table.insert(MESSAGE_TABLE, {randomDeathMsg, 15})
     else
         DEATH_LINK_TRIGGERED = false
     end
@@ -5429,7 +5218,6 @@ function SendToBTClient()
     elseif CUR_STATE == STATE_INITIAL_CONNECTION_MADE then
         CUR_STATE = STATE_TENTATIVELY_CONNECTED
     elseif CUR_STATE == STATE_TENTATIVELY_CONNECTED then
-        table.insert(MESSAGE_TABLE, {"Connected to the Banjo Tooie Client!", 1})
         print("Connected!")
         PRINT_GOAL = true;
         CUR_STATE = STATE_OK
@@ -5452,13 +5240,13 @@ function receive()
         -- Handle incoming message
         if e == 'closed' then
             if CUR_STATE == STATE_OK then
-                archipelago_msg_box("Connection closed")
+                table.insert(MESSAGE_TABLE, {"Archipelago Connection Closed", 86});
                 print("Connection closed")
             end
             CUR_STATE = STATE_UNINITIALIZED
             return
         elseif e == 'timeout' then
-            archipelago_msg_box("timeout")
+            table.insert(MESSAGE_TABLE, {"Archipelago Timeout", 86});
             print("timeout")
             return
         elseif e ~= nil then
@@ -5491,13 +5279,13 @@ function getSlotData()
     -- Handle incoming message
     if e == 'closed' then
         if CUR_STATE == STATE_OK then
-            archipelago_msg_box("Connection closed")
+            table.insert(MESSAGE_TABLE, {"Archipelago Connection Closed", 86});
             print("Connection closed")
         end
         CUR_STATE = STATE_UNINITIALIZED
         return
     elseif e == 'timeout' then
-        archipelago_msg_box("timeout")
+        table.insert(MESSAGE_TABLE, {"Archipelago Timeout", 86});
         print("timeout")
         return
     elseif e ~= nil then
@@ -5518,7 +5306,6 @@ function process_slot(block)
         print(block)
         print("EO_slot_data")
     end
-
     for index, item in pairs(ROM_ITEM_TABLE)
     do
         ITEM_TABLE[item] = index - 1
@@ -5787,7 +5574,7 @@ function printGoalInfo()
         end
         if GOAL_PRINTED == false
         then
-            table.insert(MESSAGE_TABLE, {message, 69});
+            table.insert(MESSAGE_TABLE, {message, 5});
             GOAL_PRINTED =true
         end
     end
@@ -5799,7 +5586,6 @@ function messageQueue()
     then
         for id, message in pairs(MESSAGE_TABLE)
         do
-            print(message)
             BTH:setDialog(message[1], message[2])
             processed = id
             break
@@ -5839,14 +5625,10 @@ function main()
                 end
                 if (CURRENT_MAP ~= 0x158 and CURRENT_MAP ~= 0x18B and CURRENT_MAP ~= 0x0) and GOAL_PRINTED == true
                 then
-                    print(CURRENT_MAP)
                     GOAL_PRINTED = false
-                    print("Goal is set to False")
                 end
                 if CURRENT_MAP == 0x158 and GOAL_PRINTED == false
                 then
-                    print(CURRENT_MAP)
-                    print("replay Goal")
                     printGoalInfo()
                 end
             end
