@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import Toggle, DeathLink, PerGameCommonOptions, Choice, DefaultOnToggle, Range, StartInventoryPool
+from Options import Toggle, DeathLink, PerGameCommonOptions, Choice, DefaultOnToggle, Range, StartInventoryPool, FreeText
 
 class EnableMultiWorldMoveList(DefaultOnToggle):
     """Jamjars & Roysten Movelist are locked between the MultiWorld. Other players need to unlock Banjo's Moves."""
@@ -227,68 +227,74 @@ class GameLength(Choice):
     option_custom = 3
     default = 1
 
-class World1(Range):
-    """If you picked custom, what is the jiggy requirement for World 1?"""
-    display_name = "World 1 Jiggy requirement"
-    range_start = 1
-    range_end = 1
-    default = 1
+class CustomWorlds(FreeText):
+    """Enter a list of jiggy requirements you want for each world unlock. Max values of each world are: 1,20,30,40,50,60,70,80,90"""
+    display_name = "Enter your custom world jiggy requirement list:"
+    default = "1,4,8,14,20,28,36,45,55"
 
-class World2(Range):
-    """If you picked custom, what is the jiggy requirement for World 2?"""
-    display_name = "World 2 Jiggy requirement"
-    range_start = 1
-    range_end = 20
-    default = 4
 
-class World3(Range):
-    """If you picked custom, what is the jiggy requirement for World 3?"""
-    display_name = "World 3 Jiggy requirement"
-    range_start = 1
-    range_end = 30
-    default = 8
+# class World1(Range):
+#     """If you picked custom, what is the jiggy requirement for World 1?"""
+#     display_name = "World 1 Jiggy requirement"
+#     range_start = 1
+#     range_end = 1
+#     default = 1
 
-class World4(Range):
-    """If you picked custom, what is the jiggy requirement for World 4?"""
-    display_name = "World 4 Jiggy requirement"
-    range_start = 1
-    range_end = 40
-    default = 14
+# class World2(Range):
+#     """If you picked custom, what is the jiggy requirement for World 2?"""
+#     display_name = "World 2 Jiggy requirement"
+#     range_start = 1
+#     range_end = 20
+#     default = 4
 
-class World5(Range):
-    """If you picked custom, what is the jiggy requirement for World 5?"""
-    display_name = "World 5 Jiggy requirement"
-    range_start = 1
-    range_end = 50
-    default = 20
+# class World3(Range):
+#     """If you picked custom, what is the jiggy requirement for World 3?"""
+#     display_name = "World 3 Jiggy requirement"
+#     range_start = 1
+#     range_end = 30
+#     default = 8
 
-class World6(Range):
-    """If you picked custom, what is the jiggy requirement for World 6?"""
-    display_name = "World 6 Jiggy requirement"
-    range_start = 1
-    range_end = 60
-    default = 28
+# class World4(Range):
+#     """If you picked custom, what is the jiggy requirement for World 4?"""
+#     display_name = "World 4 Jiggy requirement"
+#     range_start = 1
+#     range_end = 40
+#     default = 14
 
-class World7(Range):
-    """If you picked custom, what is the jiggy requirement for World 7?"""
-    display_name = "World 7 Jiggy requirement"
-    range_start = 1
-    range_end = 70
-    default = 36
+# class World5(Range):
+#     """If you picked custom, what is the jiggy requirement for World 5?"""
+#     display_name = "World 5 Jiggy requirement"
+#     range_start = 1
+#     range_end = 50
+#     default = 20
 
-class World8(Range):
-    """If you picked custom, what is the jiggy requirement for World 8?"""
-    display_name = "World 8 Jiggy requirement"
-    range_start = 1
-    range_end = 90
-    default = 45
+# class World6(Range):
+#     """If you picked custom, what is the jiggy requirement for World 6?"""
+#     display_name = "World 6 Jiggy requirement"
+#     range_start = 1
+#     range_end = 60
+#     default = 28
 
-class World9(Range):
-    """If you picked custom, what is the jiggy requirement for Cauldon Keep?"""
-    display_name = "World 9 Jiggy requirement"
-    range_start = 1
-    range_end = 90
-    default = 55
+# class World7(Range):
+#     """If you picked custom, what is the jiggy requirement for World 7?"""
+#     display_name = "World 7 Jiggy requirement"
+#     range_start = 1
+#     range_end = 70
+#     default = 36
+
+# class World8(Range):
+#     """If you picked custom, what is the jiggy requirement for World 8?"""
+#     display_name = "World 8 Jiggy requirement"
+#     range_start = 1
+#     range_end = 90
+#     default = 45
+
+# class World9(Range):
+#     """If you picked custom, what is the jiggy requirement for Cauldon Keep?"""
+#     display_name = "World 9 Jiggy requirement"
+#     range_start = 1
+#     range_end = 90
+#     default = 55
 
 class SkipKlungo(Toggle):
     """Make it so you can skip Klungo 1 and 2."""
@@ -338,13 +344,14 @@ class BanjoTooieOptions(PerGameCommonOptions):
     open_silos: Silos
     game_length: GameLength
     open_hag1: OpenHag1
-    world_1: World1
-    world_2: World2
-    world_3: World3
-    world_4: World4
-    world_5: World5
-    world_6: World6
-    world_7: World7
-    world_8: World8
-    world_9: World9
+    custom_worlds:CustomWorlds
+    # world_1: World1
+    # world_2: World2
+    # world_3: World3
+    # world_4: World4
+    # world_5: World5
+    # world_6: World6
+    # world_7: World7
+    # world_8: World8
+    # world_9: World9
     # warp_traps: WarpTraps

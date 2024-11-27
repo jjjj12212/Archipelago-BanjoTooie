@@ -93,17 +93,40 @@ def set_level_costs(world: BanjoTooieWorld) -> None:
     normal_costs = [1,4,8,14,20,28,36,45,55]
     quick_costs = [1,3,6,10,15,21,28,35,44]
     long_costs = [1,8,16,25,34,43,52,60,70]
-    custom_costs = [
-        world.options.world_1.value,
-        world.options.world_2.value,
-        world.options.world_3.value,
-        world.options.world_4.value,
-        world.options.world_5.value,
-        world.options.world_6.value,
-        world.options.world_7.value,
-        world.options.world_8.value,
-        world.options.world_9.value
-    ]
+    custom_max = [1,20,30,40,50,60,70,80,90]
+    custom_costs = world.options.custom_worlds.value.split(",")
+
+    if len(custom_costs) < 9:
+        raise ValueError("Custom Costs has too few levels.")
+    
+    if len(custom_costs) > 9:
+        raise ValueError("Custom Costs has too many levels.")
+    
+    for i in range(len(custom_costs)):
+        try:
+            int(custom_costs[i])
+        except Exception:
+            raise ValueError("Custom Cost for world "+str(i+1)+" must be a number.")
+        custom_costs[i] = int(custom_costs[i])
+        if custom_costs[i] == 0:
+            raise ValueError("Custom Cost for world "+str(i+1)+" can't be 0.")
+        if custom_costs[i] < 0:
+            raise ValueError("Custom Cost for world "+str(i+1)+" can't be negative.")
+        if custom_costs[i] > custom_max[i]:
+            raise ValueError("Custom Cost for world "+str(i+1)+" is too high.")
+    
+
+    # custom_costs = [
+    #     world.options.world_1.value,
+    #     world.options.world_2.value,
+    #     world.options.world_3.value,
+    #     world.options.world_4.value,
+    #     world.options.world_5.value,
+    #     world.options.world_6.value,
+    #     world.options.world_7.value,
+    #     world.options.world_8.value,
+    #     world.options.world_9.value
+    # ]
 
     chosen_costs = []
     if world.options.game_length.value == 0:
