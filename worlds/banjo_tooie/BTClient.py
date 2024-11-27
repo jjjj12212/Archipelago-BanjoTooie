@@ -21,6 +21,7 @@ import bsdiff4
 from CommonClient import CommonContext, server_loop, gui_enabled, \
     ClientCommandProcessor, logger, get_base_parser
 import Utils
+import settings
 from Utils import async_start
 from worlds import network_data_package
 
@@ -63,13 +64,13 @@ bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 script_version: int = 4
 version: str = "V3.5"
-patch_md5: str = "9d870a5ecccd21e764776f0c929a2f41"
+patch_md5: str = "8a188d9e6d92c99d60f39a0ccf5d13b7"
 
 def get_item_value(ap_id):
     return ap_id
 
 async def run_game(romfile):
-        auto_start = Utils.get_options()["banjo-tooie_options"].get("rom_start", True)
+        auto_start = settings.get_settings()["banjo-tooie_options"].get("rom_start", True)
         if auto_start is True:
             import webbrowser
             webbrowser.open(romfile)
@@ -284,12 +285,14 @@ class BanjoTooieContext(CommonContext):
                     logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
                     rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")], title="Open your Banjo-Tooie US ROM")
                     self.patch_rom(rom, os.path.join(archipelago_root, "Banjo-Tooie-AP.n64"), "banjo-tooie.patch")
+                    logger.info("Patched Banjo-Tooie is located in " + os.path.join(archipelago_root, "Banjo-Tooie-AP.n64"))
                 async_start(run_game(os.path.join(archipelago_root, "Banjo-Tooie-AP.n64")))
             else:
                 logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
                 rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")], title="Open your Banjo-Tooie US ROM")
                 file_path = os.path.split(rom)
                 self.patch_rom(rom, file_path + "/Banjo-Tooie-AP.n64", "banjo-tooie.patch")
+                logger.info("Patched Banjo-Tooie is located in " + os.path.join(archipelago_root, "Banjo-Tooie-AP.n64"))
                 async_start(run_game(os.path.join(file_path, "Banjo-Tooie-AP.n64")))
 
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
