@@ -7858,15 +7858,18 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
                    if itemId == "1230856" and (TURBOTRAINERS == true or SPRINGYSTEPSHOES == true or TALONTROT == true)-- GGM Humba Item
                     then
                         FAKE_MUMBO = true
+                        REVERTING_MUMBO = false
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230857" and VAN == true and ((FLAPFLIP == true and GRIPGRAB == true) or
                     (CLIMB == true and FLAPFLIP == true and TALONTROT == true and (FLUTTER == true or AIRRATATATRAP ==true)) or 
                     (SPLITUP == true and LEGSPRING == true))-- WW Mumbo Item
                     then
                         FAKE_MUMBO = true
+                        REVERTING_MUMBO = false
                         return BTRAM:setTransformation(13) -- Mumbo
                     else
                         FAKE_MUMBO = true
+                        REVERTING_MUMBO = false
                         return BTRAM:setTransformation(13) -- Mumbo
                     end
                 else
