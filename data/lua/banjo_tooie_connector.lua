@@ -55,6 +55,7 @@ local DEBUGLVL3 = false
 
 local MINIGAMES = ""
 local TOKEN_ANNOUNCE = false;
+local SNEAK = false;
 
 -------------- MAP VARS -------------
 local CURRENT_MAP = nil;
@@ -4555,7 +4556,7 @@ function obtain_progressive_moves(itemId)
         then
             obtain_bkmove(1230820);
         else
-            BTH:setItem(ITEM_TABLE["AP_ITEM_BBUST"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_BDRILL"], 1)
         end
     elseif(itemId == 1230829) -- Progressive Eggs
     then
@@ -5096,8 +5097,11 @@ function process_block(block)
             if msg_table["player"] == PLAYER
             then
                 msg = "You have found your " .. msg_table["item"]
-            else
+            elseif msg_table["to_player"] == PLAYER
+            then
                 msg = msg_table["player"] .. " sent your " .. msg_table["item"]
+            else
+                return
             end
             if 1230753 <= msg_table["item_id"] and msg_table["item_id"] <= 1230776 -- Jamjars
             then
@@ -5362,6 +5366,11 @@ function process_slot(block)
     if block['slot_bkmoves'] ~= nil and block['slot_bkmoves'] ~= "false"
     then
         ENABLE_AP_BK_MOVES = block['slot_bkmoves']
+        if ENABLE_AP_BK_MOVES == 1
+        then
+            BTH:setItem(ITEM_TABLE["AP_ITEM_TJUMP"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_TTROT"], 1)
+        end
     end
     if block['slot_cheatorewards'] ~= nil and block['slot_cheatorewards'] ~= "false"
     then
@@ -5636,6 +5645,17 @@ function main()
                 then
                     client.saveram()
                     changed_map = CURRENT_MAP
+                end
+                local check_controls = joypad.get()
+                -- SNEAK
+                if check_controls ~= nil and check_controls['P1 DPad U'] == true and SNEAK == false
+                then
+                    joypad.setanalog({['P1 Y Axis'] = 18 })
+                    SNEAK = true
+                elseif check_controls ~= nil and check_controls['P1 DPad U'] == false and SNEAK == true
+                then
+                    joypad.setanalog({['P1 Y Axis'] = '' })
+                    SNEAK = false
                 end
             end
         elseif (CUR_STATE == STATE_UNINITIALIZED) then
