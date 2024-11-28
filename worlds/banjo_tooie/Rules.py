@@ -730,19 +730,22 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.egg_aim(state) and\
                 (self.flap_flip(state) or self.slightly_elevated_ledge(state)) and\
-                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state)) or self.MT_flight_pad(state))
+                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.talon_trot(state)) or self.MT_flight_pad(state))
         elif self.world.options.logic_type == 1: # normal
             logic = (self.flap_flip(state) or self.slightly_elevated_ledge(state)) and\
-                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state))\
-                    or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state)))
+                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state) and self.talon_trot(state))\
+                    or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state))\
+                    or state.can_reach_region(regionName.TL_HATCH, self.player))
         elif self.world.options.logic_type == 2: # advanced
             logic = (self.flap_flip(state) or self.slightly_elevated_ledge(state)) and\
-                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state))\
-                    or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state)))
+                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state) and self.talon_trot(state))\
+                    or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state))\
+                    or state.can_reach_region(regionName.TL_HATCH, self.player))
         elif self.world.options.logic_type == 3: # glitched
             logic = (self.flap_flip(state) or self.slightly_elevated_ledge(state)) and\
-                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state))\
-                    or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state)))
+                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state) and self.talon_trot(state))\
+                    or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state))\
+                    or state.can_reach_region(regionName.TL_HATCH, self.player))
         return logic
     
 
@@ -1171,21 +1174,27 @@ class BanjoTooieRules:
     def jiggy_pigpool(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.HFP_hot_water_cooled(state) and \
-                    (self.has_explosives(state) or self.bill_drill(state)) and\
-                    self.veryLongJump(state) and (self.flap_flip(state))
+            logic = self.HFP_hot_water_cooled(state)\
+                    and  (self.has_explosives(state) or self.bill_drill(state))\
+                    and self.veryLongJump(state)\
+                    and self.flap_flip(state)\
+                    and (self.has_explosives(state) or self.beak_barge(state))
         elif self.world.options.logic_type == 1: # normal
-            logic = self.HFP_hot_water_cooled(state) and \
-                    (self.has_explosives(state) or self.bill_drill(state)) and\
-                    self.veryLongJump(state) and (self.flap_flip(state))
+            logic = self.HFP_hot_water_cooled(state) and\
+                    (self.has_explosives(state) or self.bill_drill(state))\
+                    and (self.veryLongJump(state) or state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state))\
+                    and self.flap_flip(state)\
+                    and (self.has_explosives(state) or self.beak_barge(state))
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.HFP_hot_water_cooled(state) and \
-                    (self.has_explosives(state) or self.bill_drill(state)) and\
-                    self.veryLongJump(state) and (self.flap_flip(state) or self.clockwork_shot(state))
+            logic = self.HFP_hot_water_cooled(state) and\
+                    (self.has_explosives(state) or self.bill_drill(state))\
+                    and (self.veryLongJump(state) or state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state))\
+                    and (self.flap_flip(state) and (self.has_explosives(state) or self.beak_barge(state)) or self.clockwork_shot(state))
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.HFP_hot_water_cooled(state) and \
-                    (self.has_explosives(state) or self.bill_drill(state)) and\
-                    self.veryLongJump(state) and (self.flap_flip(state) or self.clockwork_shot(state))
+            logic = self.HFP_hot_water_cooled(state) and\
+                    (self.has_explosives(state) or self.bill_drill(state))\
+                    and (self.veryLongJump(state) or state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state))\
+                    and (self.flap_flip(state) and (self.has_explosives(state) or self.beak_barge(state)) or self.clockwork_shot(state))
         return logic
     
     def jiggy_smuggler(self, state: CollectionState) -> bool:
@@ -2167,17 +2176,17 @@ class BanjoTooieRules:
     def cheato_snakehead(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.egg_aim(state) and\
-                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state)) or self.MT_flight_pad(state))
+            logic = self.egg_aim(state) and self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.talon_trot(state)\
+                    or self.MT_flight_pad(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.can_shoot_any_egg(state) and self.egg_aim(state))\
-                    or (self.MT_flight_pad(state)))
+            logic = self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.can_shoot_any_egg(state) and self.egg_aim(state) and self.talon_trot(state)\
+                    or self.MT_flight_pad(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.can_shoot_any_egg(state) and self.egg_aim(state))\
-                    or (self.MT_flight_pad(state)))\
+            logic = (self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.can_shoot_any_egg(state) and self.egg_aim(state) and self.talon_trot(state))\
+                    or self.MT_flight_pad(state)\
                     or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.can_shoot_any_egg(state) and self.egg_aim(state))\
+            logic = ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.can_shoot_any_egg(state) and self.egg_aim(state) and self.talon_trot(state))\
                     or (self.MT_flight_pad(state)))\
                     or self.clockwork_shot(state)
         return logic
@@ -3531,7 +3540,7 @@ class BanjoTooieRules:
             logic = ((self.grip_grab(state) and self.flap_flip(state)) or self.climb(state)) and self.dive(state)
         elif self.world.options.logic_type == 1: # normal
             logic = ((self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state) or self.climb(state))\
-                    and (self.tall_jump(state) or self.dive(state))\
+                        and (self.tall_jump(state) or self.dive(state))\
                     or (self.leg_spring(state) or self.glide(state)) and self.tall_jump(state)
         elif self.world.options.logic_type == 2: # advanced
             logic = (self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state)\
@@ -3544,7 +3553,9 @@ class BanjoTooieRules:
                     or self.ground_rat_a_tat_rap(state)\
                     or self.beak_barge(state)\
                     or self.leg_spring(state)\
-                    or self.glide(state)
+                    or self.glide(state)\
+                    or self.pack_whack(state)\
+                    or self.taxi_pack(state)
         return logic
     
     def notes_bottom_clockwork(self, state: CollectionState) -> bool:
@@ -3978,24 +3989,47 @@ class BanjoTooieRules:
     def silo_bill_drill(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.check_notes(state, 85) and self.flap_flip(state)
+            logic = self.check_notes(state, 85)\
+                    and (self.flap_flip(state)\
+                         or (self.tall_jump(state) or self.talon_trot(state) and self.flutter(state)) and self.grip_grab(state))
         elif self.world.options.logic_type == 1: # normal
-            logic = self.check_notes(state, 85) and self.flap_flip(state)
+            logic = self.check_notes(state, 85)\
+                    and (self.flap_flip(state)\
+                         or (self.tall_jump(state) or self.talon_trot(state) and self.flutter(state)) and self.grip_grab(state))
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.check_notes(state, 85) and (self.flap_flip(state) or self.turbo_trainers(state))
+            logic = self.check_notes(state, 85)\
+                    and (self.flap_flip(state)\
+                        or (self.tall_jump(state) or self.talon_trot(state) and self.flutter(state)) and self.grip_grab(state)\
+                        or self.turbo_trainers(state))
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.check_notes(state, 85) and (self.flap_flip(state) or self.turbo_trainers(state))
+            logic = self.check_notes(state, 85)\
+                    and (self.flap_flip(state)\
+                        or (self.tall_jump(state) or self.talon_trot(state) and self.flutter(state)) and self.grip_grab(state)\
+                        or self.turbo_trainers(state))
         return logic
     
     def silo_spring(self, state:CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
-            return (self.flap_flip(state) and (self.grip_grab(state))) or self.TDL_flight_pad(state)
+            return self.flap_flip(state) and self.grip_grab(state)\
+                    or self.TDL_flight_pad(state)
         elif self.world.options.logic_type == 1: # normal
-            return (self.flap_flip(state) and (self.grip_grab(state) or self.beak_buster(state))) or self.TDL_flight_pad(state) or self.veryLongJump(state)
+            return self.flap_flip(state) and (self.grip_grab(state) or self.beak_buster(state))\
+                    or self.TDL_flight_pad(state)\
+                    or self.veryLongJump(state)\
+                    or self.turbo_trainers(state)\
+                    or self.springy_step_shoes(state)
         elif self.world.options.logic_type == 2: # advanced
-            return (self.flap_flip(state) and (self.grip_grab(state) or self.beak_buster(state))) or self.TDL_flight_pad(state) or self.long_jump(state)
+            return self.flap_flip(state) and (self.grip_grab(state) or self.beak_buster(state))\
+                    or self.TDL_flight_pad(state)\
+                    or self.veryLongJump(state)\
+                    or self.turbo_trainers(state)\
+                    or self.springy_step_shoes(state)
         elif self.world.options.logic_type == 3: # glitched
-            return (self.flap_flip(state) and (self.grip_grab(state) or self.beak_buster(state))) or self.TDL_flight_pad(state) or self.long_jump(state)
+            return self.flap_flip(state) and (self.grip_grab(state) or self.beak_buster(state))\
+                    or self.TDL_flight_pad(state)\
+                    or self.veryLongJump(state)\
+                    or self.turbo_trainers(state)\
+                    or self.springy_step_shoes(state)
     
     def can_access_taxi_pack_silo(self, state:CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
