@@ -341,10 +341,9 @@ class BanjoTooieContext(CommonContext):
             if relevant:
                 msg = self.raw_text_parser(copy.deepcopy(args["data"]))
                 player = self.player_names[int(args["data"][0]["text"])]
-                to_player = self.player_names[int(args["data"][4]["text"])]
                 item_name = self.item_names.lookup_in_slot(int(args["data"][2]["text"]))
                 # self._set_message(msg, None)
-                self._set_message({"player":player, "item":item_name, "item_id":int(args["data"][2]["text"]), "to_player":to_player}, None)
+                self._set_message({"player":player, "item":item_name, "item_id":int(args["data"][2]["text"]), "to_player":player}, None)
 
 def get_payload(ctx: BanjoTooieContext):
     if ctx.deathlink_enabled and ctx.deathlink_pending:
