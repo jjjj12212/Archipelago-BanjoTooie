@@ -340,7 +340,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_chuffy: EnableMultiWorldChuffyTrain
     randomize_notes: EnableMultiWorldNotes
     bassclef_amount: BassclefNotes
-    trebleclef_amount: TrebleclefNotes
+    extra_trebleclefs_count: TrebleclefNotes
     randomize_stop_n_swap: RandomizeStopnSwap
     randomize_dino_roar: EnableMultiWorldDinoRoar
     jingaling_jiggy: KingJingalingHasJiggy

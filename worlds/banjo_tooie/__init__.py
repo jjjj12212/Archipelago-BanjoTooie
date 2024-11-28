@@ -193,8 +193,8 @@ class BanjoTooieWorld(World):
                         if self.options.bassclef_amount > 0:
                             for i in range(self.options.bassclef_amount): #adds an additional big-o-pants for each bassclef
                                 itempool += [self.create_item(name)]
-                        if self.options.trebleclef_amount > 0:
-                            for i in range(self.options.trebleclef_amount*3): #adds an additional big-o-pants for each bassclef
+                        if self.options.extra_trebleclefs_count > 0:
+                            for i in range(self.options.extra_trebleclefs_count*3): #adds an additional big-o-pants for each bassclef
                                 itempool += [self.create_item(name)]
 
                     #end of none qty logic
@@ -202,14 +202,14 @@ class BanjoTooieWorld(World):
                     #notes - extra other notes
                     elif item.code == 1230797: 
                         count = id.qty
-                        count -= ((self.options.bassclef_amount.value*2) + (self.options.trebleclef_amount.value*4))
+                        count -= ((self.options.bassclef_amount.value*2) + (self.options.extra_trebleclefs_count.value*4))
                         for i in range(count):
                             itempool += [self.create_item(name)]
 
                     #treble - extra trebles 
-                    elif item.code == 1230516 and self.options.trebleclef_amount.value > 0: #add more Trebles
+                    elif item.code == 1230516 and self.options.extra_trebleclefs_count.value > 0: #add more Trebles
                         count = id.qty
-                        count += self.options.trebleclef_amount.value
+                        count += self.options.extra_trebleclefs_count.value
                         for i in range(count):
                             itempool += [self.create_item(name)]
                     #bassclef - extra bassclef
