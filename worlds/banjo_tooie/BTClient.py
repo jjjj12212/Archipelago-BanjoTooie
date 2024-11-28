@@ -331,10 +331,10 @@ class BanjoTooieContext(CommonContext):
                     msg = self.raw_text_parser(copy.deepcopy(args["data"]))
                     player = self.player_names[int(args["data"][0]["text"])]
                     to_player = self.player_names[int(args["data"][0]["text"])]
-                    for id, data in args["data"].items():
+                    for id, data in enumerate(args["data"]):
                         if id == 0:
                             continue
-                        if data['type'] == "player_id":
+                        if "type" in data and data['type'] == "player_id":
                             to_player = self.player_names[int(data["text"])]
                             break
                     item_name = self.item_names.lookup_in_slot(int(args["data"][2]["text"]))
@@ -348,12 +348,12 @@ class BanjoTooieContext(CommonContext):
                 msg = self.raw_text_parser(copy.deepcopy(args["data"]))
                 player = self.player_names[int(args["data"][0]["text"])]
                 to_player = self.player_names[int(args["data"][0]["text"])]
-                for id, data in args["data"].items():
-                    if id == 0:
-                        continue
-                    if data['type'] == "player_id":
-                        to_player = self.player_names[int(data["text"])]
-                        break
+                for id, data in enumerate(args["data"]):
+                        if id == 0:
+                            continue
+                        if "type" in data and data['type'] == "player_id":
+                            to_player = self.player_names[int(data["text"])]
+                            break
                 item_name = self.item_names.lookup_in_slot(int(args["data"][2]["text"]))
                 # self._set_message(msg, None)
                 self._set_message({"player":player, "item":item_name, "item_id":int(args["data"][2]["text"]), "to_player":to_player}, None)
