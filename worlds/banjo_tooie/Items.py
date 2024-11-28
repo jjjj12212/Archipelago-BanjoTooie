@@ -5,6 +5,7 @@ from .Names import locationName
 
 
 class BanjoTooieItem(Item):
+    #1230781
     game: str = "Banjo-Tooie"
 class ItemData(typing.NamedTuple):
     btid: int = 0
@@ -126,6 +127,7 @@ misc_collectable_table = {
     itemName.TREBLE:        ItemData(1230516,  9, "progress", ""),
     itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY),
     itemName.NOTE:          ItemData(1230797, 144, "progress", ""),
+    itemName.BASS:          ItemData(1230781,  0, "progress", ""),
     # itemName.WARPS: ItemData(1230799, 20, "trap", None),
     itemName.NONE:          ItemData(1230888, 0, "filler", "")
 }

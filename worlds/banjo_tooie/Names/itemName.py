@@ -14,6 +14,8 @@ GLOWBO = "Glowbo"
 JIGGY = "Jiggy"
 TREBLE = "Treble Clef"
 NOTE = "5 Notes"
+BASS = "Bass Clef"
+
 MUMBOTOKEN = "Mumbo Token"
 WARPS = "Grunty Warp Spell"
 IKEY = "Ice Key"

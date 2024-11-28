@@ -97,6 +97,20 @@ class EnableMultiWorldNotes(Toggle):
     """Note Nests are scattered across the MultiWorld."""
     display_name = "Randomize Note Nests"
 
+class BassclefNotes(Range):
+    """Convert some 5 notes into Bassclefs (10 notes). How many notes do you want converted?
+       Be aware that 1 bassclef removes two 5 notes and adds an additional Big-O-Pants."""
+    display_name = "Bassclefs (10 notes) Amount"
+    range_start = 0
+    range_end = 30
+
+class TrebleclefNotes(Range):
+    """Convert some 5 notes into Trebleclefs (20 notes). How many notes do you want converted?
+       Be aware that 1 Trebleclef removes four 5 notes and adds three additional Big-O-Pants."""
+    display_name = "Add additional Trebleclefs (20 notes) Amount"
+    range_start = 0
+    range_end = 21
+
 class EnableMultiWorldDinoRoar(Toggle):
     """Baby T-Rex Roar is lost across the MultiWorld. Other players need to help him learn to ROAR!"""
     display_name = "Baby T-Rex Roar"
@@ -325,6 +339,8 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_stations: EnableMultiWorldTrainStationSwitches
     randomize_chuffy: EnableMultiWorldChuffyTrain
     randomize_notes: EnableMultiWorldNotes
+    bassclef_amount: BassclefNotes
+    trebleclef_amount: TrebleclefNotes
     randomize_stop_n_swap: RandomizeStopnSwap
     randomize_dino_roar: EnableMultiWorldDinoRoar
     jingaling_jiggy: KingJingalingHasJiggy

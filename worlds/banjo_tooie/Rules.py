@@ -3974,6 +3974,7 @@ class BanjoTooieRules:
     def check_notes(self, state:CollectionState, amount:int) -> bool:
         count:int = 0
         count = state.count(itemName.TREBLE, self.player) * 20
+        count += state.count(itemName.BASS, self.player) * 10
         count += state.count(itemName.NOTE, self.player) * 5
         return count >= amount
         

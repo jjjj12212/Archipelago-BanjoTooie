@@ -4450,6 +4450,15 @@ function obtain_AP_NOTES()
     BTH:setItem(ITEM_TABLE["AP_ITEM_NOTE"], TOTAL_NOTES)
 end
 
+function obtain_AP_BASSCLEF()
+    if DEBUG_NOTES == true
+    then
+        print("Bassclef Obtained")
+    end
+    TOTAL_NOTES = TOTAL_NOTES + 2
+    BTH:setItem(ITEM_TABLE["AP_ITEM_NOTE"], TOTAL_NOTES)
+end
+
 --------------------------------- JIGGY CHUNKS ----------------------------------
 
 function jiggy_chunks_check()
@@ -5058,6 +5067,9 @@ function processAGIItem(item_list)
             elseif(memlocation == 1230797) -- Notes
             then
                 obtain_AP_NOTES()
+            elseif(memlocation == 1230781) -- Bassclefs
+            then
+                obtain_AP_BASSCLEF()
             elseif memlocation == 1230796 -- Chuffy
             then
                 obtain_AP_CHUFFY()

@@ -190,8 +190,34 @@ class BanjoTooieWorld(World):
                         if self.options.randomize_bk_moves.value == 0: # No moves added, fills for the Jiggy Chunks, Dino Kids
                             for i in range(6):
                                 itempool += [self.create_item(name)]
+                        if self.options.bassclef_amount > 0:
+                            for i in range(self.options.bassclef_amount): #adds an additional big-o-pants for each bassclef
+                                itempool += [self.create_item(name)]
+                        if self.options.trebleclef_amount > 0:
+                            for i in range(self.options.trebleclef_amount*3): #adds an additional big-o-pants for each bassclef
+                                itempool += [self.create_item(name)]
+
                     #end of none qty logic
 
+                    #notes - extra other notes
+                    elif item.code == 1230797: 
+                        count = id.qty
+                        count -= ((self.options.bassclef_amount.value*2) + (self.options.trebleclef_amount.value*4))
+                        for i in range(count):
+                            itempool += [self.create_item(name)]
+
+                    #treble - extra trebles 
+                    elif item.code == 1230516 and self.options.trebleclef_amount.value > 0: #add more Trebles
+                        count = id.qty
+                        count += self.options.trebleclef_amount.value
+                        for i in range(count):
+                            itempool += [self.create_item(name)]
+                    #bassclef - extra bassclef
+                    elif item.code == 1230781 and self.options.bassclef_amount.value > 0: #add Bassclefs
+                        count = id.qty
+                        count += self.options.bassclef_amount.value
+                        for i in range(count):
+                            itempool += [self.create_item(name)]
                     else:
                         for i in range(id.qty):
                             if self.options.randomize_jinjos == False and self.jiggy_counter > 81 and item.code == 1230515:
