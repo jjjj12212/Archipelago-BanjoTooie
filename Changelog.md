@@ -3,10 +3,9 @@
     -Plateau to GGM: For GGM early, doing it with talon trot + air rat-a-tat rap + beak buster is no longer in logic.
     -GGM Entrance Cheato page: going for it as you enter the level is no longer in logic, due to technical reasons.
     -Plateau Sign notes: if not on intended logic, can be gotten with
-      - split up + pack whack + tall jump (hard trick)
+      - split up + + tall jump
       - split up + glide
       - split up + grip grab
-      - split up + wing whack + tall jump
     -Mumbo in TDL: can be reached with no moves. Intended logic still requires stilt stride.
     -Mumbo Glowbo in TDL: Same as a above.
     -TDL Entrance Jinjo: removed stilt stride as a way to get talon trot.

@@ -3489,23 +3489,21 @@ class BanjoTooieRules:
             logic = (self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state)\
                     or self.leg_spring(state)\
                     or self.split_up(state) and self.grip_grab(state)\
-                    or self.wing_whack(state) and self.tall_jump(state)\
+                    or self.split_up(state) and self.tall_jump(state)\
                     or self.glide(state)
         elif self.world.options.logic_type == 2: # advanced
             logic = ((self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state))\
                     or self.clockwork_shot(state)\
                     or self.leg_spring(state)\
-                    or self.pack_whack(state) and self.tall_jump(state)\
                     or self.split_up(state) and self.grip_grab(state)\
-                    or self.wing_whack(state) and self.tall_jump(state)\
+                    or self.split_up(state) and self.tall_jump(state)\
                     or self.glide(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = ((self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state))\
                     or self.clockwork_shot(state)\
                     or self.leg_spring(state)\
-                    or self.pack_whack(state) and self.tall_jump(state)\
                     or self.split_up(state) and self.grip_grab(state)\
-                    or self.wing_whack(state) and self.tall_jump(state)\
+                    or self.split_up(state) and self.tall_jump(state)\
                     or self.glide(state)
         return logic
     
