@@ -103,6 +103,7 @@ local CURRENT_MAP = nil;
 local NEXT_MAP = nil;
 local AP_LOADING_ZONES = {};
 local ZONE_SET = false;
+local CCL_OPEN_TEMP = false;
 
 -------------- TRANSFORM VARS -----
 local FAKE_MUMBO = false;
@@ -2163,15 +2164,21 @@ local TRANSFORM_SWAP_MAP = {
     ["mumbo"] = "1230855",
     ["humba"] = "1230174",
     },
-    [0x17A] =	{ --MT - Targitzan's Really Sacred Chamber
-    },
-    [0x177] =	{ --MT - Targitzan's Slightly Sacred Chamber
-    },
+    -- [0x17A] =	{ --MT - Targitzan's Really Sacred Chamber
+    -- },
+    -- [0x177] =	{ --MT - Targitzan's Slightly Sacred Chamber
+    -- },
     [0xC5] = { --MT - Treasure Chamber
+    },
+    [0x178] = { --MT - Inside Tatgitzan's Temple
+    },
+    [0xB6] = { --MT - Wumba's Wigwam
     ["mumbo"] = "1230855",
     ["humba"] = "1230174",
     },
-    [0x178] = { --MT - Inside Tatgitzan's Temple
+    [0xBC] = { --MT - Code Chamber
+    ["mumbo"] = "1230855",
+    ["humba"] = "1230174",
     },
     --GLITTER GULCH MINE
     
@@ -2183,6 +2190,8 @@ local TRANSFORM_SWAP_MAP = {
     ["skull"] = true,
     },
     [0xCC] ={ --GGM - Flooded Caves
+    ["mumbo"] = "1230856",
+    ["humba"] = "1230175",    
     },
     [0xCA] ={ --GGM - Fuel Depot
     ["mumbo"] = "1230856",
@@ -2196,13 +2205,17 @@ local TRANSFORM_SWAP_MAP = {
     ["mumbo"] = "1230856",
     ["humba"] = "1230175",
     },
-    [0xD1] = { --GGM - Inside Chuffy's Boiler
-    },
+    -- [0xD1] = { --GGM - Inside Chuffy's Boiler
+    -- },
     [0x163] =	{ --GGM - Ordnance Storage Entrance
     },
     [0xCF] = { --GGM - Power Hut Basement
     ["mumbo"] = "1230856",
     ["humba"] = "1230175",
+    },
+    [0xD4] = { --GGM - Poer Hut
+    ["humba"] = "1230175",
+    ["mumbo"] = "1230856",
     },
     [0xD8] = { --GGM - Prospector's Hut
     ["mumbo"] = "1230856",
@@ -2225,6 +2238,15 @@ local TRANSFORM_SWAP_MAP = {
     ["humba"] = "1230175",
     },
     [0xD0] = {}, -- GGM - Chuffy Cabin
+    [0xE9] = { --GGM - Wumba's Wigwam
+    ["humba"] = "1230175",
+    ["mumbo"] = "1230856",
+    },
+    [0xCB] = { --GGM - Crushing Shed
+    ["humba"] = "1230175",
+    ["mumbo"] = "1230856",
+    },
+
     --WITCHYWORLD
     [0xD6] = { --WW
     ["mumbo"] = "1230857",
@@ -2235,6 +2257,14 @@ local TRANSFORM_SWAP_MAP = {
     ["humba"] = "1230176",
     },
     [0xE1] = { --WW - Crazy Castle Stockade
+    ["mumbo"] = "1230857",
+    ["humba"] = "1230176",
+    },
+    [0xE2] = { --WW - Crazy Castle Lobby
+    ["mumbo"] = "1230857",
+    ["humba"] = "1230176",
+    },
+    [0xE3] = { --WW - Crazy Castle Pump Room
     ["mumbo"] = "1230857",
     ["humba"] = "1230176",
     },
@@ -2273,6 +2303,7 @@ local TRANSFORM_SWAP_MAP = {
     ["mumbo"] = "1230858",
     },
     [0xF4] = { --JRL - Ancient Swimming Baths
+    ["humba"] = "1230177",
     },
     [0x1A8] =	{ --JRL - Atlantis
     ["humba"] = "1230177",
@@ -2281,8 +2312,10 @@ local TRANSFORM_SWAP_MAP = {
     ["mumbo"] = "1230858",
     },
     [0xF6] = {  --JRL - Electric Eel's lair
+    ["humba"] = "1230177",    
     },
     [0xF8] = { --JRL - Inside the Big Fish
+    ["humba"] = "1230177",    
     },
     [0xED] =	{ --JRL - Jolly's
     ["mumbo"] = "1230858",
@@ -2296,18 +2329,18 @@ local TRANSFORM_SWAP_MAP = {
     [0x1A9] =	{ --JRL - Sea Bottom
     ["humba"] = "1230177",
     },
-    [0x181] =	{ --JRL - Sea Botom Cavern
-    ["humba"] = "1230177",
-    },
     [0xF7] = { --JRL - Seaweed Sanctum
     },
     [0x1A6] =	{ --JRL - Smuggler's cavern
-    ["mumbo"] = "1230858",
     },
     [0xFA] = { --JRL - Temple of the Fishes
+    ["humba"] = "1230177",
     },
     [0xEF] = { --JRL - Mumbo's Skull
     ["skull"] = true,
+    },
+    [0x120] =	{ --JRL - Wumba's Wigwam
+    ["humba"] = "1230177",
     },
     --TERRYDACTYLAND
     [0x112] =	{ --TDL
@@ -2317,13 +2350,14 @@ local TRANSFORM_SWAP_MAP = {
     [0x171] = { --TDL - Mumbo's Skull
     ["skull"] = true,
     },
-    [0x123] = { --TDL - Inside Chompa's Belly
-    },
+    -- [0x123] = { --TDL - Inside Chompa's Belly
+    -- },
     --[0x116] = { --TDL - Inside the Mountain (soft lock in dino cage?)
     --["mumbo"] = "1230859",
     --},
     [0x115] = { --TDL - Oogle Boogles' Cave
     ["mumbo"] = "1230859",
+    ["humba"] = "1230178"
     },
     [0x117] = { --TDL - River Passage
     ["mumbo"] = "1230859",
@@ -2332,13 +2366,28 @@ local TRANSFORM_SWAP_MAP = {
     [0x119] = { -- Unga Bunga Cave
     },
     [0x11A] = { --TDL - Stomping Plains
+    ["mumbo"] = "1230859",
+    ["humba"] = "1230178"
     },
     [0x118] =	{ --TDL - Styracosaurus Family Cave
     ["mumbo"] = "1230859",
+    ["humba"] = "1230178"
     },
     [0x113] =	{ --TDL - Terry's Nest
     },
+    [0x11B] =	{ --TDL - Bonfire Cavern
+    ["mumbo"] = "1230859",
+    ["humba"] = "1230178"
+    },
     [0x114] =	{ --TDL - Train Station
+    ["mumbo"] = "1230859",
+    ["humba"] = "1230178"
+    },
+    [0x11E] =	{ --TDL - Wumba's Wigwam, Small
+    ["mumbo"] = "1230859",
+    ["humba"] = "1230178"
+    },
+    [0x122] =	{ --TDL - Wumba's Wigwam, Big
     ["mumbo"] = "1230859",
     ["humba"] = "1230178"
     },
@@ -2359,21 +2408,25 @@ local TRANSFORM_SWAP_MAP = {
     [0x106] =	{ --GI - Floor 2
     ["humba"] = "1230179",
     },
-    [0x108] =	{ --GI - Floor 3
+    [0x11F] =	{ --GI - Wumba's Wigwam
     ["humba"] = "1230179",
     },
-    [0x109] =	{ --GI - Floor 3 (Boiler Plant)
+    [0x108] =	{ --GI - Floor 3
+    ["mumbo"] = "1230860",
     },
+    --[0x109] =	{ --GI - Floor 3 (Boiler Plant)
+    --},
     [0x10A] =	{ --GI - Floor 3 (Packing Room)
     },
     [0x10B] =	{ --GI - Floor 4
+    ["mumbo"] = "1230860",
     },
-    [0x10D] =	{ --GI - Floor 4 (Quality Control)
-    },
-    [0x10E] =	{ --GI - Floor 5
-    },
-    [0x187] =	{ --GI - Sewer Entrance
-    },
+    -- [0x10D] =	{ --GI - Floor 4 (Quality Control)
+    -- },
+    -- [0x10E] =	{ --GI - Floor 5
+    -- },
+    -- [0x187] =	{ --GI - Sewer Entrance
+    -- },
     [0x102] =	{ --GI - Train Station
     },
     [0x104] =	{ --GI - Trash Compactor
@@ -2385,12 +2438,15 @@ local TRANSFORM_SWAP_MAP = {
     ["skull"] = true,
     },
     [0x131] =	{ --HFP - Boggy's Igloo
+    ["mumbo"] = "1230861",
     },
-    [0x12B] =	{ --HFP - Chilli Billi
-    },
-    [0x12C] =	{ --HFP - Chilly Willy
-    },
+    -- [0x12B] =	{ --HFP - Chilli Billi
+    -- },
+    -- [0x12C] =	{ --HFP - Chilly Willy
+    -- },
     [0x132] =	{ --HFP - Icicle Grotto
+    ["humba"] = "1230180",    
+    ["mumbo"] = "1230861",
     },
     [0x128] =	{ --HFP - Icy Side
     ["mumbo"] = "1230861",
@@ -2399,7 +2455,7 @@ local TRANSFORM_SWAP_MAP = {
     [0x133] =	{ --HFP - Inside the Volcano
     },
     [0x12D] =	{ --HFP - Kickball Stadium lobby
-    ["mumbo"] = "1230861",    
+    ["mumbo"] = "1230861",
     },
     [0x127] =	{ --HFP - Lava Side
     ["mumbo"] = "1230861",
@@ -2407,6 +2463,10 @@ local TRANSFORM_SWAP_MAP = {
     [0x129] =	{ --HFP - Lava Train Station
     },
     [0x12A] = { -- HFP - Icy Side Station
+    },
+    [0x135] =	{ --HFP - Wumba's Wigwam
+    ["mumbo"] = "1230861",
+    ["humba"] = "1230180",
     },
     --CLOUD CUCKOOLAND
     [0x136] =	{ --CCL
@@ -2417,12 +2477,12 @@ local TRANSFORM_SWAP_MAP = {
     ["mumbo"] = "1230862",
     ["humba"] = "1230181",
     },
-    [0x138] =	{ --CCL - Inside the Cheese Wedge
-    },
-    [0x13D] =	{ --CCL - Inside the Pot o' Gold
-    },
-    [0x137] =	{ --CCL - Inside the Trash Can
-    },
+    -- [0x138] =	{ --CCL - Inside the Cheese Wedge
+    -- },
+    -- [0x13D] =	{ --CCL - Inside the Pot o' Gold
+    -- },
+    -- [0x137] =	{ --CCL - Inside the Trash Can
+    -- },
     [0x13F] =	{ --CCL - Mingy Jongo's Skull
     ["skull"] = true,
     ["humba"] = "1230181",
@@ -2434,8 +2494,6 @@ local TRANSFORM_SWAP_MAP = {
     [0x140] =	{ --CCL - Wumba's Wigwam
     ["mumbo"] = "1230862",
     ["humba"] = "1230181",
-    },
-    [0x139] =	{ --CCL - Zubbas' Nest
     }
 }
 
@@ -7728,20 +7786,53 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
     BTMODELOBJ:changeName("Player", false)
     local check = BTMODELOBJ:checkModel();
 
-    if mapaddr == 0x142
-    then
-        REVERTING_MUMBO = true
-        BTRAM:setTransformation(1)
-    end
-
     if death_flg  == 1 and (currentState == 8 or currentState == 15 or currentState == 16 or 
     currentState == 12 or currentState == 18 or currentState == 7 or currentState == 2 or currentState == 6
-    or currentState == 13) --mumbo or any transformation except big t-rex, respawns in JV if transformation not done properly
+    or currentState == 13) and (mapaddr ~= 0x139 or mapaddr ~= 0x181)--mumbo or any transformation except big t-rex, respawns in JV if transformation not done properly
     then
         setCurrentHealth(10) -- sets transformation health to max plus 1 so when banjo returns to that form he wont be on 0 health
         REVERTING_MUMBO = true
-        return BTRAM:setTransformation(1) -- Banjo
+        return BTRAM:setTransformation(1)
     end
+    
+    if mapaddr == 0x142 -- emergency transform back to banjo if jv deathwarp
+    then
+        setCurrentHealth(10)
+        REVERTING_MUMBO = true
+        return BTRAM:setTransformation(1)
+    end
+    
+    -- if (mapaddr == 0xC5 or mapaddr == 0xD6) and currentState == 18 -- detransform trex in treasure chamber or ww to prevent softlocks
+    -- then
+    --     return BTRAM:setTransformation(1)
+    -- end
+
+    -- if mapaddr == 0x115 and currentState == 16 -- detransform van in tdl to prevent softlocks
+    -- then
+    --     return BTRAM:setTransformation(1)
+    -- end
+
+    -- if mapaddr == 0xD6 and currentState == 15 -- detransform detonator in ww to prevent softlocks
+    -- then
+    --     return BTRAM:setTransformation(1)
+    -- end
+
+    -- if mapaddr == 0xC5 and currentState == 13 and FAKE_MUMBO == true -- detransform fake mumbo in treasure chamber to prevent softlock
+    -- then
+    --     REVERTING_MUMBO = true
+    --     return BTRAM:setTransformation(1)
+    -- end
+
+    if (mapaddr == 0x10B or mapaddr == 0x108) and currentState == 7 -- lock washing machine on floors 3 and 4 when using the elevator
+    then
+        return false
+    end
+
+    if mapaddr == 0x139 -- emergency transform into bee for zubba nest shenanigans
+    then
+        return BTRAM:setTransformation(6)
+    end
+    
     if TRANSFORM_SWAP_MAP[mapaddr] == nil or BTRAMOBJ == nil
     then
         return false
@@ -7755,7 +7846,7 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
     then
         return -- panic option wont allow any action if true mumbo returns home
     end
-    if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == false
+    if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == true
     then
         if currentState == 1 or currentState == 8 or currentState == 15 or currentState == 16 or 
         currentState == 12 or currentState == 18 or currentState == 7 or currentState == 2 or currentState == 6 -- banjo or non-mumbo transforms
@@ -7767,15 +7858,18 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
                    if itemId == "1230856" and (TURBOTRAINERS == true or SPRINGYSTEPSHOES == true or TALONTROT == true)-- GGM Humba Item
                     then
                         FAKE_MUMBO = true
+                        REVERTING_MUMBO = false
                         return BTRAM:setTransformation(13) -- Mumbo
                     elseif itemId == "1230857" and VAN == true and ((FLAPFLIP == true and GRIPGRAB == true) or
                     (CLIMB == true and FLAPFLIP == true and TALONTROT == true and (FLUTTER == true or AIRRATATATRAP ==true)) or 
                     (SPLITUP == true and LEGSPRING == true))-- WW Mumbo Item
                     then
                         FAKE_MUMBO = true
+                        REVERTING_MUMBO = false
                         return BTRAM:setTransformation(13) -- Mumbo
                     else
                         FAKE_MUMBO = true
+                        REVERTING_MUMBO = false
                         return BTRAM:setTransformation(13) -- Mumbo
                     end
                 else
@@ -7787,7 +7881,7 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
             REVERTING_MUMBO = true
             BTRAM:setTransformation(1) -- Banjo
         end
-    elseif check_controls ~= nil and check_controls['P1 R'] == true and check_controls['P1 L'] == true
+    elseif check_controls ~= nil and check_controls['P1 R'] == false and check_controls['P1 L'] == true
     then
         if currentState == 1 or (currentState == 13 and FAKE_MUMBO == true) -- Banjo or Mumbo
         then
@@ -7823,12 +7917,15 @@ function transform_swap(mapaddr, currentState) --Only run when transitioning Map
                         return BTRAM:setTransformation(6) -- Bee
                     end
                 else
+                    REVERTING_MUMBO = true
                     BTRAM:setTransformation(1) -- Banjo
                 end
             end
         elseif currentState == 8 or currentState == 15 or currentState == 16 or currentState == 12 or 
-        currentState == 18 or currentState == 7 or currentState == 2 or currentState == 6 or 
-        (currentState == 13 and FAKE_MUMBO == true)
+        currentState == 18 or currentState == 7 or currentState == 2 or currentState == 6
+        then
+            BTRAM:setTransformation(1) -- Banjo
+        elseif currentState == 13 and FAKE_MUMBO == true
         then
             REVERTING_MUMBO = true
             BTRAM:setTransformation(1) -- Banjo
@@ -8479,6 +8576,7 @@ function watchMapTransition()
                 set_checked_STATIONS()
                 ChuffyTDLFix()
                 ccl_cutscene_skip()
+                tempCCLOpen()
                 if GOAL_TYPE == 4
                 then
                     hag1_open()
@@ -8577,6 +8675,19 @@ function finishTransition()
         nearDisiple()
         -- Token Announcement
         mumbo_announce()
+    end
+end
+
+function tempCCLOpen()
+    if WORLD_ENTRANCE_MAP["WORLD 8"]["opened"] == false and CCL_OPEN_TEMP == false and (NEXT_MAP == 0x136 or CURRENT_MAP == 0x136 )
+    then
+        BTRAMOBJ:setFlag(WORLD_ENTRANCE_MAP["WORLD 8"]['addr'], WORLD_ENTRANCE_MAP["WORLD 8"]['bit'])
+        CCL_OPEN_TEMP = true
+    elseif WORLD_ENTRANCE_MAP["WORLD 8"]["opened"] == false and CCL_OPEN_TEMP == true and (NEXT_MAP ~= 0x136)
+    then
+        print("Closing World")
+        BTRAMOBJ:clearFlag(WORLD_ENTRANCE_MAP["WORLD 8"]['addr'], WORLD_ENTRANCE_MAP["WORLD 8"]['bit'])
+        CCL_OPEN_TEMP = false
     end
 end
 
@@ -9058,9 +9169,13 @@ function DPadStats()
 
         if check_controls ~= nil and check_controls['P1 L'] == true and check_controls['P1 R'] == true and check_controls['P1 C Down'] == true and KILL_ME == false
         then
-            KILL_BANJO = true 
-            killBT()
-            KILL_ME = true
+            currentState = BTRAM:getTransformation()
+            if currentState ~= 19
+            then
+                KILL_BANJO = true 
+                killBT()
+                KILL_ME = true
+            end
         elseif check_controls ~= nil and (check_controls['P1 L'] == true or check_controls['P1 R'] == true or check_controls['P1 C Down'] == true) and KILL_ME == true
         then
             KILL_ME = false
@@ -10261,7 +10376,9 @@ function printGoalInfo()
         elseif GOAL_TYPE == 5 and TH_LENGTH < 15 then
             message = "You are trying to find "..TH_LENGTH.." of the 15 of Mumbo Tokens \nscattered throughout the Isle of Hags! Good Luck and"..randomEncouragment;
         end
+        print("")
         print(message)
+        print("")
         table.insert(AP_MESSAGES, message);
     end
 end

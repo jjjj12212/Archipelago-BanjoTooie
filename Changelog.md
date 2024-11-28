@@ -11,6 +11,11 @@
     -TDL Entrance Jinjo: removed stilt stride as a way to get talon trot.
     -TDL Unga Bunga Glowbo: If not on intended logic, can be gotten with the T-rex.
     -Saucer of peril: the door can be open with a clockwork shot, in hard tricks and glitches logics.
+  - CCL exit Bubble will appear even though CCL is closed. (no more save+quit)
+  - Additional fixes for Transformations
+  - Buttonbinding changes:
+    - L = Humba
+    - L+R = Mumbo
 
 # 3.5-beta
   - Logic fixes:
