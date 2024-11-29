@@ -9,14 +9,15 @@
       - split up + + tall jump
       - split up + glide
       - split up + grip grab
+    - Saucer of peril: the door can be opened with a clockwork shot, in hard tricks and glitches logics.
     - Dive of Death notes: In glitch logic, can be gotten with pack whack or taxi pack.
     - Pig Pool Jiggy: checks to see if you can press the button in the Waste Disposal. Also, all logics except intended can use turbo trainers to reach the pipe.
     - Mumbo in TDL: can be reached with no moves. Intended logic still requires stilt stride.
     - Mumbo Glowbo in TDL: Same as a above.
     - TDL Entrance Jinjo: removed stilt stride as a way to get talon trot.
     - TDL Unga Bunga Glowbo: If not on intended logic, can be gotten with the T-rex.
-    - Springy Step Shoes silo: If not on intended logic, added springy step shoes and turbo trainers as a way to get talon trot. 
-    - Saucer of peril: the door can be open with a clockwork shot, in hard tricks and glitches logics.
+    - Springy Step Shoes silo: If not on intended logic, added springy step shoes and turbo trainers as a way to get talon trot.
+    - Central Cavern Jinjo: If you're using Springy Step Shoes, it also checks that you have bill drill. It can also be gotten with bill drill + springy step shoes + grip grab.
   - CCL exit Bubble will appear even though CCL is closed. (no more save+quit)
   - Additional fixes for Transformations
   - Buttonbinding changes:

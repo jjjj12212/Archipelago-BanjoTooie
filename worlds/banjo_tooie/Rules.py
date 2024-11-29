@@ -3202,20 +3202,19 @@ class BanjoTooieRules:
                     or state.has(itemName.HUMBACC, self.player)
         elif self.world.options.logic_type == 1: # normal
             logic = self.split_up(state) and (self.spring_pad(state) or self.flight_pad(state))\
-                    or self.springy_step_shoes(state) and (self.bill_drill(state) or self.flutter(state) or self.air_rat_a_tat_rap(state) or self.split_up(state))\
+                    or self.springy_step_shoes(state) and self.bill_drill(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state) or self.split_up(state))\
                     or self.leg_spring(state)\
-                    or state.has(itemName.HUMBACC, self.player)
-                     
+                    or state.has(itemName.HUMBACC, self.player)                     
         elif self.world.options.logic_type == 2: # advanced
             logic = self.split_up(state) and (self.spring_pad(state) or self.flight_pad(state))\
                     or self.clockwork_shot(state)\
-                    or self.springy_step_shoes(state) and (self.bill_drill(state) or self.flutter(state) or self.air_rat_a_tat_rap(state) or self.split_up(state))\
+                    or self.springy_step_shoes(state) and self.bill_drill(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state) or self.split_up(state))\
                     or self.leg_spring(state)\
                     or state.has(itemName.HUMBACC, self.player)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.split_up(state) and (self.spring_pad(state) or self.flight_pad(state))\
                     or self.clockwork_shot(state)\
-                    or self.springy_step_shoes(state) and (self.bill_drill(state) or self.flutter(state) or self.air_rat_a_tat_rap(state) or self.split_up(state))\
+                    or self.springy_step_shoes(state) and self.bill_drill(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state) or self.split_up(state))\
                     or self.leg_spring(state)\
                     or state.has(itemName.HUMBACC, self.player)
         return logic
