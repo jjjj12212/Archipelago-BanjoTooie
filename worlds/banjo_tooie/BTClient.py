@@ -168,7 +168,7 @@ class BanjoTooieContext(CommonContext):
             return
         return
 
-    def _set_message(self, msg: dict[str, str, int], msg_id: Union[int, None]):
+    def _set_message(self, msg: dict[str, str, int, str], msg_id: Union[int, None]):
         if msg_id == None:
             self.messages.update({len(self.messages)+1: msg })
         else:
@@ -180,8 +180,6 @@ class BanjoTooieContext(CommonContext):
         text = data.get("cause", "")
         if text:
             logger.info(f"DeathLink: {text}")
-        else:
-            logger.info(f"{random.choice(self.death_messages)} \n(DeathLink: Received from {data['source']})")
 
     async def send_death(self, death_text: str = ""):
         if self.server and self.server.socket:
@@ -332,9 +330,16 @@ class BanjoTooieContext(CommonContext):
                 if relevant == True:
                     msg = self.raw_text_parser(copy.deepcopy(args["data"]))
                     player = self.player_names[int(args["data"][0]["text"])]
+                    to_player = self.player_names[int(args["data"][0]["text"])]
+                    for id, data in enumerate(args["data"]):
+                        if id == 0:
+                            continue
+                        if "type" in data and data['type'] == "player_id":
+                            to_player = self.player_names[int(data["text"])]
+                            break
                     item_name = self.item_names.lookup_in_slot(int(args["data"][2]["text"]))
                     # self._set_message(msg, None)
-                    self._set_message({"player":player, "item":item_name, "item_id":int(args["data"][2]["text"])}, None)
+                    self._set_message({"player":player, "item":item_name, "item_id":int(args["data"][2]["text"]), "to_player":to_player }, None)
         else:
             text = self.jsontotextparser(copy.deepcopy(args["data"]))
             logger.info(text)
@@ -342,9 +347,16 @@ class BanjoTooieContext(CommonContext):
             if relevant:
                 msg = self.raw_text_parser(copy.deepcopy(args["data"]))
                 player = self.player_names[int(args["data"][0]["text"])]
+                to_player = self.player_names[int(args["data"][0]["text"])]
+                for id, data in enumerate(args["data"]):
+                        if id == 0:
+                            continue
+                        if "type" in data and data['type'] == "player_id":
+                            to_player = self.player_names[int(data["text"])]
+                            break
                 item_name = self.item_names.lookup_in_slot(int(args["data"][2]["text"]))
                 # self._set_message(msg, None)
-                self._set_message({"player":player, "item":item_name, "item_id":int(args["data"][2]["text"])}, None)
+                self._set_message({"player":player, "item":item_name, "item_id":int(args["data"][2]["text"]), "to_player":to_player}, None)
 
 def get_payload(ctx: BanjoTooieContext):
     if ctx.deathlink_enabled and ctx.deathlink_pending:

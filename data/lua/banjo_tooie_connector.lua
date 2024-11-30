@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V3.5"
+local BT_VERSION = "V3.5.1"
 local PLAYER = ""
 local SEED = 0
 
@@ -55,6 +55,7 @@ local DEBUGLVL3 = false
 
 local MINIGAMES = ""
 local TOKEN_ANNOUNCE = false;
+local SNEAK = false;
 
 -------------- MAP VARS -------------
 local CURRENT_MAP = nil;
@@ -3760,12 +3761,13 @@ BTHACK = {
         setting_seed = 0x0,
         setting_chuffy = 0x4,
         setting_puzzle = 0x5,
-        setting_klungo = 0x6,
-        setting_tot = 0x7,
-        setting_minigames = 0x8,
-        setting_dialog_character = 0x9,
-        setting_jiggy_requirements = 0xA,
-        setting_open_silos = 0x15,
+        setting_backdoors = 0x6,
+        setting_klungo = 0x7,
+        setting_tot = 0x8,
+        setting_minigames = 0x9,
+        setting_dialog_character = 0xA,
+        setting_jiggy_requirements = 0xB,
+        setting_open_silos = 0x16,
     pc_items = 0x10,
     pc_exit_map = 0x14,
         exit_on_map = 0x0,
@@ -3860,6 +3862,10 @@ end
 
 function BTHACK:setSettingPuzzle(puzzle)
     mainmemory.writebyte(self.setting_puzzle + BTHACK:getSettingPointer(), puzzle);
+end
+
+function BTHACK:setSettingBackdoors(backdoors)
+    mainmemory.writebyte(self.setting_backdoors + BTHACK:getSettingPointer(), backdoors);
 end
 
 function BTHACK:setSettingKlungo(klungo)
@@ -4449,6 +4455,15 @@ function obtain_AP_NOTES()
     BTH:setItem(ITEM_TABLE["AP_ITEM_NOTE"], TOTAL_NOTES)
 end
 
+function obtain_AP_BASSCLEF()
+    if DEBUG_NOTES == true
+    then
+        print("Bassclef Obtained")
+    end
+    TOTAL_NOTES = TOTAL_NOTES + 2
+    BTH:setItem(ITEM_TABLE["AP_ITEM_NOTE"], TOTAL_NOTES)
+end
+
 --------------------------------- JIGGY CHUNKS ----------------------------------
 
 function jiggy_chunks_check()
@@ -4555,7 +4570,7 @@ function obtain_progressive_moves(itemId)
         then
             obtain_bkmove(1230820);
         else
-            BTH:setItem(ITEM_TABLE["AP_ITEM_BBUST"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_BDRILL"], 1)
         end
     elseif(itemId == 1230829) -- Progressive Eggs
     then
@@ -4997,6 +5012,7 @@ function mumbo_announce()
             local message = "You have found enough Mumbo Tokens! Time to head home!"
             print(" ")
             print(message)
+            table.insert(MESSAGE_TABLE, {message, 8});
             TOKEN_ANNOUNCE = true
         end
     end
@@ -5057,6 +5073,9 @@ function processAGIItem(item_list)
             elseif(memlocation == 1230797) -- Notes
             then
                 obtain_AP_NOTES()
+            elseif(memlocation == 1230781) -- Bassclefs
+            then
+                obtain_AP_BASSCLEF()
             elseif memlocation == 1230796 -- Chuffy
             then
                 obtain_AP_CHUFFY()
@@ -5096,8 +5115,11 @@ function process_block(block)
             if msg_table["player"] == PLAYER
             then
                 msg = "You have found your " .. msg_table["item"]
-            else
+            elseif msg_table["to_player"] == PLAYER
+            then
                 msg = msg_table["player"] .. " sent your " .. msg_table["item"]
+            else
+                return
             end
             if 1230753 <= msg_table["item_id"] and msg_table["item_id"] <= 1230776 -- Jamjars
             then
@@ -5362,6 +5384,11 @@ function process_slot(block)
     if block['slot_bkmoves'] ~= nil and block['slot_bkmoves'] ~= "false"
     then
         ENABLE_AP_BK_MOVES = block['slot_bkmoves']
+        if ENABLE_AP_BK_MOVES == 1
+        then
+            BTH:setItem(ITEM_TABLE["AP_ITEM_TJUMP"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_TTROT"], 1)
+        end
     end
     if block['slot_cheatorewards'] ~= nil and block['slot_cheatorewards'] ~= "false"
     then
@@ -5387,6 +5414,7 @@ function process_slot(block)
     if block['slot_backdoors'] ~= nil and block['slot_backdoors'] ~= "false"
     then
         BACKDOORS = true
+        BTH:setSettingBackdoors(1)
     end
     if block['slot_skip_klungo'] ~= nil and block['slot_skip_klungo'] ~= "false"
     then
@@ -5617,6 +5645,7 @@ function main()
                 CURRENT_MAP = BTH:getMap()
                 receive();
                 messageQueue();
+                mumbo_announce()
                 if VERROR == true
                 then
                     print("ERROR: Banjo_Tooie_connector Mismatch. Please obtain the correct version")
@@ -5636,6 +5665,17 @@ function main()
                 then
                     client.saveram()
                     changed_map = CURRENT_MAP
+                end
+                local check_controls = joypad.get()
+                -- SNEAK
+                if check_controls ~= nil and check_controls['P1 DPad U'] == true and SNEAK == false
+                then
+                    joypad.setanalog({['P1 Y Axis'] = 18 })
+                    SNEAK = true
+                elseif check_controls ~= nil and check_controls['P1 DPad U'] == false and SNEAK == true
+                then
+                    joypad.setanalog({['P1 Y Axis'] = '' })
+                    SNEAK = false
                 end
             end
         elseif (CUR_STATE == STATE_UNINITIALIZED) then

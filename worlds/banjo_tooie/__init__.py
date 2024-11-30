@@ -74,7 +74,7 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
 
     def __init__(self, world, player):
-        self.version = "V3.5"
+        self.version = "V3.5.1"
         self.kingjingalingjiggy = False
         self.starting_egg: int = 0
         self.starting_attack: int = 0
@@ -190,8 +190,34 @@ class BanjoTooieWorld(World):
                         if self.options.randomize_bk_moves.value == 0: # No moves added, fills for the Jiggy Chunks, Dino Kids
                             for i in range(6):
                                 itempool += [self.create_item(name)]
+                        if self.options.bassclef_amount > 0:
+                            for i in range(self.options.bassclef_amount): #adds an additional big-o-pants for each bassclef
+                                itempool += [self.create_item(name)]
+                        if self.options.extra_trebleclefs_count > 0:
+                            for i in range(self.options.extra_trebleclefs_count*3): #adds an additional big-o-pants for each bassclef
+                                itempool += [self.create_item(name)]
+
                     #end of none qty logic
 
+                    #notes - extra other notes
+                    elif item.code == 1230797: 
+                        count = id.qty
+                        count -= ((self.options.bassclef_amount.value*2) + (self.options.extra_trebleclefs_count.value*4))
+                        for i in range(count):
+                            itempool += [self.create_item(name)]
+
+                    #treble - extra trebles 
+                    elif item.code == 1230516 and self.options.extra_trebleclefs_count.value > 0: #add more Trebles
+                        count = id.qty
+                        count += self.options.extra_trebleclefs_count.value
+                        for i in range(count):
+                            itempool += [self.create_item(name)]
+                    #bassclef - extra bassclef
+                    elif item.code == 1230781 and self.options.bassclef_amount.value > 0: #add Bassclefs
+                        count = id.qty
+                        count += self.options.bassclef_amount.value
+                        for i in range(count):
+                            itempool += [self.create_item(name)]
                     else:
                         for i in range(id.qty):
                             if self.options.randomize_jinjos == False and self.jiggy_counter > 81 and item.code == 1230515:
