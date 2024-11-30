@@ -5012,6 +5012,7 @@ function mumbo_announce()
             local message = "You have found enough Mumbo Tokens! Time to head home!"
             print(" ")
             print(message)
+            table.insert(MESSAGE_TABLE, {message, 8});
             TOKEN_ANNOUNCE = true
         end
     end
@@ -5644,6 +5645,7 @@ function main()
                 CURRENT_MAP = BTH:getMap()
                 receive();
                 messageQueue();
+                mumbo_announce()
                 if VERROR == true
                 then
                     print("ERROR: Banjo_Tooie_connector Mismatch. Please obtain the correct version")
