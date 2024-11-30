@@ -285,7 +285,7 @@ class World8(Range):
 
 class World9(Range):
     """If you picked custom, what is the jiggy requirement for Cauldon Keep?"""
-    display_name = "Cauldon Keep Jiggy requirement"
+    display_name = "World 9 Jiggy requirement"
     range_start = 1
     range_end = 90
     default = 55
