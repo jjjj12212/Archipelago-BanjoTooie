@@ -23,6 +23,7 @@
   - Buttonbinding changes:
     - L = Humba
     - L+R = Mumbo
+  - fix backdoor with oogle booga 
 
 # 3.5-beta
   - Logic fixes:

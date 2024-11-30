@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | 3.5-Beta
+# Archipelago Banjo-Tooie (US-Only) | 3.5.1-Beta
 Banjo Tooie for Archipelago 
 
 # Current Implementation
@@ -46,7 +46,8 @@ Banjo Tooie for Archipelago
  - Dpad down + L: Health Regen
  - Dpad left + L: Aim Assist 
  - L + Start: Smooth Banjo (increases in-game fps)
-
+ - L during loading transition: Humba Transformation (if unlocked)
+ - L + R during loading transition: Mumbo (if unlocked)
 ## Quality of life
 - Skip Jiggywiggy puzzles to open levels
 - Auto skip dialogs and cutscenes
@@ -71,8 +72,8 @@ Go to worlds/banjo_tooie/docs/setup_en.md for detailed instructions how to setup
 # Contributors
  - @g0goTAS (g0goTBC) - Logic Programmer
  - @oohnahleevay Unalive - Coder
- - @fhnnhf Coder
- - @Auztin (HAG-1 Flags and Misc)
+ - @fhnnhf - Coder
+ - @Auztin - HAG-1 Flags and Misc
  - GDO - Tester
  - @Cyb3RGER - AP Launcher
  - Beebaleen - Previous Doc Maintainer
