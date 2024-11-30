@@ -93,8 +93,12 @@ def set_level_costs(world: BanjoTooieWorld) -> None:
     normal_costs = [1,4,8,14,20,28,36,45,55]
     quick_costs = [1,3,6,10,15,21,28,35,44]
     long_costs = [1,8,16,25,34,43,52,60,70]
-    custom_max = [1,20,30,40,50,60,70,80,90]
+    level_cost_max = [1,20,30,40,50,60,70,80,90]
     custom_costs = world.options.custom_worlds.value.split(",")
+
+    random_costs = [1,1,1,1,1,1,1,1,1]
+    for i in range(len(random_costs)):
+        random_costs[i] = random.randint(1, level_cost_max[i])
 
     if len(custom_costs) < 9:
         raise ValueError("Custom Costs has too few levels.")
@@ -112,7 +116,7 @@ def set_level_costs(world: BanjoTooieWorld) -> None:
             raise ValueError("Custom Cost for world "+str(i+1)+" can't be 0.")
         if custom_costs[i] < 0:
             raise ValueError("Custom Cost for world "+str(i+1)+" can't be negative.")
-        if custom_costs[i] > custom_max[i]:
+        if custom_costs[i] > level_cost_max[i]:
             raise ValueError("Custom Cost for world "+str(i+1)+" is too high.")
     
 
@@ -137,7 +141,9 @@ def set_level_costs(world: BanjoTooieWorld) -> None:
         chosen_costs = long_costs
     elif world.options.game_length.value == 3:
         chosen_costs = custom_costs
-    
+    elif world.options.game_length.value == 4:
+        chosen_costs = random_costs
+
     world.randomize_worlds = {list(world.randomize_order.keys())[i]: chosen_costs[i] for i in range(len(list(world.randomize_order.keys())))}
 
 
