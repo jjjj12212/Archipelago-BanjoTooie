@@ -7767,7 +7767,8 @@ end
 function backDoors()
     if BACKDOORS == true
     then
-        if CURRENT_MAP == 0x115
+        local banjo = BTRAM:getBanjoMovementState()
+        if CURRENT_MAP == 0x115 and banjo ~= 0x00
         then
             BTRAMOBJ:setFlag(0x2B, 6) -- removes oogle boogles guard if you enter their room from the backside
         end
