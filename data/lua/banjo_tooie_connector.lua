@@ -3761,12 +3761,13 @@ BTHACK = {
         setting_seed = 0x0,
         setting_chuffy = 0x4,
         setting_puzzle = 0x5,
-        setting_klungo = 0x6,
-        setting_tot = 0x7,
-        setting_minigames = 0x8,
-        setting_dialog_character = 0x9,
-        setting_jiggy_requirements = 0xA,
-        setting_open_silos = 0x15,
+        setting_backdoors = 0x6,
+        setting_klungo = 0x7,
+        setting_tot = 0x8,
+        setting_minigames = 0x9,
+        setting_dialog_character = 0xA,
+        setting_jiggy_requirements = 0xB,
+        setting_open_silos = 0x16,
     pc_items = 0x10,
     pc_exit_map = 0x14,
         exit_on_map = 0x0,
@@ -3861,6 +3862,10 @@ end
 
 function BTHACK:setSettingPuzzle(puzzle)
     mainmemory.writebyte(self.setting_puzzle + BTHACK:getSettingPointer(), puzzle);
+end
+
+function BTHACK:setSettingBackdoors(backdoors)
+    mainmemory.writebyte(self.setting_backdoors + BTHACK:getSettingPointer(), backdoors);
 end
 
 function BTHACK:setSettingKlungo(klungo)
@@ -5408,6 +5413,7 @@ function process_slot(block)
     if block['slot_backdoors'] ~= nil and block['slot_backdoors'] ~= "false"
     then
         BACKDOORS = true
+        BTH:setSettingBackdoors(1)
     end
     if block['slot_skip_klungo'] ~= nil and block['slot_skip_klungo'] ~= "false"
     then
