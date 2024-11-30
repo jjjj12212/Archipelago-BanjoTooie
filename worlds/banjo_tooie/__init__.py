@@ -100,6 +100,7 @@ class BanjoTooieWorld(World):
         self.worlds_randomized = False
         self.single_silo = ""
         self.loading_zones = {}
+        self.jamjars_silo_costs = {}
         super(BanjoTooieWorld, self).__init__(world, player)
 
     def create_item(self, itemname: str) -> Item:
@@ -624,8 +625,12 @@ class BanjoTooieWorld(World):
             spoiler_handle.write('\n\tLoading Zones:')
             for starting_zone, actual_world in world.worlds[player].loading_zones.items():
                     spoiler_handle.write(f"\n\t\t{entrance_hags[starting_zone]} -> {actual_world}")
-            spoiler_handle.write('\n\tBanjo-Tooie Silo:\n')
+            spoiler_handle.write('\n\tBanjo-Tooie Open Overworld Silos :\n')
             spoiler_handle.write("\t\t"+world.worlds[player].single_silo)
+            spoiler_handle.write('\n\tJamjars\' Silo Costs:')
+            for silo, cost in world.worlds[player].jamjars_silo_costs.items():
+                    spoiler_handle.write(f"\n\t\t{silo}: {cost}")
+            
 
     def fill_slot_data(self) -> Dict[str, Any]:
         btoptions = {}

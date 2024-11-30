@@ -469,42 +469,42 @@ class BanjoTooieRules:
             locationName.ROYSTEN1: lambda state: self.bill_drill(state),
             locationName.ROYSTEN2: lambda state: self.bill_drill(state),
 
-            locationName.EGGAIM: lambda state: self.check_notes(state, 25),
-            locationName.BBLASTER: lambda state: self.check_notes(state, 30),
+            locationName.EGGAIM: lambda state: self.check_notes(state, locationName.EGGAIM),
+            locationName.BBLASTER: lambda state: self.check_notes(state, locationName.BBLASTER),
             locationName.GGRAB: lambda state: self.can_access_JSG(state) and 
-                                              self.check_notes(state, 35),
+                                              self.check_notes(state, locationName.GGRAB),
 
             locationName.BDRILL: lambda state: self.silo_bill_drill(state),
-            locationName.BBAYONET: lambda state: self.GM_boulders(state) and self.check_notes(state, 95),
+            locationName.BBAYONET: lambda state: self.GM_boulders(state) and self.check_notes(state, locationName.BBAYONET),
 
-            locationName.AIREAIM: lambda state: self.check_notes(state, 180),
-            locationName.SPLITUP: lambda state: self.check_notes(state, 160),
-            locationName.PACKWH: lambda state: self.split_up(state) and self.check_notes(state, 170),
+            locationName.AIREAIM: lambda state: self.check_notes(state, locationName.AIREAIM),
+            locationName.SPLITUP: lambda state: self.check_notes(state, locationName.SPLITUP),
+            locationName.PACKWH: lambda state: self.split_up(state) and self.check_notes(state, locationName.PACKWH),
 
             locationName.AUQAIM: lambda state: (self.has_explosives(state) or state.has(itemName.DOUBLOON, self.player, 28)) and
-                                               self.check_notes(state, 285),
+                                               self.check_notes(state, locationName.AUQAIM),
             locationName.TTORP: lambda state:  self.can_reach_atlantis(state) and self.grip_grab(state) and self.tall_jump(state) and
-                                               self.check_notes(state, 290),
+                                               self.check_notes(state, locationName.TTORP),
             locationName.WWHACK: lambda state: (self.has_explosives(state)) and self.split_up(state) and
-                                               self.check_notes(state, 265),
+                                               self.check_notes(state, locationName.WWHACK),
 
-            locationName.SPRINGB: lambda state: self.check_notes(state, 390) and self.silo_spring(state),
-            locationName.TAXPACK: lambda state: self.can_access_taxi_pack_silo(state) and self.check_notes(state, 405),
-            locationName.HATCH: lambda state:   self.split_up(state) and self.check_notes(state, 420),
+            locationName.SPRINGB: lambda state: self.check_notes(state, locationName.SPRINGB) and self.silo_spring(state),
+            locationName.TAXPACK: lambda state: self.can_access_taxi_pack_silo(state) and self.check_notes(state, locationName.TAXPACK),
+            locationName.HATCH: lambda state:   self.split_up(state) and self.check_notes(state, locationName.HATCH),
 
             locationName.SNPACK: lambda state:  self.silo_snooze(state),
-            locationName.LSPRING: lambda state: self.check_notes(state, 545) and self.split_up(state),
-            locationName.CLAWBTS: lambda state: self.check_notes(state, 505),
+            locationName.LSPRING: lambda state: self.check_notes(state, locationName.LSPRING) and self.split_up(state),
+            locationName.CLAWBTS: lambda state: self.check_notes(state, locationName.CLAWBTS),
 
-            locationName.SHPACK: lambda state: self.split_up(state) and self.check_notes(state, 640),
-            locationName.GLIDE: lambda state: self.can_access_glide_silo(state) and self.check_notes(state, 660),
+            locationName.SHPACK: lambda state: self.split_up(state) and self.check_notes(state, locationName.SHPACK),
+            locationName.GLIDE: lambda state: self.can_access_glide_silo(state) and self.check_notes(state, locationName.GLIDE),
 
-            locationName.SAPACK: lambda state: self.shack_pack(state) and self.check_notes(state, 765),
+            locationName.SAPACK: lambda state: self.shack_pack(state) and self.check_notes(state, locationName.SAPACK),
 
-            locationName.FEGGS: lambda state: self.check_notes(state, 45),
-            locationName.GEGGS: lambda state: self.check_notes(state, 110),
-            locationName.IEGGS: lambda state: self.check_notes(state, 220),
-            locationName.CEGGS: lambda state: self.check_notes(state, 315)
+            locationName.FEGGS: lambda state: self.check_notes(state, locationName.FEGGS),
+            locationName.GEGGS: lambda state: self.check_notes(state, locationName.GEGGS),
+            locationName.IEGGS: lambda state: self.check_notes(state, locationName.IEGGS),
+            locationName.CEGGS: lambda state: self.check_notes(state, locationName.CEGGS)
         }
 
         self.jinjo_rules = {
@@ -3353,7 +3353,7 @@ class BanjoTooieRules:
 
 
     def silo_snooze(self, state: CollectionState) -> bool:
-        return self.check_notes(state, 525) and self.solo_banjo_waste_disposal(state)
+        return self.check_notes(state, locationName.SNPACK) and self.solo_banjo_waste_disposal(state)
     
     def tswitch_ww(self, state: CollectionState) -> bool:
         logic = True
@@ -3979,8 +3979,9 @@ class BanjoTooieRules:
             if name == item_name:
                 return state.has(name, self.player) and self.split_up(state)
             
-    def check_notes(self, state:CollectionState, amount:int) -> bool:
-        count:int = 0
+    def check_notes(self, state: CollectionState, silo: locationName) -> bool:
+        amount = self.world.jamjars_silo_costs[silo]
+        count: int = 0
         count = state.count(itemName.TREBLE, self.player) * 20
         count += state.count(itemName.BASS, self.player) * 10
         count += state.count(itemName.NOTE, self.player) * 5
@@ -3989,20 +3990,20 @@ class BanjoTooieRules:
     def silo_bill_drill(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.check_notes(state, 85)\
+            logic = self.check_notes(state, locationName.BDRILL)\
                     and (self.flap_flip(state)\
                          or (self.tall_jump(state) or self.talon_trot(state) and self.flutter(state)) and self.grip_grab(state))
         elif self.world.options.logic_type == 1: # normal
-            logic = self.check_notes(state, 85)\
+            logic = self.check_notes(state, locationName.BDRILL)\
                     and (self.flap_flip(state)\
                          or (self.tall_jump(state) or self.talon_trot(state) and self.flutter(state)) and self.grip_grab(state))
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.check_notes(state, 85)\
+            logic = self.check_notes(state, locationName.BDRILL)\
                     and (self.flap_flip(state)\
                         or (self.tall_jump(state) or self.talon_trot(state) and self.flutter(state)) and self.grip_grab(state)\
                         or self.turbo_trainers(state))
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.check_notes(state, 85)\
+            logic = self.check_notes(state, locationName.BDRILL)\
                     and (self.flap_flip(state)\
                         or (self.tall_jump(state) or self.talon_trot(state) and self.flutter(state)) and self.grip_grab(state)\
                         or self.turbo_trainers(state))

@@ -1,4 +1,6 @@
 import random
+
+from worlds.banjo_tooie.Names import locationName
 from .Names import itemName, regionName
 from typing import TYPE_CHECKING, List
 
@@ -29,6 +31,7 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
         randomize_entrance_loading_zones(world)
         choose_unlocked_silos(world)
         handle_early_moves(world)
+        generate_jamjars_costs(world)
 
 def randomize_level_order(world: BanjoTooieWorld) -> None:
     world.worlds_randomized = world.options.randomize_worlds.value
@@ -240,12 +243,127 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
             move = world.random.choice(move_lst)
             world.multiworld.early_items[world.player][move] = 1
 
-def early_fire_eggs(world: BanjoTooieWorld) -> None:
-    world.multiworld.early_items[world.player][itemName.PBEGGS if world.options.egg_behaviour.value == 2 else itemName.FEGGS] = 1
-    if world.options.randomize_bk_moves != 0:
-        world.multiworld.early_items[world.player][world.random.choice([itemName.EGGAIM, itemName.EGGSHOOT])] = 1
+    def early_fire_eggs(world: BanjoTooieWorld) -> None:
+        world.multiworld.early_items[world.player][itemName.PBEGGS if world.options.egg_behaviour.value == 2 else itemName.FEGGS] = 1
+        if world.options.randomize_bk_moves != 0:
+            world.multiworld.early_items[world.player][world.random.choice([itemName.EGGAIM, itemName.EGGSHOOT])] = 1
 
-def early_torpedo(world: BanjoTooieWorld) -> None:
-    if world.options.randomize_bk_moves != 0:
-        world.multiworld.early_items[world.player][itemName.DIVE] = 1
-    world.multiworld.early_items[world.player][itemName.TTORP] = 1
+    def early_torpedo(world: BanjoTooieWorld) -> None:
+        if world.options.randomize_bk_moves != 0:
+            world.multiworld.early_items[world.player][itemName.DIVE] = 1
+        world.multiworld.early_items[world.player][itemName.TTORP] = 1
+
+def generate_jamjars_costs(world: BanjoTooieWorld) -> None:
+    if world.options.jamjars_silo_costs == 0: # Vanilla
+        world.jamjars_silo_costs = {
+            locationName.FEGGS: 45,
+            locationName.GEGGS: 110,
+            locationName.IEGGS: 200,
+            locationName.CEGGS: 315,
+            locationName.EGGAIM: 25,
+            locationName.BBLASTER: 30,
+            locationName.GGRAB: 35,
+            locationName.BDRILL: 85,
+            locationName.BBAYONET: 95,
+            locationName.SPLITUP: 160,
+            locationName.PACKWH: 170,
+            locationName.AIREAIM: 180,
+            locationName.WWHACK: 265,
+            locationName.AUQAIM: 285,
+            locationName.TTORP: 290,
+            locationName.SPRINGB: 390,
+            locationName.TAXPACK: 405,
+            locationName.HATCH: 420,
+            locationName.CLAWBTS: 505,
+            locationName.SNPACK: 525,
+            locationName.LSPRING: 545,
+            locationName.SHPACK: 640,
+            locationName.GLIDE: 660,
+            locationName.SAPACK: 765,
+        }
+    elif world.options.jamjars_silo_costs == 1: # Random
+        silo_locations = [
+            locationName.FEGGS,
+            locationName.GEGGS,
+            locationName.IEGGS,
+            locationName.CEGGS,
+            locationName.EGGAIM,
+            locationName.BBLASTER,
+            locationName.GGRAB,
+            locationName.BDRILL,
+            locationName.BBAYONET,
+            locationName.SPLITUP,
+            locationName.PACKWH,
+            locationName.AIREAIM,
+            locationName.WWHACK,
+            locationName.AUQAIM,
+            locationName.TTORP,
+            locationName.SPRINGB,
+            locationName.TAXPACK,
+            locationName.HATCH,
+            locationName.CLAWBTS,
+            locationName.SNPACK,
+            locationName.LSPRING,
+            locationName.SHPACK,
+            locationName.GLIDE,
+            locationName.SAPACK,
+        ]
+
+        for location in silo_locations:
+            world.jamjars_silo_costs.update({location: world.random.randint(0, 800/5)*5})
+
+    elif world.options.jamjars_silo_costs == 2: # Progressive
+        # We have no control over overworld progression, so those stay vanilla.
+        world.jamjars_silo_costs = {
+            locationName.FEGGS: 45,
+            locationName.GEGGS: 110,
+            locationName.IEGGS: 200,
+            locationName.CEGGS: 315
+        }
+
+        # In decreasing order so that pop removes the lowest.
+        move_costs = [765, 660, 640, 545, 525, 505, 420, 405, 390, 290, 285, 265, 180, 170, 160, 95, 85, 35, 30, 25]
+        moves_per_world = {
+            regionName.MT: [
+                locationName.EGGAIM,
+                locationName.BBLASTER,
+                locationName.GGRAB,
+                ],
+            regionName.GM: [
+                locationName.BDRILL,
+                locationName.BBAYONET,
+            ],
+            regionName.WW: [
+                locationName.SPLITUP,
+                locationName.PACKWH,
+                locationName.AIREAIM,
+            ],
+            regionName.JR: [
+                locationName.WWHACK,
+                locationName.AUQAIM,
+                locationName.TTORP,
+            ],
+            regionName.TL: [
+                locationName.SPRINGB,
+                locationName.TAXPACK,
+                locationName.HATCH,
+            ],
+            regionName.GIO: [
+                locationName.CLAWBTS,
+                locationName.SNPACK,
+                locationName.LSPRING,
+            ],
+            regionName.HP: [
+                locationName.SHPACK,
+                locationName.GLIDE,
+            ],
+            regionName.CC: [
+                locationName.SAPACK,
+            ],
+            regionName.CK: []
+        }
+
+        for world_entrance in world.randomize_order:
+            actual_level = world.loading_zones[world_entrance]
+            for silo in moves_per_world[actual_level]:
+                world.jamjars_silo_costs.update({silo: move_costs.pop()})

@@ -5,6 +5,14 @@ class EnableMultiWorldMoveList(DefaultOnToggle):
     """Jamjars & Roysten Movelist are locked between the MultiWorld. Other players need to unlock Banjo's Moves."""
     display_name = "Jamjars' Movelist"
 
+class JamjarsSiloCosts(Choice):
+    """Change how many notes it takes to use Jamjars' move silos. Requires Jamjars' movelist to be changed."""
+    display_name = "Jamjars' Silo Costs"
+    option_vanilla = 0
+    option_random = 1
+    option_progressive = 2
+    default = 0
+
 class EnableMultiWorldBKMoveList(Choice):
     """Banjo-Kazooie's Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves.
     Mcjiggy Special - No Talon Trot and Tall Jump in the Pool """
@@ -322,6 +330,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     activate_overlay_text:ActivateOverlayText
     overlay_text_colour:OverlayTextColour
     randomize_moves: EnableMultiWorldMoveList
+    jamjars_silo_costs: JamjarsSiloCosts
     randomize_bk_moves: EnableMultiWorldBKMoveList
     progressive_beak_buster: ProgressiveBeakBuster
     egg_behaviour:EggsBehaviour
