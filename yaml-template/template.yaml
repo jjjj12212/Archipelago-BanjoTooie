@@ -44,19 +44,19 @@ Banjo-Tooie:
   # Beak Buster -> Bill Drill Progression
   progressive_beak_buster: 'false'
 
-  # Change how Eggs behave in Banjo-Tooie
+  # Change how Eggs behave in Banjo-Tooie, Requires randomize_bk_moves
   # 0: Default (Start with Blue Eggs, get other eggs randomly in AP)
   # 1: Randomize Starting Eggs (you will start with a random egg)
   # 2: Progressive Eggs (Blue -> Fire -> Grenade -> Ice -> Clockwork)
   egg_behaviour: 0
 
-  # Stilt Stride -> Turbo Trainers -> Spring Boots -> Claw Climbers
+  # Stilt Stride -> Turbo Trainers -> Spring Boots -> Claw Climbers, Requires randomize_bk_moves
   progressive_shoes: 'false'
 
-  # Dive -> Double Air -> Fast Swimming
+  # Dive -> Double Air -> Fast Swimming, Requires randomize_bk_moves
   progressive_water_training: 'false'
 
-  # Ground Rat-a-tat Rap -> Breegull Bash
+  # Ground Rat-a-tat Rap -> Breegull Bash, Requires randomize_bk_moves
   progressive_bash_attack: 'false'
 
   randomize_jinjos: 'true'
@@ -76,11 +76,15 @@ Banjo-Tooie:
 
   randomize_dino_roar: 'true'
 
+
   # Changes which levels are open; Recommended when doing multiworld seeds.
   randomize_worlds: 'false'
 
   # World Entrances will warp you to a different world. This only affects main entrances.
   randomize_world_loading_zone: 'false'
+
+  # Opens many one way switches on game start, allowing for more backdoor access to levels.
+  backdoors: 'false'
 
   # Choose if you want IoH Silos to be closed, randomly open 1 or enable all. If you enabled Randomized Worlds with BK Moves randomized and
   # silos set to none, it will be enforced to one.
@@ -88,7 +92,6 @@ Banjo-Tooie:
 
   logic_type: 0                # 0: Intended, 1: Easy Tricks, 2: Hard Tricks, 3: glitches
   jingaling_jiggy: 'true'      # True: Always get Jiggy from Jingaling; recommended when playing Multiworld.
-  skip_jingaling: 'true'       # Get Jingaling's reward early and head straight to Bottle's home.
   skip_tower_of_tragedy: 1     # 0: no skip, 1: skip completely, 2: play 3rd round only
   speed_up_minigames: 'true'   # skip to round 3 of kickball, dodgems
   skip_puzzles: 'true'
@@ -126,26 +129,25 @@ Banjo-Tooie:
   world_9: 55 # 1-90
 
   # Start with these items.
-  # start_inventory: {Grip Grab: 1, Fire Eggs: 1}
+  # start_inventory: {"Grip Grab": 1, "Fire Eggs": 1}
 
   # if cheato_as_filler is true, add locations you don't want to deal with... like Scrotty.
-  # exclude_locations: {}
+  # exclude_locations: {"CCL: Canary Mary Jiggy", "CCL: Canary Mary Cheato Page"}
 
   # Forces these items to be in your world.
-  # local_items: []
+  # local_items: ["5 Notes"]
 
   # Forces these items to not be in your world.
-  # non_local_items: []
+  # non_local_items: ["Jiggy"]
 
   # Start with these item's locations prefilled into the ``!hint`` command. These hints are free.
-  # start_hints: []
+  # start_hints: ["Clockwork Kazooie Eggs", "Grip Grab"]
 
   # Start with these locations and their item prefilled into the ``!hint`` command. These hints are free.
-  # start_location_hints: []
+  # start_location_hints: ["HFP: Glide Silo", "HFP: Shack Pack Silo", "CCL: Sack Pack Silo"]
 
   # These locations will have an important item.
-  # priority_locations: []
+  # priority_locations: ["TDL: Scrotty Jiggy"]
 
   # Items shared with other people.
-  # item_links: []
-
+  # item_links: ["Chuffy"]

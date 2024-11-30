@@ -1,18 +1,29 @@
 # 3.5.1-beta
   -Logic fixes:
-    -Plateau to GGM: For GGM early, doing it with talon trot + air rat-a-tat rap + beak buster is no longer in logic.
-    -GGM Entrance Cheato page: going for it as you enter the level is no longer in logic, due to technical reasons.
-    -Plateau Sign notes: if not on intended logic, can be gotten with
-      - split up + pack whack + tall jump (hard trick)
+    - Treasure Chamber Jiggy: checks if you have talon trot, if you're reaching the top from the inside. Also, if not on intended logic, takes getting the relic from TDL into consideration.
+    - Snake Head Cheato Page: Checks if you have talon trot, if you're reaching the top from the inside. For intended logic, no longer requires egg aim if reaching it by flight.
+    - Plateau to GGM: For GGM early, doing it with talon trot + air rat-a-tat rap + beak buster is no longer in logic.
+    - GGM Entrance Cheato page: going for it as you enter the level is no longer in logic, due to technical reasons.
+    - Bill Drill silo: can be gotten with talon trot + flutter + grip grab, or tall jump + grip grab.
+    - Plateau Sign notes: if not on intended logic, can be gotten with
+      - split up + + tall jump
       - split up + glide
       - split up + grip grab
-      - split up + wing whack + tall jump
-    -Mumbo in TDL: can be reached with no moves. Intended logic still requires stilt stride.
-    -Mumbo Glowbo in TDL: Same as a above.
-    -TDL Entrance Jinjo: removed stilt stride as a way to get talon trot.
-    -TDL Unga Bunga Glowbo: If not on intended logic, can be gotten with the T-rex.
-    -Saucer of peril: the door can be open with a clockwork shot, in hard tricks and glitches logics.
+    - Saucer of peril: the door can be opened with a clockwork shot, in hard tricks and glitches logics.
+    - Dive of Death notes: In glitch logic, can be gotten with pack whack or taxi pack.
+    - Pig Pool Jiggy: checks to see if you can press the button in the Waste Disposal. Also, all logics except intended can use turbo trainers to reach the pipe.
+    - Mumbo in TDL: can be reached with no moves. Intended logic still requires stilt stride.
+    - Mumbo Glowbo in TDL: Same as a above.
+    - TDL Entrance Jinjo: removed stilt stride as a way to get talon trot.
+    - TDL Unga Bunga Glowbo: If not on intended logic, can be gotten with the T-rex.
+    - Springy Step Shoes silo: If not on intended logic, added springy step shoes and turbo trainers as a way to get talon trot.
+    - Central Cavern Jinjo: If you're using Springy Step Shoes, it also checks that you have bill drill. It can also be gotten with bill drill + springy step shoes + grip grab.
   - CCL exit Bubble will appear even though CCL is closed. (no more save+quit)
+  - Additional fixes for Transformations
+  - Buttonbinding changes:
+    - L = Humba
+    - L+R = Mumbo
+  - fix backdoor with oogle booga 
 
 # 3.5-beta
   - Logic fixes:
