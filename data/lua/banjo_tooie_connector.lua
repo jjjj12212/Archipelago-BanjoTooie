@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V3.5.1"
+local BT_VERSION = "V3.5"
 local PLAYER = ""
 local SEED = 0
 
@@ -3766,8 +3766,9 @@ BTHACK = {
         setting_tot = 0x8,
         setting_minigames = 0x9,
         setting_dialog_character = 0xA,
-        setting_jiggy_requirements = 0xB,
-        setting_open_silos = 0x16,
+        setting_max_mumbo_tokens = 0xB,
+        setting_jiggy_requirements = 0xC,
+        setting_open_silos = 0x17,
     pc_items = 0x10,
     pc_exit_map = 0x14,
         exit_on_map = 0x0,
@@ -3886,6 +3887,10 @@ end
 
 function BTHACK:setSettingJiggyRequirements(index, jiggy_requirements)
     mainmemory.writebyte(self.setting_jiggy_requirements + index + BTHACK:getSettingPointer() , jiggy_requirements);
+end
+
+function BTHACK:setSettingMaxMumboTokens(tokens)
+    mainmemory.writebyte(self.setting_max_mumbo_tokens + BTHACK:getSettingPointer(), tokens);
 end
 
 function BTHACK:setSettingOpenSilos(index, open)
@@ -5457,6 +5462,7 @@ function process_slot(block)
     if block['slot_token_hunt_length'] ~= nil and block['slot_token_hunt_length'] ~= ""
     then
         TH_LENGTH = block['slot_token_hunt_length']
+
     end
     if block['slot_world_order'] ~= nil
     then
@@ -5581,24 +5587,34 @@ function printGoalInfo()
         local message = ""
         if GOAL_TYPE == 0 then
             message = "You need to hunt down Grunty in her HAG1 and put her back in the ground!\nGood Luck and"..randomEncouragment;
+            BTH:setSettingMaxMumboTokens(0)
         elseif GOAL_TYPE == 1 and MGH_LENGTH == 15 then
             message = "You are hunting down all 15 of the Mumbo Tokens found in Grunty's dastardly minigames!\n Good luck and"..randomEncouragment;
+            BTH:setSettingMaxMumboTokens(MGH_LENGTH)
         elseif GOAL_TYPE == 1 and MGH_LENGTH < 15 then
             message = "You are hunting for "..MGH_LENGTH.." Mumbo Tokens from Grunty's dastardly minigames!\n Good Luck and"..randomEncouragment;
+            BTH:setSettingMaxMumboTokens(MGH_LENGTH)
         elseif GOAL_TYPE == 2 and BH_LENGTH == 8 then
             message = "You are hunting down all 8 Mumbo Tokens from each world boss!\n Good Luck and"..randomEncouragment;
+            BTH:setSettingMaxMumboTokens(BH_LENGTH)
         elseif GOAL_TYPE == 2 and BH_LENGTH < 8 then
             message = "You are hunting for "..BH_LENGTH.." Mumbo Tokens from the 8 world bosses!\n Good Luck and"..randomEncouragment;
+            BTH:setSettingMaxMumboTokens(BH_LENGTH)
         elseif GOAL_TYPE == 3 and JFR_LENGTH == 9 then
             message ="You are trying to rescue all 9 Jinjo families and retrieve their Mumbo Tokens!\nGood Luck and"..randomEncouragment;
+            BTH:setSettingMaxMumboTokens(JFR_LENGTH)
         elseif GOAL_TYPE == 3 and JFR_LENGTH < 9 then
             message = "You are trying to rescue "..JFR_LENGTH.." of the 9 Jinjo families and retrieve their Mumbo Tokens!\n Good Luck and"..randomEncouragment;
+            BTH:setSettingMaxMumboTokens(JFR_LENGTH)
         elseif GOAL_TYPE == 4 then
             message ="You absolute mad lad! You're doing the Wonder Wing Challenge!\nGood Luck and"..randomEncouragment;
+            BTH:setSettingMaxMumboTokens(32)
         elseif GOAL_TYPE == 5 and TH_LENGTH == 15 then
             message ="You are trying to find all 15 of Mumbo's Tokens scattered throughout the Isle of Hags!\n Good Luck and"..randomEncouragment;
+            BTH:setSettingMaxMumboTokens(TH_LENGTH)
         elseif GOAL_TYPE == 5 and TH_LENGTH < 15 then
             message = "You are trying to find "..TH_LENGTH.." of the 15 of Mumbo Tokens scattered throughout the Isle of Hags!\nGood Luck and"..randomEncouragment;
+            BTH:setSettingMaxMumboTokens(TH_LENGTH)
         end
         if GOAL_PRINTED == false
         then
