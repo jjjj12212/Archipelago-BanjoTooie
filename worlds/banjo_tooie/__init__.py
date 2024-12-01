@@ -367,6 +367,8 @@ class BanjoTooieWorld(World):
             raise ValueError("You cannot have progressive Water Training without randomizing moves and randomizing BK moves")
         if self.options.progressive_bash_attack.value == True and (self.options.randomize_stop_n_swap.value == False or self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive bash attack without randomizing Stop N Swap and randomizing BK moves")
+        if self.options.randomize_moves == False and self.options.jamjars_silo_costs.value != 0:
+            raise ValueError("You cannot change the silo costs without randomizing Jamjars' moves.")
         if self.options.egg_behaviour.value == 1:
             eggs = list([itemName.BEGGS, itemName.FEGGS, itemName.GEGGS, itemName.IEGGS, itemName.CEGGS])
             self.random.shuffle(eggs)
