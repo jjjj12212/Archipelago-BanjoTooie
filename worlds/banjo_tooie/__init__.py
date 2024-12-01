@@ -191,11 +191,11 @@ class BanjoTooieWorld(World):
                         if self.options.randomize_bk_moves.value == 0: # No moves added, fills for the Jiggy Chunks, Dino Kids
                             for i in range(6):
                                 itempool += [self.create_item(name)]
-                        if self.options.bassclef_amount > 0:
-                            for i in range(self.options.bassclef_amount): #adds an additional big-o-pants for each bassclef
+                        if self.options.bassclef_amount.value > 0:
+                            for i in range(self.options.bassclef_amount.value): #adds an additional big-o-pants for each bassclef
                                 itempool += [self.create_item(name)]
-                        if self.options.extra_trebleclefs_count > 0:
-                            for i in range(self.options.extra_trebleclefs_count*3): #adds an additional big-o-pants for each bassclef
+                        if self.options.extra_trebleclefs_count.value > 0:
+                            for i in range(self.options.extra_trebleclefs_count.value*3): #adds an additional big-o-pants for each bassclef
                                 itempool += [self.create_item(name)]
 
                     #end of none qty logic
@@ -298,7 +298,8 @@ class BanjoTooieWorld(World):
         
         # if item.code == 1230888 and self.options.cheato_rewards.value == False and self.options.honeyb_rewards.value == False:
         #     return False
-        if item.code == 1230888 and self.options.randomize_bk_moves.value == 2:
+        if item.code == 1230888 and self.options.randomize_bk_moves.value == 2 and \
+            (self.options.bassclef_amount.value == 0 and self.options.extra_trebleclefs_count.value == 0):
             return False
         
         if self.options.progressive_beak_buster.value == True and (item.code == 1230820 or item.code == 1230757):
@@ -624,8 +625,21 @@ class BanjoTooieWorld(World):
             spoiler_handle.write('\n\tVersion: ' + world.worlds[player].version)
             spoiler_handle.write('\n\tLoading Zones:')
             for starting_zone, actual_world in world.worlds[player].loading_zones.items():
-                    spoiler_handle.write(f"\n\t\t{entrance_hags[starting_zone]} -> {actual_world}")
-            spoiler_handle.write('\n\tBanjo-Tooie Open Overworld Silos :\n')
+                    if actual_world == regionName.JR:
+                        spoiler_handle.write(f"\n\t\t{entrance_hags[starting_zone]} -> Jolly Roger's Lagoon")
+                    elif actual_world == regionName.GIO:
+                        spoiler_handle.write(f"\n\t\t{entrance_hags[starting_zone]} -> Grunty Industries")
+                    else:
+                        spoiler_handle.write(f"\n\t\t{entrance_hags[starting_zone]} -> {actual_world}")
+            spoiler_handle.write('\n\tWorld Costs:')
+            for entrances, cost in world.worlds[player].randomize_worlds.items():
+                    if entrances == regionName.JR:
+                        spoiler_handle.write(f"\n\t\tJolly Roger's Lagoon: {cost}")
+                    elif entrances == regionName.GIO:
+                        spoiler_handle.write(f"\n\t\tGrunty Industries: {cost}")
+                    else:
+                        spoiler_handle.write(f"\n\t\t{entrances}: {cost}")
+            spoiler_handle.write('\n\tBanjo-Tooie Open Overworld Silos:\n')
             spoiler_handle.write("\t\t"+world.worlds[player].single_silo)
             spoiler_handle.write('\n\tJamjars\' Silo Costs:')
             for silo, cost in world.worlds[player].jamjars_silo_costs.items():
@@ -690,6 +704,10 @@ class BanjoTooieWorld(World):
         btoptions['loading_zones'] = self.loading_zones
         btoptions['silo_option'] = int(self.options.open_silos.value)
         btoptions['version'] = self.version
+        btoptions['bassclef_amount'] = int(self.options.bassclef_amount.value)
+        btoptions['extra_trebleclefs_count'] = int(self.options.extra_trebleclefs_count.value)
+        btoptions['jamjars_silo_costs'] = self.jamjars_silo_costs
+        btoptions['jamjars_silo_option'] = int(self.options.jamjars_silo_costs.value)
 
         return btoptions
 
