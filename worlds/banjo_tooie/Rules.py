@@ -4636,10 +4636,12 @@ class BanjoTooieRules:
                 self.talon_trot(state) and self.backdoors_enabled(state)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.has_explosives(state) and self.claw_clamber_boots(state) and\
-                self.talon_trot(state) and self.backdoors_enabled(state)
+                (self.talon_trot(state) or ((self.grip_grab(state) or self.beak_buster(state)) and\
+                self.climb(state) and self.flap_flip(state))) and self.backdoors_enabled(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.has_explosives(state) and self.claw_clamber_boots(state) and\
-                self.talon_trot(state) and self.backdoors_enabled(state)
+                (self.talon_trot(state) or ((self.grip_grab(state) or self.beak_buster(state)) and\
+                self.climb(state) and self.flap_flip(state))) and self.backdoors_enabled(state)
         return logic
 
 
