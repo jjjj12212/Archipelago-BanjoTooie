@@ -101,7 +101,7 @@ def set_level_costs(world: BanjoTooieWorld) -> None:
 
     random_costs = [1,1,1,1,1,1,1,1,1]
     for i in range(len(random_costs)):
-        random_costs[i] = random.randint(1, level_cost_max[i])
+        random_costs[i] = world.random.randint(1, level_cost_max[i])
 
     if len(custom_costs) < 9:
         raise ValueError("Custom Costs has too few levels.")
