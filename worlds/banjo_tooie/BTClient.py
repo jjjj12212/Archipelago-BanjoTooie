@@ -397,7 +397,6 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_player": ctx.slot_data["player_name"],
             "slot_seed": ctx.slot_data["seed"],
             "slot_deathlink": ctx.deathlink_enabled,
-            "slot_activate_text": ctx.slot_data["activate_text"],
             "slot_skip_tot": ctx.slot_data["skip_tot"],
             "slot_honeycomb": ctx.slot_data["honeycomb"],
             "slot_pages": ctx.slot_data["pages"],
@@ -426,9 +425,9 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_jinjo_family_rescue_length": ctx.slot_data["jinjo_family_rescue_length"],
             "slot_token_hunt_length": ctx.slot_data["token_hunt_length"],
             "slot_version": version,
-            "slot_text_colour": ctx.slot_data["text_colour"],
             "slot_open_silo": ctx.slot_data["first_silo"],
-            "slot_zones": ctx.slot_data['loading_zones']
+            "slot_zones": ctx.slot_data['loading_zones'],
+            "slot_dialog_character": ctx.slot_data['dialog_character']
         })
     ctx.sendSlot = False
     return payload

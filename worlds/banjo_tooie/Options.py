@@ -5,6 +5,123 @@ class EnableMultiWorldMoveList(DefaultOnToggle):
     """Jamjars & Roysten Movelist are locked between the MultiWorld. Other players need to unlock Banjo's Moves."""
     display_name = "Jamjars' Movelist"
 
+class DialogCharacters(Choice):
+    """Change the Character that announces your obtained moves, worlds, etc."""
+    display_name = "Dialog Character"
+    option_GLOWBO = 0
+    option_JIGGY = 1
+    option_HONEYCOMB = 2
+    option_SUB = 3
+    option_WASHER = 4
+    option_BANJO = 5
+    option_KAZOOIE = 6
+    option_BOTTLES = 7
+    option_MUMBO = 8
+    option_JINJO_YELLOW = 9
+    option_JINJO_GREEN = 10
+    option_JINJO_BLUE = 11
+    option_JINJO_PURPLE = 12
+    option_JINJO_ORANGE = 13
+    option_BEEHIVE = 14
+    option_GRUNTY = 15
+    option_ZUBBA = 16
+    option_JAMJARS = 17
+    option_BOVINA = 18
+    option_MINGO_WHITE = 19
+    option_MINGO_ORANGE = 20
+    option_MINGO_YELLOW = 21
+    option_MINGO_BROWN = 22
+    option_UNOGOPAZ = 23
+    option_CHIEF_BLOATAZIN = 24
+    option_DILBERTA = 25
+    option_STONIES1 = 26
+    option_CANARY_MARY = 27
+    option_CHEATO = 28
+    option_GOBI = 29
+    option_DINO_KID1 = 30
+    option_MR_PATCH = 31
+    option_MOGGY = 32
+    option_SOGGY = 33
+    option_GROGGY = 34
+    option_MRS_BOGGY = 35
+    option_PROSPECTOR = 36
+    option_HUMBA = 37
+    option_UFO = 38
+    option_OLD_KING_COAL = 39
+    option_SSSLUMBER = 40
+    option_BOGGY = 41
+    option_BIG_AL = 42
+    option_SALTY_JOE = 43
+    option_CONGA = 44
+    option_PAWNO = 45
+    option_TIPTUP = 46
+    option_JOLLY = 47
+    option_MERRY_MAGGIE = 48
+    option_TERRY = 49
+    option_BARGASAURUS = 50
+    option_YELLOW_STONY = 51
+    option_ALIEN = 52
+    option_CHRIS_P_BACON = 53
+    option_CAPTAIN_BLUBBER = 54
+    option_STYRACOSAURUS_MOM = 55
+    option_ROYSTEN = 56
+    option_SAFE = 57
+    option_GUFFO = 58
+    option_MR_FIT = 59
+    option_CAPTAIN_BLACKEYE = 60
+    option_JINJO_RED = 61
+    option_JINJO_WHITE = 62
+    option_JINJO_BLACK = 63
+    option_JINJO_BROWN = 64
+    option_CHILLY_WILLY = 65
+    option_CHILLI_BILLI = 66
+    option_MINGY_JONGO = 67
+    option_YELLOW_DODGEM = 68
+    option_MINGELLA = 69
+    option_BLOBBELDA = 70
+    option_KLUNGO = 71
+    option_BOTTLES_DEAD = 72
+    option_MINGO_GREEN = 73
+    option_MINGO_RED = 74
+    option_MINGO_BLUE = 75
+    option_MINGO_PURPLE = 76
+    option_MINGO_BLACK = 77
+    option_RABBIT_WORKER1 = 78
+    option_UNGA_BUNGA = 79
+    option_JIGGYWIGGY = 80
+    option_JIGGYWIGGY_DISCIPLE = 81
+    option_HONEY_B = 82
+    option_BANJO_KAZOOIE = 83
+    option_PIG1 = 84
+    option_OOGLE_BOOGLE = 85
+    option_GI_ANNOUNCER = 86
+    option_DINGPOT = 87
+    option_KING_JINGALING_DEAD = 88
+    option_ROCKNUT = 89
+    option_MILDRED = 90
+    option_BIGGA_FOOT = 91
+    option_GEORGE = 92
+    option_SABREMAN = 93
+    option_DIPPY = 94
+    option_LOGGO = 95
+    option_KING_JINGALING = 96
+    option_MRS_BOTTLES = 97
+    option_SPECCY = 98
+    option_GOGGLES = 99
+    option_TARGITZAN = 100
+    option_CHOMPA = 101
+    option_LORD_WOO_FAK_FAK = 102
+    option_WELDAR = 103
+    option_ALIEN_CHILD = 104
+    option_EVIL_BOTTLES = 105
+    option_DINO_KID2 = 106
+    option_DINO_SCRIT_SMALL = 107
+    option_DINO_SCRIT_BIG = 108
+    option_HEGGY = 109
+    option_default_icons = 110
+    option_complete_random = 255
+    default = 110
+
 class JamjarsSiloCosts(Choice):
     """Change how many notes it takes to use Jamjars' move silos. Requires Jamjars' movelist to be changed."""
     display_name = "Jamjars' Silo Costs"
@@ -266,8 +383,7 @@ class SkipKlungo(Toggle):
 class BanjoTooieOptions(PerGameCommonOptions):
     start_inventory_from_pool: StartInventoryPool
     death_link: DeathLink
-    activate_overlay_text:ActivateOverlayText
-    overlay_text_colour:OverlayTextColour
+    dialog_character:DialogCharacters
     randomize_moves: EnableMultiWorldMoveList
     jamjars_silo_costs: JamjarsSiloCosts
     randomize_bk_moves: EnableMultiWorldBKMoveList
