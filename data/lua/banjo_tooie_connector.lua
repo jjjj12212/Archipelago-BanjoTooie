@@ -96,6 +96,9 @@ local DEATH_LINK = false
 ---------------- IOH SILO VARS -------------
 local OPEN_SILO = "NONE"
 
+---------------- DIALOG CHARACTER ----------------
+local DIALOG_CHARACTER = 110
+
 -------------- ENCOURAGEMENT MESSAGES ------------
 local ENCOURAGEMENT = {
          [1]  = {message = " GUH-HUH!"},
@@ -5017,7 +5020,12 @@ function mumbo_announce()
             local message = "You have found enough Mumbo Tokens! Time to head home!"
             print(" ")
             print(message)
-            table.insert(MESSAGE_TABLE, {message, 8});
+            if DIALOG_CHARACTER == 110
+            then
+                table.insert(MESSAGE_TABLE, {message, 8});
+            else
+                table.insert(MESSAGE_TABLE, {message, DIALOG_CHARACTER});
+            end
             TOKEN_ANNOUNCE = true
         end
     end
@@ -5128,39 +5136,84 @@ function process_block(block)
             end
             if 1230753 <= msg_table["item_id"] and msg_table["item_id"] <= 1230776 -- Jamjars
             then
-                table.insert(MESSAGE_TABLE, {msg, 17})
+                if DIALOG_CHARACTER == 110
+                then
+                    table.insert(MESSAGE_TABLE, {msg, 17})
+                else
+                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+                end
             end
             if 1230779 <= msg_table["item_id"] and msg_table["item_id"] <= 1230780 -- Amaze + Roar
             then
-                table.insert(MESSAGE_TABLE, {msg, 17})
+                if DIALOG_CHARACTER == 110
+                then
+                    table.insert(MESSAGE_TABLE, {msg, 17})
+                else
+                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+                end
             end
             if 1230810 <= msg_table["item_id"] and msg_table["item_id"] <= 1230827 -- BK Moves
             then
-                table.insert(MESSAGE_TABLE, {msg, 7})
+                if DIALOG_CHARACTER == 110
+                then
+                    table.insert(MESSAGE_TABLE, {msg, 7})
+                else
+                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+                end
             end
             if 1230790 <= msg_table["item_id"] and msg_table["item_id"] <= 1230796 --Stations + Chuffy
             then
-                table.insert(MESSAGE_TABLE, {msg, 39})
+                if DIALOG_CHARACTER == 110
+                then
+                    table.insert(MESSAGE_TABLE, {msg, 39})
+                else
+                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+                end
             end
             if (1230777 <= msg_table["item_id"] and msg_table["item_id"] <= 1230778) or msg_table["item_id"] == 1230831 -- Roysten
             then
-                table.insert(MESSAGE_TABLE, {msg, 56})
+                if DIALOG_CHARACTER == 110
+                then
+                    table.insert(MESSAGE_TABLE, {msg, 56})
+                else
+                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+                end
             end
             if 1230828 <= msg_table["item_id"] and msg_table["item_id"] <= 1230832 -- Progressive Moves
             then
-                table.insert(MESSAGE_TABLE, {msg, 7})
+                if DIALOG_CHARACTER == 110
+                then
+                    table.insert(MESSAGE_TABLE, {msg, 7})
+                else
+                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+                end
             end
             if 1230944 <= msg_table["item_id"] and msg_table["item_id"] <= 1230952 -- Worlds
             then
-                table.insert(MESSAGE_TABLE, {msg, 27})
+                if DIALOG_CHARACTER == 110
+                then
+                    table.insert(MESSAGE_TABLE, {msg, 27})
+                else
+                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+                end
             end
             if 1230855 <= msg_table["item_id"] and msg_table["item_id"] <= 1230863 -- Mumbo
             then
-                table.insert(MESSAGE_TABLE, {msg, 8})
+                if DIALOG_CHARACTER == 110
+                then
+                    table.insert(MESSAGE_TABLE, {msg, 8})
+                else
+                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+                end
             end
             if 1230174 <= msg_table["item_id"] and msg_table["item_id"] <= 1230182 -- Humba
             then
-                table.insert(MESSAGE_TABLE, {msg, 37})
+                if DIALOG_CHARACTER == 110
+                then
+                    table.insert(MESSAGE_TABLE, {msg, 37})
+                else
+                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+                end
             end
         end
     end
@@ -5571,6 +5624,10 @@ function process_slot(block)
             emu.frameadvance()
         end
     end
+    if block['slot_dialog_character'] ~= nil and block['slot_dialog_character'] ~= ""
+    then
+        DIALOG_CHARACTER = block['slot_dialog_character']
+    end
 
     if block['slot_zones'] ~= nil
     then
@@ -5618,7 +5675,12 @@ function printGoalInfo()
         end
         if GOAL_PRINTED == false
         then
-            table.insert(MESSAGE_TABLE, {message, 5});
+            if DIALOG_CHARACTER == 110
+            then
+                table.insert(MESSAGE_TABLE, {message, 5});
+            else
+                table.insert(MESSAGE_TABLE, {message, DIALOG_CHARACTER});
+            end
             GOAL_PRINTED =true
         end
     end

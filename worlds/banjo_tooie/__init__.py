@@ -653,10 +653,6 @@ class BanjoTooieWorld(World):
         btoptions["player_name"] = self.multiworld.player_name[self.player]
         btoptions["seed"] = self.random.randint(12212, 9090763)
         btoptions["deathlink"] = "true" if self.options.death_link.value == 1 else "false"
-        btoptions["activate_text"] = "true" if self.options.activate_overlay_text.value == 1 else "false"
-        btoptions['text_colour'] = int(self.options.overlay_text_colour.value)
-
-
         if self.options.skip_tower_of_tragedy == 1:
             btoptions["skip_tot"] = "true"
         elif self.options.skip_tower_of_tragedy == 2:
@@ -710,6 +706,9 @@ class BanjoTooieWorld(World):
         btoptions['extra_trebleclefs_count'] = int(self.options.extra_trebleclefs_count.value)
         btoptions['jamjars_silo_costs'] = self.jamjars_silo_costs
         btoptions['jamjars_silo_option'] = int(self.options.jamjars_silo_costs.value)
+
+        btoptions['dialog_character'] = int(self.options.dialog_character.value)
+
 
         return btoptions
 
