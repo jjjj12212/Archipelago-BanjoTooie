@@ -656,10 +656,14 @@ def connect_regions(self):
                         regionName.IOHCT: lambda state: rules.split_up(state)})
     
     region_GM = multiworld.get_region(regionName.GM, player)
-    region_GM.add_exits({regionName.GMWSJT, regionName.CHUFFY, regionName.WW},
-    {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_GGM(state),
-     regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ggm_to_chuffy(state),
-     regionName.WW: lambda state: rules.ggm_to_ww(state)})
+    region_GM.add_exits({regionName.GMWSJT, regionName.CHUFFY, regionName.WW}, {
+                        regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_GGM(state),
+                        regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ggm_to_chuffy(state),
+                        regionName.WW: lambda state: rules.ggm_to_ww(state)
+                        })
+    
+    region_GMWSJT = multiworld.get_region(regionName.GMWSJT, player)
+    region_GMWSJT.add_exits({regionName.GM}, {})
     
     region_PG = multiworld.get_region(regionName.IOHPG, player)
     region_PG.add_exits({regionName.WWE, regionName.IOHPGU, regionName.IOHPL},
@@ -731,8 +735,8 @@ def connect_regions(self):
     region_GIOB.add_exits({regionName.GIO, regionName.GI2, regionName.GI3, regionName.GI4, regionName.GI5},
                         {regionName.GIO: lambda state: rules.climb(state),
                          regionName.GI2: lambda state: rules.outside_gi_back_to_floor2(state),
-                         regionName.GI3: lambda state: rules.outside_gi_back_to_upper_floors(state),
-                         regionName.GI4: lambda state: rules.outside_gi_back_to_upper_floors(state),
+                         regionName.GI3: lambda state: rules.outside_gi_back_to_floor_3(state),
+                         regionName.GI4: lambda state: rules.outside_gi_back_to_floor_4(state),
                          regionName.GI5: lambda state: rules.outside_gi_back_to_floor_5(state)
                          })
     
