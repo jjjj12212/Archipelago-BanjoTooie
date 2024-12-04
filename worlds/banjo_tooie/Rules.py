@@ -4663,20 +4663,16 @@ class BanjoTooieRules:
     def mt_hfp_backdoor(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and self.has_explosives(state) and\
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and\
                    self.backdoors_enabled(state)
         elif self.world.options.logic_type == 1: # normal
             logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
-                    (self.has_explosives(state) or \
-                    self.check_mumbo_magic(state, itemName.MUMBOHP)) and\
                    self.backdoors_enabled(state)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
-                    (self.has_explosives(state) or self.check_mumbo_magic(state, itemName.MUMBOHP)) and\
                    self.backdoors_enabled(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
-                    (self.has_explosives(state) or self.check_mumbo_magic(state, itemName.MUMBOHP)) and\
                    self.backdoors_enabled(state)
         return logic
 
@@ -4684,13 +4680,19 @@ class BanjoTooieRules:
     def ww_tdl_backdoor(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.has_explosives(state) and self.claw_clamber_boots(state) and self.backdoors_enabled(state)
+            logic = self.has_explosives(state) and self.claw_clamber_boots(state) and\
+                self.talon_trot(state) and self.backdoors_enabled(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.has_explosives(state) and self.claw_clamber_boots(state) and self.backdoors_enabled(state)
+            logic = self.has_explosives(state) and self.claw_clamber_boots(state) and\
+                self.talon_trot(state) and self.backdoors_enabled(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.has_explosives(state) and self.claw_clamber_boots(state) and self.backdoors_enabled(state)
+            logic = self.has_explosives(state) and self.claw_clamber_boots(state) and\
+                (self.talon_trot(state) or ((self.grip_grab(state) or self.beak_buster(state)) and\
+                self.climb(state) and self.flap_flip(state))) and self.backdoors_enabled(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.has_explosives(state) and self.claw_clamber_boots(state) and self.backdoors_enabled(state)
+            logic = self.has_explosives(state) and self.claw_clamber_boots(state) and\
+                (self.talon_trot(state) or ((self.grip_grab(state) or self.beak_buster(state)) and\
+                self.climb(state) and self.flap_flip(state))) and self.backdoors_enabled(state)
         return logic
 
 
