@@ -1,3 +1,16 @@
+# 3.5.2-beta
+  - Renamings:
+    - GI locations: will now have the floor in the name.
+  - Logic fixes:
+    - GI got a significant region refactor. Many different regions got added. This has many side-effects on the logic, including logic changes to the following locations.
+      - Guarded Jiggy, Weldar Jiggy, Underwater waste disposal jiggy, repair depot Cheato page, Weldar Mumbo token: moved to floor 1.
+      - GI Train Switch: moved to Outside Back
+      - GI Trebleclef, Outside Jinjo, Floor 2 Cheato Page: Moved to outside
+      - Worker Jiggy: moved to floor 2
+      - Boiler Plant Jinjo, Twinklies Packaging jiggy: moved to boiler plant
+      - Clinker's Cavern jiggy, Quality Control Jiggy: moved to back of floor 4
+      - Floor 5 jiggy, Floor 5 jinjo, Chimney honeycomb: moved to floor 5
+
 # 3.5.1-beta
   -Logic fixes:
     - Treasure Chamber Jiggy: checks if you have talon trot, if you're reaching the top from the inside. Also, if not on intended logic, takes getting the relic from TDL into consideration.
@@ -6,7 +19,7 @@
     - GGM Entrance Cheato page: going for it as you enter the level is no longer in logic, due to technical reasons.
     - Bill Drill silo: can be gotten with talon trot + flutter + grip grab, or tall jump + grip grab.
     - Plateau Sign notes: if not on intended logic, can be gotten with
-      - split up + + tall jump
+      - split up + tall jump
       - split up + glide
       - split up + grip grab
     - Saucer of peril: the door can be opened with a clockwork shot, in hard tricks and glitches logics.
@@ -23,7 +36,7 @@
   - Buttonbinding changes:
     - L = Humba
     - L+R = Mumbo
-  - fix backdoor with oogle booga 
+  - fix backdoor with oogle boogle
 
 # 3.5-beta
   - Logic fixes:
