@@ -1,5 +1,6 @@
 # 3.5.2-beta
   - Renamings:
+    - Area 51 notes: renamed to left and right notes.
     - GI locations: will now have the floor in the name.
   - Logic fixes:
     - GI got a significant region refactor. Many different regions got added. This has many side-effects on the logic, including logic changes to the following locations.
@@ -13,6 +14,7 @@
     - MT Entrance Honeycomb: in glitch logic, can be gotten with breegull bash.
     - GGM: Can be entered from Water Storage.
     - Flooded caves jiggy: the final platform can be reached with grip grab or beak buster
+    - Left Area 51 note: added long jump requirement if getting it as Banjo-Kazooie.
     - Pig Pool Jiggy: accessing the JRL pipe from the slit above Jolly's is in all logics
     - Checks that require the TDL flight pad: fixed a bug where the flight pad was in logic without flight pad.
     - Unga Bunga Glowbo: can be gotten with turbo trainers or springy step shoes, if not on intended logic.

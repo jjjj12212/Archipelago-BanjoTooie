@@ -582,8 +582,8 @@ class BanjoTooieRules:
             locationName.NOTEGGM16: lambda state: self.notes_easy_fuel_depot(state),
 
 
-            locationName.NOTEWW9:   lambda state: self.notes_ww_area51(state),
-            locationName.NOTEWW10:  lambda state: self.notes_ww_area51(state),
+            locationName.NOTEWW9:   lambda state: self.notes_ww_area51_left(state),
+            locationName.NOTEWW10:  lambda state: self.notes_ww_area51_right(state),
             locationName.NOTEWW13:  lambda state: self.notes_dive_of_death(state),
             locationName.NOTEWW14:  lambda state: self.notes_dive_of_death(state),
 
@@ -3592,7 +3592,7 @@ class BanjoTooieRules:
                     or self.glide(state)
         return logic
     
-    def notes_ww_area51(self, state: CollectionState) -> bool:
+    def notes_ww_area51_right(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = self.has_explosives(state) and self.spring_pad(state)
@@ -3605,6 +3605,25 @@ class BanjoTooieRules:
                     or self.clockwork_shot(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = ((self.has_explosives(state) or self.split_up(state)) and self.spring_pad(state))\
+                    or self.leg_spring(state)\
+                    or self.clockwork_shot(state)
+        return logic
+
+    def notes_ww_area51_left(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.has_explosives(state) and self.spring_pad(state) and self.long_jump(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.has_explosives(state) and self.spring_pad(state) and self.long_jump(state)\
+                    or self.leg_spring(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.has_explosives(state) and self.spring_pad(state) and self.long_jump(state)\
+                    or self.split_up(state) and self.spring_pad(state)\
+                    or self.leg_spring(state)\
+                    or self.clockwork_shot(state)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.has_explosives(state) and self.spring_pad(state) and self.long_jump(state)\
+                    or self.split_up(state) and self.spring_pad(state)\
                     or self.leg_spring(state)\
                     or self.clockwork_shot(state)
         return logic
