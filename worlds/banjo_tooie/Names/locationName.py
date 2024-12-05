@@ -828,7 +828,7 @@ NESTJR34 = "JRL: Lockers Egg Nest 2"
 NESTJR35 = "JRL: Lockers Egg Nest 3"
 NESTJR36 = "JRL: Near Big Fish Warp Pad Egg Nest 1"
 NESTJR37 = "JRL: Near Big Fish Warp Pad Egg Nest 2"
-
+# Missing locker semees, 2 nests
 
 
 NESTTL1 = "TDL: Flight Pad Pillar Feather Nest 1"
@@ -1101,4 +1101,4 @@ NESTCC45 = "CCL: Pot o' Gold Egg Nest 1"
 NESTCC46 = "CCL: Pot o' Gold Egg Nest 2"
 
 NESTCC47 = "CCL: Humba's Wigwam Egg Nest 1"
-NESTCC48 = "CCL: Humba's Wigwam Egg Nest 1"
+NESTCC48 = "CCL: Humba's Wigwam Egg Nest 2"
