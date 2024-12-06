@@ -8686,7 +8686,6 @@ function tempCCLOpen()
         CCL_OPEN_TEMP = true
     elseif WORLD_ENTRANCE_MAP["WORLD 8"]["opened"] == false and CCL_OPEN_TEMP == true and (NEXT_MAP ~= 0x136)
     then
-        print("Closing World")
         BTRAMOBJ:clearFlag(WORLD_ENTRANCE_MAP["WORLD 8"]['addr'], WORLD_ENTRANCE_MAP["WORLD 8"]['bit'])
         CCL_OPEN_TEMP = false
     end
