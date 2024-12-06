@@ -4907,19 +4907,6 @@ function obtain_mumbo_token()
     BTH:setItem(ITEM_TABLE["AP_ITEM_MUMBOTOKEN"], TOTAL_MUMBO_TOKENS)
 end
 
-function tempCCLOpen()
-    if WORLD_ENTRANCE_MAP["WORLD 8"]["opened"] == false and CCL_OPEN_TEMP == false and (NEXT_MAP == 0x136 or CURRENT_MAP == 0x136 )
-    then
-        BTRAMOBJ:setFlag(WORLD_ENTRANCE_MAP["WORLD 8"]['addr'], WORLD_ENTRANCE_MAP["WORLD 8"]['bit'])
-        CCL_OPEN_TEMP = true
-    elseif WORLD_ENTRANCE_MAP["WORLD 8"]["opened"] == false and CCL_OPEN_TEMP == true and (NEXT_MAP ~= 0x136)
-    then
-        print("Closing World")
-        BTRAMOBJ:clearFlag(WORLD_ENTRANCE_MAP["WORLD 8"]['addr'], WORLD_ENTRANCE_MAP["WORLD 8"]['bit'])
-        CCL_OPEN_TEMP = false
-    end
-end
-
 ---------------------- GAME FUNCTIONS -------------------
 
 function zoneWarp(zone_table)

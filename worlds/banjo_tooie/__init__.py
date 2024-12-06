@@ -85,18 +85,6 @@ class BanjoTooieWorld(World):
         self.use_cheato_filler = False
         self.randomize_worlds = {}
         self.randomize_order = {}
-        self.world_sphere_1 = [
-            regionName.MT,
-            regionName.GM,
-            regionName.WW,
-            regionName.JR,
-            regionName.HP,
-            regionName.TL,
-            regionName.CC,
-            regionName.GIO
-        ]
-        self.world_sphere_2 = [
-        ]
         self.worlds_randomized = False
         self.single_silo = ""
         self.loading_zones = {}
