@@ -184,6 +184,10 @@ class BanjoTooieWorld(World):
                                 itempool += [self.create_item(name)]
                         if self.options.extra_trebleclefs_count.value > 0:
                             for i in range(self.options.extra_trebleclefs_count.value*3): #adds an additional big-o-pants for each bassclef
+                                if self.options.victory_condition.value == 5 and \
+                                (((self.options.bassclef_amount.value*2) + (self.options.extra_trebleclefs_count.value*4)) >= 130) and \
+                                i == (self.options.extra_trebleclefs_count.value*3 - 14):
+                                    break
                                 itempool += [self.create_item(name)]
 
                     #end of none qty logic
@@ -193,6 +197,9 @@ class BanjoTooieWorld(World):
                         count = id.qty
                         count -= ((self.options.bassclef_amount.value*2) + (self.options.extra_trebleclefs_count.value*4))
                         for i in range(count):
+                            if self.options.victory_condition.value == 5:
+                                if (count - self.notecounter) < 14 and count > 14 and item.code == 1230797:
+                                    break #sub in for Mumbo Tokens up to 10
                             itempool += [self.create_item(name)]
 
                     #treble - extra trebles 
@@ -212,8 +219,6 @@ class BanjoTooieWorld(World):
                             if self.options.randomize_jinjos == False and self.jiggy_counter > 81 and item.code == 1230515:
                                 break
                             if self.options.victory_condition.value == 5:
-                                if (144 - self.notecounter) < 14 and item.code == 1230797:
-                                    break #sub in for Mumbo Tokens up to 10
                                 if item.code == 1230801: #remove Jinjo Multiplayer
                                     break
                                 itempool += [self.create_item(name)]
