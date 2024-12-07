@@ -382,6 +382,12 @@ class SkipKlungo(Toggle):
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     start_inventory_from_pool: StartInventoryPool
+    logic_type: LogicType
+    victory_condition: VictoryCondition
+    minigame_hunt_length: MinigameHuntLength
+    boss_hunt_length: BossHuntLength
+    jinjo_family_rescue_length: JinjoFamilyRescueLength
+    token_hunt_length: TokenHuntLength
     death_link: DeathLink
     dialog_character:DialogCharacters
     randomize_moves: EnableMultiWorldMoveList
@@ -414,12 +420,6 @@ class BanjoTooieOptions(PerGameCommonOptions):
     skip_klungo: SkipKlungo
     skip_tower_of_tragedy: SkipToT
     speed_up_minigames: SpeedUpMinigames
-    logic_type: LogicType
-    victory_condition: VictoryCondition
-    minigame_hunt_length: MinigameHuntLength
-    boss_hunt_length: BossHuntLength
-    jinjo_family_rescue_length: JinjoFamilyRescueLength
-    token_hunt_length: TokenHuntLength
     randomize_worlds: RandomizeWorlds
     randomize_world_loading_zone: RandomizeWorldZones
     open_silos: Silos
