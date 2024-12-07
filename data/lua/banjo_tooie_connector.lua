@@ -1420,10 +1420,10 @@ local DAILOG_KEY_TABLE = {
     "ICON_ZUBBA",
     "ICON_JAMJARS",
     "ICON_BOVINA",
-    "ICON_MINGO_WHITE",
-    "ICON_MINGO_ORANGE", --20
-    "ICON_MINGO_YELLOW",
-    "ICON_MINGO_BROWN",
+    "ICON_MINJO_WHITE",
+    "ICON_MINJO_ORANGE", --20
+    "ICON_MINJO_YELLOW",
+    "ICON_MINJO_BROWN",
     "ICON_UNOGOPAZ",
     "ICON_CHIEF_BLOATAZIN",
     "ICON_DILBERTA",
@@ -1474,11 +1474,11 @@ local DAILOG_KEY_TABLE = {
     "ICON_BLOBBELDA", --70
     "ICON_KLUNGO",
     "ICON_BOTTLES_DEAD",
-    "ICON_MINGO_GREEN",
-    "ICON_MINGO_RED",
-    "ICON_MINGO_BLUE",
-    "ICON_MINGO_PURPLE",
-    "ICON_MINGO_BLACK",
+    "ICON_MINJO_GREEN",
+    "ICON_MINJO_RED",
+    "ICON_MINJO_BLUE",
+    "ICON_MINJO_PURPLE",
+    "ICON_MINJO_BLACK",
     "ICON_RABBIT_WORKER1",
     "ICON_UNGA_BUNGA",
     "ICON_JIGGYWIGGY", --80
@@ -4615,13 +4615,66 @@ function obtain_progressive_moves(itemId)
         obtain_roysten_moves(itemId);
     elseif(itemId == 1230832)
     then
-        BTH:getItem(ITEM_TABLE["AP_ITEM_BBASH"])
         if BTH:getItem(ITEM_TABLE["AP_ITEM_GRAT"]) == 0
         then
             obtain_bkmove(1230824);
         elseif BTH:getItem(ITEM_TABLE["AP_ITEM_BBASH"]) == 0
         then
             BTH:setItem(ITEM_TABLE["AP_ITEM_BBASH"], 1)
+        end
+    elseif(itemId == 1230782) -- Progressive Flight
+    then
+        if BTH:getItem(ITEM_TABLE["AP_ITEM_FPAD"]) == 0
+        then
+            obtain_bkmove(1230811);
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_BBOMB"]) == 0
+        then
+            obtain_bkmove(1230827);
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_AIREAIM"]) == 0
+        then
+            BTH:setItem(ITEM_TABLE["AP_ITEM_AIREAIM"], 1)
+        end
+    elseif(itemId == 1230783) -- Progressive Egg Aim
+    then
+        if BTH:getItem(ITEM_TABLE["AP_ITEM_EGGSHOOT"]) == 0
+        then
+            obtain_bkmove(1230813);
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_EGGAIM"]) == 0
+        then
+            BTH:setItem(ITEM_TABLE["AP_ITEM_EGGAIM"], 1)
+        end
+    elseif(itemId == 1230784) -- Progressive Adv Water Training
+    then
+        if BTH:getItem(ITEM_TABLE["AP_ITEM_DIVE"]) == 0
+        then
+            BTH:setItem(ITEM_TABLE["AP_ITEM_DIVE"], 1)
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_AUQAIM"]) == 0
+        then
+            BTH:setItem(ITEM_TABLE["AP_ITEM_AUQAIM"], 1)
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_TTORP"]) == 0
+        then
+            BTH:setItem(ITEM_TABLE["AP_ITEM_TTORP"], 1)
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_DAIR"]) == 0
+        then
+            BTH:setItem(ITEM_TABLE["AP_ITEM_DAIR"], 1)
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_FSWIM"]) == 0
+        then
+            BTH:setItem(ITEM_TABLE["AP_ITEM_FSWIM"], 1)
+        end
+    elseif(itemId == 1230785) -- Progressive Adv Egg Aim
+    then
+        if BTH:getItem(ITEM_TABLE["AP_ITEM_EGGSHOOT"]) == 0
+        then
+            obtain_bkmove(1230813);
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_AMAZEOGAZE"]) == 0
+        then
+            BTH:setItem(ITEM_TABLE["AP_ITEM_AMAZEOGAZE"], 1)
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_EGGAIM"]) == 0
+        then
+            BTH:setItem(ITEM_TABLE["AP_ITEM_EGGAIM"], 1)
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_BBLASTER"]) == 0
+        then
+            BTH:setItem(ITEM_TABLE["AP_ITEM_BBLASTER"], 1)
         end
     end
 end
@@ -5048,6 +5101,9 @@ function processAGIItem(item_list)
             elseif( 1230828 <= memlocation and memlocation <= 1230832) -- Progressive Moves
             then
                 obtain_progressive_moves(memlocation)
+            elseif(1230782 <= memlocation and memlocation <= 1230785) -- More Progressive Moves
+            then
+                obtain_progressive_moves(memlocation)
             elseif( 1230799 <= memlocation and memlocation <= 1230804) -- StopNSwap
             then
                 obtain_mystery_item(memlocation)
@@ -5064,6 +5120,7 @@ function processAGIItem(item_list)
             elseif(memlocation == 1230831) -- Progressive Water Training
             then
                 obtain_roysten_moves(memlocation)
+
             elseif(memlocation == 1230513) -- Cheato Item
             then
                 obtain_AP_PAGES()
@@ -5167,6 +5224,15 @@ function process_block(block)
                 end
             end
             if 1230828 <= msg_table["item_id"] and msg_table["item_id"] <= 1230832 -- Progressive Moves
+            then
+                if DIALOG_CHARACTER == 110
+                then
+                    table.insert(MESSAGE_TABLE, {msg, 7})
+                else
+                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+                end
+            end
+            if 1230782 <= msg_table["item_id"] and msg_table["item_id"] <= 1230785 -- Progressive Moves Pt.2
             then
                 if DIALOG_CHARACTER == 110
                 then
@@ -5633,28 +5699,28 @@ function printGoalInfo()
             message = "You need to hunt down Grunty in her HAG1 and put her back in the ground!\nGood Luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(0)
         elseif GOAL_TYPE == 1 and MGH_LENGTH == 15 then
-            message = "You are hunting down all 15 of the Mumbo Tokens found in Grunty's dastardly minigames!\n Good luck and"..randomEncouragment;
+            message = "You are hunting down all 15 of the Mumbo Tokens found in Grunty's dastardly minigames!\nGood luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(MGH_LENGTH)
         elseif GOAL_TYPE == 1 and MGH_LENGTH < 15 then
-            message = "You are hunting for "..MGH_LENGTH.." Mumbo Tokens from Grunty's dastardly minigames!\n Good Luck and"..randomEncouragment;
+            message = "You are hunting for "..MGH_LENGTH.." Mumbo Tokens from Grunty's dastardly minigames!\nGood Luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(MGH_LENGTH)
         elseif GOAL_TYPE == 2 and BH_LENGTH == 8 then
-            message = "You are hunting down all 8 Mumbo Tokens from each world boss!\n Good Luck and"..randomEncouragment;
+            message = "You are hunting down all 8 Mumbo Tokens from each world boss!\nGood Luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(BH_LENGTH)
         elseif GOAL_TYPE == 2 and BH_LENGTH < 8 then
-            message = "You are hunting for "..BH_LENGTH.." Mumbo Tokens from the 8 world bosses!\n Good Luck and"..randomEncouragment;
+            message = "You are hunting for "..BH_LENGTH.." Mumbo Tokens from the 8 world bosses!\nGood Luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(BH_LENGTH)
         elseif GOAL_TYPE == 3 and JFR_LENGTH == 9 then
             message ="You are trying to rescue all 9 Jinjo families and retrieve their Mumbo Tokens!\nGood Luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(JFR_LENGTH)
         elseif GOAL_TYPE == 3 and JFR_LENGTH < 9 then
-            message = "You are trying to rescue "..JFR_LENGTH.." of the 9 Jinjo families and retrieve their Mumbo Tokens!\n Good Luck and"..randomEncouragment;
+            message = "You are trying to rescue "..JFR_LENGTH.." of the 9 Jinjo families and retrieve their Mumbo Tokens!\nGood Luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(JFR_LENGTH)
         elseif GOAL_TYPE == 4 then
             message ="You absolute mad lad! You're doing the Wonder Wing Challenge!\nGood Luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(32)
         elseif GOAL_TYPE == 5 and TH_LENGTH == 15 then
-            message ="You are trying to find all 15 of Mumbo's Tokens scattered throughout the Isle of Hags!\n Good Luck and"..randomEncouragment;
+            message ="You are trying to find all 15 of Mumbo's Tokens scattered throughout the Isle of Hags!\nGood Luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(TH_LENGTH)
         elseif GOAL_TYPE == 5 and TH_LENGTH < 15 then
             message = "You are trying to find "..TH_LENGTH.." of the 15 of Mumbo Tokens scattered throughout the Isle of Hags!\nGood Luck and"..randomEncouragment;

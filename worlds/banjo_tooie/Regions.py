@@ -674,7 +674,7 @@ def connect_regions(self):
     region_PGU = multiworld.get_region(regionName.IOHPGU, player)
     region_PGU.add_exits({regionName.IOHWL, regionName.IOHPG},
     {regionName.IOHPG: lambda state: rules.PGU_to_PG(state),
-     regionName.IOHWL: lambda state: state.has(itemName.TTORP, player)})
+     regionName.IOHWL: lambda state: state.has(itemName.TTORP, player) or state.has(itemName.PASWIM, player, 3)})
     
     region_WW = multiworld.get_region(regionName.WW, player)
     region_WW.add_exits({regionName.CHUFFY, regionName.TL},

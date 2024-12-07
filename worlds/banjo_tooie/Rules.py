@@ -5524,10 +5524,11 @@ class BanjoTooieRules:
         return state.has(itemName.GGRAB, self.player)
     
     def breegull_blaster(self, state: CollectionState) -> bool:
-        return state.has(itemName.BBLASTER, self.player)
+        return state.has(itemName.BBLASTER, self.player) or state.has(itemName.PAEGGAIM, self.player, 4)
     
     def egg_aim(self, state: CollectionState) -> bool:
-        return state.has(itemName.EGGAIM, self.player)
+        return state.has(itemName.EGGAIM, self.player) or state.has(itemName.PEGGAIM, self.player, 2) \
+        or state.has(itemName.PAEGGAIM, self.player, 3)
     
     #You cannot use bill drill without beak buster. Pressing Z in the air does nothing.
     def bill_drill(self, state: CollectionState) -> bool:
@@ -5544,16 +5545,16 @@ class BanjoTooieRules:
         return self.check_solo_moves(state, itemName.PACKWH)
     
     def airborne_egg_aiming(self, state: CollectionState) -> bool:
-        return state.has(itemName.AIREAIM, self.player)
+        return state.has(itemName.AIREAIM, self.player) or state.has(itemName.PFLIGHT, self.player, 3)
     
     def wing_whack(self, state: CollectionState) -> bool:
         return self.check_solo_moves(state, itemName.WWHACK)
     
     def sub_aqua_egg_aiming(self, state: CollectionState) -> bool:
-        return state.has(itemName.AUQAIM, self.player)
+        return state.has(itemName.AUQAIM, self.player) or state.has(itemName.PASWIM, self.player, 2)
 
     def talon_torpedo(self, state: CollectionState) -> bool:
-        return state.has(itemName.TTORP, self.player)
+        return state.has(itemName.TTORP, self.player) or state.has(itemName.PASWIM, self.player, 3)
     
     def springy_step_shoes(self, state: CollectionState) -> bool:
         return state.has(itemName.SPRINGB, self.player) or state.has(itemName.PSHOES, self.player, 3)
@@ -5588,13 +5589,15 @@ class BanjoTooieRules:
             or state.has(itemName.PBASH, self.player, 2)
     
     def amaze_o_gaze(self, state: CollectionState) -> bool:
-        return state.has(itemName.AMAZEOGAZE, self.player)
+        return state.has(itemName.AMAZEOGAZE, self.player) or state.has(itemName.PAEGGAIM, self.player, 2)
     
     def doubleAir(self, state: CollectionState) -> bool:
-        return state.has(itemName.DAIR, self.player) or state.has(itemName.PSWIM, self.player, 2)
+        return state.has(itemName.DAIR, self.player) or state.has(itemName.PSWIM, self.player, 2) \
+        or state.has(itemName.PASWIM, self.player, 4)
 
     def dive(self, state: CollectionState) -> bool:
-        return self.has_BK_move(state, itemName.DIVE) or state.has(itemName.PSWIM, self.player, 1)
+        return self.has_BK_move(state, itemName.DIVE) or state.has(itemName.PSWIM, self.player, 1) \
+        or state.has(itemName.PASWIM, self.player, 1)
     
     def tall_jump(self, state: CollectionState) -> bool:
         return self.has_BK_move(state, itemName.TJUMP)
@@ -5621,7 +5624,8 @@ class BanjoTooieRules:
         return self.has_BK_move(state, itemName.BBARGE)
 
     def third_person_egg_shooting(self, state: CollectionState) -> bool:
-        return self.has_BK_move(state, itemName.EGGSHOOT)
+        return self.has_BK_move(state, itemName.EGGSHOOT) or state.has(itemName.PEGGAIM, self.player, 1) \
+        or state.has(itemName.PAEGGAIM, self.player, 1)
     
     def talon_trot(self, state: CollectionState) -> bool:
         return self.has_BK_move(state, itemName.TTROT)
@@ -5630,7 +5634,7 @@ class BanjoTooieRules:
         return self.has_BK_move(state, itemName.BBUST) or state.has(itemName.PBBUST, self.player)
     
     def flight_pad(self, state: CollectionState) -> bool:
-        return self.has_BK_move(state, itemName.FPAD)
+        return self.has_BK_move(state, itemName.FPAD) or state.has(itemName.PFLIGHT, self.player, 1)
 
     def wonderwing(self, state: CollectionState) -> bool:
         return self.has_BK_move(state, itemName.WWING)
@@ -5639,7 +5643,7 @@ class BanjoTooieRules:
         return self.has_BK_move(state, itemName.SSTRIDE) or state.has(itemName.PSHOES, self.player, 1)
     
     def beak_bomb(self, state: CollectionState) -> bool:
-        return self.has_BK_move(state, itemName.BBOMB)
+        return self.has_BK_move(state, itemName.BBOMB) or state.has(itemName.PFLIGHT, self.player, 2)
     
     def turbo_trainers(self, state: CollectionState) -> bool:
         return self.has_BK_move(state, itemName.TTRAIN) or state.has(itemName.PSHOES, self.player, 2)
