@@ -74,7 +74,7 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
 
     def __init__(self, world, player):
-        self.version = "V3.5.1"
+        self.version = "V3.5.2"
         self.kingjingalingjiggy = False
         self.starting_egg: int = 0
         self.starting_attack: int = 0
@@ -85,18 +85,6 @@ class BanjoTooieWorld(World):
         self.use_cheato_filler = False
         self.randomize_worlds = {}
         self.randomize_order = {}
-        self.world_sphere_1 = [
-            regionName.MT,
-            regionName.GM,
-            regionName.WW,
-            regionName.JR,
-            regionName.HP,
-            regionName.TL,
-            regionName.CC,
-            regionName.GIO
-        ]
-        self.world_sphere_2 = [
-        ]
         self.worlds_randomized = False
         self.single_silo = ""
         self.loading_zones = {}

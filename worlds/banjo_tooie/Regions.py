@@ -370,57 +370,67 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     ],
     regionName.IOHQM:   [],
     regionName.GIO: [
-        locationName.TRAINSWGI,
+        locationName.TREBLEGI,
     ],
+    regionName.GIOB: [
+        locationName.TRAINSWGI,
+        locationName.JINJOGI5,
+    ],
+    regionName.GIES: [],
     regionName.GI1: [
         # locationName.JINJOGI3, Moved to JRL
+        locationName.JIGGYGI1,
+        locationName.JIGGYGI2,
+        locationName.JIGGYGI7,
         locationName.JIGGYGI8,
         locationName.JIGGYGI10,
         locationName.CHEATOGI1,
+        locationName.CHEATOGI3,
         locationName.HONEYCGI2,
         locationName.SNPACK,
         locationName.CLAWBTS,
-        locationName.TREBLEGI,
         locationName.NOTEGI4,
         locationName.NOTEGI5,
         locationName.NOTEGI1,
         locationName.NOTEGI2,
         locationName.NOTEGI3,
-        locationName.NOTEGI13,
-        locationName.NOTEGI14,
         locationName.NOTEGI11,
         locationName.NOTEGI12,
+        locationName.NOTEGI13,
+        locationName.NOTEGI14,
     ],
     regionName.GI2: [
+        locationName.CHEATOGI2,
         locationName.GLOWBOGI1,
         locationName.LSPRING,
         locationName.JINJOGI2,
-        locationName.JIGGYGI7,
+        locationName.JIGGYGI4,
         locationName.NOTEGI6,
         locationName.NOTEGI7,
         locationName.NOTEGI8,
         locationName.NOTEGI9,
         locationName.NOTEGI10,
     ],
-    regionName.GI3ALL: [
-        locationName.JINJOGI1,
-        locationName.JINJOGI4,
-        locationName.JINJOGI5,
-        locationName.JIGGYGI1,
-        locationName.JIGGYGI2,
-        locationName.JIGGYGI3,
-        locationName.JIGGYGI4,
-        locationName.JIGGYGI5,
-        locationName.JIGGYGI6,
-        locationName.JIGGYGI9,
+    regionName.GI2EM: [],
+    regionName.GI3: [
         locationName.HONEYCGI1,
-        locationName.HONEYCGI3,
         locationName.GLOWBOGI2,
-        locationName.CHEATOGI2,
-        locationName.CHEATOGI3,
         locationName.NOTEGI15,
-        locationName.NOTEGI16,
-        
+        locationName.NOTEGI16,        
+    ],
+    regionName.GI3B: [
+        locationName.JINJOGI4,
+        locationName.JIGGYGI9,
+    ],
+    regionName.GI4: [],
+    regionName.GI4B: [
+        locationName.JIGGYGI3,
+        locationName.JIGGYGI6,
+    ],
+    regionName.GI5: [
+        locationName.JINJOGI1,
+        locationName.JIGGYGI5,
+        locationName.HONEYCGI3,
     ],
     regionName.HP: [
         locationName.JINJOHP1,
@@ -542,8 +552,8 @@ def create_regions(self):
         region_map[regionName.WW].append(locationName.MUMBOTKNGAME6)
         region_map[regionName.JRU2].append(locationName.MUMBOTKNGAME7)
         region_map[regionName.TL].append(locationName.MUMBOTKNGAME8)
-        region_map[regionName.GI3ALL].append(locationName.MUMBOTKNGAME9)
-        region_map[regionName.GI3ALL].append(locationName.MUMBOTKNGAME10)
+        region_map[regionName.GI4B].append(locationName.MUMBOTKNGAME9)
+        region_map[regionName.GI3B].append(locationName.MUMBOTKNGAME10)
         region_map[regionName.HP].append(locationName.MUMBOTKNGAME11)
         region_map[regionName.CC].append(locationName.MUMBOTKNGAME12)
         region_map[regionName.CC].append(locationName.MUMBOTKNGAME13)
@@ -556,7 +566,7 @@ def create_regions(self):
         region_map[regionName.WW].append(locationName.MUMBOTKNBOSS3)
         region_map[regionName.JRU2].append(locationName.MUMBOTKNBOSS4)
         region_map[regionName.TL].append(locationName.MUMBOTKNBOSS5)
-        region_map[regionName.GI3ALL].append(locationName.MUMBOTKNBOSS6)
+        region_map[regionName.GI1].append(locationName.MUMBOTKNBOSS6)
         region_map[regionName.HP].append(locationName.MUMBOTKNBOSS7)
         region_map[regionName.CC].append(locationName.MUMBOTKNBOSS8)
 
@@ -646,10 +656,14 @@ def connect_regions(self):
                         regionName.IOHCT: lambda state: rules.split_up(state)})
     
     region_GM = multiworld.get_region(regionName.GM, player)
-    region_GM.add_exits({regionName.GMWSJT, regionName.CHUFFY, regionName.WW},
-    {regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_GGM(state),
-     regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ggm_to_chuffy(state),
-     regionName.WW: lambda state: rules.ggm_to_ww(state)})
+    region_GM.add_exits({regionName.GMWSJT, regionName.CHUFFY, regionName.WW}, {
+                        regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_GGM(state),
+                        regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ggm_to_chuffy(state),
+                        regionName.WW: lambda state: rules.ggm_to_ww(state)
+                        })
+    
+    region_GMWSJT = multiworld.get_region(regionName.GMWSJT, player)
+    region_GMWSJT.add_exits({regionName.GM}, {})
     
     region_PG = multiworld.get_region(regionName.IOHPG, player)
     region_PG.add_exits({regionName.WWE, regionName.IOHPGU, regionName.IOHPL},
@@ -712,27 +726,78 @@ def connect_regions(self):
                          regionName.CKE: lambda state: rules.quag_to_CK(state)})
     
     region_GIO = multiworld.get_region(regionName.GIO, player)
-    region_GIO.add_exits({regionName.GI1, regionName.GI2, regionName.GI3ALL},
+    region_GIO.add_exits({regionName.GI1, regionName.GIOB, regionName.GI5},
                         {regionName.GI1: lambda state: rules.outside_gi_to_floor1(state),
-                         regionName.GI2: lambda state: rules.outside_gi_to_floor2(state),
-                         regionName.GI3ALL: lambda state: rules.outside_gi_to_floor3(state)})
+                         regionName.GIOB: lambda state: rules.outside_gi_to_outside_back(state),
+                         regionName.GI5: lambda state: rules.outside_gi_to_floor_5(state)})
+    
+    region_GIOB = multiworld.get_region(regionName.GIOB, player)
+    region_GIOB.add_exits({regionName.GIO, regionName.GI2, regionName.GI3, regionName.GI4, regionName.GI5},
+                        {regionName.GIO: lambda state: rules.climb(state),
+                         regionName.GI2: lambda state: rules.outside_gi_back_to_floor2(state),
+                         regionName.GI3: lambda state: rules.outside_gi_back_to_floor_3(state),
+                         regionName.GI4: lambda state: rules.outside_gi_back_to_floor_4(state),
+                         regionName.GI5: lambda state: rules.outside_gi_back_to_floor_5(state)
+                         })
+    
+    region_GIES = multiworld.get_region(regionName.GIES, player)
+    region_GIES.add_exits({regionName.GI1, regionName.GI2, regionName.GI3, regionName.GI4},
+                        {regionName.GI1: lambda state: rules.elevator_shaft_to_floor_1(state),
+                         regionName.GI2: lambda state: rules.elevator_shaft_to_em(state),
+                         regionName.GI3: lambda state: rules.elevator_shaft_to_boiler_plant(state),
+                         regionName.GI4: lambda state: rules.elevator_shaft_to_floor_4(state)})
     
     region_GI1 = multiworld.get_region(regionName.GI1, player)
-    region_GI1.add_exits({regionName.GIO, regionName.GI2, regionName.GI3ALL, regionName.CHUFFY},
+    region_GI1.add_exits({regionName.GIO, regionName.GIES, regionName.GI2, regionName.GI5, regionName.CHUFFY},
                         {regionName.GIO: lambda state: rules.split_up(state),
-                         regionName.GI2: lambda state: rules.F1_to_F2(state),
-                         regionName.GI3ALL: lambda state: rules.F1_to_F3(state),
+                         regionName.GI2: lambda state: rules.F1_to_F2(state), # TODO: 1 to 3 and 1 to 4
+                         regionName.GI5: lambda state: rules.F1_to_F5(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.gi_to_chuffy(state)})
     
     region_GI2 = multiworld.get_region(regionName.GI2, player)
-    region_GI2.add_exits({regionName.GIO, regionName.GI1, regionName.GI3ALL},
+    region_GI2.add_exits({regionName.GIOB, regionName.GI1, regionName.GI2EM, regionName.GI3},
                         {regionName.GI1: lambda state: rules.F2_to_F1(state),
-                         regionName.GI3ALL: lambda state: rules.F2_to_F3(state)})
+                         regionName.GI2EM: lambda state: rules.floor_2_to_em_room(state),
+                         regionName.GI3: lambda state: rules.F2_to_F3(state)
+                         })
     
-    region_GI3ALL = multiworld.get_region(regionName.GI3ALL, player)
-    region_GI3ALL.add_exits({regionName.GIO, regionName.GI2}, {
-                            regionName.GI2: lambda state: rules.F3_to_F2(state)})
+    region_GI2EM = multiworld.get_region(regionName.GI2, player)
+    region_GI2EM.add_exits({regionName.GIES},
+                        {regionName.GIES: lambda state: rules.floor_2_em_room_to_elevator_shaft(state)
+                         })
+    
+    region_GI3 = multiworld.get_region(regionName.GI3, player)
+    region_GI3.add_exits({regionName.GIOB, regionName.GI2, regionName.GI3B, regionName.GI4, regionName.GI5}, {
+                            regionName.GIOB: lambda state: rules.floor_3_to_outside_back(state),
+                            regionName.GI2: lambda state: rules.F3_to_F2(state),
+                            regionName.GI3B: lambda state: rules.floor_3_to_boiler_plant(state),
+                            regionName.GI4: lambda state: rules.F3_to_F4(state),
+                            regionName.GI5: lambda state: rules.floor_3_to_floor_5(state),
+                            })
+    
+    region_GI3B = multiworld.get_region(regionName.GI3B, player)
+    region_GI3B.add_exits({regionName.GI3, regionName.GIES}, {
+                            regionName.GIES: lambda state: rules.elevator_door(state), 
+                          })
 
+    region_GI4 = multiworld.get_region(regionName.GI4, player)
+    region_GI4.add_exits({regionName.GIOB, regionName.GI3, regionName.GI4B, regionName.GI5}, {
+                            regionName.GIOB: lambda state: rules.floor_4_to_outside_back(state),
+                            regionName.GI3: lambda state: rules.floor_4_to_floor_3(state),
+                            regionName.GI4B: lambda state: rules.floor_4_to_floor_4_back(state),
+                            regionName.GI5: lambda state: rules.floor_4_to_floor_5(state),
+                            })
+    
+    region_GI4B = multiworld.get_region(regionName.GI4B, player)
+    region_GI4B.add_exits({regionName.GIES, regionName.GI4}, {
+                            regionName.GIES: lambda state: rules.floor_4_back_to_elevator_shaft(state)
+                            })
+
+    region_GI5 = multiworld.get_region(regionName.GI5, player)
+    region_GI5.add_exits({regionName.GI3, regionName.GI3B, regionName.GI4}, { # If you can fly and reach the roof, you have access to floor 3 and 4.
+                            regionName.GI3B: lambda state: rules.floor_5_to_boiler_plant(state)
+                            })
+    
     region_CK = multiworld.get_region(regionName.CK, player)
     region_CK.add_exits({regionName.H1},
                         {regionName.H1: lambda state: rules.check_hag1_options(state)})
