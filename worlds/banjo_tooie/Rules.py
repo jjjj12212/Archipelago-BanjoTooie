@@ -4076,7 +4076,7 @@ class BanjoTooieRules:
                 return state.has(name, self.player) and self.split_up(state)
             
     def check_notes(self, state: CollectionState, silo: locationName) -> bool:
-        amount = self.world.jamjars_silo_costs[silo]
+        amount = self.world.jamjars_siloname_costs[silo]
         count: int = 0
         count = state.count(itemName.TREBLE, self.player) * 20
         count += state.count(itemName.BASS, self.player) * 10

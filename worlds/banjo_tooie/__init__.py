@@ -74,7 +74,7 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
 
     def __init__(self, world, player):
-        self.version = "V3.5"
+        self.version = "V4.0"
         self.kingjingalingjiggy = False
         self.starting_egg: int = 0
         self.starting_attack: int = 0
@@ -88,6 +88,7 @@ class BanjoTooieWorld(World):
         self.worlds_randomized = False
         self.single_silo = ""
         self.loading_zones = {}
+        self.jamjars_siloname_costs = {}
         self.jamjars_silo_costs = {}
         super(BanjoTooieWorld, self).__init__(world, player)
 
@@ -691,7 +692,7 @@ class BanjoTooieWorld(World):
             spoiler_handle.write('\n\tBanjo-Tooie Open Overworld Silos:\n')
             spoiler_handle.write("\t\t"+world.worlds[player].single_silo)
             spoiler_handle.write('\n\tJamjars\' Silo Costs:')
-            for silo, cost in world.worlds[player].jamjars_silo_costs.items():
+            for silo, cost in world.worlds[player].jamjars_siloname_costs.items():
                     spoiler_handle.write(f"\n\t\t{silo}: {cost}")
             
 
@@ -751,6 +752,7 @@ class BanjoTooieWorld(World):
         btoptions['version'] = self.version
         btoptions['bassclef_amount'] = int(self.options.bassclef_amount.value)
         btoptions['extra_trebleclefs_count'] = int(self.options.extra_trebleclefs_count.value)
+        btoptions['jamjars_siloname_costs'] = self.jamjars_siloname_costs
         btoptions['jamjars_silo_costs'] = self.jamjars_silo_costs
         btoptions['jamjars_silo_option'] = int(self.options.jamjars_silo_costs.value)
 

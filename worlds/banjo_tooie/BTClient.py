@@ -63,7 +63,7 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_to_id"]
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 script_version: int = 4
-version: str = "V3.5"
+version: str = "V4.0"
 patch_md5: str = "920857d9b75d19ae7ff5173829f64766"
 
 def get_item_value(ap_id):
@@ -425,6 +425,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_jinjo_family_rescue_length": ctx.slot_data["jinjo_family_rescue_length"],
             "slot_token_hunt_length": ctx.slot_data["token_hunt_length"],
             "slot_version": version,
+            "slot_silo_costs": ctx.slot_data["jamjars_silo_costs"],
             "slot_open_silo": ctx.slot_data["first_silo"],
             "slot_zones": ctx.slot_data['loading_zones'],
             "slot_dialog_character": ctx.slot_data['dialog_character']

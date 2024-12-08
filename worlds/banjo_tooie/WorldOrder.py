@@ -3,6 +3,7 @@ import random
 from worlds.banjo_tooie.Names import locationName
 from .Names import itemName, regionName
 from typing import TYPE_CHECKING, List
+from .Locations import all_location_table
 
 # I don't know what is going on here, but it works.
 if TYPE_CHECKING:
@@ -24,6 +25,7 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
             world.starting_egg = passthrough['starting_egg']
             world.starting_attack = passthrough['starting_attack']
             world.single_silo = passthrough['first_silo']
+            world.jamjars_siloname_costs = passthrough['jamjars_siloname_costs']
             world.loading_zones = passthrough['loading_zones']
     else:
         randomize_level_order(world)
@@ -270,7 +272,7 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
 
 def generate_jamjars_costs(world: BanjoTooieWorld) -> None:
     if world.options.jamjars_silo_costs == 0: # Vanilla
-        world.jamjars_silo_costs = {
+        world.jamjars_siloname_costs = {
             locationName.FEGGS: 45,
             locationName.GEGGS: 110,
             locationName.IEGGS: 200,
@@ -325,11 +327,11 @@ def generate_jamjars_costs(world: BanjoTooieWorld) -> None:
         ]
 
         for location in silo_locations:
-            world.jamjars_silo_costs.update({location: world.random.randint(0, 160)*5})
+            world.jamjars_siloname_costs.update({location: world.random.randint(0, 160)*5})
 
     elif world.options.jamjars_silo_costs == 2: # Progressive
         # We have no control over overworld progression, so those stay vanilla.
-        world.jamjars_silo_costs = {
+        world.jamjars_siloname_costs = {
             locationName.FEGGS: 45,
             locationName.GEGGS: 110,
             locationName.IEGGS: 200,
@@ -381,4 +383,7 @@ def generate_jamjars_costs(world: BanjoTooieWorld) -> None:
         for world_entrance in world.randomize_order:
             actual_level = world.loading_zones[world_entrance]
             for silo in moves_per_world[actual_level]:
-                world.jamjars_silo_costs.update({silo: move_costs.pop()})
+                world.jamjars_siloname_costs.update({silo: move_costs.pop()})
+            
+    for name, value in world.jamjars_siloname_costs.items():
+        world.jamjars_silo_costs[all_location_table[name].btid] = value

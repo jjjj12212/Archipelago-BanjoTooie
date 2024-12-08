@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V3.5"
+local BT_VERSION = "V4.0"
 local PLAYER = ""
 local SEED = 0
 
@@ -323,8 +323,8 @@ local ASSET_MAP_CHECK = {
             "1230781"
         },
         ["SILO"] = {
-            "1230754",
-            "1230755"
+            "1230753",
+            "1230754"
         },
     },
     [0xC4] = { --MT - Jade Snake Grove
@@ -342,7 +342,7 @@ local ASSET_MAP_CHECK = {
             "1230687"
         },
         ["SILO"] = {
-            "1230753",
+            "1230755",
         },
     },
     [0xBB] = { --MT - Mayan Kickball Stadium (Lobby)
@@ -1512,6 +1512,33 @@ local DAILOG_KEY_TABLE = {
     "ICON_DINO_SCRIT_BIG",
     "ICON_HEGGY", --109
 }
+local JAMJAR_SILO_TABLE = {}
+local JAMJAR_SILO_LOCATIONS = {
+    "1230753",
+    "1230754",
+    "1230755",
+    "1230756",
+    "1230757",
+    "1230758",
+    "1230759",
+    "1230760",
+    "1230761",
+    "1230762",
+    "1230763",
+    "1230764",
+    "1230765",
+    "1230766",
+    "1230767",
+    "1230768",
+    "1230769",
+    "1230770",
+    "1230771",
+    "1230772",
+    "1230773",
+    "1230774",
+    "1230775",
+    "1230776",
+}
 
 local UNLOCKED_WORLDS = {} -- Worlds unlocked
 
@@ -1520,8 +1547,8 @@ local ADDRESS_MAP = {
     ["SILO"] = {
         ["1230753"] = {
             ['addr'] = 0x1B,
-            ['bit'] = 1,
-            ['name'] = 'Grip Grab'
+            ['bit'] = 3,
+            ['name'] = 'Egg Aim'
         },
         ["1230754"] = {
             ['addr'] = 0x1B,
@@ -1530,8 +1557,8 @@ local ADDRESS_MAP = {
         },
         ["1230755"] = {
             ['addr'] = 0x1B,
-            ['bit'] = 3,
-            ['name'] = 'Egg Aim'
+            ['bit'] = 1,
+            ['name'] = 'Grip Grab'
         },
         ["1230756"] = {
             ['addr'] = 0x1E,
@@ -3772,6 +3799,7 @@ BTHACK = {
         setting_max_mumbo_tokens = 0xB,
         setting_jiggy_requirements = 0xC,
         setting_open_silos = 0x17,
+        setting_silo_requirements = 0x1E,
     pc_items = 0x10,
     pc_exit_map = 0x14,
         exit_on_map = 0x0,
@@ -3890,6 +3918,10 @@ end
 
 function BTHACK:setSettingJiggyRequirements(index, jiggy_requirements)
     mainmemory.writebyte(self.setting_jiggy_requirements + index + BTHACK:getSettingPointer() , jiggy_requirements);
+end
+
+function BTHACK:setSettingSiloRequirements(index, silo_requirements)
+    mainmemory.write_u16_be(self.setting_silo_requirements + (index*2) + BTHACK:getSettingPointer(), silo_requirements);
 end
 
 function BTHACK:setSettingMaxMumboTokens(tokens)
@@ -5447,6 +5479,10 @@ function process_slot(block)
     do
         DIALOG_CHARACTER_TABLE[item] = index - 1
     end
+    for index, item in pairs(JAMJAR_SILO_LOCATIONS)
+    do
+        JAMJAR_SILO_TABLE[item] = index - 1
+    end
     if block['slot_player'] ~= nil and block['slot_player'] ~= ""
     then
         PLAYER = block['slot_player']
@@ -5620,6 +5656,15 @@ function process_slot(block)
                     WORLD_ENTRANCE_MAP[worlds]["locationId"] = tostring(locationId)
                 end
             end
+        end
+    end
+    if block['slot_silo_costs'] ~= nil 
+    then
+        print(block['slot_silo_costs'])
+        for locationId, value in pairs(block['slot_silo_costs'])
+        do
+           BTH:setSettingSiloRequirements(JAMJAR_SILO_TABLE[locationId], value) 
+           print(JAMJAR_SILO_TABLE[locationId] .." - ".. tostring(value))
         end
     end
     if block['slot_open_silo'] ~= nil
