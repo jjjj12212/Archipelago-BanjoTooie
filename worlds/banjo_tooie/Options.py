@@ -260,6 +260,10 @@ class EnableMultiWorldDinoRoar(Toggle):
     """Baby T-Rex Roar is lost across the MultiWorld. Other players need to help him learn to ROAR!"""
     display_name = "Baby T-Rex Roar"
 
+class EnableNestsanity(Toggle):
+    """Eggs and feather nests give checks when you collect them for the first time. They behave as regular egg nests the other times."""
+    display_name = "Nestsanity"
+
 class KingJingalingHasJiggy(DefaultOnToggle):
     """King Jingaling will always have a Jiggy for you."""
     display_name = "King Jingaling Jiggy"
@@ -436,6 +440,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     extra_trebleclefs_count: TrebleclefNotes
     randomize_stop_n_swap: RandomizeStopnSwap
     randomize_dino_roar: EnableMultiWorldDinoRoar
+    nestsanity: EnableNestsanity
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
     backdoors:Backdoors

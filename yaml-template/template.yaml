@@ -73,9 +73,8 @@ Banjo-Tooie:
   randomize_chuffy: 'true'     # Chuffy as a AP Item
   randomize_notes: 'true'
   randomize_stop_n_swap: 'true' # Ice key + Eggs + Egg rewards are added to the item pool.
-
   randomize_dino_roar: 'true'
-
+  nestsanity: 'false' # Every egg nest and feather nest give a check when you collect them for the first time. They behave as normal the other times.
 
   # Changes which levels are open; Recommended when doing multiworld seeds.
   randomize_worlds: 'false'

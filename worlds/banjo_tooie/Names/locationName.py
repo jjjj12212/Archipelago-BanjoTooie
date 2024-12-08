@@ -575,6 +575,7 @@ NESTIH23 = "IoH: Wooded Hollow Right of Jiggywiggy's Temple Egg Nest 1"
 NESTIH24 = "IoH: Wooded Hollow Right of Jiggywiggy's Temple Egg Nest 2"
 NESTIH25 = "IoH: Wooded Hollow Outside Bottles' House Feather Nest 1"
 NESTIH26 = "IoH: Wooded Hollow Outside Bottles' House Feather Nest 2"
+
 NESTIH27 = "IoH: Plateau Near GGM Entrance Egg Nest 1"
 NESTIH28 = "IoH: Plateau Near GGM Entrance Egg Nest 2"
 NESTIH29 = "IoH: Plateau Near Cliff Top Entrance Feather Nest"
