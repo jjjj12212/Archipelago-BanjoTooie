@@ -79,6 +79,10 @@ PBEGGS       = "Progressive Eggs"
 PSHOES       = "Progressive Shoes"
 PSWIM       = "Progressive Water Training"
 PBASH       = "Progressive Bash Attack"
+PFLIGHT     = "Progrssive Flight"
+PEGGAIM     = "Progressive Egg Aim"
+PASWIM      = "Progressive Adv. Water Training"
+PAEGGAIM    = "Progressive Adv. Egg Aiming"
 
 # Mumbo Magics
 MUMBOMT = "Mumbo: Golden Goliath"

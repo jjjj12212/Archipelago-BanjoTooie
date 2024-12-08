@@ -5,7 +5,7 @@ from .Names import locationName
 
 
 class BanjoTooieItem(Item):
-    #1230781
+    #1230785 Note that 1230790+ exists
     game: str = "Banjo-Tooie"
 class ItemData(typing.NamedTuple):
     btid: int = 0
@@ -95,7 +95,11 @@ progressive_ability_table = {
     itemName.PBEGGS:        ItemData(1230829, 4, "progress", ""),
     itemName.PSHOES:        ItemData(1230830, 4, "progress", ""),
     itemName.PSWIM:         ItemData(1230831, 3, "progress", ""),
-    itemName.PBASH:         ItemData(1230832, 2, "progress", "")
+    itemName.PBASH:         ItemData(1230832, 2, "progress", ""),
+    itemName.PFLIGHT:       ItemData(1230782, 3, "progress", ""),
+    itemName.PEGGAIM:       ItemData(1230783, 2, "progress", ""),
+    itemName.PASWIM:        ItemData(1230784, 5, "progress", ""),
+    itemName.PAEGGAIM:      ItemData(1230785, 4, "progress", ""),
 }
 
 level_progress_table = {

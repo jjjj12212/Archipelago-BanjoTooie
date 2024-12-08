@@ -27,10 +27,10 @@ class DialogCharacters(Choice):
     option_ZUBBA = 16
     option_JAMJARS = 17
     option_BOVINA = 18
-    option_MINGO_WHITE = 19
-    option_MINGO_ORANGE = 20
-    option_MINGO_YELLOW = 21
-    option_MINGO_BROWN = 22
+    option_MINJO_WHITE = 19
+    option_MINJO_ORANGE = 20
+    option_MINJO_YELLOW = 21
+    option_MINJO_BROWN = 22
     option_UNOGOPAZ = 23
     option_CHIEF_BLOATAZIN = 24
     option_DILBERTA = 25
@@ -81,11 +81,11 @@ class DialogCharacters(Choice):
     option_BLOBBELDA = 70
     option_KLUNGO = 71
     option_BOTTLES_DEAD = 72
-    option_MINGO_GREEN = 73
-    option_MINGO_RED = 74
-    option_MINGO_BLUE = 75
-    option_MINGO_PURPLE = 76
-    option_MINGO_BLACK = 77
+    option_MINJO_GREEN = 73
+    option_MINJO_RED = 74
+    option_MINJO_BLUE = 75
+    option_MINJO_PURPLE = 76
+    option_MINJO_BLACK = 77
     option_RABBIT_WORKER1 = 78
     option_UNGA_BUNGA = 79
     option_JIGGYWIGGY = 80
@@ -158,6 +158,24 @@ class ProgressiveShoes(Toggle):
 class ProgressiveSwimming(Toggle):
     """Dive to Double Air to Faster Swimming. Randomize Moves and Randomize BK Moves are required."""
     display_name = "Progressive Water Training"
+
+class ProgressiveAdvSwimming(Toggle):
+    """Dive to Sub Aqua Aiming to Talon Torpedo to Double Air to Faster Swimming. 
+    Randomize Moves and Randomize BK Moves are required. Progressive Swimming must be disabled"""
+    display_name = "Progressive Adv. Water Training"
+
+class ProgressiveFlight(Toggle):
+    """Flight Pad to Beak Bomb to Airborne Egg Aim. Randomize Moves and Randomize BK Moves are required."""
+    display_name = "Progressive Flight"
+
+class ProgressiveEggAim(Toggle):
+    """Third Person Egg Shooting to Egg Aim. Randomize Moves and Randomize BK Moves are required."""
+    display_name = "Progressive Egg Aim"
+
+class ProgressiveAdvEggAim(Toggle):
+    """Third Person Egg Shooting to Amaze-O-Gaze to Egg Aim to Breegull Blaster.
+    Randomize Moves and Randomize BK Moves are required. Progressive Egg Aim must be disabled"""
+    display_name = "Progressive Adv. Egg Aiming"
 
 class ProgressiveBashAttack(Toggle):
     """Ground Rat-a-tat Rap to Breegull Bash. Randomize Stop N Swap and Randomize BK Moves are required"""
@@ -382,6 +400,12 @@ class SkipKlungo(Toggle):
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     start_inventory_from_pool: StartInventoryPool
+    logic_type: LogicType
+    victory_condition: VictoryCondition
+    minigame_hunt_length: MinigameHuntLength
+    boss_hunt_length: BossHuntLength
+    jinjo_family_rescue_length: JinjoFamilyRescueLength
+    token_hunt_length: TokenHuntLength
     death_link: DeathLink
     dialog_character:DialogCharacters
     randomize_moves: EnableMultiWorldMoveList
@@ -391,6 +415,10 @@ class BanjoTooieOptions(PerGameCommonOptions):
     egg_behaviour:EggsBehaviour
     progressive_shoes: ProgressiveShoes
     progressive_water_training: ProgressiveSwimming
+    progressive_adv_water_training:ProgressiveAdvSwimming
+    progressive_flight:ProgressiveFlight
+    progressive_egg_aiming:ProgressiveEggAim
+    progressive_adv_egg_aiming:ProgressiveAdvEggAim
     progressive_bash_attack: ProgressiveBashAttack
     randomize_jinjos: EnableMultiWorldJinjos
     randomize_doubloons: EnableMultiWorldDoubloons
@@ -414,12 +442,6 @@ class BanjoTooieOptions(PerGameCommonOptions):
     skip_klungo: SkipKlungo
     skip_tower_of_tragedy: SkipToT
     speed_up_minigames: SpeedUpMinigames
-    logic_type: LogicType
-    victory_condition: VictoryCondition
-    minigame_hunt_length: MinigameHuntLength
-    boss_hunt_length: BossHuntLength
-    jinjo_family_rescue_length: JinjoFamilyRescueLength
-    token_hunt_length: TokenHuntLength
     randomize_worlds: RandomizeWorlds
     randomize_world_loading_zone: RandomizeWorldZones
     open_silos: Silos
