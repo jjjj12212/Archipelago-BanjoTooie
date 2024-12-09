@@ -5660,11 +5660,9 @@ function process_slot(block)
     end
     if block['slot_silo_costs'] ~= nil 
     then
-        print(block['slot_silo_costs'])
         for locationId, value in pairs(block['slot_silo_costs'])
         do
            BTH:setSettingSiloRequirements(JAMJAR_SILO_TABLE[locationId], value) 
-           print(JAMJAR_SILO_TABLE[locationId] .." - ".. tostring(value))
         end
     end
     if block['slot_open_silo'] ~= nil
