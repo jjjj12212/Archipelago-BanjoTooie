@@ -5201,105 +5201,7 @@ function process_block(block)
         local msg = ""
         for k, msg_table in pairs(block['messages'])
         do
-            if msg_table["player"] == PLAYER
-            then
-                msg = "You have found your " .. msg_table["item"]
-            elseif msg_table["to_player"] == PLAYER
-            then
-                msg = msg_table["player"] .. " sent your " .. msg_table["item"]
-            else
-                return
-            end
-            if 1230753 <= msg_table["item_id"] and msg_table["item_id"] <= 1230776 -- Jamjars
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 17})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230779 <= msg_table["item_id"] and msg_table["item_id"] <= 1230780 -- Amaze + Roar
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 17})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230810 <= msg_table["item_id"] and msg_table["item_id"] <= 1230827 -- BK Moves
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 7})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230790 <= msg_table["item_id"] and msg_table["item_id"] <= 1230796 --Stations + Chuffy
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 39})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if (1230777 <= msg_table["item_id"] and msg_table["item_id"] <= 1230778) or msg_table["item_id"] == 1230831 -- Roysten
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 56})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230828 <= msg_table["item_id"] and msg_table["item_id"] <= 1230832 -- Progressive Moves
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 7})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230782 <= msg_table["item_id"] and msg_table["item_id"] <= 1230785 -- Progressive Moves Pt.2
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 7})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230944 <= msg_table["item_id"] and msg_table["item_id"] <= 1230952 -- Worlds
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 27})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230855 <= msg_table["item_id"] and msg_table["item_id"] <= 1230863 -- Mumbo
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 8})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230174 <= msg_table["item_id"] and msg_table["item_id"] <= 1230182 -- Humba
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 37})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
+            Messages(msg_table)
         end
     end
     if block['triggerDeath'] == true and DEATH_LINK == true
@@ -5312,6 +5214,109 @@ function process_block(block)
 
     if DEBUGLVL3 == true then
         print(block)
+    end
+end
+
+function Messages(msg_table)
+    local msg = ""
+    if msg_table["player"] == PLAYER and msg_table["to_player"] == PLAYER
+    then
+        msg = "You have found your " .. msg_table["item"]
+    elseif msg_table["to_player"] == PLAYER
+    then
+        msg = msg_table["player"] .. " sent your " .. msg_table["item"]
+    else
+        return
+    end
+    if 1230753 <= msg_table["item_id"] and msg_table["item_id"] <= 1230776 -- Jamjars
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 17})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230779 <= msg_table["item_id"] and msg_table["item_id"] <= 1230780 -- Amaze + Roar
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 17})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230810 <= msg_table["item_id"] and msg_table["item_id"] <= 1230827 -- BK Moves
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 7})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230790 <= msg_table["item_id"] and msg_table["item_id"] <= 1230796 --Stations + Chuffy
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 39})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if (1230777 <= msg_table["item_id"] and msg_table["item_id"] <= 1230778) or msg_table["item_id"] == 1230831 -- Roysten
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 56})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230828 <= msg_table["item_id"] and msg_table["item_id"] <= 1230832 -- Progressive Moves
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 7})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230782 <= msg_table["item_id"] and msg_table["item_id"] <= 1230785 -- Progressive Moves Pt.2
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 7})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230944 <= msg_table["item_id"] and msg_table["item_id"] <= 1230952 -- Worlds
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 27})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230855 <= msg_table["item_id"] and msg_table["item_id"] <= 1230863 -- Mumbo
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 8})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230174 <= msg_table["item_id"] and msg_table["item_id"] <= 1230182 -- Humba
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 37})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
     end
 end
 
