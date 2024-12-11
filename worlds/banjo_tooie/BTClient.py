@@ -64,7 +64,8 @@ bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 script_version: int = 4
 version: str = "V4.0"
-patch_md5: str = "920857d9b75d19ae7ff5173829f64766"
+game_append_version: str = "V40"
+patch_md5: str = "834bbd12b5a32a1030c214264b75000f"
 
 def get_item_value(ap_id):
     return ap_id
@@ -279,19 +280,19 @@ class BanjoTooieContext(CommonContext):
                     archipelago_root = pathlib.Path(__file__).parents[i]
                     break
             if archipelago_root != None:
-                if self.check_rom(os.path.join(archipelago_root, "Banjo-Tooie-AP.n64")) != patch_md5:
+                if self.check_rom(os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64")) != patch_md5:
                     logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
                     rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")], title="Open your Banjo-Tooie US ROM")
-                    self.patch_rom(rom, os.path.join(archipelago_root, "Banjo-Tooie-AP.n64"), "banjo-tooie.patch")
-                    logger.info("Patched Banjo-Tooie is located in " + os.path.join(archipelago_root, "Banjo-Tooie-AP.n64"))
-                async_start(run_game(os.path.join(archipelago_root, "Banjo-Tooie-AP.n64")))
+                    self.patch_rom(rom, os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64"), "banjo-tooie.patch")
+                    logger.info("Patched Banjo-Tooie is located in " + os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64"))
+                async_start(run_game(os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64")))
             else:
                 logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
                 rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")], title="Open your Banjo-Tooie US ROM")
                 file_path = os.path.split(rom)
-                self.patch_rom(rom, file_path + "/Banjo-Tooie-AP.n64", "banjo-tooie.patch")
-                logger.info("Patched Banjo-Tooie is located in " + os.path.join(archipelago_root, "Banjo-Tooie-AP.n64"))
-                async_start(run_game(os.path.join(file_path, "Banjo-Tooie-AP.n64")))
+                self.patch_rom(rom, file_path + "/Banjo-Tooie-AP"+game_append_version+".n64", "banjo-tooie.patch")
+                logger.info("Patched Banjo-Tooie is located in " + os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64"))
+                async_start(run_game(os.path.join(file_path, "Banjo-Tooie-AP"+game_append_version+".n64")))
 
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
         # elif cmd == 'Print':

@@ -388,7 +388,8 @@ class GameLength(Choice):
     default = 1
 
 class CustomWorlds(FreeText):
-    """Enter a list of jiggy requirements you want for each world unlock. Max values of each world are: 1,20,30,40,50,60,70,80,90"""
+    """Enter a list of jiggy requirements you want for each world unlock. Max values of each world are: 1,20,30,40,50,60,70,80,90
+    Enter your custom world jiggy requirement list"""
     display_name = "Custom world cost list"
     default = "1,4,8,14,20,28,36,45,55"
 
