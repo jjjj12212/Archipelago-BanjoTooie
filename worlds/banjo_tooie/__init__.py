@@ -16,13 +16,12 @@ from .WorldOrder import WorldRandomize
 from BaseClasses import ItemClassification, Tutorial, Item, Region, MultiWorld
 #from Fill import fill_restrictive
 from worlds.AutoWorld import World, WebWorld
-from worlds.LauncherComponents import Component, components, Type
+from worlds.LauncherComponents import Component, components, Type, launch_subprocess
 
 
 def run_client():
     from worlds.banjo_tooie.BTClient import main  # lazy import
-    p = Process(target=main)
-    p.start()
+    launch_subprocess(main)
 
 components.append(Component("Banjo-Tooie Client", func=run_client, component_type=Type.CLIENT))
 
