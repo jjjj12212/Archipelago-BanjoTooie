@@ -880,7 +880,10 @@ async def n64_sync_task(ctx: BanjoTooieContext):
 def main():
     Utils.init_logging("Banjo-Tooie Client")
     parser = get_base_parser()
-    args = parser.parse_args()
+    args = sys.argv[1:]  # the default for parse_args()
+    if "Banjo-Tooie Client" in args:
+        args.remove("Banjo-Tooie Client")
+    args = parser.parse_args(args)
 
     async def _main():
         multiprocessing.freeze_support()
