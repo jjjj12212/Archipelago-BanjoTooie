@@ -94,23 +94,29 @@ class BanjoTooieWorld(World):
         banjoItem = all_item_table.get(itemname)
         if banjoItem.type == 'progress':
             if banjoItem.btid == 1230515:
-                maxJiggy = max(self.randomize_worlds.values()) if self.randomize_worlds else 70
-                extraJiggys = (90 - maxJiggy)/2
-                if self.jiggy_counter > (maxJiggy+extraJiggys):
-                    item_classification = ItemClassification.filler
-                elif self.jiggy_counter > maxJiggy:
-                    item_classification = ItemClassification.useful
+                if hasattr(self.multiworld, "generation_is_fake") == False: 
+                    maxJiggy = max(self.randomize_worlds.values()) if self.randomize_worlds else 70
+                    extraJiggys = (90 - maxJiggy)/2
+                    if self.jiggy_counter > (maxJiggy+extraJiggys):
+                        item_classification = ItemClassification.filler
+                    elif self.jiggy_counter > maxJiggy:
+                        item_classification = ItemClassification.useful
+                    else:
+                        item_classification = ItemClassification.progression
+                    self.jiggy_counter += 1
                 else:
                     item_classification = ItemClassification.progression
-                self.jiggy_counter += 1
             elif banjoItem.btid == 1230797 and self.options.randomize_notes.value == True:
-                if self.notecounter > 130:
-                    item_classification = ItemClassification.filler
-                elif self.notecounter > 117:
-                    item_classification = ItemClassification.useful
+                if hasattr(self.multiworld, "generation_is_fake") == False:
+                    if self.notecounter > 130:
+                        item_classification = ItemClassification.filler
+                    elif self.notecounter > 117:
+                        item_classification = ItemClassification.useful
+                    else:
+                        item_classification = ItemClassification.progression
+                    self.notecounter += 1
                 else:
                     item_classification = ItemClassification.progression
-                self.notecounter += 1
             else:
                 item_classification = ItemClassification.progression
         if banjoItem.type == 'progression_skip_balancing': #Mumbo Tokens
