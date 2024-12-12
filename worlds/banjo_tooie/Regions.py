@@ -653,17 +653,12 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.NESTGM2,
       locationName.NESTGM3,
       locationName.NESTGM4,
-      locationName.NESTGM5,
-      locationName.NESTGM6,
-      locationName.NESTGM7,
-      locationName.NESTGM8,
-      locationName.NESTGM9,
-      locationName.NESTGM10,
+
       locationName.NESTGM11,
       locationName.NESTGM12,
       locationName.NESTGM13,
       locationName.NESTGM14,
-      # in GMWSJT
+
       locationName.NESTGM16,
       locationName.NESTGM17,
       locationName.NESTGM18,
@@ -687,6 +682,14 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.NESTGM36,
       locationName.NESTGM37,
       locationName.NESTGM38,
+    ],
+    regionName.GMFD: [
+      locationName.NESTGM5,
+      locationName.NESTGM6,
+      locationName.NESTGM7,
+      locationName.NESTGM8,
+      locationName.NESTGM9,
+      locationName.NESTGM10,
     ],
     regionName.GMWSJT: [
       locationName.NESTGM15,
@@ -745,7 +748,6 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.NESTWW40,
       locationName.NESTWW41,
       locationName.NESTWW42,
-      locationName.NESTWW43,
     ],
     regionName.IOHCT:   [
       locationName.NESTIH40,
@@ -925,12 +927,10 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.NESTGI23,
       locationName.NESTGI24,
       locationName.NESTGI25,
-      locationName.NESTGI26,
       locationName.NESTGI27,
       locationName.NESTGI28,
       locationName.NESTGI29,
       locationName.NESTGI30,
-      locationName.NESTGI31,
     ],
     regionName.GI2EM: [
       locationName.NESTGI32,
@@ -980,6 +980,10 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.NESTGI1,
       locationName.NESTGI2,
       locationName.NESTGI3,
+      
+      locationName.NESTGI26,
+
+      locationName.NESTGI31,
 
       locationName.NESTGI53,
       locationName.NESTGI54,
@@ -1210,7 +1214,12 @@ def connect_regions(self):
     region_GM.add_exits({regionName.GMWSJT, regionName.CHUFFY, regionName.WW}, {
                         regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_GGM(state),
                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ggm_to_chuffy(state),
-                        regionName.WW: lambda state: rules.ggm_to_ww(state)
+                        regionName.GMFD: lambda state: rules.ggm_to_fuel_depot(state)
+                        })
+    
+    region_GMFD = multiworld.get_region(regionName.GMFD, player)
+    region_GMFD.add_exits({regionName.WW}, {
+                        regionName.WW: lambda state: rules.fuel_depot_to_ww(state),
                         })
     
     region_GMWSJT = multiworld.get_region(regionName.GMWSJT, player)
@@ -1228,9 +1237,11 @@ def connect_regions(self):
      regionName.IOHWL: lambda state: state.has(itemName.TTORP, player) or state.has(itemName.PASWIM, player, 3)})
     
     region_WW = multiworld.get_region(regionName.WW, player)
-    region_WW.add_exits({regionName.CHUFFY, regionName.TL},
-    {regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ww_to_chuffy(state),
-     regionName.TL: lambda state: rules.ww_tdl_backdoor(state)})
+    region_WW.add_exits({regionName.CHUFFY, regionName.TL, regionName.GMFD},
+                        {regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ww_to_chuffy(state),
+                        regionName.TL: lambda state: rules.ww_tdl_backdoor(state),
+                        regionName.GMFD: lambda state: rules.ww_to_fuel_depot(state),
+                        })
 
     region_IOHCT = multiworld.get_region(regionName.IOHCT, player)
     region_IOHCT.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.HFPE, regionName.JRLE, regionName.CHUFFY, regionName.IOHPL},
@@ -1256,6 +1267,7 @@ def connect_regions(self):
                         {regionName.MT: lambda state: rules.HFP_to_MT(state),
                          regionName.JR: lambda state: rules.HFP_to_JRL(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.hfp_to_chuffy(state)})
+
     region_IOHWL = multiworld.get_region(regionName.IOHWL, player)
     region_IOHWL.add_exits({regionName.IOHPGU, regionName.IOHQM, regionName.TDLE, regionName.CCLE},
                         {regionName.IOHPGU: lambda state: rules.WL_to_PGU(state),

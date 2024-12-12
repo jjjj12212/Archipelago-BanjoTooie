@@ -189,8 +189,8 @@ class BanjoTooieWorld(World):
                                 i == (self.options.extra_trebleclefs_count.value*3 - 14):
                                     break
                                 itempool += [self.create_item(name)]
-                        if self.options.nestsanity.value == True: # TODO: change for egg and feather refills
-                            for i in range(472):
+                        if self.options.nestsanity.value == True: # TODO: change for egg and feather packs
+                            for i in range(471):
                                 itempool += [self.create_item(name)]
 
                     #end of none qty logic
