@@ -598,6 +598,7 @@ NESTIH42 = "IoH: Cliff Top Feather Nest 2"
 NESTIH43 = "IoH: Cliff Top Feather Nest 3"
 NESTIH44 = "IoH: Cliff Top Feather Nest 4"
 NESTIH45 = "IoH: Cliff Top Egg Nest 2"
+NESTIH64 = "IoH: Cliff Top Egg Nest 3" # Out of order
 
 NESTIH46 = "IoH: Humba's Wigwam Egg Nest 1"
 NESTIH47 = "IoH: Humba's Wigwam Egg Nest 2"

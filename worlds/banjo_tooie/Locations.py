@@ -960,6 +960,7 @@ IHCTLoc_table = {
     locationName.NESTIH43: LocationData(1231077),
     locationName.NESTIH44: LocationData(1231078),
     locationName.NESTIH45: LocationData(1231079),
+    locationName.NESTIH64: LocationData(1231482), #Out of order.
 }
 
 boss_table = {
