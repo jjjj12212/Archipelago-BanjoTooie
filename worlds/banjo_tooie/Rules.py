@@ -481,7 +481,7 @@ class BanjoTooieRules:
             locationName.PACKWH: lambda state: self.split_up(state) and self.check_notes(state, 170),
 
             locationName.AUQAIM: lambda state: (self.has_explosives(state) or state.has(itemName.DOUBLOON, self.player, 28)) and
-                                               self.check_notes(state, 285),
+                                               self.check_notes(state, 275),
             locationName.TTORP: lambda state:  self.can_reach_atlantis(state) and self.grip_grab(state) and self.tall_jump(state) and
                                                self.check_notes(state, 290),
             locationName.WWHACK: lambda state: (self.has_explosives(state)) and self.split_up(state) and
@@ -1755,16 +1755,16 @@ class BanjoTooieRules:
     def jiggy_hfp_kickball(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and self.has_explosives(state)
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.can_access_JSG(state) and self.has_explosives(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.can_access_JSG(state) and \
                     (self.has_explosives(state) or \
                     self.check_mumbo_magic(state, itemName.MUMBOHP))
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.can_access_JSG(state) and \
                     (self.has_explosives(state) or self.check_mumbo_magic(state, itemName.MUMBOHP))
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.can_access_JSG(state) and \
                     (self.has_explosives(state) or self.check_mumbo_magic(state, itemName.MUMBOHP))
         return logic
     
@@ -1913,15 +1913,15 @@ class BanjoTooieRules:
     def honeycomb_mt_entrance(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT)
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.can_access_JSG(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = (self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT)) or \
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.can_access_JSG(state) or \
                     self.clockwork_eggs(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT)) or \
+            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.can_access_JSG(state) or \
                     self.clockwork_eggs(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT))\
+            logic = self.can_access_JSG(state) and self.check_humba_magic(state, itemName.HUMBAMT)\
                     or self.clockwork_eggs(state)\
                     or self.breegull_bash(state)
                     

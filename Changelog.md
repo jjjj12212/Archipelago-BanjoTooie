@@ -1,5 +1,6 @@
 # 3.5.3-beta
   - Logic Fixes:
+    - MT Honeycomb: takes glitched access into JSG into account for the stony.
     - Treasure Chamber Jiggy: added condition to make sure you can reach the treasure chamber.
     - GGM Entrance Glowbo: In hard tricks and glitches logics, can be gotten with nothing by jumping on the right side of the slope.
     - GGM Mumbo Notes: if not on intended logic, can be gotten with turbo trainers or springy step shoes.
@@ -12,6 +13,7 @@
     - GI Train station honeycomb: if not on intended logic, can be gotten with leg spring.
     - Air Conditionning Plant Note 2: in intended logic, added moves to cross the gap.
     - Dragon Brothers jiggy: added moves to jump over the tongue
+    - HFP Kickball Jiggy: takes glitched access into JSG into account for the stony.
     - CCL Humba Jinjo: Uses logic that was meant to be in use for the past 2 months. Oops!
       - From the logs from 3.0-beta: "can be gotten with leg spring, if not on beginner logic. Advanced and glitched logic can get it with a clockwork shot."
 
