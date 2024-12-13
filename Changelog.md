@@ -1,3 +1,20 @@
+# 3.5.3-beta
+  - Logic Fixes:
+    - Treasure Chamber Jiggy: added condition to make sure you can reach the treasure chamber.
+    - GGM Entrance Glowbo: In hard tricks and glitches logics, can be gotten with nothing by jumping on the right side of the slope.
+    - GGM Mumbo Notes: if not on intended logic, can be gotten with turbo trainers or springy step shoes.
+    - Alcove Doubloons: For hard tricks and glitch logics, can be gotten with:
+      - Pack Whack + Tall Jump + Grip Grab
+      - Tall Jump + Wing Whack
+      - Tall Jump + Glide
+    - Chompa Jiggy: For hard tricks and glitch logics, added beak buster as a way to reach the flight pad.
+    - Glitched access to the top of TDL: if going through the insides of the mountain, requires tall jump, grip grab, or beak buster to reach the flight pad.
+    - GI Train station honeycomb: if not on intended logic, can be gotten with leg spring.
+    - Air Conditionning Plant Note 2: in intended logic, added moves to cross the gap.
+    - Dragon Brothers jiggy: added moves to jump over the tongue
+    - CCL Humba Jinjo: Uses logic that was meant to be in use for the past 2 months. Oops!
+      - From the logs from 3.0-beta: "can be gotten with leg spring, if not on beginner logic. Advanced and glitched logic can get it with a clockwork shot."
+
 # 3.5.2-beta
   - Renamings:
     - Area 51 notes: renamed to left and right notes.
@@ -21,7 +38,7 @@
     - Central Cavern Jinjo: No longer needs bill drill on advanced and glitched logic. You can use the shoes near the split up pads
 
 # 3.5.1-beta
-  -Logic fixes:
+  - Logic fixes:
     - Treasure Chamber Jiggy: checks if you have talon trot, if you're reaching the top from the inside. Also, if not on intended logic, takes getting the relic from TDL into consideration.
     - Snake Head Cheato Page: Checks if you have talon trot, if you're reaching the top from the inside. For intended logic, no longer requires egg aim if reaching it by flight.
     - Plateau to GGM: For GGM early, doing it with talon trot + air rat-a-tat rap + beak buster is no longer in logic.
