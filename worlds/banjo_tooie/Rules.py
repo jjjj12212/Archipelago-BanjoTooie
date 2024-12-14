@@ -6142,6 +6142,7 @@ class BanjoTooieRules:
             logic = self.climb(state) or self.beak_buster(state) or self.flutter(state) or self.air_rat_a_tat_rap(state)
         return logic
 
+
     def PG_to_PL(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner

@@ -318,7 +318,7 @@ class BanjoTooieWorld(World):
         
         # if item.code == 1230888 and self.options.cheato_rewards.value == False and self.options.honeyb_rewards.value == False:
         #     return False
-        if item.code == 1230888 and self.options.randomize_bk_moves.value == 2 and \
+        if item.code == 1230888 and self.options.randomize_bk_moves.value == 2 and self.options.nessanity.value == False \
             (self.options.bassclef_amount.value == 0 and self.options.extra_trebleclefs_count.value == 0):
             return False
         if item.code == 1230888 and self.options.traps.value == True:

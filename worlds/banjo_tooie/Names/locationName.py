@@ -829,7 +829,7 @@ NESTJR35 = "JRL: Lockers Egg Nest 2"
 NESTJR36 = "JRL: Lockers Egg Nest 3"
 NESTJR37 = "JRL: Near Big Fish Warp Pad Egg Nest 1"
 NESTJR38 = "JRL: Near Big Fish Warp Pad Egg Nest 2"
-NESTJR39 = "JRL: Locker Cavern Seemee Fish Egg Nest"
+NESTJR39 = "JRL: Locker Cavern Seemee Fish Feather Nest"
 NESTJR40 = "JRL: Locker Cavern Seemee Fish Egg Nest"
 
 
