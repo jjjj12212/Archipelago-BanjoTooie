@@ -16,13 +16,12 @@ from .WorldOrder import WorldRandomize
 from BaseClasses import ItemClassification, Tutorial, Item, Region, MultiWorld
 #from Fill import fill_restrictive
 from worlds.AutoWorld import World, WebWorld
-from worlds.LauncherComponents import Component, components, Type
+from worlds.LauncherComponents import Component, components, Type, launch_subprocess
 
 
 def run_client():
     from worlds.banjo_tooie.BTClient import main  # lazy import
-    p = Process(target=main)
-    p.start()
+    launch_subprocess(main)
 
 components.append(Component("Banjo-Tooie Client", func=run_client, component_type=Type.CLIENT))
 
@@ -74,7 +73,7 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
 
     def __init__(self, world, player):
-        self.version = "V3.5"
+        self.version = "V4.0"
         self.kingjingalingjiggy = False
         self.starting_egg: int = 0
         self.starting_attack: int = 0
@@ -88,6 +87,7 @@ class BanjoTooieWorld(World):
         self.worlds_randomized = False
         self.single_silo = ""
         self.loading_zones = {}
+        self.jamjars_siloname_costs = {}
         self.jamjars_silo_costs = {}
         super(BanjoTooieWorld, self).__init__(world, player)
 
@@ -95,23 +95,29 @@ class BanjoTooieWorld(World):
         banjoItem = all_item_table.get(itemname)
         if banjoItem.type == 'progress':
             if banjoItem.btid == 1230515:
-                maxJiggy = max(self.randomize_worlds.values()) if self.randomize_worlds else 70
-                extraJiggys = (90 - maxJiggy)/2
-                if self.jiggy_counter > (maxJiggy+extraJiggys):
-                    item_classification = ItemClassification.filler
-                elif self.jiggy_counter > maxJiggy:
-                    item_classification = ItemClassification.useful
+                if hasattr(self.multiworld, "generation_is_fake") == False: 
+                    maxJiggy = max(self.randomize_worlds.values()) if self.randomize_worlds else 70
+                    extraJiggys = (90 - maxJiggy)/2
+                    if self.jiggy_counter > (maxJiggy+extraJiggys):
+                        item_classification = ItemClassification.filler
+                    elif self.jiggy_counter > maxJiggy:
+                        item_classification = ItemClassification.useful
+                    else:
+                        item_classification = ItemClassification.progression
+                    self.jiggy_counter += 1
                 else:
                     item_classification = ItemClassification.progression
-                self.jiggy_counter += 1
             elif banjoItem.btid == 1230797 and self.options.randomize_notes.value == True:
-                if self.notecounter > 130:
-                    item_classification = ItemClassification.filler
-                elif self.notecounter > 117:
-                    item_classification = ItemClassification.useful
+                if hasattr(self.multiworld, "generation_is_fake") == False:
+                    if self.notecounter > 130:
+                        item_classification = ItemClassification.filler
+                    elif self.notecounter > 117:
+                        item_classification = ItemClassification.useful
+                    else:
+                        item_classification = ItemClassification.progression
+                    self.notecounter += 1
                 else:
                     item_classification = ItemClassification.progression
-                self.notecounter += 1
             else:
                 item_classification = ItemClassification.progression
         if banjoItem.type == 'progression_skip_balancing': #Mumbo Tokens
@@ -149,6 +155,39 @@ class BanjoTooieWorld(World):
         itempool = []
         if self.options.cheato_as_filler == True:
             self.use_cheato_filler = True
+        ############## START OF TRAP / BIG O PANTS COUNTER #######################################
+        trap_big_pants_counter = 0
+        if self.options.cheato_rewards.value == True and self.options.randomize_bk_moves.value == 0:
+            for i in range(5):
+                trap_big_pants_counter += 1
+        if self.options.honeyb_rewards.value == True and self.options.randomize_bk_moves.value == 0: #10 if both options are on
+            for i in range(5):
+                trap_big_pants_counter += 1
+        if self.options.randomize_bk_moves.value == 1: # 2 moves won't be added to the pool
+            for i in range(2):
+                trap_big_pants_counter += 1
+        if self.options.randomize_bk_moves.value == 0: # No moves added, fills for the Jiggy Chunks, Dino Kids
+            for i in range(6):
+                trap_big_pants_counter += 1
+        if self.options.bassclef_amount.value > 0:
+            for i in range(self.options.bassclef_amount.value): #adds an additional big-o-pants for each bassclef
+                trap_big_pants_counter += 1
+        if self.options.extra_trebleclefs_count.value > 0:
+            for i in range(self.options.extra_trebleclefs_count.value*3): #adds an additional big-o-pants for each bassclef
+                if self.options.victory_condition.value == 5 and \
+                (((self.options.bassclef_amount.value*2) + (self.options.extra_trebleclefs_count.value*4)) >= 130) and \
+                i == (self.options.extra_trebleclefs_count.value*3 - 14):
+                    break
+                trap_big_pants_counter += 1
+        if self.options.nestsanity.value == True: # TODO: change for egg and feather packs
+            trap_big_pants_counter += 472
+        if self.options.traps.value == True:
+            trup = divmod(trap_big_pants_counter, 3)
+            ttrap_qty = trup[0] + (1 if trup[1] >= 1 else 0)
+            strap_qty = trup[0] + (1 if trup[1] >= 2 else 0)
+            trtrap_qty = trup[0]
+
+        ############## END OF TRAP / BIG O PANTS COUNTER #######################################
         for name,id in all_item_table.items():
             item = self.create_item(name)
             if self.item_filter(item):
@@ -167,32 +206,17 @@ class BanjoTooieWorld(World):
 
                     #if none in pool
                     elif item.code == 1230888:
-                        if self.options.cheato_rewards.value == True and self.options.randomize_bk_moves.value == 0:
-                            for i in range(5):
-                                itempool += [self.create_item(name)]
-                        if self.options.honeyb_rewards.value == True and self.options.randomize_bk_moves.value == 0: #10 if both options are on
-                            for i in range(5):
-                                itempool += [self.create_item(name)]
-                        if self.options.randomize_bk_moves.value == 1: # 2 moves won't be added to the pool
-                            for i in range(2):
-                                itempool += [self.create_item(name)]
-                        if self.options.randomize_bk_moves.value == 0: # No moves added, fills for the Jiggy Chunks, Dino Kids
-                            for i in range(6):
-                                itempool += [self.create_item(name)]
-                        if self.options.bassclef_amount.value > 0:
-                            for i in range(self.options.bassclef_amount.value): #adds an additional big-o-pants for each bassclef
-                                itempool += [self.create_item(name)]
-                        if self.options.extra_trebleclefs_count.value > 0:
-                            for i in range(self.options.extra_trebleclefs_count.value*3): #adds an additional big-o-pants for each bassclef
-                                if self.options.victory_condition.value == 5 and \
-                                (((self.options.bassclef_amount.value*2) + (self.options.extra_trebleclefs_count.value*4)) >= 130) and \
-                                i == (self.options.extra_trebleclefs_count.value*3 - 14):
-                                    break
-                                itempool += [self.create_item(name)]
-                        if self.options.nestsanity.value == True: # TODO: change for egg and feather packs
-                            for i in range(471):
-                                itempool += [self.create_item(name)]
-
+                       for i in range(trap_big_pants_counter):
+                            itempool += [self.create_item(name)]
+                    elif item.code == 1230786:
+                        for i in range(ttrap_qty):
+                            itempool += [self.create_item(name)]
+                    elif item.code == 1230787:
+                        for i in range(strap_qty):
+                            itempool += [self.create_item(name)]
+                    elif item.code == 1230788:
+                        for i in range(trtrap_qty):
+                            itempool += [self.create_item(name)]
                     #end of none qty logic
 
                     #notes - extra other notes
@@ -296,6 +320,11 @@ class BanjoTooieWorld(World):
         #     return False
         if item.code == 1230888 and self.options.randomize_bk_moves.value == 2 and \
             (self.options.bassclef_amount.value == 0 and self.options.extra_trebleclefs_count.value == 0):
+            return False
+        if item.code == 1230888 and self.options.traps.value == True:
+            return False
+        
+        if (item.code == 1230786 or item.code == 1230787 or item.code == 1230788) and self.options.traps.value == False:
             return False
         
         if self.options.progressive_beak_buster.value == True and (item.code == 1230820 or item.code == 1230757):
@@ -694,7 +723,7 @@ class BanjoTooieWorld(World):
             spoiler_handle.write('\n\tBanjo-Tooie Open Overworld Silos:\n')
             spoiler_handle.write("\t\t"+world.worlds[player].single_silo)
             spoiler_handle.write('\n\tJamjars\' Silo Costs:')
-            for silo, cost in world.worlds[player].jamjars_silo_costs.items():
+            for silo, cost in world.worlds[player].jamjars_siloname_costs.items():
                     spoiler_handle.write(f"\n\t\t{silo}: {cost}")
             
 
@@ -754,6 +783,7 @@ class BanjoTooieWorld(World):
         btoptions['version'] = self.version
         btoptions['bassclef_amount'] = int(self.options.bassclef_amount.value)
         btoptions['extra_trebleclefs_count'] = int(self.options.extra_trebleclefs_count.value)
+        btoptions['jamjars_siloname_costs'] = self.jamjars_siloname_costs
         btoptions['jamjars_silo_costs'] = self.jamjars_silo_costs
         btoptions['jamjars_silo_option'] = int(self.options.jamjars_silo_costs.value)
 

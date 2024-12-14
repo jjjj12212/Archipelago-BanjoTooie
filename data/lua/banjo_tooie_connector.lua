@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V3.5"
+local BT_VERSION = "V4.0"
 local PLAYER = ""
 local SEED = 0
 
@@ -78,6 +78,10 @@ local RED_JINJO = 0;
 local BLUE_JINJO = 0;
 local PURPLE_JINJO = 0;
 local BLACK_JINJO = 0;
+
+local TTRAPS = 0;
+local STRAPS = 0;
+local TRTRAPS = 0;
 
 -------------- SKIP VARS ------------
 local OPEN_HAG1 = false;
@@ -323,8 +327,8 @@ local ASSET_MAP_CHECK = {
             "1230781"
         },
         ["SILO"] = {
-            "1230754",
-            "1230755"
+            "1230753",
+            "1230754"
         },
     },
     [0xC4] = { --MT - Jade Snake Grove
@@ -342,7 +346,7 @@ local ASSET_MAP_CHECK = {
             "1230687"
         },
         ["SILO"] = {
-            "1230753",
+            "1230755",
         },
     },
     [0xBB] = { --MT - Mayan Kickball Stadium (Lobby)
@@ -1398,6 +1402,13 @@ local ROM_ITEM_TABLE = {
     "AP_ITEM_H1A",
 };
 
+local TRAP_TABLE = {};
+local TRAPS = {
+    "AP_TRAP_TRIP",
+    "AP_TRAP_SLIP",
+    "AP_TRAP_MISFIRE"
+}
+
 local CURRENT_DIALOG_CHARACTER = nil
 local DIALOG_CHARACTER_TABLE = {}
 local DAILOG_KEY_TABLE = {
@@ -1512,6 +1523,33 @@ local DAILOG_KEY_TABLE = {
     "ICON_DINO_SCRIT_BIG",
     "ICON_HEGGY", --109
 }
+local JAMJAR_SILO_TABLE = {}
+local JAMJAR_SILO_LOCATIONS = {
+    "1230753",
+    "1230754",
+    "1230755",
+    "1230756",
+    "1230757",
+    "1230758",
+    "1230759",
+    "1230760",
+    "1230761",
+    "1230762",
+    "1230763",
+    "1230764",
+    "1230765",
+    "1230766",
+    "1230767",
+    "1230768",
+    "1230769",
+    "1230770",
+    "1230771",
+    "1230772",
+    "1230773",
+    "1230774",
+    "1230775",
+    "1230776",
+}
 
 local UNLOCKED_WORLDS = {} -- Worlds unlocked
 
@@ -1520,8 +1558,8 @@ local ADDRESS_MAP = {
     ["SILO"] = {
         ["1230753"] = {
             ['addr'] = 0x1B,
-            ['bit'] = 1,
-            ['name'] = 'Grip Grab'
+            ['bit'] = 3,
+            ['name'] = 'Egg Aim'
         },
         ["1230754"] = {
             ['addr'] = 0x1B,
@@ -1530,8 +1568,8 @@ local ADDRESS_MAP = {
         },
         ["1230755"] = {
             ['addr'] = 0x1B,
-            ['bit'] = 3,
-            ['name'] = 'Egg Aim'
+            ['bit'] = 1,
+            ['name'] = 'Grip Grab'
         },
         ["1230756"] = {
             ['addr'] = 0x1E,
@@ -3772,8 +3810,10 @@ BTHACK = {
         setting_max_mumbo_tokens = 0xB,
         setting_jiggy_requirements = 0xC,
         setting_open_silos = 0x17,
+        setting_silo_requirements = 0x1E,
     pc_items = 0x10,
-    pc_exit_map = 0x14,
+    pc_traps = 0x14,
+    pc_exit_map = 0x18,
         exit_on_map = 0x0,
         exit_og_map = 0x2,
         exit_to_map = 0x4,
@@ -3781,12 +3821,13 @@ BTHACK = {
         exit_to_exit = 0x7,
         exit_map_struct_size = 0x8,
         world_index = 0,
-    n64 = 0x18,
+    n64 = 0x1C,
         n64_show_text = 0x0,
         n64_death_us = 0x1,
         n64_death_ap = 0x2,
-    real_flags = 0x1C,
-    fake_flags = 0x20,
+        current_map = 0x4,
+    real_flags = 0x20,
+    fake_flags = 0x24,
     txt_queue = 0
 }
 
@@ -3892,6 +3933,10 @@ function BTHACK:setSettingJiggyRequirements(index, jiggy_requirements)
     mainmemory.writebyte(self.setting_jiggy_requirements + index + BTHACK:getSettingPointer() , jiggy_requirements);
 end
 
+function BTHACK:setSettingSiloRequirements(index, silo_requirements)
+    mainmemory.write_u16_be(self.setting_silo_requirements + (index*2) + BTHACK:getSettingPointer(), silo_requirements);
+end
+
 function BTHACK:setSettingMaxMumboTokens(tokens)
     mainmemory.writebyte(self.setting_max_mumbo_tokens + BTHACK:getSettingPointer(), tokens);
 end
@@ -3921,6 +3966,19 @@ function BTHACK:getMap()
     end
 	local n64_ptr = BTHACK:dereferencePointer(self.n64 + hackPointerIndex);
     return mainmemory.read_u16_be(n64_ptr + 4)
+end
+
+function BTHACK:getTrapPointer()
+    local hackPointerIndex = BTHACK:dereferencePointer(self.base_index);
+    if hackPointerIndex == nil
+    then
+        return nil
+    end
+	return BTHACK:dereferencePointer(self.pc_traps + hackPointerIndex);
+end
+
+function BTHACK:sendTrap(index, value)
+    mainmemory.writebyte(index + self:getTrapPointer(), value);
 end
 
 function BTHACK:setWorldEntrance(currentWorldId, newWorldId, entranceId, currentMap, newEntanceId)
@@ -4960,6 +5018,22 @@ function obtain_mumbo_token()
     BTH:setItem(ITEM_TABLE["AP_ITEM_MUMBOTOKEN"], TOTAL_MUMBO_TOKENS)
 end
 
+---------------------- TRAPS ----------------------------
+function traps(itemId)
+    if itemId == 1230786
+    then
+        TTRAPS = TTRAPS + 1
+        BTH:sendTrap(TRAP_TABLE["AP_TRAP_TRIP"], TTRAPS)
+    elseif itemId == 1230787
+    then
+        STRAPS = STRAPS + 1
+        BTH:sendTrap(TRAP_TABLE["AP_TRAP_SLIP"], STRAPS)
+    elseif itemId == 1230788
+    then
+        TRTRAPS = TRTRAPS + 1
+        BTH:sendTrap(TRAP_TABLE["AP_TRAP_MISFIRE"], TRTRAPS)
+    end
+end
 ---------------------- GAME FUNCTIONS -------------------
 
 function zoneWarp(zone_table)
@@ -5107,6 +5181,9 @@ function processAGIItem(item_list)
             elseif( 1230799 <= memlocation and memlocation <= 1230804) -- StopNSwap
             then
                 obtain_mystery_item(memlocation)
+            elseif( 1230786 <= memlocation and memlocation <= 1230788) -- Traps
+            then
+                traps(memlocation)
             elseif(memlocation == 1230514) -- Doubloon Item
             then
                 obtained_AP_DOUBLOON()
@@ -5169,105 +5246,7 @@ function process_block(block)
         local msg = ""
         for k, msg_table in pairs(block['messages'])
         do
-            if msg_table["player"] == PLAYER
-            then
-                msg = "You have found your " .. msg_table["item"]
-            elseif msg_table["to_player"] == PLAYER
-            then
-                msg = msg_table["player"] .. " sent your " .. msg_table["item"]
-            else
-                return
-            end
-            if 1230753 <= msg_table["item_id"] and msg_table["item_id"] <= 1230776 -- Jamjars
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 17})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230779 <= msg_table["item_id"] and msg_table["item_id"] <= 1230780 -- Amaze + Roar
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 17})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230810 <= msg_table["item_id"] and msg_table["item_id"] <= 1230827 -- BK Moves
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 7})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230790 <= msg_table["item_id"] and msg_table["item_id"] <= 1230796 --Stations + Chuffy
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 39})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if (1230777 <= msg_table["item_id"] and msg_table["item_id"] <= 1230778) or msg_table["item_id"] == 1230831 -- Roysten
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 56})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230828 <= msg_table["item_id"] and msg_table["item_id"] <= 1230832 -- Progressive Moves
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 7})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230782 <= msg_table["item_id"] and msg_table["item_id"] <= 1230785 -- Progressive Moves Pt.2
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 7})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230944 <= msg_table["item_id"] and msg_table["item_id"] <= 1230952 -- Worlds
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 27})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230855 <= msg_table["item_id"] and msg_table["item_id"] <= 1230863 -- Mumbo
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 8})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
-            if 1230174 <= msg_table["item_id"] and msg_table["item_id"] <= 1230182 -- Humba
-            then
-                if DIALOG_CHARACTER == 110
-                then
-                    table.insert(MESSAGE_TABLE, {msg, 37})
-                else
-                    table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-                end
-            end
+            Messages(msg_table)
         end
     end
     if block['triggerDeath'] == true and DEATH_LINK == true
@@ -5280,6 +5259,109 @@ function process_block(block)
 
     if DEBUGLVL3 == true then
         print(block)
+    end
+end
+
+function Messages(msg_table)
+    local msg = ""
+    if msg_table["player"] == PLAYER and msg_table["to_player"] == PLAYER
+    then
+        msg = "You have found your " .. msg_table["item"]
+    elseif msg_table["to_player"] == PLAYER
+    then
+        msg = msg_table["player"] .. " sent your " .. msg_table["item"]
+    else
+        return
+    end
+    if 1230753 <= msg_table["item_id"] and msg_table["item_id"] <= 1230776 -- Jamjars
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 17})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230779 <= msg_table["item_id"] and msg_table["item_id"] <= 1230780 -- Amaze + Roar
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 17})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230810 <= msg_table["item_id"] and msg_table["item_id"] <= 1230827 -- BK Moves
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 7})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230790 <= msg_table["item_id"] and msg_table["item_id"] <= 1230796 --Stations + Chuffy
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 39})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if (1230777 <= msg_table["item_id"] and msg_table["item_id"] <= 1230778) or msg_table["item_id"] == 1230831 -- Roysten
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 56})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230828 <= msg_table["item_id"] and msg_table["item_id"] <= 1230832 -- Progressive Moves
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 7})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230782 <= msg_table["item_id"] and msg_table["item_id"] <= 1230785 -- Progressive Moves Pt.2
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 7})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230944 <= msg_table["item_id"] and msg_table["item_id"] <= 1230952 -- Worlds
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 27})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230855 <= msg_table["item_id"] and msg_table["item_id"] <= 1230863 -- Mumbo
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 8})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
+    end
+    if 1230174 <= msg_table["item_id"] and msg_table["item_id"] <= 1230182 -- Humba
+    then
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 37})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
     end
 end
 
@@ -5446,6 +5528,14 @@ function process_slot(block)
     for index, item in pairs(DAILOG_KEY_TABLE)
     do
         DIALOG_CHARACTER_TABLE[item] = index - 1
+    end
+    for index, item in pairs(JAMJAR_SILO_LOCATIONS)
+    do
+        JAMJAR_SILO_TABLE[item] = index - 1
+    end
+    for index, item in pairs(TRAPS)
+    do
+        TRAP_TABLE[item] = index - 1
     end
     if block['slot_player'] ~= nil and block['slot_player'] ~= ""
     then
@@ -5620,6 +5710,13 @@ function process_slot(block)
                     WORLD_ENTRANCE_MAP[worlds]["locationId"] = tostring(locationId)
                 end
             end
+        end
+    end
+    if block['slot_silo_costs'] ~= nil 
+    then
+        for locationId, value in pairs(block['slot_silo_costs'])
+        do
+           BTH:setSettingSiloRequirements(JAMJAR_SILO_TABLE[locationId], value) 
         end
     end
     if block['slot_open_silo'] ~= nil

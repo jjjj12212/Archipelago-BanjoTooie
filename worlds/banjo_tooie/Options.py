@@ -256,6 +256,10 @@ class TrebleclefNotes(Range):
     range_end = 21
     default = 0
 
+class Traps(Toggle):
+    """Swaps out the Big-O-Pants with Traps!"""
+    display_name = "Traps"
+
 class EnableMultiWorldDinoRoar(Toggle):
     """Baby T-Rex Roar is lost across the MultiWorld. Other players need to help him learn to ROAR!"""
     display_name = "Baby T-Rex Roar"
@@ -392,8 +396,9 @@ class GameLength(Choice):
     default = 1
 
 class CustomWorlds(FreeText):
-    """Enter a list of jiggy requirements you want for each world unlock. Max values of each world are: 1,20,30,40,50,60,70,80,90"""
-    display_name = "Enter your custom world jiggy requirement list"
+    """Enter a list of jiggy requirements you want for each world unlock. Max values of each world are: 1,20,30,40,50,60,70,80,90
+    Enter your custom world jiggy requirement list"""
+    display_name = "Custom world cost list"
     default = "1,4,8,14,20,28,36,45,55"
 
 
@@ -438,6 +443,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_notes: EnableMultiWorldNotes
     bassclef_amount: BassclefNotes
     extra_trebleclefs_count: TrebleclefNotes
+    traps:Traps
     randomize_stop_n_swap: RandomizeStopnSwap
     randomize_dino_roar: EnableMultiWorldDinoRoar
     nestsanity: EnableNestsanity
