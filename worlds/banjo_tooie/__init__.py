@@ -241,6 +241,18 @@ class BanjoTooieWorld(World):
                         count += self.options.bassclef_amount.value
                         for i in range(count):
                             itempool += [self.create_item(name)]
+
+                    # The next 3 need to add up to the number of nest locations
+                    elif item.code == 1230805 and self.options.nestsanity.value == True: #Golden egg nests
+                        for i in range(23):
+                            itempool += [self.create_item(name)]
+                    elif item.code == 1230806 and self.options.nestsanity.value == True: # egg nests
+                        for i in range(315):
+                            itempool += [self.create_item(name)]
+                    elif item.code == 1230807 and self.options.nestsanity.value == True: #Feather nests
+                        for i in range(135):
+                            itempool += [self.create_item(name)]
+
                     else:
                         for i in range(id.qty):
                             if self.options.randomize_jinjos == False and self.jiggy_counter > 81 and item.code == 1230515:
@@ -318,8 +330,8 @@ class BanjoTooieWorld(World):
         
         # if item.code == 1230888 and self.options.cheato_rewards.value == False and self.options.honeyb_rewards.value == False:
         #     return False
-        if item.code == 1230888 and self.options.randomize_bk_moves.value == 2 and self.options.nessanity.value == False \
-            (self.options.bassclef_amount.value == 0 and self.options.extra_trebleclefs_count.value == 0):
+        if item.code == 1230888 and self.options.randomize_bk_moves.value == 2 \
+            and (self.options.bassclef_amount.value == 0 and self.options.extra_trebleclefs_count.value == 0):
             return False
         if item.code == 1230888 and self.options.traps.value == True:
             return False
@@ -789,7 +801,7 @@ class BanjoTooieWorld(World):
 
         btoptions['dialog_character'] = int(self.options.dialog_character.value)
 
-
+        btoptions['nestsanity'] = "true" if self.options.nestsanity == 1 else "false"
         return btoptions
 
     # for the universal tracker, doesn't get called in standard gen
