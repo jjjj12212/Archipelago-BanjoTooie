@@ -180,7 +180,7 @@ class BanjoTooieWorld(World):
                     break
                 trap_big_pants_counter += 1
         if self.options.nestsanity.value == True: # TODO: change for egg and feather packs
-            trap_big_pants_counter += 472
+            trap_big_pants_counter += 473
         if self.options.traps.value == True:
             trup = divmod(trap_big_pants_counter, 3)
             ttrap_qty = trup[0] + (1 if trup[1] >= 1 else 0)
