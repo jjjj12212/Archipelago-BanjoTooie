@@ -155,6 +155,37 @@ class BanjoTooieWorld(World):
         itempool = []
         if self.options.cheato_as_filler == True:
             self.use_cheato_filler = True
+        ############## START OF TRAP / BIG O PANTS COUNTER #######################################
+        trap_big_pants_counter = 0
+        if self.options.cheato_rewards.value == True and self.options.randomize_bk_moves.value == 0:
+            for i in range(5):
+                trap_big_pants_counter += 1
+        if self.options.honeyb_rewards.value == True and self.options.randomize_bk_moves.value == 0: #10 if both options are on
+            for i in range(5):
+                trap_big_pants_counter += 1
+        if self.options.randomize_bk_moves.value == 1: # 2 moves won't be added to the pool
+            for i in range(2):
+                trap_big_pants_counter += 1
+        if self.options.randomize_bk_moves.value == 0: # No moves added, fills for the Jiggy Chunks, Dino Kids
+            for i in range(6):
+                trap_big_pants_counter += 1
+        if self.options.bassclef_amount.value > 0:
+            for i in range(self.options.bassclef_amount.value): #adds an additional big-o-pants for each bassclef
+                trap_big_pants_counter += 1
+        if self.options.extra_trebleclefs_count.value > 0:
+            for i in range(self.options.extra_trebleclefs_count.value*3): #adds an additional big-o-pants for each bassclef
+                if self.options.victory_condition.value == 5 and \
+                (((self.options.bassclef_amount.value*2) + (self.options.extra_trebleclefs_count.value*4)) >= 130) and \
+                i == (self.options.extra_trebleclefs_count.value*3 - 14):
+                    break
+                trap_big_pants_counter += 1
+        if self.options.traps.value == True:
+            trup = divmod(trap_big_pants_counter, 3)
+            ttrap_qty = trup[0] + (1 if trup[1] >= 1 else 0)
+            strap_qty = trup[0] + (1 if trup[1] >= 2 else 0)
+            trtrap_qty = trup[0]
+
+        ############## END OF TRAP / BIG O PANTS COUNTER #######################################
         for name,id in all_item_table.items():
             item = self.create_item(name)
             if self.item_filter(item):
@@ -173,29 +204,17 @@ class BanjoTooieWorld(World):
 
                     #if none in pool
                     elif item.code == 1230888:
-                        if self.options.cheato_rewards.value == True and self.options.randomize_bk_moves.value == 0:
-                            for i in range(5):
-                                itempool += [self.create_item(name)]
-                        if self.options.honeyb_rewards.value == True and self.options.randomize_bk_moves.value == 0: #10 if both options are on
-                            for i in range(5):
-                                itempool += [self.create_item(name)]
-                        if self.options.randomize_bk_moves.value == 1: # 2 moves won't be added to the pool
-                            for i in range(2):
-                                itempool += [self.create_item(name)]
-                        if self.options.randomize_bk_moves.value == 0: # No moves added, fills for the Jiggy Chunks, Dino Kids
-                            for i in range(6):
-                                itempool += [self.create_item(name)]
-                        if self.options.bassclef_amount.value > 0:
-                            for i in range(self.options.bassclef_amount.value): #adds an additional big-o-pants for each bassclef
-                                itempool += [self.create_item(name)]
-                        if self.options.extra_trebleclefs_count.value > 0:
-                            for i in range(self.options.extra_trebleclefs_count.value*3): #adds an additional big-o-pants for each bassclef
-                                if self.options.victory_condition.value == 5 and \
-                                (((self.options.bassclef_amount.value*2) + (self.options.extra_trebleclefs_count.value*4)) >= 130) and \
-                                i == (self.options.extra_trebleclefs_count.value*3 - 14):
-                                    break
-                                itempool += [self.create_item(name)]
-
+                       for i in range(trap_big_pants_counter):
+                            itempool += [self.create_item(name)]
+                    elif item.code == 1230786:
+                        for i in range(ttrap_qty):
+                            itempool += [self.create_item(name)]
+                    elif item.code == 1230787:
+                        for i in range(strap_qty):
+                            itempool += [self.create_item(name)]
+                    elif item.code == 1230788:
+                        for i in range(trtrap_qty):
+                            itempool += [self.create_item(name)]
                     #end of none qty logic
 
                     #notes - extra other notes
@@ -299,6 +318,11 @@ class BanjoTooieWorld(World):
         #     return False
         if item.code == 1230888 and self.options.randomize_bk_moves.value == 2 and \
             (self.options.bassclef_amount.value == 0 and self.options.extra_trebleclefs_count.value == 0):
+            return False
+        if item.code == 1230888 and self.options.traps.value == True:
+            return False
+        
+        if (item.code == 1230786 or item.code == 1230787 or item.code == 1230788) and self.options.traps.value == False:
             return False
         
         if self.options.progressive_beak_buster.value == True and (item.code == 1230820 or item.code == 1230757):

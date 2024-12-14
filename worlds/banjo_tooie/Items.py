@@ -5,7 +5,7 @@ from .Names import locationName
 
 
 class BanjoTooieItem(Item):
-    #1230785 Note that 1230790+ exists
+    #1230788 Note that 1230790+ exists
     game: str = "Banjo-Tooie"
 class ItemData(typing.NamedTuple):
     btid: int = 0
@@ -60,7 +60,7 @@ moves_table = {
     itemName.SHPACK:        ItemData(1230774, 1, "progress", locationName.SHPACK),
     itemName.GLIDE:         ItemData(1230775, 1, "progress", locationName.GLIDE),
     itemName.SAPACK:        ItemData(1230776, 1, "progress", locationName.SAPACK),
-    itemName.FSWIM:         ItemData(1230777, 1, "useful", locationName.ROYSTEN1),
+    itemName.FSWIM:         ItemData(1230777, 1, "useful",   locationName.ROYSTEN1),
     itemName.DAIR:          ItemData(1230778, 1, "progress", locationName.ROYSTEN2),
     itemName.AMAZEOGAZE:    ItemData(1230779, 1, "progress", locationName.GOGGLES)
 }
@@ -132,8 +132,11 @@ misc_collectable_table = {
     itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY),
     itemName.NOTE:          ItemData(1230797, 144, "progress", ""),
     itemName.BASS:          ItemData(1230781,  0, "progress", ""),
-    # itemName.WARPS: ItemData(1230799, 20, "trap", None),
-    itemName.NONE:          ItemData(1230888, 0, "filler", "")
+    itemName.NONE:          ItemData(1230888,  0, "filler", ""),
+    itemName.TTRAP:         ItemData(1230786,  0, "trap", ""),
+    itemName.STRAP:         ItemData(1230787,  0, "trap", ""),
+    itemName.TRTRAP:        ItemData(1230788,  0, "trap", "")
+
 }
 
 stop_n_swap_table = {

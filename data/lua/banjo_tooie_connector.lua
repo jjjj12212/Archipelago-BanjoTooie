@@ -79,6 +79,10 @@ local BLUE_JINJO = 0;
 local PURPLE_JINJO = 0;
 local BLACK_JINJO = 0;
 
+local TTRAPS = 0;
+local STRAPS = 0;
+local TRTRAPS = 0;
+
 -------------- SKIP VARS ------------
 local OPEN_HAG1 = false;
 
@@ -1397,6 +1401,13 @@ local ROM_ITEM_TABLE = {
     "AP_ITEM_CKA",
     "AP_ITEM_H1A",
 };
+
+local TRAP_TABLE = {};
+local TRAPS = {
+    "AP_TRAP_TRIP",
+    "AP_TRAP_SLIP",
+    "AP_TRAP_MISFIRE"
+}
 
 local CURRENT_DIALOG_CHARACTER = nil
 local DIALOG_CHARACTER_TABLE = {}
@@ -3801,7 +3812,8 @@ BTHACK = {
         setting_open_silos = 0x17,
         setting_silo_requirements = 0x1E,
     pc_items = 0x10,
-    pc_exit_map = 0x14,
+    pc_traps = 0x14,
+    pc_exit_map = 0x18,
         exit_on_map = 0x0,
         exit_og_map = 0x2,
         exit_to_map = 0x4,
@@ -3809,12 +3821,13 @@ BTHACK = {
         exit_to_exit = 0x7,
         exit_map_struct_size = 0x8,
         world_index = 0,
-    n64 = 0x18,
+    n64 = 0x1C,
         n64_show_text = 0x0,
         n64_death_us = 0x1,
         n64_death_ap = 0x2,
-    real_flags = 0x1C,
-    fake_flags = 0x20,
+        current_map = 0x4,
+    real_flags = 0x20,
+    fake_flags = 0x24,
     txt_queue = 0
 }
 
@@ -3953,6 +3966,19 @@ function BTHACK:getMap()
     end
 	local n64_ptr = BTHACK:dereferencePointer(self.n64 + hackPointerIndex);
     return mainmemory.read_u16_be(n64_ptr + 4)
+end
+
+function BTHACK:getTrapPointer()
+    local hackPointerIndex = BTHACK:dereferencePointer(self.base_index);
+    if hackPointerIndex == nil
+    then
+        return nil
+    end
+	return BTHACK:dereferencePointer(self.pc_traps + hackPointerIndex);
+end
+
+function BTHACK:sendTrap(index, value)
+    mainmemory.writebyte(index + self:getTrapPointer(), value);
 end
 
 function BTHACK:setWorldEntrance(currentWorldId, newWorldId, entranceId, currentMap, newEntanceId)
@@ -4992,6 +5018,22 @@ function obtain_mumbo_token()
     BTH:setItem(ITEM_TABLE["AP_ITEM_MUMBOTOKEN"], TOTAL_MUMBO_TOKENS)
 end
 
+---------------------- TRAPS ----------------------------
+function traps(itemId)
+    if itemId == 1230786
+    then
+        TTRAPS = TTRAPS + 1
+        BTH:sendTrap(TRAP_TABLE["AP_TRAP_TRIP"], TTRAPS)
+    elseif itemId == 1230787
+    then
+        STRAPS = STRAPS + 1
+        BTH:sendTrap(TRAP_TABLE["AP_TRAP_SLIP"], STRAPS)
+    elseif itemId == 1230788
+    then
+        TRTRAPS = TRTRAPS + 1
+        BTH:sendTrap(TRAP_TABLE["AP_TRAP_MISFIRE"], TRTRAPS)
+    end
+end
 ---------------------- GAME FUNCTIONS -------------------
 
 function zoneWarp(zone_table)
@@ -5139,6 +5181,9 @@ function processAGIItem(item_list)
             elseif( 1230799 <= memlocation and memlocation <= 1230804) -- StopNSwap
             then
                 obtain_mystery_item(memlocation)
+            elseif( 1230786 <= memlocation and memlocation <= 1230788) -- Traps
+            then
+                traps(memlocation)
             elseif(memlocation == 1230514) -- Doubloon Item
             then
                 obtained_AP_DOUBLOON()
@@ -5487,6 +5532,10 @@ function process_slot(block)
     for index, item in pairs(JAMJAR_SILO_LOCATIONS)
     do
         JAMJAR_SILO_TABLE[item] = index - 1
+    end
+    for index, item in pairs(TRAPS)
+    do
+        TRAP_TABLE[item] = index - 1
     end
     if block['slot_player'] ~= nil and block['slot_player'] ~= ""
     then

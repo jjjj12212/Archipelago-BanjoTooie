@@ -114,6 +114,9 @@ TRAINSWHP2 = "HFP: Icy Side Train Station"
 TRAINSWWW  = "WW: Train Station"
 
 NONE = "Big-O Pants"
+TTRAP = "Trip Trap"
+STRAP = "Slip Trap"
+TRTRAP = "Transform Trap"
 
 CHUFFY = "Chuffy"
 

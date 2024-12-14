@@ -256,6 +256,10 @@ class TrebleclefNotes(Range):
     range_end = 21
     default = 0
 
+class Traps(Toggle):
+    """Swaps out the Big-O-Pants with Traps!"""
+    display_name = "Traps"
+
 class EnableMultiWorldDinoRoar(Toggle):
     """Baby T-Rex Roar is lost across the MultiWorld. Other players need to help him learn to ROAR!"""
     display_name = "Baby T-Rex Roar"
@@ -435,6 +439,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_notes: EnableMultiWorldNotes
     bassclef_amount: BassclefNotes
     extra_trebleclefs_count: TrebleclefNotes
+    traps:Traps
     randomize_stop_n_swap: RandomizeStopnSwap
     randomize_dino_roar: EnableMultiWorldDinoRoar
     jingaling_jiggy: KingJingalingHasJiggy

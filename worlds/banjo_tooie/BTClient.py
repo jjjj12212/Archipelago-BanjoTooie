@@ -65,7 +65,7 @@ bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_i
 script_version: int = 4
 version: str = "V4.0"
 game_append_version: str = "V40"
-patch_md5: str = "834bbd12b5a32a1030c214264b75000f"
+patch_md5: str = "087b41d38cf6728d7bd682dc775eb24c"
 
 def get_item_value(ap_id):
     return ap_id
@@ -207,62 +207,6 @@ class BanjoTooieContext(CommonContext):
         self.ui = BanjoTooieManager(self)
         self.ui_task = asyncio.create_task(self.ui.async_run(), name="UI")
 
-    def read_file(self, path):
-        with open(path, 'rb') as fi:
-            data = fi.read()
-        return data
-
-    def write_file(self, path, data):
-        with open(path, 'wb') as fi:
-            fi.write(data)
-
-    def swap(self, data):
-        swapped_data = bytearray(b'\0'*len(data))
-        for i in range(0, len(data), 2):
-            swapped_data[i] = data[i+1]
-            swapped_data[i+1] = data[i]
-        return bytes(swapped_data)
-    
-    def check_rom(self, patchedRom):
-        if os.path.isfile(patchedRom):
-            rom = self.read_file(patchedRom)
-            md5 = hashlib.md5(rom).hexdigest()
-            return md5
-        else:
-            return "00000"
-
-    def patch_rom(self, romPath, dstPath, patchPath):
-        rom = self.read_file(romPath)
-        md5 = hashlib.md5(rom).hexdigest()
-        if (md5 == "ca0df738ae6a16bfb4b46d3860c159d9"): # byte swapped
-            rom = self.swap(rom)
-        elif (md5 != "40e98faa24ac3ebe1d25cb5e5ddf49e4"):
-            logger.error("Unknown ROM!")
-            return
-        patch = self.openFile(patchPath).read()
-        self.write_file(dstPath, bsdiff4.patch(rom, patch))
-        # newrom = self.read_file(dstPath)
-        # md5 = hashlib.md5(newrom).hexdigest()
-        # print(md5)
-
-    def openFile(self, resource: str, mode: str = "rb", encoding: str = None):
-        filename = sys.modules[__name__].__file__
-        apworldExt = ".apworld"
-        game = "banjo_tooie/"
-        if apworldExt in filename:
-            zip_path = pathlib.Path(filename[:filename.index(apworldExt) + len(apworldExt)])
-            with zipfile.ZipFile(zip_path) as zf:
-                zipFilePath = game + resource
-                if mode == 'rb':
-                    return zf.open(zipFilePath, 'r')
-                else:
-                    return io.TextIOWrapper(zf.open(zipFilePath, 'r'), encoding)
-        else:
-            return open(os.path.join(pathlib.Path(__file__).parent, resource), mode, encoding=encoding)
-
-        # self.patch_rom("banjo-tooie.n64", "banjo-tooie-romhack.n64", "banjo-tooie.patch")
-
-
     def on_package(self, cmd, args):
         if cmd == 'Connected':
             self.slot_data = args.get('slot_data', None)
@@ -279,21 +223,7 @@ class BanjoTooieContext(CommonContext):
                 if fpath.parents[i].stem == "Archipelago":
                     archipelago_root = pathlib.Path(__file__).parents[i]
                     break
-            if archipelago_root != None:
-                if self.check_rom(os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64")) != patch_md5:
-                    logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
-                    rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")], title="Open your Banjo-Tooie US ROM")
-                    self.patch_rom(rom, os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64"), "banjo-tooie.patch")
-                    logger.info("Patched Banjo-Tooie is located in " + os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64"))
-                async_start(run_game(os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64")))
-            else:
-                logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
-                rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")], title="Open your Banjo-Tooie US ROM")
-                file_path = os.path.split(rom)
-                self.patch_rom(rom, file_path + "/Banjo-Tooie-AP"+game_append_version+".n64", "banjo-tooie.patch")
-                logger.info("Patched Banjo-Tooie is located in " + os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64"))
-                async_start(run_game(os.path.join(file_path, "Banjo-Tooie-AP"+game_append_version+".n64")))
-
+            async_start(run_game(os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64")))
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
         # elif cmd == 'Print':
             # msg = args['text']
@@ -876,6 +806,60 @@ async def n64_sync_task(ctx: BanjoTooieContext):
                 ctx.n64_status = CONNECTION_REFUSED_STATUS
                 continue
 
+def read_file(path):
+    with open(path, 'rb') as fi:
+        data = fi.read()
+    return data
+
+def write_file(path, data):
+    with open(path, 'wb') as fi:
+        fi.write(data)
+
+def swap(data):
+    swapped_data = bytearray(b'\0'*len(data))
+    for i in range(0, len(data), 2):
+        swapped_data[i] = data[i+1]
+        swapped_data[i+1] = data[i]
+    return bytes(swapped_data)
+
+def check_rom(patchedRom):
+    if os.path.isfile(patchedRom):
+        rom = read_file(patchedRom)
+        md5 = hashlib.md5(rom).hexdigest()
+        return md5
+    else:
+        return "00000"
+
+def patch_rom(romPath, dstPath, patchPath):
+    rom = read_file(romPath)
+    md5 = hashlib.md5(rom).hexdigest()
+    if (md5 == "ca0df738ae6a16bfb4b46d3860c159d9"): # byte swapped
+        rom = swap(rom)
+    elif (md5 != "40e98faa24ac3ebe1d25cb5e5ddf49e4"):
+        logger.error("Unknown ROM!")
+        return
+    patch = openFile(patchPath).read()
+    write_file(dstPath, bsdiff4.patch(rom, patch))
+    # newrom = self.read_file(dstPath)
+    # md5 = hashlib.md5(newrom).hexdigest()
+    # print(md5)
+
+def openFile(resource: str, mode: str = "rb", encoding: str = None):
+    filename = sys.modules[__name__].__file__
+    apworldExt = ".apworld"
+    game = "banjo_tooie/"
+    if apworldExt in filename:
+        zip_path = pathlib.Path(filename[:filename.index(apworldExt) + len(apworldExt)])
+        with zipfile.ZipFile(zip_path) as zf:
+            zipFilePath = game + resource
+            if mode == 'rb':
+                return zf.open(zipFilePath, 'r')
+            else:
+                return io.TextIOWrapper(zf.open(zipFilePath, 'r'), encoding)
+    else:
+        return open(os.path.join(pathlib.Path(__file__).parent, resource), mode, encoding=encoding)
+
+    # self.patch_rom("banjo-tooie.n64", "banjo-tooie-romhack.n64", "banjo-tooie.patch")
 
 def main():
     Utils.init_logging("Banjo-Tooie Client")
@@ -886,6 +870,25 @@ def main():
     args = parser.parse_args(args)
 
     async def _main():
+        fpath = pathlib.Path(__file__)
+        archipelago_root = None
+        for i in range(0, 5,+1) :
+            if fpath.parents[i].stem == "Archipelago":
+                archipelago_root = pathlib.Path(__file__).parents[i]
+                break
+        if archipelago_root != None:
+            if check_rom(os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64")) != patch_md5:
+                logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
+                rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")], title="Open your Banjo-Tooie US ROM")
+                patch_rom(rom, os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64"), "banjo-tooie.patch")
+                logger.info("Patched Banjo-Tooie is located in " + os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64"))
+        else:
+            logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
+            rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")], title="Open your Banjo-Tooie US ROM")
+            file_path = os.path.split(rom)
+            patch_rom(rom, file_path + "/Banjo-Tooie-AP"+game_append_version+".n64", "banjo-tooie.patch")
+            logger.info("Patched Banjo-Tooie is located in " + os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64"))
+            
         multiprocessing.freeze_support()
 
         ctx = BanjoTooieContext(args.connect, args.password)
