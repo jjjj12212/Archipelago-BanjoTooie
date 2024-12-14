@@ -153,6 +153,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.GMWSJT: [
         locationName.JINJOGM1,
     ],
+    regionName.GMFD: [],
     regionName.CHUFFY: 
     [
         locationName.JIGGYGM1,
@@ -565,6 +566,7 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.NESTSM22,
       locationName.NESTSM23,
       locationName.NESTSM24,
+      locationName.NESTSM25,
     ],
     regionName.IOHJV:    [
       locationName.NESTIH1,
@@ -756,6 +758,7 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.NESTIH43,
       locationName.NESTIH44,
       locationName.NESTIH45,
+      locationName.NESTIH64,
     ],
     regionName.JR:      [
       locationName.NESTJR1,

@@ -4742,7 +4742,7 @@ class BanjoTooieRules:
             logic = self.small_elevation(state) or self.grip_grab(state) or self.clockwork_shot(state) or self.beak_buster(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.small_elevation(state) or self.grip_grab(state) or self.clockwork_shot(state) or self.beak_buster(state)
-        return 
+        return logic
     
     def nest_toxic_gas_cave(self, state: CollectionState) -> bool:
         logic = True
