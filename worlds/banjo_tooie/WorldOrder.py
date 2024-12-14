@@ -286,7 +286,7 @@ def generate_jamjars_costs(world: BanjoTooieWorld) -> None:
             locationName.PACKWH: 170,
             locationName.AIREAIM: 180,
             locationName.WWHACK: 265,
-            locationName.AUQAIM: 285,
+            locationName.AUQAIM: 275,
             locationName.TTORP: 290,
             locationName.SPRINGB: 390,
             locationName.TAXPACK: 405,
@@ -339,7 +339,7 @@ def generate_jamjars_costs(world: BanjoTooieWorld) -> None:
         }
 
         # In decreasing order so that pop removes the lowest.
-        move_costs = [765, 660, 640, 545, 525, 505, 420, 405, 390, 290, 285, 265, 180, 170, 160, 95, 85, 35, 30, 25]
+        move_costs = [765, 660, 640, 545, 525, 505, 420, 405, 390, 290, 275, 265, 180, 170, 160, 95, 85, 35, 30, 25]
         moves_per_world = {
             regionName.MT: [
                 locationName.EGGAIM,
