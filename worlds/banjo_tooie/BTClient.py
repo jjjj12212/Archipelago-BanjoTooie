@@ -5,6 +5,7 @@ import multiprocessing
 import copy
 import random
 import subprocess
+import sys
 import time
 from typing import Union
 import zipfile
@@ -57,7 +58,7 @@ bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 
 script_version: int = 4
-version: str = "V3.5.2"
+version: str = "V3.5.3"
 
 def get_item_value(ap_id):
     return ap_id
@@ -789,7 +790,10 @@ async def n64_sync_task(ctx: BanjoTooieContext):
 def main():
     Utils.init_logging("Banjo-Tooie Client")
     parser = get_base_parser()
-    args = parser.parse_args()
+    args = sys.argv[1:]  # the default for parse_args()
+    if "Banjo-Tooie Client" in args:
+        args.remove("Banjo-Tooie Client")
+    args = parser.parse_args(args)
 
     async def _main():
         multiprocessing.freeze_support()
