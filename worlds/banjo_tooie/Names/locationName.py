@@ -908,7 +908,7 @@ NESTGI3 = "GI Floor 5: Roof Feather Nest 3"
 NESTGI4 = "GI Outside: Right Side of Building Feather Nest"
 NESTGI5 = "GI Outside: Left Side of Building Feather Nest"
 
-NESTGI6 = "GI Floor 1: Top Pipe Egg Nest 1"
+NESTGI6 = "GI Floor 1: Top Pipe Egg Nest"
 NESTGI7 = "GI Floor 1: High Pipe Egg Nest 1"
 NESTGI8 = "GI Floor 1: Near Waste Disposal Feather Nest 1"
 NESTGI9 = "GI Floor 1: Near Waste Disposal Feather Nest 2"
