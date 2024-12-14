@@ -16,6 +16,8 @@
     - HFP Kickball Jiggy: takes glitched access into JSG into account for the stony.
     - CCL Humba Jinjo: Uses logic that was meant to be in use for the past 2 months. Oops!
       - From the logs from 3.0-beta: "can be gotten with leg spring, if not on beginner logic. Advanced and glitched logic can get it with a clockwork shot."
+  - Fix UT getting accurate counts for Notes and Jiggies
+  - BTClient allows CLI but untested with arguments (jjjj12212's evironment isn't able to...)
 
 # 3.5.2-beta
   - Renamings:
