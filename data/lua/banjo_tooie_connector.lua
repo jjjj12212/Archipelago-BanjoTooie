@@ -50,6 +50,7 @@ local DEBUG_JINJO = false
 local DEBUG_HONEYCOMB = false
 local DEBUG_DOUBLOON = false
 local DEBUG_AMAZE = false
+local DEBUG_NESTS = false
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 
@@ -82,6 +83,10 @@ local BLACK_JINJO = 0;
 local TTRAPS = 0;
 local STRAPS = 0;
 local TRTRAPS = 0;
+
+local EGGNEST = 0;
+local FEATHERNEST = 0;
+local GOLDNEST = 0;
 
 -------------- SKIP VARS ------------
 local OPEN_HAG1 = false;
@@ -987,6 +992,9 @@ local ASSET_MAP_CHECK = {
         ["SILO"] = {
             "1230764",
         },
+        ["NESTS"] = {
+            "1231245",
+        }
     },
     [0xF4] = { --JRL - Ancient Swimming Baths
         ["PAGES"] = {
@@ -1016,6 +1024,14 @@ local ASSET_MAP_CHECK = {
         },
         ["TREBLE"] = {
             "1230784"
+        },
+        ["NESTS"] = {
+            "1231246",
+            "1231247",
+            "1231248",
+            "1231249",
+            "1231250",
+            "1231251",
         }
     },
     [0xFF] = { --JRL - Blubber's Wave Race Hire
@@ -1036,6 +1052,10 @@ local ASSET_MAP_CHECK = {
     [0xF8] = { --JRL - Inside the Big Fish
         ["JINJOS"] = {
             "1230568", -- Big Fish
+        },
+        ["NESTS"] = {
+            "1231232",
+            "1231233",
         }
     },
     [0xED] =	{ --JRL - Jolly's
@@ -1054,11 +1074,25 @@ local ASSET_MAP_CHECK = {
         ["SILO"] = {
             "1230766",
         },
+        ["NESTS"] = {
+            "1231219",
+            "1231220",
+            "1231221",
+            "1231222",
+            "1231223",
+            "1231224",
+        }
     },
     [0xFC] =	{ --JRL - Lord Woo Fak Fak
         ["JIGGIES"] = {
             "1230632", -- Lord Woo
         },
+        ["NESTS"] = {
+            "1231238",
+            "1231239",
+            "1231240",
+            "1231241",
+        }
     },      
     [0xEE] =	{ --JRL - Pawno's Emporium
         ["JIGGIES"] = {
@@ -1074,6 +1108,16 @@ local ASSET_MAP_CHECK = {
             "1230858",
             "1230859",
             "1230860",
+        },
+        ["NESTS"] = {
+            "1231225",
+            "1231226",
+            "1231227",
+        }
+    },
+    [0x120] = { -- JRL - Humba
+        ["NESTS"] = {
+            "1231242",
         }
     },
     [0x1A9] =	{ --JRL - Sea Bottom
@@ -1085,6 +1129,15 @@ local ASSET_MAP_CHECK = {
         },
         ["HONEYCOMB"] = {
             "1230712", -- SEEMEE
+        },
+        ["NESTS"] = {
+            "1231252",
+            "1231253",
+            "1231254",
+            "1231255",
+            "1231256",
+            "1231257",
+            "1231258",
         }
     },
     [0x181] =	{ --JRL - Sea Botom Cavern
@@ -1095,6 +1148,12 @@ local ASSET_MAP_CHECK = {
     [0xF7] = { --JRL - Seaweed Sanctum
         ["JINJOS"] = {
             "1230569", -- Seaweed
+        },
+        ["NESTS"] = {
+            "1231228",
+            "1231229",
+            "1231230",
+            "1231231",
         }
     },
     [0x1A6] =	{ --JRL - Smuggler's cavern
@@ -1107,12 +1166,22 @@ local ASSET_MAP_CHECK = {
         },
         ["HONEYCOMB"] = {
             "1230712", -- SEEMEE
+        },
+        ["NESTS"] = {
+            "1231243",
+            "1231244",
         }
     },
     [0xFA] = { --JRL - Temple of the Fishes
         ["JIGGIES"] = {
             "1230628", -- Chris P. Bacon
         },
+        ["NESTS"] = {
+            "1231234",
+            "1231235",
+            "1231236",
+            "1231237",
+        }
     },
     [0xEF] = { --JRL - Mumbo's Skull
         ["DOUBLOON"] = {
@@ -1167,7 +1236,29 @@ local ASSET_MAP_CHECK = {
             "1230768",
         },
         ["STATIONBTN"] = {"1230791"},
-        ["ROAR"] = {"1231009"}
+        ["ROAR"] = {"1231009"},
+        ["NESTS"] = {
+            "1231259",
+            "1231260",
+            "1231261",
+            "1231262",
+            "1231263",
+            "1231264",
+            "1231265",
+            "1231266",
+            "1231267",
+            "1231268",
+            "1231269",
+            "1231270",
+            "1231271",
+            "1231272",
+            "1231273",
+            "1231274",
+            "1231275",
+            "1231276",
+            "1231277",
+            "1231278",
+        }
     },
     [0x123] = { --TDL - Inside Chompa's Belly
         ["JIGGIES"] = {
@@ -1180,12 +1271,24 @@ local ASSET_MAP_CHECK = {
         },
         ["PAGES"] = {
             "1230741", -- Mountain
+        },
+        ["NESTS"] = {
+            "1231289",
+            "1231290",
+            "1231291",
+            "1231292",
         }
     },
     [0x115] = { --TDL - Oogle Boogles' Cave
         ["JIGGIES"] = {
             "1230640", -- Oogle Boogle Tribe
         },
+        ["NESTS"] = {
+            "1231285",
+            "1231286",
+            "1231287",
+            "1231288",
+        }
     },
     [0x117] = { --TDL - River Passage
         ["HONEYCOMB"] = {
@@ -1200,11 +1303,22 @@ local ASSET_MAP_CHECK = {
         ["SILO"] = {
             "1230769",
         },
+        ["NESTS"] = {
+            "1231293",
+        }
     },
     [0x119] = { -- Unga Bunga Cave
         ["SILO"] = {
             "1230770",
         },
+        ["NESTS"] = {
+            "1231297",
+            "1231298",
+            "1231299",
+            "1231300",
+            "1231301",
+            "1231302",
+        }
     },
     [0x11A] = { --TDL - Stomping Plains
         ["JIGGIES"] = {
@@ -1212,11 +1326,25 @@ local ASSET_MAP_CHECK = {
         },
         ["JINJOS"] = {
             "1230575", -- Stomping
+        },
+        ["NESTS"] = {
+            "1231303",
+            "1231304",
+            "1231305",
+            "1231306",
+            "1231307",
+            "1231308",
+            "1231309",
         }
     },
     [0x118] =	{ --TDL - Styracosaurus Family Cave
         ["HONEYCOMB"] = {
             "1230716" -- Cave
+        },
+        ["NESTS"] = {
+            "1231294",
+            "1231295",
+            "1231296",
         }
     },
     [0x113] =	{ --TDL - Terry's Nest
@@ -1224,10 +1352,32 @@ local ASSET_MAP_CHECK = {
             "1230639", -- Terry
             "1230642", -- Terry's Kids
         },
+        ["NESTS"] = {
+            "1231279",
+            "1231280",
+        }
     },
     [0x114] =	{ --TDL - Train Station
         ["JIGGIES"] = {
             "1230644", -- Rocknut
+        },
+        ["NESTS"] = {
+            "1231281",
+            "1231282",
+            "1231283",
+            "1231284",
+        }
+    },
+    [0x11B] = { --TDL - Bonfire Cavern
+        ["NESTS"] = {
+            "1231310",
+            "1231311",
+        }
+    },
+    [0x171] = { -- TDL - Mumbo
+        ["NESTS"] = {
+            "1231312",
+            "1231313",
         }
     },
     --GRUNTY INDUSTRIES
@@ -1244,7 +1394,14 @@ local ASSET_MAP_CHECK = {
         ["TREBLE"] = {
             "1230786"
         },
-        ["STATIONBTN"] = {"1230790"}
+        ["STATIONBTN"] = {"1230790"},
+        ["NESTS"] = {
+            "1231314",
+            "1231315",
+            "1231316",
+            "1231317",
+            "1231318",
+        }
     },
     [0x10F] = { --GI - Basement
         ["JIGGIES"] = {
@@ -1253,11 +1410,22 @@ local ASSET_MAP_CHECK = {
         ["NOTES"] = {
             "1230892",
             "1230893",
+        },
+        ["NESTS"] = {
+            "1231369",
+            "1231370",
+            "1231371",
+            "1231372",
+            "1231373",
         }
     },
     [0x110] =	{ --GI - Basement (Repair Depot)
         ["PAGES"] = {
             "1230745" -- Repair Depot
+        },
+        ["NESTS"] = {
+            "1231374",
+            "1231375",
         }
     },
     [0x111] =	{ --GI - Basement (Waste Disposal)
@@ -1277,6 +1445,12 @@ local ASSET_MAP_CHECK = {
         ["SILO"] = {
             "1230771",
         },
+        ["NESTS"] = {
+            "1231376",
+            "1231377",
+            "1231378",
+            "1231379",
+        }
     },
     [0x101] =	{ --GI - Floor 1
         ["JIGGIES"] = {
@@ -1290,6 +1464,21 @@ local ASSET_MAP_CHECK = {
         ["SILO"] = {
             "1230773",
         },
+        ["NESTS"] = {
+            "1231319",
+            "1231320",
+            "1231321",
+            "1231322",
+            "1231323",
+            "1231324",
+        }
+    },
+    [0x105] = { --GI - Elevator Shaft
+        ["NESTS"] = {
+            "1231332",
+            "1231333",
+            "1231334",
+        }
     },
     [0x106] =	{ --GI - Floor 2
         ["JIGGIES"] = {
@@ -1314,6 +1503,25 @@ local ASSET_MAP_CHECK = {
         ["SILO"] = {
             "1230772",
         },
+        ["NESTS"] = {
+            "1231335",
+            "1231336",
+            "1231337",
+            "1231338",
+            "1231339",
+            "1231340",
+            "1231341",
+            "1231342",
+            "1231343",
+            "1231344",
+        }
+    },
+    [0x107] = { --GI - Floor 2 Electromagnetic Chamber
+        ["NESTS"] = {
+            "1231345",
+            "1231346",
+            "1231347",
+        }
     },
     [0x108] =	{ --GI - Floor 3
         ["JIGGIES"] = {
@@ -1328,11 +1536,23 @@ local ASSET_MAP_CHECK = {
         ["NOTES"] = {
             "1230894",
             "1230895"
+        },
+        ["NESTS"] = {
+            "1231348",
+            "1231349",
+            "1231350",
+            "1231351",
+            "1231352",
+            "1231353",
         }
     },
     [0x109] =	{ --GI - Floor 3 (Boiler Plant)
         ["JINJOS"] = {
             "1230579" -- Top of Boiler
+        },
+        ["NESTS"] = {
+            "1231354",
+            "1231355",
         }
     },
     [0x10A] =	{ --GI - Floor 3 (Packing Room)
@@ -1341,12 +1561,25 @@ local ASSET_MAP_CHECK = {
         },
     },
     [0x10B] =	{ --GI - Floor 4
-
+        ["NESTS"] = {
+            "1231356",
+            "1231357",
+            "1231358",
+            "1231359",
+            "1231360",
+            "1231361",
+            "1231362",
+        }
     },
     [0x10D] =	{ --GI - Floor 4 (Quality Control)
         ["JIGGIES"] = {
             "1230651", -- Quality Control
         },
+        ["NESTS"] = {
+            "1231363",
+            "1231364",
+            "1231365",
+        }
     },
     [0x10E] =	{ --GI - Floor 5
         ["JIGGIES"] = {
@@ -1355,12 +1588,23 @@ local ASSET_MAP_CHECK = {
         },
         ["JINJOS"] = {
             "1230576" -- 5 floor
+        },
+        ["NESTS"] = {
+            "1231366",
+            "1231367",
+            "1231368",
         }
     },
     [0x187] =	{ --GI - Sewer Entrance
         ["JIGGIES"] = {
             "1230648", -- Clinker
         },
+        ["NESTS"] = {
+            "1231388",
+            "1231389",
+            "1231390",
+            "1231391",
+        }
     },
     [0x102] =	{ --GI - Train Station
         ["HONEYCOMB"] = {
@@ -1370,12 +1614,21 @@ local ASSET_MAP_CHECK = {
             "1230880",
             "1230881",
             "1230882",
+        },
+        ["NESTS"] = {
+            "1231325",
+            "1231326",
+            "1231327",
         }
     },
     [0x104] =	{ --GI - Trash Compactor
         ["JIGGIES"] = {
             "1230653", -- Trash Compactor
         },
+        ["NESTS"] = {
+            "1231330",
+            "1231331",
+        }
     },
     [0x103] =	{ --GI - Workers' Quarters
         ["JIGGIES"] = {
@@ -1383,6 +1636,22 @@ local ASSET_MAP_CHECK = {
         },
         ["PAGES"] = {
             "1230743" -- Loggo
+        },
+        ["NESTS"] = {
+            "1231328",
+            "1231329",
+        }
+    },
+    [0x162] = { --GI - Clinker's Cavern
+        ["NESTS"] = {
+            "1231380",
+            "1231381",
+            "1231382",
+            "1231383",
+            "1231384",
+            "1231385",
+            "1231386",
+            "1231387",
         }
     },
     --HAILFIRE PEAKS
@@ -1395,11 +1664,17 @@ local ASSET_MAP_CHECK = {
         ["JIGGIES"] = {
             "1230656", -- Brothers
         },
+        ["NESTS"] = {
+            "1231414",
+        }
     },
     [0x12C] =	{ --HFP - Chilly Willy
         ["JIGGIES"] = {
             "1230656", -- Brothers
         },
+        ["NESTS"] = {
+            "1231415",
+        }
     },
     [0x132] =	{ --HFP - Icicle Grotto
         ["JINJOS"] = {
@@ -1410,6 +1685,14 @@ local ASSET_MAP_CHECK = {
         },
         ["TREBLE"] = {
             "1230787"
+        },
+        ["NESTS"] = {
+            "1231422",
+            "1231423",
+            "1231424",
+            "1231425",
+            "1231426",
+            "1231427",
         }
     },
     [0x128] =	{ --HFP - Icy Side
@@ -1442,7 +1725,16 @@ local ASSET_MAP_CHECK = {
         ["SILO"] = {
             "1230775",
         },
-        ["STATIONBTN"] = {"1230793"}
+        ["STATIONBTN"] = {"1230793"},
+        ["NESTS"] = {
+            "1231403",
+            "1231404",
+            "1231405",
+            "1231406",
+            "1231407",
+            "1231408",
+            "1231409",
+        }
     },
     [0x133] =	{ --HFP - Inside the Volcano
         ["JIGGIES"] = {
@@ -1456,6 +1748,14 @@ local ASSET_MAP_CHECK = {
         ["JIGGIES"] = {
             "1230663", -- Kickball
         },
+        ["NESTS"] = {
+            "1231416",
+            "1231417",
+            "1231418",
+            "1231419",
+            "1231420",
+            "1231421",
+        }
     },
     [0x127] =	{ --HFP - Lava Side
         ["JIGGIES"] = {
@@ -1489,15 +1789,47 @@ local ASSET_MAP_CHECK = {
         ["SILO"] = {
             "1230774",
         },
-        ["STATIONBTN"] = {"1230792"}
+        ["STATIONBTN"] = {"1230792"},
+        ["NESTS"] = {
+            "1231392",
+            "1231393",
+            "1231394",
+            "1231395",
+            "1231396",
+            "1231397",
+            "1231398",
+            "1231399",
+            "1231400",
+            "1231401",
+            "1231402",
+        }
     },
     [0x129] =	{ --HFP - Lava Train Station
         ["HONEYCOMB"] = {
             "1230722" -- Train Station
+        },
+        ["NESTS"] = {
+            "1231410",
+            "1231411",
         }
     },
     [0x12A] = { -- HFP - Icy Side Station
-
+        ["NESTS"] = {
+            "1231412",
+            "1231413",
+        }
+    },
+    [0x135] = { -- HFP - Humba
+        ["NESTS"] = {
+            "1231430",
+            "1231431",
+        }
+    },
+    [0x134] = { -- HFP - Mumbo
+        ["NESTS"] = {
+            "1231428",
+            "1231429",
+        }
     },
     --CLOUD CUCKOOLAND
     [0x136] =	{ --CCL
@@ -1518,6 +1850,43 @@ local ASSET_MAP_CHECK = {
         },
         ["GLOWBO"] = {
             "1230700"
+        },
+        ["NESTS"] = {
+            "1231432",
+            "1231433",
+            "1231434",
+            "1231435",
+            "1231436",
+            "1231437",
+            "1231438",
+            "1231439",
+            "1231440",
+            "1231441",
+            "1231442",
+            "1231443",
+            "1231444",
+            "1231445",
+            "1231446",
+            "1231447",
+            "1231448",
+            "1231449",
+            "1231450",
+            "1231451",
+            "1231452",
+            "1231453",
+            "1231454",
+            "1231455",
+            "1231456",
+            "1231457",
+            "1231458",
+            "1231459",
+            "1231460",
+            "1231461",
+            "1231462",
+            "1231463",
+            "1231464",
+            "1231466",
+            "1231465",
         }
 
     },
@@ -1554,6 +1923,15 @@ local ASSET_MAP_CHECK = {
         },
         ["SILO"] = {
             "1230776",
+        },
+        ["NESTS"] = {
+            "1231471",
+            "1231472",
+            "1231473",
+            "1231474",
+            "1231475",
+            "1231476",
+            "1231477",
         }
     },
     [0x138] =	{ --CCL - Inside the Cheese Wedge
@@ -1562,6 +1940,10 @@ local ASSET_MAP_CHECK = {
         },
         ["JINJOS"] = {
             "1230587" -- Cheese
+        },
+        ["NESTS"] = {
+            "1231469",
+            "1231470",
         }
     },
     [0x13D] =	{ --CCL - Inside the Pot o' Gold
@@ -1570,6 +1952,10 @@ local ASSET_MAP_CHECK = {
         },
         ["PAGES"] = {
             "1230750" -- O Gold
+        },
+        ["NESTS"] = {
+            "1231478",
+            "1231479",
         }
     },
     [0x137] =	{ --CCL - Inside the Trash Can
@@ -1578,6 +1964,10 @@ local ASSET_MAP_CHECK = {
         },
         ["JINJOS"] = {
             "1230586" -- Trash
+        },
+        ["NESTS"] = {
+            "1231467",
+            "1231468",
         }
     },
     [0x13F] =	{ --CCL - Mingy Jongo's Skull
@@ -1599,6 +1989,10 @@ local ASSET_MAP_CHECK = {
     [0x140] =	{ --CCL - Wumba's Wigwam
         ["JINJOS"] = {
             "1230590" -- Balasters
+        },
+        ["NESTS"] = {
+            "1231480",
+            "1231481",
         }
     },
     [0x139] =	{ --CCL - Zubbas' Nest
@@ -1705,6 +2099,9 @@ local ROM_ITEM_TABLE = {
     "AP_ITEM_TRAINSWHP2",
     "AP_ITEM_TRAINSWWW",
     "AP_ITEM_CHUFFY",
+    "AP_ITEM_GNEST",
+    "AP_ITEM_ENEST",
+    "AP_ITEM_FNEST",
     "AP_ITEM_MTA",
     "AP_ITEM_GGA",
     "AP_ITEM_WWA",
@@ -4686,11 +5083,11 @@ end
 
 function BTHACK:checkNestFlag(bytebit)
     local offset_byte = math.floor(bytebit / 8)
-    local bit = math.fmod(bytebit, 8)
+    local bitbit = math.fmod(bytebit, 8)
 
     local nest_addr = BTHACK:getNestPointer()
     local currentValue = mainmemory.readbyte(nest_addr + offset_byte);
-    if bit.check(currentValue, bit) then
+    if bit.check(currentValue, bitbit) then
         return true;
     end
     return false;
@@ -5847,6 +6244,44 @@ function traps(itemId)
         BTH:sendTrap(TRAP_TABLE["AP_TRAP_MISFIRE"], TRTRAPS)
     end
 end
+
+---------------------- NESTS LOCATIONS ------------------
+
+function nest_check()
+    local checks = {}
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK[CURRENT_MAP]["NESTS"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["NESTS"])
+            do
+                checks[locationId] = BTH:checkNestFlag(ADDRESS_MAP["NESTS"][locationId])
+                if DEBUG_NESTS == true
+                then
+                    print(locationId .. ":" .. tostring(checks[locationId]))
+                end
+            end
+        end
+    end
+    return checks
+end
+
+function obtain_nests(itemId)
+    if itemId == 1230806
+    then
+        EGGNEST = EGGNEST + 1
+        BTH:setItem(ITEM_TABLE["AP_ITEM_ENEST"], EGGNEST)
+    elseif itemId == 1230807
+    then
+        FEATHERNEST = FEATHERNEST + 1
+        BTH:setItem(ITEM_TABLE["AP_ITEM_FNEST"], FEATHERNEST)
+    elseif itemId == 1230805
+    then
+        GOLDNEST = GOLDNEST + 1
+        BTH:setItem(ITEM_TABLE["AP_ITEM_GNEST"], GOLDNEST)
+    end
+end
+
 ---------------------- GAME FUNCTIONS -------------------
 
 function zoneWarp(zone_table)
@@ -5997,6 +6432,9 @@ function processAGIItem(item_list)
             elseif( 1230786 <= memlocation and memlocation <= 1230788) -- Traps
             then
                 traps(memlocation)
+            elseif( 1230805 <= memlocation and memlocation <= 1230807) -- Nests
+            then
+                obtain_nests(memlocation)
             elseif(memlocation == 1230514) -- Doubloon Item
             then
                 obtained_AP_DOUBLOON()
@@ -6225,6 +6663,7 @@ function SendToBTClient()
     retTable["goggles"] = amaze_check();
     retTable["roar"] = roar_check();
     retTable["dino_kids"] = dino_kids_check();
+    retTable["nests"] = nest_check();
     retTable["DEMO"] = false;
     retTable["sync_ready"] = "true"
 
