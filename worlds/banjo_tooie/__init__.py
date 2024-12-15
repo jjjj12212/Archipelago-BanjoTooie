@@ -179,8 +179,8 @@ class BanjoTooieWorld(World):
                 i == (self.options.extra_trebleclefs_count.value*3 - 14):
                     break
                 trap_big_pants_counter += 1
-        if self.options.nestsanity.value == True: # TODO: change for egg and feather packs
-            trap_big_pants_counter += 473
+        # if self.options.nestsanity.value == True: # TODO: change for egg and feather packs
+        #     trap_big_pants_counter += 473
         if self.options.traps.value == True:
             trup = divmod(trap_big_pants_counter, 3)
             ttrap_qty = trup[0] + (1 if trup[1] >= 1 else 0)
@@ -241,18 +241,6 @@ class BanjoTooieWorld(World):
                         count += self.options.bassclef_amount.value
                         for i in range(count):
                             itempool += [self.create_item(name)]
-
-                    # The next 3 need to add up to the number of nest locations
-                    elif item.code == 1230805 and self.options.nestsanity.value == True: #Golden egg nests
-                        for i in range(23):
-                            itempool += [self.create_item(name)]
-                    elif item.code == 1230806 and self.options.nestsanity.value == True: # egg nests
-                        for i in range(315):
-                            itempool += [self.create_item(name)]
-                    elif item.code == 1230807 and self.options.nestsanity.value == True: #Feather nests
-                        for i in range(135):
-                            itempool += [self.create_item(name)]
-
                     else:
                         for i in range(id.qty):
                             if self.options.randomize_jinjos == False and self.jiggy_counter > 81 and item.code == 1230515:
@@ -326,6 +314,13 @@ class BanjoTooieWorld(World):
         if item.code in range(1230810, 1230828) and self.options.randomize_bk_moves.value == 0:
             return False
         elif (item.code == 1230815 or item.code == 1230816) and self.options.randomize_bk_moves.value == 1: # talon trot and tall jump not in pool
+            return False
+        
+        if item.code == 1230805 and self.options.nestsanity.value == False: #Golden egg nests
+            return False
+        if item.code == 1230806 and self.options.nestsanity.value == False: #egg nests
+            return False
+        if item.code == 1230807 and self.options.nestsanity.value == False: #Feather nests
             return False
         
         # if item.code == 1230888 and self.options.cheato_rewards.value == False and self.options.honeyb_rewards.value == False:
