@@ -986,7 +986,7 @@ IHWLLoc_table = {
 }
 
 IHQMLoc_table = {
-    locationName.NESTIH59: LocationData(1231092),
+    locationName.NESTIH58: LocationData(1231092),
     locationName.NESTIH59: LocationData(1231093),
     locationName.NESTIH60: LocationData(1231094),
     locationName.NESTIH61: LocationData(1231095),
