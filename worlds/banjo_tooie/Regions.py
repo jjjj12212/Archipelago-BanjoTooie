@@ -1214,7 +1214,7 @@ def connect_regions(self):
                         regionName.IOHCT: lambda state: rules.split_up(state)})
     
     region_GM = multiworld.get_region(regionName.GM, player)
-    region_GM.add_exits({regionName.GMWSJT, regionName.CHUFFY, regionName.WW}, {
+    region_GM.add_exits({regionName.GMWSJT, regionName.CHUFFY, regionName.GMFD}, {
                         regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_GGM(state),
                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ggm_to_chuffy(state),
                         regionName.GMFD: lambda state: rules.ggm_to_fuel_depot(state)
