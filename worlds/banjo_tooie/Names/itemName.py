@@ -133,3 +133,8 @@ HFA = "Hailfire Peaks"
 CCA = "Cloud Cuckooland"
 CKA = "Cauldron Keep"
 #H1A = "HAG-1" 
+
+
+GNEST = "Golden Egg Nest"
+ENEST = "Egg Nest"
+FNEST = "Feather Nest"

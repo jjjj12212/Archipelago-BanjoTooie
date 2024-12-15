@@ -169,6 +169,12 @@ rando_key_table = {
     itemName.CKA:           ItemData(1230952,   1, "progress", locationName.W9),
 }
 
+nest_table= {
+    itemName.GNEST:           ItemData(1230805,   23, "filler", ""),
+    itemName.ENEST:           ItemData(1230806,   315, "filler", ""),
+    itemName.FNEST:           ItemData(1230807,   135, "filler", ""),
+}
+
 
 all_item_table = {
     **moves_table,
@@ -182,7 +188,8 @@ all_item_table = {
     **stop_n_swap_table,
     **bk_moves_table,
     **progressive_ability_table,
-    **dino_table
+    **dino_table,
+    **nest_table
 }
 
 all_group_table = {
@@ -196,7 +203,8 @@ all_group_table = {
     'token': token_table,
     "stopnswap": stop_n_swap_table,
     "bk_moves": bk_moves_table,
-    "dino": dino_table
+    "dino": dino_table,
+    "nest": nest_table
 }
 
 

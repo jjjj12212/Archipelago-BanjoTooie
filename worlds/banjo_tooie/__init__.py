@@ -179,6 +179,8 @@ class BanjoTooieWorld(World):
                 i == (self.options.extra_trebleclefs_count.value*3 - 14):
                     break
                 trap_big_pants_counter += 1
+        # if self.options.nestsanity.value == True: # TODO: change for egg and feather packs
+        #     trap_big_pants_counter += 473
         if self.options.traps.value == True:
             trup = divmod(trap_big_pants_counter, 3)
             ttrap_qty = trup[0] + (1 if trup[1] >= 1 else 0)
@@ -314,10 +316,17 @@ class BanjoTooieWorld(World):
         elif (item.code == 1230815 or item.code == 1230816) and self.options.randomize_bk_moves.value == 1: # talon trot and tall jump not in pool
             return False
         
+        if item.code == 1230805 and self.options.nestsanity.value == False: #Golden egg nests
+            return False
+        if item.code == 1230806 and self.options.nestsanity.value == False: #egg nests
+            return False
+        if item.code == 1230807 and self.options.nestsanity.value == False: #Feather nests
+            return False
+        
         # if item.code == 1230888 and self.options.cheato_rewards.value == False and self.options.honeyb_rewards.value == False:
         #     return False
-        if item.code == 1230888 and self.options.randomize_bk_moves.value == 2 and \
-            (self.options.bassclef_amount.value == 0 and self.options.extra_trebleclefs_count.value == 0):
+        if item.code == 1230888 and self.options.randomize_bk_moves.value == 2 \
+            and (self.options.bassclef_amount.value == 0 and self.options.extra_trebleclefs_count.value == 0):
             return False
         if item.code == 1230888 and self.options.traps.value == True:
             return False
@@ -787,7 +796,7 @@ class BanjoTooieWorld(World):
 
         btoptions['dialog_character'] = int(self.options.dialog_character.value)
 
-
+        btoptions['nestsanity'] = "true" if self.options.nestsanity == 1 else "false"
         return btoptions
 
     # for the universal tracker, doesn't get called in standard gen
