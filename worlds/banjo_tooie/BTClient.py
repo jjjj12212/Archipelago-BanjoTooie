@@ -359,7 +359,8 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_silo_costs": ctx.slot_data["jamjars_silo_costs"],
             "slot_open_silo": ctx.slot_data["first_silo"],
             "slot_zones": ctx.slot_data['loading_zones'],
-            "slot_dialog_character": ctx.slot_data['dialog_character']
+            "slot_dialog_character": ctx.slot_data['dialog_character'],
+            "slot_nestsanity": ctx.slot_data['nestsanity']
         })
     ctx.sendSlot = False
     return payload
