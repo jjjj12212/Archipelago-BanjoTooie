@@ -1,7 +1,7 @@
 -- Banjo Tooie Connector Lua
--- Created by Mike Jackson (jjjj12212) 
+-- Created by Mike Jackson (jjjj12212)
 -- with the help of Rose (Oktorose), the OOT Archipelago team, ScriptHawk BT.lua
--- modifications from Unalive, HemiJackson & fhnnhf 
+-- modifications from Unalive, HemiJackson & fhnnhf
 
 -- local RDRAMBase = 0x80000000;
 -- local RDRAMSize = 0x800000;
@@ -578,7 +578,7 @@ local ASSET_MAP_CHECK = {
         }
     },
     --GLITTER GULCH MINE
-    
+
     [0xC7] = { --GGM
         ["JIGGIES"] = {
             "1230607", -- Canary Mary
@@ -791,7 +791,7 @@ local ASSET_MAP_CHECK = {
             "1230565", -- Cactus of Strength
         },
         ["PAGES"] = {
-            "1230736" -- Saucer 
+            "1230736" -- Saucer
         },
         ["HONEYCOMB"] = {
             "1230709", -- Space Zone
@@ -1093,7 +1093,7 @@ local ASSET_MAP_CHECK = {
             "1231240",
             "1231241",
         }
-    },      
+    },
     [0xEE] =	{ --JRL - Pawno's Emporium
         ["JIGGIES"] = {
             "1230634", -- Pawno
@@ -2249,15 +2249,15 @@ local JAMJAR_SILO_LOCATIONS = {
     "1230760",
     "1230763",
     "1230764",
-    "1230765",
     "1230766",
+    "1230765",
     "1230767",
     "1230768",
     "1230769",
     "1230770",
+    "1230773",
     "1230771",
     "1230772",
-    "1230773",
     "1230774",
     "1230775",
     "1230776",
@@ -4638,8 +4638,8 @@ local ADDRESS_MAP = {
         ['1231254'] = 0x0F5,
         ['1231255'] = 0x0F6,
         ['1231256'] = 0x0F7,
-        ['1231257'] = 0x0F8,
-        ['1231258'] = 0x0F9,
+        ['1231258'] = 0x0F8,
+        ['1231257'] = 0x0F9,
         ['1231259'] = 0x0FA,
         ['1231260'] = 0x0FB,
         ['1231261'] = 0x0FC,
@@ -4716,16 +4716,16 @@ local ADDRESS_MAP = {
         ['1231332'] = 0x143,
         ['1231333'] = 0x144,
         ['1231334'] = 0x145,
-        ['1231335'] = 0x146,
-        ['1231336'] = 0x147,
-        ['1231337'] = 0x148,
-        ['1231338'] = 0x149,
-        ['1231339'] = 0x14A,
-        ['1231340'] = 0x14B,
-        ['1231341'] = 0x14C,
-        ['1231342'] = 0x14D,
-        ['1231343'] = 0x14E,
-        ['1231344'] = 0x14F,
+        ['1231336'] = 0x146,
+        ['1231337'] = 0x147,
+        ['1231339'] = 0x148,
+        ['1231340'] = 0x149,
+        ['1231341'] = 0x14A,
+        ['1231342'] = 0x14B,
+        ['1231343'] = 0x14C,
+        ['1231344'] = 0x14D,
+        ['1231335'] = 0x14E,
+        ['1231338'] = 0x14F,
         ['1231345'] = 0x150,
         ['1231346'] = 0x151,
         ['1231347'] = 0x152,
@@ -4740,10 +4740,10 @@ local ADDRESS_MAP = {
         ['1231356'] = 0x15B,
         ['1231357'] = 0x15C,
         ['1231358'] = 0x15D,
-        ['1231359'] = 0x15E,
-        ['1231360'] = 0x15F,
-        ['1231361'] = 0x160,
-        ['1231362'] = 0x161,
+        ['1231360'] = 0x15E,
+        ['1231361'] = 0x15F,
+        ['1231362'] = 0x160,
+        ['1231359'] = 0x161,
         ['1231363'] = 0x162,
         ['1231364'] = 0x163,
         ['1231365'] = 0x164,
@@ -5325,7 +5325,6 @@ function obtain_AP_JIGGY()
     end
     TOTAL_JIGGY = TOTAL_JIGGY + 1
     BTH:setItem(ITEM_TABLE["AP_ITEM_JIGGY"], TOTAL_JIGGY)
-    check_open_level()
 end
 
 function jiggy_check()
@@ -5877,7 +5876,7 @@ function obtain_progressive_moves(itemId)
         elseif BTH:getItem(ITEM_TABLE["AP_ITEM_CLAWBTS"]) == 0
         then
             BTH:setItem(ITEM_TABLE["AP_ITEM_CLAWBTS"], 1)
-        end  
+        end
     elseif(itemId == 1230831)
     then
         obtain_roysten_moves(itemId);
@@ -6309,7 +6308,7 @@ function zoneWarp(zone_table)
        while success == false do
             BTH:setWorldEntrance(orig_map, new_map, orig_table['entranceId'], orig_table['exitMap'], new_table['entranceId'])
             success = BTH:setWorldEntrance(new_table['exitMap'], orig_table['exitMap'], new_table['exitId'], new_map, orig_table['exitId'])
-            if orig_map == 0xC7 -- Glitter Gulch Mine 
+            if orig_map == 0xC7 -- Glitter Gulch Mine
             then
                 BTH:setWorldEntrance(orig_map, new_map, 16, orig_table['exitMap'], new_table['entranceId'])
             end
@@ -6319,16 +6318,33 @@ function zoneWarp(zone_table)
 end
 
 function hag1_open()
-    if GOAL_TYPE == 0 and OPEN_HAG1 == false and TOTAL_JIGGY >= 70
+    if BTH:getItem(ITEM_TABLE["AP_ITEM_H1A"]) == 1
+    then
+        return
+    end
+    local opened = false
+    if GOAL_TYPE == 0 and (OPEN_HAG1 == true or (OPEN_HAG1 == false and TOTAL_JIGGY >= 70))
     then
         BTH:setItem(ITEM_TABLE["AP_ITEM_H1A"], 1)
+        opened = true
     elseif GOAL_TYPE == 4 and TOTAL_MUMBO_TOKENS >= 32
     then
         BTH:setItem(ITEM_TABLE["AP_ITEM_H1A"], 1)
+        opened = true
+    end
+    if opened
+    then
+        local msg = "HAG-1 is now open!"
+        if DIALOG_CHARACTER == 110
+        then
+            table.insert(MESSAGE_TABLE, {msg, 87})
+        else
+            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
+        end
     end
 end
 
-function check_open_level(show_message)  -- See if entrance conditions for a level have been met    
+function check_open_level()  -- See if entrance conditions for a level have been met
     if DEBUG == true then
         print(TOTAL_JIGGY)
     end
@@ -6441,7 +6457,7 @@ function processAGIItem(item_list)
             elseif(memlocation == 1230515) -- Jiggy
             then
                 obtain_AP_JIGGY()
-                check_open_level(true) -- check if the current jiggy count opens a new level
+                check_open_level() -- check if the current jiggy count opens a new level
             elseif memlocation == 1230516 -- Treble Clef
             then
                 obtain_AP_TREBLE()
@@ -6473,6 +6489,7 @@ function processAGIItem(item_list)
             elseif(memlocation == 1230798) --Mumbo Token
             then
                 obtain_mumbo_token()
+                check_open_level() -- check if the current jiggy count opens a new level
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
         end
@@ -6672,7 +6689,7 @@ function SendToBTClient()
         retTable["banjo_map"] = 0x0;
     else
         retTable["banjo_map"] = CURRENT_MAP;
-    end 
+    end
     if DEBUGLVL3 == true
     then
         print("Send Data")
@@ -6816,7 +6833,8 @@ function process_slot(block)
         if block['slot_skip_tot'] == "false"
         then
             BTH:setSettingToT(0)
-        elseif block['slot_skip_tot'] == "false"  then
+        elseif block['slot_skip_tot'] == "true"
+        then
             BTH:setSettingToT(1)
         else
             BTH:setSettingToT(2)
@@ -6874,13 +6892,14 @@ function process_slot(block)
         SKIP_KLUNGO = true
         BTH:setSettingKlungo(1)
     end
+    if block['slot_goal_type'] ~= nil and block['slot_goal_type'] ~= ""
+    then
+        GOAL_TYPE = block['slot_goal_type']
+    end
     if block['slot_open_hag1'] ~= nil and block['slot_open_hag1'] ~= "false"
     then
         OPEN_HAG1 = true
-        if block['slot_goal_type'] == 0
-        then
-            BTH:setItem(ITEM_TABLE["AP_ITEM_H1A"], 1)
-        end
+        hag1_open()
     end
     if block['slot_chuffy'] ~= nil and block['slot_chuffy'] ~= "false"
     then
@@ -6894,10 +6913,6 @@ function process_slot(block)
     if block['slot_worlds'] ~= nil and block['slot_worlds'] ~= "false"
     then
         ENABLE_AP_WORLDS = true
-    end
-    if block['slot_goal_type'] ~= nil and block['slot_goal_type'] ~= ""
-    then
-        GOAL_TYPE = block['slot_goal_type']
     end
     if block['slot_minigame_hunt_length'] ~= nil and block['slot_minigame_hunt_length'] ~= ""
     then
@@ -6927,33 +6942,33 @@ function process_slot(block)
             elseif(level == "Glitter Gulch Mine")
             then
                 BTH:setSettingJiggyRequirements(1, jiggy_amt)
-            
+
             elseif(level == "Witchyworld")
             then
                 BTH:setSettingJiggyRequirements(2, jiggy_amt)
-            
+
             elseif(level == "Jolly Roger's Lagoon - Town Center")
             then
                 level = "Jolly Roger's Lagoon"
                 BTH:setSettingJiggyRequirements(3, jiggy_amt)
-            
+
             elseif(level == "Terrydactyland")
             then
                 BTH:setSettingJiggyRequirements(4, jiggy_amt)
-            
+
             elseif(level == "Outside Grunty Industries")
             then
                 level = "Grunty Industries"
                 BTH:setSettingJiggyRequirements(5, jiggy_amt)
-            
+
             elseif(level == "Hailfire Peaks")
             then
                 BTH:setSettingJiggyRequirements(6, jiggy_amt)
-            
+
             elseif(level == "Cloud Cuckooland")
             then
                 BTH:setSettingJiggyRequirements(7, jiggy_amt)
-            
+
             elseif(level == "Cauldron Keep")
             then
                 BTH:setSettingJiggyRequirements(8, jiggy_amt)
@@ -6968,11 +6983,11 @@ function process_slot(block)
             end
         end
     end
-    if block['slot_silo_costs'] ~= nil 
+    if block['slot_silo_costs'] ~= nil
     then
         for locationId, value in pairs(block['slot_silo_costs'])
         do
-           BTH:setSettingSiloRequirements(JAMJAR_SILO_TABLE[locationId], value) 
+           BTH:setSettingSiloRequirements(JAMJAR_SILO_TABLE[locationId], value)
         end
     end
     if block['slot_open_silo'] ~= nil
@@ -7045,7 +7060,7 @@ end
 
 function printGoalInfo()
     local randomEncouragment = ENCOURAGEMENT[math.random(1, #ENCOURAGEMENT)]["message"]
-    if GOAL_TYPE ~= nil and MGH_LENGTH ~= nil and BH_LENGTH ~= nil and 
+    if GOAL_TYPE ~= nil and MGH_LENGTH ~= nil and BH_LENGTH ~= nil and
     JFR_LENGTH ~= nil and TH_LENGTH ~= nil then
         local message = ""
         if GOAL_TYPE == 0 then
