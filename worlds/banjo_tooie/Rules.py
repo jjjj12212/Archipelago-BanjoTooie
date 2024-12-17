@@ -6909,7 +6909,7 @@ class BanjoTooieRules:
             logic = (self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state)
         return logic
     
-    # TODO: F2 to F3 and F4 from outside (maybe already done by GIOB), F2 to F5 with split up
+
     def F2_to_F3(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
