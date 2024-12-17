@@ -10,7 +10,6 @@ import random
 import subprocess
 import sys
 import time
-from tkinter import filedialog
 from typing import Union
 import zipfile
 from asyncio import StreamReader, StreamWriter
@@ -78,6 +77,29 @@ async def run_game(romfile):
         elif os.path.isfile(auto_start):
             subprocess.Popen([auto_start, romfile],
                             stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+async def apply_patch():
+    fpath = pathlib.Path(__file__)
+    archipelago_root = None
+    for i in range(0, 5,+1) :
+        if fpath.parents[i].stem == "Archipelago":
+            archipelago_root = pathlib.Path(__file__).parents[i]
+            break
+    patch_path = None
+    if archipelago_root:
+        patch_path = os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64")
+    if not patch_path or check_rom(patch_path) != patch_md5:
+        logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
+        await asyncio.sleep(0.01)
+        rom = Utils.open_filename("Open your Banjo-Tooie US ROM", (("Rom Files", (".z64", ".n64")), ("All Files", "*"),))
+        if not rom:
+            logger.info("No ROM selected. Please restart the Banjo-Tooie Client to try again.")
+            return
+        if not patch_path:
+            patch_path = os.path.split(rom) + "/Banjo-Tooie-AP"+game_append_version+".n64"
+        patch_rom(rom, patch_path, "Banjo-Tooie.patch")
+    if patch_path:
+        logger.info("Patched Banjo-Tooie is located in " + patch_path)
 
 
 class BanjoTooieCommandProcessor(ClientCommandProcessor):
@@ -207,6 +229,7 @@ class BanjoTooieContext(CommonContext):
 
         self.ui = BanjoTooieManager(self)
         self.ui_task = asyncio.create_task(self.ui.async_run(), name="UI")
+        asyncio.create_task(apply_patch())
 
     def on_package(self, cmd, args):
         if cmd == 'Connected':
@@ -880,25 +903,6 @@ def main():
     args = parser.parse_args(args)
 
     async def _main():
-        fpath = pathlib.Path(__file__)
-        archipelago_root = None
-        for i in range(0, 5,+1) :
-            if fpath.parents[i].stem == "Archipelago":
-                archipelago_root = pathlib.Path(__file__).parents[i]
-                break
-        if archipelago_root != None:
-            if check_rom(os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64")) != patch_md5:
-                logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
-                rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")], title="Open your Banjo-Tooie US ROM")
-                patch_rom(rom, os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64"), "banjo-tooie.patch")
-                logger.info("Patched Banjo-Tooie is located in " + os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64"))
-        else:
-            logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
-            rom = filedialog.askopenfilename(filetypes=[("Rom Files", (".z64", ".n64")), ("All Files", "*")], title="Open your Banjo-Tooie US ROM")
-            file_path = os.path.split(rom)
-            patch_rom(rom, file_path + "/Banjo-Tooie-AP"+game_append_version+".n64", "banjo-tooie.patch")
-            logger.info("Patched Banjo-Tooie is located in " + os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64"))
-
         multiprocessing.freeze_support()
 
         ctx = BanjoTooieContext(args.connect, args.password)
