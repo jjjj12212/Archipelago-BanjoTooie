@@ -832,6 +832,11 @@ class BanjoTooieRules:
             locationName.NESTTL21:    lambda state: self.tdl_top(state),
             locationName.NESTTL22:    lambda state: self.tdl_top(state),
 
+            locationName.NESTTL23:    lambda state: self.enter_tdl_train_station(state),
+            locationName.NESTTL24:    lambda state: self.enter_tdl_train_station(state),
+            locationName.NESTTL25:    lambda state: self.enter_tdl_train_station(state),
+            locationName.NESTTL26:    lambda state: self.enter_tdl_train_station(state),
+
             locationName.NESTTL27:    lambda state: self.oogle_boogles_open(state),
             locationName.NESTTL28:    lambda state: self.oogle_boogles_open(state),
             locationName.NESTTL29:    lambda state: self.oogle_boogles_open(state),
@@ -853,7 +858,7 @@ class BanjoTooieRules:
             locationName.NESTTL51:    lambda state: self.nest_stomping_plains_footprint(state),
 
             locationName.NESTTL52:    lambda state: self.tdl_top(state),
-            locationName.NESTTL53:    lambda state: self.nest_stomping_plains_entrance(state),
+            locationName.NESTTL53:    lambda state: self.can_reach_stomping_plains(state),
 
 
             locationName.NESTGI4:    lambda state: self.nest_gi_outside_right(state),
@@ -1788,15 +1793,26 @@ class BanjoTooieRules:
     def jiggy_stomping_plains(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.ice_eggs(state) and self.tdl_top(state) and self.long_jump(state) and self.talon_trot(state)
+            logic = self.can_reach_stomping_plains(state) and self.talon_trot(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_reach_stomping_plains(state) and self.talon_trot(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.can_reach_stomping_plains(state) and (self.tall_jump(state) or self.talon_trot(state))
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.can_reach_stomping_plains(state) and (self.tall_jump(state) or self.talon_trot(state))
+        return logic
+
+    def can_reach_stomping_plains(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.ice_eggs(state) and self.tdl_top(state) and self.long_jump(state)
         elif self.world.options.logic_type == 1: # normal
             logic = self.tdl_top(state) and \
-            (self.wing_whack(state) or self.glide(state) or \
-            self.ice_eggs(state)) and self.long_jump(state) and self.talon_trot(state)
+            (self.wing_whack(state) or self.glide(state) or self.ice_eggs(state)) and self.long_jump(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.tdl_top(state) and self.long_jump(state) and (self.tall_jump(state) or self.talon_trot(state))
+            logic = self.tdl_top(state) and (self.long_jump(state) or self.talon_trot(state) or self.split_up(state))
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.tdl_top(state) and (self.tall_jump(state) or self.talon_trot(state))
+            logic = self.tdl_top(state) and (self.long_jump(state) or self.talon_trot(state))
         return logic
     
     def jiggy_rocknuts(self, state: CollectionState) -> bool:
@@ -2096,14 +2112,18 @@ class BanjoTooieRules:
     def jiggy_hfp_stomping(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.jinjo_stomping_plains(state) and self.snooze_pack(state) and self.tall_jump(state) and self.talon_trot(state)
+            logic = self.can_reach_stomping_plains(state) and self.snooze_pack(state) and self.tall_jump(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.jinjo_stomping_plains(state) and self.snooze_pack(state) and self.tall_jump(state) and self.talon_trot(state)
+            logic = self.can_reach_stomping_plains(state) and self.snooze_pack(state) and self.tall_jump(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.jinjo_stomping_plains(state)
+            logic = self.can_reach_stomping_plains(state) and self.tall_jump(state) and self.split_up(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.jiggy_stomping_plains(state) and self.split_up(state) and self.tall_jump(state)\
-                    or (state.can_reach_region(regionName.HP, self.player) and self.clockwork_eggs(state) and self.egg_aim(state))
+            logic = self.can_reach_stomping_plains(state) and self.tall_jump(state) and self.split_up(state)\
+                    or (state.can_reach_region(regionName.HP, self.player) and self.clockwork_shot(state)\
+                        and (self.talon_trot(state)\
+                            or self.split_up(state)\
+                            or self.leg_spring(state)\
+                            or self.flap_flip(state)))
         return logic
     
     def jiggy_hfp_kickball(self, state: CollectionState) -> bool:
@@ -3450,13 +3470,15 @@ class BanjoTooieRules:
     def jinjo_stomping_plains(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.jiggy_stomping_plains(state) and self.split_up(state) and self.tall_jump(state)
+            logic = self.can_reach_stomping_plains(state) and self.split_up(state) and self.tall_jump(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.jiggy_stomping_plains(state) and self.split_up(state) and self.tall_jump(state)
+            logic = self.can_reach_stomping_plains(state) and self.split_up(state) and self.tall_jump(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.jiggy_stomping_plains(state) and self.split_up(state) and self.tall_jump(state)
+            logic = self.can_reach_stomping_plains(state) and self.split_up(state) and self.tall_jump(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.jiggy_stomping_plains(state) and (self.split_up(state) and self.tall_jump(state) or self.egg_barge(state))
+            logic = self.can_reach_stomping_plains(state) and\
+                    (self.split_up(state) and self.tall_jump(state)\
+                    or self.egg_barge(state) and (self.tall_jump(state) or self.talon_trot(state)))
         return logic
     
     def jinjo_legspring(self, state: CollectionState) -> bool:
@@ -4580,9 +4602,42 @@ class BanjoTooieRules:
 
     def nest_sm_waterfall_top(self, state: CollectionState) -> bool:
         return self.flight_pad(state)
-    
+
     def nest_sm_waterfall_platform(self, state: CollectionState) -> bool:
-        return self.flight_pad(state) or self.small_elevation(state) or self.grip_grab(state)
+        if self.world.options.logic_type == 0: # beginner
+            return self.flight_pad(state)\
+                or self.tall_jump(state)\
+                or self.flap_flip(state)\
+                or self.air_rat_a_tat_rap(state)\
+                or self.flutter(state)\
+                or self.flap_flip(state)\
+                or self.grip_grab(state)
+        elif self.world.options.logic_type == 1: # normal
+            return self.flight_pad(state)\
+                or self.tall_jump(state)\
+                or self.flap_flip(state)\
+                or self.air_rat_a_tat_rap(state)\
+                or self.flutter(state)\
+                or self.flap_flip(state)\
+                or self.grip_grab(state)
+        elif self.world.options.logic_type == 2: # advanced
+            return self.flight_pad(state)\
+                    or self.tall_jump(state)\
+                    or self.flap_flip(state)\
+                    or self.air_rat_a_tat_rap(state)\
+                    or self.flutter(state)\
+                    or self.flap_flip(state)\
+                    or self.grip_grab(state)\
+                    or self.clockwork_shot(state)
+        elif self.world.options.logic_type == 3: # glitched
+            return self.flight_pad(state)\
+                    or self.tall_jump(state)\
+                    or self.flap_flip(state)\
+                    or self.air_rat_a_tat_rap(state)\
+                    or self.flutter(state)\
+                    or self.flap_flip(state)\
+                    or self.grip_grab(state)\
+                    or self.clockwork_shot(state)
 
     def nest_bottles_house(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
@@ -4998,6 +5053,22 @@ class BanjoTooieRules:
                     or self.tdl_top(state)
         return logic
 
+    def enter_tdl_train_station(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.small_elevation(state)\
+                    or state.can_reach_region(regionName.CHUFFY, self.player) and state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWTD, self.player)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.small_elevation(state)\
+                    or self.turbo_trainers(state)\
+                    or self.springy_step_shoes(state)\
+                    or state.can_reach_region(regionName.CHUFFY, self.player) and state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWTD, self.player)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = True
+        elif self.world.options.logic_type == 3: # glitched
+            logic = True
+        return logic
+
     def nest_tdl_wall_with_holes(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
@@ -5116,15 +5187,13 @@ class BanjoTooieRules:
     def nest_stomping_plains_entrance(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.ice_eggs(state) and self.tdl_top(state) and self.long_jump(state)
+            logic = self.can_reach_stomping_plains(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.tdl_top(state) and \
-                    (self.wing_whack(state) or self.glide(state) or \
-                    self.ice_eggs(state) and self.long_jump(state))
+            logic = self.can_reach_stomping_plains(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.tdl_top(state) and self.long_jump(state)
+            logic = self.can_reach_stomping_plains(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.tdl_top(state) and self.long_jump(state)
+            logic = self.can_reach_stomping_plains(state)
         return logic
 
     def nest_gi_outside_right(self, state: CollectionState) -> bool:
@@ -5800,25 +5869,25 @@ class BanjoTooieRules:
     def nest_stomping_plains_footprint(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.ice_eggs(state) and self.tdl_top(state) and self.long_jump(state)\
+            logic = self.can_reach_stomping_plains(state)\
                     and (self.tall_jump(state) and self.split_up(state)\
                         or self.snooze_pack(state)\
                         or self.talon_trot(state)
                     )
         elif self.world.options.logic_type == 1: # normal
-            logic = self.ice_eggs(state) and self.tdl_top(state) and self.long_jump(state)\
+            logic = self.can_reach_stomping_plains(state)\
                     and (self.tall_jump(state) and self.split_up(state)\
                         or self.snooze_pack(state)\
                         or self.talon_trot(state)
                     )
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.ice_eggs(state) and self.tdl_top(state) and self.long_jump(state)\
+            logic = self.can_reach_stomping_plains(state)\
                     and (self.tall_jump(state) and self.split_up(state)\
                         or self.snooze_pack(state)\
                         or self.talon_trot(state)
                     )
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.ice_eggs(state) and self.tdl_top(state) and self.long_jump(state)\
+            logic = self.can_reach_stomping_plains(state)\
                     and (self.tall_jump(state) and self.split_up(state)\
                         or self.snooze_pack(state)\
                         or self.talon_trot(state)
@@ -5985,9 +6054,15 @@ class BanjoTooieRules:
         
     def tdl_top(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
-            return self.springy_step_shoes(state)
+            return self.springy_step_shoes(state)\
+                        and (self.tall_jump(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state))\
+                            or self.split_up(state)\
+                            or self.talon_trot(state))
         elif self.world.options.logic_type == 1: # normal
-            return self.springy_step_shoes(state)
+            return self.springy_step_shoes(state)\
+                        and (self.tall_jump(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state))\
+                            or self.split_up(state)\
+                            or self.talon_trot(state))
         elif self.world.options.logic_type == 2: # advanced
             return (self.springy_step_shoes(state) or self.leg_spring(state) and self.glide(state))
         elif self.world.options.logic_type == 3: # glitched

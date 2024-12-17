@@ -1,3 +1,7 @@
+# 4.0-beta
+  - Logic fixes:
+    - Stomping Plains collectables: reworked the logic to remove redundancy.
+    - TDL Train station: for intended and easy tricks, require a jump upgrade to enter.
 # 3.5.3-beta
   - Logic Fixes:
     - MT Honeycomb: takes glitched access into JSG into account for the stony.

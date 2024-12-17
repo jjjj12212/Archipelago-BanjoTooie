@@ -567,7 +567,7 @@ NESTIH15 = "IoH: Bottles' House Egg Nest 2"
 NESTIH16 = "IoH: Bottles' House Feather Nest 1"
 NESTIH17 = "IoH: Bottles' House Feather Nest 2"
 
-NESTIH18 = "IoH: Wooded Hollow Outside Heggy's Egg Shed egg Nest 1"
+NESTIH18 = "IoH: Wooded Hollow Outside Heggy's Egg Shed Egg Nest 1"
 NESTIH19 = "IoH: Wooded Hollow Outside Heggy's Egg Shed Egg Nest 2"
 NESTIH20 = "IoH: Wooded Hollow Left of Jiggywiggy's Temple Feather Nest 1"
 NESTIH21 = "IoH: Wooded Hollow Left of Jiggywiggy's Temple Feather Nest 2"

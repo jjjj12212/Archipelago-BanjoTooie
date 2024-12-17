@@ -1370,12 +1370,12 @@ def connect_regions(self):
     
     region_chuffy = multiworld.get_region(regionName.CHUFFY, player)
     region_chuffy.add_exits({regionName.GM, regionName.WW, regionName.IOHCT, regionName.TL,regionName.GI1,regionName.HP},
-                        {regionName.GM: lambda state: state.has(itemName.CHUFFY, self.player),
-                         regionName.WW: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWWW, player),
-                         regionName.IOHCT: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWIH, player),
-                         regionName.TL: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWTD, player),
-                         regionName.GI1: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWGI, player),
-                         regionName.HP: lambda state: state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWHP1, player)
+                        {regionName.GM: lambda state: state.has(itemName.CHUFFY, player),
+                         regionName.WW: lambda state: state.has(itemName.CHUFFY, player) and state.has(itemName.TRAINSWWW, player),
+                         regionName.IOHCT: lambda state: state.has(itemName.CHUFFY, player) and state.has(itemName.TRAINSWIH, player),
+                         regionName.TL: lambda state: state.has(itemName.CHUFFY, player) and state.has(itemName.TRAINSWTD, player),
+                         regionName.GI1: lambda state: state.has(itemName.CHUFFY, player) and state.has(itemName.TRAINSWGI, player),
+                         regionName.HP: lambda state: state.has(itemName.CHUFFY, player) and state.has(itemName.TRAINSWHP1, player)
                          })
     
     region_mt_entrance = multiworld.get_region(regionName.MTE, player)
