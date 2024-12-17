@@ -7120,6 +7120,8 @@ function messageQueue()
         if processed ~= -1
         then
             table.remove(MESSAGE_TABLE, processed)
+        else
+            BTH:setSettingDialogCharacter(DIALOG_CHARACTER)
         end
     end
 end
