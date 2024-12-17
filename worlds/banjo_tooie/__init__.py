@@ -1,3 +1,4 @@
+from math import ceil, floor
 import random
 from multiprocessing import Process
 import settings
@@ -109,12 +110,20 @@ class BanjoTooieWorld(World):
                     item_classification = ItemClassification.progression
             elif banjoItem.btid == 1230797 and self.options.randomize_notes.value == True:
                 if hasattr(self.multiworld, "generation_is_fake") == False:
-                    if self.notecounter > 130:
-                        item_classification = ItemClassification.filler
-                    elif self.notecounter > 117:
+                    total_clefs = 20 * (self.options.extra_trebleclefs_count.value + 9) + 10 * self.options.bassclef_amount.value
+                    remaining_total = 900 - total_clefs
+                    
+                    five_packs = max(0, remaining_total /5)
+                    progression_five_packs = max(0, (900 - max(self.jamjars_siloname_costs.values()))/ 5)
+                    useful_five_packs = floor((five_packs-progression_five_packs)/2)
+                    # filler_five_packs = ceil((five_packs-progression_five_packs)/2)
+
+                    if self.notecounter < progression_five_packs:
+                        item_classification = ItemClassification.progression
+                    elif self.notecounter >= progression_five_packs and self.notecounter < progression_five_packs + useful_five_packs:
                         item_classification = ItemClassification.useful
                     else:
-                        item_classification = ItemClassification.progression
+                        item_classification = ItemClassification.filler
                     self.notecounter += 1
                 else:
                     item_classification = ItemClassification.progression
@@ -179,8 +188,6 @@ class BanjoTooieWorld(World):
                 i == (self.options.extra_trebleclefs_count.value*3 - 14):
                     break
                 trap_big_pants_counter += 1
-        # if self.options.nestsanity.value == True: # TODO: change for egg and feather packs
-        #     trap_big_pants_counter += 473
         if self.options.traps.value == True:
             trup = divmod(trap_big_pants_counter, 3)
             ttrap_qty = trup[0] + (1 if trup[1] >= 1 else 0)

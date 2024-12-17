@@ -1,7 +1,16 @@
 # 4.0-beta
   - Logic fixes:
     - Stomping Plains collectables: reworked the logic to remove redundancy.
+    - TDL Entrance jinjo: for intended and easy trick logics, jumping onto the pillar and into the alcove is no longer in logic, due to its difficulty.
     - TDL Train station: for intended and easy tricks, require a jump upgrade to enter.
+    - Unga Bunga Entrance Glowbo: if not on intended logic, can be gotten with a beak buster. Hard tricks and glitch logics can get it with air rat-a-tat rap.
+    - HFP Ladder Notes: intended and easy tricks logics can get them with split up.
+    - Superstash jiggy: if jumping from the sack pack entrance to reach the switch near superstash, you need climb.
+    - Mr. Fit jiggy: hard tricks and glitch logics can shoot a clockwork for the high jump event.
+    - Plateau to Pine Grove: shooting the fire switch in third person as solo Kazooie is now in all logics except intended.
+    - Floor 1 access: flying into the floor 1 window to access floor 1 is now in logic.
+    - TDL to hatch: refactored logic.
+
 # 3.5.3-beta
   - Logic Fixes:
     - MT Honeycomb: takes glitched access into JSG into account for the stony.

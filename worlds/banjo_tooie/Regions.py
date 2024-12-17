@@ -1282,7 +1282,7 @@ def connect_regions(self):
     region_TL.add_exits({regionName.TL_HATCH, regionName.WW, regionName.CHUFFY},
                         {regionName.WW: lambda state: rules.TDL_to_WW(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.tdl_to_chuffy(state),
-                         regionName.TL_HATCH: lambda state: rules.long_jump(state),
+                         regionName.TL_HATCH: lambda state: rules.tdl_to_hatch(state),
                          })
     
     region_QM = multiworld.get_region(regionName.IOHQM, player)
@@ -1316,7 +1316,7 @@ def connect_regions(self):
     region_GI1 = multiworld.get_region(regionName.GI1, player)
     region_GI1.add_exits({regionName.GIO, regionName.GIES, regionName.GI2, regionName.GI5, regionName.CHUFFY},
                         {regionName.GIO: lambda state: rules.split_up(state),
-                         regionName.GI2: lambda state: rules.F1_to_F2(state), # TODO: 1 to 3 and 1 to 4
+                         regionName.GI2: lambda state: rules.F1_to_F2(state), # TODO: 1 to 3 and 1 to 4, maybe
                          regionName.GI5: lambda state: rules.F1_to_F5(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.gi_to_chuffy(state)})
     
@@ -1360,7 +1360,8 @@ def connect_regions(self):
                             })
 
     region_GI5 = multiworld.get_region(regionName.GI5, player)
-    region_GI5.add_exits({regionName.GI3, regionName.GI3B, regionName.GI4}, { # If you can fly and reach the roof, you have access to floor 3 and 4.
+    region_GI5.add_exits({regionName.GI1, regionName.GI3, regionName.GI3B, regionName.GI4}, { # If you can fly and reach the roof, you have access to floor 3 and 4.
+                            regionName.GI1:  lambda state: rules.floor_5_to_floor_1(state),
                             regionName.GI3B: lambda state: rules.floor_5_to_boiler_plant(state)
                             })
     

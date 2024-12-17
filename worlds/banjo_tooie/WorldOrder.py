@@ -327,7 +327,7 @@ def generate_jamjars_costs(world: BanjoTooieWorld) -> None:
         ]
 
         for location in silo_locations:
-            world.jamjars_siloname_costs.update({location: world.random.randint(0, 153)*5})
+            world.jamjars_siloname_costs.update({location: world.random.randint(0, 160)*5})
 
     elif world.options.jamjars_silo_costs == 2: # Progressive
         # We have no control over overworld progression, so those stay vanilla.
