@@ -248,26 +248,26 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
             move = world.random.choice(move_lst)
             world.multiworld.early_items[world.player][move] = 1
 
-    def early_fire_eggs(world: BanjoTooieWorld) -> None:
-        world.multiworld.early_items[world.player][itemName.PBEGGS if world.options.egg_behaviour.value == 2 else itemName.FEGGS] = 1
-        if world.options.randomize_bk_moves != 0:
-            if world.options.progressive_egg_aiming.value == True:
-                world.multiworld.early_items[world.player][itemName.PEGGAIM] = 2
-            elif world.options.progressive_adv_egg_aiming.value == True:
-                world.multiworld.early_items[world.player][itemName.PAEGGAIM] = 3
-            else:
-                world.multiworld.early_items[world.player][world.random.choice([itemName.EGGAIM, itemName.EGGSHOOT])] = 1
+def early_fire_eggs(world: BanjoTooieWorld) -> None:
+    world.multiworld.early_items[world.player][itemName.PBEGGS if world.options.egg_behaviour.value == 2 else itemName.FEGGS] = 1
+    if world.options.randomize_bk_moves != 0:
+        if world.options.progressive_egg_aiming.value == True:
+            world.multiworld.early_items[world.player][itemName.PEGGAIM] = 2
+        elif world.options.progressive_adv_egg_aiming.value == True:
+            world.multiworld.early_items[world.player][itemName.PAEGGAIM] = 3
+        else:
+            world.multiworld.early_items[world.player][world.random.choice([itemName.EGGAIM, itemName.EGGSHOOT])] = 1
 
-    def early_torpedo(world: BanjoTooieWorld) -> None:
-        if world.options.randomize_bk_moves != 0:
-            if world.options.progressive_water_training.value == True:
-                world.multiworld.early_items[world.player][itemName.PSWIM] = 1
-                world.multiworld.early_items[world.player][itemName.TTORP] = 1
-            elif world.options.progressive_adv_water_training.value == True:
-                world.multiworld.early_items[world.player][itemName.PASWIM] = 3
-            else:
-                world.multiworld.early_items[world.player][itemName.DIVE] = 1
-                world.multiworld.early_items[world.player][itemName.TTORP] = 1
+def early_torpedo(world: BanjoTooieWorld) -> None:
+    if world.options.randomize_bk_moves != 0:
+        if world.options.progressive_water_training.value == True:
+            world.multiworld.early_items[world.player][itemName.PSWIM] = 1
+            world.multiworld.early_items[world.player][itemName.TTORP] = 1
+        elif world.options.progressive_adv_water_training.value == True:
+            world.multiworld.early_items[world.player][itemName.PASWIM] = 3
+        else:
+            world.multiworld.early_items[world.player][itemName.DIVE] = 1
+            world.multiworld.early_items[world.player][itemName.TTORP] = 1
 
 
 def generate_jamjars_costs(world: BanjoTooieWorld) -> None:

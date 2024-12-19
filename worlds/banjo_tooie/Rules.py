@@ -701,7 +701,7 @@ class BanjoTooieRules:
             locationName.NESTMT15:    lambda state: self.nest_pillars(state),
             locationName.NESTMT16:    lambda state: self.nest_pillars(state),
             locationName.NESTMT17:    lambda state: self.nest_pillars(state),
-            locationName.NESTMT18:    lambda state: self.nest_mt_cell_left(state), # TODO: Which one is the left nest?
+            locationName.NESTMT18:    lambda state: self.nest_mt_cell_right(state), 
             locationName.NESTMT19:    lambda state: self.prison_compound_open(state),
             locationName.NESTMT20:    lambda state: self.prison_compound_open(state),
             locationName.NESTMT21:    lambda state: self.nest_mt_cell_left(state),
