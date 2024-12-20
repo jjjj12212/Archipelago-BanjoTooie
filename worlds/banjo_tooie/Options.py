@@ -208,10 +208,6 @@ class EnableMultiWorldCheatoPages(DefaultOnToggle):
     """Cheato pages are scattered across the MultiWorld."""
     display_name = "Randomize Cheato Pages"
 
-class SetMultiWorldCheatoPagesFiller(Toggle):
-    """If Cheato pages are scattered, sets Cheato Items as filler."""
-    display_name = "Use Cheato Pages as Filler"
-
 class EnableMultiWorldHoneycombs(DefaultOnToggle):
     """Honeycombs are scattered across the MultiWorld."""
     display_name = "Randomize Honeycombs"
@@ -433,7 +429,6 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_doubloons: EnableMultiWorldDoubloons
     randomize_cheato: EnableMultiWorldCheatoPages
     cheato_rewards: EnableCheatoRewards
-    cheato_as_filler: SetMultiWorldCheatoPagesFiller
     randomize_honeycombs: EnableMultiWorldHoneycombs
     honeyb_rewards: EnableHoneyBRewards
     randomize_glowbos: EnableMultiWorldGlowbos

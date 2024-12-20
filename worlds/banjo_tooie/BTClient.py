@@ -64,7 +64,7 @@ bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_i
 script_version: int = 4
 version: str = "V4.0"
 game_append_version: str = "V40"
-patch_md5: str = "fe151bc412157e0b092bd281797d980c"
+patch_md5: str = "58d52340f5421283f789342b81b63bdd"
 
 def get_item_value(ap_id):
     return ap_id
@@ -634,8 +634,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             ctx._set_message("You have completed your goal", None)
 
         #Mumbo Tokens
-        if (ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or
-            ctx.slot_data["goal_type"] == 3) and not ctx.finished_game:
+        if (ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2) and not ctx.finished_game:
             mumbo_tokens = 0
             for networkItem in ctx.items_received:
                 if networkItem.item == 1230798:
@@ -650,12 +649,24 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                         ctx.finished_game = True
                         ctx._set_message("You have completed your goal", None)
 
-        if (ctx.current_map == 371 and ctx.slot_data["goal_type"] == 5 and not ctx.finished_game):
+        if (ctx.current_map == 401 and ctx.slot_data["goal_type"] == 5 and not ctx.finished_game):
             mumbo_tokens = 0
             for networkItem in ctx.items_received:
                 if networkItem.item == 1230798:
                     mumbo_tokens += 1
                     if (mumbo_tokens >= ctx.slot_data["token_hunt_length"]):
+                        await ctx.send_msgs([{
+                            "cmd": "StatusUpdate",
+                            "status": 30
+                        }])
+                        ctx.finished_game = True
+
+        if (ctx.current_map == 401 and ctx.slot_data["goal_type"] == 3 and not ctx.finished_game):
+            mumbo_tokens = 0
+            for networkItem in ctx.items_received:
+                if networkItem.item == 1230798:
+                    mumbo_tokens += 1
+                    if (mumbo_tokens >= ctx.slot_data["jinjo_family_rescue_length"]):
                         await ctx.send_msgs([{
                             "cmd": "StatusUpdate",
                             "status": 30

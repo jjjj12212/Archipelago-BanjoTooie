@@ -117,6 +117,7 @@ NONE = "Big-O Pants"
 TTRAP = "Trip Trap"
 STRAP = "Slip Trap"
 TRTRAP = "Transform Trap"
+SQTRAP = "Squish Trap"
 
 CHUFFY = "Chuffy"
 

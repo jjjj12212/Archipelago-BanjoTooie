@@ -83,6 +83,7 @@ local BLACK_JINJO = 0;
 local TTRAPS = 0;
 local STRAPS = 0;
 local TRTRAPS = 0;
+local SQTRAPS = 0;
 
 local EGGNEST = 0;
 local FEATHERNEST = 0;
@@ -2118,7 +2119,8 @@ local TRAP_TABLE = {};
 local TRAPS = {
     "AP_TRAP_TRIP",
     "AP_TRAP_SLIP",
-    "AP_TRAP_MISFIRE"
+    "AP_TRAP_MISFIRE",
+    "AP_TRAP_SQUISH"
 }
 
 local CURRENT_DIALOG_CHARACTER = nil
@@ -4987,17 +4989,18 @@ BTHACK = {
     pc_messages = 0x8,
     pc_settings = 0xC,
         setting_seed = 0x0,
-        setting_chuffy = 0x4,
-        setting_nests = 0x5,
-        setting_puzzle = 0x6,
-        setting_backdoors = 0x7,
-        setting_klungo = 0x8,
-        setting_tot = 0x9,
-        setting_minigames = 0xA,
-        setting_dialog_character = 0xB,
-        setting_max_mumbo_tokens = 0xC,
-        setting_jiggy_requirements = 0xD,
-        setting_open_silos = 0x18,
+        setting_victory_condition = 0x4,
+        setting_chuffy = 0x5,
+        setting_nests = 0x6,
+        setting_puzzle = 0x7,
+        setting_backdoors = 0x8,
+        setting_klungo = 0x9,
+        setting_tot = 0xA,
+        setting_minigames = 0xB,
+        setting_dialog_character = 0xC,
+        setting_max_mumbo_tokens = 0xD,
+        setting_jiggy_requirements = 0xE,
+        setting_open_silos = 0x19,
         setting_silo_requirements = 0x20,
     pc_items = 0x10,
     pc_traps = 0x14,
@@ -5100,6 +5103,10 @@ end
 
 function BTHACK:setSettingSeed(seed)
     mainmemory.write_u32_be(self.setting_seed + BTHACK:getSettingPointer(), seed);
+end
+
+function BTHACK:setVictoryCondition(victory)
+    mainmemory.writebyte(self.setting_victory_condition + BTHACK:getSettingPointer(), victory);
 end
 
 function BTHACK:setSettingChuffy(chuffy)
@@ -6241,6 +6248,10 @@ function traps(itemId)
     then
         TRTRAPS = TRTRAPS + 1
         BTH:sendTrap(TRAP_TABLE["AP_TRAP_MISFIRE"], TRTRAPS)
+    elseif itemId == 1230789
+    then
+        SQTRAPS = SQTRAPS + 1
+        BTH:sendTrap(TRAP_TABLE["AP_TRAP_SQUISH"], SQTRAPS)
     end
 end
 
@@ -6395,7 +6406,23 @@ function mumbo_announce()
     then
         if TOTAL_MUMBO_TOKENS >= TH_LENGTH
         then
-            local message = "You have found enough Mumbo Tokens! Time to head home!"
+            local message = "You have found enough Mumbo Tokens! Time to party at Bottles' House!"
+            print(" ")
+            print(message)
+            if DIALOG_CHARACTER == 110
+            then
+                table.insert(MESSAGE_TABLE, {message, 8});
+            else
+                table.insert(MESSAGE_TABLE, {message, DIALOG_CHARACTER});
+            end
+            TOKEN_ANNOUNCE = true
+        end
+    end
+    if GOAL_TYPE == 3 and TOKEN_ANNOUNCE == false
+    then
+        if TOTAL_MUMBO_TOKENS >= JFR_LENGTH
+        then
+            local message = "You have found enough Mumbo Tokens! Time to party at Bottles' House!"
             print(" ")
             print(message)
             if DIALOG_CHARACTER == 110
@@ -6445,7 +6472,7 @@ function processAGIItem(item_list)
             elseif( 1230799 <= memlocation and memlocation <= 1230804) -- StopNSwap
             then
                 obtain_mystery_item(memlocation)
-            elseif( 1230786 <= memlocation and memlocation <= 1230788) -- Traps
+            elseif( 1230786 <= memlocation and memlocation <= 1230789) -- Traps
             then
                 traps(memlocation)
             elseif( 1230805 <= memlocation and memlocation <= 1230807) -- Nests
@@ -6895,6 +6922,7 @@ function process_slot(block)
     if block['slot_goal_type'] ~= nil and block['slot_goal_type'] ~= ""
     then
         GOAL_TYPE = block['slot_goal_type']
+        BTH:setVictoryCondition(GOAL_TYPE)
     end
     if block['slot_open_hag1'] ~= nil and block['slot_open_hag1'] ~= "false"
     then

@@ -82,7 +82,6 @@ class BanjoTooieWorld(World):
         self.doubloon_counter: int = 0
         self.notecounter: int = 0
         self.slot_data = []
-        self.use_cheato_filler = False
         self.randomize_worlds = {}
         self.randomize_order = {}
         self.worlds_randomized = False
@@ -162,8 +161,6 @@ class BanjoTooieWorld(World):
     
     def create_items(self) -> None:
         itempool = []
-        if self.options.cheato_as_filler == True:
-            self.use_cheato_filler = True
         ############## START OF TRAP / BIG O PANTS COUNTER #######################################
         trap_big_pants_counter = 0
         if self.options.cheato_rewards.value == True and self.options.randomize_bk_moves.value == 0:
@@ -189,10 +186,11 @@ class BanjoTooieWorld(World):
                     break
                 trap_big_pants_counter += 1
         if self.options.traps.value == True:
-            trup = divmod(trap_big_pants_counter, 3)
+            trup = divmod(trap_big_pants_counter, 4)
             ttrap_qty = trup[0] + (1 if trup[1] >= 1 else 0)
             strap_qty = trup[0] + (1 if trup[1] >= 2 else 0)
-            trtrap_qty = trup[0]
+            trtrap_qty = trup[0] + (1 if trup[1] >= 3 else 0)
+            sqtrap_qty = trup[0]
 
         ############## END OF TRAP / BIG O PANTS COUNTER #######################################
         for name,id in all_item_table.items():
@@ -223,6 +221,9 @@ class BanjoTooieWorld(World):
                             itempool += [self.create_item(name)]
                     elif item.code == 1230788:
                         for i in range(trtrap_qty):
+                            itempool += [self.create_item(name)]
+                    elif item.code == 1230789:
+                        for i in range(sqtrap_qty):
                             itempool += [self.create_item(name)]
                     #end of none qty logic
 
@@ -338,7 +339,7 @@ class BanjoTooieWorld(World):
         if item.code == 1230888 and self.options.traps.value == True:
             return False
         
-        if (item.code == 1230786 or item.code == 1230787 or item.code == 1230788) and self.options.traps.value == False:
+        if (item.code == 1230786 or item.code == 1230787 or item.code == 1230788 or item.code == 1230789) and self.options.traps.value == False:
             return False
         
         if self.options.progressive_beak_buster.value == True and (item.code == 1230820 or item.code == 1230757):
@@ -414,8 +415,6 @@ class BanjoTooieWorld(World):
         self.pre_fill_me()
 
     def generate_early(self) -> None:
-        if self.options.cheato_as_filler.value == True and self.options.cheato_rewards == True:
-            raise ValueError("Cheato Pages cannot be marked as filler if Cheato Rewards are set.")
         if self.options.randomize_worlds.value == True and self.options.randomize_bk_moves.value != 0 and self.options.logic_type == 0:
             raise ValueError("Randomize Worlds and Randomize BK Moves is not compatible with Beginner Logic.")
         if self.options.randomize_notes == False and self.options.randomize_worlds.value == True and self.options.randomize_bk_moves.value != 0:
@@ -447,6 +446,8 @@ class BanjoTooieWorld(World):
             raise ValueError("You cannot have progressive bash attack without randomizing Stop N Swap and randomizing BK moves")
         if self.options.randomize_moves == False and self.options.jamjars_silo_costs.value != 0:
             raise ValueError("You cannot change the silo costs without randomizing Jamjars' moves.")
+        if self.options.open_hag1.value == False and self.options.victory_condition.value == 4:
+            self.options.open_hag1.value = True
         if self.options.egg_behaviour.value == 1:
             eggs = list([itemName.BEGGS, itemName.FEGGS, itemName.GEGGS, itemName.IEGGS, itemName.CEGGS])
             self.random.shuffle(eggs)
