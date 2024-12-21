@@ -450,9 +450,9 @@ HONEYBR3    = "IoH: Honey B's Reward 3" # 5
 HONEYBR4    = "IoH: Honey B's Reward 4" # 7
 HONEYBR5    = "IoH: Honey B's Reward 5" # 9
 GOGGLES     = "IoH: Amaze-O-Gaze Goggles"
-SCRUT       = "TDL: Scrut"
-SCRAT       = "TDL: Scrat"
-SCRIT       = "TDL: Scrit"
+SCRUT       = "TDL: Scrut (Lost)"
+SCRAT       = "TDL: Scrat (Sick)"
+SCRIT       = "TDL: Scrit (Enlarge)"
 ROARDINO    = "TDL: Baby T-Rex Roar"
 
 #Jiggy Chunks
