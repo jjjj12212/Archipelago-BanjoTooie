@@ -1,9 +1,9 @@
 # 4.0-beta
   - Banjo-Tooie Rom Patch Released!
     - The patch is NOT built per seed. It is built per version. So you will only be prompt to patch your game once per version.
-    - reworked the lua AGAIN!!! To better fit the new ROM
-    - sent items now shows up normally in game when received
-    - items that do not have their own icons (like moves). A in-game dialog will appear.
+    - Reworked the lua AGAIN!!! To better fit the new ROM
+    - Sent items now shows up normally in game when received
+    - Items that do not have their own icons (like moves). A in-game dialog will appear.
     - Gruntilda will mock you when you die in game.
     - You can set the Character in the dialog Or keep it default or completely randomized.
     - Pause Menu now has a Archipelago Menu. Those you are familiar with the lua console menus are now moved to this menu.
@@ -23,7 +23,7 @@
       - Bassclefs (10 notes). 1 Bassclef adds 1 Big-O-Pants (up to 30)
       - Swap with additional Trebleclefs. 1 additional Trebleclef adds 3 Big-O-Pants (up to 21)
     - Traps!
-      - replaces ALL Big-O-Pants with 4 Very Special Traps
+      - Replaces ALL Big-O-Pants with 4 Very Special Traps
       - The Traps are:
         - <b>Redacted</b>
         - <b>Redacted</b>
@@ -33,8 +33,9 @@
       - Either Completely random
       - Progressive (changes with your randomize starting worlds)
     - Nestsanity
-      - All feather and egg nests are checks and items.
+      - All feather and egg nests are checks and items
       - Adds more filler items into the game
+      - Special Icon to let you know its an un-collected check
     - Remove Cheato as Filler Option
     - Remove Refill cheat
     - Remove Bizhawk messages option

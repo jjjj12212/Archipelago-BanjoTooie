@@ -51,7 +51,7 @@ Banjo Tooie for Archipelago
 
 ## Quality of life / Additional Features
 - Instant Transformations
-- replace Notes with Bassclefs (10) or additional Trebleclefs
+- Replace Notes with Bassclefs (10) or additional Trebleclefs
 - Backdoors (transition to other level requires less items)
 - Open Hag-1 (doesn't require 70 jiggies to open)
 - Skip Jiggywiggy puzzles to open levels
@@ -65,7 +65,7 @@ Banjo Tooie for Archipelago
 - Random level Entrances
 - Change how Eggs works (YAML Option)
 - Different Logic types for different skill levels
-- customizablle world requirements
+- Customizable world requirements
 - Console support (Everdrive with USB support + Expansion Pak required)
 
 # How to install
