@@ -600,8 +600,8 @@ NESTIH44 = "IoH: Cliff Top Feather Nest 4"
 NESTIH45 = "IoH: Cliff Top Near Path To Plateau Egg Nest 2"
 NESTIH64 = "IoH: Cliff Top Near JRL Egg Nest" # Out of order
 
-NESTIH46 = "IoH: Humba's Wigwam Egg Nest 1"
-NESTIH47 = "IoH: Humba's Wigwam Egg Nest 2"
+NESTIH46 = "IoH: Wumba's Wigwam Egg Nest 1"
+NESTIH47 = "IoH: Wumba's Wigwam Egg Nest 2"
 
 NESTIH48 = "IoH: Wasteland Next to Quagmire Entrance Feather Nest"
 NESTIH49 = "IoH: Wasteland TDL Entrance Feather Nest 1"
@@ -624,8 +624,8 @@ NESTIH63 = "IoH: Quagmire Egg Nest 3"
 
 
 
-NESTMT1 = "MT: Humba's Wigwam Feather Nest 1"
-NESTMT2 = "MT: Humba's Wigwam Feather Nest 2"
+NESTMT1 = "MT: Wumba's Wigwam Feather Nest 1"
+NESTMT2 = "MT: Wumba's Wigwam Feather Nest 2"
 
 NESTMT3 = "MT: Mumbo's Skull Egg Nest 1"
 NESTMT4 = "MT: Mumbo's Skull Egg Nest 2"
@@ -641,13 +641,13 @@ NESTMT12 = "MT: Kickball Stadium Feather Nest 2"
 NESTMT13 = "MT: Bovina Egg Nest 1"
 NESTMT14 = "MT: Bovina Egg Nest 2"
 
-NESTMT15 = "MT: Prison Compund Pillars Egg Nest 1"
-NESTMT16 = "MT: Prison Compund Pillars Egg Nest 2"
-NESTMT17 = "MT: Prison Compund Pillars Egg Nest 3"
-NESTMT18 = "MT: Prison Compund Top of Prison Cell Feather Right Nest"
-NESTMT19 = "MT: Prison Compund Entrance Egg Nest 1"
-NESTMT20 = "MT: Prison Compund Entrance Egg Nest 2"
-NESTMT21 = "MT: Prison Compund Top of Prison Cell Feather Left Nest"
+NESTMT15 = "MT: Prison Compound Pillars Egg Nest 1"
+NESTMT16 = "MT: Prison Compound Pillars Egg Nest 2"
+NESTMT17 = "MT: Prison Compound Pillars Egg Nest 3"
+NESTMT18 = "MT: Prison Compound Top of Prison Cell Feather Right Nest"
+NESTMT19 = "MT: Prison Compound Entrance Egg Nest 1"
+NESTMT20 = "MT: Prison Compound Entrance Egg Nest 2"
+NESTMT21 = "MT: Prison Compound Top of Prison Cell Feather Left Nest"
 
 NESTMT22 = "MT: Jade Snake Grove Above Code Chamber Egg Nest"
 NESTMT23 = "MT: Jade Snake Grove Near Warp Pad Egg Nest 1"
@@ -788,9 +788,9 @@ NESTJR4 = "JRL: Jolly's Near Sub-Aqua Egg Aiming Silo Feather Nest 2"
 NESTJR5 = "JRL: Jolly's Gunpowder Feather Nest 1"
 NESTJR6 = "JRL: Jolly's Gunpowder Feather Nest 2"
 
-NESTJR7 = "JRL: Pawno's Emporeum Egg Nest 1"
-NESTJR8 = "JRL: Pawno's Emporeum Egg Nest 2"
-NESTJR9 = "JRL: Pawno's Emporeum Egg Nest 3"
+NESTJR7 = "JRL: Pawno's Emporium Egg Nest 1"
+NESTJR8 = "JRL: Pawno's Emporium Egg Nest 2"
+NESTJR9 = "JRL: Pawno's Emporium Egg Nest 3"
 
 NESTJR10 = "JRL: Seaweed Sanctum Bottom Floor Feather Nest"
 NESTJR11 = "JRL: Seaweed Sanctum Second Floor Egg Nest 1"
@@ -810,7 +810,7 @@ NESTJR21 = "JRL: Davie Jones Locker Egg Nest 2"
 NESTJR22 = "JRL: Davie Jones Locker Egg Nest 3"
 NESTJR23 = "JRL: Davie Jones Locker Egg Nest 4"
 
-NESTJR24 = "JRL: Humba's Wigwam Feather Nest"
+NESTJR24 = "JRL: Wumba's Wigwam Feather Nest"
 
 NESTJR25 = "JRL: Smuggler's Cavern Egg Nest 1"
 NESTJR26 = "JRL: Smuggler's Cavern Egg Nest 2"
@@ -1047,8 +1047,8 @@ NESTHP36 = "HFP: Icicle Grotto Top Egg Nest 2"
 NESTHP37 = "HFP: Mumbo's Skull Feather Nest 1"
 NESTHP38 = "HFP: Mumbo's Skull Feather Nest 2"
 
-NESTHP39 = "HFP: Humba's Wigwam Feather Nest 1"
-NESTHP40 = "HFP: Humba's Wigwam Feather Nest 2"
+NESTHP39 = "HFP: Wumba's Wigwam Feather Nest 1"
+NESTHP40 = "HFP: Wumba's Wigwam Feather Nest 2"
 
 
 
@@ -1105,5 +1105,5 @@ NESTCC46 = "CCL: Central Cavern Under Cheese Wedge Exit Egg Nest 2"
 NESTCC47 = "CCL: Pot o' Gold Egg Nest 1"
 NESTCC48 = "CCL: Pot o' Gold Egg Nest 2"
 
-NESTCC49 = "CCL: Humba's Wigwam Egg Nest 1"
-NESTCC50 = "CCL: Humba's Wigwam Egg Nest 2"
+NESTCC49 = "CCL: Wumba's Wigwam Egg Nest 1"
+NESTCC50 = "CCL: Wumba's Wigwam Egg Nest 2"
