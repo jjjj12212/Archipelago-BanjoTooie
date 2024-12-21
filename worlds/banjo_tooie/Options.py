@@ -185,17 +185,6 @@ class EnableCheatoRewards(DefaultOnToggle):
     """Cheato rewards you with a cheat and an additional randomized reward. Use Cheato Pages as Filler cannot be set if this is enabled."""
     display_name = "Cheato Rewards"
 
-class ActivateOverlayText(DefaultOnToggle):
-    """Activates the overlay text on screen. Useful if you are not streaming/viewing the BT_Client."""
-    display_name = "Activate Overlay Text"
-
-class OverlayTextColour(Choice):
-    """Choose which colour the overlay text should display."""
-    display_name = "Text Overlay Colour"
-    option_chilli_billi = 0
-    option_chilly_willy = 1
-    default = 0
-
 class EnableMultiWorldJinjos(DefaultOnToggle):
     """Jinjos have fled to other worlds. Other players need to return them home."""
     display_name = "Randomize Jinjos"

@@ -1,4 +1,46 @@
 # 4.0-beta
+  - Banjo-Tooie Rom Patch Released!
+    - The patch is NOT built per seed. It is built per version. So you will only be prompt to patch your game once per version.
+    - reworked the lua AGAIN!!! To better fit the new ROM
+    - sent items now shows up normally in game when received
+    - items that do not have their own icons (like moves). A in-game dialog will appear.
+    - Gruntilda will mock you when you die in game.
+    - You can set the Character in the dialog Or keep it default or completely randomized.
+    - Pause Menu now has a Archipelago Menu. Those you are familiar with the lua console menus are now moved to this menu.
+      - You can respawn or reset you game within this menu as well as access certian cheats
+    - Special Opening Credits
+    - Contains ALL of our existing features!
+    - This Randomizer is fully compatible with the Everdrive! You will need to run a special application that we provide while you have a USB cable connected. We know the Everdrive X7 is compatible. (Your everdrive needs a USB port. (2.5 is not compatible)). The Expansion Pak is required.
+    - You can now "Instant" Transform to mumbo or Humba Transformation with the left D-pad. HOWEVER! Due to Logic issue, you will have to tag Mumbo's Skull / Humba's Wigwam to access the "Instant" transformation (no longer requires map transitions).
+      - There are a few maps where you cannot do this, but you will get sound feedback saying that you cannot transform. 
+  - New Features / Changes!
+    - More Progressive items
+      - Adv. Water Training - Dive to Sub Aqua Aiming to Talon Torpedo to Double Air to Faster Swimming.
+      - Flight - Flight Pad to Beak Bomb to Airborne Egg Aim
+      - Egg Aim - Third Person Egg Shooting to Egg Aim
+      - Adv. Egg Aiming - Third Person Egg Shooting to Amaze-O-Gaze to Egg Aim to Breegull Blaster.
+    - Options to reduce the amount of notes to be collected
+      - Bassclefs (10 notes). 1 Bassclef adds 1 Big-O-Pants (up to 30)
+      - Swap with additional Trebleclefs. 1 additional Trebleclef adds 3 Big-O-Pants (up to 21)
+    - Traps!
+      - replaces ALL Big-O-Pants with 4 Very Special Traps
+      - The Traps are:
+        - <b>Redacted</b>
+        - <b>Redacted</b>
+        - <b>Redacted</b>
+        - <b>Redacted</b>
+    - Jamjar Silo costs are now Randomized
+      - Either Completely random
+      - Progressive (changes with your randomize starting worlds)
+    - Nestsanity
+      - All feather and egg nests are checks and items.
+      - Adds more filler items into the game
+    - Remove Cheato as Filler Option
+    - Remove Refill cheat
+    - Remove Bizhawk messages option
+    - Custom Worlds are no longer seperate options but rather a single string.
+    - Completing Jinjo Family Rescue or Token Hunt requires you to take them to Bottles' House to complete your run.
+    - If you don't have Chuffy, Chuffy will not be at GGM Station.
   - Logic fixes:
     - Stomping Plains collectables: reworked the logic to remove redundancy.
     - TDL Entrance jinjo: for intended and easy trick logics, jumping onto the pillar and into the alcove is no longer in logic, due to its difficulty.
