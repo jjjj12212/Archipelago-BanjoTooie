@@ -7,18 +7,25 @@
     - Gruntilda will mock you when you die in game.
     - You can set the Character in the dialog Or keep it default or completely randomized.
     - Pause Menu now has a Archipelago Menu. Those you are familiar with the lua console menus are now moved to this menu.
-      - You can respawn or reset you game within this menu as well as access certian cheats
+      - You can respawn or reset you game within this menu as well as access certain cheats
     - Special Opening Credits
     - Contains ALL of our existing features!
     - This Randomizer is fully compatible with the Everdrive! You will need to run a special application that we provide while you have a USB cable connected. We know the Everdrive X7 is compatible. (Your everdrive needs a USB port. (2.5 is not compatible)). The Expansion Pak is required.
-    - You can now "Instant" Transform to mumbo or Humba Transformation with the left D-pad. HOWEVER! Due to Logic issue, you will have to tag Mumbo's Skull / Humba's Wigwam to access the "Instant" transformation (no longer requires map transitions).
+    - You can now "Instant" Transform to mumbo or Humba Transformation with the left D-pad. HOWEVER! Due to logic issues, you will have to enter Mumbo's Skull or Humba's Wigwam to unlock the "Instant" transformation (no longer requires map transitions).
       - There are a few maps where you cannot do this, but you will get sound feedback saying that you cannot transform. 
   - New Features / Changes!
+    - Nestsanity
+      - All feather and egg nests are checks. 473 new locations!
+      - When this option is selected, the following fillers are added into the game:
+        - Egg Nest: gives 1 nest worth of your least filled eggs
+        - Feather Nest: gives 1 nest worth of your least filled feathers
+        - Golden Egg Nest: You get golden eggs for 60 seconds
+      - Uncollected nests have the Archipelago logo as their texture
     - More Progressive items
       - Adv. Water Training - Dive to Sub Aqua Aiming to Talon Torpedo to Double Air to Faster Swimming.
       - Flight - Flight Pad to Beak Bomb to Airborne Egg Aim
       - Egg Aim - Third Person Egg Shooting to Egg Aim
-      - Adv. Egg Aiming - Third Person Egg Shooting to Amaze-O-Gaze to Egg Aim to Breegull Blaster.
+      - Adv. Egg Aiming - Third Person Egg Shooting to Amaze-O-Gaze to Egg Aim to Breegull Blaster
     - Options to reduce the amount of notes to be collected
       - Bassclefs (10 notes). 1 Bassclef adds 1 Big-O-Pants (up to 30)
       - Swap with additional Trebleclefs. 1 additional Trebleclef adds 3 Big-O-Pants (up to 21)
@@ -31,28 +38,27 @@
         - <b>Redacted</b>
     - Jamjar Silo costs are now Randomized
       - Either Completely random
-      - Progressive (changes with your randomize starting worlds)
-    - Nestsanity
-      - All feather and egg nests are checks and items
-      - Adds more filler items into the game
-      - Special Icon to let you know its an un-collected check
+      - Progressive (vanilla costs, but they get reordered based on the order in which the levels open)
     - Remove Cheato as Filler Option
     - Remove Refill cheat
     - Remove Bizhawk messages option
-    - Custom Worlds are no longer seperate options but rather a single string.
+    - Custom World Costs are no longer seperate options in the yaml, but rather a single string.
     - Completing Jinjo Family Rescue or Token Hunt requires you to take them to Bottles' House to complete your run.
-    - If you don't have Chuffy, Chuffy will not be at GGM Station.
+    - If you don't have Chuffy and it is randomized, Chuffy will not be at GGM Station.
   - Logic fixes:
-    - Stomping Plains collectables: reworked the logic to remove redundancy.
-    - TDL Entrance jinjo: for intended and easy trick logics, jumping onto the pillar and into the alcove is no longer in logic, due to its difficulty.
-    - TDL Train station: for intended and easy tricks, require a jump upgrade to enter.
-    - Unga Bunga Entrance Glowbo: if not on intended logic, can be gotten with a beak buster. Hard tricks and glitch logics can get it with air rat-a-tat rap.
-    - HFP Ladder Notes: intended and easy tricks logics can get them with split up.
-    - Superstash jiggy: if jumping from the sack pack entrance to reach the switch near superstash, you need climb.
-    - Mr. Fit jiggy: hard tricks and glitch logics can shoot a clockwork for the high jump event.
-    - Plateau to Pine Grove: shooting the fire switch in third person as solo Kazooie is now in all logics except intended.
-    - Floor 1 access: flying into the floor 1 window to access floor 1 is now in logic.
-    - TDL to hatch: refactored logic.
+    - Bovina Jiggy: can be done with ice eggs
+    - Dodgem Dome Jiggy: fixed the logic for the clockwork warp, for glitch logic.
+    - Stomping Plains collectables: reworked the logic to remove redundancy
+    - TDL Entrance jinjo: for intended and easy trick logics, jumping onto the pillar and into the alcove is no longer in logic, due to its difficulty
+    - TDL Train station: for intended and easy tricks, require a jump upgrade to enter
+    - Unga Bunga Entrance Glowbo: if not on intended logic, can be gotten with a beak buster. Hard tricks and glitch logics can get it with air rat-a-tat rap
+    - GI Floor 2 Taller Box Stack Note: removed damage boost from easy tricks logic
+    - HFP Ladder Notes: intended and easy tricks logics can get them with split up
+    - Superstash jiggy: if jumping from the sack pack entrance to reach the switch near superstash, you need climb
+    - Mr. Fit jiggy: hard tricks and glitch logics can shoot a clockwork for the high jump event
+    - Plateau to Pine Grove: shooting the fire switch in third person as solo Kazooie is now in all logics except intended
+    - Floor 1 access: flying into the floor 1 window to access floor 1 is now in logic
+    - TDL to hatch: refactored logic
 
 # 3.5.3-beta
   - Logic Fixes:

@@ -1074,18 +1074,15 @@ class BanjoTooieRules:
     def jiggy_bovina(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-          logic = self.egg_aim(state) and (self.blue_eggs(state) or self.fire_eggs(state) or self.grenade_eggs(state))
+          logic = self.egg_aim(state) and (self.has_linear_egg(state))
         elif self.world.options.logic_type == 1: # normal
-          logic = (self.blue_eggs(state) or self.fire_eggs(state) or self.grenade_eggs(state) or self.clockwork_eggs(state))\
-                    and (self.egg_aim(state) or (self.MT_flight_pad(state) and self.airborne_egg_aiming(state)))
+          logic = self.egg_aim(state) or (self.MT_flight_pad(state) and self.airborne_egg_aiming(state))
         elif self.world.options.logic_type == 2: # advanced
-            logic = (self.blue_eggs(state) or self.fire_eggs(state) or self.grenade_eggs(state) or self.clockwork_eggs(state))\
-                        and (self.egg_aim(state) or (self.MT_flight_pad(state) and self.airborne_egg_aiming(state)))\
+            logic = (self.egg_aim(state) or (self.MT_flight_pad(state) and self.airborne_egg_aiming(state)))\
                     or (self.flap_flip(state) and self.beak_buster(state))\
                     or self.MT_flight_pad(state) and self.beak_bomb(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (self.blue_eggs(state) or self.fire_eggs(state) or self.grenade_eggs(state) or self.clockwork_eggs(state))\
-                        and (self.egg_aim(state) or (self.MT_flight_pad(state) and self.airborne_egg_aiming(state)))\
+            logic = (self.egg_aim(state) or (self.MT_flight_pad(state) and self.airborne_egg_aiming(state)))\
                     or (self.flap_flip(state) and self.beak_buster(state))\
                     or self.MT_flight_pad(state) and self.beak_bomb(state)
         return logic
@@ -1349,7 +1346,7 @@ class BanjoTooieRules:
             if self.world.options.speed_up_minigames == 1:
                 # No van required if you can clockwork warp into dodgems, since the door is already opened!
                 logic = (self.humbaWW(state) and self.mumboWW(state))\
-                    or (self.grenade_eggs(state) and self.clockwork_eggs(state))
+                    or (self.clockwork_warp(state))
             else:
                 logic = self.humbaWW(state) and self.mumboWW(state)
         return logic
@@ -4331,7 +4328,7 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = self.small_elevation(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = True
+            logic = self.small_elevation(state)
         elif self.world.options.logic_type == 2: # advanced
             logic = True
         elif self.world.options.logic_type == 3: # glitched
@@ -7367,8 +7364,7 @@ class BanjoTooieRules:
         return logic
     
     def clockwork_warp(self, state: CollectionState) -> bool:
-        return (self.clockwork_eggs(state) and self.grenade_eggs(state)\
-                    and self.egg_aim(state) and self.third_person_egg_shooting(state))
+        return self.clockwork_eggs(state) and self.grenade_eggs(state) and self.egg_aim(state) and self.third_person_egg_shooting(state)
 
     def grip_grab(self, state: CollectionState) -> bool:
         return state.has(itemName.GGRAB, self.player)
