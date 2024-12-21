@@ -1,4 +1,4 @@
-# 4.0-beta
+# 4.0
   - Banjo-Tooie Rom Patch Released!
     - The patch is NOT built per seed. It is built per version. So you will only be prompt to patch your game once per version.
     - Reworked the lua AGAIN!!! To better fit the new ROM
