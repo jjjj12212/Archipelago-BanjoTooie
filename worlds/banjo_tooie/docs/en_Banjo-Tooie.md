@@ -7,29 +7,31 @@ config file.
 
 ## What does randomization do to this game?
 
-Randomize Items, skip certain cutscenes and dialogs, Skippable Tower of Tragedy, Shorten Long mini-games,
-Pause Menu will display total items collected in your game + Multi-world, and Pause Menu -> Totals acts like a in-game Tracker for check locations.
-Use the Dpad to display unlocked elements that the Pause Menu doesn't display (Moves, Magic, etc.)
+Randomize the majority of collectable items, unlockable moves, train stations & Chuffy, skip majority of cutscenes and dialogs, skippable Tower of Tragedy Game Show, shorten long mini-games, randomize jamjar silo costs, customizable world costs, skip Klungo 1 & 2, Prison Code Door is always open, allows for instant transformation, customizable dialog character when receiving certian items, pause menu contains a new Arhipelago Menu, randomize opening of worlds order and randomize world entrances.
 
 ## What items and locations can get shuffled?
 
 - Jiggies
-- Treble Clefs
-- Jamjar Moves + Amaze-O-Gaze + Roysten
+- Notes
 - Empty Honeycombs
 - Cheato Pages
+- Jinjos
 - Glowbos
-- Mega Glowbo
+- Moves from Jamjars, Roysten & Amaze-O-Gaze
 - Doubloons
-- Ice Key
-- Mystery Eggs
-- Banjo Kazooie Moves
-- Notes
-- Double Air + Fast Swimming
+- Treble Clef
+- Train Switches
+- Chuffy
+- Cheato Rewards
+- Honey B Rewards
+- Moves from Banjo-Kazooie
+- T-Rex Roar
+- Nests
+- Traps
 
 ## When the player receives an item, what happens?
 
-When the player receives an item, it will be displayed on the Client. If you receive a move, you will be able to use that move right away.
+When the player receives a collectable, the received a collectable will appear on screen. If you received a unlockable move, you will receive a dialog stating what move was obtained.
 
 ## Unique Local Commands
 
