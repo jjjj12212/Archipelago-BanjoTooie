@@ -777,7 +777,7 @@ class BanjoTooieWorld(World):
         btoptions['progressive_shoes'] = "true" if self.options.progressive_shoes == 1 else "false"
         btoptions['progressive_water_training'] = int(self.options.progressive_water_training.value)
         btoptions['progressive_bash_attack'] = "true" if self.options.progressive_bash_attack == 1 else "false"
-        btoptions['progressive_egg_aim'] = int(self.options.progressive_egg_aiming)
+        btoptions['progressive_egg_aim'] = int(self.options.progressive_egg_aiming.value)
         btoptions['progressive_flight'] = "true" if self.options.progressive_flight.value == True else "false"
 
         btoptions['starting_egg'] = int(self.starting_egg)
