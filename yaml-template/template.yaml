@@ -121,7 +121,7 @@ Banjo-Tooie:
   randomize_glowbos: 'true'   # adds Mumbo / Humba Magic to the pool
   randomize_treble: 'true'    # adds Trebleclefs to the pool
   randomize_stations: 'true'  # adds Stations to the pool
-  randomize_chuffy: 'true'    # Chuffy as a AP Item. You can also "call" Chuffy at any unlocked station without needing to fight him
+  randomize_chuffy: 'true'    # Chuffy as a AP Item. You can also "call" Chuffy at any unlocked station without needing to fight King Coal.
   randomize_notes: 'true'     # adds Notes to the pool
   bassclef_amount:  0         # 0 - 30; replace 2 notes with a Bassclef (10 notes) 
   extra_trebleclefs_count: 0  # 0 - 21; replace 4 notes with an additional trebleclef 

@@ -6597,6 +6597,10 @@ function Messages(msg_table)
     end
     if 1230790 <= msg_table["item_id"] and msg_table["item_id"] <= 1230796 --Stations + Chuffy
     then
+        if msg_table["item_id"] == 1230796
+        then
+            msg = msg .. "\nDon't forget that you can call Chuffy at any unlocked station."
+        end
         if DIALOG_CHARACTER == 110
         then
             table.insert(MESSAGE_TABLE, {msg, 39})
@@ -6842,6 +6846,10 @@ function process_slot(block)
         SEED = block['slot_seed']
         BTH:setSettingSeed(SEED)
     end
+    if block['slot_dialog_character'] ~= nil and block['slot_dialog_character'] ~= ""
+    then
+        DIALOG_CHARACTER = block['slot_dialog_character']
+    end
     if block['slot_deathlink'] ~= nil and block['slot_deathlink'] ~= "false"
     then
         DEATH_LINK = true
@@ -7020,6 +7028,8 @@ function process_slot(block)
     end
     if block['slot_open_silo'] ~= nil
     then
+        local message = ""
+
         OPEN_SILO = block['slot_open_silo']
         if OPEN_SILO == "ALL"
         then
@@ -7030,22 +7040,34 @@ function process_slot(block)
             BTH:setSettingOpenSilos(4, 1) -- CT
             BTH:setSettingOpenSilos(5, 1) -- WL
             BTH:setSettingOpenSilos(6, 1) -- QM
+            message = "All Isle O' Hags Silos are Open"
         elseif string.find(OPEN_SILO, "Wasteland") ~= nil then
             BTH:setSettingOpenSilos(0, 1)
             BTH:setSettingOpenSilos(5, 1) -- WL
+            message = "The Isle O' Hags Wasteland Silo is open"
         elseif string.find(OPEN_SILO, "Quagmire") ~= nil then
             BTH:setSettingOpenSilos(0, 1)
             BTH:setSettingOpenSilos(6, 1) -- QM
+            message = "The Isle O' Hags Quagmire Silo is open"
         elseif string.find(OPEN_SILO, "Plateau") ~= nil then
             BTH:setSettingOpenSilos(0, 1)
             BTH:setSettingOpenSilos(2, 1) -- PL
+            message = "The Isle O' Hags Plateau Silo is open"
         elseif string.find(OPEN_SILO, "Pine Grove") ~= nil then
             BTH:setSettingOpenSilos(0, 1)
             BTH:setSettingOpenSilos(3, 1) -- PG
+            message = "The Isle O' Hags Pine Grove Silo is open"
         elseif string.find(OPEN_SILO, "Cliff Top") ~= nil then
             BTH:setSettingOpenSilos(0, 1)
             BTH:setSettingOpenSilos(4, 1) -- CT
+            message = "The Isle O' Hags Cliff Top Silo is open"
         end
+        if DIALOG_CHARACTER == 110
+            then
+                table.insert(MESSAGE_TABLE, {message, 17});
+            else
+                table.insert(MESSAGE_TABLE, {message, DIALOG_CHARACTER});
+            end
     end
     if block['slot_version'] ~= nil and block['slot_version'] ~= ""
     then
@@ -7072,10 +7094,6 @@ function process_slot(block)
             end
             emu.frameadvance()
         end
-    end
-    if block['slot_dialog_character'] ~= nil and block['slot_dialog_character'] ~= ""
-    then
-        DIALOG_CHARACTER = block['slot_dialog_character']
     end
 
     if block['slot_zones'] ~= nil

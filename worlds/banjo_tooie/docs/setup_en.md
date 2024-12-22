@@ -43,7 +43,7 @@ For those who wish to play this randomizer on Actual N64 Hardware:
 - You will need a USB connection between the PC that will have the Banjo-Tooie Client Running and the Everdrive
 - Install the USB driver on the PC that will be connecting to the everdrive
     - Windows: https://ftdichip.com/wp-content/uploads/2021/08/CDM212364_Setup.zip
-    - Linux: Driver is built into the kernel
+    - Linux 64-bit: https://ftdichip.com/wp-content/uploads/2022/07/libftd2xx-x86_64-1.4.27.tgz
 - For Everdrive 3.0, the OS version needs to be 3.06 to be compatible.
 
 ## Prerequisite

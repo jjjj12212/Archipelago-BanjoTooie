@@ -218,7 +218,8 @@ class EnableMultiWorldTrainStationSwitches(Toggle):
     display_name = "Randomize Train Station Switches"
 
 class EnableMultiWorldChuffyTrain(Toggle):
-    """Chuffy is lost somewhere in the MultiWorld."""
+    """Chuffy is lost somewhere in the MultiWorld. 
+    Once received, you can call Chuffy at any unlocked station without defeating Old King Coal."""
     display_name = "Chuffy as a randomized AP Item"
 
 class EnableMultiWorldNotes(Toggle):
