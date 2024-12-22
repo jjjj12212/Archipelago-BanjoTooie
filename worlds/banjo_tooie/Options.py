@@ -155,27 +155,27 @@ class ProgressiveShoes(Toggle):
     """Stilt Stride to Turbo Trainers to Spring Boots to Claw Climber Boots. Randomize Moves and Randomize BK Moves are required."""
     display_name = "Progressive Kazooie Shoes"
 
-class ProgressiveSwimming(Toggle):
-    """Dive to Double Air to Faster Swimming. Randomize Moves and Randomize BK Moves are required."""
+class ProgressiveSwimming(Choice):
+    """Set to On: Dive to Double Air to Faster Swimming.
+    Set to Advanced: Dive to Sub Aqua Aiming to Talon Torpedo to Double Air to Faster Swimming.
+    Randomize Moves and Randomize BK Moves are required."""
     display_name = "Progressive Water Training"
+    option_none = 0
+    option_on = 1
+    option_advanced = 2
 
-class ProgressiveAdvSwimming(Toggle):
-    """Dive to Sub Aqua Aiming to Talon Torpedo to Double Air to Faster Swimming. 
-    Randomize Moves and Randomize BK Moves are required. Progressive Swimming must be disabled"""
-    display_name = "Progressive Adv. Water Training"
+class ProgressiveEggAim(Choice):
+    """Set to On: Third Person Egg Shooting to Egg Aim. 
+    Set to Advanced: Third Person Egg Shooting to Amaze-O-Gaze to Egg Aim to Breegull Blaster.
+    Randomize Moves and Randomize BK Moves are required."""
+    display_name = "Progressive Egg Aim"
+    option_none = 0
+    option_on = 1
+    option_advanced = 2
 
 class ProgressiveFlight(Toggle):
     """Flight Pad to Beak Bomb to Airborne Egg Aim. Randomize Moves and Randomize BK Moves are required."""
     display_name = "Progressive Flight"
-
-class ProgressiveEggAim(Toggle):
-    """Third Person Egg Shooting to Egg Aim. Randomize Moves and Randomize BK Moves are required."""
-    display_name = "Progressive Egg Aim"
-
-class ProgressiveAdvEggAim(Toggle):
-    """Third Person Egg Shooting to Amaze-O-Gaze to Egg Aim to Breegull Blaster.
-    Randomize Moves and Randomize BK Moves are required. Progressive Egg Aim must be disabled"""
-    display_name = "Progressive Adv. Egg Aiming"
 
 class ProgressiveBashAttack(Toggle):
     """Ground Rat-a-tat Rap to Breegull Bash. Randomize Stop N Swap and Randomize BK Moves are required"""
@@ -409,10 +409,8 @@ class BanjoTooieOptions(PerGameCommonOptions):
     egg_behaviour:EggsBehaviour
     progressive_shoes: ProgressiveShoes
     progressive_water_training: ProgressiveSwimming
-    progressive_adv_water_training:ProgressiveAdvSwimming
     progressive_flight:ProgressiveFlight
     progressive_egg_aiming:ProgressiveEggAim
-    progressive_adv_egg_aiming:ProgressiveAdvEggAim
     progressive_bash_attack: ProgressiveBashAttack
     randomize_jinjos: EnableMultiWorldJinjos
     randomize_doubloons: EnableMultiWorldDoubloons

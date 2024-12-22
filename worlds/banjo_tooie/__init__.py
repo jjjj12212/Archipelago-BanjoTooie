@@ -351,13 +351,13 @@ class BanjoTooieWorld(World):
         if item.code == 1230782 and self.options.progressive_flight.value == False:
             return False
         
-        if item.code == 1230783 and self.options.progressive_egg_aiming == False:
+        if item.code == 1230783 and self.options.progressive_egg_aiming.value != 1:
             return False
         
-        if item.code == 1230784 and self.options.progressive_adv_water_training == False:
+        if item.code == 1230785 and self.options.progressive_egg_aiming.value != 2:
             return False
         
-        if item.code == 1230785 and self.options.progressive_adv_egg_aiming == False:
+        if item.code == 1230784 and self.options.progressive_water_training.value != 2:
             return False
         
         if self.options.egg_behaviour.value != 1 and item.code == 1230823: #remove blue eggs in pool
@@ -376,24 +376,20 @@ class BanjoTooieWorld(World):
         if item.code == 1230830 and self.options.progressive_shoes.value == False:
             return False
         
-        if self.options.progressive_water_training.value == True and (item.code == 1230810 or item.code == 1230778 \
+        if self.options.progressive_water_training.value != 0 and (item.code == 1230810 or item.code == 1230778 \
             or item.code == 1230777):
             return False
-        if item.code == 1230831 and self.options.progressive_water_training.value == False:
+        if self.options.progressive_water_training.value == 2 and (item.code == 1230766 or item.code == 1230765):
+            return False
+        if item.code == 1230831 and self.options.progressive_water_training.value != 1:
             return False
         
         if self.options.progressive_flight.value == True and (item.code == 1230811 or item.code == 1230827 or item.code == 1230760):
             return False
         
-        if self.options.progressive_egg_aiming.value == True and (item.code == 1230755 or item.code == 1230813):
-            return False
-        
-        if self.options.progressive_adv_water_training.value == True and (item.code == 1230810 or item.code == 1230778 \
-            or item.code == 1230777 or item.code == 1230766 or item.code == 1230765):
-            return False
-        
-        if self.options.progressive_adv_egg_aiming.value == True and (item.code == 1230755 or item.code == 1230813\
-            or item.code == 1230779 or item.code == 1230754):
+        if self.options.progressive_egg_aiming.value != 0 and (item.code == 1230755 or item.code == 1230813):
+            return False 
+        if self.options.progressive_egg_aiming.value == 2 and (item.code == 1230779 or item.code == 1230754):
             return False
         
         if self.options.progressive_bash_attack.value == True and (item.code == 1230800 or item.code == 1230824):
@@ -430,18 +426,10 @@ class BanjoTooieWorld(World):
             raise ValueError("You cannot have progressive Shoes without randomizing moves and randomizing BK moves")
         if self.options.progressive_water_training.value == True and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive Water Training without randomizing moves and randomizing BK moves")
-        if self.options.progressive_adv_water_training.value == True and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
-            raise ValueError("You cannot have progressive adv. water training without randomizing moves and randomizing BK moves")
-        if self.options.progressive_adv_water_training.value == True and self.options.progressive_water_training.value == True:
-            self.options.progressive_water_training.value = False
         if self.options.progressive_flight.value == True and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive flight without randomizing moves and randomizing BK moves")
         if self.options.progressive_egg_aiming.value == True and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive egg aiming without randomizing moves and randomizing BK moves")
-        if self.options.progressive_adv_egg_aiming.value == True and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
-            raise ValueError("You cannot have progressive adv. egg aiming without randomizing moves and randomizing BK moves")
-        if self.options.progressive_adv_egg_aiming.value == True and self.options.progressive_egg_aiming.value == True:
-            self.options.progressive_egg_aiming.value = False
         if self.options.progressive_bash_attack.value == True and (self.options.randomize_stop_n_swap.value == False or self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive bash attack without randomizing Stop N Swap and randomizing BK moves")
         if self.options.randomize_moves == False and self.options.jamjars_silo_costs.value != 0:
@@ -468,23 +456,23 @@ class BanjoTooieWorld(World):
             else:
                 base_attacks: list
                 if self.options.logic_type == 0:
-                    if self.options.progressive_egg_aiming.value == True :
+                    if self.options.progressive_egg_aiming.value == 1 :
                         base_attacks = [itemName.PEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
-                    elif self.options.progressive_adv_egg_aiming.value == True:
+                    elif self.options.progressive_egg_aiming.value == 2:
                         base_attacks = [itemName.PAEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
                     else:
                         base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
                 if self.options.logic_type == 1:
-                    if self.options.progressive_egg_aiming.value == True :
+                    if self.options.progressive_egg_aiming.value == 1 :
                         base_attacks = [itemName.PEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
-                    elif self.options.progressive_adv_egg_aiming.value == True:
+                    elif self.options.progressive_egg_aiming.value == 2:
                         base_attacks = [itemName.PAEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
                     else:
                         base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
                 else:
-                    if self.options.progressive_egg_aiming.value == True :
+                    if self.options.progressive_egg_aiming.value == 1 :
                         base_attacks = [itemName.PEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
-                    elif self.options.progressive_adv_egg_aiming.value == True:
+                    elif self.options.progressive_egg_aiming.value == 2:
                         base_attacks = [itemName.PAEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
                     else:
                         base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
@@ -787,8 +775,10 @@ class BanjoTooieWorld(World):
         btoptions['progressive_beak_buster'] = "true" if self.options.progressive_beak_buster == 1 else "false"
         btoptions['egg_behaviour'] = int(self.options.egg_behaviour.value)
         btoptions['progressive_shoes'] = "true" if self.options.progressive_shoes == 1 else "false"
-        btoptions['progressive_water_training'] = "true" if self.options.progressive_water_training == 1 else "false"
+        btoptions['progressive_water_training'] = int(self.options.progressive_water_training.value)
         btoptions['progressive_bash_attack'] = "true" if self.options.progressive_bash_attack == 1 else "false"
+        btoptions['progressive_egg_aim'] = int(self.options.progressive_egg_aiming)
+        btoptions['progressive_flight'] = "true" if self.options.progressive_flight.value == True else "false"
 
         btoptions['starting_egg'] = int(self.starting_egg)
         btoptions['starting_attack'] = int(self.starting_attack)

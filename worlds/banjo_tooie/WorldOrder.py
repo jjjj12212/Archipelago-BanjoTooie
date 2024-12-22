@@ -204,7 +204,7 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
     actual_first_level = world.loading_zones[first_level]
 
     # A silo to the first world is not given.
-    if world.options.randomize_bk_moves != 2 and world.single_silo == "NONE":
+    if world.options.randomize_bk_moves.value != 2 and world.single_silo == "NONE":
         if  first_level != regionName.MT and world.options.logic_type != 2:
             world.multiworld.early_items[world.player][itemName.GGRAB] = 1
 
@@ -218,7 +218,7 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
             if first_level == regionName.CK: # CK can't be first if progressive shoes.
                 world.multiworld.early_items[world.player][itemName.CLAWBTS] = 1
 
-    if world.options.randomize_bk_moves == 2: # Guaranteed silo to first level, but getting enough stuff in levels is still hard sometimes.
+    if world.options.randomize_bk_moves.value == 2: # Guaranteed silo to first level, but getting enough stuff in levels is still hard sometimes.
         # MT, GGM, WW Easy
 
         if actual_first_level == regionName.JR and world.options.randomize_doubloons.value == False:
@@ -251,19 +251,19 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
 def early_fire_eggs(world: BanjoTooieWorld) -> None:
     world.multiworld.early_items[world.player][itemName.PBEGGS if world.options.egg_behaviour.value == 2 else itemName.FEGGS] = 1
     if world.options.randomize_bk_moves != 0:
-        if world.options.progressive_egg_aiming.value == True:
+        if world.options.progressive_egg_aiming.value == 1:
             world.multiworld.early_items[world.player][itemName.PEGGAIM] = 2
-        elif world.options.progressive_adv_egg_aiming.value == True:
+        elif world.options.progressive_egg_aiming.value == 2:
             world.multiworld.early_items[world.player][itemName.PAEGGAIM] = 3
         else:
             world.multiworld.early_items[world.player][world.random.choice([itemName.EGGAIM, itemName.EGGSHOOT])] = 1
 
 def early_torpedo(world: BanjoTooieWorld) -> None:
     if world.options.randomize_bk_moves != 0:
-        if world.options.progressive_water_training.value == True:
+        if world.options.progressive_water_training.value == 1:
             world.multiworld.early_items[world.player][itemName.PSWIM] = 1
             world.multiworld.early_items[world.player][itemName.TTORP] = 1
-        elif world.options.progressive_adv_water_training.value == True:
+        elif world.options.progressive_water_training.value == 2:
             world.multiworld.early_items[world.player][itemName.PASWIM] = 3
         else:
             world.multiworld.early_items[world.player][itemName.DIVE] = 1
