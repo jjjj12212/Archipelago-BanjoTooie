@@ -2369,14 +2369,16 @@ class BanjoTooieRules:
             logic = self.grip_grab(state) and self.climb(state) and self.flap_flip(state)\
                     or (self.leg_spring(state) and self.glide(state))
         elif self.world.options.logic_type == 2: # advanced
-            logic = (self.grip_grab(state) or self.beak_buster(state)) and self.climb(state) and self.flap_flip(state)\
-                    or (self.leg_spring(state) and self.glide(state))\
-                    or (self.clockwork_shot(state) and (self.talon_trot(state) or self.split_up(state)))
+            logic = (self.grip_grab(state) or self.beak_buster(state)) and self.climb(state)\
+                        and self.flap_flip(state) and (self.clockwork_shot(state) or self.longJumpToGripGrab(state))\
+                    or self.leg_spring(state) and self.glide(state)\
+                    or self.clockwork_shot(state) and (self.talon_trot(state) or self.split_up(state))
         elif self.world.options.logic_type == 3: # glitched
-            logic = ((self.grip_grab(state) or self.beak_buster(state)) and self.climb(state) and self.flap_flip(state))\
-                    or (self.clockwork_shot(state) and state.can_reach_region(regionName.GM, self.player) and self.ggm_to_ww(state))\
-                    or (self.leg_spring(state) and self.glide(state))\
-                    or (self.clockwork_shot(state) and (self.talon_trot(state) or self.split_up(state)))
+            logic = (self.grip_grab(state) or self.beak_buster(state)) and self.climb(state)\
+                        and self.flap_flip(state) and (self.clockwork_shot(state) or self.longJumpToGripGrab(state))\
+                    or self.clockwork_shot(state) and state.can_reach_region(regionName.GMFD, self.player) and self.fuel_depot_to_ww(state)\
+                    or self.leg_spring(state) and self.glide(state)\
+                    or self.clockwork_shot(state) and (self.talon_trot(state) or self.split_up(state))
         return logic
     
     def honeycomb_crazy_castle(self, state: CollectionState) -> bool:
