@@ -65,11 +65,24 @@ Banjo-Tooie:
   death_link: 'false'           # If someone "kicks the bucket", you all perish together 
   randomize_moves: 'true'       # Randomize Jamjar + Roysten + Amaze-O-Gaze Moves
 
+  # Change how many notes it takes to use Jamjars' move silos. Requires Jamjars' movelist to be changed
+  # 0 = Vanilla
+  # 1 = Completely Random
+  # 2 = Progressive
+  jamjars_silo_costs: 0
+
   # Randomize Banjo-Kazooie Moves in Banjo-Tooie
   # 0: Don't randomize 
   # 1: Mcjiggy Special - You keep Talon Trot and Tall Jump
   # 2: All - Everything
   randomize_bk_moves: 0
+
+  # Change how Eggs behave in Banjo-Tooie
+  # 0: Default (Start with Blue Eggs, get other eggs randomly in AP)
+  # 1: Randomize Starting Eggs (you will start with a random egg)
+  # 2: Progressive Eggs (Blue -> Fire -> Grenade -> Ice -> Clockwork)
+  # Requires randomize_bk_moves & randomize_moves
+  egg_behaviour: 0
 
   # Beak Buster -> Bill Drill Progression 
   # Requires randomize_bk_moves & randomize_moves
@@ -99,14 +112,6 @@ Banjo-Tooie:
   # Requires randomize_bk_moves & randomize_moves
   progressive_flight: 'false'
 
-  # Change how Eggs behave in Banjo-Tooie
-  # 0: Default (Start with Blue Eggs, get other eggs randomly in AP)
-  # 1: Randomize Starting Eggs (you will start with a random egg)
-  # 2: Progressive Eggs (Blue -> Fire -> Grenade -> Ice -> Clockwork)
-  # Requires randomize_bk_moves & randomize_moves
-  egg_behaviour: 0
-
-
   randomize_jinjos: 'true'    # adds Jinjos to the pool
   randomize_doubloons: 'true' # adds Doubloons to the pool
   randomize_cheato: 'true'    # adds Cheato Pages to the pool
@@ -118,6 +123,8 @@ Banjo-Tooie:
   randomize_stations: 'true'  # adds Stations to the pool
   randomize_chuffy: 'true'    # Chuffy as a AP Item. You can also "call" Chuffy at any unlocked station without needing to fight him
   randomize_notes: 'true'     # adds Notes to the pool
+  bassclef_amount:  0         # 0 - 30; replace 2 notes with a Bassclef (10 notes) 
+  extra_trebleclefs_count: 0  # 0 - 21; replace 4 notes with an additional trebleclef 
   randomize_stop_n_swap: 'true' # Ice key + Eggs + Egg rewards are added to the item pool
   randomize_dino_roar: 'true' # Roar is in the pool
   nestsanity: 'false'         # Every egg nest and feather nest give a check when you collect them for the first time. They behave as normal afterwards.

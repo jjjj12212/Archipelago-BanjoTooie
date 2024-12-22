@@ -393,25 +393,33 @@ class SkipKlungo(Toggle):
 
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
-    start_inventory_from_pool: StartInventoryPool
     logic_type: LogicType
+
     victory_condition: VictoryCondition
     minigame_hunt_length: MinigameHuntLength
     boss_hunt_length: BossHuntLength
     jinjo_family_rescue_length: JinjoFamilyRescueLength
     token_hunt_length: TokenHuntLength
+    
+    speed_up_minigames: SpeedUpMinigames
+
+    game_length: GameLength
+    custom_worlds:CustomWorlds
+
     death_link: DeathLink
-    dialog_character:DialogCharacters
+
     randomize_moves: EnableMultiWorldMoveList
     jamjars_silo_costs: JamjarsSiloCosts
     randomize_bk_moves: EnableMultiWorldBKMoveList
-    progressive_beak_buster: ProgressiveBeakBuster
     egg_behaviour:EggsBehaviour
+
+    progressive_beak_buster: ProgressiveBeakBuster
     progressive_shoes: ProgressiveShoes
     progressive_water_training: ProgressiveSwimming
     progressive_flight:ProgressiveFlight
     progressive_egg_aiming:ProgressiveEggAim
     progressive_bash_attack: ProgressiveBashAttack
+
     randomize_jinjos: EnableMultiWorldJinjos
     randomize_doubloons: EnableMultiWorldDoubloons
     randomize_cheato: EnableMultiWorldCheatoPages
@@ -425,19 +433,22 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_notes: EnableMultiWorldNotes
     bassclef_amount: BassclefNotes
     extra_trebleclefs_count: TrebleclefNotes
-    traps:Traps
     randomize_stop_n_swap: RandomizeStopnSwap
     randomize_dino_roar: EnableMultiWorldDinoRoar
     nestsanity: EnableNestsanity
+    traps:Traps
+
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
-    backdoors:Backdoors
-    skip_klungo: SkipKlungo
-    skip_tower_of_tragedy: SkipToT
-    speed_up_minigames: SpeedUpMinigames
     randomize_worlds: RandomizeWorlds
     randomize_world_loading_zone: RandomizeWorldZones
-    open_silos: Silos
-    game_length: GameLength
     open_hag1: OpenHag1
-    custom_worlds:CustomWorlds
+    backdoors:Backdoors
+    open_silos: Silos
+
+    skip_tower_of_tragedy: SkipToT
+    skip_klungo: SkipKlungo
+    dialog_character:DialogCharacters
+
+    start_inventory_from_pool: StartInventoryPool
+
