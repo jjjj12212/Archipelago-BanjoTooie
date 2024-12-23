@@ -271,7 +271,7 @@ class BanjoTooieRules:
             locationName.JIGGYJR1:  lambda state: self.jiggy_sub_challenge(state),
             locationName.JIGGYJR2:  lambda state: self.jiggy_tiptup(state),
             locationName.JIGGYJR3:  lambda state: self.jiggy_bacon(state),
-            locationName.JIGGYJR4:  lambda state: self.jiggy_pigpool(state),
+            locationName.JIGGYJR4:  lambda state: self.jiggy_pig_pool(state),
             locationName.JIGGYJR5:  lambda state: self.jiggy_smuggler(state),
             locationName.JIGGYJR6:  lambda state: self.jiggy_merry_maggie(state),
             locationName.JIGGYJR7:  lambda state: self.jiggy_lord_woo(state),
@@ -1536,40 +1536,25 @@ class BanjoTooieRules:
                 (self.check_humba_magic(state, itemName.HUMBAJR) and self.egg_aim(state) and self.has_linear_egg(state))
         return logic
     
-    def jiggy_pigpool(self, state: CollectionState) -> bool:
+    def jiggy_pig_pool(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = self.HFP_hot_water_cooled(state)\
-                    and (self.has_explosives(state) or self.bill_drill(state))\
-                    and (self.veryLongJump(state)\
-                        or (self.bill_drill(state) or self.has_explosives(state)) and self.talon_trot(state) and self.spring_pad(state) and self.grip_grab(state)
-                    )\
+                    and self.jrl_waste_disposal(state)\
                     and self.flap_flip(state)\
                     and (self.has_explosives(state) or self.beak_barge(state))
         elif self.world.options.logic_type == 1: # normal
-            logic = self.HFP_hot_water_cooled(state) and\
-                    (self.has_explosives(state) or self.bill_drill(state))\
-                    and (self.veryLongJump(state)\
-                        or state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state)\
-                        or (self.bill_drill(state) or self.has_explosives(state)) and self.talon_trot(state) and self.spring_pad(state) and self.grip_grab(state)
-                    )\
+            logic = self.HFP_hot_water_cooled(state)\
+                    and self.jrl_waste_disposal(state)\
                     and self.flap_flip(state)\
                     and (self.has_explosives(state) or self.beak_barge(state))
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.HFP_hot_water_cooled(state) and\
-                    (self.has_explosives(state) or self.bill_drill(state))\
-                    and (self.veryLongJump(state)\
-                        or state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state)\
-                        or (self.bill_drill(state) or self.has_explosives(state)) and self.talon_trot(state) and self.spring_pad(state) and self.grip_grab(state)
-                    )\
+            logic = self.HFP_hot_water_cooled(state)\
+                    and self.jrl_waste_disposal(state)\
                     and (self.flap_flip(state) and (self.has_explosives(state) or self.beak_barge(state)) or self.clockwork_shot(state))
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.HFP_hot_water_cooled(state) and\
-                    (self.has_explosives(state) or self.bill_drill(state))\
-                    and (self.veryLongJump(state)\
-                        or state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state)\
-                        or (self.bill_drill(state) or self.has_explosives(state)) and self.talon_trot(state) and self.spring_pad(state) and self.grip_grab(state)
-                    )\
+            logic = self.HFP_hot_water_cooled(state)\
+                    and self.jrl_waste_disposal(state)\
                     and (self.flap_flip(state) and (self.has_explosives(state) or self.beak_barge(state)) or self.clockwork_shot(state))
         return logic
     
@@ -4884,7 +4869,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 2: # advanced
             logic = self.GM_boulders(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.GM_boulders(state) or self.ground_rat_a_tat_rap(state) or self.beak_barge(state) or self.third_person_egg_shooting(state)
+            logic = self.GM_boulders(state) or self.ground_rat_a_tat_rap(state) or self.beak_barge(state) or self.egg_barge(state)
         return logic
     
     def nest_canary_low(self, state: CollectionState) -> bool:
@@ -5654,33 +5639,41 @@ class BanjoTooieRules:
     def nest_waste_disposal_water_pump(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = (self.has_explosives(state) or self.bill_drill(state))\
-                    and (self.veryLongJump(state)\
-                        or (self.bill_drill(state) or self.has_explosives(state)) and self.talon_trot(state) and self.spring_pad(state) and self.grip_grab(state)
-                    )\
-                    and self.flap_flip(state) and self.climb(state)
+            logic = self.jrl_waste_disposal(state) and self.flap_flip(state) and self.climb(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = (self.has_explosives(state) or self.bill_drill(state))\
-                    and (self.veryLongJump(state)\
-                        or state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state)\
-                        or (self.bill_drill(state) or self.has_explosives(state)) and self.talon_trot(state) and self.spring_pad(state) and self.grip_grab(state)
-                    )\
-                    and self.flap_flip(state) and self.climb(state)
+            logic = self.jrl_waste_disposal(state) and self.flap_flip(state) and self.climb(state)
         elif self.world.options.logic_type == 2: # advanced
             #If someone finds a setup for a clockwork shot for these nests, I'll add it to the logic.
+            logic = self.jrl_waste_disposal(state) and self.flap_flip(state) and self.climb(state)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.jrl_waste_disposal(state) and self.flap_flip(state) and self.climb(state)
+        return logic
+    
+    def jrl_waste_disposal(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
             logic = (self.has_explosives(state) or self.bill_drill(state))\
-                    and (self.veryLongJump(state)\
-                        or state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state)\
-                        or (self.bill_drill(state) or self.has_explosives(state)) and self.talon_trot(state) and self.spring_pad(state) and self.grip_grab(state)
-                    )\
-                    and self.flap_flip(state) and self.climb(state)
+                        and (self.talon_trot(state)\
+                             or self.tall_jump(state) and self.roll(state) and self.flutter(state)
+                        )
+        elif self.world.options.logic_type == 1: # normal
+            logic = (self.has_explosives(state) or self.bill_drill(state))\
+                    and (self.talon_trot(state)\
+                        or self.tall_jump(state) and self.roll(state) and self.flutter(state)\
+                        or state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state)
+                    )
+        elif self.world.options.logic_type == 2: # advanced
+            logic = (self.has_explosives(state) or self.bill_drill(state))\
+                    and (self.talon_trot(state)\
+                        or self.tall_jump(state) and self.roll(state) and self.flutter(state)\
+                        or state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state)
+                    )
         elif self.world.options.logic_type == 3: # glitched
             logic = (self.has_explosives(state) or self.bill_drill(state))\
-                    and (self.veryLongJump(state)\
-                        or state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state)\
-                        or (self.bill_drill(state) or self.has_explosives(state)) and self.talon_trot(state) and self.spring_pad(state) and self.grip_grab(state)
-                    )\
-                    and self.flap_flip(state) and self.climb(state)
+                    and (self.talon_trot(state)\
+                        or self.tall_jump(state) and self.roll(state) and self.flutter(state)\
+                        or state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state)
+                    )
         return logic
 
     def nest_clinkers_lobby(self, state: CollectionState) -> bool:
@@ -5967,24 +5960,7 @@ class BanjoTooieRules:
                     or (self.bill_drill(state) and (self.small_elevation(state) or self.flutter(state))))
 
     def prison_compound_open(self, state: CollectionState) -> bool:
-        if self.world.options.logic_type == 0: # beginner
-            return (self.grenade_eggs(state) or self.check_mumbo_magic(state, itemName.MUMBOMT)) and \
-                (self.mt_jiggy(state) or (self.HFP_to_MT(state) and self.hfp_jiggy(state) and self.split_up(state)))
-        
-        elif self.world.options.logic_type == 1: # normal
-            return (self.has_explosives(state) or \
-                 self.check_mumbo_magic(state, itemName.MUMBOMT)) and \
-                 (self.mt_jiggy(state) or (self.HFP_to_MT(state) and self.hfp_jiggy(state) and self.split_up(state)))
-        
-        elif self.world.options.logic_type == 2: # advanced
-            return (self.has_explosives(state) or \
-                 self.check_mumbo_magic(state, itemName.MUMBOMT)) and \
-                 (self.mt_jiggy(state) or (self.HFP_to_MT(state) and self.hfp_jiggy(state) and self.split_up(state)))
-        
-        elif self.world.options.logic_type == 3: # glitched
-            return (self.has_explosives(state) or \
-                 self.check_mumbo_magic(state, itemName.MUMBOMT)) and \
-                 (self.mt_jiggy(state) or (self.HFP_to_MT(state) and self.hfp_jiggy(state) and self.split_up(state)))
+        return self.has_explosives(state) or self.check_mumbo_magic(state, itemName.MUMBOMT)
         
     def dilberta_free(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner

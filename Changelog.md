@@ -46,13 +46,16 @@
     - Completing Jinjo Family Rescue or Token Hunt requires you to take them to Bottles' House to complete your run.
     - If you don't have Chuffy and it is randomized, Chuffy will not be at GGM Station.
   - Logic fixes:
+    - Prison Compound access: refactored to delete legacy code
     - Bovina Jiggy: can be done with ice eggs
-    - Dodgem Dome Jiggy: fixed the logic for the clockwork warp, for glitch logic.
+    - Dodgem Dome Jiggy: fixed the logic for the clockwork warp, for glitch logic
+    - Area 51 honeycomb: refactored logic due to new fuel depot region
     - Stomping Plains collectables: reworked the logic to remove redundancy
     - TDL Entrance jinjo: for intended and easy trick logics, jumping onto the pillar and into the alcove is no longer in logic, due to its difficulty
     - TDL Train station: for intended and easy tricks, require a jump upgrade to enter
     - Unga Bunga Entrance Glowbo: if not on intended logic, can be gotten with a beak buster. Hard tricks and glitch logics can get it with air rat-a-tat rap
     - GI Floor 2 Taller Box Stack Note: removed damage boost from easy tricks logic
+    - Waste Disposal (water pump room): can be reached with just talon trot.
     - HFP Ladder Notes: intended and easy tricks logics can get them with split up
     - Superstash jiggy: if jumping from the sack pack entrance to reach the switch near superstash, you need climb
     - Mr. Fit jiggy: hard tricks and glitch logics can shoot a clockwork for the high jump event
