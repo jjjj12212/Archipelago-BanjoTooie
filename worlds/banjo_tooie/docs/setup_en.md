@@ -18,6 +18,7 @@ Our implementation also supports the Everdrive 3.0 and X7. (USB Support)
         - Windows: https://ftdichip.com/wp-content/uploads/2021/08/CDM212364_Setup.zip
         - Linux: Driver is built into the kernel
     - For Everdrive 3.0, the OS version needs to be 3.06 to be compatible.
+    - The Nintendo 64 Expansion Pak is required
 -   Grab the latest release from https://github.com/jjjj12212/Archipelago-BanjoTooie
 -   A Banjo-Tooie ROM (USA ONLY).
 
