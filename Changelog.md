@@ -63,6 +63,8 @@
     - Plateau to Pine Grove: shooting the fire switch in third person as solo Kazooie is now in all logics except intended
     - Floor 1 access: flying into the floor 1 window to access floor 1 is now in logic
     - TDL to hatch: refactored logic
+  - Other fixes:
+    - Correct issue that where certain victory lengths was not considered during generation
 
 # 3.5.3-beta
   - Logic Fixes:
