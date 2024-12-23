@@ -5699,19 +5699,22 @@ class BanjoTooieRules:
             logic = self.flight_pad(state)\
                     or self.leg_spring(state)\
                     or self.glide(state)\
-                    or self.tall_jump(state) and self.wing_whack(state)
+                    or self.tall_jump(state) and self.wing_whack(state)\
+                    or self.flap_flip(state) and (self.grip_grab(state) or self.beak_buster(state))
         elif self.world.options.logic_type == 2: # advanced
             logic = self.flight_pad(state)\
                     or self.leg_spring(state)\
                     or self.glide(state)\
                     or self.clockwork_shot(state)\
-                    or self.tall_jump(state) and self.wing_whack(state)
+                    or self.tall_jump(state) and self.wing_whack(state)\
+                    or self.flap_flip(state) and (self.grip_grab(state) or self.beak_buster(state))
         elif self.world.options.logic_type == 3: # glitched
             logic = self.flight_pad(state)\
                     or self.leg_spring(state)\
                     or self.glide(state)\
                     or self.clockwork_shot(state)\
-                    or self.tall_jump(state) and self.wing_whack(state)
+                    or self.tall_jump(state) and self.wing_whack(state)\
+                    or self.flap_flip(state) and (self.grip_grab(state) or self.beak_buster(state))
         return logic
     
     def nest_ice_cube(self, state: CollectionState) -> bool:
