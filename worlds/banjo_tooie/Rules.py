@@ -5698,17 +5698,20 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.flight_pad(state)\
                     or self.leg_spring(state)\
-                    or self.glide(state)
+                    or self.glide(state)\
+                    or self.tall_jump(state) and self.wing_whack(state)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.flight_pad(state)\
                     or self.leg_spring(state)\
                     or self.glide(state)\
-                    or self.clockwork_shot(state)
+                    or self.clockwork_shot(state)\
+                    or self.tall_jump(state) and self.wing_whack(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.flight_pad(state)\
                     or self.leg_spring(state)\
                     or self.glide(state)\
-                    or self.clockwork_shot(state)
+                    or self.clockwork_shot(state)\
+                    or self.tall_jump(state) and self.wing_whack(state)
         return logic
     
     def nest_ice_cube(self, state: CollectionState) -> bool:
@@ -5869,13 +5872,15 @@ class BanjoTooieRules:
     def nest_hfp_kickball_egg(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.small_elevation(state) and self.has_explosives(state)
+            logic = self.small_elevation(state) and self.has_explosives(state)\
+                    or state.has(itemName.MUMBOHP, self.player) and self.tall_jump(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.small_elevation(state) and self.has_explosives(state)
+            logic = self.small_elevation(state) and self.has_explosives(state)\
+                    or state.has(itemName.MUMBOHP, self.player) and self.tall_jump(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.has_explosives(state)
+            logic = self.has_explosives(state) or state.has(itemName.MUMBOHP, self.player)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.has_explosives(state)
+            logic = self.has_explosives(state) or state.has(itemName.MUMBOHP, self.player)
         return logic
     
     def nest_hfp_kickball_feather(self, state: CollectionState) -> bool:
