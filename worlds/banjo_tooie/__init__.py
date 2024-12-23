@@ -416,6 +416,8 @@ class BanjoTooieWorld(World):
         if self.options.randomize_notes == False and self.options.randomize_worlds.value == True and self.options.randomize_bk_moves.value != 0:
             if self.multiworld.players == 1:
                 raise ValueError("Randomize Notes is required for Randomize BK Moves and Randomize Worlds enabled.")
+        if self.options.randomize_notes == False and (self.options.extra_trebleclefs_count.value != 0 and self.options.bassclef_amount.value != 0):
+            raise ValueError("Randomize Notes is required to add extra Treble Clefs or Bass Clefs")
         if self.options.progressive_beak_buster.value == True and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive Beak Buster without randomizing moves and randomizing BK moves")
         if self.options.egg_behaviour.value == 1 and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):

@@ -228,7 +228,8 @@ class EnableMultiWorldNotes(Toggle):
 
 class BassclefNotes(Range):
     """Convert some 5 notes into Bassclefs (10 notes). How many notes do you want converted?
-       Be aware that 1 bassclef removes two 5 notes and adds an additional Big-O-Pants."""
+       Be aware that 1 bassclef removes two 5 notes and adds an additional Big-O-Pants.
+       Randomize Notes is required."""
     display_name = "Bassclefs (10 notes) Amount"
     range_start = 0
     range_end = 30
@@ -236,7 +237,8 @@ class BassclefNotes(Range):
 
 class TrebleclefNotes(Range):
     """Convert some 5 notes into Trebleclefs (20 notes). How many notes do you want converted?
-       Be aware that 1 Trebleclef removes four 5 notes and adds three additional Big-O-Pants."""
+       Be aware that 1 Trebleclef removes four 5 notes and adds three additional Big-O-Pants.
+       Randomize Notes is required."""
     display_name = "Add additional Trebleclefs (20 notes) Amount"
     range_start = 0
     range_end = 21
@@ -312,10 +314,6 @@ class Silos(Choice):
     option_all = 2
     default = 0
 
-class SpeedUpMinigames(DefaultOnToggle):
-    """Start 3-round minigames at Round 3."""
-    display_name = "Speed Up Minigames"
-
 class VictoryCondition(Choice):
     """Choose which victory condition you want
     HAG1: Unlock the HAG1 fight and defeat Gruntilda
@@ -387,6 +385,9 @@ class CustomWorlds(FreeText):
     display_name = "Custom world cost list"
     default = "1,4,8,14,20,28,36,45,55"
 
+class SpeedUpMinigames(DefaultOnToggle):
+    """Start 3-round minigames at Round 3."""
+    display_name = "Speed Up Minigames"
 
 class SkipKlungo(Toggle):
     """Make it so you can skip Klungo 1 and 2."""
@@ -394,6 +395,8 @@ class SkipKlungo(Toggle):
 
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
+    death_link: DeathLink
+
     logic_type: LogicType
 
     victory_condition: VictoryCondition
@@ -401,13 +404,9 @@ class BanjoTooieOptions(PerGameCommonOptions):
     boss_hunt_length: BossHuntLength
     jinjo_family_rescue_length: JinjoFamilyRescueLength
     token_hunt_length: TokenHuntLength
-    
-    speed_up_minigames: SpeedUpMinigames
 
     game_length: GameLength
     custom_worlds:CustomWorlds
-
-    death_link: DeathLink
 
     randomize_moves: EnableMultiWorldMoveList
     jamjars_silo_costs: JamjarsSiloCosts
@@ -421,6 +420,11 @@ class BanjoTooieOptions(PerGameCommonOptions):
     progressive_egg_aiming:ProgressiveEggAim
     progressive_bash_attack: ProgressiveBashAttack
 
+    randomize_notes: EnableMultiWorldNotes
+    randomize_treble: EnableMultiWorldTrebleClefs
+    extra_trebleclefs_count: TrebleclefNotes
+    bassclef_amount: BassclefNotes
+
     randomize_jinjos: EnableMultiWorldJinjos
     randomize_doubloons: EnableMultiWorldDoubloons
     randomize_cheato: EnableMultiWorldCheatoPages
@@ -428,17 +432,13 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_honeycombs: EnableMultiWorldHoneycombs
     honeyb_rewards: EnableHoneyBRewards
     randomize_glowbos: EnableMultiWorldGlowbos
-    randomize_treble: EnableMultiWorldTrebleClefs
-    randomize_stations: EnableMultiWorldTrainStationSwitches
-    randomize_chuffy: EnableMultiWorldChuffyTrain
-    randomize_notes: EnableMultiWorldNotes
-    bassclef_amount: BassclefNotes
-    extra_trebleclefs_count: TrebleclefNotes
     randomize_stop_n_swap: RandomizeStopnSwap
     randomize_dino_roar: EnableMultiWorldDinoRoar
     nestsanity: EnableNestsanity
     traps:Traps
 
+    randomize_stations: EnableMultiWorldTrainStationSwitches
+    randomize_chuffy: EnableMultiWorldChuffyTrain
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
     randomize_worlds: RandomizeWorlds
@@ -447,6 +447,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     backdoors:Backdoors
     open_silos: Silos
 
+    speed_up_minigames: SpeedUpMinigames
     skip_tower_of_tragedy: SkipToT
     skip_klungo: SkipKlungo
     dialog_character:DialogCharacters
