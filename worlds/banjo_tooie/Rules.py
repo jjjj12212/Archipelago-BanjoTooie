@@ -966,7 +966,7 @@ class BanjoTooieRules:
             locationName.NESTHP21:    lambda state: self.jiggy_ice_station(state),
             locationName.NESTHP22:    lambda state: self.jiggy_ice_station(state),
 
-            locationName.NESTHP23:    lambda state: self.flight_pad(state) and state.has(itemName.IEGGS, self.player),
+            locationName.NESTHP23:    lambda state: self.flight_pad(state) and self.ice_eggs_item(state),
 
             locationName.NESTHP24:    lambda state: self.nest_chilly_willy(state),
 
@@ -1032,19 +1032,19 @@ class BanjoTooieRules:
     def jiggy_targitzan(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-          logic = self.jiggy_sschamber(state) and (state.has(itemName.BEGGS, self.player) or state.has(itemName.FEGGS, self.player) or state.has(itemName.GEGGS, self.player))
+          logic = self.jiggy_sschamber(state) and (self.blue_eggs_item(state) or self.fire_eggs_item(state) or self.grenade_eggs_item(state))
         elif self.world.options.logic_type == 1: # normal
           logic = self.jiggy_sschamber(state)\
-                         and ((state.has(itemName.BEGGS, self.player) or state.has(itemName.FEGGS, self.player) or state.has(itemName.GEGGS, self.player))\
-                              or state.has(itemName.IEGGS, self.player) and self.beak_bayonet(state))
+                         and ((self.blue_eggs_item(state) or self.fire_eggs_item(state) or self.grenade_eggs_item(state))\
+                              or self.ice_eggs_item(state) and self.beak_bayonet(state))
         elif self.world.options.logic_type == 2: # advanced
           logic = self.jiggy_sschamber(state)\
-                         and ((state.has(itemName.BEGGS, self.player) or state.has(itemName.FEGGS, self.player) or state.has(itemName.GEGGS, self.player))\
-                              or state.has(itemName.IEGGS, self.player) and self.beak_bayonet(state))
+                         and ((self.blue_eggs_item(state) or self.fire_eggs_item(state) or self.grenade_eggs_item(state))\
+                              or self.ice_eggs_item(state) and self.beak_bayonet(state))
         elif self.world.options.logic_type == 3: # glitched
           logic = self.jiggy_sschamber(state)\
-                         and ((state.has(itemName.BEGGS, self.player) or state.has(itemName.FEGGS, self.player) or state.has(itemName.GEGGS, self.player))\
-                              or state.has(itemName.IEGGS, self.player) and self.beak_bayonet(state))
+                         and ((self.blue_eggs_item(state) or self.fire_eggs_item(state) or self.grenade_eggs_item(state))\
+                              or self.ice_eggs_item(state) and self.beak_bayonet(state))
         return logic
 
     def jiggy_sschamber(self, state: CollectionState) -> bool:
@@ -3168,16 +3168,16 @@ class BanjoTooieRules:
     def pink_mystery_egg(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = (self.grenade_eggs(state) or (self.airborne_egg_aiming(state) and state.has(itemName.GEGGS, self.player))) \
+            logic = (self.grenade_eggs(state) or (self.airborne_egg_aiming(state) and self.grenade_eggs_item(state))) \
                     and self.flight_pad(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = (self.grenade_eggs(state) or (self.airborne_egg_aiming(state) and state.has(itemName.GEGGS, self.player))) \
+            logic = (self.grenade_eggs(state) or (self.airborne_egg_aiming(state) and self.grenade_eggs_item(state))) \
                     and self.flight_pad(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (self.grenade_eggs(state) or (self.airborne_egg_aiming(state) and state.has(itemName.GEGGS, self.player))) \
+            logic = (self.grenade_eggs(state) or (self.airborne_egg_aiming(state) and self.grenade_eggs_item(state))) \
                     and self.flight_pad(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (self.has_explosives(state) or (self.airborne_egg_aiming(state) and state.has(itemName.GEGGS, self.player))) \
+            logic = (self.has_explosives(state) or (self.airborne_egg_aiming(state) and self.grenade_eggs_item(state))) \
                     and self.flight_pad(state)
         return logic
     
@@ -4975,13 +4975,13 @@ class BanjoTooieRules:
     def nest_big_top(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = state.has(itemName.GEGGS, self.player) and self.airborne_egg_aiming(state) and self.can_kill_fruity(state)
+            logic = self.grenade_eggs_item(state) and self.airborne_egg_aiming(state) and self.can_kill_fruity(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.GEGGS, self.player) and self.airborne_egg_aiming(state) and self.can_kill_fruity(state)
+            logic = self.grenade_eggs_item(state) and self.airborne_egg_aiming(state) and self.can_kill_fruity(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.GEGGS, self.player) and self.airborne_egg_aiming(state) and self.can_kill_fruity(state)
+            logic = self.grenade_eggs_item(state) and self.airborne_egg_aiming(state) and self.can_kill_fruity(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.GEGGS, self.player) and self.airborne_egg_aiming(state) and self.can_kill_fruity(state)
+            logic = self.grenade_eggs_item(state) and self.airborne_egg_aiming(state) and self.can_kill_fruity(state)
         return logic
     
     def nest_jolly_gunpowder(self, state: CollectionState) -> bool:
@@ -5977,9 +5977,9 @@ class BanjoTooieRules:
 
     def can_reach_atlantis(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == 0: # beginner
-            return state.has(itemName.IEGGS, self.player) and self.long_swim(state) and self.sub_aqua_egg_aiming(state)
+            return self.ice_eggs_item(state) and self.long_swim(state) and self.sub_aqua_egg_aiming(state)
         elif self.world.options.logic_type == 1: # normal
-            return state.has(itemName.IEGGS, self.player) and self.long_swim(state) and self.sub_aqua_egg_aiming(state)
+            return self.ice_eggs_item(state) and self.long_swim(state) and self.sub_aqua_egg_aiming(state)
         elif self.world.options.logic_type == 2: # advanced
             return self.long_swim(state)
         elif self.world.options.logic_type == 3: # glitched
@@ -7314,9 +7314,13 @@ class BanjoTooieRules:
     def can_shoot_any_egg(self, state: CollectionState) -> bool:
         return self.egg_aim(state) or self.third_person_egg_shooting(state)
 
+    # The regular variant of the function check to see if you can shoot the eggs, the "item" variant only checks if you have the egg item
     def blue_eggs(self, state: CollectionState) -> bool:
         if not self.can_shoot_any_egg(state):
             return False
+        return self.blue_eggs_item(state)
+
+    def blue_eggs_item(self, state: CollectionState) -> bool:
         if self.world.options.egg_behaviour == 1: #Fully random order
             return state.has(itemName.BEGGS, self.player)
         return True
@@ -7324,6 +7328,9 @@ class BanjoTooieRules:
     def fire_eggs(self, state: CollectionState) -> bool:
         if not self.can_shoot_any_egg(state):
             return False
+        return self.fire_eggs_item(state)
+
+    def fire_eggs_item(self, state: CollectionState) -> bool:
         if self.world.options.egg_behaviour == 2: #progressive
             return state.has(itemName.PBEGGS, self.player, 1)
         return state.has(itemName.FEGGS, self.player)
@@ -7331,6 +7338,9 @@ class BanjoTooieRules:
     def grenade_eggs(self, state: CollectionState) -> bool:
         if not self.can_shoot_any_egg(state):
             return False
+        return self.grenade_eggs_item(state)
+
+    def grenade_eggs_item(self, state: CollectionState) -> bool:
         if self.world.options.egg_behaviour == 2: #progressive
             return state.has(itemName.PBEGGS, self.player, 2)
         return state.has(itemName.GEGGS, self.player)
@@ -7338,6 +7348,9 @@ class BanjoTooieRules:
     def ice_eggs(self, state: CollectionState) -> bool:
         if not self.can_shoot_any_egg(state):
             return False
+        return self.ice_eggs_item(state)
+
+    def ice_eggs_item(self, state: CollectionState) -> bool:
         if self.world.options.egg_behaviour == 2: #progressive
             return state.has(itemName.PBEGGS, self.player, 3)
         return state.has(itemName.IEGGS, self.player)
@@ -7345,6 +7358,9 @@ class BanjoTooieRules:
     def clockwork_eggs(self, state: CollectionState) -> bool:
         if not self.can_shoot_any_egg(state):
             return False
+        return self.clockwork_eggs_item(state)
+
+    def clockwork_eggs_item(self, state: CollectionState) -> bool:
         if self.world.options.egg_behaviour == 2: #progressive
             return state.has(itemName.PBEGGS, self.player, 4)
         return state.has(itemName.CEGGS, self.player)
@@ -7354,7 +7370,7 @@ class BanjoTooieRules:
     
     def has_linear_egg(self, state: CollectionState) -> bool:
         return self.blue_eggs(state) or\
-              self.fire_eggs(state) or\
+                self.fire_eggs(state) or\
                 self.grenade_eggs(state) or\
                 self.ice_eggs(state)
     

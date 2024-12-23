@@ -46,6 +46,7 @@
     - Completing Jinjo Family Rescue or Token Hunt requires you to take them to Bottles' House to complete your run.
     - If you don't have Chuffy and it is randomized, Chuffy will not be at GGM Station.
   - Logic fixes:
+    - Targitzan Jiggy, Pink Mystery Egg, the entirety of Atlantis: fixed a bug where progressive eggs made it so that getting those checks never became in logic
     - Prison Compound access: refactored to delete legacy code
     - Bovina Jiggy: can be done with ice eggs
     - Dodgem Dome Jiggy: fixed the logic for the clockwork warp, for glitch logic

@@ -110,13 +110,9 @@ class BanjoTooieWorld(World):
             elif banjoItem.btid == 1230797 and self.options.randomize_notes.value == True:
                 if hasattr(self.multiworld, "generation_is_fake") == False:
                     total_clefs = 20 * (self.options.extra_trebleclefs_count.value + 9) + 10 * self.options.bassclef_amount.value
-                    remaining_total = 900 - total_clefs
-                    
-                    five_packs = max(0, remaining_total /5)
-                    progression_five_packs = max(0, (900 - max(self.jamjars_siloname_costs.values()))/ 5)
-                    useful_five_packs = floor((five_packs-progression_five_packs)/2)
-                    # filler_five_packs = ceil((five_packs-progression_five_packs)/2)
-
+                    progression_five_packs = int(max(0, max(self.jamjars_siloname_costs.values())-total_clefs)/5)
+                    useful_five_packs = floor((900-total_clefs-progression_five_packs*5)/5/2)
+                    # filler_five_packs = ceil((900-total_clefs-progression_five_packs*5)/5/2)
                     if self.notecounter < progression_five_packs:
                         item_classification = ItemClassification.progression
                     elif self.notecounter >= progression_five_packs and self.notecounter < progression_five_packs + useful_five_packs:
