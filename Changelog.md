@@ -57,6 +57,7 @@
     - GI Floor 2 Taller Box Stack Note: removed damage boost from easy tricks logic
     - Waste Disposal (water pump room): can be reached with just talon trot.
     - HFP Ladder Notes: intended and easy tricks logics can get them with split up
+    - Dragon Brothers Jiggy: reworked the logic with moves that are required for the damage boost
     - Superstash jiggy: if jumping from the sack pack entrance to reach the switch near superstash, you need climb
     - Mr. Fit jiggy: hard tricks and glitch logics can shoot a clockwork for the high jump event
     - Plateau to Pine Grove: shooting the fire switch in third person as solo Kazooie is now in all logics except intended
