@@ -5098,6 +5098,10 @@ end
 
 function BTHACK:getSettingPointer()
     local hackPointerIndex = BTHACK:dereferencePointer(self.base_index);
+    if hackPointerIndex == nil
+    then
+        return
+    end
 	return BTHACK:dereferencePointer(self.pc_settings + hackPointerIndex);
 end
 
@@ -6890,7 +6894,27 @@ function process_slot(block)
     if block['slot_bkmoves'] ~= nil and block['slot_bkmoves'] ~= "false"
     then
         ENABLE_AP_BK_MOVES = block['slot_bkmoves']
-        if ENABLE_AP_BK_MOVES == 1
+        if ENABLE_AP_BK_MOVES == 0
+        then
+            BTH:setItem(ITEM_TABLE["AP_ITEM_DIVE"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_FPAD"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_FFLIP"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_EGGSHOOT"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_ROLL"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_TTROT"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_TJUMP"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_CLIMB"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_FLUTTER"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_WWING"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_BBUST"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_TTRAIN"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_ARAT"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_BEGGS"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_GRAT"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_BBARGE"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_SSTRIDE"], 1)
+            BTH:setItem(ITEM_TABLE["AP_ITEM_BBOMB"], 1)
+        elseif ENABLE_AP_BK_MOVES == 1
         then
             BTH:setItem(ITEM_TABLE["AP_ITEM_TJUMP"], 1)
             BTH:setItem(ITEM_TABLE["AP_ITEM_TTROT"], 1)
