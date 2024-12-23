@@ -113,9 +113,9 @@ class BanjoTooieWorld(World):
                     progression_five_packs = int(max(0, max(self.jamjars_siloname_costs.values())-total_clefs)/5)
                     useful_five_packs = floor((900-total_clefs-progression_five_packs*5)/5/2)
                     # filler_five_packs = ceil((900-total_clefs-progression_five_packs*5)/5/2)
-                    if self.notecounter < progression_five_packs:
+                    if self.notecounter <= progression_five_packs:
                         item_classification = ItemClassification.progression
-                    elif self.notecounter >= progression_five_packs and self.notecounter < progression_five_packs + useful_five_packs:
+                    elif self.notecounter > progression_five_packs and self.notecounter <= progression_five_packs + useful_five_packs:
                         item_classification = ItemClassification.useful
                     else:
                         item_classification = ItemClassification.filler
