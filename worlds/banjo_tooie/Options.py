@@ -156,21 +156,21 @@ class ProgressiveShoes(Toggle):
     display_name = "Progressive Kazooie Shoes"
 
 class ProgressiveSwimming(Choice):
-    """Set to On: Dive to Double Air to Faster Swimming.
+    """Set to Basic: Dive to Double Air to Faster Swimming.
     Set to Advanced: Dive to Sub Aqua Aiming to Talon Torpedo to Double Air to Faster Swimming.
     Randomize Moves and Randomize BK Moves are required."""
     display_name = "Progressive Water Training"
     option_none = 0
-    option_on = 1
+    option_basic = 1
     option_advanced = 2
 
 class ProgressiveEggAim(Choice):
-    """Set to On: Third Person Egg Shooting to Egg Aim. 
+    """Set to Basic: Third Person Egg Shooting to Egg Aim. 
     Set to Advanced: Third Person Egg Shooting to Amaze-O-Gaze to Egg Aim to Breegull Blaster.
     Randomize Moves and Randomize BK Moves are required."""
     display_name = "Progressive Egg Aim"
     option_none = 0
-    option_on = 1
+    option_basic = 1
     option_advanced = 2
 
 class ProgressiveFlight(Toggle):
