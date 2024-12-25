@@ -452,7 +452,7 @@ HONEYBR5    = "IoH: Honey B's Reward 5" # 9
 GOGGLES     = "IoH: Amaze-O-Gaze Goggles"
 SCRUT       = "TDL: Scrut (Lost)"
 SCRAT       = "TDL: Scrat (Sick)"
-SCRIT       = "TDL: Scrit (Enlarge)"
+SCRIT       = "TDL: Scrit (Small)"
 ROARDINO    = "TDL: Baby T-Rex Roar"
 
 #Jiggy Chunks
@@ -902,9 +902,9 @@ NESTTL55 = "TDL: Mumbo's Skull Feather Nest 2"
 
 
 
-NESTGI1 = "GI Floor 5: Roof Feather Nest 1"
-NESTGI2 = "GI Floor 5: Roof Feather Nest 2"
-NESTGI3 = "GI Floor 5: Roof Feather Nest 3"
+NESTGI1 = "GI Outside: Roof Feather Nest 1"
+NESTGI2 = "GI Outside: Roof Feather Nest 2"
+NESTGI3 = "GI Outside: Roof Feather Nest 3"
 NESTGI4 = "GI Outside: Right Side of Building Feather Nest"
 NESTGI5 = "GI Outside: Left Side of Building Feather Nest"
 

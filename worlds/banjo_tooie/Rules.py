@@ -963,8 +963,8 @@ class BanjoTooieRules:
             locationName.NESTHP19:    lambda state: self.hfp_top(state),
             locationName.NESTHP20:    lambda state: self.hfp_top(state),
 
-            locationName.NESTHP21:    lambda state: self.jiggy_ice_station(state),
-            locationName.NESTHP22:    lambda state: self.jiggy_ice_station(state),
+            locationName.NESTHP21:    lambda state: self.nest_icy_side_train_station_hard(state),
+            locationName.NESTHP22:    lambda state: self.nest_icy_side_train_station_easy(state),
 
             locationName.NESTHP23:    lambda state: self.flight_pad(state) and self.ice_eggs_item(state),
 
@@ -1546,16 +1546,28 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == 1: # normal
             logic = self.HFP_hot_water_cooled(state)\
                     and self.jrl_waste_disposal(state)\
-                    and self.flap_flip(state)\
+                    and (self.flap_flip(state)\
+                        or self.tall_jump(state) and self.beak_buster(state)\
+                        or self.talon_trot(state) and self.flutter(state) and self.beak_buster(state)
+                    )\
                     and (self.has_explosives(state) or self.beak_barge(state))
         elif self.world.options.logic_type == 2: # advanced
             logic = self.HFP_hot_water_cooled(state)\
                     and self.jrl_waste_disposal(state)\
-                    and (self.flap_flip(state) and (self.has_explosives(state) or self.beak_barge(state)) or self.clockwork_shot(state))
+                    and ((self.flap_flip(state)\
+                        or self.tall_jump(state) and self.beak_buster(state)\
+                        or self.talon_trot(state) and self.flutter(state) and self.beak_buster(state)
+                        ) and (self.has_explosives(state) or self.beak_barge(state))\
+                        or self.clockwork_shot(state)
+                    )
         elif self.world.options.logic_type == 3: # glitched
             logic = self.HFP_hot_water_cooled(state)\
                     and self.jrl_waste_disposal(state)\
-                    and (self.flap_flip(state) and (self.has_explosives(state) or self.beak_barge(state)) or self.clockwork_shot(state))
+                    and ((self.flap_flip(state)\
+                        or self.tall_jump(state) and self.beak_buster(state)\
+                        or self.talon_trot(state) and self.flutter(state) and self.beak_buster(state)
+                        ) and (self.has_explosives(state) or self.beak_barge(state))\
+                    or self.clockwork_shot(state))
         return logic
     
     def jiggy_smuggler(self, state: CollectionState) -> bool:
@@ -2601,13 +2613,13 @@ class BanjoTooieRules:
     def honeycomb_trash(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.flight_pad(state)
+            logic = self.flight_pad(state) or state.has(itemName.HUMBACC, self.player)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.flight_pad(state) or self.glide(state)
+            logic = self.flight_pad(state) or self.glide(state) or state.has(itemName.HUMBACC, self.player)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.flight_pad(state) or self.glide(state)
+            logic = self.flight_pad(state) or self.glide(state) or state.has(itemName.HUMBACC, self.player)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.flight_pad(state) or self.glide(state)
+            logic = self.flight_pad(state) or self.glide(state) or state.has(itemName.HUMBACC, self.player)
         return logic
 
     def honeycomb_pot(self, state: CollectionState) -> bool:
@@ -5768,6 +5780,33 @@ class BanjoTooieRules:
                              or self.pack_whack(state)\
                              or self.humbaHFP(state)
                              )
+        return logic
+
+    def nest_icy_side_train_station_easy(self, state: CollectionState) -> bool:
+        return self.jiggy_ice_station(state)
+
+    def nest_icy_side_train_station_hard(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.can_beat_king_coal(state) and self.grenade_eggs(state) and \
+                    state.has(itemName.TRAINSWHP1, self.player) and state.has(itemName.TRAINSWHP2, self.player) and \
+                    self.egg_aim(state) and state.can_reach_region(regionName.WW, self.player)\
+                    and self.flight_pad(state) and self.dive(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.can_beat_king_coal(state) and self.grenade_eggs(state) and \
+                    state.has(itemName.TRAINSWHP1, self.player) and state.has(itemName.TRAINSWHP2, self.player) and \
+                    state.can_reach_region(regionName.WW, self.player)\
+                    and self.flight_pad(state) and (self.beak_buster(state) or self.dive(state))
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.can_beat_king_coal(state) and self.grenade_eggs(state) and \
+                    state.has(itemName.TRAINSWHP1, self.player) and state.has(itemName.TRAINSWHP2, self.player) and \
+                    state.can_reach_region(regionName.WW, self.player)\
+                    and self.flight_pad(state) and (self.beak_buster(state) or self.dive(state))
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.can_beat_king_coal(state) and self.grenade_eggs(state) and \
+                    state.has(itemName.TRAINSWHP1, self.player) and state.has(itemName.TRAINSWHP2, self.player) and \
+                    state.can_reach_region(regionName.WW, self.player)\
+                    and self.flight_pad(state) and (self.beak_buster(state) or self.dive(state))
         return logic
     
     def nest_hfp_spring_pad(self, state: CollectionState) -> bool:

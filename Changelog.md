@@ -45,12 +45,15 @@
     - Custom World Costs are no longer seperate options in the yaml, but rather a single string.
     - Completing Jinjo Family Rescue or Token Hunt requires you to take them to Bottles' House to complete your run.
     - If you don't have Chuffy and it is randomized, Chuffy will not be at GGM Station.
+  - Renamings:
+    - Scrotty Kids have their names changed based on their problem, to avoid confusion
   - Logic fixes:
     - Targitzan Jiggy, Pink Mystery Egg, the entirety of Atlantis: fixed a bug where progressive eggs made it so that getting those checks never became in logic
     - Prison Compound access: refactored to delete legacy code
     - Bovina Jiggy: can be done with ice eggs
     - Dodgem Dome Jiggy: fixed the logic for the clockwork warp, for glitch logic
     - Area 51 honeycomb: refactored logic due to new fuel depot region
+    - Pig Pool Jiggy: if not on intended logic, you can jump over the pipes in the waste disposal with tall jump + beak buster, or talon trot + flutter + beak buster
     - Stomping Plains collectables: reworked the logic to remove redundancy
     - TDL Entrance jinjo: for intended and easy trick logics, jumping onto the pillar and into the alcove is no longer in logic, due to its difficulty
     - TDL Train station: for intended and easy tricks, require a jump upgrade to enter
@@ -59,6 +62,7 @@
     - Waste Disposal (water pump room): can be reached with just talon trot.
     - HFP Ladder Notes: intended and easy tricks logics can get them with split up
     - Dragon Brothers Jiggy: reworked the logic with moves that are required for the damage boost
+    - Trash Can Honeycomb: can be gotten with the bee
     - Superstash jiggy: if jumping from the sack pack entrance to reach the switch near superstash, you need climb
     - Mr. Fit jiggy: hard tricks and glitch logics can shoot a clockwork for the high jump event
     - Plateau to Pine Grove: shooting the fire switch in third person as solo Kazooie is now in all logics except intended
