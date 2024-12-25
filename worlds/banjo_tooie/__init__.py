@@ -448,35 +448,31 @@ class BanjoTooieWorld(World):
             self.starting_egg = banjoItem.btid
         if self.options.randomize_bk_moves.value != 0:
             chosen_attack: str
-            if self.options.victory_condition == 4 and not (self.options.logic_type == 0 and self.options.skip_klungo == 0): # Wonderwing challenge: you start with wonderwing if you can do it.
-                chosen_attack = itemName.WWING
-
-            else:
-                base_attacks: list
-                if self.options.logic_type == 0:
-                    if self.options.progressive_egg_aiming.value == 1 :
-                        base_attacks = [itemName.PEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
-                    elif self.options.progressive_egg_aiming.value == 2:
-                        base_attacks = [itemName.PAEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
-                    else:
-                        base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
-                if self.options.logic_type == 1:
-                    if self.options.progressive_egg_aiming.value == 1 :
-                        base_attacks = [itemName.PEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
-                    elif self.options.progressive_egg_aiming.value == 2:
-                        base_attacks = [itemName.PAEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
-                    else:
-                        base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
+            base_attacks: list
+            if self.options.logic_type == 0:
+                if self.options.progressive_egg_aiming.value == 1 :
+                    base_attacks = [itemName.PEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
+                elif self.options.progressive_egg_aiming.value == 2:
+                    base_attacks = [itemName.PAEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
                 else:
-                    if self.options.progressive_egg_aiming.value == 1 :
-                        base_attacks = [itemName.PEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
-                    elif self.options.progressive_egg_aiming.value == 2:
-                        base_attacks = [itemName.PAEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
-                    else:
-                        base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
-                    base_attacks.append(itemName.PBASH if self.options.progressive_bash_attack.value == 1 else itemName.GRAT)
-                    base_attacks.append(itemName.PBBUST if self.options.progressive_beak_buster.value == True else itemName.BBUST)
-                chosen_attack = self.random.choice(base_attacks)
+                    base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
+            if self.options.logic_type == 1:
+                if self.options.progressive_egg_aiming.value == 1 :
+                    base_attacks = [itemName.PEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
+                elif self.options.progressive_egg_aiming.value == 2:
+                    base_attacks = [itemName.PAEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
+                else:
+                    base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
+            else:
+                if self.options.progressive_egg_aiming.value == 1 :
+                    base_attacks = [itemName.PEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
+                elif self.options.progressive_egg_aiming.value == 2:
+                    base_attacks = [itemName.PAEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
+                else:
+                    base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
+                base_attacks.append(itemName.PBASH if self.options.progressive_bash_attack.value == 1 else itemName.GRAT)
+                base_attacks.append(itemName.PBBUST if self.options.progressive_beak_buster.value == True else itemName.BBUST)
+            chosen_attack = self.random.choice(base_attacks)
 
             starting_attack = self.create_item(chosen_attack)
             self.multiworld.push_precollected(starting_attack)

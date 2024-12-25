@@ -45,6 +45,7 @@
     - Custom World Costs are no longer seperate options in the yaml, but rather a single string.
     - Completing Jinjo Family Rescue or Token Hunt requires you to take them to Bottles' House to complete your run.
     - If you don't have Chuffy and it is randomized, Chuffy will not be at GGM Station.
+    - If you are doing the Wonderwing Challenge, you no longer always start with Wonderwing as your attack
   - Renamings:
     - Scrotty Kids have their names changed with their problem, to avoid confusion
   - Logic fixes:
