@@ -58,6 +58,9 @@ local MINIGAMES = ""
 local TOKEN_ANNOUNCE = false;
 local SNEAK = false;
 
+local SILO_MESSAGE = "";
+local SEND_SILO_MSG = true;
+
 -------------- MAP VARS -------------
 local CURRENT_MAP = nil;
 
@@ -88,6 +91,8 @@ local SQTRAPS = 0;
 local EGGNEST = 0;
 local FEATHERNEST = 0;
 local GOLDNEST = 0;
+
+local ENABLE_AP_CHUFFY = false;
 
 -------------- SKIP VARS ------------
 local OPEN_HAG1 = false;
@@ -1525,9 +1530,6 @@ local ASSET_MAP_CHECK = {
         }
     },
     [0x108] =	{ --GI - Floor 3
-        ["JIGGIES"] = {
-            "1230649", -- Skivvy
-        },
         ["HONEYCOMB"] = {
             "1230718" -- Floor 3
         },
@@ -1548,6 +1550,9 @@ local ASSET_MAP_CHECK = {
         }
     },
     [0x109] =	{ --GI - Floor 3 (Boiler Plant)
+        ["JIGGIES"] = {
+            "1230649", -- Skivvy
+        },
         ["JINJOS"] = {
             "1230579" -- Top of Boiler
         },
@@ -6601,7 +6606,7 @@ function Messages(msg_table)
     end
     if 1230790 <= msg_table["item_id"] and msg_table["item_id"] <= 1230796 --Stations + Chuffy
     then
-        if msg_table["item_id"] == 1230796
+        if msg_table["item_id"] == 1230796 and ENABLE_AP_CHUFFY == true
         then
             msg = msg .. "\nDon't forget that you can call Chuffy at any unlocked station."
         end
@@ -7052,7 +7057,6 @@ function process_slot(block)
     end
     if block['slot_open_silo'] ~= nil
     then
-        local message = ""
 
         OPEN_SILO = block['slot_open_silo']
         if OPEN_SILO == "ALL"
@@ -7064,34 +7068,28 @@ function process_slot(block)
             BTH:setSettingOpenSilos(4, 1) -- CT
             BTH:setSettingOpenSilos(5, 1) -- WL
             BTH:setSettingOpenSilos(6, 1) -- QM
-            message = "All Isle O' Hags Silos are Open"
+            SILO_MESSAGE = "All Isle O' Hags Silos are Open"
         elseif string.find(OPEN_SILO, "Wasteland") ~= nil then
             BTH:setSettingOpenSilos(0, 1)
             BTH:setSettingOpenSilos(5, 1) -- WL
-            message = "The Isle O' Hags Wasteland Silo is open"
+            SILO_MESSAGE = "The Isle O' Hags Wasteland Silo is open"
         elseif string.find(OPEN_SILO, "Quagmire") ~= nil then
             BTH:setSettingOpenSilos(0, 1)
             BTH:setSettingOpenSilos(6, 1) -- QM
-            message = "The Isle O' Hags Quagmire Silo is open"
+            SILO_MESSAGE = "The Isle O' Hags Quagmire Silo is open"
         elseif string.find(OPEN_SILO, "Plateau") ~= nil then
             BTH:setSettingOpenSilos(0, 1)
             BTH:setSettingOpenSilos(2, 1) -- PL
-            message = "The Isle O' Hags Plateau Silo is open"
+            SILO_MESSAGE = "The Isle O' Hags Plateau Silo is open"
         elseif string.find(OPEN_SILO, "Pine Grove") ~= nil then
             BTH:setSettingOpenSilos(0, 1)
             BTH:setSettingOpenSilos(3, 1) -- PG
-            message = "The Isle O' Hags Pine Grove Silo is open"
+            SILO_MESSAGE = "The Isle O' Hags Pine Grove Silo is open"
         elseif string.find(OPEN_SILO, "Cliff Top") ~= nil then
             BTH:setSettingOpenSilos(0, 1)
             BTH:setSettingOpenSilos(4, 1) -- CT
-            message = "The Isle O' Hags Cliff Top Silo is open"
+            SILO_MESSAGE = "The Isle O' Hags Cliff Top Silo is open"
         end
-        if DIALOG_CHARACTER == 110
-            then
-                table.insert(MESSAGE_TABLE, {message, 17});
-            else
-                table.insert(MESSAGE_TABLE, {message, DIALOG_CHARACTER});
-            end
     end
     if block['slot_version'] ~= nil and block['slot_version'] ~= ""
     then
@@ -7203,8 +7201,12 @@ function main()
         return
     end
     print("Banjo-Tooie Archipelago Version " .. BT_VERSION)
-    server, error = socket.bind('localhost', 21221)
     BTH = BTHACK:new(nil)
+    while BTHACK:getSettingPointer() == nil
+    do
+        emu.frameadvance()
+    end
+    server, error = socket.bind('localhost', 21221)
     local changed_map = 0x0
     while true do
         FRAME = FRAME + 1
@@ -7231,6 +7233,18 @@ function main()
                 if CURRENT_MAP == 0x158 and GOAL_PRINTED == false
                 then
                     printGoalInfo()
+                end
+                if CURRENT_MAP == 0xAF and SEND_SILO_MSG == true
+                then
+                    if DIALOG_CHARACTER == 110
+                    then
+                        table.insert(MESSAGE_TABLE, {SILO_MESSAGE, 17});
+                    else
+                        table.insert(MESSAGE_TABLE, {SILO_MESSAGE, DIALOG_CHARACTER});
+                    end
+                elseif CURRENT_MAP == 0x142 and SEND_SILO_MSG == true
+                then
+                    SEND_SILO_MSG = false
                 end
                 if changed_map ~= CURRENT_MAP
                 then
