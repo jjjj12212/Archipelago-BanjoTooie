@@ -53,6 +53,7 @@ local DEBUG_AMAZE = false
 local DEBUG_NESTS = false
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
+local AP_TIMEOUT_COUNTER = 0
 
 local MINIGAMES = ""
 local TOKEN_ANNOUNCE = false;
@@ -6770,7 +6771,12 @@ function receive()
             CUR_STATE = STATE_UNINITIALIZED
             return
         elseif e == 'timeout' then
-            table.insert(MESSAGE_TABLE, {"Archipelago Timeout", 86});
+            AP_TIMEOUT_COUNTER = AP_TIMEOUT_COUNTER + 1
+            if AP_TIMEOUT_COUNTER == 5
+            then
+                table.insert(MESSAGE_TABLE, {"Archipelago Timeout", 86});
+                AP_TIMEOUT_COUNTER = 0
+            end
             print("timeout")
             return
         elseif e ~= nil then
@@ -6782,6 +6788,7 @@ function receive()
         then
             print("Processing Block");
         end
+        AP_TIMEOUT_COUNTER = 0
         process_block(json.decode(l))
         if DEBUGLVL3 == true
         then
@@ -6809,7 +6816,12 @@ function getSlotData()
         CUR_STATE = STATE_UNINITIALIZED
         return
     elseif e == 'timeout' then
-        table.insert(MESSAGE_TABLE, {"Archipelago Timeout", 86});
+        AP_TIMEOUT_COUNTER = AP_TIMEOUT_COUNTER + 1
+        if AP_TIMEOUT_COUNTER == 10
+        then
+            table.insert(MESSAGE_TABLE, {"Archipelago Timeout", 86});
+            AP_TIMEOUT_COUNTER = 0
+        end
         print("timeout")
         return
     elseif e ~= nil then
@@ -6821,6 +6833,7 @@ function getSlotData()
     then
         print("Processing Slot Data");
     end
+    AP_TIMEOUT_COUNTER = 0
     process_slot(json.decode(l))
 end
 
@@ -7242,6 +7255,7 @@ function main()
                     else
                         table.insert(MESSAGE_TABLE, {SILO_MESSAGE, DIALOG_CHARACTER});
                     end
+                    SEND_SILO_MSG = false
                 elseif CURRENT_MAP == 0x142 and SEND_SILO_MSG == true
                 then
                     SEND_SILO_MSG = false
