@@ -50,6 +50,7 @@ MTJSG = "Mayahem Temple - Jade Snake Grove"
 GM = "Glitter Gulch Mine"
 GMS = "Glitter Gulch Mine Station"
 GMWSJT = "Glitter Gulch Mine - Water Storage Jinjo Tank"
+GMFD = "Glitter Gulch Mine - Fuel Depot, Behind the Rocks"
 
 WW = "Witchyworld"
 WWS = "Witchyworld Station"

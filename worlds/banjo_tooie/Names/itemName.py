@@ -14,6 +14,8 @@ GLOWBO = "Glowbo"
 JIGGY = "Jiggy"
 TREBLE = "Treble Clef"
 NOTE = "5 Notes"
+BASS = "Bass Clef"
+
 MUMBOTOKEN = "Mumbo Token"
 WARPS = "Grunty Warp Spell"
 IKEY = "Ice Key"
@@ -77,6 +79,10 @@ PBEGGS       = "Progressive Eggs"
 PSHOES       = "Progressive Shoes"
 PSWIM       = "Progressive Water Training"
 PBASH       = "Progressive Bash Attack"
+PFLIGHT     = "Progressive Flight"
+PEGGAIM     = "Progressive Egg Aim"
+PASWIM      = "Progressive Adv. Water Training"
+PAEGGAIM    = "Progressive Adv. Egg Aiming"
 
 # Mumbo Magics
 MUMBOMT = "Mumbo: Golden Goliath"
@@ -108,6 +114,10 @@ TRAINSWHP2 = "HFP: Icy Side Train Station"
 TRAINSWWW  = "WW: Train Station"
 
 NONE = "Big-O Pants"
+TTRAP = "Trip Trap"
+STRAP = "Slip Trap"
+TRTRAP = "Transform Trap"
+SQTRAP = "Squish Trap"
 
 CHUFFY = "Chuffy"
 
@@ -124,3 +134,8 @@ HFA = "Hailfire Peaks"
 CCA = "Cloud Cuckooland"
 CKA = "Cauldron Keep"
 #H1A = "HAG-1" 
+
+
+GNEST = "Golden Egg Nest"
+ENEST = "Egg Nest"
+FNEST = "Feather Nest"

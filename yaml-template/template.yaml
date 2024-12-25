@@ -27,86 +27,25 @@ description: 'Created By jjjj12212'
 game: Banjo-Tooie
 
 Banjo-Tooie:
-  death_link: 'false'
-  activate_overlay_text: 'true'
-  # overlay_text_colour
-  # 0 - Red messages
-  # 1 - Blue messages
-  overlay_text_colour: 0
+  death_link: 'false'           # If someone "kicks the bucket", you all perish together 
 
-  randomize_moves: 'true'
-  # Randomize Banjo-Kazooie Moves in Banjo-Tooie
-  # 0: Don't randomize 
-  # 1: Mcjiggy Special - No Talon Trot or Tall Jump in the Pool
-  # 2: All - Everything
-  randomize_bk_moves: 0
+  # Choose your logic difficulty and difficulty of tricks you are expected to perform to reach certain areas.
+  # 0 = intended
+  # 1 = easy tricks
+  # 2 = hard tricks
+  # 3 = glitches
+  logic_type: 0
 
-  # Beak Buster -> Bill Drill Progression
-  progressive_beak_buster: 'false'
+  # Choose which victory condition you want
+  # 0 = HAG1: Unlock the HAG1 fight and defeat Gruntilda
+  # 1 = Minigame Hunt: Clear the 14 minigames and the final Canary Mary race in Cloud Cuckcoo Land to collect Mumbo Tokens
+  # 2 = Boss Hunt: Kill the 8 world bosses and collect their Mumbo Tokens
+  # 3 = Jinjo Family Rescue: Rescue Jinjo Families to collect their prized Mumbo Tokens
+  # 4 = Wonderwing Challenge: Collect all 32 Mumbo Tokens across all boss fights, mini games and every Jinjo family
+  # to gain access to HAG1 and Defeat Grunty. The Ultimate Banjo Tooie experience!!
+  # 5 = Token Hunt: Mumbo's Tokens are scattered around the world. Help him find them
+  victory_condition: 0
 
-  # Change how Eggs behave in Banjo-Tooie, Requires randomize_bk_moves
-  # 0: Default (Start with Blue Eggs, get other eggs randomly in AP)
-  # 1: Randomize Starting Eggs (you will start with a random egg)
-  # 2: Progressive Eggs (Blue -> Fire -> Grenade -> Ice -> Clockwork)
-  egg_behaviour: 0
-
-  # Stilt Stride -> Turbo Trainers -> Spring Boots -> Claw Climbers, Requires randomize_bk_moves
-  progressive_shoes: 'false'
-
-  # Dive -> Double Air -> Fast Swimming, Requires randomize_bk_moves
-  progressive_water_training: 'false'
-
-  # Ground Rat-a-tat Rap -> Breegull Bash, Requires randomize_bk_moves
-  progressive_bash_attack: 'false'
-
-  randomize_jinjos: 'true'
-
-  randomize_doubloons: 'true'
-  randomize_cheato: 'true'
-  cheato_rewards: 'true'
-  cheato_as_filler: 'false'
-  randomize_honeycombs: 'true'
-  honeyb_rewards: 'true'
-  randomize_glowbos: 'true'
-  randomize_treble: 'true'
-  randomize_stations: 'true'
-  randomize_chuffy: 'true'     # Chuffy as a AP Item
-  randomize_notes: 'true'
-  randomize_stop_n_swap: 'true' # Ice key + Eggs + Egg rewards are added to the item pool.
-
-  randomize_dino_roar: 'true'
-
-
-  # Changes which levels are open; Recommended when doing multiworld seeds.
-  randomize_worlds: 'false'
-
-  # World Entrances will warp you to a different world. This only affects main entrances.
-  randomize_world_loading_zone: 'false'
-
-  # Opens many one way switches on game start, allowing for more backdoor access to levels.
-  backdoors: 'false'
-
-  # Choose if you want IoH Silos to be closed, randomly open 1 or enable all. If you enabled Randomized Worlds with BK Moves randomized and
-  # silos set to none, it will be enforced to one.
-  open_silos: 0               # 0: None, 1: one random silo, 2: All Silos Open
-
-  logic_type: 0                # 0: Intended, 1: Easy Tricks, 2: Hard Tricks, 3: glitches
-  jingaling_jiggy: 'true'      # True: Always get Jiggy from Jingaling; recommended when playing Multiworld.
-  skip_tower_of_tragedy: 1     # 0: no skip, 1: skip completely, 2: play 3rd round only
-  speed_up_minigames: 'true'   # skip to round 3 of kickball, dodgems
-  skip_puzzles: 'true'
-  skip_klungo: 'true'          # Skips Klungo 1 & 2
-
-
-  # Victory Conditions
-  #   0: HAG-1
-  #   1: Mini-Games
-  #   2: World Bosses
-  #   3: Jinjo Family Hunt
-  #   4: Wonderwing Challenge
-  #   5. Token Hunt
-  victory_condition: 0     
-  open_hag1: 'true'             # Once Cauldron Keep is open, HAG1 is open
   minigame_hunt_length: 14      # 1-15
   boss_hunt_length: 8           # 1-8        
   jinjo_family_rescue_length: 9 # 1-9 
@@ -116,17 +55,109 @@ Banjo-Tooie:
   # 0: Quick  - 1,3,6,10,15,21,28,35,44
   # 1: Normal - 1,4,8,14,20,28,36,45,55
   # 2: Long   - 1,8,16,25,34,43,52,60,70
-  # 3: Custom
+  # 3: Custom - You pick
+  # 4: Random - Let the game randomize it.
   game_length: 1
-  world_1: 1  # 1-3
-  world_2: 4  # 1-20
-  world_3: 8  # 1-30
-  world_4: 14 # 1-40
-  world_5: 20 # 1-50
-  world_6: 28 # 1-60
-  world_7: 36 # 1-70
-  world_8: 45 # 1-90
-  world_9: 55 # 1-90
+
+  # Enter a list of jiggy requirements you want for each world unlock. Max values of each world are: 1,10,20,30,50,60,70,80,90
+  custom_worlds: "1,4,8,14,20,28,36,45,55"
+
+  randomize_moves: 'true'       # Randomize Jamjar + Roysten + Amaze-O-Gaze Moves
+
+  # Change how many notes it takes to use Jamjars' move silos. Requires Jamjars' movelist to be changed
+  # 0 = Vanilla
+  # 1 = Completely Random
+  # 2 = Progressive
+  jamjars_silo_costs: 0
+
+  # Randomize Banjo-Kazooie Moves in Banjo-Tooie
+  # 0: Don't randomize 
+  # 1: Mcjiggy Special - You keep Talon Trot and Tall Jump
+  # 2: All - Everything
+  randomize_bk_moves: 0
+
+  # Change how Eggs behave in Banjo-Tooie
+  # 0: Default (Start with Blue Eggs, get other eggs randomly in AP)
+  # 1: Randomize Starting Eggs (you will start with a random egg)
+  # 2: Progressive Eggs (Blue -> Fire -> Grenade -> Ice -> Clockwork)
+  # Requires randomize_bk_moves & randomize_moves
+  egg_behaviour: 0
+
+  # Beak Buster -> Bill Drill Progression 
+  # Requires randomize_bk_moves & randomize_moves
+  progressive_beak_buster: 'false'
+
+  # Stilt Stride -> Turbo Trainers -> Spring Boots -> Claw Climbers
+  # Requires randomize_bk_moves & randomize_moves
+  progressive_shoes: 'false'
+
+  # 0 = disabled
+  # 1 = Dive -> Double Air -> Fast Swimming
+  # 2 = Dive -> Sub Aqua Aiming -> Talon Torpedo -> Double Air -> Faster Swimming
+  # Requires randomize_bk_moves & randomize_moves
+  progressive_water_training: 0
+
+  # Flight Pad -> Beak Bomb -> Airborne Egg Aim
+  # Requires randomize_bk_moves & randomize_moves
+  progressive_flight: 'false'
+
+  # 0 = disabled
+  # 1 = Third Person Egg Shooting -> Egg Aim
+  # 2 = Third Person Egg Shooting -> Amaze-O-Gaze -> Egg Aim -> Breegull Blaster
+  # Requires randomize_bk_moves & randomize_moves
+  progressive_egg_aiming: 0
+
+  # Ground Rat-a-tat Rap -> Breegull Bash
+  # Requires randomize_bk_moves & randomize_moves
+  progressive_bash_attack: 'false'
+
+  randomize_notes: 'true'     # adds Notes to the pool
+  randomize_treble: 'true'    # adds Trebleclefs to the pool
+  extra_trebleclefs_count: 0  # 0 - 21; replace 4 notes with an additional trebleclef. Requires randomize_notes
+  bassclef_amount:  0         # 0 - 30; replace 2 notes with a Bassclef (10 notes). Requires randomize_notes
+
+  randomize_jinjos: 'true'    # adds Jinjos to the pool
+  randomize_doubloons: 'true' # adds Doubloons to the pool
+  randomize_cheato: 'true'    # adds Cheato Pages to the pool
+  cheato_rewards: 'true'      # handing in pages gives you an item. Pages will be set as progressive items
+  randomize_honeycombs: 'true' # adds honeycombs to the pool
+  honeyb_rewards: 'true'      # handing in honeycombs gives you an item. Honeycombs will be set as progressive items
+  randomize_glowbos: 'true'   # adds Mumbo / Humba Magic to the pool
+  randomize_stop_n_swap: 'true' # Ice key + Eggs + Egg rewards are added to the item pool
+  randomize_dino_roar: 'true' # Roar is in the pool
+  nestsanity: 'false'         # Every egg nest and feather nest give a check when you collect them for the first time. They behave as normal afterwards.
+  traps: 'false'              # Swaps all Big-O-Pants (junk) items to Traps
+
+  randomize_stations: 'true'  # adds Stations to the pool
+  randomize_chuffy: 'true'    # Chuffy as a AP Item. You can also "call" Chuffy at any unlocked station without needing to fight King Coal.
+  jingaling_jiggy: 'true'     # Always start the game with 1 Jiggy from Jingaling
+  skip_puzzles: 'true'        # you won't be able to utilize randomizing worlds / loading zones if this is disabled
+  randomize_worlds: 'false'   # Changes the order in which levels open
+  randomize_world_loading_zone: 'false' # World Entrances will warp you to a different world. This only affects main entrances.
+  open_hag1: 'true'           # HAG1's door is open
+
+  # The following gates are preopened: MT>TDL, MT>HFP, GGM>WW, WW>TDL
+  # For MT>TDL only the gate accessed from TDL's side is opened and for GGM>WW the boulders are still unexploded
+  # The bridge from HFPs entrance is pre-moved to allow secondary access to clifftop
+  # George is also pre-dropped to make HFP>JRL more accessible
+  backdoors: 'false'
+
+  # Choose if you want IoH Silos to be closed, randomly open 1 or enable all. If you enabled Randomized Worlds with BK Moves randomized and
+  # silos set to none, it will be enforced to one
+  # 0: None
+  # 1: one random silo
+  # 2: All Silos Open
+  open_silos: 0               
+
+
+  speed_up_minigames: 'true'    # skip to round 3 of kickball, dodgems
+  skip_tower_of_tragedy: 1    # 0: no skip, 1: skip completely, 2: play 3rd round only
+  skip_klungo: 'true'         # Skips Klungo 1 & 2
+
+  # Change the Character that announces your obtained moves, worlds, etc. 
+  # The list is massive which will be at the bottom of the file to reference
+  dialog_character: 110       
+
 
   # Start with these items.
   # start_inventory: {"Grip Grab": 1, "Fire Eggs": 1}
@@ -150,4 +181,119 @@ Banjo-Tooie:
   # priority_locations: ["TDL: Scrotty Jiggy"]
 
   # Items shared with other people.
-  # item_links: ["Chuffy"]
+  # item_links: [{name: Mumbo, item_pool: [Mumbo Token], replacement_item: 'Big-O Pants'}]
+
+
+  #DIALOG CHARACTERS
+  #GLOWBO = 0
+  #JIGGY = 1
+  #HONEYCOMB = 2
+  #SUB = 3
+  #WASHER = 4
+  #BANJO = 5
+  #KAZOOIE = 6
+  #BOTTLES = 7
+  #MUMBO = 8
+  #JINJO_YELLOW = 9
+  #JINJO_GREEN = 10
+  #JINJO_BLUE = 11
+  #JINJO_PURPLE = 12
+  #JINJO_ORANGE = 13
+  #BEEHIVE = 14
+  #GRUNTY = 15
+  #ZUBBA = 16
+  #JAMJARS = 17
+  #BOVINA = 18
+  #MINJO_WHITE = 19
+  #MINJO_ORANGE = 20
+  #MINJO_YELLOW = 21
+  #MINJO_BROWN = 22
+  #UNOGOPAZ = 23
+  #CHIEF_BLOATAZIN = 24
+  #DILBERTA = 25
+  #STONIES1 = 26
+  #CANARY_MARY = 27
+  #CHEATO = 28
+  #GOBI = 29
+  #DINO_KID1 = 30
+  #MR_PATCH = 31
+  #MOGGY = 32
+  #SOGGY = 33
+  #GROGGY = 34
+  #MRS_BOGGY = 35
+  #PROSPECTOR = 36
+  #HUMBA = 37
+  #UFO = 38
+  #OLD_KING_COAL = 39
+  #SSSLUMBER = 40
+  #BOGGY = 41
+  #BIG_AL = 42
+  #SALTY_JOE = 43
+  #CONGA = 44
+  #PAWNO = 45
+  #TIPTUP = 46
+  #JOLLY = 47
+  #MERRY_MAGGIE = 48
+  #TERRY = 49
+  #BARGASAURUS = 50
+  #YELLOW_STONY = 51
+  #ALIEN = 52
+  #CHRIS_P_BACON = 53
+  #CAPTAIN_BLUBBER = 54
+  #STYRACOSAURUS_MOM = 55
+  #ROYSTEN = 56
+  #SAFE = 57
+  #GUFFO = 58
+  #MR_FIT = 59
+  #CAPTAIN_BLACKEYE = 60
+  #JINJO_RED = 61
+  #JINJO_WHITE = 62
+  #JINJO_BLACK = 63
+  #JINJO_BROWN = 64
+  #CHILLY_WILLY = 65
+  #CHILLI_BILLI = 66
+  #MINGY_JONGO = 67
+  #YELLOW_DODGEM = 68
+  #MINGELLA = 69
+  #BLOBBELDA = 70
+  #KLUNGO = 71
+  #BOTTLES_DEAD = 72
+  #MINJO_GREEN = 73
+  #MINJO_RED = 74
+  #MINJO_BLUE = 75
+  #MINJO_PURPLE = 76
+  #MINJO_BLACK = 77
+  #RABBIT_WORKER1 = 78
+  #UNGA_BUNGA = 79
+  #JIGGYWIGGY = 80
+  #JIGGYWIGGY_DISCIPLE = 81
+  #HONEY_B = 82
+  #BANJO_KAZOOIE = 83
+  #PIG1 = 84
+  #OOGLE_BOOGLE = 85
+  #GI_ANNOUNCER = 86
+  #DINGPOT = 87
+  #KING_JINGALING_DEAD = 88
+  #ROCKNUT = 89
+  #MILDRED = 90
+  #BIGGA_FOOT = 91
+  #GEORGE = 92
+  #SABREMAN = 93
+  #DIPPY = 94
+  #LOGGO = 95
+  #KING_JINGALING = 96
+  #MRS_BOTTLES = 97
+  #SPECCY = 98
+  #GOGGLES = 99
+  #TARGITZAN = 100
+  #CHOMPA = 101
+  #LORD_WOO_FAK_FAK = 102
+  #WELDAR = 103
+  #ALIEN_CHILD = 104
+  #EVIL_BOTTLES = 105
+  #DINO_KID2 = 106
+  #DINO_SCRIT_SMALL = 107
+  #DINO_SCRIT_BIG = 108
+  #HEGGY = 109
+  #default_icons = 110
+  #complete_random = 255

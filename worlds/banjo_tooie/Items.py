@@ -5,6 +5,7 @@ from .Names import locationName
 
 
 class BanjoTooieItem(Item):
+    #1230788 Note that 1230790+ exists
     game: str = "Banjo-Tooie"
 class ItemData(typing.NamedTuple):
     btid: int = 0
@@ -59,7 +60,7 @@ moves_table = {
     itemName.SHPACK:        ItemData(1230774, 1, "progress", locationName.SHPACK),
     itemName.GLIDE:         ItemData(1230775, 1, "progress", locationName.GLIDE),
     itemName.SAPACK:        ItemData(1230776, 1, "progress", locationName.SAPACK),
-    itemName.FSWIM:         ItemData(1230777, 1, "useful", locationName.ROYSTEN1),
+    itemName.FSWIM:         ItemData(1230777, 1, "useful",   locationName.ROYSTEN1),
     itemName.DAIR:          ItemData(1230778, 1, "progress", locationName.ROYSTEN2),
     itemName.AMAZEOGAZE:    ItemData(1230779, 1, "progress", locationName.GOGGLES)
 }
@@ -94,7 +95,11 @@ progressive_ability_table = {
     itemName.PBEGGS:        ItemData(1230829, 4, "progress", ""),
     itemName.PSHOES:        ItemData(1230830, 4, "progress", ""),
     itemName.PSWIM:         ItemData(1230831, 3, "progress", ""),
-    itemName.PBASH:         ItemData(1230832, 2, "progress", "")
+    itemName.PBASH:         ItemData(1230832, 2, "progress", ""),
+    itemName.PFLIGHT:       ItemData(1230782, 3, "progress", ""),
+    itemName.PEGGAIM:       ItemData(1230783, 2, "progress", ""),
+    itemName.PASWIM:        ItemData(1230784, 5, "progress", ""),
+    itemName.PAEGGAIM:      ItemData(1230785, 4, "progress", ""),
 }
 
 level_progress_table = {
@@ -121,13 +126,18 @@ level_progress_table = {
 
 misc_collectable_table = {
     itemName.HONEY:         ItemData(1230512, 25, "useful", ""),
-    itemName.PAGES:         ItemData(1230513, 25, "progress", ""),
+    itemName.PAGES:         ItemData(1230513, 25, "useful", ""),
     itemName.DOUBLOON:      ItemData(1230514, 30, "progress", ""),
     itemName.TREBLE:        ItemData(1230516,  9, "progress", ""),
     itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY),
     itemName.NOTE:          ItemData(1230797, 144, "progress", ""),
-    # itemName.WARPS: ItemData(1230799, 20, "trap", None),
-    itemName.NONE:          ItemData(1230888, 0, "filler", "")
+    itemName.BASS:          ItemData(1230781,  0, "progress", ""),
+    itemName.NONE:          ItemData(1230888,  0, "filler", ""),
+    itemName.TTRAP:         ItemData(1230786,  0, "trap", ""),
+    itemName.STRAP:         ItemData(1230787,  0, "trap", ""),
+    itemName.TRTRAP:        ItemData(1230788,  0, "trap", ""),
+    itemName.SQTRAP:        ItemData(1230789,  0, "trap", "")
+
 }
 
 stop_n_swap_table = {
@@ -160,6 +170,12 @@ rando_key_table = {
     itemName.CKA:           ItemData(1230952,   1, "progress", locationName.W9),
 }
 
+nest_table= {
+    itemName.GNEST:           ItemData(1230805,   23, "filler", ""),
+    itemName.ENEST:           ItemData(1230806,   315, "filler", ""),
+    itemName.FNEST:           ItemData(1230807,   135, "filler", ""),
+}
+
 
 all_item_table = {
     **moves_table,
@@ -173,7 +189,8 @@ all_item_table = {
     **stop_n_swap_table,
     **bk_moves_table,
     **progressive_ability_table,
-    **dino_table
+    **dino_table,
+    **nest_table
 }
 
 all_group_table = {
@@ -187,7 +204,8 @@ all_group_table = {
     'token': token_table,
     "stopnswap": stop_n_swap_table,
     "bk_moves": bk_moves_table,
-    "dino": dino_table
+    "dino": dino_table,
+    "nest": nest_table
 }
 
 

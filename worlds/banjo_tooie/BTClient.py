@@ -1,8 +1,11 @@
 import asyncio
+import hashlib
+import io
 import json
 import os
 import multiprocessing
 import copy
+import pathlib
 import random
 import subprocess
 import sys
@@ -10,12 +13,14 @@ import time
 from typing import Union
 import zipfile
 from asyncio import StreamReader, StreamWriter
+import bsdiff4
 
 
 # CommonClient import first to trigger ModuleUpdater
 from CommonClient import CommonContext, server_loop, gui_enabled, \
     ClientCommandProcessor, logger, get_base_parser
 import Utils
+import settings
 from Utils import async_start
 from worlds import network_data_package
 
@@ -56,16 +61,49 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 
 bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_to_id"]
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
-
 script_version: int = 4
-version: str = "V3.5.3"
+version: str = "V4.0"
+game_append_version: str = "V40"
+patch_md5: str = "2f7488b26473e4add932f87482d7fdc5"
 
 def get_item_value(ap_id):
     return ap_id
 
+async def run_game(romfile):
+        auto_start = settings.get_settings()["banjo-tooie_options"].get("rom_start", True)
+        if auto_start is True:
+            import webbrowser
+            webbrowser.open(romfile)
+        elif os.path.isfile(auto_start):
+            subprocess.Popen([auto_start, romfile],
+                            stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+async def apply_patch():
+    fpath = pathlib.Path(__file__)
+    archipelago_root = None
+    for i in range(0, 5,+1) :
+        if fpath.parents[i].stem == "Archipelago":
+            archipelago_root = pathlib.Path(__file__).parents[i]
+            break
+    patch_path = None
+    if archipelago_root:
+        patch_path = os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64")
+    if not patch_path or check_rom(patch_path) != patch_md5:
+        logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
+        await asyncio.sleep(0.01)
+        rom = Utils.open_filename("Open your Banjo-Tooie US ROM", (("Rom Files", (".z64", ".n64")), ("All Files", "*"),))
+        if not rom:
+            logger.info("No ROM selected. Please restart the Banjo-Tooie Client to try again.")
+            return
+        if not patch_path:
+            patch_path = os.path.split(rom) + "/Banjo-Tooie-AP"+game_append_version+".n64"
+        patch_rom(rom, patch_path, "Banjo-Tooie.patch")
+    if patch_path:
+        logger.info("Patched Banjo-Tooie is located in " + patch_path)
+
 
 class BanjoTooieCommandProcessor(ClientCommandProcessor):
-    def __init__(self, ctx): 
+    def __init__(self, ctx):
         super().__init__(ctx)
 
     def _cmd_n64(self):
@@ -112,6 +150,7 @@ class BanjoTooieContext(CommonContext):
         self.jiggychunks_table = {}
         self.goggles_table = False
         self.dino_kids_table = {}
+        self.nests_table = {}
         self.roar = False
         self.jiggy_table = {}
         self.current_map = 0
@@ -153,7 +192,7 @@ class BanjoTooieContext(CommonContext):
             return
         return
 
-    def _set_message(self, msg: str, msg_id: Union[int, None]):
+    def _set_message(self, msg: dict[str, str, int, str], msg_id: Union[int, None]):
         if msg_id == None:
             self.messages.update({len(self.messages)+1: msg })
         else:
@@ -165,8 +204,6 @@ class BanjoTooieContext(CommonContext):
         text = data.get("cause", "")
         if text:
             logger.info(f"DeathLink: {text}")
-        else:
-            logger.info(f"{random.choice(self.death_messages)} \n(DeathLink: Received from {data['source']})")
 
     async def send_death(self, death_text: str = ""):
         if self.server and self.server.socket:
@@ -192,6 +229,7 @@ class BanjoTooieContext(CommonContext):
 
         self.ui = BanjoTooieManager(self)
         self.ui_task = asyncio.create_task(self.ui.async_run(), name="UI")
+        asyncio.create_task(apply_patch())
 
     def on_package(self, cmd, args):
         if cmd == 'Connected':
@@ -203,12 +241,18 @@ class BanjoTooieContext(CommonContext):
                 raise Exception("Your Banjo-Tooie AP does not match with the generated world.\n" +
                                 "Your version: "+version+" | Generated version: "+self.slot_data["version"])
             self.deathlink_enabled = self.slot_data["deathlink"]
-            logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
+            fpath = pathlib.Path(__file__)
+            archipelago_root = None
+            for i in range(0, 5,+1) :
+                if fpath.parents[i].stem == "Archipelago":
+                    archipelago_root = pathlib.Path(__file__).parents[i]
+                    break
+            async_start(run_game(os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64")))
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
-        elif cmd == 'Print':
-            msg = args['text']
-            if ': !' not in msg:
-                self._set_message(msg, SYSTEM_MESSAGE_ID)
+        # elif cmd == 'Print':
+            # msg = args['text']
+            # if ': !' not in msg:
+            #     self._set_message(msg, SYSTEM_MESSAGE_ID)
         elif cmd == "ReceivedItems":
             if self.startup == False:
                 for item in args["items"]:
@@ -221,7 +265,7 @@ class BanjoTooieContext(CommonContext):
                     for (name, i) in bt_itm_name_to_id.items():
                         if item.item == i:
                             item_name = name
-                            break                    
+                            break
                     logger.info(player + " sent " + item_name)
                 logger.info("The above items will be sent when Banjo-Tooie is loaded.")
                 self.startup = True
@@ -229,45 +273,45 @@ class BanjoTooieContext(CommonContext):
     def on_print_json(self, args: dict):
         if self.ui:
             self.ui.print_json(copy.deepcopy(args["data"]))
-            relevant = args.get("type", None) in {"Hint", "ItemSend"}
+            relevant = args.get("type", None) in {"ItemSend"}
             if relevant:
                 relevant = False
                 item = args["item"]
                 if self.slot_concerns_self(args["receiving"]):
-                    relevant = True 
+                    relevant = True
                 elif self.slot_concerns_self(item.player):
                     relevant = True
 
                 if relevant == True:
                     msg = self.raw_text_parser(copy.deepcopy(args["data"]))
-                    self._set_message(msg, None)
+                    player = self.player_names[int(args["data"][0]["text"])]
+                    to_player = self.player_names[int(args["data"][0]["text"])]
+                    for id, data in enumerate(args["data"]):
+                        if id == 0:
+                            continue
+                        if "type" in data and data['type'] == "player_id":
+                            to_player = self.player_names[int(data["text"])]
+                            break
+                    item_name = self.item_names.lookup_in_slot(int(args["data"][2]["text"]))
+                    # self._set_message(msg, None)
+                    self._set_message({"player":player, "item":item_name, "item_id":int(args["data"][2]["text"]), "to_player":to_player }, None)
         else:
             text = self.jsontotextparser(copy.deepcopy(args["data"]))
             logger.info(text)
-            relevant = args.get("type", None) in {"Hint", "ItemSend"}
+            relevant = args.get("type", None) in {"ItemSend"}
             if relevant:
                 msg = self.raw_text_parser(copy.deepcopy(args["data"]))
-                self._set_message(msg, None)
-
-        # if relevant:
-        #     getitem = False
-        #     item = args["item"]
-        #     # found in this world
-        #     if self.slot_concerns_self(args["receiving"]):
-        #         relevant = True 
-        #         if args.get("type", None) != "Hint":    
-        #             getitem = True
-        #     # goes in this world
-        #     elif self.slot_concerns_self(item.player):
-        #         relevant = True
-        #     # not related
-        #     else:
-        #         relevant = False
-        #         item = args["item"]
-        #         if getitem:
-        #             self.items_received.append(item)
-
-
+                player = self.player_names[int(args["data"][0]["text"])]
+                to_player = self.player_names[int(args["data"][0]["text"])]
+                for id, data in enumerate(args["data"]):
+                        if id == 0:
+                            continue
+                        if "type" in data and data['type'] == "player_id":
+                            to_player = self.player_names[int(data["text"])]
+                            break
+                item_name = self.item_names.lookup_in_slot(int(args["data"][2]["text"]))
+                # self._set_message(msg, None)
+                self._set_message({"player":player, "item":item_name, "item_id":int(args["data"][2]["text"]), "to_player":to_player}, None)
 
 def get_payload(ctx: BanjoTooieContext):
     if ctx.deathlink_enabled and ctx.deathlink_pending:
@@ -308,7 +352,6 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_player": ctx.slot_data["player_name"],
             "slot_seed": ctx.slot_data["seed"],
             "slot_deathlink": ctx.deathlink_enabled,
-            "slot_activate_text": ctx.slot_data["activate_text"],
             "slot_skip_tot": ctx.slot_data["skip_tot"],
             "slot_honeycomb": ctx.slot_data["honeycomb"],
             "slot_pages": ctx.slot_data["pages"],
@@ -337,9 +380,11 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_jinjo_family_rescue_length": ctx.slot_data["jinjo_family_rescue_length"],
             "slot_token_hunt_length": ctx.slot_data["token_hunt_length"],
             "slot_version": version,
-            "slot_text_colour": ctx.slot_data["text_colour"],
+            "slot_silo_costs": ctx.slot_data["jamjars_silo_costs"],
             "slot_open_silo": ctx.slot_data["first_silo"],
-            "slot_zones": ctx.slot_data['loading_zones']
+            "slot_zones": ctx.slot_data['loading_zones'],
+            "slot_dialog_character": ctx.slot_data['dialog_character'],
+            "slot_nestsanity": ctx.slot_data['nestsanity']
         })
     ctx.sendSlot = False
     return payload
@@ -390,6 +435,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     goggles = payload['goggles']
     jiggylist = payload['jiggies']
     dino_kids = payload['dino_kids']
+    nests = payload['nests']
     roar_obtain = payload['roar']
     worldslist = payload['worlds']
     banjo_map = payload['banjo_map']
@@ -419,6 +465,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         worldslist = {}
     if isinstance(dino_kids, list):
         dino_kids = {}
+    if isinstance(nests, list):
+        nests = {}
     if isinstance(goggles, bool) == False:
         goggles = False
     if isinstance(demo, bool) == False:
@@ -487,6 +535,11 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         if ctx.dino_kids_table != dino_kids:
             ctx.dino_kids_table = dino_kids
             for locationId, value in dino_kids.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.nests_table != nests:
+            ctx.nests_table = nests
+            for locationId, value in nests.items():
                 if value == True:
                     locs1.append(int(locationId))
         if ctx.roar != roar_obtain:
@@ -564,7 +617,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "cmd": "LocationChecks",
                 "locations": locs1
             }])
-        
+
             if len(locs1) > 0:
                 await ctx.send_msgs([{
                     "cmd": "LocationChecks",
@@ -581,28 +634,39 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             ctx._set_message("You have completed your goal", None)
 
         #Mumbo Tokens
-        if (ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2 or 
-            ctx.slot_data["goal_type"] == 3) and not ctx.finished_game:
+        if (ctx.slot_data["goal_type"] == 1 or ctx.slot_data["goal_type"] == 2) and not ctx.finished_game:
             mumbo_tokens = 0
             for networkItem in ctx.items_received:
                 if networkItem.item == 1230798:
                     mumbo_tokens += 1
                     if ((ctx.slot_data["goal_type"] == 1 and mumbo_tokens >= ctx.slot_data["minigame_hunt_length"]) or
                         (ctx.slot_data["goal_type"] == 2 and mumbo_tokens >= ctx.slot_data["boss_hunt_length"]) or
-                        (ctx.slot_data["goal_type"] == 3 and mumbo_tokens >= ctx.slot_data["jinjo_family_rescue_length"])): 
+                        (ctx.slot_data["goal_type"] == 3 and mumbo_tokens >= ctx.slot_data["jinjo_family_rescue_length"])):
                         await ctx.send_msgs([{
                             "cmd": "StatusUpdate",
                             "status": 30
                         }])
                         ctx.finished_game = True
                         ctx._set_message("You have completed your goal", None)
-        
-        if (ctx.current_map == 371 and ctx.slot_data["goal_type"] == 5 and not ctx.finished_game):
+
+        if (ctx.current_map == 401 and ctx.slot_data["goal_type"] == 5 and not ctx.finished_game):
             mumbo_tokens = 0
             for networkItem in ctx.items_received:
                 if networkItem.item == 1230798:
                     mumbo_tokens += 1
                     if (mumbo_tokens >= ctx.slot_data["token_hunt_length"]):
+                        await ctx.send_msgs([{
+                            "cmd": "StatusUpdate",
+                            "status": 30
+                        }])
+                        ctx.finished_game = True
+
+        if (ctx.current_map == 401 and ctx.slot_data["goal_type"] == 3 and not ctx.finished_game):
+            mumbo_tokens = 0
+            for networkItem in ctx.items_received:
+                if networkItem.item == 1230798:
+                    mumbo_tokens += 1
+                    if (mumbo_tokens >= ctx.slot_data["jinjo_family_rescue_length"]):
                         await ctx.send_msgs([{
                             "cmd": "StatusUpdate",
                             "status": 30
@@ -625,14 +689,14 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         # ctx.items_handling = 0b101
         # await ctx.send_connect()
         ctx.sync_ready = True
-        
+
     # Deathlink handling
     if ctx.deathlink_enabled:
         if payload['isDead']: #Banjo died
             ctx.deathlink_pending = False
             if not ctx.deathlink_sent_this_death:
                 ctx.deathlink_sent_this_death = True
-                
+
                 await ctx.send_death()
         else: # Banjo is somehow still alive
             ctx.deathlink_sent_this_death = False
@@ -708,7 +772,7 @@ def mumbo_tokens_loc(locs: list, goaltype: int) -> list:
                 locs.append(1230991)
     return locs
 
-async def n64_sync_task(ctx: BanjoTooieContext): 
+async def n64_sync_task(ctx: BanjoTooieContext):
     logger.info("Starting n64 connector. Use /n64 for status information.")
     while not ctx.exit_event.is_set():
         error_status = None
@@ -786,6 +850,60 @@ async def n64_sync_task(ctx: BanjoTooieContext):
                 ctx.n64_status = CONNECTION_REFUSED_STATUS
                 continue
 
+def read_file(path):
+    with open(path, 'rb') as fi:
+        data = fi.read()
+    return data
+
+def write_file(path, data):
+    with open(path, 'wb') as fi:
+        fi.write(data)
+
+def swap(data):
+    swapped_data = bytearray(b'\0'*len(data))
+    for i in range(0, len(data), 2):
+        swapped_data[i] = data[i+1]
+        swapped_data[i+1] = data[i]
+    return bytes(swapped_data)
+
+def check_rom(patchedRom):
+    if os.path.isfile(patchedRom):
+        rom = read_file(patchedRom)
+        md5 = hashlib.md5(rom).hexdigest()
+        return md5
+    else:
+        return "00000"
+
+def patch_rom(romPath, dstPath, patchPath):
+    rom = read_file(romPath)
+    md5 = hashlib.md5(rom).hexdigest()
+    if (md5 == "ca0df738ae6a16bfb4b46d3860c159d9"): # byte swapped
+        rom = swap(rom)
+    elif (md5 != "40e98faa24ac3ebe1d25cb5e5ddf49e4"):
+        logger.error("Unknown ROM!")
+        return
+    patch = openFile(patchPath).read()
+    write_file(dstPath, bsdiff4.patch(rom, patch))
+    # newrom = self.read_file(dstPath)
+    # md5 = hashlib.md5(newrom).hexdigest()
+    # print(md5)
+
+def openFile(resource: str, mode: str = "rb", encoding: str = None):
+    filename = sys.modules[__name__].__file__
+    apworldExt = ".apworld"
+    game = "banjo_tooie/"
+    if apworldExt in filename:
+        zip_path = pathlib.Path(filename[:filename.index(apworldExt) + len(apworldExt)])
+        with zipfile.ZipFile(zip_path) as zf:
+            zipFilePath = game + resource
+            if mode == 'rb':
+                return zf.open(zipFilePath, 'r')
+            else:
+                return io.TextIOWrapper(zf.open(zipFilePath, 'r'), encoding)
+    else:
+        return open(os.path.join(pathlib.Path(__file__).parent, resource), mode, encoding=encoding)
+
+    # self.patch_rom("banjo-tooie.n64", "banjo-tooie-romhack.n64", "banjo-tooie.patch")
 
 def main():
     Utils.init_logging("Banjo-Tooie Client")

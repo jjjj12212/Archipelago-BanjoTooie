@@ -1,9 +1,134 @@
 from dataclasses import dataclass
-from Options import Toggle, DeathLink, PerGameCommonOptions, Choice, DefaultOnToggle, Range, StartInventoryPool
+from Options import Toggle, DeathLink, PerGameCommonOptions, Choice, DefaultOnToggle, Range, StartInventoryPool, FreeText
 
 class EnableMultiWorldMoveList(DefaultOnToggle):
     """Jamjars & Roysten Movelist are locked between the MultiWorld. Other players need to unlock Banjo's Moves."""
     display_name = "Jamjars' Movelist"
+
+class DialogCharacters(Choice):
+    """Change the Character that announces your obtained moves, worlds, etc."""
+    display_name = "Dialog Character"
+    option_GLOWBO = 0
+    option_JIGGY = 1
+    option_HONEYCOMB = 2
+    option_SUB = 3
+    option_WASHER = 4
+    option_BANJO = 5
+    option_KAZOOIE = 6
+    option_BOTTLES = 7
+    option_MUMBO = 8
+    option_JINJO_YELLOW = 9
+    option_JINJO_GREEN = 10
+    option_JINJO_BLUE = 11
+    option_JINJO_PURPLE = 12
+    option_JINJO_ORANGE = 13
+    option_BEEHIVE = 14
+    option_GRUNTY = 15
+    option_ZUBBA = 16
+    option_JAMJARS = 17
+    option_BOVINA = 18
+    option_MINJO_WHITE = 19
+    option_MINJO_ORANGE = 20
+    option_MINJO_YELLOW = 21
+    option_MINJO_BROWN = 22
+    option_UNOGOPAZ = 23
+    option_CHIEF_BLOATAZIN = 24
+    option_DILBERTA = 25
+    option_STONIES1 = 26
+    option_CANARY_MARY = 27
+    option_CHEATO = 28
+    option_GOBI = 29
+    option_DINO_KID1 = 30
+    option_MR_PATCH = 31
+    option_MOGGY = 32
+    option_SOGGY = 33
+    option_GROGGY = 34
+    option_MRS_BOGGY = 35
+    option_PROSPECTOR = 36
+    option_HUMBA = 37
+    option_UFO = 38
+    option_OLD_KING_COAL = 39
+    option_SSSLUMBER = 40
+    option_BOGGY = 41
+    option_BIG_AL = 42
+    option_SALTY_JOE = 43
+    option_CONGA = 44
+    option_PAWNO = 45
+    option_TIPTUP = 46
+    option_JOLLY = 47
+    option_MERRY_MAGGIE = 48
+    option_TERRY = 49
+    option_BARGASAURUS = 50
+    option_YELLOW_STONY = 51
+    option_ALIEN = 52
+    option_CHRIS_P_BACON = 53
+    option_CAPTAIN_BLUBBER = 54
+    option_STYRACOSAURUS_MOM = 55
+    option_ROYSTEN = 56
+    option_SAFE = 57
+    option_GUFFO = 58
+    option_MR_FIT = 59
+    option_CAPTAIN_BLACKEYE = 60
+    option_JINJO_RED = 61
+    option_JINJO_WHITE = 62
+    option_JINJO_BLACK = 63
+    option_JINJO_BROWN = 64
+    option_CHILLY_WILLY = 65
+    option_CHILLI_BILLI = 66
+    option_MINGY_JONGO = 67
+    option_YELLOW_DODGEM = 68
+    option_MINGELLA = 69
+    option_BLOBBELDA = 70
+    option_KLUNGO = 71
+    option_BOTTLES_DEAD = 72
+    option_MINJO_GREEN = 73
+    option_MINJO_RED = 74
+    option_MINJO_BLUE = 75
+    option_MINJO_PURPLE = 76
+    option_MINJO_BLACK = 77
+    option_RABBIT_WORKER1 = 78
+    option_UNGA_BUNGA = 79
+    option_JIGGYWIGGY = 80
+    option_JIGGYWIGGY_DISCIPLE = 81
+    option_HONEY_B = 82
+    option_BANJO_KAZOOIE = 83
+    option_PIG1 = 84
+    option_OOGLE_BOOGLE = 85
+    option_GI_ANNOUNCER = 86
+    option_DINGPOT = 87
+    option_KING_JINGALING_DEAD = 88
+    option_ROCKNUT = 89
+    option_MILDRED = 90
+    option_BIGGA_FOOT = 91
+    option_GEORGE = 92
+    option_SABREMAN = 93
+    option_DIPPY = 94
+    option_LOGGO = 95
+    option_KING_JINGALING = 96
+    option_MRS_BOTTLES = 97
+    option_SPECCY = 98
+    option_GOGGLES = 99
+    option_TARGITZAN = 100
+    option_CHOMPA = 101
+    option_LORD_WOO_FAK_FAK = 102
+    option_WELDAR = 103
+    option_ALIEN_CHILD = 104
+    option_EVIL_BOTTLES = 105
+    option_DINO_KID2 = 106
+    option_DINO_SCRIT_SMALL = 107
+    option_DINO_SCRIT_BIG = 108
+    option_HEGGY = 109
+    option_default_icons = 110
+    option_complete_random = 255
+    default = 110
+
+class JamjarsSiloCosts(Choice):
+    """Change how many notes it takes to use Jamjars' move silos. Requires Jamjars' movelist to be changed."""
+    display_name = "Jamjars' Silo Costs"
+    option_vanilla = 0
+    option_randomize = 1
+    option_progressive = 2
+    default = 0
 
 class EnableMultiWorldBKMoveList(Choice):
     """Banjo-Kazooie's Movelist is locked between the MultiWorld. Other players need to unlock Banjo's Moves.
@@ -30,9 +155,27 @@ class ProgressiveShoes(Toggle):
     """Stilt Stride to Turbo Trainers to Spring Boots to Claw Climber Boots. Randomize Moves and Randomize BK Moves are required."""
     display_name = "Progressive Kazooie Shoes"
 
-class ProgressiveSwimming(Toggle):
-    """Dive to Double Air to Faster Swimming. Randomize Moves and Randomize BK Moves are required."""
+class ProgressiveSwimming(Choice):
+    """Set to Basic: Dive to Double Air to Faster Swimming.
+    Set to Advanced: Dive to Sub Aqua Aiming to Talon Torpedo to Double Air to Faster Swimming.
+    Randomize Moves and Randomize BK Moves are required."""
     display_name = "Progressive Water Training"
+    option_none = 0
+    option_basic = 1
+    option_advanced = 2
+
+class ProgressiveEggAim(Choice):
+    """Set to Basic: Third Person Egg Shooting to Egg Aim. 
+    Set to Advanced: Third Person Egg Shooting to Amaze-O-Gaze to Egg Aim to Breegull Blaster.
+    Randomize Moves and Randomize BK Moves are required."""
+    display_name = "Progressive Egg Aim"
+    option_none = 0
+    option_basic = 1
+    option_advanced = 2
+
+class ProgressiveFlight(Toggle):
+    """Flight Pad to Beak Bomb to Airborne Egg Aim. Randomize Moves and Randomize BK Moves are required."""
+    display_name = "Progressive Flight"
 
 class ProgressiveBashAttack(Toggle):
     """Ground Rat-a-tat Rap to Breegull Bash. Randomize Stop N Swap and Randomize BK Moves are required"""
@@ -41,17 +184,6 @@ class ProgressiveBashAttack(Toggle):
 class EnableCheatoRewards(DefaultOnToggle):
     """Cheato rewards you with a cheat and an additional randomized reward. Use Cheato Pages as Filler cannot be set if this is enabled."""
     display_name = "Cheato Rewards"
-
-class ActivateOverlayText(DefaultOnToggle):
-    """Activates the overlay text on screen. Useful if you are not streaming/viewing the BT_Client."""
-    display_name = "Activate Overlay Text"
-
-class OverlayTextColour(Choice):
-    """Choose which colour the overlay text should display."""
-    display_name = "Text Overlay Colour"
-    option_chilli_billi = 0
-    option_chilly_willy = 1
-    default = 0
 
 class EnableMultiWorldJinjos(DefaultOnToggle):
     """Jinjos have fled to other worlds. Other players need to return them home."""
@@ -64,10 +196,6 @@ class EnableMultiWorldDoubloons(Toggle):
 class EnableMultiWorldCheatoPages(DefaultOnToggle):
     """Cheato pages are scattered across the MultiWorld."""
     display_name = "Randomize Cheato Pages"
-
-class SetMultiWorldCheatoPagesFiller(Toggle):
-    """If Cheato pages are scattered, sets Cheato Items as filler."""
-    display_name = "Use Cheato Pages as Filler"
 
 class EnableMultiWorldHoneycombs(DefaultOnToggle):
     """Honeycombs are scattered across the MultiWorld."""
@@ -90,16 +218,43 @@ class EnableMultiWorldTrainStationSwitches(Toggle):
     display_name = "Randomize Train Station Switches"
 
 class EnableMultiWorldChuffyTrain(Toggle):
-    """Chuffy is lost somewhere in the MultiWorld."""
+    """Chuffy is lost somewhere in the MultiWorld. 
+    Once received, you can call Chuffy at any unlocked station without defeating Old King Coal."""
     display_name = "Chuffy as a randomized AP Item"
 
 class EnableMultiWorldNotes(Toggle):
     """Note Nests are scattered across the MultiWorld."""
     display_name = "Randomize Note Nests"
 
+class BassclefNotes(Range):
+    """Convert some 5 notes into Bassclefs (10 notes). How many notes do you want converted?
+       Be aware that 1 bassclef removes two 5 notes and adds an additional Big-O-Pants.
+       Randomize Notes is required."""
+    display_name = "Bassclefs (10 notes) Amount"
+    range_start = 0
+    range_end = 30
+    default = 0
+
+class TrebleclefNotes(Range):
+    """Convert some 5 notes into Trebleclefs (20 notes). How many notes do you want converted?
+       Be aware that 1 Trebleclef removes four 5 notes and adds three additional Big-O-Pants.
+       Randomize Notes is required."""
+    display_name = "Add additional Trebleclefs (20 notes) Amount"
+    range_start = 0
+    range_end = 21
+    default = 0
+
+class Traps(Toggle):
+    """Swaps out the Big-O-Pants with Traps!"""
+    display_name = "Traps"
+
 class EnableMultiWorldDinoRoar(Toggle):
     """Baby T-Rex Roar is lost across the MultiWorld. Other players need to help him learn to ROAR!"""
     display_name = "Baby T-Rex Roar"
+
+class EnableNestsanity(Toggle):
+    """Eggs and feather nests give checks when you collect them for the first time. They behave as regular egg nests the other times."""
+    display_name = "Nestsanity"
 
 class KingJingalingHasJiggy(DefaultOnToggle):
     """King Jingaling will always have a Jiggy for you."""
@@ -158,10 +313,6 @@ class Silos(Choice):
     option_one = 1
     option_all = 2
     default = 0
-
-class SpeedUpMinigames(DefaultOnToggle):
-    """Start 3-round minigames at Round 3."""
-    display_name = "Speed Up Minigames"
 
 class VictoryCondition(Choice):
     """Choose which victory condition you want
@@ -225,70 +376,18 @@ class GameLength(Choice):
     option_normal = 1
     option_long = 2
     option_custom = 3
+    option_randomize = 4
     default = 1
 
-class World1(Range):
-    """If you picked custom, what is the jiggy requirement for World 1?"""
-    display_name = "World 1 Jiggy requirement"
-    range_start = 1
-    range_end = 1
-    default = 1
+class CustomWorlds(FreeText):
+    """Enter a list of jiggy requirements you want for each world unlock. Max values of each world are: 1,20,30,40,50,60,70,80,90
+    Enter your custom world jiggy requirement list"""
+    display_name = "Custom world cost list"
+    default = "1,4,8,14,20,28,36,45,55"
 
-class World2(Range):
-    """If you picked custom, what is the jiggy requirement for World 2?"""
-    display_name = "World 2 Jiggy requirement"
-    range_start = 1
-    range_end = 20
-    default = 4
-
-class World3(Range):
-    """If you picked custom, what is the jiggy requirement for World 3?"""
-    display_name = "World 3 Jiggy requirement"
-    range_start = 1
-    range_end = 30
-    default = 8
-
-class World4(Range):
-    """If you picked custom, what is the jiggy requirement for World 4?"""
-    display_name = "World 4 Jiggy requirement"
-    range_start = 1
-    range_end = 40
-    default = 14
-
-class World5(Range):
-    """If you picked custom, what is the jiggy requirement for World 5?"""
-    display_name = "World 5 Jiggy requirement"
-    range_start = 1
-    range_end = 50
-    default = 20
-
-class World6(Range):
-    """If you picked custom, what is the jiggy requirement for World 6?"""
-    display_name = "World 6 Jiggy requirement"
-    range_start = 1
-    range_end = 60
-    default = 28
-
-class World7(Range):
-    """If you picked custom, what is the jiggy requirement for World 7?"""
-    display_name = "World 7 Jiggy requirement"
-    range_start = 1
-    range_end = 70
-    default = 36
-
-class World8(Range):
-    """If you picked custom, what is the jiggy requirement for World 8?"""
-    display_name = "World 8 Jiggy requirement"
-    range_start = 1
-    range_end = 90
-    default = 45
-
-class World9(Range):
-    """If you picked custom, what is the jiggy requirement for Cauldon Keep?"""
-    display_name = "World 9 Jiggy requirement"
-    range_start = 1
-    range_end = 90
-    default = 55
+class SpeedUpMinigames(DefaultOnToggle):
+    """Start 3-round minigames at Round 3."""
+    display_name = "Speed Up Minigames"
 
 class SkipKlungo(Toggle):
     """Make it so you can skip Klungo 1 and 2."""
@@ -296,55 +395,62 @@ class SkipKlungo(Toggle):
 
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
-    start_inventory_from_pool: StartInventoryPool
+    death_link: DeathLink
+
     logic_type: LogicType
+
     victory_condition: VictoryCondition
     minigame_hunt_length: MinigameHuntLength
     boss_hunt_length: BossHuntLength
     jinjo_family_rescue_length: JinjoFamilyRescueLength
     token_hunt_length: TokenHuntLength
-    death_link: DeathLink
-    activate_overlay_text:ActivateOverlayText
-    overlay_text_colour:OverlayTextColour
+
+    game_length: GameLength
+    custom_worlds:CustomWorlds
+
     randomize_moves: EnableMultiWorldMoveList
+    jamjars_silo_costs: JamjarsSiloCosts
     randomize_bk_moves: EnableMultiWorldBKMoveList
-    progressive_beak_buster: ProgressiveBeakBuster
     egg_behaviour:EggsBehaviour
+
+    progressive_beak_buster: ProgressiveBeakBuster
     progressive_shoes: ProgressiveShoes
     progressive_water_training: ProgressiveSwimming
+    progressive_flight:ProgressiveFlight
+    progressive_egg_aiming:ProgressiveEggAim
     progressive_bash_attack: ProgressiveBashAttack
+
+    randomize_notes: EnableMultiWorldNotes
+    randomize_treble: EnableMultiWorldTrebleClefs
+    extra_trebleclefs_count: TrebleclefNotes
+    bassclef_amount: BassclefNotes
+
     randomize_jinjos: EnableMultiWorldJinjos
     randomize_doubloons: EnableMultiWorldDoubloons
     randomize_cheato: EnableMultiWorldCheatoPages
     cheato_rewards: EnableCheatoRewards
-    cheato_as_filler: SetMultiWorldCheatoPagesFiller
     randomize_honeycombs: EnableMultiWorldHoneycombs
     honeyb_rewards: EnableHoneyBRewards
     randomize_glowbos: EnableMultiWorldGlowbos
-    randomize_treble: EnableMultiWorldTrebleClefs
-    randomize_stations: EnableMultiWorldTrainStationSwitches
-    randomize_chuffy: EnableMultiWorldChuffyTrain
-    randomize_notes: EnableMultiWorldNotes
     randomize_stop_n_swap: RandomizeStopnSwap
     randomize_dino_roar: EnableMultiWorldDinoRoar
+    nestsanity: EnableNestsanity
+    traps:Traps
+
+    randomize_stations: EnableMultiWorldTrainStationSwitches
+    randomize_chuffy: EnableMultiWorldChuffyTrain
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
-    backdoors:Backdoors
-    skip_klungo: SkipKlungo
-    skip_tower_of_tragedy: SkipToT
-    speed_up_minigames: SpeedUpMinigames
     randomize_worlds: RandomizeWorlds
     randomize_world_loading_zone: RandomizeWorldZones
-    open_silos: Silos
-    game_length: GameLength
     open_hag1: OpenHag1
-    world_1: World1
-    world_2: World2
-    world_3: World3
-    world_4: World4
-    world_5: World5
-    world_6: World6
-    world_7: World7
-    world_8: World8
-    world_9: World9
-    # warp_traps: WarpTraps
+    backdoors:Backdoors
+    open_silos: Silos
+
+    speed_up_minigames: SpeedUpMinigames
+    skip_tower_of_tragedy: SkipToT
+    skip_klungo: SkipKlungo
+    dialog_character:DialogCharacters
+
+    start_inventory_from_pool: StartInventoryPool
+
