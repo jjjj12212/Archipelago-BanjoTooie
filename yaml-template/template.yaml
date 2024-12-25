@@ -181,7 +181,7 @@ Banjo-Tooie:
   # priority_locations: ["TDL: Scrotty Jiggy"]
 
   # Items shared with other people.
-  # item_links: [{name: Mumbo, item_pool: [Mumbo Token], replacement_item: 'Big-O-Pants'}
+  # item_links: [{name: Mumbo, item_pool: [Mumbo Token], replacement_item: 'Big-O Pants'}]
 
 
   #DIALOG CHARACTERS
