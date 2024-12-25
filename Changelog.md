@@ -46,7 +46,7 @@
     - Completing Jinjo Family Rescue or Token Hunt requires you to take them to Bottles' House to complete your run.
     - If you don't have Chuffy and it is randomized, Chuffy will not be at GGM Station.
   - Renamings:
-    - Scrotty Kids have their names changed based on their problem, to avoid confusion
+    - Scrotty Kids have their names changed with their problem, to avoid confusion
   - Logic fixes:
     - Targitzan Jiggy, Pink Mystery Egg, the entirety of Atlantis: fixed a bug where progressive eggs made it so that getting those checks never became in logic
     - Prison Compound access: refactored to delete legacy code
