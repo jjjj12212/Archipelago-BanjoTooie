@@ -1,7 +1,6 @@
 import random
 
-from worlds.banjo_tooie.Names import locationName
-from .Names import itemName, regionName
+from .Names import itemName, regionName, locationName
 from typing import TYPE_CHECKING, List
 from .Locations import all_location_table
 

@@ -192,7 +192,7 @@ class BanjoTooieContext(CommonContext):
             return
         return
 
-    def _set_message(self, msg: dict[str, str, int, str], msg_id: Union[int, None]):
+    def _set_message(self, msg: dict, msg_id: Union[int, None]):
         if msg_id == None:
             self.messages.update({len(self.messages)+1: msg })
         else:
