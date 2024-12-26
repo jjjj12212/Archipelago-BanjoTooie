@@ -7287,7 +7287,7 @@ function main()
                     BT_SOCK = client
                     BT_SOCK:settimeout(0)
                 else
-                    print('Connection failed, ensure Banjo Tooie Client is running, connected and rerun banjotooie_connector.lua')
+                    print('Connection failed, ensure Banjo Tooie Client is running, connected, reboot Core and rerun banjotooie_connector.lua')
                     return
                 end
             end
