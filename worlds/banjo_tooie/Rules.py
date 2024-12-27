@@ -664,13 +664,9 @@ class BanjoTooieRules:
         }
 
         self.nest_rules = {
-            locationName.NESTSM1:    lambda state: self.nest_lair_bottom(state),
-            locationName.NESTSM2:    lambda state: self.nest_lair_bottom(state),
-            locationName.NESTSM3:    lambda state: self.nest_lair_bottom(state),
             locationName.NESTSM4:    lambda state: self.nest_lair_top(state),
             locationName.NESTSM5:    lambda state: self.nest_lair_top(state),
             locationName.NESTSM6:    lambda state: self.nest_lair_top(state),
-            locationName.NESTSM7:    lambda state: self.nest_lair_bottom(state),
 
             locationName.NESTSM22:    lambda state: self.nest_sm_waterfall_top(state),
             locationName.NESTSM23:    lambda state: self.nest_sm_waterfall_platform(state),
@@ -688,9 +684,9 @@ class BanjoTooieRules:
             locationName.NESTIH56:    lambda state: self.nest_another_digger_tunnel(state),
             locationName.NESTIH57:    lambda state: self.nest_another_digger_tunnel(state),
 
-            locationName.NESTIH58:    lambda state: self.nest_quagmire_hard(state),
+            locationName.NESTIH58:    lambda state: self.nest_quagmire_medium(state),
             locationName.NESTIH59:    lambda state: self.nest_quagmire_easy(state),
-            locationName.NESTIH60:    lambda state: self.nest_quagmire_medium(state),
+            locationName.NESTIH60:    lambda state: self.nest_quagmire_hard(state),
 
             locationName.NESTMT1:    lambda state: self.nest_jade_snake_grove(state),
             locationName.NESTMT2:    lambda state: self.nest_jade_snake_grove(state),
@@ -1023,7 +1019,7 @@ class BanjoTooieRules:
             locationName.NESTCC42:    lambda state: self.nest_ccl_flight(state),
             locationName.NESTCC43:    lambda state: self.nest_ccl_flight(state),
             locationName.NESTCC44:    lambda state: self.nest_near_superstash(state),
-            locationName.NESTCC45:    lambda state: self.nest_ccl_flight(state),
+            locationName.NESTCC45:    lambda state: self.nest_near_superstash(state),
 
             locationName.NESTCC47:    lambda state: self.nest_pot_of_gold(state),
             locationName.NESTCC48:    lambda state: self.nest_pot_of_gold(state), 
@@ -1130,35 +1126,35 @@ class BanjoTooieRules:
     def jiggy_prison_quicksand(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.slightly_elevated_ledge(state)\
+            logic = (self.slightly_elevated_ledge(state) or self.flap_flip(state))\
                   and self.stilt_stride(state) and self.prison_compound_open(state) and self.tall_jump(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.slightly_elevated_ledge(state)\
+            logic = (self.slightly_elevated_ledge(state) or self.flap_flip(state))\
                   and self.stilt_stride(state) and self.prison_compound_open(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.slightly_elevated_ledge(state)\
+            logic = (self.slightly_elevated_ledge(state) or self.flap_flip(state))\
                   and self.stilt_stride(state) and self.prison_compound_open(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.slightly_elevated_ledge(state)\
+            logic = (self.slightly_elevated_ledge(state) or self.flap_flip(state))\
                   and self.stilt_stride(state) and self.prison_compound_open(state)
         return logic
     
     def jiggy_pillars(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.bill_drill(state) and (self.dive(state) or self.slightly_elevated_ledge(state) and self.tall_jump(state))\
+            logic = self.bill_drill(state) and (self.dive(state) or (self.slightly_elevated_ledge(state) or self.flap_flip(state)) and self.tall_jump(state))\
                     and self.small_elevation(state) and self.prison_compound_open(state)
         elif self.world.options.logic_type == 1: # normal
             logic = self.bill_drill(state) and self.small_elevation(state) and self.prison_compound_open(state)\
-                    and (self.dive(state) or self.slightly_elevated_ledge(state) or self.beak_buster(state))
+                    and (self.dive(state) or (self.slightly_elevated_ledge(state) or self.flap_flip(state)) or self.beak_buster(state))
         elif self.world.options.logic_type == 2: # advanced
             logic = self.prison_compound_open(state) and \
                 ((self.bill_drill(state) and self.small_elevation(state)) or self.extremelyLongJump(state) or self.clockwork_shot(state))\
-                    and (self.dive(state) or self.slightly_elevated_ledge(state) or self.beak_buster(state))
+                    and (self.dive(state) or (self.slightly_elevated_ledge(state) or self.flap_flip(state)) or self.beak_buster(state))
         elif self.world.options.logic_type == 3: # glitched
             logic = self.prison_compound_open(state) and \
                 ((self.bill_drill(state) and self.small_elevation(state)) or self.extremelyLongJump(state) or self.clockwork_shot(state))\
-                    and (self.dive(state) or self.slightly_elevated_ledge(state) or self.beak_buster(state))
+                    and (self.dive(state) or (self.slightly_elevated_ledge(state) or self.flap_flip(state)) or self.beak_buster(state))
         return logic
     
     def jiggy_top(self, state: CollectionState) -> bool:
@@ -2059,7 +2055,15 @@ class BanjoTooieRules:
         return logic
     
     def jiggy_volcano(self, state: CollectionState) -> bool:
-        logic = self.long_jump(state) and self.hfp_top(state)
+        logic = True
+        if self.world.options.logic_type == 0: # beginner
+            logic = self.long_jump(state) and self.hfp_top(state)
+        elif self.world.options.logic_type == 1: # normal
+            logic = self.long_jump(state) and self.hfp_top(state) or self.split_up(state)
+        elif self.world.options.logic_type == 2: # advanced
+            logic = self.long_jump(state) and self.hfp_top(state) or self.split_up(state)
+        elif self.world.options.logic_type == 3: # glitched
+            logic = self.long_jump(state) and self.hfp_top(state) or self.split_up(state)
         return logic
     
     def jiggy_sabreman(self, state: CollectionState) -> bool:
@@ -2669,14 +2673,14 @@ class BanjoTooieRules:
     def cheato_prison(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.prison_compound_open(state) and self.slightly_elevated_ledge(state) and self.tall_jump(state)
+            logic = self.prison_compound_open(state) and (self.slightly_elevated_ledge(state) or self.flap_flip(state)) and self.tall_jump(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.prison_compound_open(state) and self.slightly_elevated_ledge(state)
+            logic = self.prison_compound_open(state) and (self.slightly_elevated_ledge(state) or self.flap_flip(state))
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.prison_compound_open(state) and (self.slightly_elevated_ledge(state)\
+            logic = self.prison_compound_open(state) and ((self.slightly_elevated_ledge(state) or self.flap_flip(state))\
                     or (self.egg_aim(state) and self.clockwork_eggs(state)))
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.prison_compound_open(state) and (self.slightly_elevated_ledge(state)\
+            logic = self.prison_compound_open(state) and ((self.slightly_elevated_ledge(state) or self.flap_flip(state))\
                     or (self.egg_aim(state) and self.clockwork_eggs(state)))
         return logic
     
@@ -4445,17 +4449,20 @@ class BanjoTooieRules:
                     or self.notes_ccl_high(state)
         elif self.world.options.logic_type == 1: # normal
             logic = (self.climb(state) and self.sack_pack(state))\
-                    or self.notes_ccl_high(state)
+                    or self.notes_ccl_high(state)\
+                    or self.springy_step_shoes(state) and self.split_up(state)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.climb(state)\
                     or (self.springy_step_shoes(state))\
                     or self.notes_ccl_high(state)\
-                    or self.clockwork_shot(state)
+                    or self.clockwork_shot(state)\
+                    or self.springy_step_shoes(state) and self.split_up(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.climb(state)\
                     or (self.springy_step_shoes(state))\
                     or self.notes_ccl_high(state)\
-                    or self.clockwork_shot(state)
+                    or self.clockwork_shot(state)\
+                    or self.springy_step_shoes(state) and self.split_up(state)
         return logic
     
     def notes_ccl_high(self, state: CollectionState) -> bool:
@@ -4772,38 +4779,38 @@ class BanjoTooieRules:
     def nest_pillars(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.dive(state) or self.slightly_elevated_ledge(state) and self.tall_jump(state) and self.prison_compound_open(state)
+            logic = self.dive(state) or (self.slightly_elevated_ledge(state) or self.flap_flip(state)) and self.tall_jump(state) and self.prison_compound_open(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = (self.dive(state) or self.slightly_elevated_ledge(state) or self.beak_buster(state)) and self.prison_compound_open(state)
+            logic = (self.dive(state) or (self.slightly_elevated_ledge(state) or self.flap_flip(state)) or self.beak_buster(state)) and self.prison_compound_open(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = (self.dive(state) or self.slightly_elevated_ledge(state) or self.beak_buster(state)) and self.prison_compound_open(state)
+            logic = (self.dive(state) or (self.slightly_elevated_ledge(state) or self.flap_flip(state)) or self.beak_buster(state)) and self.prison_compound_open(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = (self.dive(state) or self.slightly_elevated_ledge(state) or self.beak_buster(state)) and self.prison_compound_open(state)
+            logic = (self.dive(state) or (self.slightly_elevated_ledge(state) or self.flap_flip(state)) or self.beak_buster(state)) and self.prison_compound_open(state)
         return logic
     
 
     def nest_mt_cell_left(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.slightly_elevated_ledge(state) and self.tall_jump(state) and self.prison_compound_open(state)
+            logic = (self.slightly_elevated_ledge(state) or self.flap_flip(state)) and self.tall_jump(state) and self.prison_compound_open(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.slightly_elevated_ledge(state) and self.prison_compound_open(state)
+            logic = (self.slightly_elevated_ledge(state) or self.flap_flip(state)) and self.prison_compound_open(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.slightly_elevated_ledge(state) and self.prison_compound_open(state)
+            logic = (self.slightly_elevated_ledge(state) or self.flap_flip(state)) and self.prison_compound_open(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.prison_compound_open(state) and (self.slightly_elevated_ledge(state) or self.clockwork_shot(state) and self.tall_jump(state))
+            logic = self.prison_compound_open(state) and ((self.slightly_elevated_ledge(state) or self.flap_flip(state)) or self.clockwork_shot(state) and self.tall_jump(state))
         return logic
     
     def nest_mt_cell_right(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
-            logic = self.slightly_elevated_ledge(state) and self.tall_jump(state) and self.prison_compound_open(state)
+            logic = (self.slightly_elevated_ledge(state) or self.flap_flip(state)) and self.tall_jump(state) and self.prison_compound_open(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.slightly_elevated_ledge(state) and self.prison_compound_open(state)
+            logic = (self.slightly_elevated_ledge(state) or self.flap_flip(state)) and self.prison_compound_open(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.slightly_elevated_ledge(state) and self.prison_compound_open(state)
+            logic = (self.slightly_elevated_ledge(state) or self.flap_flip(state)) and self.prison_compound_open(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.prison_compound_open(state) and (self.slightly_elevated_ledge(state) or self.clockwork_shot(state))
+            logic = self.prison_compound_open(state) and (self.slightly_elevated_ledge(state) or self.flap_flip(state) or self.clockwork_shot(state))
         return logic
     
     def nest_bill_drill(self, state: CollectionState) -> bool:
@@ -5402,14 +5409,14 @@ class BanjoTooieRules:
             logic = self.snooze_pack(state)
         elif self.world.options.logic_type == 1: # normal
             logic = self.snooze_pack(state)\
-                    or self.split_up and self.tall_jump(state)\
+                    or self.split_up(state) and self.tall_jump(state)\
                     or self.wing_whack(state)\
                     or self.glide(state)\
                     or self.leg_spring(state)\
                     or self.flap_flip(state)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.snooze_pack(state)\
-                    or self.split_up and self.tall_jump(state)\
+                    or self.split_up(state) and self.tall_jump(state)\
                     or self.wing_whack(state)\
                     or self.glide(state)\
                     or self.leg_spring(state)\
@@ -5417,7 +5424,7 @@ class BanjoTooieRules:
                     or self.flap_flip(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.snooze_pack(state)\
-                    or self.split_up and self.tall_jump(state)\
+                    or self.split_up(state) and self.tall_jump(state)\
                     or self.wing_whack(state)\
                     or self.glide(state)\
                     or self.leg_spring(state)\
@@ -6622,11 +6629,11 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.TRAINSWWW, self.player) and (self.climb(state) and self.small_elevation(state))
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state))
+            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state) or self.flap_flip(state))
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state))
+            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state) or self.flap_flip(state))
         elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state))
+            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state) or self.flap_flip(state))
         return logic
     
     def ioh_to_chuffy(self, state: CollectionState) -> bool:
@@ -6634,11 +6641,11 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.TRAINSWIH, self.player) and (self.climb(state) and self.small_elevation(state))
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state))
+            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state) or self.flap_flip(state) or self.flap_flip(state))
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state) or self.beak_buster(state))
+            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state) or self.beak_buster(state) or self.flap_flip(state))
         elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state) or self.beak_buster(state))
+            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state) or self.beak_buster(state) or self.flap_flip(state))
         return logic
 
     # For this one, the ladder is farther off the ground.
@@ -7130,14 +7137,17 @@ class BanjoTooieRules:
     def WL_to_PGU(self, state: CollectionState) -> bool:
         logic = True
         # Going through the loading zone gives you dive for free, which is a thing beginners would not know.
+        # If nestsanity is turned on, players are forced to go through the digger tunnel
         if self.world.options.logic_type == 0: # beginner
             logic = self.talon_torpedo(state) and self.dive(state)
         elif self.world.options.logic_type == 1 : # normal
-            logic = self.talon_torpedo(state)
+            logic = self.talon_torpedo(state)\
+                    and (self.world.options.nestsanity.value == False or self.dive(state) or self.beak_buster(state))
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.talon_torpedo(state)
+            logic = self.talon_torpedo(state)\
+                    and (self.world.options.nestsanity.value == False or self.dive(state) or self.beak_buster(state))
         elif self.world.options.logic_type == 3: # glitched
-            logic = True
+            logic = (self.world.options.nestsanity.value == False or self.dive(state) or self.beak_buster(state))
         return logic
 
     def tdl_to_hatch(self, state: CollectionState) -> bool:
