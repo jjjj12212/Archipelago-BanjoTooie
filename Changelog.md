@@ -7,7 +7,7 @@
   - Logic fixes:
     - Another Digger Tunnel to Pine Grove: if nestsanity is on, it checks to see if you can leave the tunnel with dive or beak buster
     - Gruntilda Lair: moved into its own region. This fixes nests that were not in logic with flap flip + climb
-    - Chuffy Access: if not on intended logic, can be reached with just flap flip in all levels, except TDL 
+    - Chuffy Access: if not on intended logic, can be reached with just flap flip from HFP
     - Top-Left of Superstash Egg Nest 2: fixed bug that made it use the wrong logic
     - Quagmire Feather Nests: fixed logics that were swapped
     - Prison Compound collectibles: the top of the prison cell can be reached with just Flap Flip
