@@ -6,7 +6,7 @@ from .Names import regionName, locationName, itemName
 from .Locations import BanjoTooieLocation
 from .Rules import BanjoTooieRules
 
-# This dict contains all the regions, as well as all the locations that are always tracker by Archipelago.
+# This dict contains all the regions, as well as all the locations that are always tracked by Archipelago.
 BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
     "Menu":              [],
     regionName.SM:       [
@@ -17,6 +17,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.ROYSTEN1,
         locationName.ROYSTEN2
     ],
+    regionName.SMGL:     [],
     regionName.IOHJV:    [
         locationName.JIGGYIH1,
         locationName.JIGGYIH2,
@@ -542,13 +543,6 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
 NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
     "Menu":              [],
     regionName.SM:       [
-      locationName.NESTSM1,
-      locationName.NESTSM2,
-      locationName.NESTSM3,
-      locationName.NESTSM4,
-      locationName.NESTSM5,
-      locationName.NESTSM6,
-      locationName.NESTSM7,
       locationName.NESTSM8,
       locationName.NESTSM9,
       locationName.NESTSM10,
@@ -567,6 +561,15 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.NESTSM23,
       locationName.NESTSM24,
       locationName.NESTSM25,
+    ],
+    regionName.SMGL:     [
+      locationName.NESTSM1,
+      locationName.NESTSM2,
+      locationName.NESTSM3,
+      locationName.NESTSM4,
+      locationName.NESTSM5,
+      locationName.NESTSM6,
+      locationName.NESTSM7,
     ],
     regionName.IOHJV:    [
       locationName.NESTIH1,
@@ -1134,11 +1137,11 @@ def create_regions(self):
         region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO9)
 
     if multiworld.worlds[player].options.cheato_rewards.value == True:
-        region_map[regionName.SM].append(locationName.CHEATOR1)
-        region_map[regionName.SM].append(locationName.CHEATOR2)
-        region_map[regionName.SM].append(locationName.CHEATOR3)
-        region_map[regionName.SM].append(locationName.CHEATOR4)
-        region_map[regionName.SM].append(locationName.CHEATOR5)
+        region_map[regionName.SMGL].append(locationName.CHEATOR1)
+        region_map[regionName.SMGL].append(locationName.CHEATOR2)
+        region_map[regionName.SMGL].append(locationName.CHEATOR3)
+        region_map[regionName.SMGL].append(locationName.CHEATOR4)
+        region_map[regionName.SMGL].append(locationName.CHEATOR5)
 
     if multiworld.worlds[player].options.honeyb_rewards.value == True:
         region_map[regionName.IOHPL].append(locationName.HONEYBR1)
@@ -1186,8 +1189,10 @@ def connect_regions(self):
     region_menu.add_exits({regionName.SM})
 
     region_SM = multiworld.get_region(regionName.SM, player)
-    region_SM.add_exits({regionName.IOHJV},
-                        {regionName.IOHWH: lambda state: rules.canGetPassedKlungo(state)})
+    region_SM.add_exits({regionName.IOHJV, regionName.SMGL},{
+                          regionName.IOHWH: lambda state: rules.canGetPassedKlungo(state),
+                          regionName.SMGL: lambda state: rules.SM_to_GL(state)
+                        })
 
     region_JV = multiworld.get_region(regionName.IOHJV, player)
     region_JV.add_exits({regionName.IOHWH})

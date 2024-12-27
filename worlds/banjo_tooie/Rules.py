@@ -4632,11 +4632,11 @@ class BanjoTooieRules:
         return logic
 
     def nest_lair_top(self, state: CollectionState) -> bool:
-        return self.flight_pad(state) and self.small_elevation(state)
-    
-    def nest_lair_bottom(self, state: CollectionState) -> bool:
-        return self.flight_pad(state)
+        return self.small_elevation(state)
 
+    def SM_to_GL(self, state: CollectionState) -> bool:
+        return self.flight_pad(state) or self.flap_flip(state) and self.climb(state)
+    
     def nest_sm_waterfall_top(self, state: CollectionState) -> bool:
         return self.flight_pad(state)
 
@@ -7311,7 +7311,7 @@ class BanjoTooieRules:
                 self.clockwork_eggs(state)
     
     def reach_cheato(self, state: CollectionState, page_amt: int) -> bool:
-        return state.has(itemName.PAGES, self.player, page_amt) and (self.flight_pad(state) or (self.flap_flip(state) and self.climb(state)))
+        return state.has(itemName.PAGES, self.player, page_amt)
 
     def has_BK_move(self, state: CollectionState, move) -> bool:
         if move == itemName.BEGGS:
@@ -7319,8 +7319,6 @@ class BanjoTooieRules:
         if move not in [itemName.DIVE, itemName.FPAD, itemName.GRAT, itemName.ROLL, itemName.ARAT, itemName.BBARGE, itemName.TJUMP, itemName.FLUTTER, itemName.FFLIP, itemName.CLIMB, itemName.TTROT, itemName.BBUST, itemName.WWING, itemName.SSTRIDE, itemName.TTRAIN, itemName.BBOMB, itemName.EGGAIM, itemName.EGGSHOOT]:
             raise ValueError("Not a BK move! {}".format(move))
         if self.world.options.randomize_bk_moves == 0: # Not randomised
-            return True
-        if move not in bk_moves_table.keys(): # Move not yet implemented
             return True
         if self.world.options.randomize_bk_moves == 1 and move in [itemName.TTROT, itemName.TJUMP]: # McJiggy Special, not randomised.
             return True
