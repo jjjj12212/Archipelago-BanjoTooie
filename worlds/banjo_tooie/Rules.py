@@ -6629,11 +6629,11 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.TRAINSWWW, self.player) and (self.climb(state) and self.small_elevation(state))
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state) or self.flap_flip(state))
+            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state))
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state) or self.flap_flip(state))
+            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state))
         elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state) or self.flap_flip(state))
+            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state))
         return logic
     
     def ioh_to_chuffy(self, state: CollectionState) -> bool:
@@ -6641,11 +6641,11 @@ class BanjoTooieRules:
         if self.world.options.logic_type == 0: # beginner
             logic = state.has(itemName.TRAINSWIH, self.player) and (self.climb(state) and self.small_elevation(state))
         elif self.world.options.logic_type == 1: # normal
-            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state) or self.flap_flip(state) or self.flap_flip(state))
+            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state))
         elif self.world.options.logic_type == 2: # advanced
-            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state) or self.beak_buster(state) or self.flap_flip(state))
+            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state) or self.beak_buster(state))
         elif self.world.options.logic_type == 3: # glitched
-            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state) or self.beak_buster(state) or self.flap_flip(state))
+            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state) or self.beak_buster(state))
         return logic
 
     # For this one, the ladder is farther off the ground.
