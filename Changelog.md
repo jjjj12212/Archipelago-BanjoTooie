@@ -14,7 +14,7 @@
     - Trash Compactor Nests: fixed typo in logic
     - Volcano jiggy: on hard tricks and glitches logics, can be done with split up
     - Cheese Wedge Exit Note: if not on intended logic, can be gotten with split up + springy step shoes
-
+  - Fix early Claw Climbers if CK entrance is your first entrance
 
 # 4.0
   - Banjo-Tooie Rom Patch Released!
