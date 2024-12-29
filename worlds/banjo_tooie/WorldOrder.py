@@ -246,6 +246,10 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
                 move_lst = [itemName.SPLITUP, itemName.FPAD]
             move = world.random.choice(move_lst)
             world.multiworld.early_items[world.player][move] = 1
+        
+        if first_level == regionName.CK: # CK can't be first if progressive shoes.
+                world.multiworld.early_items[world.player][itemName.CLAWBTS] = 1
+
 
 def early_fire_eggs(world: BanjoTooieWorld) -> None:
     world.multiworld.early_items[world.player][itemName.PBEGGS if world.options.egg_behaviour.value == 2 else itemName.FEGGS] = 1
