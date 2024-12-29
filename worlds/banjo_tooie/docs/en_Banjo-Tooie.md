@@ -7,7 +7,20 @@ config file.
 
 ## What does randomization do to this game?
 
-Randomize the majority of collectable items, unlockable moves, train stations & Chuffy, call Chuffy to any unlocked station without being required to defeat King Coal first, skip majority of cutscenes and dialogs, skippable Tower of Tragedy Game Show, shorten long mini-games, randomize jamjar silo costs, customizable world costs, skip Klungo 1 & 2, Prison Code Door is always open, allows for instant transformation, customizable dialog character when receiving certian items, pause menu contains a new Arhipelago Menu, randomize opening of worlds order and randomize world entrances.
+- Randomize the majority of collectable items, unlockable moves, train stations & Chuffy
+- Call Chuffy to any unlocked station without being required to defeat King Coal first
+- Skip majority of cutscenes and dialog
+- Skippable Tower of Tragedy Game Show
+- Shorten long mini-games
+- Randomize jamjar silo costs
+- Customizable world costs
+- Skip Klungo 1 & 2
+- Prison Code Door is always open
+- Allows for instant transformation once Mumbo Skull or Humba Wigwam as been taged by Banjo-Kazooie
+- Customizable dialog character when receiving certian items
+- Pause menu contains a new Arhipelago Menu
+- Randomize opening of worlds order and randomize world entrances
+- If nestanity is enabled, all un-collected nests has the Archipelago logo
 
 ## What items and locations can get shuffled?
 

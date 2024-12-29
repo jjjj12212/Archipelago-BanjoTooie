@@ -54,11 +54,18 @@ For those who wish to play this randomizer on Actual N64 Hardware:
 
 ## Generate your world
 - Familiarize yourself on how Archipelago works. Here is a guide to learn how to generate your world: https://archipelago.gg/tutorial/Archipelago/setup/en#on-your-local-installation
+- In quick summary:
+    - Generate your YAML template either using the Archipelago Launcher Or using our template here: https://github.com/jjjj12212/Archipelago-BanjoTooie/blob/main/yaml-template/template.yaml
+    - Put your YAML in the Players folder
+    - In the Archipelago Launcher, click Generate to generate the world
+    - Once generated, click Host and select your world in the Archipelago\Output folder.
 
 ## How to install / Setup - Client Side PC Emulation
 
 - Copy data/lua/banjo_tooie_connector.lua into data/lua in your existing Archipelago
 - Install banjo_tooie.apworld
+- If you are new to Archipelago, you need to Generate your world if you are playing solo or hosting a multiworld.
+    - Look at section "Generate your world"
 - Run Launcher.exe and select Banjo-Tooie Client
 - If this is your first time running this version, it will prompt for your Banjo-Tooie (US) ROM
 - The patched rom is located in your Archipelago root folder
@@ -70,6 +77,8 @@ For those who wish to play this randomizer on Actual N64 Hardware:
 ## How to install / Setup - Client Side Everdrive
 - The Everdrive will need to have a USB connection to the PC that will be running the Banjo-Tooie Client.
 - Install the banjo_tooie.apworld
+- If you are new to Archipelago, you need to Setup the Server Side & Generate your world if you are playing solo or hosting a multiworld.
+    - Look at section "Generate your world"
 - Run Launcher.exe and select Banjo-Tooie Client
 - If this is your first time running this version, it will prompt for your Banjo-Tooie (US) ROM
 - The patched rom is located in your Archipelago root folder
