@@ -50,22 +50,22 @@ For those who wish to play this randomizer on Actual N64 Hardware:
 ## Prerequisite
 
 ## How to Install - Server Side
-- Install banjo_tooie.apworld
+- Install banjo_tooie.apworld (https://github.com/jjjj12212/Archipelago-BanjoTooie/tree/main  and look on the right hand side for the latest release. Click on it, then scroll to the bottom to find the assets section. It's in there!)
 
 ## Generate your world
 - Familiarize yourself on how Archipelago works. Here is a guide to learn how to generate your world: https://archipelago.gg/tutorial/Archipelago/setup/en#on-your-local-installation
 
 ## How to install / Setup - Client Side PC Emulation
 
-- Copy data/lua/banjo_tooie_connector.lua into data/lua in your existing Archipelago
+- Copy data/lua/banjo_tooie_connector.lua from this download into data/lua in your existing Archipelago (if you don't have Archipelago, you'll need to get it from here: https://archipelago.gg/tutorial/Archipelago/setup/en)
 - Install banjo_tooie.apworld
-- Run Launcher.exe and select Banjo-Tooie Client
+- Run ArchipelagoLauncher.exe and select Banjo-Tooie Client
 - If this is your first time running this version, it will prompt for your Banjo-Tooie (US) ROM
-- The patched rom is located in your Archipelago root folder
+- The patched rom is located in your Archipelago root folder (It's a N64 file with the format > Banjo-Tooie-xxxxx)
 - Connect the Archipelago Client with the server.
 - To connect the client to the multiserver simply put  `<address>:<port>`  on the textfield on top and press `connect` (if the server uses password, then it will prompt after connection).
 - Open Bizhawk (2.9.1+) and open your patched Banjo-Tooie (US) game
-- Once you are in the game title menu or game select screen, apply the banjo_tooie_connector lua script (drag and drop)
+- Once you are in the game title menu or game select screen, apply the banjo_tooie_connector lua script (drag and drop, or open the LUA console and navigate to Archipelago/data/lua and select the banjo_tooie_connector.lua file)
 
 ## How to install / Setup - Client Side Everdrive
 - The Everdrive will need to have a USB connection to the PC that will be running the Banjo-Tooie Client.
