@@ -7,12 +7,17 @@
   - Logic fixes:
     - Another Digger Tunnel to Pine Grove: if nestsanity is on, it checks to see if you can leave the tunnel with dive or beak buster
     - Gruntilda Lair: moved into its own region. This fixes nests that were not in logic with flap flip + climb
+      - For hard tricks and glitches logics, can be reached with tall jump + beak buster, or talon trot + flutter + beak buster
+    - Gruntilda's Lair Top Egg Nests: easy tricks logic can get them with grip grab or beak buster. Hard tricks and glitches logics can also get them with flutter, air rat-a-tat rap or a clockwork shot
+    - Prison Compound collectibles: the top of the prison cell can be reached with just Flap Flip
     - Chuffy Access: if not on intended logic, can be reached with just flap flip from HFP
+    - Fuel Depot nests: refactored logic to make it so that getting the detonator puts them in logic
+    - Under Terry's Nest Jiggy: removed the clockwork shop to get it early, as it's too hard
     - Top-Left of Superstash Egg Nest 2: fixed bug that made it use the wrong logic
     - Quagmire Feather Nests: fixed logics that were swapped
-    - Prison Compound collectibles: the top of the prison cell can be reached with just Flap Flip
     - Trash Compactor Nests: fixed typo in logic
     - Volcano jiggy: on hard tricks and glitches logics, can be done with split up
+    - Pot o Gold collectibles: the pot o gold can be reached with glide, if on hard tricks or glitches logics.
     - Cheese Wedge Exit Note: if not on intended logic, can be gotten with split up + springy step shoes
 
 
