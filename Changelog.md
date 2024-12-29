@@ -19,7 +19,7 @@
     - Volcano jiggy: on hard tricks and glitches logics, can be done with split up
     - Pot o Gold collectibles: the pot o gold can be reached with glide, if on hard tricks or glitches logics.
     - Cheese Wedge Exit Note: if not on intended logic, can be gotten with split up + springy step shoes
-  - Fix early Claw Climbers if CK entrance is your first entrance
+  - Fix early Claw Clamber Boots if CK entrance is your first entrance
 
 # 4.0
   - Banjo-Tooie Rom Patch Released!
