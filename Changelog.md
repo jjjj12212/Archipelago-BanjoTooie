@@ -1,3 +1,35 @@
+# 4.0.1
+  - Renamings:
+    - Quagmire Feather Nests:
+      - 1 -> Left Feather Nest
+      - 2 -> Back Feather Nest
+      - 3 -> High Feather Nest
+  - Logic fixes:
+    - Another Digger Tunnel to Pine Grove: if nestsanity is on, it checks to see if you can leave the tunnel with dive or beak buster
+    - Gruntilda Lair: moved into its own region. This fixes nests that were not in logic with flap flip + climb
+      - For hard tricks and glitches logics, can be reached with tall jump + beak buster, or talon trot + flutter + beak buster
+    - Gruntilda's Lair Top Egg Nests: easy tricks logic can get them with grip grab or beak buster. Hard tricks and glitches logics can also get them with flutter, air rat-a-tat rap or a clockwork shot
+    - Prison Compound collectibles: the top of the prison cell can be reached with just Flap Flip
+    - Chuffy Access: if not on intended logic, can be reached with just flap flip from HFP
+    - Fuel Depot nests: refactored logic to make it so that getting the detonator puts them in logic
+    - Under Terry's Nest Jiggy: removed the clockwork shop to get it early, as it's too hard
+    - Top-Left of Superstash Egg Nest 2: fixed bug that made it use the wrong logic
+    - Quagmire Feather Nests: fixed logics that were swapped
+    - Trash Compactor Nests: fixed typo in logic
+    - Volcano jiggy: on hard tricks and glitches logics, can be done with split up
+    - Pot o Gold collectibles: the pot o gold can be reached with glide, if on hard tricks or glitches logics.
+    - Cheese Wedge Exit Note: if not on intended logic, can be gotten with split up + springy step shoes
+  - Fix early Claw Clamber Boots if CK entrance is your first entrance
+  - AP Menu -> Options -> Reset has been renamed to Back to Jinjo Village to be clearer on its function
+  - AP Nests will now sparkle on collection, similar to collecting non-AP nests
+  - Sparkles appear around you when instant transforming
+  - Fix for CCL: Wumba's Wigwam Egg Nest 2 not always marking as collected
+  - Fixed the HFP Dragon Brothers having Storm Trooper aim
+  - Unogopaz will no longer crash the game if you approach as Banjo, instant transform to Stony, then attempt to talk to him
+  - Traps will be postponed while paused and during the Canary Mary races
+  - Zubba's Nest door will now auto open if you instant transform to Bee, once you've opened it normally before
+  - You will be forced to Bee when entering Zubba's Nest
+
 # 4.0
   - Banjo-Tooie Rom Patch Released!
     - The patch is NOT built per seed. It is built per version. So you will only be prompt to patch your game once per version.

@@ -15,7 +15,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V4.0"
+local BT_VERSION = "V4.0.1"
 local PLAYER = ""
 local SEED = 0
 
@@ -7287,7 +7287,7 @@ function main()
                     BT_SOCK = client
                     BT_SOCK:settimeout(0)
                 else
-                    print('Connection failed, ensure Banjo Tooie Client is running, connected and rerun banjotooie_connector.lua')
+                    print('Connection failed, ensure Banjo Tooie Client is running, connected, reboot Core and rerun banjotooie_connector.lua')
                     return
                 end
             end
