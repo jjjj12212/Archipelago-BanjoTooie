@@ -20,6 +20,15 @@
     - Pot o Gold collectibles: the pot o gold can be reached with glide, if on hard tricks or glitches logics.
     - Cheese Wedge Exit Note: if not on intended logic, can be gotten with split up + springy step shoes
   - Fix early Claw Clamber Boots if CK entrance is your first entrance
+  - AP Menu -> Options -> Reset has been renamed to Back to Jinjo Village to be clearer on its function
+  - AP Nests will now sparkle on collection, similar to collecting non-AP nests
+  - Sparkles appear around you when instant transforming
+  - Fix for CCL: Wumba's Wigwam Egg Nest 2 not always marking as collected
+  - Fixed the HFP Dragon Brothers having Storm Trooper aim
+  - Unogopaz will no longer crash the game if you approach as Banjo, instant transform to Stony, then attempt to talk to him
+  - Traps will be postponed while paused and during the Canary Mary races
+  - Zubba's Nest door will now auto open if you instant transform to Bee, once you've opened it normally before
+  - You will be forced to Bee when entering Zubba's Nest
 
 # 4.0
   - Banjo-Tooie Rom Patch Released!
