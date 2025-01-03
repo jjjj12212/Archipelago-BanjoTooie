@@ -297,7 +297,8 @@ class SkipToT(Choice):
     default = 1
 
 class LogicType(Choice):
-    """Choose your logic difficulty and difficulty of tricks you are expected to perform to reach certain areas."""
+    """Choose your logic difficulty and difficulty of tricks you are expected to perform to reach certain areas.
+    Please be aware that if you plan on randomizing worlds with BK Moves in the pool, you cannot use "intended" logic.""" 
     display_name = "Logic Type"
     option_intended = 0
     option_easy_tricks = 1
