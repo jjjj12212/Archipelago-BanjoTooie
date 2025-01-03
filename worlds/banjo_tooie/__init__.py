@@ -96,7 +96,7 @@ class BanjoTooieWorld(World):
         if banjoItem.type == 'progress':
             if banjoItem.btid == 1230515:
                 if hasattr(self.multiworld, "generation_is_fake") == False: 
-                    maxJiggy = max(self.randomize_worlds.values()) if self.randomize_worlds else 70
+                    maxJiggy = max(self.randomize_worlds.values()) if (self.randomize_worlds and self.options.open_hag1 == True) else 70
                     extraJiggys = (90 - maxJiggy)/2
                     if self.jiggy_counter > (maxJiggy+extraJiggys):
                         item_classification = ItemClassification.filler
