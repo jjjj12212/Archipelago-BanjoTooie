@@ -91,7 +91,7 @@ class BanjoTooieWorld(World):
         self.jamjars_silo_costs = {}
         super(BanjoTooieWorld, self).__init__(world, player)
         
-    def item_code(itemname: str) -> int:
+    def item_code(self, itemname: str) -> int:
         return all_item_table[itemname].btid
 
     def create_item(self, itemname: str) -> Item:
