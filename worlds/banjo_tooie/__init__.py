@@ -274,6 +274,9 @@ class BanjoTooieWorld(World):
                                 itempool += [self.create_item(name)]
             elif item.code == 1230832 and item.code == self.starting_attack and self.options.progressive_bash_attack.value == 1: #we only need 1 more Progressive Bash Attack
                 itempool += [self.create_item(name)] #only creates 1 progressive bash attack
+            elif self.check_starting_progressive(item) > 0:
+                for i in range(self.check_starting_progressive(item)):
+                    itempool += [item]
         for item in itempool:
             self.multiworld.itempool.append(item)
 
@@ -417,6 +420,11 @@ class BanjoTooieWorld(World):
             return False
 
         return True
+    
+    def check_starting_progressive(self, item: Item) -> int:
+        if item.code == self.starting_attack and (range(1230828, 1230833) or range(1230782, 1230786)):
+            return all_item_table[item.name].qty - 1 
+        return 0
 
     def create_regions(self) -> None:
         create_regions(self)

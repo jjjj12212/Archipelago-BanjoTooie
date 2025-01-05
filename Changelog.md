@@ -1,10 +1,11 @@
 # 4.1
   - Multiplayer Jinjo is back for Token Hunt
   - Fixed issue where items and checks were not balanced in Token hunt
+  - Fixed issue where if you start with a progressive item, items / checks are not balanced
   - Golden egg nests are now traps
     - They will only appear if traps and nestanity are enabled.
   - New Option:
-    - Set Nest ratios to traps.
+    - Set Nest ratios to traps. (From Dev :Dardy)
 
 # 4.0.1
   - Renamings:
