@@ -181,6 +181,12 @@ class BanjoTooieWorld(World):
                 i == (self.options.extra_trebleclefs_count.value*3 - 14):
                     break
                 trap_big_pants_counter += 1
+        if self.options.traps_nests_ratio.value > 0:
+            total_nests = 315 + 135
+            removed_nests = int(total_nests * self.options.traps_nests_ratio.value / 100)
+            removed_enests = int(315 * self.options.traps_nests_ratio.value / 100)
+            removed_fnests = removed_nests - removed_enests
+            trap_big_pants_counter += removed_nests
         if self.options.traps.value == True:
             trup = divmod(trap_big_pants_counter, 4)
             ttrap_qty = trup[0] + (1 if trup[1] >= 1 else 0)
@@ -222,7 +228,16 @@ class BanjoTooieWorld(World):
                         for i in range(sqtrap_qty):
                             itempool += [self.create_item(name)]
                     #end of none qty logic
-
+                    
+                    #nests removal for nestsanity and nest traps
+                    elif item.code == 1230806 and self.options.traps_nests_ratio.value > 0:
+                        for i in range(315 - removed_enests):
+                            itempool += [self.create_item(name)]
+                    elif item.code == 1230807 and self.options.traps_nests_ratio.value > 0:
+                        for i in range(135 - removed_fnests):
+                            itempool += [self.create_item(name)]
+                    #end of nest removal for nest traps
+                    
                     #notes - extra other notes
                     elif item.code == 1230797: 
                         count = id.qty
@@ -432,6 +447,8 @@ class BanjoTooieWorld(World):
             raise ValueError("You cannot have progressive bash attack without randomizing Stop N Swap and randomizing BK moves")
         if self.options.randomize_moves == False and self.options.jamjars_silo_costs.value != 0:
             raise ValueError("You cannot change the silo costs without randomizing Jamjars' moves.")
+        if self.options.nestsanity.value == False and self.options.traps_nests_ratio.value > 0:
+            raise ValueError("You cannot have nests as traps without nestsanity.")
         if self.options.open_hag1.value == False and self.options.victory_condition.value == 4:
             self.options.open_hag1.value = True
         if self.options.egg_behaviour.value == 1:
