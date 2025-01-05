@@ -178,7 +178,7 @@ class BanjoTooieWorld(World):
             for i in range(self.options.extra_trebleclefs_count.value*3): #adds an additional big-o-pants for each bassclef
                 if self.options.victory_condition.value == 5 and \
                 (((self.options.bassclef_amount.value*2) + (self.options.extra_trebleclefs_count.value*4)) >= 130) and \
-                i == (self.options.extra_trebleclefs_count.value*3 - 14):
+                i == (self.options.extra_trebleclefs_count.value*3 - 15):
                     break
                 trap_big_pants_counter += 1
         if self.options.traps.value == True:
@@ -229,8 +229,8 @@ class BanjoTooieWorld(World):
                         count -= ((self.options.bassclef_amount.value*2) + (self.options.extra_trebleclefs_count.value*4))
                         for i in range(count):
                             if self.options.victory_condition.value == 5:
-                                if (count - self.notecounter) < 14 and count > 14 and item.code == 1230797:
-                                    break #sub in for Mumbo Tokens up to 10
+                                if (count - self.notecounter) < 15 and count >= 15:
+                                    break #sub in for Mumbo Tokens up to 15
                             itempool += [self.create_item(name)]
 
                     #treble - extra trebles 
@@ -249,10 +249,6 @@ class BanjoTooieWorld(World):
                         for i in range(id.qty):
                             if self.options.randomize_jinjos == False and self.jiggy_counter > 81 and item.code == 1230515:
                                 break
-                            if self.options.victory_condition.value == 5:
-                                if item.code == 1230801: #remove Jinjo Multiplayer
-                                    break
-                                itempool += [self.create_item(name)]
                             else:
                                 itempool += [self.create_item(name)]
             elif item.code == 1230832 and item.code == self.starting_attack and self.options.progressive_bash_attack.value == 1: #we only need 1 more Progressive Bash Attack

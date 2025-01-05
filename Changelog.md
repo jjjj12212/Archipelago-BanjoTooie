@@ -1,3 +1,7 @@
+# 4.1
+  - Multiplayer Jinjo is back for Token Hunt
+  - Fixed issue where items and checks were not balanced in Token hunt
+
 # 4.0.1
   - Renamings:
     - Quagmire Feather Nests:
