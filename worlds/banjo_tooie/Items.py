@@ -137,7 +137,6 @@ misc_collectable_table = {
     itemName.STRAP:         ItemData(1230787,  0, "trap", ""),
     itemName.TRTRAP:        ItemData(1230788,  0, "trap", ""),
     itemName.SQTRAP:        ItemData(1230789,  0, "trap", "")
-
 }
 
 stop_n_swap_table = {
@@ -171,9 +170,9 @@ rando_key_table = {
 }
 
 nest_table= {
-    itemName.GNEST:           ItemData(1230805,   23, "filler", ""),
-    itemName.ENEST:           ItemData(1230806,   315, "filler", ""),
-    itemName.FNEST:           ItemData(1230807,   135, "filler", ""),
+    itemName.GNEST:           ItemData(1230805,   0, "trap", ""),
+    itemName.ENEST:           ItemData(1230806,   331, "filler", ""),
+    itemName.FNEST:           ItemData(1230807,   142, "filler", ""),
 }
 
 

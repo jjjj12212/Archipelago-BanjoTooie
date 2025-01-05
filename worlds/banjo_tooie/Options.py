@@ -257,8 +257,8 @@ class EnableNestsanity(Toggle):
     display_name = "Nestsanity"
     
 class TrapsToNestRatio(Range):
-    """Replace a percentage of all feather and egg nests items (except golden eggs) to Trap items
-    Requires Traps and Nestsanity to be enabled."""
+    """Select a percentage of all feather and egg nests items to be replaced with trap items
+    Requires Traps and Nestsanity to have an effect."""
     display_name = "Traps to Nests Ratio"
     range_start = 0
     range_end = 100
