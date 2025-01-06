@@ -74,8 +74,9 @@ def generate_world_order(world: BanjoTooieWorld, worlds: List[str]) -> List[str]
         if world.options.randomize_bk_moves.value != 2 and world.options.open_silos.value == 0 and worlds[0] in [regionName.GIO, regionName.CK]:
             good_order = False
 
-        # With progressive water training, you can't manually reach wasteland
-        if world.options.randomize_bk_moves.value == 1 and world.options.open_silos.value == 0 and worlds[0] in [regionName.CC, regionName.TL]:
+        # Without nests, you can't manually reach wasteland
+        if world.options.randomize_bk_moves.value == 1 and world.options.open_silos.value == 0\
+            and world.options.nestsanity.value == 0 and worlds[0] in [regionName.CC, regionName.TL]:
             good_order = False
 
         # The 2nd world needs to be not too hard to access from the first world.
