@@ -6,6 +6,7 @@
     - They will only appear if traps and nestanity are enabled.
   - New Option:
     - Set Nest ratios to traps. (From Dev :Dardy)
+  - Fix generation issues where there wouldn't be enough locations to reach your first world with McJiggy Special
   - Logic fixes:
     - TDL to Chuffy: if not on intended logic, can be done with flap flip + beak buster
     - HFP to MT, Colosseum Egg Nests, Colosseum Cheato page, Top of HFP access: The walls can be broken with Dragon Kazooie! Thanks to JXJacob for figuring this out!
