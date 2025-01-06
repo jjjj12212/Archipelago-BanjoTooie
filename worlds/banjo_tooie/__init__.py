@@ -453,11 +453,11 @@ class BanjoTooieWorld(World):
             raise ValueError("You cannot have progressive Eggs without randomizing moves")
         if self.options.progressive_shoes.value == True and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive Shoes without randomizing moves and randomizing BK moves")
-        if self.options.progressive_water_training.value == True and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
+        if self.options.progressive_water_training.value != 0 and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive Water Training without randomizing moves and randomizing BK moves")
         if self.options.progressive_flight.value == True and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive flight without randomizing moves and randomizing BK moves")
-        if self.options.progressive_egg_aiming.value == True and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
+        if self.options.progressive_egg_aiming.value != 0 and (self.options.randomize_bk_moves.value == False or self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive egg aiming without randomizing moves and randomizing BK moves")
         if self.options.progressive_bash_attack.value == True and (self.options.randomize_stop_n_swap.value == False or self.options.randomize_moves == False):
             raise ValueError("You cannot have progressive bash attack without randomizing Stop N Swap and randomizing BK moves")
