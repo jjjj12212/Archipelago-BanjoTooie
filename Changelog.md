@@ -23,6 +23,8 @@
     - Dodgem Dome Jinjo: if not on intended logic, can be gotten with leg spring + glide
     - Space Zone Honeycomb: Removed tightrope walk as solo Kazooie from easy tricks logic
     - Oogle Boogle Jiggy: added tall jump to use the spring pad
+    - Trash Compactor Jiggy: added tall jump as a requirement if pack whacking accross
+    - Trash Compactor Nests: if not on intended logic, having a clockwork walk to the nests is now in logic
     - Air conditionning fan feather nests: removed leg spring from intended and easy tricks, due to its difficulty. The other logics also require Wing Whack or Glide to get these nests.
     - Air conditionning near repair depot nests: Getting them as solo Kazooie is now in hard tricks and glitch logics
     - Floor 3 notes: added leg spring as a possibility

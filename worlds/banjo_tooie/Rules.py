@@ -299,7 +299,7 @@ class BanjoTooieRules:
             locationName.JIGGYGI5: lambda state: self.jiggy_floor5(state),
             locationName.JIGGYGI6: lambda state: self.jiggy_quality_control(state),
             locationName.JIGGYGI7: lambda state: self.jiggy_guarded(state),
-            locationName.JIGGYGI8: lambda state: self.jiggy_compactor(state),
+            locationName.JIGGYGI8: lambda state: self.jiggy_trash_compactor(state),
             locationName.JIGGYGI9: lambda state: self.jiggy_twinkly(state),
             locationName.JIGGYGI10: lambda state: self.jiggy_waste_disposal_box(state),
 
@@ -1948,17 +1948,18 @@ class BanjoTooieRules:
                     or (self.claw_clamber_boots(state) or state.can_reach_region(regionName.GI2, self.player)) and (self.spring_pad(state) or self.leg_spring(state)) and self.clockwork_shot(state)
         return logic
     
-    def jiggy_compactor(self, state: CollectionState) -> bool:
+    def jiggy_trash_compactor(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == 0: # beginner
             logic = self.snooze_pack(state)
         elif self.world.options.logic_type == 1: # normal
-            logic = self.snooze_pack(state) or self.pack_whack(state)
+            logic = self.snooze_pack(state) or self.pack_whack(state) and self.tall_jump(state)
         elif self.world.options.logic_type == 2: # advanced
-            logic = self.snooze_pack(state) or self.pack_whack(state)
+            logic = self.snooze_pack(state) or self.pack_whack(state) and self.tall_jump(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.snooze_pack(state) or self.pack_whack(state) or\
-                    (self.egg_aim(state) and self.clockwork_eggs(state) and self.breegull_bash(state) and self.talon_trot(state))
+            logic = self.snooze_pack(state)\
+                    or self.pack_whack(state) and self.tall_jump(state)\
+                    or (self.egg_aim(state) and self.clockwork_eggs(state) and self.breegull_bash(state) and self.talon_trot(state))
         return logic
     
     def jiggy_twinkly(self, state: CollectionState) -> bool:
@@ -5451,14 +5452,15 @@ class BanjoTooieRules:
                     or self.wing_whack(state)\
                     or self.glide(state)\
                     or self.leg_spring(state)\
-                    or self.flap_flip(state)
+                    or self.flap_flip(state)\
+                    or self.clockwork_eggs(state)
         elif self.world.options.logic_type == 2: # advanced
             logic = self.snooze_pack(state)\
                     or self.split_up(state) and self.tall_jump(state)\
                     or self.wing_whack(state)\
                     or self.glide(state)\
                     or self.leg_spring(state)\
-                    or self.clockwork_shot(state)\
+                    or self.clockwork_eggs(state)\
                     or self.flap_flip(state)
         elif self.world.options.logic_type == 3: # glitched
             logic = self.snooze_pack(state)\
@@ -5466,7 +5468,7 @@ class BanjoTooieRules:
                     or self.wing_whack(state)\
                     or self.glide(state)\
                     or self.leg_spring(state)\
-                    or self.clockwork_shot(state)\
+                    or self.clockwork_eggs(state)\
                     or self.flap_flip(state)
         return logic
 
