@@ -428,7 +428,7 @@ class BanjoTooieWorld(World):
         return True
     
     def check_starting_progressive(self, item: Item) -> int:
-        if item.code == self.starting_attack and (range(1230828, 1230833) or range(1230782, 1230786)):
+        if item.code == self.starting_attack and (item.code in range(1230828, 1230833) or item.code in range(1230782, 1230786)):
             return all_item_table[item.name].qty - 1 
         return 0
 
