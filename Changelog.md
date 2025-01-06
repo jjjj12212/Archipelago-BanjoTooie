@@ -1,4 +1,11 @@
-# 4.0.2
+# 4.1
+  - Multiplayer Jinjo is back for Token Hunt
+  - Fixed issue where items and checks were not balanced in Token hunt
+  - Fixed issue where if you start with a progressive item, items / checks are not balanced
+  - Golden egg nests are now traps
+    - They will only appear if traps and nestanity are enabled.
+  - New Option:
+    - Set Nest ratios to traps. (From Dev :Dardy)
   - Logic fixes:
     - TDL to Chuffy: if not on intended logic, can be done with flap flip + beak buster
     - HFP to MT, Colosseum Egg Nests, Colosseum Cheato page, Top of HFP access: The walls can be broken with Dragon Kazooie! Thanks to JXJacob for figuring this out!

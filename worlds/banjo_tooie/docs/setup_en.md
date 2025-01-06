@@ -30,7 +30,7 @@ Once BizHawk has been installed, open EmuHawk and change the following settings:
 -   Under Config > Hotkeys, many hotkeys are listed, with many bound to common keys on the keyboard. You will likely want to disable most of these, which you can do quickly using  `Esc`.
 -   If playing with a controller, when you bind controls, disable "P1 A Up", "P1 A Down", "P1 A Left", and "P1 A Right" as these interfere with aiming if bound. Set directional input using the Analog tab instead.
 -   Under N64 enable "Use Expansion Slot". (The N64 menu only appears after loading a ROM.)
--   Under Condig -> Speed/Skip, click "Audio Throttle" as this will fix the off pitch sounds while playing
+-   Under Config -> Speed/Skip, click "Audio Throttle" as this will fix the off pitch sounds while playing
 
 It is strongly recommended to associate N64 rom extensions (*.n64, *.z64) to the EmuHawk we've just installed. To do so, we simply have to search any N64 rom we happened to own, right click and select "Open with…", unfold the list that appears and select the bottom option "Look for another application", then browse to the BizHawk folder and select EmuHawk.exe.
 

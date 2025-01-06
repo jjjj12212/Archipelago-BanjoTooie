@@ -178,9 +178,17 @@ class BanjoTooieWorld(World):
             for i in range(self.options.extra_trebleclefs_count.value*3): #adds an additional big-o-pants for each bassclef
                 if self.options.victory_condition.value == 5 and \
                 (((self.options.bassclef_amount.value*2) + (self.options.extra_trebleclefs_count.value*4)) >= 130) and \
-                i == (self.options.extra_trebleclefs_count.value*3 - 14):
+                i == (self.options.extra_trebleclefs_count.value*3 - 15):
                     break
                 trap_big_pants_counter += 1
+        if self.options.traps.value == 1 and self.options.nestsanity.value == True:
+            total_nests = all_item_table[itemName.ENEST].qty + all_item_table[itemName.FNEST].qty - 23
+            removed_nests = int(total_nests * self.options.traps_nests_ratio.value / 100)
+            removed_enests = int((all_item_table[itemName.ENEST].qty-16) * self.options.traps_nests_ratio.value / 100)
+            removed_fnests = removed_nests - (removed_enests)
+            removed_enests += 16 #golden eggs
+            removed_fnests += 7 # golden eggs
+            trap_big_pants_counter += removed_nests
         if self.options.traps.value == True:
             trup = divmod(trap_big_pants_counter, 4)
             ttrap_qty = trup[0] + (1 if trup[1] >= 1 else 0)
@@ -221,16 +229,29 @@ class BanjoTooieWorld(World):
                     elif item.code == 1230789:
                         for i in range(sqtrap_qty):
                             itempool += [self.create_item(name)]
-                    #end of none qty logic
 
+                    #end of none qty logic
+                    
+                    #nests removal for nestsanity and nest traps
+                    elif item.code == 1230806:
+                        for i in range(all_item_table[item.name].qty - removed_enests):
+                            itempool += [self.create_item(name)]
+                    elif item.code == 1230807:
+                        for i in range(all_item_table[item.name].qty - removed_fnests):
+                            itempool += [self.create_item(name)]
+                    elif item.code == 1230805 and self.options.traps.value == True:
+                        for i in range(23):
+                            itempool += [self.create_item(name)]
+                    #end of nest removal for nest traps
+                    
                     #notes - extra other notes
                     elif item.code == 1230797: 
                         count = id.qty
                         count -= ((self.options.bassclef_amount.value*2) + (self.options.extra_trebleclefs_count.value*4))
                         for i in range(count):
                             if self.options.victory_condition.value == 5:
-                                if (count - self.notecounter) < 14 and count > 14 and item.code == 1230797:
-                                    break #sub in for Mumbo Tokens up to 10
+                                if (count - self.notecounter) < 15 and count >= 15:
+                                    break #sub in for Mumbo Tokens up to 15
                             itempool += [self.create_item(name)]
 
                     #treble - extra trebles 
@@ -249,14 +270,13 @@ class BanjoTooieWorld(World):
                         for i in range(id.qty):
                             if self.options.randomize_jinjos == False and self.jiggy_counter > 81 and item.code == 1230515:
                                 break
-                            if self.options.victory_condition.value == 5:
-                                if item.code == 1230801: #remove Jinjo Multiplayer
-                                    break
-                                itempool += [self.create_item(name)]
                             else:
                                 itempool += [self.create_item(name)]
             elif item.code == 1230832 and item.code == self.starting_attack and self.options.progressive_bash_attack.value == 1: #we only need 1 more Progressive Bash Attack
                 itempool += [self.create_item(name)] #only creates 1 progressive bash attack
+            elif self.check_starting_progressive(item) > 0:
+                for i in range(self.check_starting_progressive(item)):
+                    itempool += [item]
         for item in itempool:
             self.multiworld.itempool.append(item)
 
@@ -400,6 +420,11 @@ class BanjoTooieWorld(World):
             return False
 
         return True
+    
+    def check_starting_progressive(self, item: Item) -> int:
+        if item.code == self.starting_attack and (range(1230828, 1230833) or range(1230782, 1230786)):
+            return all_item_table[item.name].qty - 1 
+        return 0
 
     def create_regions(self) -> None:
         create_regions(self)
@@ -815,7 +840,6 @@ class BanjoTooieWorld(World):
             else:
                 return level
 
-        
         if self.options.randomize_world_loading_zone.value == False:
             return
 
