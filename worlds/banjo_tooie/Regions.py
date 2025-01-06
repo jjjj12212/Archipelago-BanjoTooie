@@ -1247,7 +1247,7 @@ def connect_regions(self):
                           })
     
     region_WW = multiworld.get_region(regionName.WW, player)
-    region_WW.add_exits({regionName.CHUFFY, regionName.TL, regionName.GMFD},
+    region_WW.add_exits({regionName.CHUFFY, regionName.TL, regionName.GMFD, regionName.WWA51NESTS},
                         {regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ww_to_chuffy(state),
                         regionName.TL: lambda state: rules.ww_tdl_backdoor(state),
                         regionName.GMFD: lambda state: rules.ww_to_fuel_depot(state),
@@ -1287,7 +1287,7 @@ def connect_regions(self):
                          regionName.CCLE: lambda state: rules.ccl_jiggy(state)})
     
     region_TL = multiworld.get_region(regionName.TL, player)
-    region_TL.add_exits({regionName.TL_HATCH, regionName.WW, regionName.CHUFFY},
+    region_TL.add_exits({regionName.TL_HATCH, regionName.WW, regionName.CHUFFY, regionName.WWA51NESTS},
                         {regionName.WW: lambda state: rules.TDL_to_WW(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.tdl_to_chuffy(state),
                          regionName.TL_HATCH: lambda state: rules.tdl_to_hatch(state),
