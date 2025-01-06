@@ -1,3 +1,27 @@
+# 4.0.2
+  - Logic fixes:
+    - TDL to Chuffy: if not on intended logic, can be done with flap flip + beak buster
+    - HFP to MT, Colosseum Egg Nests, Colosseum Cheato page, Top of HFP access: The walls can be broken with Dragon Kazooie! Thanks to JXJacob for figuring this out!
+    - Colosseum Egg Nests: removed Mumbo from intended logic
+    - Mildred Jinjo: can be gotten with Dragon Kazooie
+    - HFP to JRL: added air rat-a-tat as a possibility, if doing the glitch
+    - SM Waterfall Platform: can be gotten with talon trot
+    - Cliff Top Feather Nest 3: if not on intended logic, can be gotten with beak buster. If on hard tricks or glitches, can also be gotten with flutter
+    - Cheese Wedge Jiggy: if using glitches, checks for flight pad. Doing clockwork warps as solo Kazooie is now in logic
+    - Prison Compound Quicksand Jiggy and Cheato page, Pillar jiggy and nests: Fixed bug where you didn't need grip grab if using flap flip to climb the jail cell
+    - Prison Compound Feather Nests: added clockwork shot in hard tricks logic
+    - Fuel Depot nests: If getting them from GGM, detonator is required
+    - Area 51 nests: moved to a new region to allow getting the nests from TDL
+    - Area 51 notes: added glide as a way to get them, if not on intended logic
+    - Dodgem Dome Jinjo: if not on intended logic, can be gotten with leg spring + glide
+    - Space Zone Honeycomb: Removed tightrope walk as solo Kazooie from easy tricks logic
+    - Oogle Boogle Jiggy: added tall jump to use the spring pad
+    - Air conditionning fan feather nests: removed leg spring from intended and easy tricks, due to its difficulty. The other logics also require Wing Whack or Glide to get these nests.
+    - Air conditionning near repair depot nests: Getting them as solo Kazooie is now in hard tricks and glitch logics
+    - Floor 3 notes: added leg spring as a possibility
+    - Aliens Jiggy: Fixed bug where it checked if you could reach Atlantis
+    - HFP trebleclef, volcano honeycomb, glide silo, ice pillar Cheato page, icicle grotto spring pad nest, icicle grotto top nests: for intended logic, only going through icicle grotto is now considered.
+
 # 4.0.1
   - Renamings:
     - Quagmire Feather Nests:

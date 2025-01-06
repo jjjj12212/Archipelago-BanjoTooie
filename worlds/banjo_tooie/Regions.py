@@ -216,6 +216,7 @@ BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEWW15,
         locationName.NOTEWW16
     ],
+    regionName.WWA51NESTS:   [],
     regionName.IOHCT:   [
         locationName.JINJOIH3,
         locationName.IEGGS,
@@ -715,8 +716,7 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.NESTWW2,
       locationName.NESTWW3,
       locationName.NESTWW4,
-      locationName.NESTWW5,
-      locationName.NESTWW6,
+
       locationName.NESTWW7,
       locationName.NESTWW8,
       locationName.NESTWW9,
@@ -753,6 +753,10 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.NESTWW40,
       locationName.NESTWW41,
       locationName.NESTWW42,
+    ],
+    regionName.WWA51NESTS:   [
+      locationName.NESTWW5,
+      locationName.NESTWW6,  
     ],
     regionName.IOHCT:   [
       locationName.NESTIH40,
@@ -1247,6 +1251,7 @@ def connect_regions(self):
                         {regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ww_to_chuffy(state),
                         regionName.TL: lambda state: rules.ww_tdl_backdoor(state),
                         regionName.GMFD: lambda state: rules.ww_to_fuel_depot(state),
+                        regionName.WWA51NESTS: lambda state: rules.a51_nests_from_WW(state),
                         })
 
     region_IOHCT = multiworld.get_region(regionName.IOHCT, player)
@@ -1286,6 +1291,7 @@ def connect_regions(self):
                         {regionName.WW: lambda state: rules.TDL_to_WW(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.tdl_to_chuffy(state),
                          regionName.TL_HATCH: lambda state: rules.tdl_to_hatch(state),
+                         regionName.WWA51NESTS: lambda state: rules.a51_nests_from_TDL(state),
                          })
     
     region_QM = multiworld.get_region(regionName.IOHQM, player)
