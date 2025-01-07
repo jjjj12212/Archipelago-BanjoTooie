@@ -61,41 +61,41 @@ def randomize_level_order(world: BanjoTooieWorld) -> None:
             world.randomize_order.update({regionName.CK: 1230952})
 
 def generate_world_order(world: BanjoTooieWorld, worlds: List[str]) -> List[str]:
-    good_order = False
-    while not good_order:
-        good_order = True
-        world.random.shuffle(worlds)
-
-        # Fewer than 4 collectibles to get progressive Claw Clambers.
-        if world.options.progressive_shoes.value and worlds[0] == regionName.CK:
-            good_order = False
-
-        # Not enough collectibles in the overworld to get to Quag
-        if world.options.randomize_bk_moves.value != 2 and world.options.open_silos.value == 0 and worlds[0] in [regionName.GIO, regionName.CK]:
-            good_order = False
-
-        # Without nests, you can't manually reach wasteland
-        if world.options.randomize_bk_moves.value == 1 and world.options.open_silos.value == 0\
-            and world.options.nestsanity.value == 0 and worlds[0] in [regionName.CC, regionName.TL]:
-            good_order = False
-
-        # The 2nd world needs to be not too hard to access from the first world.
-        easy_2nd_worlds = {
-            regionName.MT: [regionName.GM],
-            regionName.GM: [regionName.MT, regionName.WW, regionName.JR, regionName.HP],
-            regionName.WW: [regionName.MT, regionName.GM, regionName.TL, regionName.CC],
-            regionName.JR: [regionName.MT, regionName.GM, regionName.HP],
-            # GI is not easy when you need 3 progressive shoes.
-            regionName.TL: [regionName.MT, regionName.GM, regionName.WW, regionName.CC] if world.options.progressive_shoes.value else [regionName.MT, regionName.GM, regionName.WW, regionName.GIO, regionName.CC],
-            # Reaching CK is not easy when you need 4 progressive shoes.
-            regionName.GIO: [regionName.MT, regionName.GM, regionName.GIO, regionName.TL, regionName.CC] if world.options.progressive_shoes.value else [regionName.MT, regionName.GM, regionName.GIO, regionName.TL, regionName.CC, regionName.CK],
-            regionName.HP:  [regionName.MT, regionName.GM, regionName.JR],
-            # Same thing with GI here.
-            regionName.CC: [regionName.MT, regionName.GM, regionName.WW, regionName.TL] if world.options.progressive_shoes.value else [regionName.MT, regionName.GM, regionName.WW, regionName.GIO, regionName.TL],
-            regionName.CK:  [regionName.MT, regionName.GM, regionName.GIO, regionName.TL, regionName.CC] 
-        }
-        if worlds[1] not in easy_2nd_worlds[worlds[0]]:
-            good_order = False
+    
+    bad_first_worlds = set()
+    # Fewer than 4 collectibles to get progressive Claw Clambers.
+    if world.options.progressive_shoes.value:
+        bad_first_worlds.add(regionName.CK) 
+    # Not enough collectibles in the overworld to get to Quag
+    if world.options.randomize_bk_moves.value != 2 and world.options.open_silos.value == 0:
+        bad_first_worlds.update([regionName.GIO, regionName.CK])
+    # Without nests, reaching Wasteland might not be possible
+    if world.options.randomize_bk_moves.value == 1 and world.options.open_silos.value == 0\
+        and world.options.nestsanity.value == 0:
+        bad_first_worlds.update([regionName.CC, regionName.TL])
+        
+    world1 = world.random.choice([w for w in worlds if w not in bad_first_worlds])
+    # The 2nd world needs to be not too hard to access from the first world.
+    easy_2nd_worlds = {
+        regionName.MT: [regionName.GM],
+        regionName.GM: [regionName.MT, regionName.WW, regionName.JR, regionName.HP],
+        regionName.WW: [regionName.MT, regionName.GM, regionName.TL, regionName.CC],
+        regionName.JR: [regionName.MT, regionName.GM, regionName.HP],
+        # GI is not easy when you need 3 progressive shoes.
+        regionName.TL: [regionName.MT, regionName.GM, regionName.WW, regionName.CC] if world.options.progressive_shoes.value else [regionName.MT, regionName.GM, regionName.WW, regionName.GIO, regionName.CC],
+        # Reaching CK is not easy when you need 4 progressive shoes.
+        regionName.GIO: [regionName.MT, regionName.GM, regionName.GIO, regionName.TL, regionName.CC] if world.options.progressive_shoes.value else [regionName.MT, regionName.GM, regionName.GIO, regionName.TL, regionName.CC, regionName.CK],
+        regionName.HP:  [regionName.MT, regionName.GM, regionName.JR],
+        # Same thing with GI here.
+        regionName.CC: [regionName.MT, regionName.GM, regionName.WW, regionName.TL] if world.options.progressive_shoes.value else [regionName.MT, regionName.GM, regionName.WW, regionName.GIO, regionName.TL],
+        regionName.CK:  [regionName.MT, regionName.GM, regionName.GIO, regionName.TL, regionName.CC] 
+    }
+    world2 = world.random.choice(easy_2nd_worlds[world1])
+    left_worlds = [w for w in worlds if w not in [world1, world2]]
+    world.random.shuffle(left_worlds)
+    
+    worlds = [world1] + [world2] + left_worlds
+    
     return worlds
 
 def set_level_costs(world: BanjoTooieWorld) -> None:
@@ -161,14 +161,14 @@ def randomize_entrance_loading_zones(world: BanjoTooieWorld) -> None:
     if not world.options.randomize_world_loading_zone:
         world.loading_zones = {level: level for level in randomizable_levels}
     else:
-        randomized_levels = randomizable_levels[::]
-        world.random.shuffle(randomized_levels)
-        while randomized_levels[0] in [regionName.CK, regionName.GIO]:
-            world.random.shuffle(randomized_levels)
-        #rigged the lottery
-        # while randomized_levels[0] != regionName.CC:
-        #     world.random.shuffle(randomized_levels)
-        #EO rig
+        good_levels = [l for l in randomizable_levels if l not in [regionName.CK, regionName.GIO]]
+        level1 = world.random.choice(good_levels)
+        
+        rest_levels = [l for l in randomizable_levels if l != level1]
+        world.random.shuffle(rest_levels)
+        
+        randomized_levels = [level1] + rest_levels
+        
         world.loading_zones = {randomizable_levels[i]: randomized_levels[i] for i in range(len(randomizable_levels))}
 
 
