@@ -31,6 +31,11 @@
     - Floor 3 notes: added leg spring as a possibility
     - Aliens Jiggy: Fixed bug where it checked if you could reach Atlantis
     - HFP trebleclef, volcano honeycomb, glide silo, ice pillar Cheato page, icicle grotto spring pad nest, icicle grotto top nests: for intended logic, only going through icicle grotto is now considered.
+  - Potential fix for the rare console only random crash
+  - Fix for not being able to do certain minigames if speed_up_minigames is off
+  - You can no longer enter the HAG-1 fight early in the Wonderwing Challenge by completing the Jiggywiggy Challenge for that door
+  - A message will show if instant transform fails because you haven't visited the Wigwam/Skull yet
+  - Deathlink and Traps will no longer happen in most minigames
 
 # 4.0.1
   - Renamings:
