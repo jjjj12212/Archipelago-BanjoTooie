@@ -1194,7 +1194,7 @@ def connect_regions(self):
 
     region_SM = multiworld.get_region(regionName.SM, player)
     region_SM.add_exits({regionName.IOHJV, regionName.SMGL},{
-                          regionName.IOHWH: lambda state: rules.canGetPassedKlungo(state),
+                          regionName.IOHJV: lambda state: rules.canGetPassedKlungo(state),
                           regionName.SMGL: lambda state: rules.SM_to_GL(state)
                         })
 
