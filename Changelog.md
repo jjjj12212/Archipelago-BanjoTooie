@@ -23,6 +23,7 @@
     - Area 51 notes: added glide as a way to get them, if not on intended logic
     - Dodgem Dome Jinjo: if not on intended logic, can be gotten with leg spring + glide
     - Space Zone Honeycomb: Removed tightrope walk as solo Kazooie from easy tricks logic
+    - Waste Disposal Pump Room collectables: in hard tricks and glitch logics, you can clear the pipes with tall jump + beak buster, tall jump + flutter, or talon trot + (flutter or air rat-a-tat rap) + beak buster 
     - Oogle Boogle Jiggy: added tall jump to use the spring pad
     - Trash Compactor Jiggy: added tall jump as a requirement if pack whacking accross
     - Trash Compactor Nests: if not on intended logic, having a clockwork walk to the nests is now in logic

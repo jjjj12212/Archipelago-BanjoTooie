@@ -1548,7 +1548,9 @@ class BanjoTooieRules:
                     and self.jrl_waste_disposal(state)\
                     and ((self.flap_flip(state)\
                         or self.tall_jump(state) and self.beak_buster(state)\
-                        or self.talon_trot(state) and self.flutter(state) and self.beak_buster(state)
+                        or self.talon_trot(state) and self.flutter(state) and self.beak_buster(state)\
+                        or self.tall_jump(state) and self.flutter(state)\
+                        or self.extremelyLongJump(state)\
                         ) and (self.has_explosives(state) or self.beak_barge(state))\
                         or self.clockwork_shot(state)
                     )
@@ -5727,9 +5729,21 @@ class BanjoTooieRules:
             logic = self.jrl_waste_disposal(state) and self.flap_flip(state) and self.climb(state)
         elif self.world.options.logic_type == 2: # advanced
             #If someone finds a setup for a clockwork shot for these nests, I'll add it to the logic.
-            logic = self.jrl_waste_disposal(state) and self.flap_flip(state) and self.climb(state)
+            logic = self.jrl_waste_disposal(state) and self.climb(state)\
+                         and (self.flap_flip(state)\
+                            or self.tall_jump(state) and self.flutter(state)\
+                            or self.extremelyLongJump(state)\
+                            or self.tall_jump(state) and self.beak_buster(state)\
+                            or self.talon_trot(state) and self.flutter(state) and self.beak_buster(state)\
+                        )
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.jrl_waste_disposal(state) and self.flap_flip(state) and self.climb(state)
+            logic = self.jrl_waste_disposal(state) and self.climb(state)\
+                         and (self.flap_flip(state)\
+                            or self.tall_jump(state) and self.flutter(state)\
+                            or self.extremelyLongJump(state)\
+                            or self.tall_jump(state) and self.beak_buster(state)\
+                            or self.talon_trot(state) and self.flutter(state) and self.beak_buster(state)\
+                        )
         return logic
     
     def jrl_waste_disposal(self, state: CollectionState) -> bool:
