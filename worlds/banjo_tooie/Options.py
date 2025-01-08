@@ -255,6 +255,14 @@ class EnableMultiWorldDinoRoar(Toggle):
 class EnableNestsanity(Toggle):
     """Eggs and feather nests give checks when you collect them for the first time. They behave as regular egg nests the other times."""
     display_name = "Nestsanity"
+    
+class TrapsToNestRatio(Range):
+    """Select a percentage of all feather and egg nests items to be replaced with trap items
+    Requires Traps and Nestsanity to have an effect."""
+    display_name = "Traps to Nests Ratio"
+    range_start = 0
+    range_end = 100
+    default = 0
 
 class KingJingalingHasJiggy(DefaultOnToggle):
     """King Jingaling will always have a Jiggy for you."""
@@ -297,7 +305,8 @@ class SkipToT(Choice):
     default = 1
 
 class LogicType(Choice):
-    """Choose your logic difficulty and difficulty of tricks you are expected to perform to reach certain areas."""
+    """Choose your logic difficulty and difficulty of tricks you are expected to perform to reach certain areas.
+    Please be aware that if you plan on randomizing worlds with BK Moves in the pool, you cannot use "intended" logic.""" 
     display_name = "Logic Type"
     option_intended = 0
     option_easy_tricks = 1
@@ -435,7 +444,8 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_stop_n_swap: RandomizeStopnSwap
     randomize_dino_roar: EnableMultiWorldDinoRoar
     nestsanity: EnableNestsanity
-    traps:Traps
+    traps: Traps
+    traps_nests_ratio: TrapsToNestRatio
 
     randomize_stations: EnableMultiWorldTrainStationSwitches
     randomize_chuffy: EnableMultiWorldChuffyTrain

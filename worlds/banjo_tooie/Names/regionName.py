@@ -54,6 +54,7 @@ GMFD = "Glitter Gulch Mine - Fuel Depot, Behind the Rocks"
 
 WW = "Witchyworld"
 WWS = "Witchyworld Station"
+WWA51NESTS = "Witchyworld - Area 51 Egg Nests"
 
 JR = "Jolly Roger's Lagoon - Town Center"
 JRU = "Jolly Roger's Lagoon - Underwater"

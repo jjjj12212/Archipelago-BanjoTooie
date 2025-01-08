@@ -16,7 +16,7 @@ Our implementation also supports the Everdrive 3.0 and X7. (USB Support)
 -   Everdrive:
     - Install the USB driver on the PC that will be connecting to the everdrive
         - Windows: https://ftdichip.com/wp-content/uploads/2021/08/CDM212364_Setup.zip
-        - Linux: Driver is built into the kernel
+        - Linux: https://ftdichip.com/wp-content/uploads/2022/07/libftd2xx-x86_64-1.4.27.tgz
     - For Everdrive 3.0, the OS version needs to be 3.06 to be compatible.
     - The Nintendo 64 Expansion Pak is required
 -   Grab the latest release from https://github.com/jjjj12212/Archipelago-BanjoTooie
@@ -30,7 +30,7 @@ Once BizHawk has been installed, open EmuHawk and change the following settings:
 -   Under Config > Hotkeys, many hotkeys are listed, with many bound to common keys on the keyboard. You will likely want to disable most of these, which you can do quickly using  `Esc`.
 -   If playing with a controller, when you bind controls, disable "P1 A Up", "P1 A Down", "P1 A Left", and "P1 A Right" as these interfere with aiming if bound. Set directional input using the Analog tab instead.
 -   Under N64 enable "Use Expansion Slot". (The N64 menu only appears after loading a ROM.)
--   Under Condig -> Speed/Skip, click "Audio Throttle" as this will fix the off pitch sounds while playing
+-   Under Config -> Speed/Skip, click "Audio Throttle" as this will fix the off pitch sounds while playing
 
 It is strongly recommended to associate N64 rom extensions (*.n64, *.z64) to the EmuHawk we've just installed. To do so, we simply have to search any N64 rom we happened to own, right click and select "Open with…", unfold the list that appears and select the bottom option "Look for another application", then browse to the BizHawk folder and select EmuHawk.exe.
 
