@@ -162,6 +162,8 @@ class BanjoTooieWorld(World):
         itempool = []
         ############## START OF TRAP / BIG O PANTS COUNTER #######################################
         trap_big_pants_counter = 0
+        removed_enests = 0
+        removed_fnests = 0
         if self.options.cheato_rewards.value == True and self.options.randomize_bk_moves.value == 0:
             for i in range(5):
                 trap_big_pants_counter += 1
