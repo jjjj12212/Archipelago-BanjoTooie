@@ -58,6 +58,7 @@ class BanjoTooieWorld(World):
         item_name_to_id[name] = data.btid
 
     location_name_to_id = {name: data.btid for name, data in all_location_table.items()}
+    location_name_to_group = {name: data.group for name, data in all_location_table.items()}
 
     item_name_groups = {
         # "Jiggy": all_group_table["jiggy"],
@@ -522,7 +523,7 @@ class BanjoTooieWorld(World):
             self.banjo_pre_fills(itemName.HONEY, "Honeycomb", False)
                     
         if self.options.randomize_cheato.value == False:
-            self.banjo_pre_fills(itemName.PAGES, "Page", False)
+            self.banjo_pre_fills(itemName.PAGES, "Cheato Page", False)
 
         if self.options.randomize_doubloons.value == False:
             self.banjo_pre_fills(itemName.DOUBLOON, "Doubloon", False)
@@ -697,7 +698,7 @@ class BanjoTooieWorld(World):
     def get_filler_item_name(self) -> str:
         return itemName.NONE
 
-    def banjo_pre_fills(self, itemNameOrGroup: str, locationFindCriteria: str, useGroup: bool ) -> None:
+    def banjo_pre_fills(self, itemNameOrGroup: str, group: str, useGroup: bool ) -> None:
         if useGroup:
             for group_name, item_info in self.item_name_groups.items():
                 if group_name == itemNameOrGroup:
@@ -710,7 +711,7 @@ class BanjoTooieWorld(World):
         else:
             for name, id in self.location_name_to_id.items():
                 item = self.create_item(itemNameOrGroup)
-                if name.find(locationFindCriteria) != -1:
+                if self.location_name_to_group[name] == group:
                     # self.multiworld.get_location(name, self.player).place_locked_item(item)
                     location = self.multiworld.get_location(name, self.player)
                     location.place_locked_item(item)
