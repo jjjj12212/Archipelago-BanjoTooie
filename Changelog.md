@@ -1,3 +1,7 @@
+# 4.1.1
+  - Renamings
+    - GI Floor 2: Near Cheato Page Feather Nest -> GI Floor 2: Near Page Feather Nest
+      - This fixes a bug when you have nests randomised, but not Cheato pages
 # 4.1
   - Multiplayer Jinjo is back for Token Hunt
   - Fixed issue where items and checks were not balanced in Token hunt
