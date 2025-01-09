@@ -523,7 +523,7 @@ class BanjoTooieWorld(World):
             self.banjo_pre_fills(itemName.HONEY, "Honeycomb", False)
                     
         if self.options.randomize_cheato.value == False:
-            self.banjo_pre_fills(itemName.PAGES, "CheatoPage", False)
+            self.banjo_pre_fills(itemName.PAGES, "Cheato Page", False)
 
         if self.options.randomize_doubloons.value == False:
             self.banjo_pre_fills(itemName.DOUBLOON, "Doubloon", False)
