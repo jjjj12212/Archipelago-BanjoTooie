@@ -1,5 +1,11 @@
+# 4.1.2
+  - Logic fixes
+    - Outside GI Left of Building Feather Nest: removed split up + tall jump, since it's not possible
+    - Oogle Boogle cave stuff: is now in logic if entering TDL from the backdoor is possible
+
 # 4.1.1
   - Fixed generation issue when you had nestsanity off and cheato page randomization off.
+
 # 4.1
   - Multiplayer Jinjo is back for Token Hunt
   - Fixed issue where items and checks were not balanced in Token hunt
