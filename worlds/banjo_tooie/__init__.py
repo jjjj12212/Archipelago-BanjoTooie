@@ -198,6 +198,9 @@ class BanjoTooieWorld(World):
             removed_fnests = removed_nests - removed_enests
             
             trap_big_pants_counter += removed_nests + all_item_table[itemName.GNEST].qty
+        elif self.options.nestsanity.value == True: # nestsanity with no traps, remove gnests
+            trap_big_pants_counter += all_item_table[itemName.GNEST].qty
+
         if self.options.traps.value == True:
             trap_list = self.random.choices(['gnests', 'ttrap', 'strap', 'trtrap', 'sqtrap'], weights = [
                 self.options.golden_eggs_weight.value if self.options.nestsanity.value == True else 0,
