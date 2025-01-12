@@ -1,5 +1,6 @@
 # 4.1.2
   - Logic fixes
+    - MT to HFP access: added entering the stadium with the beak bomb glitch if backdoors is active
     - Outside GI Left of Building Feather Nest: removed split up + tall jump, since it's not possible
     - Oogle Boogle cave stuff: is now in logic if entering TDL from the backdoor is possible
   - Removed Knuckles from the game

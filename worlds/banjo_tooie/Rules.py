@@ -6623,8 +6623,9 @@ class BanjoTooieRules:
             logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
                    self.backdoors_enabled(state)
         elif self.world.options.logic_type == 3: # glitched
-            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
-                   self.backdoors_enabled(state)
+            logic = (self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT)\
+                        or self.MT_flight_pad(state) and self.beak_bomb(state))\
+                    and self.backdoors_enabled(state)
         return logic
 
 
