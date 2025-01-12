@@ -5,6 +5,8 @@ import settings
 import typing
 from jinja2 import Environment, FileSystemLoader
 from typing import Dict, Any
+
+from .Hints import generate_hints
 from .Items import BanjoTooieItem, all_item_table, all_group_table
 from .Locations import BanjoTooieLocation, LocationData, all_location_table, MTLoc_Table, GMLoc_table, WWLoc_table, JRLoc_table, TLLoc_table, GILoc_table, HPLoc_table, CCLoc_table
 from .Regions import create_regions, connect_regions
@@ -47,6 +49,7 @@ class BanjoTooieWorld(World):
     """
     
     game: str = "Banjo-Tooie"
+    version = "V4.1"
     web = BanjoTooieWeb()
     topology_present = True
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
@@ -75,7 +78,6 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
 
     def __init__(self, world, player):
-        self.version = "V4.1"
         self.kingjingalingjiggy = False
         self.starting_egg: int = 0
         self.starting_attack: int = 0
@@ -90,6 +92,7 @@ class BanjoTooieWorld(World):
         self.loading_zones = {}
         self.jamjars_siloname_costs = {}
         self.jamjars_silo_costs = {}
+        self.hints = []
         super(BanjoTooieWorld, self).__init__(world, player)
         
     def item_code(self, itemname: str) -> int:
@@ -733,11 +736,10 @@ class BanjoTooieWorld(World):
             regionName.CK: regionName.IOHQM + " (Caudron Keep Entrance)"
         }
         bt_players = world.get_game_players(cls.game)
-        # spoiler_handle.write('\n\nBanjo-Tooie')
+        spoiler_handle.write('\n\nBanjo-Tooie ({})'.format(BanjoTooieWorld.version))
         for player in bt_players:
             name = world.get_player_name(player)
-            spoiler_handle.write(f"\n\nBanjo-Tooie ({name}):")
-            spoiler_handle.write('\n\tVersion: ' + world.worlds[player].version)
+            spoiler_handle.write(f"\n\n{name}:")
             spoiler_handle.write('\n\tLoading Zones:')
             for starting_zone, actual_world in world.worlds[player].loading_zones.items():
                     if actual_world == regionName.JR:
@@ -759,9 +761,14 @@ class BanjoTooieWorld(World):
             spoiler_handle.write('\n\tJamjars\' Silo Costs:')
             for silo, cost in world.worlds[player].jamjars_siloname_costs.items():
                     spoiler_handle.write(f"\n\t\t{silo}: {cost}")
+            spoiler_handle.write('\n\tHints:')
+            for hint in world.worlds[player].hints:
+                    spoiler_handle.write(f"\n\t\t{hint}")
             
 
     def fill_slot_data(self) -> Dict[str, Any]:
+        self.hints = generate_hints(self)
+
         btoptions = {}
         btoptions["player_name"] = self.multiworld.player_name[self.player]
         btoptions["seed"] = self.random.randint(12212, 9090763)
@@ -816,7 +823,7 @@ class BanjoTooieWorld(World):
         btoptions['first_silo'] = self.single_silo
         btoptions['loading_zones'] = self.loading_zones
         btoptions['silo_option'] = int(self.options.open_silos.value)
-        btoptions['version'] = self.version
+        btoptions['version'] = BanjoTooieWorld.version
         btoptions['bassclef_amount'] = int(self.options.bassclef_amount.value)
         btoptions['extra_trebleclefs_count'] = int(self.options.extra_trebleclefs_count.value)
         btoptions['jamjars_siloname_costs'] = self.jamjars_siloname_costs
@@ -826,6 +833,8 @@ class BanjoTooieWorld(World):
         btoptions['dialog_character'] = int(self.options.dialog_character.value)
 
         btoptions['nestsanity'] = "true" if self.options.nestsanity == 1 else "false"
+
+        # btoptions['hints'] = self.hints
         return btoptions
 
     # for the universal tracker, doesn't get called in standard gen
