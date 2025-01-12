@@ -5,6 +5,7 @@
     - Oogle Boogle cave stuff: is now in logic if entering TDL from the backdoor is possible
   - Removed Knuckles from the game
   - jjjj12212 can't math. fix item location matching when jinjos are not randomized.
+  - Fixed number of progression jiggies when Hag 1 is closed
 
 # 4.1.1
   - Fixed generation issue when you had nestsanity off and cheato page randomization off.
