@@ -127,7 +127,12 @@ Banjo-Tooie:
   randomize_dino_roar: 'true' # Roar is in the pool
   nestsanity: 'false'         # Every egg nest and feather nest give a check when you collect them for the first time. They behave as normal afterwards.
   traps: 'false'              # Swaps all Big-O-Pants (junk) items to Traps
-  traps_nests_ratio: 0        # 0 - 100; replaces a percentage of all egg and feather nests (except golden eggs) to Big-O-Pants or trap items. Requires nestsanity.
+  traps_nests_ratio: 0        # 0 - 100; replaces a percentage of all feather and egg nests (except golden eggs) to Big-O-Pants or trap items. Requires nestsanity.
+  golden_eggs_weight: 40      # 0 - 100; weight of golden eggs in the trap pool. Requires nestsanity and traps.
+  trip_trap_weight: 40        # 0 - 100; weight of trip traps in the trap pool. Requires traps.
+  slip_trap_weight: 40        # 0 - 100; weight of slip traps in the trap pool. Requires traps.
+  transform_trap_weight: 40   # 0 - 100; weight of transform traps in the trap pool. Requires traps.
+  squish_trap_weight: 20      # 0 - 100; weight of squish traps in the trap pool. Requires traps.
 
   randomize_stations: 'true'  # adds Stations to the pool
   randomize_chuffy: 'true'    # Chuffy as a AP Item. You can also "call" Chuffy at any unlocked station without needing to fight King Coal.
