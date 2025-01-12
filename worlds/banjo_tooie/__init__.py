@@ -208,7 +208,7 @@ class BanjoTooieWorld(World):
             if self.item_filter(item):
                 if item.code == self.item_code(itemName.JIGGY) and self.kingjingalingjiggy == True:
                     for i in range(id.qty - 1): #note the -1 in the count here. King Took one already.
-                        if self.options.randomize_jinjos == False and self.jiggy_counter > 80:
+                        if self.options.randomize_jinjos == False and self.jiggy_counter > 81:
                             break
                         else:
                             itempool += [self.create_item(name)]
