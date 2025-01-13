@@ -93,6 +93,7 @@ class BanjoTooieWorld(World):
         self.jamjars_siloname_costs = {}
         self.jamjars_silo_costs = {}
         self.hints = []
+        self.hinted_location_names = []
         super(BanjoTooieWorld, self).__init__(world, player)
         
     def item_code(self, itemname: str) -> int:
@@ -767,7 +768,7 @@ class BanjoTooieWorld(World):
             
 
     def fill_slot_data(self) -> Dict[str, Any]:
-        self.hints = generate_hints(self)
+        generate_hints(self)
 
         btoptions = {}
         btoptions["player_name"] = self.multiworld.player_name[self.player]
