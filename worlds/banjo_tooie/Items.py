@@ -1,7 +1,6 @@
 from BaseClasses import Item
 import typing
-from .Names import itemName
-from .Names import locationName
+from .Names import itemName, locationName
 
 
 class BanjoTooieItem(Item):
@@ -11,7 +10,7 @@ class ItemData(typing.NamedTuple):
     btid: int = 0
     qty: int = 0
     type: str = ""
-    default_location: str = "" 
+    default_location: str = ""
 
 
 
@@ -73,7 +72,7 @@ bk_moves_table = {
     itemName.DIVE:          ItemData(1230810, 1, "progress", ""),
     itemName.FPAD:          ItemData(1230811, 1, "progress", ""),
     itemName.FFLIP:         ItemData(1230812, 1, "progress", ""),
-    itemName.EGGSHOOT:      ItemData(1230813, 1, "progress", ""),     
+    itemName.EGGSHOOT:      ItemData(1230813, 1, "progress", ""),
     itemName.ROLL:          ItemData(1230814, 1, "progress", ""),
     itemName.TTROT:         ItemData(1230815, 1, "progress", ""),
     itemName.TJUMP:         ItemData(1230816, 1, "progress", ""),
@@ -92,7 +91,7 @@ bk_moves_table = {
 
 progressive_ability_table = {
     itemName.PBBUST:        ItemData(1230828, 2, "progress", ""),
-    itemName.PBEGGS:        ItemData(1230829, 4, "progress", ""),
+    itemName.PEGGS:        ItemData(1230829, 4, "progress", ""),
     itemName.PSHOES:        ItemData(1230830, 4, "progress", ""),
     itemName.PSWIM:         ItemData(1230831, 3, "progress", ""),
     itemName.PBASH:         ItemData(1230832, 2, "progress", ""),
@@ -170,13 +169,13 @@ rando_key_table = {
 }
 
 nest_table= {
-    itemName.GNEST:           ItemData(1230805,   0, "trap", ""),
-    itemName.ENEST:           ItemData(1230806,   331, "filler", ""),
-    itemName.FNEST:           ItemData(1230807,   142, "filler", ""),
+    itemName.GNEST:           ItemData(1230805,   23, "trap", ""),
+    itemName.ENEST:           ItemData(1230806,   315, "filler", ""),
+    itemName.FNEST:           ItemData(1230807,   135, "filler", ""),
 }
 
 
-all_item_table = {
+all_item_table: dict[str, ItemData] = {
     **moves_table,
     **jinjo_table,
     **level_progress_table,
@@ -192,15 +191,15 @@ all_item_table = {
     **nest_table
 }
 
-all_group_table = {
-    'jiggy': jiggy_table,
-    'jinjo': jinjo_table,
-    'misc': misc_collectable_table,
-    'moves': moves_table,
-    'magic': level_progress_table,
-    'stations': stations_table,
-    'levelaccess': rando_key_table,
-    'token': token_table,
+all_group_table: dict[str, dict[str, ItemData]] = {
+    "jiggy": jiggy_table,
+    "jinjo": jinjo_table,
+    "misc": misc_collectable_table,
+    "moves": moves_table,
+    "magic": level_progress_table,
+    "stations": stations_table,
+    "levelaccess": rando_key_table,
+    "token": token_table,
     "stopnswap": stop_n_swap_table,
     "bk_moves": bk_moves_table,
     "dino": dino_table,
