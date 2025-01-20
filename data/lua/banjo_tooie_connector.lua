@@ -6409,6 +6409,217 @@ function unlock_worlds(itemId)
     end
 end
 
+---------------------------------- ITEM GET MESSAGES ----------------------------------
+
+local station_names = {
+    [1230794] = "Train Station in Isle O' Hags",
+    [1230791] = "Train Station in Terrydactyland",
+    [1230790] = "Train Station in Grunty Industries",
+    [1230792] = "Train Station on the Lava Side of Hailfire Peaks",
+    [1230793] = "Train Station on the Icy Side of Hailfire Peaks",
+    [1230795] = "Train Station in Witchy World",
+}
+
+local magic_names = {
+    [1230855] = "Golden Goliath",
+    [1230856] = "Levitate",
+    [1230857] = "Power",
+    [1230858] = "Oxygenate",
+    [1230859] = "Enlarge",
+    [1230860] = "EMP",
+    [1230861] = "Life Force",
+    [1230862] = "Rain Dance",
+    [1230863] = "Heal",
+}
+
+local transformation_names = {
+    [1230174] = {name = "Stony", attribute = "strong"},
+    [1230175] = {name = "Detonator", attribute = "explosive"},
+    [1230176] = {name = "Money Van", attribute = "fast"},
+    [1230177] = {name = "Submarine", attribute = "high-tech"},
+    [1230178] = {name = "T-Rex", attribute = "scary"},
+    [1230179] = {name = "Washing Machine", attribute = "useful"},
+    [1230180] = {name = "Snowball", attribute = "cool"},
+    [1230181] = {name = "Bee", attribute = "cute"},
+    [1230182] = {name = "Dragon", attribute = "dangerous"},
+}
+
+function display_item_message(msg_table)
+    -- Cancel if not for this player
+    if msg_table["to_player"] ~= PLAYER
+    then
+        return
+    end
+
+    -- Select message text depending on item id
+    local msg_text = get_item_message_text(msg_table["item_id"], msg_table["item"], msg_table["player"])
+    if not msg_text then return end
+
+    -- Select character icon depending on item id
+    local msg_icon = get_item_message_char(msg_table["item_id"]);
+    if not msg_icon then return end
+
+    table.insert(MESSAGE_TABLE, {msg_text, msg_icon});
+end
+
+function get_item_message_text(item_id, item, player)
+    local own = player == PLAYER
+
+    if (1230753 <= item_id and item_id <= 1230780) -- BT Moves
+        or (1230810 <= item_id and item_id <= 1230827) -- BK Moves
+        or (1230782 <= item_id and item_id <= 1230785) -- Progessive Moves 1
+        or (1230828 <= item_id and item_id <= 1230832) -- Progressive Moves 2
+        or (item_id == 1230800 or item_id == 1230802) -- Stop'n'Swap Moves
+    then
+        return own
+            and string.format("You can now use the %s.", item)
+            or string.format("%s taught you how to use the %s.", player, item)
+    elseif 1230944 <= item_id and item_id <= 1230952 -- Worlds
+    then
+        return own
+            and string.format("%s is now open.", item)
+            or string.format("%s has just opened %s.", player, item)
+    elseif item_id == 1230796 -- Chuffy
+    then
+        local special = ENABLE_AP_CHUFFY and "\nDon't forget that you can call Chuffy at any unlocked station." or ""
+        return own
+            and string.format("You can now use %s.%s", item, special)
+            or string.format("%s has just repaired %s.%s", player, item, special)
+    elseif 1230790 <= item_id and item_id <= 1230795 -- Stations
+    then
+        return own
+            and string.format("You can now use the %s.", station_names[item_id])
+            or string.format("%s has just opened the %s.", player, station_names[item_id])
+    elseif 1230855 <= item_id and item_id <= 1230863 -- Mumbo Magic
+    then
+        if DIALOG_CHARACTER == 110 or DIALOG_CHARACTER == 8
+        then
+            -- Mumbo flavor text
+            return own
+                and string.format("Mumbo now use mighty %s spell. Bear go visit Mumbo to try.", magic_names[item_id])
+                or string.format("%s told Mumbo mighty %s spell. Bear go visit Mumbo to try.", player, magic_names[item_id])
+        else
+            -- Basic text
+            return own
+                and string.format("Mumbo can now use the %s spell.", magic_names[item_id])
+                or string.format("%s has just unlocked Mumbo's %s spell.", player, magic_names[item_id])
+        end
+    elseif 1230174 <= item_id and item_id <= 1230182 -- Humba Transformations
+    then
+        if DIALOG_CHARACTER == 110 or DIALOG_CHARACTER == 37
+        then
+            -- Humba flavor text
+            return own
+                and string.format("Wumba now make bear %s. Very %s!", transformation_names[item_id]["name"], transformation_names[item_id]["attribute"])
+                or string.format("%s told Wumba how to make bear %s. Very %s!", player, transformation_names[item_id]["name"], transformation_names[item_id]["attribute"])
+        else
+            -- Basic text
+            return own
+                and string.format("Banjo can now be transformed into a %s.", transformation_names[item_id]["name"])
+                or string.format("%s has just unlocked the %s transformation.", player, transformation_names[item_id]["name"])
+        end
+    else
+        return nil
+    end
+end
+
+function get_item_message_char(item_id)
+    -- Default character is used depending on the item
+    if DIALOG_CHARACTER == 110
+    then
+        if 1230753 <= item_id and item_id <= 1230776 -- BT Moves
+        then
+            return 17 -- Jamjars
+        elseif item_id == 1230779 -- Amaze O' Gaze
+        then
+            return 99 -- Goggles
+        elseif item_id == 1230780 -- Roar
+        then
+            return 50 -- Bargasaurus
+        elseif item_id == 1230800 or item_id == 1230802 -- Stop'n'Swap Moves
+        then
+            return 109 -- Heggy
+        elseif 1230810 <= item_id and item_id <= 1230827 -- BK Moves
+        then
+            return 7 -- Bottles
+        elseif (1230777 <= item_id and item_id <= 1230778)
+            or (item_id == 1230831) -- Water Moves
+        then
+            return 56 -- Roysten
+        elseif (1230828 <= item_id and item_id <= 1230830)
+            or (item_id == 1230832)
+            or (1230782 <= item_id and item_id <= 1230785) -- Progressive Moves
+        then
+            return 7 -- Bottles
+        elseif item_id == 1230944 -- Mayahem Temple
+        then
+            return 100 -- Targitzan
+        elseif item_id == 1230945 -- Glitter Gulch Mine
+        then
+            return 39 -- Old King Coal
+        elseif item_id == 1230946 or item_id == 1230795 -- Witchy World
+        then
+            return 31 -- Mr Patch
+        elseif item_id == 1230947 -- Jolly Roger's Lagoon
+        then
+            return 102 -- Lord Woo Fak Fak
+        elseif item_id == 1230948 or item_id == 1230791 -- Terrydactyland
+        then
+            return 49 -- Terry
+        elseif item_id == 1230949 or item_id == 1230790 -- Grunty Industries
+        then
+            return 130 -- Weldar
+        elseif item_id == 1230950 or item_id == 1230792 or item_id == 1230793 -- Hailfire Peaks
+        then
+            return 65 -- Chilly Willy
+        elseif item_id == 1230951 -- Cloud Cuckooland
+        then
+            return 27 -- Canary Mary
+        elseif item_id == 1230952 -- Cauldron Keep
+        then
+            return 71 -- Klungo
+        elseif item_id == 1230794 -- Isle O' Hags Station
+        then
+            return 8 -- Mumbo
+        elseif item_id == 1230796 -- Chuffy
+        then
+            return 39 -- Old King Coal
+        elseif 1230855 <= item_id and item_id <= 1230863 -- Mumbo Magic
+        then
+            return 8 -- Mumbo
+        elseif 1230174 <= item_id and item_id <= 1230182 -- Humba Transformations
+        then
+            return 37 -- Humba
+        else -- Default
+            return 7 -- Bottles
+        end
+
+    -- Completely random character
+    elseif DIALOG_CHARACTER == 255
+    then
+        return math.random(0, 109)
+
+    -- Fixed dialog character has been selected
+    else
+        return DIALOG_CHARACTER
+    end
+end
+
+---------------------------------- ITEM CATEGORIES ----------------------------------
+
+function is_jamjars_move(item_id)
+    return 1230753 <= item_id and item_id <= 1230776
+end
+
+function is_roysten_move(item_id)
+end
+
+function is_stopnswap_move(item_id)
+end
+
+function is_bk_move(item_id)
+end
+
 ---------------------- ARCHIPELAGO FUNCTIONS -------------
 
 function mumbo_announce()
@@ -6551,7 +6762,7 @@ function process_block(block)
         local msg = ""
         for k, msg_table in pairs(block['messages'])
         do
-            Messages(msg_table)
+            display_item_message(msg_table)
         end
     end
     if block['triggerDeath'] == true and DEATH_LINK == true
@@ -6564,113 +6775,6 @@ function process_block(block)
 
     if DEBUGLVL3 == true then
         print(block)
-    end
-end
-
-function Messages(msg_table)
-    local msg = ""
-    if msg_table["player"] == PLAYER and msg_table["to_player"] == PLAYER
-    then
-        msg = "You have found your " .. msg_table["item"]
-    elseif msg_table["to_player"] == PLAYER
-    then
-        msg = msg_table["player"] .. " sent your " .. msg_table["item"]
-    else
-        return
-    end
-    if 1230753 <= msg_table["item_id"] and msg_table["item_id"] <= 1230776 -- Jamjars
-    then
-        if DIALOG_CHARACTER == 110
-        then
-            table.insert(MESSAGE_TABLE, {msg, 17})
-        else
-            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-        end
-    end
-    if 1230779 <= msg_table["item_id"] and msg_table["item_id"] <= 1230780 -- Amaze + Roar
-    then
-        if DIALOG_CHARACTER == 110
-        then
-            table.insert(MESSAGE_TABLE, {msg, 17})
-        else
-            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-        end
-    end
-    if 1230810 <= msg_table["item_id"] and msg_table["item_id"] <= 1230827 -- BK Moves
-    then
-        if DIALOG_CHARACTER == 110
-        then
-            table.insert(MESSAGE_TABLE, {msg, 7})
-        else
-            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-        end
-    end
-    if 1230790 <= msg_table["item_id"] and msg_table["item_id"] <= 1230796 --Stations + Chuffy
-    then
-        if msg_table["item_id"] == 1230796 and ENABLE_AP_CHUFFY == true
-        then
-            msg = msg .. "\nDon't forget that you can call Chuffy at any unlocked station."
-        end
-        if DIALOG_CHARACTER == 110
-        then
-            table.insert(MESSAGE_TABLE, {msg, 39})
-        else
-            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-        end
-    end
-    if (1230777 <= msg_table["item_id"] and msg_table["item_id"] <= 1230778) or msg_table["item_id"] == 1230831 -- Roysten
-    then
-        if DIALOG_CHARACTER == 110
-        then
-            table.insert(MESSAGE_TABLE, {msg, 56})
-        else
-            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-        end
-    end
-    if 1230828 <= msg_table["item_id"] and msg_table["item_id"] <= 1230832 -- Progressive Moves
-    then
-        if DIALOG_CHARACTER == 110
-        then
-            table.insert(MESSAGE_TABLE, {msg, 7})
-        else
-            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-        end
-    end
-    if 1230782 <= msg_table["item_id"] and msg_table["item_id"] <= 1230785 -- Progressive Moves Pt.2
-    then
-        if DIALOG_CHARACTER == 110
-        then
-            table.insert(MESSAGE_TABLE, {msg, 7})
-        else
-            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-        end
-    end
-    if 1230944 <= msg_table["item_id"] and msg_table["item_id"] <= 1230952 -- Worlds
-    then
-        if DIALOG_CHARACTER == 110
-        then
-            table.insert(MESSAGE_TABLE, {msg, 27})
-        else
-            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-        end
-    end
-    if 1230855 <= msg_table["item_id"] and msg_table["item_id"] <= 1230863 -- Mumbo
-    then
-        if DIALOG_CHARACTER == 110
-        then
-            table.insert(MESSAGE_TABLE, {msg, 8})
-        else
-            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-        end
-    end
-    if 1230174 <= msg_table["item_id"] and msg_table["item_id"] <= 1230182 -- Humba
-    then
-        if DIALOG_CHARACTER == 110
-        then
-            table.insert(MESSAGE_TABLE, {msg, 37})
-        else
-            table.insert(MESSAGE_TABLE, {msg, DIALOG_CHARACTER});
-        end
     end
 end
 
@@ -7081,27 +7185,27 @@ function process_slot(block)
             BTH:setSettingOpenSilos(4, 1) -- CT
             BTH:setSettingOpenSilos(5, 1) -- WL
             BTH:setSettingOpenSilos(6, 1) -- QM
-            SILO_MESSAGE = "All Isle O' Hags Silos are Open"
+            SILO_MESSAGE = "All Isle O' Hags Silos are open."
         elseif string.find(OPEN_SILO, "Wasteland") ~= nil then
             BTH:setSettingOpenSilos(0, 1)
             BTH:setSettingOpenSilos(5, 1) -- WL
-            SILO_MESSAGE = "The Isle O' Hags Wasteland Silo is open"
+            SILO_MESSAGE = "The Isle O' Hags Wasteland Silo is open."
         elseif string.find(OPEN_SILO, "Quagmire") ~= nil then
             BTH:setSettingOpenSilos(0, 1)
             BTH:setSettingOpenSilos(6, 1) -- QM
-            SILO_MESSAGE = "The Isle O' Hags Quagmire Silo is open"
+            SILO_MESSAGE = "The Isle O' Hags Quagmire Silo is open."
         elseif string.find(OPEN_SILO, "Plateau") ~= nil then
             BTH:setSettingOpenSilos(0, 1)
             BTH:setSettingOpenSilos(2, 1) -- PL
-            SILO_MESSAGE = "The Isle O' Hags Plateau Silo is open"
+            SILO_MESSAGE = "The Isle O' Hags Plateau Silo is open."
         elseif string.find(OPEN_SILO, "Pine Grove") ~= nil then
             BTH:setSettingOpenSilos(0, 1)
             BTH:setSettingOpenSilos(3, 1) -- PG
-            SILO_MESSAGE = "The Isle O' Hags Pine Grove Silo is open"
+            SILO_MESSAGE = "The Isle O' Hags Pine Grove Silo is open."
         elseif string.find(OPEN_SILO, "Cliff Top") ~= nil then
             BTH:setSettingOpenSilos(0, 1)
             BTH:setSettingOpenSilos(4, 1) -- CT
-            SILO_MESSAGE = "The Isle O' Hags Cliff Top Silo is open"
+            SILO_MESSAGE = "The Isle O' Hags Cliff Top Silo is open."
         end
     end
     if block['slot_version'] ~= nil and block['slot_version'] ~= ""
@@ -7172,7 +7276,7 @@ function printGoalInfo()
             message ="You are trying to find all 15 of Mumbo's Tokens scattered throughout the Isle of Hags!\nGood Luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(TH_LENGTH)
         elseif GOAL_TYPE == 5 and TH_LENGTH < 15 then
-            message = "You are trying to find "..TH_LENGTH.." of the 15 of Mumbo Tokens scattered throughout the Isle of Hags!\nGood Luck and"..randomEncouragment;
+            message = "You are trying to find "..TH_LENGTH.." of the 15 of Mumbo Tokens scattered throughout the Isle O' Hags!\nGood Luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(TH_LENGTH)
         end
         if GOAL_PRINTED == false
