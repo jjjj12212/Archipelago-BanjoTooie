@@ -6451,7 +6451,10 @@ function display_item_message(msg_table)
         return
     end
 
-    -- Select message text depending on item id
+    -- Select item for current level of progressive move upgrades
+    convert_progressive_move_message(msg_table)
+
+    -- Select text depending on item id
     local msg_text = get_item_message_text(msg_table["item_id"], msg_table["item"], msg_table["player"])
     if not msg_text then return end
 
@@ -6460,6 +6463,158 @@ function display_item_message(msg_table)
     if not msg_icon then return end
 
     table.insert(MESSAGE_TABLE, {msg_text, msg_icon});
+end
+
+function convert_progressive_move_message(msg_table)
+    local item_id = msg_table["item_id"]
+    if item_id == 1230828 -- Progressive Beak Buster
+    then
+        if BTH:getItem(ITEM_TABLE["AP_ITEM_BDRILL"]) == 1
+        then
+            msg_table["item_id"] = 1230757
+            msg_table["item"] = "Bill Drill"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_BBUST"]) == 1
+        then
+            msg_table["item_id"] = 1230820
+            msg_table["item"] = "Beak Buster"
+        end
+    elseif item_id == 1230829 -- Progressive Eggs
+    then
+        if BTH:getItem(ITEM_TABLE["AP_ITEM_CEGGS"]) == 1
+        then
+            msg_table["item_id"] = 1230767
+            msg_table["item"] = "Clockwork Eggs"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_IEGGS"]) == 1
+        then
+            msg_table["item_id"] = 1230763
+            msg_table["item"] = "Ice Eggs"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_GEGGS"]) == 1
+        then
+            msg_table["item_id"] = 1230759
+            msg_table["item"] = "Grenade Eggs"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_FEGGS"]) == 1
+        then
+            msg_table["item_id"] = 1230756
+            msg_table["item"] = "Fire Eggs"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_BEGGS"]) == 1
+        then
+            msg_table["item_id"] = 1230823
+            msg_table["item"] = "Blue Eggs"
+        end
+    elseif item_id == 1230830 -- Progressive Shoes
+    then
+        if BTH:getItem(ITEM_TABLE["AP_ITEM_CLAWBTS"]) == 1
+        then
+            msg_table["item_id"] = 1230773
+            msg_table["item"] = "Claw Clamber Boots"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_SPRINGB"]) == 1
+        then
+            msg_table["item_id"] = 1230768
+            msg_table["item"] = "Springy Step Shoes"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_TTRAIN"]) == 1
+        then
+            msg_table["item_id"] = 1230821
+            msg_table["item"] = "Turbo Trainers"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_SSTRIDE"]) == 1
+        then
+            msg_table["item_id"] = 1230826
+            msg_table["item"] = "Stilt Stride"
+        end
+    elseif item_id == 1230831 -- Progressive Water Training
+    then
+        if BTH:getItem(ITEM_TABLE["AP_ITEM_FSWIM"]) == 1
+        then
+            msg_table["item_id"] = 1230777
+            msg_table["item"] = "Fast Swimming"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_DAIR"]) == 1
+        then
+            msg_table["item_id"] = 1230778
+            msg_table["item"] = "Double Air"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_DIVE"]) == 1
+        then
+            msg_table["item_id"] = 1230810
+            msg_table["item"] = "Dive"
+        end
+    elseif item_id == 1230832 -- Progressive Bash Attack
+    then
+        if BTH:getItem(ITEM_TABLE["AP_ITEM_BBASH"]) == 1
+        then
+            msg_table["item_id"] = 1230800
+            msg_table["item"] = "Breegull Bash"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_GRAT"]) == 1
+        then
+            msg_table["item_id"] = 1230824
+            msg_table["item"] = "Ground Rat-a-tat Rap"
+        end
+    elseif item_id == 1230782 -- Progressive Flight
+    then
+        if BTH:getItem(ITEM_TABLE["AP_ITEM_AIREAIM"]) == 1
+        then
+            msg_table["item_id"] = 1230760
+            msg_table["item"] = "Airborne Egg Aiming"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_BBOMB"]) == 1
+        then
+            msg_table["item_id"] = 1230827
+            msg_table["item"] = "Beak Bomb"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_FPAD"]) == 1
+        then
+            msg_table["item_id"] = 1230811
+            msg_table["item"] = "Flight Pad"
+        end
+    elseif item_id == 1230783 -- Progressive Egg Aim
+    then
+        if BTH:getItem(ITEM_TABLE["AP_ITEM_EGGAIM"]) == 1
+        then
+            msg_table["item_id"] = 1230755
+            msg_table["item"] = "Egg Aim"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_EGGSHOOT"]) == 1
+        then
+            msg_table["item_id"] = 1230813
+            msg_table["item"] = "Third Person Egg Shooting"
+        end
+    elseif item_id == 1230784 -- Progressive Adv Water Training
+    then
+        if BTH:getItem(ITEM_TABLE["AP_ITEM_FSWIM"]) == 1
+        then
+            msg_table["item_id"] = 1230777
+            msg_table["item"] = "Fast Swimming"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_DAIR"]) == 1
+        then
+            msg_table["item_id"] = 1230778
+            msg_table["item"] = "Double Air"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_TTORP"]) == 1
+        then
+            msg_table["item_id"] = 1230765
+            msg_table["item"] = "Talon Torpedo"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_AUQAIM"]) == 1
+        then
+            msg_table["item_id"] = 1230766
+            msg_table["item"] = "Sub-Aqua Egg Aiming"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_DIVE"]) == 1
+        then
+            msg_table["item_id"] = 1230810
+            msg_table["item"] = "Dive"
+        end
+    elseif item_id == 1230785 -- Progressive Adv Egg Aim
+    then
+        if BTH:getItem(ITEM_TABLE["AP_ITEM_BBLASTER"]) == 1
+        then
+            msg_table["item_id"] = 1230754
+            msg_table["item"] = "Breegull Blaster"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_EGGAIM"]) == 1
+        then
+            msg_table["item_id"] = 1230755
+            msg_table["item"] = "Egg Aim"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_AMAZEOGAZE"]) == 1
+        then
+            msg_table["item_id"] = 1230779
+            msg_table["item"] = "Amaze-O-Gaze"
+        elseif BTH:getItem(ITEM_TABLE["AP_ITEM_EGGSHOOT"]) == 1
+        then
+            msg_table["item_id"] = 1230813
+            msg_table["item"] = "Third Person Egg Shooting"
+        end
+    end
 end
 
 function get_item_message_text(item_id, item, player)
@@ -6477,8 +6632,8 @@ function get_item_message_text(item_id, item, player)
     elseif 1230944 <= item_id and item_id <= 1230952 -- Worlds
     then
         return own
-            and string.format("%s is now open.", item)
-            or string.format("%s has just opened %s.", player, item)
+            and string.format("%s is now open!", item)
+            or string.format("%s has just opened %s!", player, item)
     elseif item_id == 1230796 -- Chuffy
     then
         local special = ENABLE_AP_CHUFFY and "\nDon't forget that you can call Chuffy at any unlocked station." or ""
@@ -6518,9 +6673,9 @@ function get_item_message_text(item_id, item, player)
                 and string.format("Banjo can now be transformed into a %s.", transformation_names[item_id]["name"])
                 or string.format("%s has just unlocked the %s transformation.", player, transformation_names[item_id]["name"])
         end
-    else
-        return nil
     end
+
+    return nil
 end
 
 function get_item_message_char(item_id)
@@ -6568,7 +6723,7 @@ function get_item_message_char(item_id)
             return 49 -- Terry
         elseif item_id == 1230949 or item_id == 1230790 -- Grunty Industries
         then
-            return 130 -- Weldar
+            return 103 -- Weldar
         elseif item_id == 1230950 or item_id == 1230792 or item_id == 1230793 -- Hailfire Peaks
         then
             return 65 -- Chilly Willy
@@ -6603,21 +6758,6 @@ function get_item_message_char(item_id)
     else
         return DIALOG_CHARACTER
     end
-end
-
----------------------------------- ITEM CATEGORIES ----------------------------------
-
-function is_jamjars_move(item_id)
-    return 1230753 <= item_id and item_id <= 1230776
-end
-
-function is_roysten_move(item_id)
-end
-
-function is_stopnswap_move(item_id)
-end
-
-function is_bk_move(item_id)
 end
 
 ---------------------- ARCHIPELAGO FUNCTIONS -------------
