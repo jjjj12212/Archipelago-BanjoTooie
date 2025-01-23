@@ -1,21 +1,19 @@
 from BaseClasses import CollectionState
 from typing import TYPE_CHECKING
 
-from worlds.banjo_tooie.Options import EggsBehaviour, LogicType, VictoryCondition
+from worlds.banjo_tooie.Options import EggsBehaviour, LogicType, RandomizeBKMoveList, VictoryCondition
 from .Names import regionName, itemName, locationName
 from worlds.generic.Rules import add_rule, set_rule, forbid_item, add_item_rule
 
 # I don't know what is going on here, but it works.
 if TYPE_CHECKING:
     from . import BanjoTooieWorld
-else:
-    BanjoTooieWorld = object
 
 # Shamelessly Stolen from KH2 :D
 
 class BanjoTooieRules:
     player: int
-    world: BanjoTooieWorld
+    world: "BanjoTooieWorld"
     region_rules = {}
     #can_transform = {}
     mumbo_magic = []
@@ -28,7 +26,7 @@ class BanjoTooieRules:
     # kazooie_moves = []
     jiggy_rules = {}
 
-    def __init__(self, world: BanjoTooieWorld) -> None:
+    def __init__(self, world: "BanjoTooieWorld") -> None:
         self.player = world.player
         self.world = world
 
@@ -143,8 +141,8 @@ class BanjoTooieRules:
                 locationName.W9: lambda state: self.WorldUnlocks_req(state, 1230952)
             }
 
-        if self.world.options.victory_condition.value == VictoryCondition.option_minigame_hunt\
-            or self.world.options.victory_condition.value == VictoryCondition.option_wonderwing_challenge:
+        if self.world.options.victory_condition == VictoryCondition.option_minigame_hunt\
+            or self.world.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
 
             self.gametoken_rules = {
                 locationName.MUMBOTKNGAME1: lambda state: self.jiggy_mayahem_kickball(state),
@@ -165,8 +163,8 @@ class BanjoTooieRules:
 
             }
 
-        if self.world.options.victory_condition.value == VictoryCondition.option_boss_hunt\
-            or self.world.options.victory_condition.value == VictoryCondition.option_wonderwing_challenge:
+        if self.world.options.victory_condition == VictoryCondition.option_boss_hunt\
+            or self.world.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
             self.bosstoken_rules = {
                 locationName.MUMBOTKNBOSS1: lambda state: self.jiggy_targitzan(state),
                 locationName.MUMBOTKNBOSS2: lambda state: self.can_beat_king_coal(state),
@@ -178,8 +176,8 @@ class BanjoTooieRules:
                 locationName.MUMBOTKNBOSS8: lambda state: self.jiggy_mingy(state),
             }
 
-        if self.world.options.victory_condition.value == VictoryCondition.option_jinjo_family_rescue\
-            or self.world.options.victory_condition.value == VictoryCondition.option_wonderwing_challenge:
+        if self.world.options.victory_condition == VictoryCondition.option_jinjo_family_rescue\
+            or self.world.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
             self.jinjotoken_rules = {
                 locationName.MUMBOTKNJINJO1: lambda state: state.has(itemName.WJINJO, self.player, 1),
                 locationName.MUMBOTKNJINJO2: lambda state: state.has(itemName.OJINJO, self.player, 2),
@@ -1339,7 +1337,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.humbaWW(state) and self.mumboWW(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            if self.world.options.speed_up_minigames == 1:
+            if self.world.options.speed_up_minigames:
                 # No van required if you can clockwork warp into dodgems, since the door is already opened!
                 logic = (self.humbaWW(state) and self.mumboWW(state))\
                     or (self.clockwork_warp(state))
@@ -6230,15 +6228,15 @@ class BanjoTooieRules:
 
     def oogle_boogles_open(self, state) -> bool:
         return self.humbaTDL(state) and self.mumboTDL(state)
-    
+
     def access_oogle_boogle(self, state) -> bool:
-        if self.world.options.logic_type == 0: # beginner
+        if self.world.options.logic_type == LogicType.option_intended:
             logic = self.oogle_boogles_open(state) or state.can_reach_region(regionName.WW, self.player) and self.ww_tdl_backdoor(state)
-        elif self.world.options.logic_type == 1: # normal
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = self.oogle_boogles_open(state) or state.can_reach_region(regionName.WW, self.player) and self.ww_tdl_backdoor(state)
-        elif self.world.options.logic_type == 2: # advanced
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.oogle_boogles_open(state) or state.can_reach_region(regionName.WW, self.player) and self.ww_tdl_backdoor(state)
-        elif self.world.options.logic_type == 3: # glitched
+        elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.oogle_boogles_open(state)\
                     or state.can_reach_region(regionName.WW, self.player) and self.ww_tdl_backdoor(state)\
                     or self.clockwork_warp(state)
@@ -6487,7 +6485,7 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
             logic = False
-        elif self.world.options.logic_type == 1 : # normal
+        elif self.world.options.logic_type == LogicType.option_easy_tricks : # normal
             logic = self.wing_whack(state) and self.leg_spring(state) and\
                                                  self.glide(state) and self.GM_boulders(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
@@ -6516,7 +6514,7 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.fire_eggs(state) and self.egg_aim(state)
-        elif self.world.options.logic_type == 1 : # normal
+        elif self.world.options.logic_type == LogicType.option_easy_tricks : # normal
             logic = self.fire_eggs(state) and self.egg_aim(state)\
                     or self.talon_trot(state) and self.fire_eggs(state)\
                     or self.split_up(state) and self.fire_eggs(state)
@@ -6534,7 +6532,7 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.gm_jiggy(state)
-        elif self.world.options.logic_type == 1 : # normal
+        elif self.world.options.logic_type == LogicType.option_easy_tricks : # normal
             logic = self.gm_jiggy(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.gm_jiggy(state)
@@ -6547,7 +6545,7 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.backdoors_enabled(state)
-        elif self.world.options.logic_type == 1 : # normal
+        elif self.world.options.logic_type == LogicType.option_easy_tricks : # normal
             logic = self.backdoors_enabled(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.backdoors_enabled(state)
@@ -7186,7 +7184,7 @@ class BanjoTooieRules:
     def drop_down_from_higher_floors_outside(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == LogicType.option_intended:
             logic = False
-        elif self.world.options.logic_type == 1 : # normal
+        elif self.world.options.logic_type == LogicType.option_easy_tricks : # normal
             logic = self.beak_buster(state) or self.flutter(state) or self.air_rat_a_tat_rap(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = True
@@ -7197,7 +7195,7 @@ class BanjoTooieRules:
     def escape_floor_4_bk(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.springy_step_shoes(state)
-        elif self.world.options.logic_type == 1 : # normal
+        elif self.world.options.logic_type == LogicType.option_easy_tricks : # normal
             logic = self.springy_step_shoes(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.springy_step_shoes(state) or self.flap_flip(state) and self.grip_grab(state)
@@ -7218,7 +7216,7 @@ class BanjoTooieRules:
     def floor_4_to_floor_4_back(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.mumboGI(state) and self.tall_jump(state)
-        elif self.world.options.logic_type == 1 : # normal
+        elif self.world.options.logic_type == LogicType.option_easy_tricks : # normal
             logic = self.mumboGI(state) and self.tall_jump(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.mumboGI(state) and self.tall_jump(state)
@@ -7231,7 +7229,7 @@ class BanjoTooieRules:
     def floor_4_to_floor_5(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == LogicType.option_intended:
             logic = False
-        elif self.world.options.logic_type == 1 : # normal
+        elif self.world.options.logic_type == LogicType.option_easy_tricks : # normal
             logic = self.leg_spring(state) and self.flight_pad(state) and self.solo_kazooie_gi(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.leg_spring(state) and self.flight_pad(state) and self.solo_kazooie_gi(state)
@@ -7242,7 +7240,7 @@ class BanjoTooieRules:
     def floor_3_to_floor_5(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == LogicType.option_intended:
             logic = False
-        elif self.world.options.logic_type == 1 : # normal
+        elif self.world.options.logic_type == LogicType.option_easy_tricks : # normal
             logic = self.leg_spring(state) and self.flight_pad(state) and self.solo_kazooie_gi(state) and self.gi_flight_pad_switch(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.leg_spring(state) and self.flight_pad(state) and self.solo_kazooie_gi(state) and self.gi_flight_pad_switch(state)
@@ -7254,7 +7252,7 @@ class BanjoTooieRules:
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.flap_flip(state) and self.grip_grab(state)\
                     or self.climb(state) and self.slightly_elevated_ledge(state)
-        elif self.world.options.logic_type == 1 : # normal
+        elif self.world.options.logic_type == LogicType.option_easy_tricks : # normal
             logic = self.flap_flip(state) and self.grip_grab(state)\
                     or self.climb(state) and self.slightly_elevated_ledge(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
@@ -7271,7 +7269,7 @@ class BanjoTooieRules:
         # If nestsanity is turned on, players are forced to go through the digger tunnel
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.talon_torpedo(state) and self.dive(state)
-        elif self.world.options.logic_type == 1 : # normal
+        elif self.world.options.logic_type == LogicType.option_easy_tricks : # normal
             logic = self.talon_torpedo(state)\
                     and (not self.world.options.nestsanity or self.dive(state) or self.beak_buster(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
@@ -7459,9 +7457,9 @@ class BanjoTooieRules:
             raise ValueError("Use self.blueEgg(state) instead!")
         if move not in [itemName.DIVE, itemName.FPAD, itemName.GRAT, itemName.ROLL, itemName.ARAT, itemName.BBARGE, itemName.TJUMP, itemName.FLUTTER, itemName.FFLIP, itemName.CLIMB, itemName.TTROT, itemName.BBUST, itemName.WWING, itemName.SSTRIDE, itemName.TTRAIN, itemName.BBOMB, itemName.EGGAIM, itemName.EGGSHOOT]:
             raise ValueError("Not a BK move! {}".format(move))
-        if self.world.options.randomize_bk_moves == 0: # Not randomised
+        if self.world.options.randomize_bk_moves == RandomizeBKMoveList.option_none:
             return True
-        if self.world.options.randomize_bk_moves == 1 and move in [itemName.TTROT, itemName.TJUMP]: # McJiggy Special, not randomised.
+        if self.world.options.randomize_bk_moves == RandomizeBKMoveList.option_mcjiggy_special and move in [itemName.TTROT, itemName.TJUMP]:
             return True
         return state.has(move, self.player)
 
@@ -8138,17 +8136,17 @@ class BanjoTooieRules:
             for location, rules in self.gametoken_rules.items():
                 tokens = self.world.multiworld.get_location(location, self.player)
                 set_rule(tokens, rules)
-            self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, self.world.options.minigame_hunt_length.value)
+            self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, self.world.options.minigame_hunt_length)
         elif self.world.options.victory_condition == VictoryCondition.option_boss_hunt:
             for location, rules in self.bosstoken_rules.items():
                 tokens = self.world.multiworld.get_location(location, self.player)
                 set_rule(tokens, rules)
-            self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, self.world.options.boss_hunt_length.value)
+            self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, self.world.options.boss_hunt_length)
         elif self.world.options.victory_condition == VictoryCondition.option_jinjo_family_rescue:
             for location, rules in self.jinjotoken_rules.items():
                 tokens = self.world.multiworld.get_location(location, self.player)
                 set_rule(tokens, rules)
-            self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, self.world.options.jinjo_family_rescue_length.value)
+            self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, self.world.options.jinjo_family_rescue_length)
         elif self.world.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
             for location, rules in self.bosstoken_rules.items():
                 tokens = self.world.multiworld.get_location(location, self.player)
@@ -8162,6 +8160,6 @@ class BanjoTooieRules:
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, 32) \
             and self.check_hag1_options(state)
         elif self.world.options.victory_condition == VictoryCondition.option_token_hunt:
-            self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, self.world.options.token_hunt_length.value)
+            self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, self.world.options.token_hunt_length)
         else:
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has("Kick Around", self.player)
