@@ -443,15 +443,18 @@ class SkipKlungo(Toggle):
     """Make it so you can skip Klungo 1 and 2."""
     display_name = "Skip Klungo"
 
-class EnableSignpostHints(Toggle):
-    """Signposts hint a location when read."""
-    display_name = "Enable Signpost Hints"
+class SignpostHints(Range):
+    """Choose how many signpost give a hint when read."""
+    display_name = "Signpost Hints"
+    range_start = 0
+    range_end = 61
+    default = 0
 
-class SignpostHintDistribution(Range):
-    """Choose how many hints, out of the 61 signpost hints, that will hint for one of your moves.
+class SignpostMoveHints(Range):
+    """Choose how many signposts, out of the signposts that contain a hint, will hint for one of your moves.
     The rest of the hints will hint slow locations.
-    This option only has an effect if signpost hints are enabled, and if BT moves or BK moves are randomized."""
-    display_name = "Signpost Hint Distribution"
+    Silos and BT moves will not be hinted if randomize_bt_moves is not enabled."""
+    display_name = "Signpost Move Hints"
     range_start = 0
     range_end = 61
     default = 20
@@ -544,8 +547,8 @@ class BanjoTooieOptions(PerGameCommonOptions):
     skip_klungo: SkipKlungo
     dialog_character:DialogCharacters
 
-    enable_signpost_hints: EnableSignpostHints
-    signpost_hint_distribution: SignpostHintDistribution
+    signpost_hints: SignpostHints
+    signpost_move_hints: SignpostMoveHints
     add_signpost_hints_to_ap: AddSignpostHintsToArchipelagoHints
     hint_clarity: HintClarity
 

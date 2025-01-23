@@ -1,4 +1,4 @@
-import typing
+from typing import List, NamedTuple
 from BaseClasses import ItemClassification, Location
 from worlds.AutoWorld import World
 from worlds.banjo_tooie.Options import HintClarity
@@ -6,15 +6,13 @@ from .Items import moves_table, bk_moves_table, progressive_ability_table
 from .Locations import all_location_table
 from .Names import locationName
 
-TOTAL_HINTS = 61
-
-class HintData(typing.NamedTuple):
+class HintData(NamedTuple):
     text: str # The displayed text in the game.
     location_id: int
     location_player_id: int
 
 def generate_hints(world: World):
-    hintDatas = []
+    hintDatas: List[HintData] = []
 
     generate_move_hints(world, hintDatas)
     generate_slow_locations_hints(world, hintDatas)
@@ -22,10 +20,19 @@ def generate_hints(world: World):
     world.random.shuffle(hintDatas)
     
     hint_location_ids = get_signpost_location_ids()
-    for i in range(TOTAL_HINTS):
-        world.hints.update({hint_location_ids[i]: hintDatas[i]})
 
-def generate_slow_locations_hints(world: World, hint_datas: typing.List[HintData]):
+    # It is done this way to keep the order of the signposts intact in the spoiler log.
+    chosen_locations_ids = hint_location_ids[::]
+    world.random.shuffle(chosen_locations_ids)
+    chosen_locations_ids = chosen_locations_ids[:world.options.signpost_hints]
+    placed_hints = 0
+    for id in hint_location_ids:
+        if id not in chosen_locations_ids:
+            continue
+        world.hints.update({id: hintDatas[placed_hints]})
+        placed_hints += 1
+
+def generate_slow_locations_hints(world: World, hint_datas: List[HintData]):
     hinted_location_names_in_own_world = [location_id_to_name(world, hint_data.location_id)\
                                         for hint_data in hint_datas if hint_data.location_player_id == world.player]
 
@@ -36,9 +43,9 @@ def generate_slow_locations_hints(world: World, hint_datas: typing.List[HintData
 
     newHints = [generate_hint_from_location(world, get_location_by_name(world, location_name)) for location_name in worst_locations_names]
 
-    if len(newHints) + len(hint_datas) >= TOTAL_HINTS:
+    if len(newHints) + len(hint_datas) >= world.options.signpost_hints:
         world.random.shuffle(newHints)
-        while len(hint_datas) < TOTAL_HINTS:
+        while len(hint_datas) < world.options.signpost_hints:
             hint_datas.append(newHints.pop())
         return
     hint_datas.extend(newHints)
@@ -46,9 +53,9 @@ def generate_slow_locations_hints(world: World, hint_datas: typing.List[HintData
     bad_locations_names = [location_name for location_name in get_bad_location_names(world) if location_name not in hinted_location_names_in_own_world]
     hinted_location_names_in_own_world.extend(bad_locations_names)
     newHints = [generate_hint_from_location(world, get_location_by_name(world, location_name)) for location_name in bad_locations_names]
-    if len(newHints) + len(hint_datas) >= TOTAL_HINTS:
+    if len(newHints) + len(hint_datas) >= world.options.signpost_hints:
         world.random.shuffle(newHints)
-        while len(hint_datas) < TOTAL_HINTS:
+        while len(hint_datas) < world.options.signpost_hints:
             hint_datas.append(newHints.pop())
         return
     hint_datas.extend(newHints)
@@ -58,7 +65,7 @@ def generate_slow_locations_hints(world: World, hint_datas: typing.List[HintData
     remaining_locations = [location for location in get_player_locations(world) if location.name not in hinted_location_names_in_own_world]
     world.random.shuffle(remaining_locations)
 
-    while len(hint_datas) < TOTAL_HINTS:
+    while len(hint_datas) < world.options.signpost_hints:
         hint_datas.append(generate_hint_from_location(world, remaining_locations.pop()))
 
 def location_id_to_name(world: World, location_id: int):
@@ -101,7 +108,7 @@ def get_worst_location_names(world: World):
         locationName.SCRAT,
     ])
 
-    if world.options.randomize_jinjos.value == 1:
+    if world.options.randomize_jinjos:
         slow_location_names.extend([
             locationName.JIGGYIH6,
             locationName.JIGGYIH7,
@@ -112,12 +119,12 @@ def get_worst_location_names(world: World):
             locationName.JINJOGI5,
         ])
     
-    if world.options.randomize_glowbos.value == 1:
+    if world.options.randomize_glowbos:
         slow_location_names.extend([
             locationName.GLOWBOMEG,
         ])
 
-    if world.options.randomize_cheato.value == 1:
+    if world.options.randomize_cheato:
         slow_location_names.extend([
             locationName.CHEATOWW3,
             locationName.CHEATOJR1,
@@ -126,18 +133,18 @@ def get_worst_location_names(world: World):
         ])
     
     # The 5 most expensive silos
-    if world.options.randomize_moves != 0:
+    if world.options.randomize_moves:
         sorted_silos = [k for k, v in sorted(world.jamjars_siloname_costs.items(), key=lambda item: item[1])]
         for i in range(5):
             slow_location_names.append(sorted_silos.pop())
     
-    if world.options.cheato_rewards.value == 1:
+    if world.options.cheato_rewards:
         slow_location_names.extend([
             locationName.CHEATOR4,
             locationName.CHEATOR5,
         ])
     
-    if world.options.honeyb_rewards.value == 1:
+    if world.options.honeyb_rewards:
         slow_location_names.extend([
             locationName.HONEYBR5,
         ])
@@ -175,36 +182,36 @@ def get_bad_location_names(world: World):
         locationName.SCRUT,
     ])
     # TODO: continue here
-    if world.options.randomize_jinjos.value == 1:
+    if world.options.randomize_jinjos:
         slow_location_names.extend([
         ])
     
-    if world.options.randomize_glowbos.value == 1:
+    if world.options.randomize_glowbos:
         slow_location_names.extend([
         ])
 
-    if world.options.randomize_cheato.value == 1:
+    if world.options.randomize_cheato:
         slow_location_names.extend([
         ])
     
     # The 10 most expensive silos
-    if world.options.randomize_moves != 0:
+    if world.options.randomize_moves:
         sorted_silos = [k for k, v in sorted(world.jamjars_siloname_costs.items(), key=lambda item: item[1])]
         for i in range(10):
             slow_location_names.append(sorted_silos.pop())
     
-    if world.options.cheato_rewards.value == 1:
+    if world.options.cheato_rewards:
         slow_location_names.extend([
             locationName.CHEATOR3,
         ])
     
-    if world.options.honeyb_rewards.value == 1:
+    if world.options.honeyb_rewards:
         slow_location_names.extend([
             locationName.HONEYBR4,
         ])
     return slow_location_names
 
-def generate_move_hints(world: World, hint_datas: typing.List[HintData]):
+def generate_move_hints(world: World, hint_datas: List[HintData]):
     move_locations = get_move_locations(world)
     for location in move_locations:
         hint_datas.append(generate_hint_from_location(world, location))
@@ -247,7 +254,7 @@ def get_move_locations(world: World):
     selected_move_locations = []
 
     for location in all_move_locations:
-        if len(selected_move_locations) >= world.options.signpost_hint_distribution.value:
+        if len(selected_move_locations) >= world.options.signpost_move_hints:
             return selected_move_locations
         selected_move_locations.append(location)
     return selected_move_locations
