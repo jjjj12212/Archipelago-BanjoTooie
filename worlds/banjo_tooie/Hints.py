@@ -1,46 +1,73 @@
+import typing
+from BaseClasses import ItemClassification, Location
+from worlds.AutoWorld import World
+from worlds.banjo_tooie.Options import HintClarity
 from .Items import moves_table, bk_moves_table, progressive_ability_table
+from .Locations import all_location_table
 from .Names import locationName
 
-TOTAL_HINTS = 62
+TOTAL_HINTS = 61
 
-# TODO: will be converted to go mode items
-def generate_hints(world):
-    generate_move_hints(world)
-    generate_slow_locations_hints(world)
-    world.random.shuffle(world.hints)
+class HintData(typing.NamedTuple):
+    text: str # The displayed text in the game.
+    location_id: int
+    location_player_id: int
 
-def generate_slow_locations_hints(world):
-    worst_locations_names = [location_name for location_name in get_worst_location_names(world) if location_name not in world.hinted_location_names]
-    world.hinted_location_names.extend(worst_locations_names)
+def generate_hints(world: World):
+    hintDatas = []
+
+    generate_move_hints(world, hintDatas)
+    generate_slow_locations_hints(world, hintDatas)
+
+    world.random.shuffle(hintDatas)
+    
+    hint_location_ids = get_signpost_location_ids()
+    for i in range(TOTAL_HINTS):
+        world.hints.update({hint_location_ids[i]: hintDatas[i]})
+
+def generate_slow_locations_hints(world: World, hint_datas: typing.List[HintData]):
+    hinted_location_names_in_own_world = [location_id_to_name(world, hint_data.location_id)\
+                                        for hint_data in hint_datas if hint_data.location_player_id == world.player]
+
+    worst_locations_names = [location_name for location_name in get_worst_location_names(world)\
+                             if location_name not in hinted_location_names_in_own_world]
+
+    hinted_location_names_in_own_world.extend(worst_locations_names)
+
     newHints = [generate_hint_from_location(world, get_location_by_name(world, location_name)) for location_name in worst_locations_names]
 
-    if len(newHints) + len(world.hints) >= TOTAL_HINTS:
+    if len(newHints) + len(hint_datas) >= TOTAL_HINTS:
         world.random.shuffle(newHints)
-        while len(world.hints) < TOTAL_HINTS:
-            world.hints.append(newHints.pop())
+        while len(hint_datas) < TOTAL_HINTS:
+            hint_datas.append(newHints.pop())
         return
-    world.hints.extend(newHints)
+    hint_datas.extend(newHints)
 
-    bad_locations_names = [location_name for location_name in get_worst_location_names(world) if location_name not in world.hinted_location_names]
-    world.hinted_location_names.extend(bad_locations_names)
+    bad_locations_names = [location_name for location_name in get_bad_location_names(world) if location_name not in hinted_location_names_in_own_world]
+    hinted_location_names_in_own_world.extend(bad_locations_names)
     newHints = [generate_hint_from_location(world, get_location_by_name(world, location_name)) for location_name in bad_locations_names]
-    if len(newHints) + len(world.hints) >= TOTAL_HINTS:
+    if len(newHints) + len(hint_datas) >= TOTAL_HINTS:
         world.random.shuffle(newHints)
-        while len(world.hints) < TOTAL_HINTS:
-            world.hints.append(newHints.pop())
+        while len(hint_datas) < TOTAL_HINTS:
+            hint_datas.append(newHints.pop())
         return
-    world.hints.extend(newHints)
+    hint_datas.extend(newHints)
 
     # At this point, we went through all the bad locations, and we still don't have enough hints.
-    # So we just hint random locations that have not been picked.
-    remaining_locations = [location for location in get_player_locations(world) if location.name not in world.hinted_location_names]
+    # So we just hint random locations in our own world that have not been picked.
+    remaining_locations = [location for location in get_player_locations(world) if location.name not in hinted_location_names_in_own_world]
     world.random.shuffle(remaining_locations)
 
-    while len(world.hints) < TOTAL_HINTS:
-        world.hints.append(generate_hint_from_location(world, remaining_locations.pop()))
+    while len(hint_datas) < TOTAL_HINTS:
+        hint_datas.append(generate_hint_from_location(world, remaining_locations.pop()))
 
+def location_id_to_name(world: World, location_id: int):
+    return world.location_id_to_name[location_id]
 
-def get_worst_location_names(world):
+def get_location_by_id(world: World, location_id: int):
+    return list(filter(lambda location: location.address == location_id, get_player_locations(world)))[0]
+
+def get_worst_location_names(world: World):
     slow_location_names = []
 
     slow_location_names.extend([
@@ -118,7 +145,7 @@ def get_worst_location_names(world):
     return slow_location_names
 
 
-def get_bad_location_names(world):
+def get_bad_location_names(world: World):
     slow_location_names = []
 
     slow_location_names.extend([
@@ -177,40 +204,66 @@ def get_bad_location_names(world):
         ])
     return slow_location_names
 
-def generate_move_hints(world):
+def generate_move_hints(world: World, hint_datas: typing.List[HintData]):
     move_locations = get_move_locations(world)
-    hinted_location_names = []
     for location in move_locations:
-        world.hints.append(generate_hint_from_location(world, location))
-        if location.player == world.player:
-            world.hinted_location_names.append(location.name)
-    return hinted_location_names
-
+        hint_datas.append(generate_hint_from_location(world, location))
 
 # TODO: have some fun with Grunty's rhymes here
-def generate_hint_from_location(world, location):
-    return "{}'s {} has {}'s {}.".format(player_id_to_name(world, location.player), location.name, player_id_to_name(world, location.item.player), location.item.name)
+def generate_hint_from_location(world: World, location: Location):
+    text = ""
+    if world.options.hint_clarity == HintClarity.option_clear:
+        text = "{}'s {} has {}'s {}.".format(player_id_to_name(world, location.player),\
+            location.name, player_id_to_name(world, location.item.player), location.item.name)
+    else:
+        text = generate_cryptic_hint_text(world, location)
+    
+    return HintData(text, location.address, location.player)
 
-def get_move_locations(world):
+def generate_cryptic_hint_text(world: World, location: Location):
+    if location.item.classification in [ItemClassification.progression, ItemClassification.progression_skip_balancing]:
+        return "{}'s {} has a wonderful item.".format(player_id_to_name(world, location.player), location.name)
+    if location.item.classification == ItemClassification.useful:
+        return "{}'s {} has a good item.".format(player_id_to_name(world, location.player), location.name)
+    if location.item.classification == ItemClassification.filler:
+        return "{}'s {} has an okay item.".format(player_id_to_name(world, location.player), location.name)
+    if location.item.classification == ItemClassification.trap:
+        return "{}'s {} has a bad item.".format(player_id_to_name(world, location.player), location.name)
+
+    # Not sure what actually fits in a multi-flag classification
+    return "{}'s {} has a devilishly good item.".format(player_id_to_name(world, location.player), location.name)
+
+def get_move_locations(world: World):
     all_moves_names = []
-    all_moves_names.extend(moves_table.keys())
+    if world.options.randomize_moves:
+        all_moves_names.extend(moves_table.keys()) # We don't want BT moves to be hinted when they're in the vanilla location.
     all_moves_names.extend(bk_moves_table.keys())
     all_moves_names.extend(progressive_ability_table.keys())
 
-    locations = []
-    for location in get_all_locations(world):
-        if location.item.name in all_moves_names and location.item.player == world.player:
-            locations.append(location)
-    return locations
+    # The locations needs to have an id so that we can reveal them during gameplay in the Archipelago hint list.
+    all_move_locations = [location for location in get_all_locations(world)\
+            if location.item.name in all_moves_names and location.item.player == world.player and location.address]
+    world.random.shuffle(all_move_locations)
+    selected_move_locations = []
 
-def get_location_by_name(world, name):
+    for location in all_move_locations:
+        if len(selected_move_locations) >= world.options.signpost_hint_distribution.value:
+            return selected_move_locations
+        selected_move_locations.append(location)
+    return selected_move_locations
+
+def get_location_by_name(world: World, name: str):
     return list(filter(lambda location: location.name == name, get_player_locations(world)))[0]
 
-def get_all_locations(world):
+def get_all_locations(world: World):
     return world.multiworld.get_locations()
 
-def get_player_locations(world):
+def get_player_locations(world: World):
     return world.multiworld.get_locations(world.player)
 
-def player_id_to_name(world, id):
+def player_id_to_name(world: World, id: int):
     return world.multiworld.player_name[id]
+
+def get_signpost_location_ids():
+    location_datas = list(filter(lambda location_data: location_data.group == "Signpost", all_location_table.values()))
+    return [location_data.btid for location_data in location_datas]

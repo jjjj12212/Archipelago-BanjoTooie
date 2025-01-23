@@ -6,7 +6,7 @@ import settings
 import typing
 from typing import Dict, Any
 
-from .Hints import generate_hints
+from .Hints import HintData, generate_hints
 from .Items import BanjoTooieItem, all_item_table, all_group_table
 from .Locations import BanjoTooieLocation, LocationData, all_location_table, MTLoc_Table, GMLoc_table, WWLoc_table, JRLoc_table, TLLoc_table, GILoc_table, HPLoc_table, CCLoc_table, MumboTokenGames_table, MumboTokenBoss_table, MumboTokenJinjo_table
 from .Regions import create_regions, connect_regions
@@ -99,8 +99,7 @@ class BanjoTooieWorld(World):
         self.loading_zones = {}
         self.jamjars_siloname_costs = {}
         self.jamjars_silo_costs = {}
-        self.hints = []
-        self.hinted_location_names = []
+        self.hints: dict[int, HintData] = {}
         super(BanjoTooieWorld, self).__init__(world, player)
 
     def item_code(self, itemname: str) -> int:
@@ -728,10 +727,11 @@ class BanjoTooieWorld(World):
         bt_players = world.get_game_players(cls.game)
         spoiler_handle.write('\n\nBanjo-Tooie ({})'.format(BanjoTooieWorld.version))
         for player in bt_players:
+            currentWorld: BanjoTooieWorld = world.worlds[player]
             name = world.get_player_name(player)
             spoiler_handle.write(f"\n\n{name}:")
             spoiler_handle.write('\n\tLoading Zones:')
-            for starting_zone, actual_world in world.worlds[player].loading_zones.items():
+            for starting_zone, actual_world in currentWorld.loading_zones.items():
                     if actual_world == regionName.JR:
                         spoiler_handle.write(f"\n\t\t{entrance_hags[starting_zone]} -> Jolly Roger's Lagoon")
                     elif actual_world == regionName.GIO:
@@ -739,7 +739,7 @@ class BanjoTooieWorld(World):
                     else:
                         spoiler_handle.write(f"\n\t\t{entrance_hags[starting_zone]} -> {actual_world}")
             spoiler_handle.write("\n\tWorld Costs:")
-            for entrances, cost in world.worlds[player].randomize_worlds.items():
+            for entrances, cost in currentWorld.randomize_worlds.items():
                     if entrances == regionName.JR:
                         spoiler_handle.write(f"\n\t\tJolly Roger's Lagoon: {cost}")
                     elif entrances == regionName.GIO:
@@ -747,14 +747,14 @@ class BanjoTooieWorld(World):
                     else:
                         spoiler_handle.write(f"\n\t\t{entrances}: {cost}")
             spoiler_handle.write("\n\tBanjo-Tooie Open Overworld Silos:\n")
-            spoiler_handle.write("\t\t"+world.worlds[player].single_silo)
+            spoiler_handle.write("\t\t" + currentWorld.single_silo)
             spoiler_handle.write("\n\tJamjars' Silo Costs:")
-            for silo, cost in world.worlds[player].jamjars_siloname_costs.items():
+            for silo, cost in currentWorld.jamjars_siloname_costs.items():
                     spoiler_handle.write(f"\n\t\t{silo}: {cost}")
                     
             spoiler_handle.write('\n\tHints:')
-            for hint in world.worlds[player].hints:
-                    spoiler_handle.write(f"\n\t\t{hint}")
+            for location_id, hint_data in currentWorld.hints.items():
+                    spoiler_handle.write("\n\t\t{}: {}".format(currentWorld.location_id_to_name[location_id], hint_data.text))
 
 
     def fill_slot_data(self) -> Dict[str, Any]:

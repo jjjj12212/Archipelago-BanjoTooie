@@ -443,6 +443,40 @@ class SkipKlungo(Toggle):
     """Make it so you can skip Klungo 1 and 2."""
     display_name = "Skip Klungo"
 
+class EnableSignpostHints(Toggle):
+    """Signposts hint a location when read."""
+    display_name = "Enable Signpost Hints"
+
+class SignpostHintDistribution(Range):
+    """Choose how many hints, out of the 61 signpost hints, that will hint for one of your moves.
+    The rest of the hints will hint slow locations.
+    This option only has an effect if signpost hints are enabled, and if BT moves or BK moves are randomized."""
+    display_name = "Signpost Hint Distribution"
+    range_start = 0
+    range_end = 61
+    default = 20
+
+class AddSignpostHintsToArchipelagoHints(Choice):
+    """Choose if a signpost hint is added to the Archipelago hints upon reading the hint.
+    Never: signpost hints are never added
+    Progression: hints are added only if the hinted location has a progression item.
+    Always: hints are always added.
+    This option only has an effect if signpost hints are enabled."""
+    display_name = "Add Signpost Hints to Archipelago Hints"
+    option_never = 0
+    option_progression = 1
+    option_always = 2
+    default = 2
+
+class HintClarity(Choice):
+    """Choose how clear hints are.
+    Cryptic: hints will only tell you how good the item is.
+    Clear: hints will tell you what the item is."""
+    display_name = "Hint Clarity"
+    option_cryptic = 0
+    option_clear = 1
+    default = 1
+
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
@@ -509,6 +543,11 @@ class BanjoTooieOptions(PerGameCommonOptions):
     tower_of_tragedy: TowerOfTragedy
     skip_klungo: SkipKlungo
     dialog_character:DialogCharacters
+
+    enable_signpost_hints: EnableSignpostHints
+    signpost_hint_distribution: SignpostHintDistribution
+    add_signpost_hints_to_ap: AddSignpostHintsToArchipelagoHints
+    hint_clarity: HintClarity
 
     start_inventory_from_pool: StartInventoryPool
 
