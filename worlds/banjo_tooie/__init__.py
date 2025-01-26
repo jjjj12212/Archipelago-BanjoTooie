@@ -817,7 +817,7 @@ class BanjoTooieWorld(World):
         btoptions["jamjars_siloname_costs"] = self.jamjars_siloname_costs
         btoptions["jamjars_silo_costs"] = self.jamjars_silo_costs #table of silo costs
         btoptions["jamjars_silo_option"] = int(self.options.jamjars_silo_costs)
-        btoptions["hints"] = self.hints
+        #btoptions["hints"] = self.hints
         return btoptions
 
     # for the universal tracker, doesn't get called in standard gen
