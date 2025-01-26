@@ -6555,6 +6555,10 @@ function hag1_open()
     then
         BTH:setItem(ITEM_TABLE["AP_ITEM_H1A"], 1)
         opened = true
+    elseif GOAL_TYPE == 6 and TOTAL_MUMBO_TOKENS >= BH_LENGTH
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_H1A"], 1)
+        opened = true
     end
     if opened
     then
@@ -7351,6 +7355,9 @@ function printGoalInfo()
             BTH:setSettingMaxMumboTokens(TH_LENGTH)
         elseif GOAL_TYPE == 5 and TH_LENGTH < 15 then
             message = "You are trying to find "..TH_LENGTH.." of the 15 of Mumbo Tokens scattered throughout the Isle of Hags!\nGood Luck and"..randomEncouragment;
+            BTH:setSettingMaxMumboTokens(TH_LENGTH)
+        elseif GOAL_TYPE == 6 then
+            message = "You need to defeat "..BH_LENGTH.." Bosses in order to defeat HAG-1!\nGood Luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(TH_LENGTH)
         end
         if GOAL_PRINTED == false
