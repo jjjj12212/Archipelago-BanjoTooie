@@ -313,6 +313,13 @@ class SkipPuzzles(DefaultOnToggle):
     """Open world entrances without having to go to Jiggywiggy."""
     display_name = "Skip Puzzles"
 
+class AssistMode(Toggle):
+    """Two cheats will be added to the "CHEATS" sub-menu:
+        NESTKING  - Infinite eggs/feathers.
+        HONEYKING - Infinite health/air.
+        Canary Mary will also be easier & this will also display "ASSIST MODE" on screen if the cheats are activated."""
+    display_name = "Assist Mode"
+
 class Backdoors(Toggle):
     """Opens many one-way switches on game start, allowing for more backdoor access to levels.
     The following gates are preopened: MT -> TDL, MT -> HFP, GGM -> WW, WW -> TDL.
@@ -542,6 +549,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     backdoors:Backdoors
     open_silos: OpenSilos
 
+    assist_mode: AssistMode
     speed_up_minigames: SpeedUpMinigames
     tower_of_tragedy: TowerOfTragedy
     skip_klungo: SkipKlungo

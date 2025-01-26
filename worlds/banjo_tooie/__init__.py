@@ -797,6 +797,7 @@ class BanjoTooieWorld(World):
             "speed_up_minigames", #minigames, now int
             "tower_of_tragedy", #skip_tot, now int
             "skip_klungo", #matches, now int
+            "assist_mode",
             "dialog_character") #matches and matches
 
         btoptions["player_name"] = self.multiworld.player_name[self.player]
@@ -816,6 +817,7 @@ class BanjoTooieWorld(World):
         btoptions["jamjars_siloname_costs"] = self.jamjars_siloname_costs
         btoptions["jamjars_silo_costs"] = self.jamjars_silo_costs #table of silo costs
         btoptions["jamjars_silo_option"] = int(self.options.jamjars_silo_costs)
+        btoptions["hints"] = self.hints
         return btoptions
 
     # for the universal tracker, doesn't get called in standard gen
