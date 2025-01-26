@@ -1121,7 +1121,8 @@ def create_regions(self):
         region_map[regionName.CC].append(locationName.MUMBOTKNGAME15)
 
     if self.options.victory_condition == VictoryCondition.option_boss_hunt\
-      or self.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
+      or self.options.victory_condition == VictoryCondition.option_wonderwing_challenge\
+      or self.options.victory_condition == VictoryCondition.option_boss_hunt_and_hag1:
         region_map[regionName.MT].append(locationName.MUMBOTKNBOSS1)
         region_map[regionName.CHUFFY].append(locationName.MUMBOTKNBOSS2)
         region_map[regionName.WW].append(locationName.MUMBOTKNBOSS3)
@@ -1165,7 +1166,7 @@ def create_regions(self):
 
     self.multiworld.regions.extend(create_region(self.multiworld, self.player,\
           active_locations, region, locations) for region, locations in region_map.items())
-    if self.options.victory_condition in (VictoryCondition.option_hag1, VictoryCondition.option_wonderwing_challenge):
+    if self.options.victory_condition in (VictoryCondition.option_hag1, VictoryCondition.option_wonderwing_challenge, VictoryCondition.option_boss_hunt_and_hag1):
         self.multiworld.get_location(locationName.HAG1, player).place_locked_item(self.create_event_item(itemName.VICTORY))
 
 
@@ -1176,6 +1177,8 @@ def create_region(multiworld, player: int, active_locations, name: str, location
         if multiworld.worlds[player].options.victory_condition == VictoryCondition.option_hag1 and locationName.HAG1 in locations:
             ret.add_locations({locationName.HAG1: None})
         elif multiworld.worlds[player].options.victory_condition == VictoryCondition.option_wonderwing_challenge and locationName.HAG1 in locations:
+            ret.add_locations({locationName.HAG1: None})
+        elif multiworld.worlds[player].options.victory_condition == VictoryCondition.option_boss_hunt_and_hag1 and locationName.HAG1 in locations:
             ret.add_locations({locationName.HAG1: None})
         else:
             ret.add_locations(loc_to_id, BanjoTooieLocation)

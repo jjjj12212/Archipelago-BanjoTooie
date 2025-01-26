@@ -602,7 +602,8 @@ class BanjoTooieWorld(World):
                 self.get_location(location_name).place_locked_item(item)
 
         if self.options.victory_condition == VictoryCondition.option_boss_hunt\
-            or self.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
+            or self.options.victory_condition == VictoryCondition.option_wonderwing_challenge\
+            or self.options.victory_condition == VictoryCondition.option_boss_hunt_and_hag1:
 
             item = self.create_item(itemName.MUMBOTOKEN)
             for location_name in MumboTokenBoss_table.keys():

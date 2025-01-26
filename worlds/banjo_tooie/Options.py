@@ -373,13 +373,13 @@ class OpenSilos(Choice):
 
 class VictoryCondition(Choice):
     """Choose the victory condition.
-    HAG1: Unlock the HAG1 fight and defeat Gruntilda.
-    Minigame Hunt: Clear the 14 minigames and the final Canary Mary race in Cloud Cuckcoo Land to collect Mumbo Tokens.
-    Boss Hunt: Defeat the 8 world bosses and collect their Mumbo Tokens.
-    Jinjo Family Rescue: Rescue Jinjo Families to collect their prized Mumbo Tokens.
-    Wonderwing Challenge: Collect all 32 Mumbo Tokens across all boss fights, mini games, and every Jinjo family
-        to gain access to HAG1 and Defeat Grunty. The Ultimate Banjo Tooie experience!!
-    Token Hunt: Mumbo's Tokens are scattered around the world. Help him find them!"""
+        HAG1: Unlock the HAG1 fight and defeat Gruntilda.
+        Minigame Hunt: Clear the 14 minigames and the final Canary Mary race in Cloud Cuckcoo Land to collect Mumbo Tokens.
+        Boss Hunt: Defeat the 8 world bosses and collect their Mumbo Tokens.
+        Jinjo Family Rescue: Rescue Jinjo Families to collect their prized Mumbo Tokens.
+        Wonderwing Challenge: Collect all 32 Mumbo Tokens across all boss fights, mini games, and every Jinjo family to gain access to HAG1 and Defeat Grunty. The Ultimate Banjo Tooie experience!!
+        Token Hunt: Mumbo's Tokens are scattered around the world. Help him find them!
+        Boss Hunt + Hag1: Combines Boss Hunt with HAG-1. Hag1 won't open until the required amount of bosses are defeated"""
     display_name = "Victory Condition"
     option_hag1 = 0
     option_minigame_hunt = 1
@@ -387,6 +387,7 @@ class VictoryCondition(Choice):
     option_jinjo_family_rescue = 3
     option_wonderwing_challenge = 4
     option_token_hunt = 5
+    option_boss_hunt_and_hag1 = 6
     default = 0
 
 class MinigameHuntLength(Range):

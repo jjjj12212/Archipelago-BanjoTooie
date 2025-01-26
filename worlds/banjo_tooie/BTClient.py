@@ -225,7 +225,7 @@ class BanjoTooieContext(CommonContext):
             logging_pairs = [
                 ("Client", "Archipelago")
             ]
-            base_title = "Archipelago Banjo-Tooie Client"
+            base_title = "Banjo-Tooie Client "+ version + " for AP"
 
         self.ui = BanjoTooieManager(self)
         self.ui_task = asyncio.create_task(self.ui.async_run(), name="UI")
@@ -595,8 +595,9 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                         locs1.append(int(locationId))
         #Mumbo Tokens
         if ctx.slot_data["victory_condition"] == 1 or ctx.slot_data["victory_condition"] == 2 or \
-                    ctx.slot_data["victory_condition"] == 3 or ctx.slot_data["victory_condition"] == 4:
-                    locs1 = mumbo_tokens_loc(locs1, ctx.slot_data["victory_condition"])
+            ctx.slot_data["victory_condition"] == 3 or ctx.slot_data["victory_condition"] == 4 or \
+            ctx.slot_data["victory_condition"] == 6:
+                locs1 = mumbo_tokens_loc(locs1, ctx.slot_data["victory_condition"])
 
         if len(locs1) > 0:
             await ctx.send_msgs([{
@@ -611,7 +612,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 }])
         #GAME VICTORY
         #Beat Hag-1
-        if hag == True and (ctx.slot_data["victory_condition"] == 0 or ctx.slot_data["victory_condition"] == 4) and not ctx.finished_game:
+        if hag == True and (ctx.slot_data["victory_condition"] == 0 or ctx.slot_data["victory_condition"] == 4 or\
+            ctx.slot_data["victory_condition"] == 6) and not ctx.finished_game:
             await ctx.send_msgs([{
                 "cmd": "StatusUpdate",
                 "status": 30

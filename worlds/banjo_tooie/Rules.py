@@ -164,7 +164,8 @@ class BanjoTooieRules:
             }
 
         if self.world.options.victory_condition == VictoryCondition.option_boss_hunt\
-            or self.world.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
+            or self.world.options.victory_condition == VictoryCondition.option_wonderwing_challenge\
+            or self.world.options.victory_condition == VictoryCondition.option_boss_hunt_and_hag1:
             self.bosstoken_rules = {
                 locationName.MUMBOTKNBOSS1: lambda state: self.jiggy_targitzan(state),
                 locationName.MUMBOTKNBOSS2: lambda state: self.can_beat_king_coal(state),
@@ -8161,5 +8162,10 @@ class BanjoTooieRules:
             and self.check_hag1_options(state)
         elif self.world.options.victory_condition == VictoryCondition.option_token_hunt:
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, self.world.options.token_hunt_length)
+        elif self.world.options.victory_condition == VictoryCondition.option_boss_hunt_and_hag1:
+            for location, rules in self.bosstoken_rules.items():
+                tokens = self.world.multiworld.get_location(location, self.player)
+                set_rule(tokens, rules)
+            self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, self.world.options.boss_hunt_length) and state.has("Kick Around", self.player)
         else:
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has("Kick Around", self.player)
