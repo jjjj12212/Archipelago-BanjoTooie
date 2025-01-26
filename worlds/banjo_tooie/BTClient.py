@@ -587,7 +587,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             for locationId, value in honeybrewardslist.items():
                 if value == True:
                     locs1.append(int(locationId))
-        if ctx.slot_data["skip_puzzles"] == "true":
+        if ctx.slot_data["skip_puzzles"] == 1:
             if ctx.worldlist_table != worldslist:
                 ctx.worldlist_table = worldslist
                 for locationId, value in worldslist.items():
