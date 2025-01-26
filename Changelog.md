@@ -1,3 +1,5 @@
+# 4.2
+
 # 4.1.2
   - Logic fixes
     - MT to HFP access: added entering the stadium with the beak bomb glitch if backdoors is active
