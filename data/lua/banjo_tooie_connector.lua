@@ -5314,6 +5314,10 @@ function BTHACK:setSettingPuzzle(puzzle)
     mainmemory.writebyte(self.setting_puzzle + BTHACK:getSettingPointer(), puzzle);
 end
 
+function BTHACK:setAssistMode(assist_mode)
+    mainmemory.writebyte(self.setting_puzzle + BTHACK:getSettingPointer(), assist_mode);
+end
+
 function BTHACK:setSettingBackdoors(backdoors)
     mainmemory.writebyte(self.setting_backdoors + BTHACK:getSettingPointer(), backdoors);
 end
@@ -7150,7 +7154,7 @@ function process_slot(block)
         OPEN_HAG1 = true
         hag1_open()
     end
-    if block['slot_chuffy'] ~= nil and block['slot_chuffy'] ~= 0
+    if block['slot_randomize_chuffy'] ~= nil and block['slot_randomize_chuffy'] ~= 0
     then
         ENABLE_AP_CHUFFY = true
         BTH:setSettingChuffy(1)
@@ -7245,7 +7249,6 @@ function process_slot(block)
     end
     if block['slot_open_silo'] ~= nil
     then
-
         OPEN_SILO = block['slot_open_silo']
         if OPEN_SILO == "ALL"
         then
