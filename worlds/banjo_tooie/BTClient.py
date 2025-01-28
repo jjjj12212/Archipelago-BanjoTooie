@@ -64,7 +64,7 @@ bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_i
 script_version: int = 4
 version: str = "V4.2"
 game_append_version: str = "V42"
-patch_md5: str = "a76c6a75a1428b61f8de6391d2d652af"
+patch_md5: str = "1d43acc487500879c70bc750bb58da92"
 
 def get_item_value(ap_id):
     return ap_id
@@ -371,7 +371,8 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_dialog_character": ctx.slot_data["dialog_character"],
             "slot_nestsanity": ctx.slot_data["nestsanity"],
             "slot_hints": ctx.slot_data["hints"],
-            "slot_assist_mode": ctx.slot_data["assist_mode"]
+            "slot_extra_cheats": ctx.slot_data["extra_cheats"],
+            "slot_easy_canary": ctx.slot_data["easy_canary"]
         })
     ctx.sendSlot = False
     return payload
