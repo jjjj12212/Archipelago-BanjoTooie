@@ -5434,6 +5434,15 @@ function BTHACK:getPCMsgPointer()
 	return BTHACK:dereferencePointer(self.pc_messages + hackPointerIndex);
 end
 
+function BTHACK:getPCHintPointer()
+    local hackPointerIndex = BTHACK:dereferencePointer(self.base_index);
+    if hackPointerIndex == nil
+    then
+        return nil
+    end
+	return BTHACK:dereferencePointer(self.signpost_messages + hackPointerIndex);
+end
+
 function BTHACK:getPCDeath()
     return mainmemory.readbyte(self:getPCPointer());
 end
@@ -5501,6 +5510,26 @@ function BTHACK:setDialog(message, icon_id)
         mainmemory.writebyte(self:getPCMsgPointer() + last_char, 0);
     end
     self:setTextQueue(icon_id)
+end
+
+function BTHACK:setHintMessages(sign_id, message)
+    uppcase_text = string.upper(message)
+    local overflow = false
+    local last_char = 0
+    for idx = 0, string.len(uppcase_text)-1 do
+        if idx == 150
+        then
+            overflow = true
+            mainmemory.writebyte((self:getPCHintPointer() + sign_id*150 ) + idx, 0);
+            break;
+        end
+        last_char = last_char + 1;
+        mainmemory.writebyte((self:getPCHintPointer() + sign_id*150 ) + idx, uppcase_text:byte(idx + 1));
+    end
+    if overflow == false
+    then
+        mainmemory.writebyte((self:getPCHintPointer() + sign_id*150 ) + last_char, 0);
+    end
 end
 
 function BTHACK:getRomVersion()
@@ -7158,11 +7187,6 @@ function process_slot(block)
         GOAL_TYPE = block['slot_victory_condition']
         BTH:setVictoryCondition(GOAL_TYPE)
     end
-    if block['slot_open_hag1'] ~= nil and block['slot_open_hag1'] ~= 0
-    then
-        OPEN_HAG1 = true
-        hag1_open()
-    end
     if block['slot_randomize_chuffy'] ~= nil and block['slot_randomize_chuffy'] ~= 0
     then
         ENABLE_AP_CHUFFY = true
@@ -7172,10 +7196,10 @@ function process_slot(block)
     then
         BTH:setSettingNestsanity(1)
     end
-    if block['slot_signposts'] ~= nil and block['slot_signposts'] ~= 0
-    then
-        BTH:setSettingSignposts(1)
-    end
+    -- if block['slot_signposts'] ~= nil and block['slot_signposts'] ~= 0
+    -- then
+    --     BTH:setSettingSignposts(1)
+    -- end
     if block['slot_extra_cheats'] ~= nil and block['slot_extra_cheats'] ~= 0
     then
         BTH:setExtraCheats(1)
@@ -7299,6 +7323,18 @@ function process_slot(block)
             SILO_MESSAGE = "The Isle O' Hags Cliff Top Silo is open"
         end
     end
+    if block['slot_hints'] ~= nil
+    then
+        BTH:setSettingSignposts(1)
+        --print(block['slot_hints'])
+        local sign_id = 0
+        for _, hintdata in pairs(block['slot_hints'])
+        do
+            --print(hintdata)
+            BTH:setHintMessages(sign_id, hintdata["text"])
+            sign_id = sign_id + 1
+        end
+    end
     if block['slot_version'] ~= nil and block['slot_version'] ~= ""
     then
         CLIENT_VERSION = block['slot_version']
@@ -7324,6 +7360,11 @@ function process_slot(block)
             end
             emu.frameadvance()
         end
+    end
+    if block['slot_open_hag1'] ~= nil and block['slot_open_hag1'] ~= 0
+    then
+        OPEN_HAG1 = true
+        hag1_open()
     end
 
     if block['slot_zones'] ~= nil
