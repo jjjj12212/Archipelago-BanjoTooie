@@ -5160,10 +5160,11 @@ BTHACK = {
         setting_dialog_character = 0xC,
         setting_max_mumbo_tokens = 0xD,
         setting_signpost_hints = 0xE,
-        setting_assist_mode = 0xF,
-        setting_jiggy_requirements = 0x10,
-        setting_open_silos = 0x1B,
-        setting_silo_requirements = 0x22,
+        setting_extra_cheats = 0xF,
+        setting_easy_canary = 0x10,
+        setting_jiggy_requirements = 0x11,
+        setting_open_silos = 0x1C,
+        setting_silo_requirements = 0x24,
     pc_items = 0x14,
     pc_traps = 0x18,
     pc_exit_map = 0x1C,
@@ -5314,8 +5315,12 @@ function BTHACK:setSettingPuzzle(puzzle)
     mainmemory.writebyte(self.setting_puzzle + BTHACK:getSettingPointer(), puzzle);
 end
 
-function BTHACK:setAssistMode(assist_mode)
-    mainmemory.writebyte(self.setting_puzzle + BTHACK:getSettingPointer(), assist_mode);
+function BTHACK:setExtraCheats(extra_cheats)
+    mainmemory.writebyte(self.setting_extra_cheats + BTHACK:getSettingPointer(), extra_cheats);
+end
+
+function BTHACK:setEasyCanary(easy_canary)
+    mainmemory.writebyte(self.setting_easy_canary + BTHACK:getSettingPointer(), easy_canary);
 end
 
 function BTHACK:setSettingBackdoors(backdoors)
@@ -7170,6 +7175,14 @@ function process_slot(block)
     if block['slot_signposts'] ~= nil and block['slot_signposts'] ~= 0
     then
         BTH:setSettingSignposts(1)
+    end
+    if block['slot_extra_cheats'] ~= nil and block['slot_extra_cheats'] ~= 0
+    then
+        BTH:setExtraCheats(1)
+    end
+    if block['slot_easy_canary'] ~= nil and block['slot_easy_canary'] ~= 0
+    then
+        BTH:setEasyCanary(1)
     end
     if block['slot_worlds'] ~= nil and block['slot_worlds'] ~= "false"
     then
