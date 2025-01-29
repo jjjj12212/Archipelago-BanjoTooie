@@ -211,14 +211,18 @@ class BanjoTooieWorld(World):
             trap_big_pants_counter += removed_nests + all_item_table[itemName.GNEST].qty
         elif self.options.nestsanity: # nestsanity with no traps, remove gnests
             trap_big_pants_counter += all_item_table[itemName.GNEST].qty
+        
+        if self.options.randomize_signposts:
+            trap_big_pants_counter += 61 # There are 61 signposts in the game.
 
         if self.options.traps:
-            trap_list = self.random.choices(["gnests", "ttrap", "strap", "trtrap", "sqtrap"], weights = [
+            trap_list = self.random.choices(["gnests", "ttrap", "strap", "trtrap", "sqtrap", "titrap"], weights = [
                 self.options.golden_eggs_weight if self.options.nestsanity else 0,
                 self.options.trip_trap_weight,
                 self.options.slip_trap_weight,
                 self.options.transform_trap_weight,
                 self.options.squish_trap_weight,
+                self.options.tip_trap_weight,
             ], k = trap_big_pants_counter)
 
         ############## END OF TRAP / BIG O PANTS COUNTER #######################################
@@ -256,6 +260,9 @@ class BanjoTooieWorld(World):
                             itempool += [self.create_item(name)]
                     elif item.code == self.item_code(itemName.GNEST):
                         for i in range(trap_list.count("gnests")):
+                            itempool += [self.create_item(name)]
+                    elif item.code == self.item_code(itemName.TITRAP):
+                        for i in range(trap_list.count("titrap")):
                             itempool += [self.create_item(name)]
                     #end of none qty logic
 
@@ -752,7 +759,6 @@ class BanjoTooieWorld(World):
             spoiler_handle.write("\n\tJamjars' Silo Costs:")
             for silo, cost in currentWorld.jamjars_siloname_costs.items():
                     spoiler_handle.write(f"\n\t\t{silo}: {cost}")
-                    
             spoiler_handle.write('\n\tHints:')
             for location_id, hint_data in currentWorld.hints.items():
                     spoiler_handle.write("\n\t\t{}: {}".format(currentWorld.location_id_to_name[location_id], hint_data.text))

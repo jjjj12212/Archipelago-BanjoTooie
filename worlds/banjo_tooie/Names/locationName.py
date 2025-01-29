@@ -1153,7 +1153,7 @@ SIGNWW6 = "WW: Pump Room Signpost"
 SIGNWW7 = "WW: Gobi Cage Signpost"
 SIGNWW8 = "WW: The Haunted Caverns Signpost"
 
-SIGNJR1 = "JRL: Seeweed Sanctum Signpost"
+SIGNJR1 = "JRL: Seaweed Sanctum Signpost"
 SIGNJR2 = "JRL: Blubber's Signpost"
 SIGNJR3 = "JRL: Smuggler's Cavern Signpost"
 SIGNJR4 = "JRL: Waste Pipe Alcove Signpost"

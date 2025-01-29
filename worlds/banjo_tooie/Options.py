@@ -267,6 +267,7 @@ class TrapsToNestRatio(Range):
 
 class GoldenEggsWeight(Range):
     """The weight of Golden Eggs in the trap pool.
+    You are forced to use Golden Eggs for a minute upon receiving the trap.
     Requires Traps and Nestsanity to have an effect"""
     display_name = "Golden Eggs Weight"
     range_start = 0
@@ -275,6 +276,7 @@ class GoldenEggsWeight(Range):
 
 class TripTrapWeight(Range):
     """The weight of Trip Traps in the trap pool.
+    You trip upon receiving the trap.
     Requires Traps to have an effect"""
     display_name = "Trip Trap Weight"
     range_start = 0
@@ -283,6 +285,7 @@ class TripTrapWeight(Range):
 
 class SlipTrapWeight(Range):
     """The weight of Slip Traps in the trap pool.
+    You slip upon receiving the trap.
     Requires Traps to have an effect"""
     display_name = "Slip Trap Weight"
     range_start = 0
@@ -290,7 +293,8 @@ class SlipTrapWeight(Range):
     default = 40
 
 class TransformTrapWeight(Range):
-    """The weight of Transform Traps in the trap pool.
+    """The weight of Transform Traps in the trap pool.^
+    A transformation animation upon receiving the trap.
     Requires Traps to have an effect"""
     display_name = "Transform Trap Weight"
     range_start = 0
@@ -299,11 +303,21 @@ class TransformTrapWeight(Range):
 
 class SquishTrapWeight(Range):
     """The weight of Squish Traps in the trap pool.
+    Stomponadon attempts to squish you upon receiving the trap.
     Requires Traps to have an effect"""
     display_name = "Squish Trap Weight"
     range_start = 0
     range_end = 100
     default = 20
+
+class TipTrapWeight(Range):
+    """The weight of Tip Traps in the trap pool.
+    You receive a random textbox upon receiving the trap.
+    Requires Traps to have an effect"""
+    display_name = "Squish Trap Weight"
+    range_start = 0
+    range_end = 100
+    default = 40
 
 class KingJingalingHasJiggy(DefaultOnToggle):
     """King Jingaling will always have a Jiggy for you."""
@@ -379,7 +393,7 @@ class VictoryCondition(Choice):
         Jinjo Family Rescue: Rescue Jinjo Families to collect their prized Mumbo Tokens.
         Wonderwing Challenge: Collect all 32 Mumbo Tokens across all boss fights, mini games, and every Jinjo family to gain access to HAG1 and Defeat Grunty. The Ultimate Banjo Tooie experience!!
         Token Hunt: Mumbo's Tokens are scattered around the world. Help him find them!
-        Boss Hunt + Hag1: Combines Boss Hunt with HAG-1. Hag1 won't open until the required amount of bosses are defeated"""
+        Boss Hunt + Hag1: Combines Boss Hunt with HAG-1. HAG-1 won't open until the required amount of bosses are defeated."""
     display_name = "Victory Condition"
     option_hag1 = 0
     option_minigame_hunt = 1
@@ -450,6 +464,10 @@ class SpeedUpMinigames(DefaultOnToggle):
 class SkipKlungo(Toggle):
     """Make it so you can skip Klungo 1 and 2."""
     display_name = "Skip Klungo"
+
+class RandomizeSignposts(Toggle):
+    "Signposts give items when read."
+    display_name = "Randomize Banjo-Kazooie Movelist"
 
 class SignpostHints(Range):
     """Choose how many signpost give a hint when read."""
@@ -530,6 +548,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_stop_n_swap: RandomizeStopnSwap
     randomize_dino_roar: RandomizeWorldDinoRoar
     nestsanity: EnableNestsanity
+    randomize_signposts: RandomizeSignposts
 
     traps: Traps
     traps_nests_ratio: TrapsToNestRatio
@@ -539,6 +558,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     slip_trap_weight: SlipTrapWeight
     transform_trap_weight: TransformTrapWeight
     squish_trap_weight: SquishTrapWeight
+    tip_trap_weight: TipTrapWeight
 
     randomize_stations: RandomizeTrainStationSwitches
     randomize_chuffy: RandomizeChuffyTrain

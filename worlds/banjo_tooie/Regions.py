@@ -8,7 +8,7 @@ from .Locations import BanjoTooieLocation
 from .Rules import BanjoTooieRules
 
 # This dict contains all the regions, as well as all the locations that are always tracked by Archipelago.
-BANJOTOOIEREGIONS: typing.Dict[str, typing.List[str]] = {
+BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
     "Menu":              [],
     regionName.SM:       [
         locationName.CHEATOSM1,
@@ -1096,11 +1096,110 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
     ],
 }
 
+SIGNPOST_REGIONS = {
+    regionName.IOHJV: [
+        locationName.SIGNIH1,
+    ],
+    regionName.IOHWH: [
+        locationName.SIGNIH2,
+        locationName.SIGNIH3,
+        locationName.SIGNIH4,
+        locationName.SIGNIH5,
+
+        locationName.SIGNIH7,
+        locationName.SIGNIH8,
+        locationName.SIGNIH9,
+        locationName.SIGNIH10,
+        locationName.SIGNIH11,
+        locationName.SIGNIH12,
+        locationName.SIGNIH13,
+        locationName.SIGNIH14,
+    ],
+
+    regionName.IOHPL: [
+        locationName.SIGNIH6,
+    ],
+    regionName.IOHPG: [
+        locationName.SIGNIH15,
+        locationName.SIGNIH16,
+        locationName.SIGNIH17,
+    ],
+    regionName.IOHCT: [
+        locationName.SIGNIH18,
+    ],
+    regionName.IOHWL: [
+        locationName.SIGNIH19,
+    ],
+    regionName.MT: [
+        locationName.SIGNMT1,
+        locationName.SIGNMT2,
+        locationName.SIGNMT3,
+        locationName.SIGNMT4,
+        locationName.SIGNMT5,
+        locationName.SIGNMT6,
+        locationName.SIGNMT7,
+        locationName.SIGNMT8,
+        locationName.SIGNMT9,
+    ],
+    regionName.GM: [
+        locationName.SIGNGM1,
+        locationName.SIGNGM2,
+        locationName.SIGNGM3,
+        locationName.SIGNGM4,
+    ],
+    regionName.WW: [
+        locationName.SIGNWW1,
+        locationName.SIGNWW2,
+        locationName.SIGNWW3,
+        locationName.SIGNWW4,
+        locationName.SIGNWW5,
+        locationName.SIGNWW6,
+        locationName.SIGNWW7,
+        locationName.SIGNWW8,
+    ],
+    regionName.JR: [
+        locationName.SIGNJR2,
+        locationName.SIGNJR3,
+        locationName.SIGNJR4,
+    ],
+    regionName.JRU2: [
+        locationName.SIGNJR1,
+    ],
+    regionName.TL: [
+        locationName.SIGNTL1,
+        locationName.SIGNTL2,
+        locationName.SIGNTL3,
+        locationName.SIGNTL4,
+    ],
+    regionName.GIO: [
+        locationName.SIGNGI1,
+    ],
+    regionName.GI1: [
+        locationName.SIGNGI2,
+    ],
+    regionName.GIES: [
+        locationName.SIGNGI3,
+        locationName.SIGNGI4,
+    ],
+    regionName.HP: [
+        locationName.SIGNHP1,
+        locationName.SIGNHP2,
+        locationName.SIGNHP3,
+        locationName.SIGNHP4,
+        locationName.SIGNHP5,
+    ],
+    regionName.CC: [
+        locationName.SIGNCC1,
+        locationName.SIGNCC2,
+        locationName.SIGNCC3,
+        locationName.SIGNCC4,
+    ],
+}
+
 def create_regions(self):
     player = self.player
     active_locations = self.location_name_to_id
-    region_map = copy.deepcopy(BANJOTOOIEREGIONS)
-    nest_map = copy.deepcopy(NEST_REGIONS)
+    region_map = copy.deepcopy(BANJO_TOOIE_REGIONS)
 
     if self.options.victory_condition == VictoryCondition.option_minigame_hunt\
       or self.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
@@ -1159,7 +1258,14 @@ def create_regions(self):
         region_map[regionName.IOHPL].append(locationName.HONEYBR5)
 
     if self.options.nestsanity:
+        nest_map = copy.deepcopy(NEST_REGIONS)
         for region, locations in nest_map.items():
+            for location in locations:
+                region_map[region].append(location)
+    
+    if self.options.randomize_signposts:
+        signpost_map = copy.deepcopy(SIGNPOST_REGIONS)
+        for region, locations in signpost_map.items():
             for location in locations:
                 region_map[region].append(location)
 

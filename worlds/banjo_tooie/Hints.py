@@ -6,31 +6,74 @@ from .Items import moves_table, bk_moves_table, progressive_ability_table
 from .Locations import all_location_table
 from .Names import locationName
 
+TOTAL_HINTS = 61
+
 class HintData(NamedTuple):
     text: str # The displayed text in the game.
-    location_id: int
-    location_player_id: int
+    location_id: int|None = None
+    location_player_id: int|None = None
 
 def generate_hints(world: World):
-    hintDatas: List[HintData] = []
+    hint_datas: List[HintData] = []
 
-    generate_move_hints(world, hintDatas)
-    generate_slow_locations_hints(world, hintDatas)
+    generate_move_hints(world, hint_datas)
+    generate_slow_locations_hints(world, hint_datas)
+    generate_joke_hints(world, hint_datas)
 
-    world.random.shuffle(hintDatas)
+    assign_hints_to_locations(world, hint_datas)
+
+def assign_hints_to_locations(world: World, hint_datas: List[HintData]):
+    world.random.shuffle(hint_datas)
     
     hint_location_ids = get_signpost_location_ids()
 
     # It is done this way to keep the order of the signposts intact in the spoiler log.
     chosen_locations_ids = hint_location_ids[::]
     world.random.shuffle(chosen_locations_ids)
-    chosen_locations_ids = chosen_locations_ids[:world.options.signpost_hints]
     placed_hints = 0
     for id in hint_location_ids:
         if id not in chosen_locations_ids:
             continue
-        world.hints.update({id: hintDatas[placed_hints]})
+        world.hints.update({id: hint_datas[placed_hints]})
         placed_hints += 1
+
+def generate_joke_hints(world: World, hint_datas: List[HintData]):
+    # Fills the rest of the signposts with jokes.
+    if len(hint_datas) == TOTAL_HINTS:
+        return
+    generate_suggestion_hint(world, hint_datas)
+    generate_generic_joke_hint(world, hint_datas)
+    
+def generate_generic_joke_hint(world: World, hint_datas: List[HintData]):
+    selected_jokes = (world.random.choices([
+        "A hint is what you want, but instead here's a taunt.",
+        "This is an information signpost.",
+        "This joke hint features no newline.",
+        "Press \x86 to read this signpost.",
+        "Banjo-Kazooie: Grunty's Revenge is a collectathon that was released on the GBA.",
+        "Did you know that Banjo-Kazooie had 2 mobile games? Me neither.",
+        "After collecting all 9 black jinjos, enter their house for a happy sound.",
+        "Made you look!",
+        "Developer jjjj12212 was a good developer... until he got shot with an arrow in the knee.",
+
+        # The following are quotes from other video games (or something inspired from them).
+        "Thank you Banjo, but your hint is on another signpost!",
+        "It's dangerous to go alone, read this!",
+        "I like shorts! They're comfy and easy to wear!",
+        "Press F to pay respects.",
+        "Press \x86 to doubt.",
+        "The sign is a lie",
+    ], k = TOTAL_HINTS - len(hint_datas)))
+
+    for joke in selected_jokes:
+        hint_datas.append(HintData(joke))
+
+def generate_suggestion_hint(world: World, hint_datas: List[HintData]):
+    non_tooie_player_names = [world.player_name for world in world.multiworld.worlds.values() if world.game != "Banjo-Tooie"]
+    if not non_tooie_player_names:
+        return
+    hint = "You should suggest {} to try the Banjo-Tooie Randomizer.".format(world.random.choice(non_tooie_player_names))
+    hint_datas.append(HintData(hint))
 
 def generate_slow_locations_hints(world: World, hint_datas: List[HintData]):
     hinted_location_names_in_own_world = [location_id_to_name(world, hint_data.location_id)\

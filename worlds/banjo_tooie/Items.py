@@ -4,7 +4,7 @@ from .Names import itemName, locationName
 
 
 class BanjoTooieItem(Item):
-    #1230788 Note that 1230790+ exists
+    # 1230833 (TITRAP) but beware of level access keys that are way higher!
     game: str = "Banjo-Tooie"
 class ItemData(typing.NamedTuple):
     btid: int = 0
@@ -135,7 +135,8 @@ misc_collectable_table = {
     itemName.TTRAP:         ItemData(1230786,  0, "trap", ""),
     itemName.STRAP:         ItemData(1230787,  0, "trap", ""),
     itemName.TRTRAP:        ItemData(1230788,  0, "trap", ""),
-    itemName.SQTRAP:        ItemData(1230789,  0, "trap", "")
+    itemName.SQTRAP:        ItemData(1230789,  0, "trap", ""),
+    itemName.TITRAP:        ItemData(1230833,  0, "trap", "")
 }
 
 stop_n_swap_table = {
