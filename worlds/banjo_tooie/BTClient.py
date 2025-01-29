@@ -150,6 +150,7 @@ class BanjoTooieContext(CommonContext):
         self.jiggychunks_table = {}
         self.goggles_table = False
         self.dino_kids_table = {}
+        self.signpost_table = {}
         self.nests_table = {}
         self.roar = False
         self.jiggy_table = {}
@@ -372,7 +373,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_nestsanity": ctx.slot_data["nestsanity"],
             "slot_hints": ctx.slot_data["hints"],
             "slot_extra_cheats": ctx.slot_data["extra_cheats"],
-            "slot_easy_canary": ctx.slot_data["easy_canary"]
+            "slot_easy_canary": ctx.slot_data["easy_canary"],
         })
     ctx.sendSlot = False
     return payload
@@ -424,6 +425,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     dino_kids = payload["dino_kids"]
     nests = payload["nests"]
     roar_obtain = payload["roar"]
+    signposts = payload["signposts"]
     worldslist = payload["worlds"]
     banjo_map = payload["banjo_map"]
 
@@ -454,6 +456,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         dino_kids = {}
     if isinstance(nests, list):
         nests = {}
+    if isinstance(signposts, list):
+        signposts = {}
     if isinstance(goggles, bool) == False:
         goggles = False
     if isinstance(demo, bool) == False:
@@ -529,6 +533,15 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             for locationId, value in nests.items():
                 if value == True:
                     locs1.append(int(locationId))
+        if ctx.signpost_table != signposts:
+                ctx.signpost_table = signposts
+                for locationId, value in signposts.items():
+                    if value == True:
+#G0go, needs to add cmd to send Hint from ctx.get_slot['hints'][locationId]
+# contains ["location_id"]  (hinted locationID)
+# contains ["location_player_id"] (hinted playerId)
+                        
+                        locs1.append(int(locationId))
         if ctx.roar != roar_obtain:
             ctx.roar = roar_obtain
             if roar_obtain == True:

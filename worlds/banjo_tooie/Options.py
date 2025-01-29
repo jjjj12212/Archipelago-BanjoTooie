@@ -327,12 +327,18 @@ class SkipPuzzles(DefaultOnToggle):
     """Open world entrances without having to go to Jiggywiggy."""
     display_name = "Skip Puzzles"
 
-class AssistMode(Toggle):
-    """Two cheats will be added to the "CHEATS" sub-menu:
+class ExtraCheats(Toggle):
+    """Extra cheats will be added to the "CHEATS" sub-menu:
         NESTKING  - Infinite eggs/feathers.
         HONEYKING - Infinite health/air.
-        Canary Mary will also be easier & this will also display "ASSIST MODE" on screen if the cheats are activated."""
-    display_name = "Assist Mode"
+        SUPERBANJO - Gotta go fast!
+        SUPERBADDY - They gotta go fast!"""
+    display_name = "Extra Cheats"
+
+class EasyCanary(DefaultOnToggle):
+    """Makes Canary Mary Races much easier."""
+    display_name = "Easy Canary"
+
 
 class Backdoors(Toggle):
     """Opens many one-way switches on game start, allowing for more backdoor access to levels.
@@ -570,7 +576,8 @@ class BanjoTooieOptions(PerGameCommonOptions):
     backdoors:Backdoors
     open_silos: OpenSilos
 
-    assist_mode: AssistMode
+    extra_cheats: ExtraCheats
+    easy_canary: EasyCanary
     speed_up_minigames: SpeedUpMinigames
     tower_of_tragedy: TowerOfTragedy
     skip_klungo: SkipKlungo

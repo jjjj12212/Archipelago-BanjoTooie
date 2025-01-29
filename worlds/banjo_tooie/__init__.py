@@ -214,7 +214,7 @@ class BanjoTooieWorld(World):
         
         if self.options.randomize_signposts:
             trap_big_pants_counter += 61 # There are 61 signposts in the game.
-
+        trap_list = []
         if self.options.traps:
             trap_list = self.random.choices(["gnests", "ttrap", "strap", "trtrap", "sqtrap", "titrap"], weights = [
                 self.options.golden_eggs_weight if self.options.nestsanity else 0,
@@ -804,7 +804,9 @@ class BanjoTooieWorld(World):
             "speed_up_minigames", #minigames, now int
             "tower_of_tragedy", #skip_tot, now int
             "skip_klungo", #matches, now int
-            "assist_mode",
+            "easy_canary",
+            "extra_cheats",
+            "randomize_signposts",
             "dialog_character") #matches and matches
 
         btoptions["player_name"] = self.multiworld.player_name[self.player]

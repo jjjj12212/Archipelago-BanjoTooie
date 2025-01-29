@@ -7328,9 +7328,10 @@ function process_slot(block)
         BTH:setSettingSignposts(1)
         --print(block['slot_hints'])
         local sign_id = 0
-        for _, hintdata in pairs(block['slot_hints'])
+        for signid, hintdata in pairs(block['slot_hints'])
         do
-            --print(hintdata)
+            -- print(signid)
+            -- print(hintdata)
             BTH:setHintMessages(sign_id, hintdata["text"])
             sign_id = sign_id + 1
         end
