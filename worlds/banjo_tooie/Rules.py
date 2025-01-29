@@ -6149,18 +6149,18 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
             logic = state.can_reach_region(regionName.GM, self.player) and self.flap_flip(state)\
-                    or state.can_reach_region(regionName.WW, self.player) and state.has(itemName.CHUFFY, self.player)\
-                    or state.can_reach_region(regionName.TL, self.player) and state.has(itemName.CHUFFY, self.player)\
-                    or state.can_reach_region(regionName.GI1, self.player) and state.has(itemName.CHUFFY, self.player)\
-                    or state.can_reach_region(regionName.IOHCT, self.player) and state.has(itemName.CHUFFY, self.player)
+                    or state.can_reach_region(regionName.WW, self.player) and state.has(itemName.TRAINSWWW, self.player) and state.has(itemName.CHUFFY, self.player)\
+                    or state.can_reach_region(regionName.TL, self.player) and state.has(itemName.TRAINSWTD, self.player) and state.has(itemName.CHUFFY, self.player)\
+                    or state.can_reach_region(regionName.GI1, self.player) and state.has(itemName.TRAINSWGI, self.player) and state.has(itemName.CHUFFY, self.player)\
+                    or state.can_reach_region(regionName.IOHCT, self.player) and state.has(itemName.TRAINSWHP1, self.player) and state.has(itemName.CHUFFY, self.player)
             
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = state.can_reach_region(regionName.GM, self.player) and (self.small_elevation(state) or self.beak_buster(state) or self.humbaGGM(state))\
-                    or state.can_reach_region(regionName.WW, self.player) and state.has(itemName.TRAINSWWW) and state.has(itemName.CHUFFY, self.player)\
-                    or state.can_reach_region(regionName.TL, self.player) and state.has(itemName.TRAINSWTD) and state.has(itemName.CHUFFY, self.player)\
-                    or state.can_reach_region(regionName.GI1, self.player) and state.has(itemName.TRAINSWGI) and state.has(itemName.CHUFFY, self.player)\
-                    or state.can_reach_region(regionName.IOHCT, self.player) and state.has(itemName.TRAINSWIH) and state.has(itemName.CHUFFY, self.player)\
-                    or state.can_reach_region(regionName.HP, self.player) and state.has(itemName.TRAINSWHP1) and self.hfp_top(state)\
+                    or state.can_reach_region(regionName.WW, self.player) and state.has(itemName.TRAINSWWW, self.player) and state.has(itemName.CHUFFY, self.player)\
+                    or state.can_reach_region(regionName.TL, self.player) and state.has(itemName.TRAINSWTD, self.player) and state.has(itemName.CHUFFY, self.player)\
+                    or state.can_reach_region(regionName.GI1, self.player) and state.has(itemName.TRAINSWGI, self.player) and state.has(itemName.CHUFFY, self.player)\
+                    or state.can_reach_region(regionName.IOHCT, self.player) and state.has(itemName.TRAINSWIH, self.player) and state.has(itemName.CHUFFY, self.player)\
+                    or state.can_reach_region(regionName.HP, self.player) and state.has(itemName.TRAINSWHP1, self.player) and self.hfp_top(state)\
                         and (self.leg_spring(state)\
                             or self.tall_jump(state) and self.pack_whack(state)\
                             or self.flap_flip(state)\
@@ -6168,11 +6168,11 @@ class BanjoTooieRules:
                             or self.flight_pad(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = state.can_reach_region(regionName.GM, self.player) and (self.small_elevation(state) or self.beak_buster(state) or self.humbaGGM(state))\
-                    or state.can_reach_region(regionName.WW, self.player) and state.has(itemName.TRAINSWWW) and state.has(itemName.CHUFFY, self.player)\
-                    or state.can_reach_region(regionName.TL, self.player) and state.has(itemName.TRAINSWTD) and state.has(itemName.CHUFFY, self.player)\
-                    or state.can_reach_region(regionName.GI1, self.player) and state.has(itemName.TRAINSWGI) and state.has(itemName.CHUFFY, self.player)\
-                    or state.can_reach_region(regionName.IOHCT, self.player) and state.has(itemName.TRAINSWIH) and state.has(itemName.CHUFFY, self.player)\
-                    or state.can_reach_region(regionName.HP, self.player) and state.has(itemName.TRAINSWHP1) and self.hfp_top(state)\
+                    or state.can_reach_region(regionName.WW, self.player) and state.has(itemName.TRAINSWWW, self.player) and state.has(itemName.CHUFFY, self.player)\
+                    or state.can_reach_region(regionName.TL, self.player) and state.has(itemName.TRAINSWTD, self.player) and state.has(itemName.CHUFFY, self.player)\
+                    or state.can_reach_region(regionName.GI1, self.player) and state.has(itemName.TRAINSWGI, self.player) and state.has(itemName.CHUFFY, self.player)\
+                    or state.can_reach_region(regionName.IOHCT, self.player) and state.has(itemName.TRAINSWIH, self.player) and state.has(itemName.CHUFFY, self.player)\
+                    or state.can_reach_region(regionName.HP, self.player) and state.has(itemName.TRAINSWHP1, self.player) and self.hfp_top(state)\
                         and (self.leg_spring(state)\
                             or self.tall_jump(state) and self.pack_whack(state)\
                             or self.flap_flip(state)\
@@ -6180,11 +6180,11 @@ class BanjoTooieRules:
                             or self.flight_pad(state))
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = state.can_reach_region(regionName.GM, self.player) and (self.small_elevation(state) or self.beak_buster(state) or self.humbaGGM(state))\
-                    or state.can_reach_region(regionName.WW, self.player) and state.has(itemName.TRAINSWWW) and state.has(itemName.CHUFFY, self.player)\
-                    or state.can_reach_region(regionName.TL, self.player) and state.has(itemName.TRAINSWTD) and state.has(itemName.CHUFFY, self.player)\
-                    or state.can_reach_region(regionName.GI1, self.player) and state.has(itemName.TRAINSWGI) and state.has(itemName.CHUFFY, self.player)\
-                    or state.can_reach_region(regionName.IOHCT, self.player) and state.has(itemName.TRAINSWIH) and state.has(itemName.CHUFFY, self.player)\
-                    or state.can_reach_region(regionName.HP, self.player) and state.has(itemName.TRAINSWHP1) and self.hfp_top(state)\
+                    or state.can_reach_region(regionName.WW, self.player) and state.has(itemName.TRAINSWWW, self.player) and state.has(itemName.CHUFFY, self.player)\
+                    or state.can_reach_region(regionName.TL, self.player) and state.has(itemName.TRAINSWTD, self.player) and state.has(itemName.CHUFFY, self.player)\
+                    or state.can_reach_region(regionName.GI1, self.player) and state.has(itemName.TRAINSWGI, self.player) and state.has(itemName.CHUFFY, self.player)\
+                    or state.can_reach_region(regionName.IOHCT, self.player) and state.has(itemName.TRAINSWIH, self.player) and state.has(itemName.CHUFFY, self.player)\
+                    or state.can_reach_region(regionName.HP, self.player) and state.has(itemName.TRAINSWHP1, self.player) and self.hfp_top(state)\
                         and (self.leg_spring(state)\
                             or self.tall_jump(state) and self.pack_whack(state)\
                             or self.flap_flip(state)\

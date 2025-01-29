@@ -42,7 +42,13 @@ def generate_joke_hints(world: World, hint_datas: List[HintData]):
     if len(hint_datas) == TOTAL_HINTS:
         return
     generate_suggestion_hint(world, hint_datas)
+    generate_forced_joke_hint(world, hint_datas)
     generate_generic_joke_hint(world, hint_datas)
+
+def generate_forced_joke_hint(world: World, hint_datas: List[HintData]):
+    if len(hint_datas) == TOTAL_HINTS:
+        return
+    hint_datas.append(HintData(f"Sorry {world.player_name}, but we are not adding that feature in this game."))
     
 def generate_generic_joke_hint(world: World, hint_datas: List[HintData]):
     selected_jokes = (world.random.choices([
