@@ -767,47 +767,49 @@ class BanjoTooieWorld(World):
     def fill_slot_data(self) -> Dict[str, Any]:
         generate_hints(self)
         btoptions = self.options.as_dict(
-            "death_link", #deathlink, now int
-            "logic_type", #good and matches
-            "victory_condition", #goal_type and matches
-            "minigame_hunt_length", #good and matches
-            "boss_hunt_length", #good and matches
-            "jinjo_family_rescue_length", #good and matches
-            "token_hunt_length", #good and matches
-            "randomize_moves", #moves, now int
-            "randomize_bk_moves", #bk_moves and matches
-            "egg_behaviour", #good and matches
-            "progressive_beak_buster", #good, now int
-            "progressive_shoes", #good, now int
-            "progressive_water_training", #good and matches
-            "progressive_flight", #good, now int
-            "progressive_egg_aiming", #good and matches
-            "progressive_bash_attack", #good, now int
-            "randomize_notes", #notes, now int
-            "randomize_treble", #trebleclef, now int
-            "randomize_jinjos", #jinjo, now int
-            "randomize_doubloons", #doubloons, now int
-            "randomize_cheato", #pages, now int
-            "cheato_rewards", #matches, now int
-            "randomize_honeycombs", #honeycomb, now int
-            "honeyb_rewards", #matches, now int
-            "randomize_glowbos", #magic, now int
-            "randomize_stop_n_swap", #mystery, now int
-            "randomize_dino_roar", #roar, now int
-            "nestsanity", #matches, now int
-            "randomize_stations", #stations, now int
-            "randomize_chuffy", #chuffy, now int
-            "skip_puzzles", #matches, now int
-            "open_hag1", #matches, now int
-            "backdoors", #matches, now int
-            "open_silos", #silo_option and matches
-            "speed_up_minigames", #minigames, now int
-            "tower_of_tragedy", #skip_tot, now int
-            "skip_klungo", #matches, now int
+            "death_link",
+            "logic_type",
+            "victory_condition",
+            "minigame_hunt_length",
+            "boss_hunt_length",
+            "jinjo_family_rescue_length",
+            "token_hunt_length",
+            "randomize_moves",
+            "randomize_bk_moves",
+            "egg_behaviour",
+            "progressive_beak_buster",
+            "progressive_shoes",
+            "progressive_water_training",
+            "progressive_flight",
+            "progressive_egg_aiming",
+            "progressive_bash_attack",
+            "randomize_notes",
+            "randomize_treble",
+            "randomize_jinjos",
+            "randomize_doubloons",
+            "randomize_cheato",
+            "cheato_rewards",
+            "randomize_honeycombs",
+            "honeyb_rewards",
+            "randomize_glowbos",
+            "randomize_stop_n_swap",
+            "randomize_dino_roar",
+            "nestsanity",
+            "randomize_stations",
+            "randomize_chuffy",
+            "skip_puzzles",
+            "open_hag1",
+            "backdoors",
+            "open_silos",
+            "speed_up_minigames",
+            "tower_of_tragedy",
+            "skip_klungo",
             "easy_canary",
             "extra_cheats",
             "randomize_signposts",
-            "dialog_character") #matches and matches
+            "signpost_hints",
+            "signpost_move_hints",
+            "dialog_character")
 
         btoptions["player_name"] = self.multiworld.player_name[self.player]
         btoptions["seed"] = self.random.randint(12212, 9090763)

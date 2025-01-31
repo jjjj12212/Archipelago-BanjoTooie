@@ -89,6 +89,7 @@ local TTRAPS = 0;
 local STRAPS = 0;
 local TRTRAPS = 0;
 local SQTRAPS = 0;
+local TITRAPS = 0;
 
 local EGGNEST = 0;
 local FEATHERNEST = 0;
@@ -2216,7 +2217,8 @@ local TRAPS = {
     "AP_TRAP_TRIP",
     "AP_TRAP_SLIP",
     "AP_TRAP_MISFIRE",
-    "AP_TRAP_SQUISH"
+    "AP_TRAP_SQUISH",
+    "AP_TRAP_TIP"
 }
 
 local CURRENT_DIALOG_CHARACTER = nil
@@ -6478,6 +6480,10 @@ function traps(itemId)
     then
         SQTRAPS = SQTRAPS + 1
         BTH:sendTrap(TRAP_TABLE["AP_TRAP_SQUISH"], SQTRAPS)
+    elseif itemId == 1230833
+    then
+        TITRAPS = TITRAPS + 1
+        BTH:sendTrap(TRAP_TABLE["AP_TRAP_TIP"], TITRAPS)
     end
 end
 
@@ -6768,6 +6774,9 @@ function processAGIItem(item_list)
             then
                 obtain_mumbo_token()
                 check_open_level() -- check if the current jiggy count opens a new level
+            elseif(memlocation == 1230833) -- Tip Trap
+            then
+                traps(memlocation)
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
         end
@@ -7196,10 +7205,6 @@ function process_slot(block)
     then
         BTH:setSettingNestsanity(1)
     end
-    -- if block['slot_signposts'] ~= nil and block['slot_signposts'] ~= 0
-    -- then
-    --     BTH:setSettingSignposts(1)
-    -- end
     if block['slot_extra_cheats'] ~= nil and block['slot_extra_cheats'] ~= 0
     then
         BTH:setExtraCheats(1)
@@ -7323,17 +7328,14 @@ function process_slot(block)
             SILO_MESSAGE = "The Isle O' Hags Cliff Top Silo is open"
         end
     end
-    if block['slot_hints'] ~= nil
+    if block['slot_hints'] ~= nil and block['slot_hints_activated'] ~= 0
     then
         BTH:setSettingSignposts(1)
-        --print(block['slot_hints'])
         local sign_id = 0
-        for signid, hintdata in pairs(block['slot_hints'])
+        for sign_locationId, hintdata in pairs(block['slot_hints'])
         do
-            -- print(signid)
-            -- print(hintdata)
+            sign_id = ADDRESS_MAP["SIGNPOSTS"][sign_locationId]
             BTH:setHintMessages(sign_id, hintdata["text"])
-            sign_id = sign_id + 1
         end
     end
     if block['slot_version'] ~= nil and block['slot_version'] ~= ""
@@ -7413,7 +7415,7 @@ function printGoalInfo()
             BTH:setSettingMaxMumboTokens(TH_LENGTH)
         elseif GOAL_TYPE == 6 then
             message = "You need to defeat "..BH_LENGTH.." Bosses in order to defeat HAG-1!\nGood Luck and"..randomEncouragment;
-            BTH:setSettingMaxMumboTokens(TH_LENGTH)
+            BTH:setSettingMaxMumboTokens(BH_LENGTH)
         end
         if GOAL_PRINTED == false
         then

@@ -372,6 +372,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_dialog_character": ctx.slot_data["dialog_character"],
             "slot_nestsanity": ctx.slot_data["nestsanity"],
             "slot_hints": ctx.slot_data["hints"],
+            "slot_hints_activated": ctx.slot_data["signpost_hints"] + ctx.slot_data["signpost_move_hints"],
             "slot_extra_cheats": ctx.slot_data["extra_cheats"],
             "slot_easy_canary": ctx.slot_data["easy_canary"],
         })
@@ -736,7 +737,7 @@ def mumbo_tokens_loc(locs: list, goaltype: int) -> list:
                 locs.append(1230981)
             if locationId == 1230749: #CCL
                 locs.append(1230982)
-        if goaltype == 2 or goaltype == 4:
+        if goaltype == 2 or goaltype == 4 or goaltype == 6:
             if locationId == 1230596: #MT
                 locs.append(1230960)
             if locationId == 1230606: #GGM
