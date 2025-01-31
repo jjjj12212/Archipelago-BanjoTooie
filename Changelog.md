@@ -28,8 +28,35 @@
   - This update features the first fixes from the PR.
   - Logic fixes
     - MT to HFP access: added entering the stadium with the beak bomb glitch if backdoors is active
-    - Outside GI Left of Building Feather Nest: removed split up + tall jump, since it's not possible
+    - GGM to WW: the transition was removed by mistake, it got readded.
+    - GI Elevator doors: removed clockworks from the logic. It doesn't work.
+    - Plateau Sign Notes: Removed split up + tall jump from easy tricks logic
+    - Quagmire feather nests: if not on intended logic, can be gotten with beak buster
+    - Pillar Nests: reworked logic
+    - Generator Cavern Jiggy: In hard tricks and glitch logics, added flap flip + beak buster, and flap flip + grip grab.
+    - Dodgem Dome Jiggy: Added talon trot as a requirement if doing the clockwork warp
+    - Inside the Mountain Egg Nests: Can be gotten by sinking as the T-rex
+    - Alcove Doubloons: fixed a bug where they would sometimes be in logic without split up or explosives
+    - Pig Pool Jiggy: the waste disposal switch can be pressed with the dragon Kazooie flame.
+    - Springy Step Shoes Silo: Removed Springy Step Shoes as a way to get it
     - Oogle Boogle cave stuff: is now in logic if entering TDL from the backdoor is possible
+    - TDL Waterfall alcove nests: in glitched logic, can be gotten as the big T-rex with its head.
+    - TDL trebleclef: same as above
+    - Floor 4 to Floor 4 Back (past the crushers): added talon trot to the clockwork warp for added ease
+    - Elevator shaft: now properly links to the back of floor 2, 3, and 4 in logic.
+    - Floor 1 Guarded Jiggy: For nonintended logics, leg spring + glide through the front window is now in logic.
+    - Outside GI Left of Building Feather Nest: removed split up + tall jump, since it's not possible
+    - Quality Control Jiggy and Nests: added talon trot to the clockwork warp for added ease
+    - Clinker's Cavern Jiggy and nests: same as above
+    - Floor 4 nest near battery door: same as above
+    - Floor 3 glowbo: added logic. Yes, it really took this long to realise that it did not have any logic.
+    - Floor 2 Scaffolding Nests: reworked logic.
+    - Icy Side Train Station nests: swapped logic of both nests
+    - icy side train station jiggy: added clockwork shot to hard tricks and glitches logic if going inside the train station
+    - Inside Trash Can nests: reworked solo Kazooie logic
+    - Dippy Note: on easy tricks logic, can be gotten with beak buster. On hard tricks and glitches logic, can be gotten with no moves.
+    - Dippy Jiggy: same as above, as far as diving goes.
+    - Glowbo pool stuff: easy tricks can do it with beak buster
 
 # 4.1
   - Multiplayer Jinjo is back for Token Hunt

@@ -1329,7 +1329,7 @@ def connect_regions(self):
                         regionName.IOHCT: lambda state: rules.split_up(state)})
 
     region_GM = self.get_region(regionName.GM)
-    region_GM.add_exits({regionName.GMWSJT, regionName.CHUFFY, regionName.GMFD}, {
+    region_GM.add_exits({regionName.GMWSJT, regionName.CHUFFY, regionName.GMFD, regionName.WW}, {
                         regionName.GMWSJT: lambda state: rules.can_access_water_storage_jinjo_from_GGM(state),
                         regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ggm_to_chuffy(state),
                         regionName.GMFD: lambda state: rules.humbaGGM(state),
@@ -1422,11 +1422,11 @@ def connect_regions(self):
                          })
 
     region_GIES = self.get_region(regionName.GIES)
-    region_GIES.add_exits({regionName.GI1, regionName.GI2, regionName.GI3, regionName.GI4},
+    region_GIES.add_exits({regionName.GI1, regionName.GI2EM, regionName.GI3B, regionName.GI4B},
                         {regionName.GI1: lambda state: rules.elevator_shaft_to_floor_1(state),
-                         regionName.GI2: lambda state: rules.elevator_shaft_to_em(state),
-                         regionName.GI3: lambda state: rules.elevator_shaft_to_boiler_plant(state),
-                         regionName.GI4: lambda state: rules.elevator_shaft_to_floor_4(state)})
+                         regionName.GI2EM: lambda state: rules.elevator_shaft_to_em(state),
+                         regionName.GI3B: lambda state: rules.elevator_shaft_to_boiler_plant(state),
+                         regionName.GI4B: lambda state: rules.elevator_shaft_to_floor_4(state)})
 
     region_GI1 = self.get_region(regionName.GI1)
     region_GI1.add_exits({regionName.GIO, regionName.GIES, regionName.GI2, regionName.GI5, regionName.CHUFFY},
