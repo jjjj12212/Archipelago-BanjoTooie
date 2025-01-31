@@ -1,18 +1,35 @@
-# 4.2
-
-# 4.1.2
+# 4.2.0
+  - New victory condition: Boss Hunt + Hag 1.
+    - Defeat bosses chosen from a new yaml option, then defeat Hag 1 to win.
+  - Signposts can now have hints!
+    - You can choose how many hints there are among the 61 signposts in the game.
+    - You can choose how many of those hints are directed to moves, the rest hint at slow locations.
+    - You can choose whether a hint tells what item is on a location (clear hint), or only tells how good the item is (cryptic hint).
+  - Signpost can now be checks, independantly of if the signposts contain hints or not.
+  - New trap: tip trap.
+    - Upon receiving the trap, you will receive one of the vanilla sign texts as a dialogue. No, you cannot skip the textbox!
+  - You can choose whether you want to be able to use SUPERBANJO, SUPERBADDY, NESTKING, HONEYKING at will during gameplay.
+  - New option to make Canary Mary minigames much easier. 
+  - New options
+    - Boss Hunt + Hag 1 length
+    - Choose how many signposts give hints.
+    - Choose how many signpost give move hints.
+    - Choose how clear signpost hints are.
+    - Choose if signposts are checks.
+    - Weight options for traps. You can now specify how likely a trap will be Golden Eggs, a Trip Trap, a Slip Trap, a Transform Trap, a Squish Trap, or a Tip Trap
+    - Easy Canary Mary
+    - Extra Cheats
+  - Removed Knuckles from the game
+  - jjjj12212 can't math. fix item location matching when jinjos are not randomized.
+  - Fixed number of progression jiggies when Hag 1 is closed
+  - Fixed generation issue when you had nestsanity off and cheato page randomization off.
+  - Chuffy is back in GGM when the train is derailed, due to the fact that the signpost inside the wagon can be gotten without Chuffy.
+  - The jukebox in Jolly's is fixed from the start.
+  - This update features the first fixes from the PR.
   - Logic fixes
     - MT to HFP access: added entering the stadium with the beak bomb glitch if backdoors is active
     - Outside GI Left of Building Feather Nest: removed split up + tall jump, since it's not possible
     - Oogle Boogle cave stuff: is now in logic if entering TDL from the backdoor is possible
-  - Removed Knuckles from the game
-  - jjjj12212 can't math. fix item location matching when jinjos are not randomized.
-  - Fixed number of progression jiggies when Hag 1 is closed
-  - New Options:
-    - Weight options for traps. You can now specify how likely a trap will be Golden Eggs, a Trip Trap, a Slip Trap, a Transform Trap or a Squish Trap.
-
-# 4.1.1
-  - Fixed generation issue when you had nestsanity off and cheato page randomization off.
 
 # 4.1
   - Multiplayer Jinjo is back for Token Hunt
