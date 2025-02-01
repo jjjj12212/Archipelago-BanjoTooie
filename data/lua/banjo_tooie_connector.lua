@@ -7354,9 +7354,7 @@ function process_slot(block)
             then
                 if ROMversion ~= CLIENT_VERSION
                 then
-                    print(ROMversion)
                     VERROR = true
-                    print("ROM VERSION DOES NOT MATCH")
                     return false
                 end
                 checked = true
@@ -7476,9 +7474,11 @@ function main()
                 mumbo_announce()
                 if VERROR == true
                 then
-                    print("ERROR: Banjo_Tooie_connector Mismatch. Please obtain the correct version")
+                    print("ERROR: version mismatch. Please obtain the same version for everything")
+                    print("The versions that you are currently using are:")
                     print("Connector Version: " .. BT_VERSION)
                     print("Client Version: " .. CLIENT_VERSION)
+                    print("ROM Version: " .. BTH:getRomVersion())
                     return
                 end
                 if (CURRENT_MAP ~= 0x158 and CURRENT_MAP ~= 0x18B and CURRENT_MAP ~= 0x0) and GOAL_PRINTED == true

@@ -26,6 +26,7 @@
   - Chuffy is back in GGM when the train is derailed, due to the fact that the signpost inside the wagon can be gotten without Chuffy.
   - The jukebox in Jolly's is fixed from the start.
   - This update features the first fixes from the PR.
+  - Better error message when getting a version mismatch in the Lua connector.
   - Logic fixes
     - MT to HFP access: added entering the stadium with the beak bomb glitch if backdoors is active
     - GGM to WW: the transition was removed by mistake, it got readded.
