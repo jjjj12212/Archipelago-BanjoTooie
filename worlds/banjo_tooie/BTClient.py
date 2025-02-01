@@ -372,9 +372,10 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_dialog_character": ctx.slot_data["dialog_character"],
             "slot_nestsanity": ctx.slot_data["nestsanity"],
             "slot_hints": ctx.slot_data["hints"],
-            "slot_hints_activated": ctx.slot_data["signpost_hints"] + ctx.slot_data["signpost_move_hints"],
+            "slot_hints_activated": ctx.slot_data["signpost_hints"],
             "slot_extra_cheats": ctx.slot_data["extra_cheats"],
             "slot_easy_canary": ctx.slot_data["easy_canary"],
+            "slot_randomize_signposts": ctx.slot_data["randomize_signposts"]
         })
     ctx.sendSlot = False
     return payload
