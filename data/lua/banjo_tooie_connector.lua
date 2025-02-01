@@ -7328,7 +7328,7 @@ function process_slot(block)
             SILO_MESSAGE = "The Isle O' Hags Cliff Top Silo is open"
         end
     end
-    if block['slot_hints'] ~= nil and block['slot_hints_activated'] ~= 0
+    if block['slot_hints'] ~= nil and (block['slot_hints_activated'] ~= 0 or block["slot_randomize_signposts"] ~= 0)
     then
         BTH:setSettingSignposts(1)
         local sign_id = 0
