@@ -582,12 +582,13 @@ class BanjoTooieOptions(PerGameCommonOptions):
     speed_up_minigames: SpeedUpMinigames
     tower_of_tragedy: TowerOfTragedy
     skip_klungo: SkipKlungo
-    dialog_character:DialogCharacters
 
     signpost_hints: SignpostHints
     signpost_move_hints: SignpostMoveHints
     # add_signpost_hints_to_ap: AddSignpostHintsToArchipelagoHints
     hint_clarity: HintClarity
+
+    dialog_character:DialogCharacters # Keep this at the bottom so that the huge list stays at the bottom of the yaml.
 
     start_inventory_from_pool: StartInventoryPool
 

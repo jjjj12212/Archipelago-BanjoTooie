@@ -383,9 +383,6 @@ class BanjoTooieWorld(World):
 
         # if item.code == self.item_code(itemName.NONE) and self.options.cheato_rewards == False and self.options.honeyb_rewards == False:
         #     return False
-        if item.code == self.item_code(itemName.NONE) and self.options.randomize_bk_moves == RandomizeBKMoveList.option_all \
-            and (self.options.bass_clef_amount == 0 and self.options.extra_trebleclefs_count == 0):
-            return False
         if item.code == self.item_code(itemName.NONE) and self.options.traps:
             return False
 
