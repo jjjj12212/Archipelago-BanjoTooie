@@ -516,7 +516,7 @@ class BanjoTooieWorld(World):
                     base_attacks = [itemName.PAEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
                 else:
                     base_attacks = [itemName.EGGSHOOT, itemName.EGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT]
-            if self.options.logic_type == LogicType.option_easy_tricks:
+            elif self.options.logic_type == LogicType.option_easy_tricks:
                 if self.options.progressive_egg_aiming == ProgressiveEggAim.option_basic:
                     base_attacks = [itemName.PEGGAIM, itemName.BBARGE, itemName.ROLL, itemName.ARAT, itemName.WWING]
                 elif self.options.progressive_egg_aiming == ProgressiveEggAim.option_advanced:
