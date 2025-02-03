@@ -1,9 +1,13 @@
-from worlds.banjo_tooie.Items import BanjoTooieItem, all_item_table
+from worlds.banjo_tooie.Items import all_item_table
+from worlds.banjo_tooie.Options import RandomizeJinjos
+from worlds.banjo_tooie.test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
-from ..Names import locationName, itemName, regionName
+from ..Names import locationName, itemName
 
-class Jinjo(BanjoTooieTestBase):
-
+class JinjosEnabled(BanjoTooieTestBase):
+    options = {
+        "randomize_jinjos": RandomizeJinjos.option_true
+    }
     def _item_pool(self) -> None:
         jinjo_count = 0
         jinjo_counter = 0
@@ -17,6 +21,10 @@ class Jinjo(BanjoTooieTestBase):
 
         assert jinjo_count == jinjo_counter
 
+class JinjosDisabled(BanjoTooieTestBase):
+    options = {
+        "randomize_jinjos": RandomizeJinjos.option_false
+    }
     def _disabled_item_pool(self) -> None:
         jinjo_counter = 0
 
@@ -186,87 +194,50 @@ class Jinjo(BanjoTooieTestBase):
         assert jinjos == placed_correctly
 
 
-class TestJinjoEnabledEasy(Jinjo):
+class TestJinjosEnabledIntended(JinjosEnabled, IntendedLogic):
     options = {
-        'randomize_jinjos': 'true',
-        'logic_type': 0
+        **JinjosEnabled.options,
+        **IntendedLogic.options,
     }
-    def test_item_pool(self) -> None:
-        super()._item_pool()
 
-
-class TestJinjoEnabledNormal(Jinjo):
+class TestJinjosEnabledEasyTricks(JinjosEnabled, EasyTricksLogic):
     options = {
-        'randomize_jinjos': 'true',
-        'logic_type': 1
+        **JinjosEnabled.options,
+        **EasyTricksLogic.options,
     }
-    def test_item_pool(self) -> None:
-        super()._item_pool()
 
-
-class TestJinjoEnabledAdvance(Jinjo):
+class TestJinjosEnabledHardTricks(JinjosEnabled, HardTricksLogic):
     options = {
-        'randomize_jinjos': 'true',
-        'logic_type': 2
+        **JinjosEnabled.options,
+        **HardTricksLogic.options,
     }
-    def test_item_pool(self) -> None:
-        super()._item_pool()
 
-
-class TestJinjoEnabledGitch(Jinjo):
+class TestJinjosEnabledGlitchesTricks(JinjosEnabled, GlitchesLogic):
     options = {
-        'randomize_jinjos': 'true',
-        'logic_type': 3
+        **JinjosEnabled.options,
+        **GlitchesLogic.options,
     }
-    def test_item_pool(self) -> None:
-        super()._item_pool()
 
-
-
-class TestJinjoDisabledEasy(Jinjo):
+class TestJinjosDisabledIntended(JinjosDisabled, IntendedLogic):
     options = {
-        'randomize_jinjos': 'false',
-        'logic_type': 0
+        **JinjosDisabled.options,
+        **IntendedLogic.options,
     }
-    def test_disabled_item_pool(self) -> None:
-        super()._disabled_item_pool()
 
-    def test_prefills(self) -> None:
-        super()._prefills()
-
-
-class TestJinjoDisabledNormal(Jinjo):
+class TestJinjosDisabledEasyTricks(JinjosDisabled, EasyTricksLogic):
     options = {
-        'randomize_jinjos': 'false',
-        'logic_type': 1
+        **JinjosDisabled.options,
+        **EasyTricksLogic.options,
     }
-    def test_disabled_item_pool(self) -> None:
-        super()._disabled_item_pool()
 
-    def test_prefills(self) -> None:
-        super()._prefills()
-
-
-class TestJinjoDisabledAdvance(Jinjo):
+class TestJinjosDisabledHardTricks(JinjosDisabled, HardTricksLogic):
     options = {
-        'randomize_jinjos': 'false',
-        'logic_type': 2
+        **JinjosDisabled.options,
+        **HardTricksLogic.options,
     }
-    def test_disabled_item_pooll(self) -> None:
-        super()._disabled_item_pool()
 
-    def test_prefills(self) -> None:
-        super()._prefills()
-
-
-class TestJinjoDisabledGlitch(Jinjo):
+class TestJinjosDisabledGlitchesTricks(JinjosDisabled, GlitchesLogic):
     options = {
-        'randomize_jinjos': 'false',
-        'logic_type': 3
+        **JinjosDisabled.options,
+        **GlitchesLogic.options,
     }
-    def test_disabled_item_pool(self) -> None:
-        super()._disabled_item_pool()
-
-    def test_prefills(self) -> None:
-        super()._prefills()
-
