@@ -490,7 +490,7 @@ class BanjoTooieWorld(World):
         if not self.options.randomize_moves and self.options.jamjars_silo_costs != JamjarsSiloCosts.option_vanilla:
             raise ValueError("You cannot change the silo costs without randomizing Jamjars' moves.")
         if not self.options.open_hag1 and self.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
-            self.options.open_hag1 = True
+            self.options.open_hag1.value = True
 
 
         if self.options.egg_behaviour == EggsBehaviour.option_random_starting_egg:
