@@ -44,6 +44,7 @@ Banjo-Tooie:
   # 4 = Wonderwing Challenge: Collect all 32 Mumbo Tokens across all boss fights, mini games and every Jinjo family
   # to gain access to HAG1 and Defeat Grunty. The Ultimate Banjo Tooie experience!!
   # 5 = Token Hunt: Mumbo's Tokens are scattered around the world. Help him find them
+  # 6 = Boss Hunt + HAG1: Defeat bosses in order to unlock HAG-1 
   victory_condition: 0
 
   minigame_hunt_length: 14      # 1-15
@@ -126,8 +127,15 @@ Banjo-Tooie:
   randomize_stop_n_swap: 'true' # Ice key + Eggs + Egg rewards are added to the item pool
   randomize_dino_roar: 'true' # Roar is in the pool
   nestsanity: 'false'         # Every egg nest and feather nest give a check when you collect them for the first time. They behave as normal afterwards.
+  randomize_signposts: 'false' # Signposts as checks 
   traps: 'false'              # Swaps all Big-O-Pants (junk) items to Traps
-  traps_nests_ratio: 0        # 0 - 100; replaces a percentage of all egg and feather nests (except golden eggs) to Big-O-Pants or trap items. Requires nestsanity.
+  traps_nests_ratio: 0        # 0 - 100; replaces a percentage of all feather and egg nests (except golden eggs) to Big-O-Pants or trap items. Requires nestsanity.
+  golden_eggs_weight: 40      # 0 - 100; weight of golden eggs in the trap pool. Requires nestsanity and traps.
+  trip_trap_weight: 40        # 0 - 100; weight of trip traps in the trap pool. Requires traps.
+  slip_trap_weight: 40        # 0 - 100; weight of slip traps in the trap pool. Requires traps.
+  transform_trap_weight: 40   # 0 - 100; weight of transform traps in the trap pool. Requires traps.
+  squish_trap_weight: 20      # 0 - 100; weight of squish traps in the trap pool. Requires traps.
+  tip_trap_weight: 40         # 0 - 100; weight of tip traps in the trap pool. Requires traps.
 
   randomize_stations: 'true'  # adds Stations to the pool
   randomize_chuffy: 'true'    # Chuffy as a AP Item. You can also "call" Chuffy at any unlocked station without needing to fight King Coal.
@@ -136,6 +144,10 @@ Banjo-Tooie:
   randomize_worlds: 'false'   # Changes the order in which levels open
   randomize_world_loading_zone: 'false' # World Entrances will warp you to a different world. This only affects main entrances.
   open_hag1: 'true'           # HAG1's door is open
+
+  signpost_hints: 0           # 0-61; how many signposts will give you hints
+  signport_move_hint: 0       # 0-61; how many signpost hints will hint move items
+  hint_clarity: 1             # 0 or 1; 0 means what type of item is hinted, 1 means tells you the exact item that is hinted 
 
   # The following gates are preopened: MT>TDL, MT>HFP, GGM>WW, WW>TDL
   # For MT>TDL only the gate accessed from TDL's side is opened and for GGM>WW the boulders are still unexploded

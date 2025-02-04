@@ -1,3 +1,64 @@
+# 4.2.0
+  - New victory condition: Boss Hunt + Hag 1.
+    - Defeat bosses chosen from a new yaml option, then defeat Hag 1 to win.
+  - Signposts can now have hints!
+    - You can choose how many hints there are among the 61 signposts in the game.
+    - You can choose how many of those hints are directed to moves, the rest hint at slow locations.
+    - You can choose whether a hint tells what item is on a location (clear hint), or only tells how good the item is (cryptic hint).
+  - Signpost can now be checks, independantly of if the signposts contain hints or not.
+  - New trap: tip trap.
+    - Upon receiving the trap, you will receive one of the vanilla sign texts as a dialogue. No, you cannot skip the textbox!
+  - You can choose whether you want to be able to use SUPERBANJO, SUPERBADDY, NESTKING, HONEYKING at will during gameplay.
+  - New option to make Canary Mary minigames much easier. 
+  - New options
+    - Boss Hunt + Hag 1 length
+    - Choose how many signposts give hints.
+    - Choose how many signpost give move hints.
+    - Choose how clear signpost hints are.
+    - Choose if signposts are checks.
+    - Weight options for traps. You can now specify how likely a trap will be Golden Eggs, a Trip Trap, a Slip Trap, a Transform Trap, a Squish Trap, or a Tip Trap
+    - Easy Canary Mary
+    - Extra Cheats
+  - Removed Knuckles from the game
+  - jjjj12212 can't math. fix item location matching when jinjos are not randomized.
+  - Fixed number of progression jiggies when Hag 1 is closed
+  - Fixed generation issue when you had nestsanity off and cheato page randomization off.
+  - Chuffy is back in GGM when the train is derailed, due to the fact that the signpost inside the wagon can be gotten without Chuffy.
+  - The jukebox in Jolly's is fixed from the start.
+  - This update features the first fixes from the PR.
+  - Better error message when getting a version mismatch in the Lua connector.
+  - Logic fixes
+    - MT to HFP access: added entering the stadium with the beak bomb glitch if backdoors is active
+    - GGM to WW: the transition was removed by mistake, it got readded.
+    - GI Elevator doors: removed clockworks from the logic. It doesn't work.
+    - Plateau Sign Notes: Removed split up + tall jump from easy tricks logic
+    - Quagmire feather nests: if not on intended logic, can be gotten with beak buster
+    - Pillar Nests: reworked logic
+    - Generator Cavern Jiggy: In hard tricks and glitch logics, added flap flip + beak buster, and flap flip + grip grab.
+    - Dodgem Dome Jiggy: Added talon trot as a requirement if doing the clockwork warp
+    - Inside the Mountain Egg Nests: Can be gotten by sinking as the T-rex
+    - Alcove Doubloons: fixed a bug where they would sometimes be in logic without split up or explosives
+    - Pig Pool Jiggy: the waste disposal switch can be pressed with the dragon Kazooie flame.
+    - Springy Step Shoes Silo: Removed Springy Step Shoes as a way to get it
+    - Oogle Boogle cave stuff: is now in logic if entering TDL from the backdoor is possible
+    - TDL Waterfall alcove nests: in glitched logic, can be gotten as the big T-rex with its head.
+    - TDL trebleclef: same as above
+    - Floor 4 to Floor 4 Back (past the crushers): added talon trot to the clockwork warp for added ease
+    - Elevator shaft: now properly links to the back of floor 2, 3, and 4 in logic.
+    - Floor 1 Guarded Jiggy: For nonintended logics, leg spring + glide through the front window is now in logic.
+    - Outside GI Left of Building Feather Nest: removed split up + tall jump, since it's not possible
+    - Quality Control Jiggy and Nests: added talon trot to the clockwork warp for added ease
+    - Clinker's Cavern Jiggy and nests: same as above
+    - Floor 4 nest near battery door: same as above
+    - Floor 3 glowbo: added logic. Yes, it really took this long to realise that it did not have any logic.
+    - Floor 2 Scaffolding Nests: reworked logic.
+    - Icy Side Train Station nests: swapped logic of both nests
+    - icy side train station jiggy: added clockwork shot to hard tricks and glitches logic if going inside the train station
+    - Inside Trash Can nests: reworked solo Kazooie logic
+    - Dippy Note: on easy tricks logic, can be gotten with beak buster. On hard tricks and glitches logic, can be gotten with no moves.
+    - Dippy Jiggy: same as above, as far as diving goes.
+    - Glowbo pool stuff: easy tricks can do it with beak buster
+
 # 4.1
   - Multiplayer Jinjo is back for Token Hunt
   - Fixed issue where items and checks were not balanced in Token hunt
