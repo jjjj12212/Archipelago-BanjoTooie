@@ -314,7 +314,7 @@ class TipTrapWeight(Range):
     """The weight of Tip Traps in the trap pool.
     You receive a random textbox upon receiving the trap.
     Requires Traps to have an effect"""
-    display_name = "Squish Trap Weight"
+    display_name = "Tip Trap Weight"
     range_start = 0
     range_end = 100
     default = 40
