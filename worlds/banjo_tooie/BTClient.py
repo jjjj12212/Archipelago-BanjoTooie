@@ -853,6 +853,14 @@ async def n64_sync_task(ctx: BanjoTooieContext):
                 logger.debug("Connection Refused, Trying Again")
                 ctx.n64_status = CONNECTION_REFUSED_STATUS
                 continue
+            except OSError:
+                logger.debug("Connection Failed, Trying Again")
+                ctx.n64_status = CONNECTION_REFUSED_STATUS
+                continue
+            except Exception as error:
+                logger.info("Unknown Error: %r", error)
+                ctx.n64_status = CONNECTION_REFUSED_STATUS
+                break
 
 def read_file(path):
     with open(path, "rb") as fi:
