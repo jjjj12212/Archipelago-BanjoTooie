@@ -1,14 +1,18 @@
-from worlds.banjo_tooie.Items import BanjoTooieItem, all_item_table
+from .Items import all_item_table
+from .Options import RandomizeJinjos
+from .test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
-from ..Names import locationName, itemName, regionName
+from ..Names import locationName, itemName
 
-class Jinjo(BanjoTooieTestBase):
-    
-    def item_pool(self) -> None:
+class JinjosEnabled(BanjoTooieTestBase):
+    options = {
+        "randomize_jinjos": RandomizeJinjos.option_true
+    }
+    def _item_pool(self) -> None:
         jinjo_count = 0
         jinjo_counter = 0
 
-        for jinjo in self.world.item_name_groups["Jinjo"]:   
+        for jinjo in self.world.item_name_groups["Jinjo"]:
             banjoItem = all_item_table.get(jinjo)
             jinjo_count += banjoItem.qty
             for item in self.world.multiworld.itempool:
@@ -16,19 +20,23 @@ class Jinjo(BanjoTooieTestBase):
                     jinjo_counter += 1
 
         assert jinjo_count == jinjo_counter
-    
-    def disabled_item_pool(self) -> None:
+
+class JinjosDisabled(BanjoTooieTestBase):
+    options = {
+        "randomize_jinjos": RandomizeJinjos.option_false
+    }
+    def _disabled_item_pool(self) -> None:
         jinjo_counter = 0
 
-        for jinjo in self.world.item_name_groups["Jinjo"]:    
+        for jinjo in self.world.item_name_groups["Jinjo"]:
             for item in self.world.multiworld.itempool:
                 if jinjo == item.name:
                     print(f"Item: {jinjo} Should be here!")
                     jinjo_counter += 1
 
         assert 0 == jinjo_counter
-    
-    def prefills(self) -> None:
+
+    def _prefills(self) -> None:
         jinjos = 0
         placed_correctly = 0
         for name in self.world.item_name_groups["Jinjo"]:
@@ -127,7 +135,7 @@ class Jinjo(BanjoTooieTestBase):
                     location_item = self.multiworld.get_location(locationName.JINJOIH5, self.player).item.name
                     if location_item == name:
                         placed_correctly += 1
-                elif name == itemName.PJINJO:      
+                elif name == itemName.PJINJO:
                     location_item = self.multiworld.get_location(locationName.JINJOMT1, self.player).item.name
                     if location_item == name:
                         placed_correctly += 1
@@ -183,130 +191,53 @@ class Jinjo(BanjoTooieTestBase):
             except:
                 print(f"Issue with Item: {name} Please Investigate")
                 placed_correctly += 0
-        assert jinjos == placed_correctly 
+        assert jinjos == placed_correctly
 
 
-class TestJinjoEnabledEasy(Jinjo):
+class TestJinjosEnabledIntended(JinjosEnabled, IntendedLogic):
     options = {
-        'randomize_jinjos': 'true',
-        'logic_type': 0
+        **JinjosEnabled.options,
+        **IntendedLogic.options,
     }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestJinjoEnabledNormal(Jinjo):
-    options = {
-        'randomize_jinjos': 'true',
-        'logic_type': 1
-    }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestJinjoEnabledAdvance(Jinjo):
-    options = {
-        'randomize_jinjos': 'true',
-        'logic_type': 2
-    }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestJinjoEnabledGitch(Jinjo):
-    options = {
-        'randomize_jinjos': 'true',
-        'logic_type': 3
-    }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
 
-class TestJinjoDisabledEasy(Jinjo):
+class TestJinjosEnabledEasyTricks(JinjosEnabled, EasyTricksLogic):
     options = {
-        'randomize_jinjos': 'false',
-        'logic_type': 0
+        **JinjosEnabled.options,
+        **EasyTricksLogic.options,
     }
-    def test_item_pool(self) -> None:
-        super().disabled_item_pool()
 
-    def test_prefills(self) -> None:
-        super().prefills()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestJinjoDisabledNormal(Jinjo):
+class TestJinjosEnabledHardTricks(JinjosEnabled, HardTricksLogic):
     options = {
-        'randomize_jinjos': 'false',
-        'logic_type': 1
+        **JinjosEnabled.options,
+        **HardTricksLogic.options,
     }
-    def test_item_pool(self) -> None:
-        super().disabled_item_pool()
 
-    def test_prefills(self) -> None:
-        super().prefills()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestJinjoDisabledAdvance(Jinjo):
+class TestJinjosEnabledGlitchesTricks(JinjosEnabled, GlitchesLogic):
     options = {
-        'randomize_jinjos': 'false',
-        'logic_type': 2
+        **JinjosEnabled.options,
+        **GlitchesLogic.options,
     }
-    def test_item_pool(self) -> None:
-        super().disabled_item_pool()
 
-    def test_prefills(self) -> None:
-        super().prefills()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-
-class TestJinjoDisabledGlitch(Jinjo):
+class TestJinjosDisabledIntended(JinjosDisabled, IntendedLogic):
     options = {
-        'randomize_jinjos': 'false',
-        'logic_type': 3
+        **JinjosDisabled.options,
+        **IntendedLogic.options,
     }
-    def test_item_pool(self) -> None:
-        super().disabled_item_pool()
 
-    def test_prefills(self) -> None:
-        super().prefills()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
+class TestJinjosDisabledEasyTricks(JinjosDisabled, EasyTricksLogic):
+    options = {
+        **JinjosDisabled.options,
+        **EasyTricksLogic.options,
+    }
+
+class TestJinjosDisabledHardTricks(JinjosDisabled, HardTricksLogic):
+    options = {
+        **JinjosDisabled.options,
+        **HardTricksLogic.options,
+    }
+
+class TestJinjosDisabledGlitchesTricks(JinjosDisabled, GlitchesLogic):
+    options = {
+        **JinjosDisabled.options,
+        **GlitchesLogic.options,
+    }

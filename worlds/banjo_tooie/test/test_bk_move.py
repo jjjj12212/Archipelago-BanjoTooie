@@ -1,14 +1,34 @@
+from .Options import LogicType, RandomizeBKMoveList
+from .test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
-from ..Names import locationName, itemName, regionName
-from .. import all_item_table, all_group_table
+from .. import all_group_table
 
-class BKMoves(BanjoTooieTestBase):
-    
-    def item_pool(self) -> None:
+class BKMovesAll(BanjoTooieTestBase):
+    options = {
+        "randomize_bk_moves": RandomizeBKMoveList.option_all
+    }
+    def test_item_pool(self) -> None:
         bk_moves_count = len(all_group_table["bk_moves"])
         bk_count = 0
-        for name, move in all_group_table["bk_moves"].items():  
-            if (move.btid == 1230815 or move.btid == 1230816) and self.world.options.randomize_bk_moves == 1:
+        for name, move in all_group_table["bk_moves"].items():
+            if move.btid == self.world.starting_egg or move.btid == self.world.starting_attack:
+                bk_count += 1
+                continue
+            for item in self.world.multiworld.itempool:
+                if name == item.name:
+                    bk_count += 1
+        assert bk_moves_count == bk_count
+
+
+class BKMovesMcJiggy(BanjoTooieTestBase):
+    options = {
+        "randomize_bk_moves": RandomizeBKMoveList.option_mcjiggy_special
+    }
+    def test_item_pool(self) -> None:
+        bk_moves_count = len(all_group_table["bk_moves"])
+        bk_count = 0
+        for name, move in all_group_table["bk_moves"].items():
+            if move.btid == 1230815  or move.btid == 1230816: #Talon Trot and Tall Jump
                 bk_moves_count -= 1 #Not in the pool
             if move.btid == self.world.starting_egg or move.btid == self.world.starting_attack:
                 bk_count += 1
@@ -17,182 +37,88 @@ class BKMoves(BanjoTooieTestBase):
                 if name == item.name:
                     bk_count += 1
         assert bk_moves_count == bk_count
-    
-    def not_in_pool(self) -> None:
+
+class BKMovesDisabled(BanjoTooieTestBase):
+    options = {
+        "randomize_bk_moves": RandomizeBKMoveList.option_none
+    }
+    def test_not_in_pool(self) -> None:
         bk_count = 0
-        for name, move in all_group_table["bk_moves"].items():  
+        for name, move in all_group_table["bk_moves"].items():
             for item in self.world.multiworld.itempool:
                 if name == item.name:
                     bk_count += 1
         assert 0 == bk_count
 
 
-class TestBKMovesALLEnabledEasy(BKMoves):
+class TestBKMovesAllIntended(BKMovesAll):
     options = {
-        'randomize_bk_moves': 2,
-        'logic_type': 0
+        **BKMovesAll.options,
+        "logic_type": LogicType.option_intended,
     }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestBKMovesALLEnabledNormal(BKMoves):
-    options = {
-        'randomize_bk_moves': 2,
-        'logic_type': 1
-    }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestBKMovesALLEnabledAdvance(BKMoves):
-    options = {
-        'randomize_bk_moves': 2,
-        'logic_type': 2
-    }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestBKMovesALLEnabledGlitch(BKMoves):
-    options = {
-        'randomize_bk_moves': 2,
-        'logic_type': 3
-    }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
 
+class TestBKMovesAllEasyTricks(BKMovesAll):
+    options = {
+        **BKMovesAll.options,
+        "logic_type": LogicType.option_easy_tricks,
+    }
 
-class TestBKMovesMcJiggyEnabledEasy(BKMoves):
+class TestBKMovesAllHardTricks(BKMovesAll):
     options = {
-        'randomize_bk_moves': 1,
-        'logic_type': 0
+        **BKMovesAll.options,
+        "logic_type": LogicType.option_hard_tricks,
     }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestBKMovesMcJiggyEnabledNormal(BKMoves):
-    options = {
-        'randomize_bk_moves': 1,
-        'logic_type': 1
-    }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
 
-class TestBKMovesMcJiggyEnabledAdvance(BKMoves):
+class TestBKMovesAllGlitchesTricks(BKMovesAll):
     options = {
-        'randomize_bk_moves': 1,
-        'logic_type': 2
+        **BKMovesAll.options,
+        "logic_type": LogicType.option_glitches
     }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestBKMovesMcJiggyEnabledGlitch(BKMoves):
-    options = {
-        'randomize_bk_moves': 1,
-        'logic_type': 3
-    }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
 
+class TestBKMovesMcJiggyIntended(BKMovesMcJiggy):
+    options = {
+        **BKMovesMcJiggy.options,
+        "logic_type": LogicType.option_intended
+    }
 
-class TestBKMovesDisabledEasy(BKMoves):
+class TestBKMovesMcJiggyEasyTricks(BKMovesMcJiggy):
     options = {
-        'randomize_bk_moves': 0,
-        'logic_type': 0
+        **BKMovesMcJiggy.options,
+        "logic_type": LogicType.option_easy_tricks,
     }
-    def test_item_pool(self) -> None:
-        super().not_in_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
 
-class TestBKMovesDisabledNormal(BKMoves):
+class TestBKMovesMcJiggyHardTricks(BKMovesMcJiggy):
     options = {
-        'randomize_bk_moves': 0,
-        'logic_type': 1
+        **BKMovesMcJiggy.options,
+        "logic_type": LogicType.option_hard_tricks
     }
-    def test_item_pool(self) -> None:
-        super().not_in_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
 
-class TestBKMovesDisabledAdvance(BKMoves):
+class TestBKMovesMcJiggyGlitchesTricks(BKMovesMcJiggy):
     options = {
-        'randomize_bk_moves': 0,
-        'logic_type': 2
+        **BKMovesMcJiggy.options,
+        "logic_type": LogicType.option_glitches
     }
-    def test_item_pool(self) -> None:
-        super().not_in_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestBKMovesDisabledGlitch(BKMoves):
+
+class TestBKMovesDisabledIntended(BKMovesDisabled):
     options = {
-        'randomize_bk_moves': 0,
-        'logic_type': 3
+        **BKMovesDisabled.options,
+        "logic_type": LogicType.option_intended,
     }
-    def test_item_pool(self) -> None:
-        super().not_in_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
+
+class TestBKMovesDisabledEasyTricks(BKMovesDisabled):
+    options = {
+        **BKMovesDisabled.options,
+        "logic_type": LogicType.option_easy_tricks,
+    }
+
+class TestBKMovesDisabledHardTricks(BKMovesDisabled):
+    options = {
+        **BKMovesDisabled.options,
+        "logic_type": LogicType.option_hard_tricks
+    }
+
+class TestBKMovesDisabledGlitchesTricks(BKMovesDisabled):
+    options = {
+        **BKMovesDisabled.options,
+        "logic_type": LogicType.option_glitches
+    }

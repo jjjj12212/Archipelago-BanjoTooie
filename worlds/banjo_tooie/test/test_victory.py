@@ -1,3 +1,5 @@
+from .Options import VictoryCondition
+from .test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 from ..Names import locationName, itemName, regionName
 from .. import all_item_table, all_group_table
@@ -6,13 +8,18 @@ from .. import all_item_table, all_group_table
 # and the game is beatable.
 class TokenTest(BanjoTooieTestBase):
     mumbo_token_location_group = {}
-    
-    def test_mumbo_tokens(self, amt = 0) -> None:
+
+    def test_mumbo_tokens(self, amt = None) -> None:
+        if amt == None:
+            amt = len(self.mumbo_token_location_group)
+
+        # Randomized tokens for Token Hunt
         mumbo_tokens = 0
         for item in self.world.multiworld.itempool:
             if "Mumbo Token" == item.name:
                 mumbo_tokens += 1
-        
+
+        # Locked locations for every other Mumbo token vic con
         for location in self.mumbo_token_location_group:
             try:
                 if "Mumbo Token" == self.world.multiworld.get_location(location, self.player).item.name:
@@ -21,10 +28,9 @@ class TokenTest(BanjoTooieTestBase):
                 mumbo_tokens += 0
         assert amt == mumbo_tokens
 
-class TestVictoryHAG1Easy(TokenTest):
+class TestVictoryHAG1(TokenTest):
     options = {
-        'victory_condition': 0,
-        'logic_type': 0
+        'victory_condition': VictoryCondition.option_hag1,
     }
     mumbo_token_location_group = {
         locationName.MUMBOTKNGAME1,
@@ -33,59 +39,34 @@ class TestVictoryHAG1Easy(TokenTest):
     }
     def test_mumbo_tokens(self) -> None:
         super().test_mumbo_tokens(0)
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
 
-class TestVictoryHAG1Normal(TokenTest):
+class TestVictoryHAG1Intended(TestVictoryHAG1, IntendedLogic):
     options = {
-        'victory_condition': 0,
-        'logic_type': 1
+        **TestVictoryHAG1.options,
+        **IntendedLogic.options
     }
-    mumbo_token_location_group = {
-        locationName.MUMBOTKNGAME1,
-        locationName.MUMBOTKNBOSS1,
-        locationName.MUMBOTKNJINJO1
-    }
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(0)
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
 
-class TestVictoryHAG1Advance(TokenTest):
+class TestVictoryHAG1EasyTricks(TestVictoryHAG1, EasyTricksLogic):
     options = {
-        'victory_condition': 0,
-        'logic_type': 2
+        **TestVictoryHAG1.options,
+        **IntendedLogic.options
     }
-    mumbo_token_location_group = {
-        locationName.MUMBOTKNGAME1,
-        locationName.MUMBOTKNBOSS1,
-        locationName.MUMBOTKNJINJO1
-    }
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(0)
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
 
-class TestVictoryHAG1Glitch(TokenTest):
+class TestVictoryHAG1Intended(TestVictoryHAG1, HardTricksLogic):
     options = {
-        'victory_condition': 0,
-        'logic_type': 3
+        **TestVictoryHAG1.options,
+        **IntendedLogic.options
     }
-    mumbo_token_location_group = {
-        locationName.MUMBOTKNGAME1,
-        locationName.MUMBOTKNBOSS1,
-        locationName.MUMBOTKNJINJO1
-    }
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(0)
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
 
-
-class TestVictoryMiniGamesEasy(TokenTest):
+class TestVictoryHAG1Intended(TestVictoryHAG1, GlitchesLogic):
     options = {
-        'victory_condition': 1,
-        'logic_type': 0
+        **TestVictoryHAG1.options,
+        **IntendedLogic.options
+    }
+
+class TestVictoryMinigames(TokenTest):
+    options = {
+        'victory_condition': VictoryCondition.option_minigame_hunt
     }
     mumbo_token_location_group = {
         locationName.MUMBOTKNGAME1,
@@ -103,98 +84,35 @@ class TestVictoryMiniGamesEasy(TokenTest):
         locationName.MUMBOTKNGAME13,
         locationName.MUMBOTKNGAME14,
         locationName.MUMBOTKNGAME15
-    } 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-
-class TestVictoryMiniGamesNormal(TokenTest):
-    options = {
-        'victory_condition': 1,
-        'logic_type': 1
     }
-    mumbo_token_location_group = {
-        locationName.MUMBOTKNGAME1,
-        locationName.MUMBOTKNGAME2,
-        locationName.MUMBOTKNGAME3,
-        locationName.MUMBOTKNGAME4,
-        locationName.MUMBOTKNGAME5,
-        locationName.MUMBOTKNGAME6,
-        locationName.MUMBOTKNGAME7,
-        locationName.MUMBOTKNGAME8,
-        locationName.MUMBOTKNGAME9,
-        locationName.MUMBOTKNGAME10,
-        locationName.MUMBOTKNGAME11,
-        locationName.MUMBOTKNGAME12,
-        locationName.MUMBOTKNGAME13,
-        locationName.MUMBOTKNGAME14,
-        locationName.MUMBOTKNGAME15
-    } 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
 
-class TestVictoryMiniGamesAdvance(TokenTest):
+class TestVictoryMinigamesIntended(TestVictoryMinigames, IntendedLogic):
     options = {
-        'victory_condition': 1,
-        'logic_type': 2
+        **TestVictoryMinigames.options,
+        **IntendedLogic.options
     }
-    mumbo_token_location_group = {
-        locationName.MUMBOTKNGAME1,
-        locationName.MUMBOTKNGAME2,
-        locationName.MUMBOTKNGAME3,
-        locationName.MUMBOTKNGAME4,
-        locationName.MUMBOTKNGAME5,
-        locationName.MUMBOTKNGAME6,
-        locationName.MUMBOTKNGAME7,
-        locationName.MUMBOTKNGAME8,
-        locationName.MUMBOTKNGAME9,
-        locationName.MUMBOTKNGAME10,
-        locationName.MUMBOTKNGAME11,
-        locationName.MUMBOTKNGAME12,
-        locationName.MUMBOTKNGAME13,
-        locationName.MUMBOTKNGAME14,
-        locationName.MUMBOTKNGAME15
-    } 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
 
-class TestVictoryMiniGamesGlitch(TokenTest):
+class TestVictoryMinigamesEasyTricks(TestVictoryMinigames, EasyTricksLogic):
     options = {
-        'victory_condition': 1,
-        'logic_type': 3
+        **TestVictoryMinigames.options,
+        **IntendedLogic.options
     }
-    mumbo_token_location_group = {
-        locationName.MUMBOTKNGAME1,
-        locationName.MUMBOTKNGAME2,
-        locationName.MUMBOTKNGAME3,
-        locationName.MUMBOTKNGAME4,
-        locationName.MUMBOTKNGAME5,
-        locationName.MUMBOTKNGAME6,
-        locationName.MUMBOTKNGAME7,
-        locationName.MUMBOTKNGAME8,
-        locationName.MUMBOTKNGAME9,
-        locationName.MUMBOTKNGAME10,
-        locationName.MUMBOTKNGAME11,
-        locationName.MUMBOTKNGAME12,
-        locationName.MUMBOTKNGAME13,
-        locationName.MUMBOTKNGAME14,
-        locationName.MUMBOTKNGAME15
-    } 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
 
-
-class TestVictoryBossesEasy(TokenTest):
+class TestVictoryMinigamesIntended(TestVictoryMinigames, HardTricksLogic):
     options = {
-        'victory_condition': 2,
-        'logic_type': 0
+        **TestVictoryMinigames.options,
+        **IntendedLogic.options
+    }
+
+class TestVictoryMinigamesIntended(TestVictoryMinigames, GlitchesLogic):
+    options = {
+        **TestVictoryMinigames.options,
+        **IntendedLogic.options
+    }
+
+class TestVictoryBosses(TokenTest):
+    options = {
+        'victory_condition': VictoryCondition.option_boss_hunt
     }
     mumbo_token_location_group = {
         locationName.MUMBOTKNBOSS1,
@@ -205,76 +123,35 @@ class TestVictoryBossesEasy(TokenTest):
         locationName.MUMBOTKNBOSS6,
         locationName.MUMBOTKNBOSS7,
         locationName.MUMBOTKNBOSS8
-    } 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-
-class TestVictoryBossesNormal(TokenTest):
-    options = {
-        'victory_condition': 2,
-        'logic_type': 1
     }
-    mumbo_token_location_group = {
-        locationName.MUMBOTKNBOSS1,
-        locationName.MUMBOTKNBOSS2,
-        locationName.MUMBOTKNBOSS3,
-        locationName.MUMBOTKNBOSS4,
-        locationName.MUMBOTKNBOSS5,
-        locationName.MUMBOTKNBOSS6,
-        locationName.MUMBOTKNBOSS7,
-        locationName.MUMBOTKNBOSS8
-    } 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
 
-class TestVictoryBossesAdvance(TokenTest):
+class TestVictoryBossesIntended(TestVictoryBosses, IntendedLogic):
     options = {
-        'victory_condition': 2,
-        'logic_type': 2
+        **TestVictoryBosses.options,
+        **IntendedLogic.options
     }
-    mumbo_token_location_group = {
-        locationName.MUMBOTKNBOSS1,
-        locationName.MUMBOTKNBOSS2,
-        locationName.MUMBOTKNBOSS3,
-        locationName.MUMBOTKNBOSS4,
-        locationName.MUMBOTKNBOSS5,
-        locationName.MUMBOTKNBOSS6,
-        locationName.MUMBOTKNBOSS7,
-        locationName.MUMBOTKNBOSS8
-    } 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
 
-class TestVictoryBossesGlitch(TokenTest):
+class TestVictoryBossesEasyTricks(TestVictoryBosses, EasyTricksLogic):
     options = {
-        'victory_condition': 2,
-        'logic_type': 3
+        **TestVictoryBosses.options,
+        **IntendedLogic.options
     }
-    mumbo_token_location_group = {
-        locationName.MUMBOTKNBOSS1,
-        locationName.MUMBOTKNBOSS2,
-        locationName.MUMBOTKNBOSS3,
-        locationName.MUMBOTKNBOSS4,
-        locationName.MUMBOTKNBOSS5,
-        locationName.MUMBOTKNBOSS6,
-        locationName.MUMBOTKNBOSS7,
-        locationName.MUMBOTKNBOSS8
-    } 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
 
-
-class TestVictoryJinjoEasy(TokenTest):
+class TestVictoryBossesIntended(TestVictoryBosses, HardTricksLogic):
     options = {
-        'victory_condition': 3,
+        **TestVictoryBosses.options,
+        **IntendedLogic.options
+    }
+
+class TestVictoryBossesIntended(TestVictoryBosses, GlitchesLogic):
+    options = {
+        **TestVictoryBosses.options,
+        **IntendedLogic.options
+    }
+
+class TestVictoryJinjos(TokenTest):
+    options = {
+        'victory_condition': VictoryCondition.option_jinjo_family_rescue,
         'logic_type': 0
     }
     mumbo_token_location_group = {
@@ -287,80 +164,35 @@ class TestVictoryJinjoEasy(TokenTest):
         locationName.MUMBOTKNJINJO7,
         locationName.MUMBOTKNJINJO8,
         locationName.MUMBOTKNJINJO9,
-    } 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-
-class TestVictoryJinjoNormal(TokenTest):
-    options = {
-        'victory_condition': 3,
-        'logic_type': 1
     }
-    mumbo_token_location_group = {
-        locationName.MUMBOTKNJINJO1,
-        locationName.MUMBOTKNJINJO2,
-        locationName.MUMBOTKNJINJO3,
-        locationName.MUMBOTKNJINJO4,
-        locationName.MUMBOTKNJINJO5,
-        locationName.MUMBOTKNJINJO6,
-        locationName.MUMBOTKNJINJO7,
-        locationName.MUMBOTKNJINJO8,
-        locationName.MUMBOTKNJINJO9,
-    } 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
 
-class TestVictoryJinjoAdvance(TokenTest):
+class TestVictoryJinjosIntended(TestVictoryJinjos, IntendedLogic):
     options = {
-        'victory_condition': 3,
-        'logic_type': 2
+        **TestVictoryJinjos.options,
+        **IntendedLogic.options
     }
-    mumbo_token_location_group = {
-        locationName.MUMBOTKNJINJO1,
-        locationName.MUMBOTKNJINJO2,
-        locationName.MUMBOTKNJINJO3,
-        locationName.MUMBOTKNJINJO4,
-        locationName.MUMBOTKNJINJO5,
-        locationName.MUMBOTKNJINJO6,
-        locationName.MUMBOTKNJINJO7,
-        locationName.MUMBOTKNJINJO8,
-        locationName.MUMBOTKNJINJO9,
-    } 
 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-
-class TestVictoryJinjoGlitch(TokenTest):
+class TestVictoryJinjosEasyTricks(TestVictoryJinjos, EasyTricksLogic):
     options = {
-        'victory_condition': 3,
-        'logic_type': 3
+        **TestVictoryJinjos.options,
+        **IntendedLogic.options
     }
-    mumbo_token_location_group = {
-        locationName.MUMBOTKNJINJO1,
-        locationName.MUMBOTKNJINJO2,
-        locationName.MUMBOTKNJINJO3,
-        locationName.MUMBOTKNJINJO4,
-        locationName.MUMBOTKNJINJO5,
-        locationName.MUMBOTKNJINJO6,
-        locationName.MUMBOTKNJINJO7,
-        locationName.MUMBOTKNJINJO8,
-        locationName.MUMBOTKNJINJO9,
-    } 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
 
-class TestVictoryWonderWingEasy(TokenTest):
+class TestVictoryJinjosIntended(TestVictoryJinjos, HardTricksLogic):
     options = {
-        'victory_condition': 4,
-        'logic_type': 0
+        **TestVictoryJinjos.options,
+        **IntendedLogic.options
+    }
+
+class TestVictoryJinjosIntended(TestVictoryJinjos, GlitchesLogic):
+    options = {
+        **TestVictoryJinjos.options,
+        **IntendedLogic.options
+    }
+
+class TestVictoryWonderwing(TokenTest):
+    options = {
+        'victory_condition': VictoryCondition.option_wonderwing_challenge
     }
     mumbo_token_location_group = {
         locationName.MUMBOTKNGAME1,
@@ -395,33 +227,37 @@ class TestVictoryWonderWingEasy(TokenTest):
         locationName.MUMBOTKNJINJO7,
         locationName.MUMBOTKNJINJO8,
         locationName.MUMBOTKNJINJO9,
-    } 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
+    }
 
-class TestVictoryWonderWingNormal(TokenTest):
+class TestVictoryWonderwingIntended(TestVictoryWonderwing, IntendedLogic):
     options = {
-        'victory_condition': 4,
-        'logic_type': 1
+        **TestVictoryWonderwing.options,
+        **IntendedLogic.options
+    }
+
+class TestVictoryWonderwingEasyTricks(TestVictoryWonderwing, EasyTricksLogic):
+    options = {
+        **TestVictoryWonderwing.options,
+        **IntendedLogic.options
+    }
+
+class TestVictoryWonderwingIntended(TestVictoryWonderwing, HardTricksLogic):
+    options = {
+        **TestVictoryWonderwing.options,
+        **IntendedLogic.options
+    }
+
+class TestVictoryWonderwingIntended(TestVictoryWonderwing, GlitchesLogic):
+    options = {
+        **TestVictoryWonderwing.options,
+        **IntendedLogic.options
+    }
+
+class TestVictoryBossesHAG1(TokenTest):
+    options = {
+        'victory_condition': VictoryCondition.option_boss_hunt_and_hag1
     }
     mumbo_token_location_group = {
-        locationName.MUMBOTKNGAME1,
-        locationName.MUMBOTKNGAME2,
-        locationName.MUMBOTKNGAME3,
-        locationName.MUMBOTKNGAME4,
-        locationName.MUMBOTKNGAME5,
-        locationName.MUMBOTKNGAME6,
-        locationName.MUMBOTKNGAME7,
-        locationName.MUMBOTKNGAME8,
-        locationName.MUMBOTKNGAME9,
-        locationName.MUMBOTKNGAME10,
-        locationName.MUMBOTKNGAME11,
-        locationName.MUMBOTKNGAME12,
-        locationName.MUMBOTKNGAME13,
-        locationName.MUMBOTKNGAME14,
-        locationName.MUMBOTKNGAME15,
         locationName.MUMBOTKNBOSS1,
         locationName.MUMBOTKNBOSS2,
         locationName.MUMBOTKNBOSS3,
@@ -429,106 +265,29 @@ class TestVictoryWonderWingNormal(TokenTest):
         locationName.MUMBOTKNBOSS5,
         locationName.MUMBOTKNBOSS6,
         locationName.MUMBOTKNBOSS7,
-        locationName.MUMBOTKNBOSS8,
-        locationName.MUMBOTKNJINJO1,
-        locationName.MUMBOTKNJINJO2,
-        locationName.MUMBOTKNJINJO3,
-        locationName.MUMBOTKNJINJO4,
-        locationName.MUMBOTKNJINJO5,
-        locationName.MUMBOTKNJINJO6,
-        locationName.MUMBOTKNJINJO7,
-        locationName.MUMBOTKNJINJO8,
-        locationName.MUMBOTKNJINJO9,
-    } 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-
-class TestVictoryWonderWingAdvance(TokenTest):
-    options = {
-        'victory_condition': 4,
-        'logic_type': 2
+        locationName.MUMBOTKNBOSS8
     }
-    mumbo_token_location_group = {
-        locationName.MUMBOTKNGAME1,
-        locationName.MUMBOTKNGAME2,
-        locationName.MUMBOTKNGAME3,
-        locationName.MUMBOTKNGAME4,
-        locationName.MUMBOTKNGAME5,
-        locationName.MUMBOTKNGAME6,
-        locationName.MUMBOTKNGAME7,
-        locationName.MUMBOTKNGAME8,
-        locationName.MUMBOTKNGAME9,
-        locationName.MUMBOTKNGAME10,
-        locationName.MUMBOTKNGAME11,
-        locationName.MUMBOTKNGAME12,
-        locationName.MUMBOTKNGAME13,
-        locationName.MUMBOTKNGAME14,
-        locationName.MUMBOTKNGAME15,
-        locationName.MUMBOTKNBOSS1,
-        locationName.MUMBOTKNBOSS2,
-        locationName.MUMBOTKNBOSS3,
-        locationName.MUMBOTKNBOSS4,
-        locationName.MUMBOTKNBOSS5,
-        locationName.MUMBOTKNBOSS6,
-        locationName.MUMBOTKNBOSS7,
-        locationName.MUMBOTKNBOSS8,
-        locationName.MUMBOTKNJINJO1,
-        locationName.MUMBOTKNJINJO2,
-        locationName.MUMBOTKNJINJO3,
-        locationName.MUMBOTKNJINJO4,
-        locationName.MUMBOTKNJINJO5,
-        locationName.MUMBOTKNJINJO6,
-        locationName.MUMBOTKNJINJO7,
-        locationName.MUMBOTKNJINJO8,
-        locationName.MUMBOTKNJINJO9,
-    } 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
 
-class TestVictoryWonderWingGlitch(TokenTest):
+class TestVictoryBossesHAG1Intended(TestVictoryBossesHAG1, IntendedLogic):
     options = {
-        'victory_condition': 4,
-        'logic_type': 3
+        **TestVictoryBossesHAG1.options,
+        **IntendedLogic.options
     }
-    mumbo_token_location_group = {
-        locationName.MUMBOTKNGAME1,
-        locationName.MUMBOTKNGAME2,
-        locationName.MUMBOTKNGAME3,
-        locationName.MUMBOTKNGAME4,
-        locationName.MUMBOTKNGAME5,
-        locationName.MUMBOTKNGAME6,
-        locationName.MUMBOTKNGAME7,
-        locationName.MUMBOTKNGAME8,
-        locationName.MUMBOTKNGAME9,
-        locationName.MUMBOTKNGAME10,
-        locationName.MUMBOTKNGAME11,
-        locationName.MUMBOTKNGAME12,
-        locationName.MUMBOTKNGAME13,
-        locationName.MUMBOTKNGAME14,
-        locationName.MUMBOTKNGAME15,
-        locationName.MUMBOTKNBOSS1,
-        locationName.MUMBOTKNBOSS2,
-        locationName.MUMBOTKNBOSS3,
-        locationName.MUMBOTKNBOSS4,
-        locationName.MUMBOTKNBOSS5,
-        locationName.MUMBOTKNBOSS6,
-        locationName.MUMBOTKNBOSS7,
-        locationName.MUMBOTKNBOSS8,
-        locationName.MUMBOTKNJINJO1,
-        locationName.MUMBOTKNJINJO2,
-        locationName.MUMBOTKNJINJO3,
-        locationName.MUMBOTKNJINJO4,
-        locationName.MUMBOTKNJINJO5,
-        locationName.MUMBOTKNJINJO6,
-        locationName.MUMBOTKNJINJO7,
-        locationName.MUMBOTKNJINJO8,
-        locationName.MUMBOTKNJINJO9,
-    } 
-    def test_mumbo_tokens(self) -> None:
-        super().test_mumbo_tokens(len(self.mumbo_token_location_group))
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
+
+class TestVictoryBossesHAG1EasyTricks(TestVictoryBossesHAG1, EasyTricksLogic):
+    options = {
+        **TestVictoryBossesHAG1.options,
+        **IntendedLogic.options
+    }
+
+class TestVictoryBossesHAG1Intended(TestVictoryBossesHAG1, HardTricksLogic):
+    options = {
+        **TestVictoryBossesHAG1.options,
+        **IntendedLogic.options
+    }
+
+class TestVictoryBossesHAG1Intended(TestVictoryBossesHAG1, GlitchesLogic):
+    options = {
+        **TestVictoryBossesHAG1.options,
+        **IntendedLogic.options
+    }

@@ -1,10 +1,14 @@
+from .Options import RandomizeTrebleClefs
+from .test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
-from ..Names import locationName, itemName, regionName
-from .. import all_item_table, all_group_table
+from ..Names import itemName
+from .. import all_group_table
 
-class Treble(BanjoTooieTestBase):
-    
-    def item_pool(self) -> None:
+class TreblesEnabled(BanjoTooieTestBase):
+    option = {
+        "randomize_treble": RandomizeTrebleClefs.option_true
+    }
+    def _item_pool(self) -> None:
         treble_amt = 0
         treble_count = 0
         for name, btitem in all_group_table["misc"].items():
@@ -16,16 +20,20 @@ class Treble(BanjoTooieTestBase):
             if itemName.TREBLE == item.name:
                     treble_count += 1
         assert treble_amt == treble_count
-    
-    def disabled_item_pool(self) -> None:
+
+class TreblesDisabled(BanjoTooieTestBase):
+    option = {
+        "randomize_treble": RandomizeTrebleClefs.option_false
+    }
+    def _disabled_item_pool(self) -> None:
         adv_count = 0
         for item in self.world.multiworld.itempool:
             if itemName.TREBLE == item.name:
                 print(f"Item: {item.name} Should not be here!")
                 adv_count += 1
         assert 0 == adv_count
-    
-    def prefills(self) -> None:
+
+    def _prefills(self) -> None:
         treble_amt = 0
         treble_count = 0
         for name, btitem in all_group_table["misc"].items():
@@ -45,127 +53,50 @@ class Treble(BanjoTooieTestBase):
         assert treble_amt == treble_count
 
 
-class TestTrebleEnabledEasy(Treble):
+class TestTreblesEnabledIntended(TreblesEnabled, IntendedLogic):
     options = {
-        'randomize_treble': 'true',
-        'logic_type': 0
+        **TreblesEnabled.options,
+        **IntendedLogic.options,
     }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestTrebleEnabledNormal(Treble):
-    options = {
-        'randomize_treble': 'true',
-        'logic_type': 1
-    }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestTrebleEnabledAdvance(Treble):
-    options = {
-        'randomize_treble': 'true',
-        'logic_type': 2
-    }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestTrebleEnabledGlitch(Treble):
-    options = {
-        'randomize_treble': 'true',
-        'logic_type': 3
-    }
-    def test_item_pool(self) -> None:
-        super().item_pool()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
 
-class TestTrebleDisabledEasy(Treble):
+class TestTreblesEnabledEasyTricks(TreblesEnabled, EasyTricksLogic):
     options = {
-        'randomize_treble': 'false',
-        'logic_type': 0
+        **TreblesEnabled.options,
+        **EasyTricksLogic.options,
     }
-    def test_item_pool(self) -> None:
-        super().disabled_item_pool()
 
-    def test_prefills(self) -> None:
-        super().prefills()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestTrebleDisabledNormal(Treble):
+class TestTreblesEnabledHardTricks(TreblesEnabled, HardTricksLogic):
     options = {
-        'randomize_treble': 'false',
-        'logic_type': 1
+        **TreblesEnabled.options,
+        **HardTricksLogic.options,
     }
-    def test_item_pool(self) -> None:
-        super().disabled_item_pool()
 
-    def test_prefills(self) -> None:
-        super().prefills()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-    
-class TestTrebleDisabledAdvance(Treble):
+class TestTreblesEnabledGlitchesTricks(TreblesEnabled, GlitchesLogic):
     options = {
-        'randomize_treble': 'false',
-        'logic_type': 2
+        **TreblesEnabled.options,
+        **GlitchesLogic.options,
     }
-    def test_item_pool(self) -> None:
-        super().disabled_item_pool()
 
-    def test_prefills(self) -> None:
-        super().prefills()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
-
-class TestTrebleDisabledGlitch(Treble):
+class TestTreblesDisabledIntended(TreblesDisabled, IntendedLogic):
     options = {
-        'randomize_treble': 'false',
-        'logic_type': 3
+        **TreblesDisabled.options,
+        **IntendedLogic.options,
     }
-    def test_item_pool(self) -> None:
-        super().disabled_item_pool()
 
-    def test_prefills(self) -> None:
-        super().prefills()
-    def test_all_state_can_reach_everything(self):
-        return super().test_all_state_can_reach_everything()
-    def test_empty_state_can_reach_something(self):
-        return super().test_empty_state_can_reach_something()
-    def test_fill(self):
-        return super().test_fill()
+class TestTreblesDisabledEasyTricks(TreblesDisabled, EasyTricksLogic):
+    options = {
+        **TreblesDisabled.options,
+        **EasyTricksLogic.options,
+    }
+
+class TestTreblesDisabledHardTricks(TreblesDisabled, HardTricksLogic):
+    options = {
+        **TreblesDisabled.options,
+        **HardTricksLogic.options,
+    }
+
+class TestTreblesDisabledGlitchesTricks(TreblesDisabled, GlitchesLogic):
+    options = {
+        **TreblesDisabled.options,
+        **GlitchesLogic.options,
+    }
