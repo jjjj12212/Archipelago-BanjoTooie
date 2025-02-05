@@ -1,6 +1,6 @@
-from worlds.banjo_tooie.Items import all_item_table
-from worlds.banjo_tooie.Options import RandomizeJinjos
-from worlds.banjo_tooie.test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
+from .Items import all_item_table
+from .Options import RandomizeJinjos
+from .test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 from ..Names import locationName, itemName
 

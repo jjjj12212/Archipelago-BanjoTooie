@@ -23,7 +23,7 @@ from worlds.LauncherComponents import Component, components, Type, launch_subpro
 
 
 def run_client():
-    from worlds.banjo_tooie.BTClient import main  # lazy import
+    from .BTClient import main  # lazy import
     launch_subprocess(main)
 
 components.append(Component("Banjo-Tooie Client", func=run_client, component_type=Type.CLIENT))
@@ -211,7 +211,7 @@ class BanjoTooieWorld(World):
             trap_big_pants_counter += removed_nests + all_item_table[itemName.GNEST].qty
         elif self.options.nestsanity: # nestsanity with no traps, remove gnests
             trap_big_pants_counter += all_item_table[itemName.GNEST].qty
-        
+
         if self.options.randomize_signposts:
             trap_big_pants_counter += 61 # There are 61 signposts in the game.
         trap_list = []
@@ -821,7 +821,7 @@ class BanjoTooieWorld(World):
         btoptions["first_silo"] = self.single_silo
 
         btoptions["version"] = BanjoTooieWorld.version
-        
+
         btoptions["jamjars_siloname_costs"] = self.jamjars_siloname_costs
         btoptions["jamjars_silo_costs"] = self.jamjars_silo_costs #table of silo costs
         btoptions["jamjars_silo_option"] = int(self.options.jamjars_silo_costs)
