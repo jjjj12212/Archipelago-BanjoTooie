@@ -1,5 +1,5 @@
-from worlds.banjo_tooie.Options import VictoryCondition
-from worlds.banjo_tooie.test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
+from .Options import VictoryCondition
+from .test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 from ..Names import locationName, itemName, regionName
 from .. import all_item_table, all_group_table

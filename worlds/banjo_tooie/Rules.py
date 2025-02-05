@@ -1,7 +1,7 @@
 from BaseClasses import CollectionState
 from typing import TYPE_CHECKING
 
-from worlds.banjo_tooie.Options import EggsBehaviour, LogicType, RandomizeBKMoveList, VictoryCondition
+from .Options import EggsBehaviour, LogicType, RandomizeBKMoveList, VictoryCondition
 from .Names import regionName, itemName, locationName
 from worlds.generic.Rules import add_rule, set_rule, forbid_item, add_item_rule
 
@@ -1025,7 +1025,7 @@ class BanjoTooieRules:
             locationName.NESTCC47:    lambda state: self.nest_pot_of_gold(state),
             locationName.NESTCC48:    lambda state: self.nest_pot_of_gold(state),
         }
-    
+
         self.signpost_rules = {
             locationName.SIGNIH3: lambda state: self.signpost_jiggywiggy_back(state),
             locationName.SIGNIH4: lambda state: self.signpost_jiggywiggy_back(state),
@@ -3179,7 +3179,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = True
         return logic
-    
+
     def glowbo_floor_3(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
@@ -6174,7 +6174,7 @@ class BanjoTooieRules:
                     or self.air_rat_a_tat_rap(state)\
                     or self.beak_buster(state)
         return logic
-    
+
     def signpost_code_chamber(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
@@ -6202,7 +6202,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.GM_boulders(state)
         return logic
-    
+
     def signpost_chuffy(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
@@ -6211,7 +6211,7 @@ class BanjoTooieRules:
                     or state.can_reach_region(regionName.TL, self.player) and state.has(itemName.TRAINSWTD, self.player) and state.has(itemName.CHUFFY, self.player)\
                     or state.can_reach_region(regionName.GI1, self.player) and state.has(itemName.TRAINSWGI, self.player) and state.has(itemName.CHUFFY, self.player)\
                     or state.can_reach_region(regionName.IOHCT, self.player) and state.has(itemName.TRAINSWHP1, self.player) and state.has(itemName.CHUFFY, self.player)
-            
+
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = state.can_reach_region(regionName.GM, self.player) and (self.small_elevation(state) or self.beak_buster(state) or self.humbaGGM(state))\
                     or state.can_reach_region(regionName.WW, self.player) and state.has(itemName.TRAINSWWW, self.player) and state.has(itemName.CHUFFY, self.player)\
@@ -6286,7 +6286,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.grenade_eggs(state)
         return logic
-    
+
     def signpost_smugglers(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.has_explosives(state) or self.dive(state)
@@ -6297,7 +6297,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.has_explosives(state) or self.dive(state)
         return logic
-    
+
     def signpost_jrl_pipes(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
@@ -6410,8 +6410,8 @@ class BanjoTooieRules:
                     or state.can_reach_region(regionName.GI2, self.player) and (self.floor_2_split_up(state) and (self.tall_jump(state) or self.leg_spring(state)))\
                     or state.can_reach_region(regionName.GI5, self.player)
         return logic
-    
-    
+
+
     def signpost_elevator_shaft(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
@@ -6447,7 +6447,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.dive(state) or self.shack_pack(state)
         return logic
-    
+
     def signpost_pool_rim(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
@@ -8519,7 +8519,7 @@ class BanjoTooieRules:
             for location, rules in self.nest_rules.items():
                 nest = self.world.multiworld.get_location(location, self.player)
                 set_rule(nest, rules)
-        
+
         if self.world.options.randomize_signposts:
             for location, rules in self.signpost_rules.items():
                 sign = self.world.multiworld.get_location(location, self.player)

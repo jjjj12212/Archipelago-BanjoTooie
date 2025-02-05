@@ -1,5 +1,5 @@
-from worlds.banjo_tooie.Options import RandomizeTrebleClefs
-from worlds.banjo_tooie.test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
+from .Options import RandomizeTrebleClefs
+from .test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 from ..Names import itemName
 from .. import all_group_table
