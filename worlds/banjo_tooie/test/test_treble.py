@@ -1,5 +1,5 @@
-from .Options import RandomizeTrebleClefs
-from .test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
+from ..Options import RandomizeTrebleClefs
+from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 from ..Names import itemName
 from .. import all_group_table

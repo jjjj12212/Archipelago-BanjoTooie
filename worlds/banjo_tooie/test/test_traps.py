@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from .Items import all_item_table, BanjoTooieItem
+from ..Items import all_item_table, BanjoTooieItem
 
 from ..Names import itemName, locationName, regionName
 from . import BanjoTooieTestBase

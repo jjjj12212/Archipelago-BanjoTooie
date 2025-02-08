@@ -1,5 +1,5 @@
 from test.bases import WorldTestBase
-from .Options import LogicType, RandomizeBKMoveList, RandomizeBTMoveList
+from ..Options import LogicType, RandomizeBKMoveList, RandomizeBTMoveList
 from . import BanjoTooieTestBase
 
 # Many tests inherit from logic tests, to make sure that the logic of all collectibles works.

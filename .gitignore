@@ -16,6 +16,7 @@
 /meta.yaml
 /pytest.ini
 /requirements.txt
+__pycache__
 
 /*.apworld
 /*.zip
@@ -24,3 +25,4 @@
 /.gitattributes
 /.github
 /.run
+/.vscode
