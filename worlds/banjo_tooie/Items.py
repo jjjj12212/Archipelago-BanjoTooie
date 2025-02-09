@@ -91,7 +91,7 @@ bk_moves_table = {
 
 progressive_ability_table = {
     itemName.PBBUST:        ItemData(1230828, 2, "progress", ""),
-    itemName.PEGGS:        ItemData(1230829, 4, "progress", ""),
+    itemName.PEGGS:         ItemData(1230829, 4, "progress", ""),
     itemName.PSHOES:        ItemData(1230830, 4, "progress", ""),
     itemName.PSWIM:         ItemData(1230831, 3, "progress", ""),
     itemName.PBASH:         ItemData(1230832, 2, "progress", ""),
@@ -99,6 +99,18 @@ progressive_ability_table = {
     itemName.PEGGAIM:       ItemData(1230783, 2, "progress", ""),
     itemName.PASWIM:        ItemData(1230784, 5, "progress", ""),
     itemName.PAEGGAIM:      ItemData(1230785, 4, "progress", ""),
+}
+
+progressive_ability_breakdown = {
+    itemName.PBBUST:        [itemName.BBUST, itemName.BDRILL],
+    itemName.PEGGS:         [itemName.FEGGS, itemName.GEGGS, itemName.IEGGS, itemName.CEGGS],
+    itemName.PSHOES:        [itemName.SSTRIDE, itemName.TTRAIN, itemName.SPRINGB, itemName.CLAWBTS],
+    itemName.PSWIM:         [itemName.DIVE, itemName.DAIR, itemName.FSWIM],
+    itemName.PBASH:         [itemName.GRAT, itemName.BBASH],
+    itemName.PFLIGHT:       [itemName.FPAD, itemName.BBOMB, itemName.AIREAIM],
+    itemName.PEGGAIM:       [itemName.EGGSHOOT, itemName.EGGAIM],
+    itemName.PASWIM:        [itemName.DIVE, itemName.AUQAIM, itemName.TTORP, itemName.DAIR, itemName.FSWIM],
+    itemName.PAEGGAIM:      [itemName.EGGSHOOT, itemName.AMAZEOGAZE, itemName.EGGAIM, itemName.BBLASTER],
 }
 
 level_progress_table = {
