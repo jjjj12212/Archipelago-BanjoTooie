@@ -23,7 +23,7 @@ from worlds.LauncherComponents import Component, components, Type, launch_subpro
 
 
 def run_client():
-    from worlds.banjo_tooie.BTClient import main  # lazy import
+    from .BTClient import main  # lazy import
     launch_subprocess(main)
 
 components.append(Component("Banjo-Tooie Client", func=run_client, component_type=Type.CLIENT))
@@ -176,31 +176,31 @@ class BanjoTooieWorld(World):
     def create_items(self) -> None:
         itempool = []
         ############## START OF TRAP / BIG O PANTS COUNTER #######################################
-        trap_big_pants_counter = 0
+        empty_slots = 0
         removed_enests = 0
         removed_fnests = 0
         if self.options.cheato_rewards and not self.options.randomize_bk_moves:
             for i in range(5):
-                trap_big_pants_counter += 1
+                empty_slots += 1
         if self.options.honeyb_rewards and not self.options.randomize_bk_moves: #10 if both options are on
             for i in range(5):
-                trap_big_pants_counter += 1
+                empty_slots += 1
         if self.options.randomize_bk_moves == RandomizeBKMoveList.option_mcjiggy_special: # 2 moves won't be added to the pool
             for i in range(2):
-                trap_big_pants_counter += 1
+                empty_slots += 1
         if not self.options.randomize_bk_moves: # No moves added, fills for the Jiggy Chunks, Dino Kids
             for i in range(6):
-                trap_big_pants_counter += 1
+                empty_slots += 1
         if self.options.bass_clef_amount > 0:
             for i in range(self.options.bass_clef_amount): #adds an additional big-o-pants for each bass clef
-                trap_big_pants_counter += 1
+                empty_slots += 1
         if self.options.extra_trebleclefs_count > 0:
             for i in range(self.options.extra_trebleclefs_count*3): #adds an additional big-o-pants for each bass clef
                 if self.options.victory_condition == VictoryCondition.option_token_hunt and \
                 (((self.options.bass_clef_amount * 2) + (self.options.extra_trebleclefs_count * 4)) >= 130) and \
                 i == (self.options.extra_trebleclefs_count*3 - 15):
                     break
-                trap_big_pants_counter += 1
+                empty_slots += 1
         if self.options.traps and self.options.nestsanity:
             total_nests = all_item_table[itemName.ENEST].qty + all_item_table[itemName.FNEST].qty
 
@@ -208,12 +208,12 @@ class BanjoTooieWorld(World):
             removed_enests = int(all_item_table[itemName.ENEST].qty * self.options.traps_nests_ratio / 100)
             removed_fnests = removed_nests - removed_enests
 
-            trap_big_pants_counter += removed_nests + all_item_table[itemName.GNEST].qty
+            empty_slots += removed_nests + all_item_table[itemName.GNEST].qty
         elif self.options.nestsanity: # nestsanity with no traps, remove gnests
-            trap_big_pants_counter += all_item_table[itemName.GNEST].qty
-        
+            empty_slots += all_item_table[itemName.GNEST].qty
+
         if self.options.randomize_signposts:
-            trap_big_pants_counter += 61 # There are 61 signposts in the game.
+            empty_slots += 61 # There are 61 signposts in the game.
         trap_list = []
         if self.options.traps:
             trap_list = self.random.choices(["gnests", "ttrap", "strap", "trtrap", "sqtrap", "titrap"], weights = [
@@ -223,7 +223,14 @@ class BanjoTooieWorld(World):
                 self.options.transform_trap_weight,
                 self.options.squish_trap_weight,
                 self.options.tip_trap_weight,
-            ], k = trap_big_pants_counter)
+            ], k = empty_slots)
+
+        extra_enests = 0
+        extra_fnests = 0
+        if not self.options.traps and self.options.nestsanity:
+            extra_enests = int(empty_slots / 2)
+            extra_fnests = empty_slots - extra_enests
+            empty_slots = 0
 
         ############## END OF TRAP / BIG O PANTS COUNTER #######################################
         for name,id in all_item_table.items():
@@ -244,7 +251,7 @@ class BanjoTooieWorld(World):
 
                     #if none in pool
                     elif item.code == self.item_code(itemName.NONE):
-                       for i in range(trap_big_pants_counter):
+                       for i in range(empty_slots):
                             itempool += [self.create_item(name)]
                     elif item.code == self.item_code(itemName.TTRAP):
                         for i in range(trap_list.count("ttrap")):
@@ -268,10 +275,10 @@ class BanjoTooieWorld(World):
 
                     #nests removal for nestsanity and nest traps
                     elif item.code == self.item_code(itemName.ENEST):
-                        for i in range(all_item_table[item.name].qty - removed_enests):
+                        for i in range(all_item_table[item.name].qty + extra_enests - removed_enests):
                             itempool += [self.create_item(name)]
                     elif item.code == self.item_code(itemName.FNEST):
-                        for i in range(all_item_table[item.name].qty - removed_fnests):
+                        for i in range(all_item_table[item.name].qty + extra_fnests - removed_fnests):
                             itempool += [self.create_item(name)]
                     #end of nest removal for nest traps
 
@@ -383,7 +390,7 @@ class BanjoTooieWorld(World):
 
         # if item.code == self.item_code(itemName.NONE) and self.options.cheato_rewards == False and self.options.honeyb_rewards == False:
         #     return False
-        if item.code == self.item_code(itemName.NONE) and self.options.traps:
+        if item.code == self.item_code(itemName.NONE) and self.options.traps and not self.options.nestsanity:
             return False
 
         if (item.code == self.item_code(itemName.TTRAP) or item.code == self.item_code(itemName.STRAP) or \
@@ -490,7 +497,7 @@ class BanjoTooieWorld(World):
         if not self.options.randomize_moves and self.options.jamjars_silo_costs != JamjarsSiloCosts.option_vanilla:
             raise ValueError("You cannot change the silo costs without randomizing Jamjars' moves.")
         if not self.options.open_hag1 and self.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
-            self.options.open_hag1 = True
+            self.options.open_hag1.value = True
 
 
         if self.options.egg_behaviour == EggsBehaviour.option_random_starting_egg:
@@ -821,7 +828,7 @@ class BanjoTooieWorld(World):
         btoptions["first_silo"] = self.single_silo
 
         btoptions["version"] = BanjoTooieWorld.version
-        
+
         btoptions["jamjars_siloname_costs"] = self.jamjars_siloname_costs
         btoptions["jamjars_silo_costs"] = self.jamjars_silo_costs #table of silo costs
         btoptions["jamjars_silo_option"] = int(self.options.jamjars_silo_costs)

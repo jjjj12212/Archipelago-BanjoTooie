@@ -64,7 +64,7 @@ bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_i
 script_version: int = 4
 version: str = "V4.2"
 game_append_version: str = "V42"
-patch_md5: str = "1d43acc487500879c70bc750bb58da92"
+patch_md5: str = "af5a3694bebe91130b897ff73c566ed8"
 
 def get_item_value(ap_id):
     return ap_id
@@ -87,7 +87,7 @@ async def apply_patch():
             break
     patch_path = None
     if archipelago_root:
-        patch_path = os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64")
+        patch_path = os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".z64")
     if not patch_path or check_rom(patch_path) != patch_md5:
         logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
         await asyncio.sleep(0.01)
@@ -96,7 +96,7 @@ async def apply_patch():
             logger.info("No ROM selected. Please restart the Banjo-Tooie Client to try again.")
             return
         if not patch_path:
-            patch_path = os.path.split(rom) + "/Banjo-Tooie-AP"+game_append_version+".n64"
+            patch_path = os.path.split(rom) + "/Banjo-Tooie-AP"+game_append_version+".z64"
         patch_rom(rom, patch_path, "Banjo-Tooie.patch")
     if patch_path:
         logger.info("Patched Banjo-Tooie is located in " + patch_path)
@@ -248,7 +248,7 @@ class BanjoTooieContext(CommonContext):
                 if fpath.parents[i].stem == "Archipelago":
                     archipelago_root = pathlib.Path(__file__).parents[i]
                     break
-            async_start(run_game(os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".n64")))
+            async_start(run_game(os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".z64")))
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
         elif cmd == "ReceivedItems":
             if self.startup == False:
@@ -542,7 +542,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
 #G0go, needs to add cmd to send Hint from ctx.get_slot['hints'][locationId]
 # contains ["location_id"]  (hinted locationID)
 # contains ["location_player_id"] (hinted playerId)
-                        
+
                         locs1.append(int(locationId))
         if ctx.roar != roar_obtain:
             ctx.roar = roar_obtain
@@ -853,6 +853,14 @@ async def n64_sync_task(ctx: BanjoTooieContext):
                 logger.debug("Connection Refused, Trying Again")
                 ctx.n64_status = CONNECTION_REFUSED_STATUS
                 continue
+            except OSError:
+                logger.debug("Connection Failed, Trying Again")
+                ctx.n64_status = CONNECTION_REFUSED_STATUS
+                continue
+            except Exception as error:
+                logger.info("Unknown Error: %r", error)
+                ctx.n64_status = CONNECTION_REFUSED_STATUS
+                break
 
 def read_file(path):
     with open(path, "rb") as fi:
@@ -888,9 +896,6 @@ def patch_rom(romPath, dstPath, patchPath):
         return
     patch = openFile(patchPath).read()
     write_file(dstPath, bsdiff4.patch(rom, patch))
-    # newrom = self.read_file(dstPath)
-    # md5 = hashlib.md5(newrom).hexdigest()
-    # print(md5)
 
 def openFile(resource: str, mode: str = "rb", encoding: str = None):
     filename = sys.modules[__name__].__file__
@@ -906,8 +911,6 @@ def openFile(resource: str, mode: str = "rb", encoding: str = None):
                 return io.TextIOWrapper(zf.open(zipFilePath, "r"), encoding)
     else:
         return open(os.path.join(pathlib.Path(__file__).parent, resource), mode, encoding=encoding)
-
-    # self.patch_rom("banjo-tooie.n64", "banjo-tooie-romhack.n64", "banjo-tooie.patch")
 
 def main():
     Utils.init_logging("Banjo-Tooie Client")

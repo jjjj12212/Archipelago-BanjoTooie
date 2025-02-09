@@ -52,7 +52,8 @@ class TestTrapsDisabledWithNestsanity(TrapTestBase):
     def test_trap_pool(self) -> None:
         pool = super().pool()
 
-        assert pool.filler_distribution[itemName.NONE] == 23
+        assert pool.filler_distribution[itemName.NONE] == 0
+        assert pool.filler_distribution[itemName.ENEST] + pool.filler_distribution[itemName.FNEST] == 450 + 23
         assert sum(pool.trap_distribution.values()) == 0
 
 

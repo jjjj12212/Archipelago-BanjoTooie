@@ -1,12 +1,12 @@
 from BaseClasses import Item
-import typing
+from typing import Dict, NamedTuple
 from .Names import itemName, locationName
 
 
 class BanjoTooieItem(Item):
     # 1230833 (TITRAP) but beware of level access keys that are way higher!
     game: str = "Banjo-Tooie"
-class ItemData(typing.NamedTuple):
+class ItemData(NamedTuple):
     btid: int = 0
     qty: int = 0
     type: str = ""
@@ -176,7 +176,7 @@ nest_table= {
 }
 
 
-all_item_table: dict[str, ItemData] = {
+all_item_table: Dict[str, ItemData] = {
     **moves_table,
     **jinjo_table,
     **level_progress_table,
@@ -192,7 +192,7 @@ all_item_table: dict[str, ItemData] = {
     **nest_table
 }
 
-all_group_table: dict[str, dict[str, ItemData]] = {
+all_group_table: Dict[str, Dict[str, ItemData]] = {
     "jiggy": jiggy_table,
     "jinjo": jinjo_table,
     "misc": misc_collectable_table,
@@ -206,6 +206,3 @@ all_group_table: dict[str, dict[str, ItemData]] = {
     "dino": dino_table,
     "nest": nest_table
 }
-
-
-

@@ -1,7 +1,7 @@
 import copy
 import typing
 from BaseClasses import Region
-from worlds.banjo_tooie.Options import VictoryCondition
+from .Options import VictoryCondition
 
 from .Names import regionName, locationName, itemName
 from .Locations import BanjoTooieLocation
@@ -1262,7 +1262,7 @@ def create_regions(self):
         for region, locations in nest_map.items():
             for location in locations:
                 region_map[region].append(location)
-    
+
     if self.options.randomize_signposts:
         signpost_map = copy.deepcopy(SIGNPOST_REGIONS)
         for region, locations in signpost_map.items():
@@ -1557,4 +1557,3 @@ def connect_regions(self):
         region_JV.add_exits({regionName.IOHPL, regionName.IOHCT, regionName.IOHPG, regionName.IOHWL, regionName.IOHQM})
     else: # The value is a region name of the overworld.
         region_JV.add_exits({silo})
-
