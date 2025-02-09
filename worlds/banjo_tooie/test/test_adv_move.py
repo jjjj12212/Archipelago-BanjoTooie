@@ -1,6 +1,5 @@
 from test.bases import WorldTestBase
-from worlds.banjo_tooie.Options import LogicType, RandomizeBTMoveList
-from worlds.banjo_tooie.test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
+from ..Options import LogicType, RandomizeBTMoveList
 from . import BanjoTooieTestBase
 from .. import all_item_table
 

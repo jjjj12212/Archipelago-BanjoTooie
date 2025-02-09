@@ -1,5 +1,4 @@
-from test.bases import WorldTestBase
-from worlds.banjo_tooie.Options import LogicType, RandomizeBKMoveList, RandomizeBTMoveList
+from ..Options import LogicType, RandomizeBKMoveList, RandomizeBTMoveList
 from . import BanjoTooieTestBase
 
 # Many tests inherit from logic tests, to make sure that the logic of all collectibles works.
@@ -23,7 +22,7 @@ class HardTricksLogic(BanjoTooieTestBase):
         "randomize_moves": RandomizeBTMoveList.option_true,
         "randomize_bk_moves": RandomizeBKMoveList.option_all,
     }
-    
+
 class GlitchesLogic(BanjoTooieTestBase):
     options = {
         "logic_type": LogicType.option_glitches,

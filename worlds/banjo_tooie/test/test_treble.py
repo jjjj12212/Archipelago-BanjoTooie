@@ -1,5 +1,5 @@
-from worlds.banjo_tooie.Options import RandomizeTrebleClefs
-from worlds.banjo_tooie.test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
+from ..Options import RandomizeTrebleClefs
+from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 from ..Names import itemName
 from .. import all_group_table
@@ -8,7 +8,7 @@ class TreblesEnabled(BanjoTooieTestBase):
     option = {
         "randomize_treble": RandomizeTrebleClefs.option_true
     }
-    def _item_pool(self) -> None:
+    def test_item_pool(self) -> None:
         treble_amt = 0
         treble_count = 0
         for name, btitem in all_group_table["misc"].items():
@@ -25,7 +25,7 @@ class TreblesDisabled(BanjoTooieTestBase):
     option = {
         "randomize_treble": RandomizeTrebleClefs.option_false
     }
-    def _disabled_item_pool(self) -> None:
+    def test_disabled_item_pool(self) -> None:
         adv_count = 0
         for item in self.world.multiworld.itempool:
             if itemName.TREBLE == item.name:
@@ -33,7 +33,7 @@ class TreblesDisabled(BanjoTooieTestBase):
                 adv_count += 1
         assert 0 == adv_count
 
-    def _prefills(self) -> None:
+    def test_prefills(self) -> None:
         treble_amt = 0
         treble_count = 0
         for name, btitem in all_group_table["misc"].items():

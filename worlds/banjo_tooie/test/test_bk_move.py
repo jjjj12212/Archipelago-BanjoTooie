@@ -1,5 +1,4 @@
-from worlds.banjo_tooie.Options import LogicType, RandomizeBKMoveList
-from worlds.banjo_tooie.test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
+from ..Options import LogicType, RandomizeBKMoveList
 from . import BanjoTooieTestBase
 from .. import all_group_table
 
