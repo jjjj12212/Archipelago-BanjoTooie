@@ -5,7 +5,7 @@ from ..Names import itemName
 from .. import all_group_table
 
 class TreblesEnabled(BanjoTooieTestBase):
-    option = {
+    options = {
         "randomize_treble": RandomizeTrebleClefs.option_true
     }
     def test_item_pool(self) -> None:
@@ -22,7 +22,7 @@ class TreblesEnabled(BanjoTooieTestBase):
         assert treble_amt == treble_count
 
 class TreblesDisabled(BanjoTooieTestBase):
-    option = {
+    options = {
         "randomize_treble": RandomizeTrebleClefs.option_false
     }
     def test_disabled_item_pool(self) -> None:

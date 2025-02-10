@@ -110,7 +110,10 @@ class BanjoTooieWorld(World):
             if itemname == itemName.JIGGY:
                 if not hasattr(self.multiworld, "generation_is_fake"):
                     maxJiggy = max(self.randomize_worlds.values())
-                    if not self.options.open_hag1 and self.options.victory_condition in (VictoryCondition.option_hag1, VictoryCondition.option_wonderwing_challenge, VictoryCondition.option_boss_hunt_and_hag1):
+                    if not self.options.open_hag1 and self.options.victory_condition in \
+                        (VictoryCondition.option_hag1,
+                         VictoryCondition.option_wonderwing_challenge,
+                         VictoryCondition.option_boss_hunt_and_hag1):
                         maxJiggy = max(maxJiggy, 70)
 
                     extraJiggys = (90 - maxJiggy)/2
@@ -315,7 +318,7 @@ class BanjoTooieWorld(World):
                 return itemName.PSWIM
         elif self.options.progressive_water_training == ProgressiveWaterTraining.option_advanced:
             if name in progressive_ability_breakdown[itemName.PASWIM]:
-                return itemName.PSWIM
+                return itemName.PASWIM
 
         if self.options.progressive_bash_attack:
             if name in progressive_ability_breakdown[itemName.PBASH]:
