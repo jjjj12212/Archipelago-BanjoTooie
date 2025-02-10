@@ -15,12 +15,14 @@ class TestNestsanityEnabled(BanjoTooieTestBase):
 
     def test_item_pool(self) -> None:
         item_pool_names = [item.name for item in self.multiworld.itempool]
+
+        # Because with nestsanity on, enests and fnests are used as filler items
         assert item_pool_names.count(itemName.ENEST) + item_pool_names.count(itemName.FNEST)\
-            == len(self.tested_locations)
+            >= len(self.tested_locations)
 
     def test_locations(self) -> None:
         assert len(self.tested_locations) == 473
-        world_location_names = self.world.get_locations()
+        world_location_names = [location.name for location in self.world.get_locations()]
         for name in self.tested_locations:
             assert name in world_location_names
 
@@ -40,7 +42,7 @@ class TestNestsanityDisabled(BanjoTooieTestBase):
         assert not itemName.GNEST in item_pool_names
 
     def test_locations(self) -> None:
-        world_location_names = self.world.get_locations()
+        world_location_names = [location.name for location in self.world.get_locations()]
         for name in self.tested_locations:
             assert not name in world_location_names
 

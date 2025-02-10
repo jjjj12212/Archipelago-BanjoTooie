@@ -1,13 +1,13 @@
 from worlds.banjo_tooie.Names import locationName
 from ..Names import itemName
-from ..Options import RandomizeChuffy, RandomizeTrainStationSwitches
+from ..Options import RandomizeChuffyTrain, RandomizeTrainStationSwitches
 from ..Items import stations_table
 from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 
 class TestRandomizedChuffy(BanjoTooieTestBase):
     options = {
-        "randomize_chuffy": RandomizeChuffy.option_true,
+        "randomize_chuffy": RandomizeChuffyTrain.option_true,
     }
 
     def test_item_pool(self) -> None:
@@ -15,7 +15,7 @@ class TestRandomizedChuffy(BanjoTooieTestBase):
 
 class TestVanillaChuffy(BanjoTooieTestBase):
     options = {
-        "randomize_chuffy": RandomizeChuffy.option_false
+        "randomize_chuffy": RandomizeChuffyTrain.option_false
     }
 
     def test_item_pool(self) -> None:

@@ -19,7 +19,7 @@ class BlueEggStartVanillaMovesTest(BanjoTooieTestBase):
             assert not egg in item_pool_names
 
     def test_prefill(self) -> None:
-        silos = [locationName.FEGGS, locationName.GEGGS, locationName.IEGGS, locationName.CEGGS]
+        print(self.world.options.randomize_moves)
         silos_to_vanilla_item = {
             locationName.FEGGS: itemName.FEGGS,
             locationName.GEGGS: itemName.GEGGS,
@@ -27,8 +27,8 @@ class BlueEggStartVanillaMovesTest(BanjoTooieTestBase):
             locationName.CEGGS: itemName.CEGGS,
         }
 
-        for silo in silos:
-            assert self.world.get_location(silo).item.name == silos_to_vanilla_item[silo]
+        for silo, egg in silos_to_vanilla_item.items():
+            assert self.world.get_location(silo).item.name == egg
 
 class BlueEggStartRandomizedMovesTest(BanjoTooieTestBase):
     options = {
@@ -87,96 +87,96 @@ class ProgressiveEggsTest(BanjoTooieTestBase):
 
 class TestBlueEggStartVanillaMovesIntended(BlueEggStartVanillaMovesTest, IntendedLogic):
     options = {
-        **BlueEggStartVanillaMovesTest.options,
         **IntendedLogic.options,
+        **BlueEggStartVanillaMovesTest.options,
     }
 
 class TestBlueEggStartVanillaMovesEasyTricks(BlueEggStartVanillaMovesTest, EasyTricksLogic):
     options = {
-        **BlueEggStartVanillaMovesTest.options,
         **EasyTricksLogic.options,
+        **BlueEggStartVanillaMovesTest.options,
     }
 
 class TestBlueEggStartVanillaMovesHardTricks(BlueEggStartVanillaMovesTest, HardTricksLogic):
     options = {
-        **BlueEggStartVanillaMovesTest.options,
         **HardTricksLogic.options,
+        **BlueEggStartVanillaMovesTest.options,
     }
 
 class TestBlueEggStartVanillaMovesGlitches(BlueEggStartVanillaMovesTest, GlitchesLogic):
     options = {
-        **BlueEggStartVanillaMovesTest.options,
         **GlitchesLogic.options,
+        **BlueEggStartVanillaMovesTest.options,
     }
 
 class TestBlueEggStartRandomizedMovesIntended(BlueEggStartRandomizedMovesTest, IntendedLogic):
     options = {
-        **BlueEggStartRandomizedMovesTest.options,
         **IntendedLogic.options,
+        **BlueEggStartRandomizedMovesTest.options,
     }
 
 class TestBlueEggStartRandomizedMovesEasyTricks(BlueEggStartRandomizedMovesTest, EasyTricksLogic):
     options = {
-        **BlueEggStartRandomizedMovesTest.options,
         **EasyTricksLogic.options,
+        **BlueEggStartRandomizedMovesTest.options,
     }
 
 class TestBlueEggStartRandomizedMovesHardTricks(BlueEggStartRandomizedMovesTest, HardTricksLogic):
     options = {
-        **BlueEggStartRandomizedMovesTest.options,
         **HardTricksLogic.options,
+        **BlueEggStartRandomizedMovesTest.options,
     }
 
 class TestBlueEggStartRandomizedMovesGlitches(BlueEggStartRandomizedMovesTest, GlitchesLogic):
     options = {
-        **BlueEggStartRandomizedMovesTest.options,
         **GlitchesLogic.options,
+        **BlueEggStartRandomizedMovesTest.options,
     }
 
 class TestRandomStartEggIntended(RandomStartEggTest, IntendedLogic):
     options = {
-        **RandomStartEggTest.options,
         **IntendedLogic.options,
+        **RandomStartEggTest.options,
     }
 
 class TestRandomStartEggEasyTricks(RandomStartEggTest, EasyTricksLogic):
     options = {
-        **RandomStartEggTest.options,
         **EasyTricksLogic.options,
+        **RandomStartEggTest.options,
     }
 
 class TestRandomStartEggHardTricks(RandomStartEggTest, HardTricksLogic):
     options = {
-        **RandomStartEggTest.options,
         **HardTricksLogic.options,
+        **RandomStartEggTest.options,
     }
 
 class TestRandomStartEggGlitches(RandomStartEggTest, GlitchesLogic):
     options = {
-        **RandomStartEggTest.options,
         **GlitchesLogic.options,
+        **RandomStartEggTest.options,
     }
 
 class TestProgressiveEggsIntended(ProgressiveEggsTest, IntendedLogic):
     options = {
-        **ProgressiveEggsTest.options,
         **IntendedLogic.options,
+        **ProgressiveEggsTest.options,
     }
 
 class TestProgressiveEggsEasyTricks(ProgressiveEggsTest, EasyTricksLogic):
     options = {
-        **ProgressiveEggsTest.options,
         **EasyTricksLogic.options,
+        **ProgressiveEggsTest.options,
     }
 
 class TestProgressiveEggsHardTricks(ProgressiveEggsTest, HardTricksLogic):
     options = {
-        **ProgressiveEggsTest.options,
         **HardTricksLogic.options,
+        **ProgressiveEggsTest.options,
     }
 
 class TestProgressiveEggsGlitches(ProgressiveEggsTest, GlitchesLogic):
     options = {
-        **ProgressiveEggsTest.options,
         **GlitchesLogic.options,
+        **ProgressiveEggsTest.options,
     }
