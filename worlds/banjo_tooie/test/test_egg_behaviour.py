@@ -19,7 +19,6 @@ class BlueEggStartVanillaMovesTest(BanjoTooieTestBase):
             assert not egg in item_pool_names
 
     def test_prefill(self) -> None:
-        print(self.world.options.randomize_moves)
         silos_to_vanilla_item = {
             locationName.FEGGS: itemName.FEGGS,
             locationName.GEGGS: itemName.GEGGS,
