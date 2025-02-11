@@ -165,6 +165,7 @@ class BanjoTooieContext(CommonContext):
         self.sendSlot = False
         self.sync_ready = False
         self.startup = False
+        self.handled_scouts = []
         # AquaPhoenix Contributed with the Gruntilda Insults
         self.death_messages = [
             "Gruntilda:    Did you hear that lovely clack, \n                     My broomstick gave you such a whack!",
@@ -489,6 +490,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
 
     if demo == False and ctx.sync_ready == True:
         locs1 = []
+        scouts1 = []
         if ctx.chuffy_table != chuffy:
             ctx.chuffy_table = chuffy
             for locationId, value in chuffy.items():
@@ -537,13 +539,16 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                     locs1.append(int(locationId))
         if ctx.signpost_table != signposts:
                 ctx.signpost_table = signposts
+                actual_hints = ctx.slot_data["hints"]
                 for locationId, value in signposts.items():
                     if value == True:
-#G0go, needs to add cmd to send Hint from ctx.get_slot['hints'][locationId]
-# contains ["location_id"]  (hinted locationID)
-# contains ["location_player_id"] (hinted playerId)
-
                         locs1.append(int(locationId))
+                        if ctx.slot_data["hint_clarity"] == 1:
+                            hint = actual_hints.get(str(locationId), None)
+                            if not hint is None and not hint.get('location_id') is None:
+                                id = hint['location_id']
+                                if not id in ctx.handled_scouts:
+                                    scouts1.append(id)
         if ctx.roar != roar_obtain:
             ctx.roar = roar_obtain
             if roar_obtain == True:
@@ -626,6 +631,15 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                     "cmd": "LocationChecks",
                     "locations": locs1
                 }])
+
+        if len(scouts1) > 0:
+            await ctx.send_msgs([{
+                "cmd": "LocationScouts",
+                "locations": scouts1,
+                "create_as_hint": 1
+            }])
+            ctx.handled_scouts.extend(scouts1)
+
         #GAME VICTORY
         #Beat Hag-1
         if hag == True and (ctx.slot_data["victory_condition"] == 0 or ctx.slot_data["victory_condition"] == 4 or\
