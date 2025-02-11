@@ -27,7 +27,7 @@ description: 'Created By jjjj12212'
 game: Banjo-Tooie
 
 Banjo-Tooie:
-  death_link: 'false'           # If someone "kicks the bucket", you all perish together 
+  death_link: 'false'           # If someone "kicks the bucket", you all perish together
 
   # Choose your logic difficulty and difficulty of tricks you are expected to perform to reach certain areas.
   # 0 = intended
@@ -44,12 +44,12 @@ Banjo-Tooie:
   # 4 = Wonderwing Challenge: Collect all 32 Mumbo Tokens across all boss fights, mini games and every Jinjo family
   # to gain access to HAG1 and Defeat Grunty. The Ultimate Banjo Tooie experience!!
   # 5 = Token Hunt: Mumbo's Tokens are scattered around the world. Help him find them
-  # 6 = Boss Hunt + HAG1: Defeat bosses in order to unlock HAG-1 
+  # 6 = Boss Hunt + HAG1: Defeat bosses in order to unlock HAG-1
   victory_condition: 0
 
   minigame_hunt_length: 14      # 1-15
-  boss_hunt_length: 8           # 1-8        
-  jinjo_family_rescue_length: 9 # 1-9 
+  boss_hunt_length: 8           # 1-8
+  jinjo_family_rescue_length: 9 # 1-9
   token_hunt_length: 10         # 1-15
 
   # Game Length
@@ -72,7 +72,7 @@ Banjo-Tooie:
   jamjars_silo_costs: 0
 
   # Randomize Banjo-Kazooie Moves in Banjo-Tooie
-  # 0: Don't randomize 
+  # 0: Don't randomize
   # 1: Mcjiggy Special - You keep Talon Trot and Tall Jump
   # 2: All - Everything
   randomize_bk_moves: 0
@@ -84,7 +84,7 @@ Banjo-Tooie:
   # Requires randomize_bk_moves & randomize_moves
   egg_behaviour: 0
 
-  # Beak Buster -> Bill Drill Progression 
+  # Beak Buster -> Bill Drill Progression
   # Requires randomize_bk_moves & randomize_moves
   progressive_beak_buster: 'false'
 
@@ -127,7 +127,7 @@ Banjo-Tooie:
   randomize_stop_n_swap: 'true' # Ice key + Eggs + Egg rewards are added to the item pool
   randomize_dino_roar: 'true' # Roar is in the pool
   nestsanity: 'false'         # Every egg nest and feather nest give a check when you collect them for the first time. They behave as normal afterwards.
-  randomize_signposts: 'false' # Signposts as checks 
+  randomize_signposts: 'false' # Signposts as checks
   traps: 'false'              # Swaps all Big-O-Pants (junk) items to Traps
   traps_nests_ratio: 0        # 0 - 100; replaces a percentage of all feather and egg nests (except golden eggs) to Big-O-Pants or trap items. Requires nestsanity.
   golden_eggs_weight: 40      # 0 - 100; weight of golden eggs in the trap pool. Requires nestsanity and traps.
@@ -146,8 +146,8 @@ Banjo-Tooie:
   open_hag1: 'true'           # HAG1's door is open
 
   signpost_hints: 0           # 0-61; how many signposts will give you hints
-  signport_move_hint: 0       # 0-61; how many signpost hints will hint move items
-  hint_clarity: 1             # 0 or 1; 0 means what type of item is hinted, 1 means tells you the exact item that is hinted 
+  signpost_move_hint: 0       # 0-61; how many signpost hints will hint move items
+  hint_clarity: 1             # 0 or 1; 0 means what type of item is hinted, 1 means tells you the exact item that is hinted
 
   # The following gates are preopened: MT>TDL, MT>HFP, GGM>WW, WW>TDL
   # For MT>TDL only the gate accessed from TDL's side is opened and for GGM>WW the boulders are still unexploded
@@ -160,7 +160,7 @@ Banjo-Tooie:
   # 0: None
   # 1: one random silo
   # 2: All Silos Open
-  open_silos: 0               
+  open_silos: 0
 
   extra_cheats: 'false'
   easy_canary: 'true'
@@ -168,9 +168,9 @@ Banjo-Tooie:
   skip_tower_of_tragedy: 1    # 0: no skip, 1: skip completely, 2: play 3rd round only
   skip_klungo: 'true'         # Skips Klungo 1 & 2
 
-  # Change the Character that announces your obtained moves, worlds, etc. 
+  # Change the Character that announces your obtained moves, worlds, etc.
   # The list is massive which will be at the bottom of the file to reference
-  dialog_character: 110       
+  dialog_character: 110
 
 
   # Start with these items.
