@@ -162,7 +162,8 @@ Banjo-Tooie:
   # 2: All Silos Open
   open_silos: 0               
 
-
+  extra_cheats: 'false'
+  easy_canary: 'true'
   speed_up_minigames: 'true'    # skip to round 3 of kickball, dodgems
   skip_tower_of_tragedy: 1    # 0: no skip, 1: skip completely, 2: play 3rd round only
   skip_klungo: 'true'         # Skips Klungo 1 & 2
