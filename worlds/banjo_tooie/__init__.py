@@ -702,7 +702,9 @@ class BanjoTooieWorld(World):
             "randomize_signposts",
             "signpost_hints",
             "signpost_move_hints",
-            "dialog_character")
+            "hint_clarity",
+            "dialog_character"
+        )
 
         btoptions["player_name"] = self.multiworld.player_name[self.player]
         btoptions["seed"] = self.random.randint(12212, 9090763)
