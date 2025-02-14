@@ -537,17 +537,20 @@ class SignpostMoveHints(Range):
     default = 20
 
 # Soon (tm), once this gets merged: https://github.com/ArchipelagoMW/Archipelago/pull/4317
-# class AddSignpostHintsToArchipelagoHints(Choice):
-#     """Choose if a signpost hint is added to the Archipelago hints upon reading the hint.
-#     Never: signpost hints are never added
-#     Progression: hints are added only if the hinted location has a progression item.
-#     Always: hints are always added.
-#     This option only has an effect if signpost hints are enabled."""
-#     display_name = "Add Signpost Hints to Archipelago Hints"
-#     option_never = 0
-#     option_progression = 1
-#     option_always = 2
-#     default = 2
+# we can add hints for other players locations as well
+class AddSignpostHintsToArchipelagoHints(Choice):
+    """Choose if a signpost hint is added to the Archipelago hints upon reading the hint.
+    Due to a limitation, only your own locations will be added as hints; your items in
+    other people worlds won't be hinted.
+    Never: signpost hints are never added
+    Progression: hints are added only if the hinted location has a progression item.
+    Always: hints are always added.
+    This option only has an effect if signpost hints are enabled."""
+    display_name = "Add Signpost Hints to Archipelago Hints"
+    option_never = 0
+    option_progression = 1
+    option_always = 2
+    default = 1
 
 class HintClarity(Choice):
     """Choose how clear hints are.
@@ -634,7 +637,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
 
     signpost_hints: SignpostHints
     signpost_move_hints: SignpostMoveHints
-    # add_signpost_hints_to_ap: AddSignpostHintsToArchipelagoHints
+    add_signpost_hints_to_ap: AddSignpostHintsToArchipelagoHints
     hint_clarity: HintClarity
 
     dialog_character:DialogCharacters # Keep this at the bottom so that the huge list stays at the bottom of the yaml.

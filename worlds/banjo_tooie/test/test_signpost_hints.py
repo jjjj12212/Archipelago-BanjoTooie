@@ -2,7 +2,7 @@ import typing
 from BaseClasses import ItemClassification
 from ...AutoWorld import call_all
 from test.bases import WorldTestBase
-from ..Options import HintClarity, RandomizeBKMoveList, RandomizeBTMoveList, RandomizeSignposts, SignpostHints
+from ..Options import HintClarity, RandomizeBKMoveList, RandomizeBTMoveList, RandomizeSignposts, SignpostHints, AddSignpostHintsToArchipelagoHints
 from . import BanjoTooieTestBase
 from ..Items import moves_table, bk_moves_table, progressive_ability_table
 
@@ -70,9 +70,44 @@ class TestClearSignpostsHints(TestSignpostsHints):
             assert receiver in text
             assert item in text
 
+class TestClearSignpostsHintsAddAllHints(TestSignpostsHints):
+    options = {
+        "hint_clarity": HintClarity.option_clear,
+        "add_signpost_hints_to_ap": AddSignpostHintsToArchipelagoHints.option_always
+    }
+    def test_should_add_hint(self) -> None:
+        for hint_data in self.world.hints.values():
+            if not hint_data.location_id:
+                assert not hint_data.should_add_hint
+            else:
+                assert hint_data.should_add_hint
+
+
+class TestClearSignpostsHintsAddAllProgressionHints(TestSignpostsHints):
+    options = {
+        "hint_clarity": HintClarity.option_clear,
+        "add_signpost_hints_to_ap": AddSignpostHintsToArchipelagoHints.option_progression
+    }
+    def test_should_add_hint(self) -> None:
+        for hint_data in self.world.hints.values():
+            if not hint_data.location_id:
+                assert not hint_data.should_add_hint
+                continue
+            hinted_location = [
+                location for location in self.world.get_locations()\
+                if location.address == hint_data.location_id
+            ][0]
+
+            if hinted_location.item.advancement:
+                assert hint_data.should_add_hint
+            else:
+                assert not hint_data.should_add_hint
+
+
 class TestCrypticSignpostsHints(TestSignpostsHints):
     options = {
-        "hint_clarity": HintClarity.option_cryptic
+        "hint_clarity": HintClarity.option_cryptic,
+        "add_signpost_hints_to_ap": AddSignpostHintsToArchipelagoHints.option_always
     }
     def test_accurate_hint_text(self) -> None:
         for hint_data in self.world.hints.values():
@@ -98,6 +133,7 @@ class TestCrypticSignpostsHints(TestSignpostsHints):
             assert text.find(finder) != -1
             assert text.find(location) != -1
             assert classification_keywords[hinted_location.item.classification] in text
+            assert hint_data.should_add_hint == False
 
 
 class TestClearSignpostsNoHints(TestClearSignpostsHints):
