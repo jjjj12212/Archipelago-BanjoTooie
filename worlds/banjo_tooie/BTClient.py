@@ -543,12 +543,15 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 for locationId, value in signposts.items():
                     if value == True:
                         locs1.append(int(locationId))
-                        if ctx.slot_data["hint_clarity"] == 1:
-                            hint = actual_hints.get(str(locationId), None)
-                            if not hint is None and not hint.get('location_id') is None:
-                                id = hint['location_id']
-                                if not id in ctx.handled_scouts:
-                                    scouts1.append(id)
+                        hint = actual_hints.get(str(locationId), None)
+
+                        if not hint is None and hint.get('should_add_hint')\
+                          and not hint.get('location_id') is None\
+                          and not hint.get('location_player_id') is None\
+                          and ctx.slot_concerns_self(hint['location_player_id']):
+                            id = hint['location_id']
+                            if not id in ctx.handled_scouts:
+                                scouts1.append(id)
         if ctx.roar != roar_obtain:
             ctx.roar = roar_obtain
             if roar_obtain == True:
@@ -636,7 +639,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             await ctx.send_msgs([{
                 "cmd": "LocationScouts",
                 "locations": scouts1,
-                "create_as_hint": 1
+                "create_as_hint": 2
             }])
             ctx.handled_scouts.extend(scouts1)
 

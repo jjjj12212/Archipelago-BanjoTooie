@@ -1,7 +1,7 @@
 from typing import List, NamedTuple, Union
 from BaseClasses import ItemClassification, Location
 from worlds.AutoWorld import World
-from .Options import HintClarity
+from .Options import HintClarity, AddSignpostHintsToArchipelagoHints
 from .Items import moves_table, bk_moves_table, progressive_ability_table
 from .Locations import all_location_table
 from .Names import locationName
@@ -12,6 +12,7 @@ class HintData(NamedTuple):
     text: str # The displayed text in the game.
     location_id: Union[int, None] = None
     location_player_id: Union[int, None] = None
+    should_add_hint: bool = False
 
 def generate_hints(world: World):
     hint_datas: List[HintData] = []
@@ -276,7 +277,16 @@ def generate_hint_data_from_location(world: World, location: Location) -> HintDa
     else:
         text = generate_cryptic_hint_text(world, location)
 
-    return HintData(text, location.address, location.player)
+    should_add_hint = True
+    if world.options.hint_clarity == HintClarity.option_cryptic\
+      or world.options.add_signpost_hints_to_ap == AddSignpostHintsToArchipelagoHints.option_never\
+      or (
+        world.options.add_signpost_hints_to_ap == AddSignpostHintsToArchipelagoHints.option_progression\
+        and not location.item.advancement
+      ):
+        should_add_hint = False
+
+    return HintData(text, location.address, location.player, should_add_hint)
 
 def generate_cryptic_hint_text(world: World, location: Location) -> str:
     if location.item.classification in (ItemClassification.progression, ItemClassification.progression_skip_balancing):
