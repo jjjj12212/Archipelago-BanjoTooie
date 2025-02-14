@@ -1,6 +1,6 @@
 from typing import Dict
 from ..Names import itemName
-from ..Options import ProgressiveBashAttack, ProgressiveBeakBuster, ProgressiveEggAim, ProgressiveFlight, ProgressiveShoes, ProgressiveWaterTraining, RandomizeBKMoveList, RandomizeBTMoveList, RandomizeStopnSwap
+from ..Options import EnableNestsanity, ProgressiveBashAttack, ProgressiveBeakBuster, ProgressiveEggAim, ProgressiveFlight, ProgressiveShoes, ProgressiveWaterTraining, RandomizeBKMoveList, RandomizeBTMoveList, RandomizeNotes, RandomizeStopnSwap
 from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 
@@ -8,6 +8,7 @@ class TestProgressiveMove(BanjoTooieTestBase):
     options = {
         "randomize_moves": RandomizeBTMoveList.option_true,
         "randomize_bk_moves": RandomizeBKMoveList.option_all,
+        "randomize_notes": RandomizeNotes.option_true
     }
     tested_items: Dict[str, int] = {}
 
@@ -42,7 +43,8 @@ class TestNonProgressiveBeakBuster(TestProgressiveMove):
 class TestProgressiveShoes(TestProgressiveMove):
     options = {
         **TestProgressiveMove.options,
-        "progressive_shoes": ProgressiveShoes.option_true
+        "progressive_shoes": ProgressiveShoes.option_true,
+        "nestsanity": EnableNestsanity.option_true
     }
     tested_items = {
         itemName.PSHOES: 4,
@@ -55,7 +57,7 @@ class TestProgressiveShoes(TestProgressiveMove):
 class TestNonProgressiveShoes(TestProgressiveMove):
     options = {
         **TestProgressiveMove.options,
-        "progressive_shoes": ProgressiveShoes.option_false
+        "progressive_shoes": ProgressiveShoes.option_false,
     }
     tested_items = {
         itemName.PSHOES: 0,
@@ -253,24 +255,32 @@ class TestTestProgressiveShoesIntended(TestProgressiveShoes, IntendedLogic):
     options = {
         **TestProgressiveShoes.options,
         **IntendedLogic.options,
+        "nestsanity": EnableNestsanity.option_true
+
     }
 
 class TestTestProgressiveShoesEasyTricks(TestProgressiveShoes, EasyTricksLogic):
     options = {
         **TestProgressiveShoes.options,
         **EasyTricksLogic.options,
+        "nestsanity": EnableNestsanity.option_true
+
     }
 
 class TestTestProgressiveShoesHardTricks(TestProgressiveShoes, HardTricksLogic):
     options = {
         **TestProgressiveShoes.options,
         **HardTricksLogic.options,
+        "nestsanity": EnableNestsanity.option_true
+
     }
 
 class TestTestProgressiveShoesGlitches(TestProgressiveShoes, GlitchesLogic):
     options = {
         **TestProgressiveShoes.options,
         **GlitchesLogic.options,
+        "nestsanity": EnableNestsanity.option_true
+
     }
 
 class TestTestNonProgressiveShoesIntended(TestNonProgressiveShoes, IntendedLogic):

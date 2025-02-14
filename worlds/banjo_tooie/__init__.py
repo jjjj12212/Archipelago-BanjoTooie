@@ -347,9 +347,9 @@ class BanjoTooieWorld(World):
     def generate_early(self) -> None:
         if self.options.randomize_worlds and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none and self.options.logic_type == LogicType.option_intended:
             raise ValueError("Randomize Worlds and Randomize BK Moves is not compatible with Beginner Logic.")
-        if not self.options.randomize_notes and self.options.randomize_worlds and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none:
+        if (not self.options.randomize_notes and not self.options.randomize_signposts and not self.options.nestsanity) and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none:
             if self.multiworld.players == 1:
-                raise ValueError("Randomize Notes is required for Randomize BK Moves and Randomize Worlds enabled.")
+                raise ValueError("Randomize Notes, signposts or nestsanity is required for Randomize BK Moves.")
         if not self.options.randomize_notes and (self.options.extra_trebleclefs_count != 0 and self.options.bass_clef_amount != 0):
             raise ValueError("Randomize Notes is required to add extra Treble Clefs or Bass Clefs")
         if self.options.progressive_beak_buster and (not self.options.randomize_bk_moves or not self.options.randomize_moves):
@@ -358,8 +358,8 @@ class BanjoTooieWorld(World):
             raise ValueError("You cannot have Randomize Starting Egg without randomizing moves and randomizing BK moves")
         elif self.options.egg_behaviour == EggsBehaviour.option_progressive_eggs and not self.options.randomize_moves:
             raise ValueError("You cannot have progressive Eggs without randomizing moves")
-        if self.options.progressive_shoes and (not self.options.randomize_bk_moves or not self.options.randomize_moves):
-            raise ValueError("You cannot have progressive Shoes without randomizing moves and randomizing BK moves")
+        if self.options.progressive_shoes and not (self.options.randomize_bk_moves and self.options.randomize_moves and (self.options.randomize_signposts or self.options.nestsanity)):
+            raise ValueError("You cannot have progressive Shoes without randomizing moves, randomizing BK moves and enabling either nestanity or randomize signpost")
         if self.options.progressive_water_training != ProgressiveWaterTraining.option_none and (self.options.randomize_bk_moves == RandomizeBKMoveList.option_none or not self.options.randomize_moves):
             raise ValueError("You cannot have progressive Water Training without randomizing moves and randomizing BK moves")
         if self.options.progressive_flight and (not self.options.randomize_bk_moves or not self.options.randomize_moves):

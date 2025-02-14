@@ -2,7 +2,7 @@ import typing
 from BaseClasses import ItemClassification
 from ...AutoWorld import call_all
 from test.bases import WorldTestBase
-from ..Options import HintClarity, RandomizeBKMoveList, RandomizeBTMoveList, SignpostHints
+from ..Options import HintClarity, RandomizeBKMoveList, RandomizeBTMoveList, RandomizeSignposts, SignpostHints
 from . import BanjoTooieTestBase
 from ..Items import moves_table, bk_moves_table, progressive_ability_table
 
@@ -115,7 +115,8 @@ class TestClearSignpostsAllHintsHalfMoves(TestClearSignpostsHints):
         "randomize_moves": RandomizeBTMoveList.option_true,
         "randomize_bk_moves": RandomizeBKMoveList.option_all,
         "signpost_hints": SignpostHints.range_end,
-        "signpost_move_hints": 30
+        "signpost_move_hints": 30,
+        "randomize_signposts": RandomizeSignposts.option_true
     }
 
 class TestCrypticSignpostsNoHints(TestCrypticSignpostsHints):
@@ -131,5 +132,6 @@ class TestCrypticSignpostsAllHintsHalfMoves(TestCrypticSignpostsHints):
         "randomize_moves": RandomizeBTMoveList.option_true,
         "randomize_bk_moves": RandomizeBKMoveList.option_all,
         "signpost_hints": SignpostHints.range_end,
-        "signpost_move_hints": 30
+        "signpost_move_hints": 30,
+        "randomize_signposts": RandomizeSignposts.option_true
     }

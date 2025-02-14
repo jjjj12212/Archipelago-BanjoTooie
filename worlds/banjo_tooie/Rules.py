@@ -6795,6 +6795,8 @@ class BanjoTooieRules:
             if locationno == locationId:
                 world = worldLoc
                 break
+        if world == "":
+            return False
         amt = self.world.randomize_worlds[world]
         return state.has(itemName.JIGGY, self.player, amt)
 

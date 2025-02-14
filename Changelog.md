@@ -1,3 +1,7 @@
+# 4.2.1
+  - randomize BK moves requires either randomize notes, nestanity, or randomize signposts to fix generation issues
+  - progressive shoes now requires nestanity, or randomize signposts
+
 # 4.2.0
   - New victory condition: Boss Hunt + Hag 1.
     - Defeat bosses chosen from a new yaml option, then defeat Hag 1 to win.

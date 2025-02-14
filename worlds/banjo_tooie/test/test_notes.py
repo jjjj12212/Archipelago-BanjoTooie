@@ -1,6 +1,6 @@
 from ..Names import itemName, locationName
 from ..Options import RandomizeNotes
-from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
+from .test_logic import EasyTricksLogic, EasyTricksLogicNoBKShuffle, GlitchesLogic, GlitchesLogicNoBKShuffle, HardTricksLogic, HardTricksLogicNoBKShuffle, IntendedLogic, IntendedLogicNoBKShuffle
 from ..Locations import all_location_table
 from . import BanjoTooieTestBase
 
@@ -55,26 +55,26 @@ class TestRandomizedNotesGlitches(TestRandomizedNotes, GlitchesLogic):
         **GlitchesLogic.options,
     }
 
-class TestVanillaNotesIntended(TestVanillaNotes, IntendedLogic):
+class TestVanillaNotesIntended(TestVanillaNotes, IntendedLogicNoBKShuffle):
     options = {
         **TestVanillaNotes.options,
-        **IntendedLogic.options,
+        **IntendedLogicNoBKShuffle.options,
     }
 
-class TestVanillaNotesEasyTricks(TestVanillaNotes, EasyTricksLogic):
+class TestVanillaNotesEasyTricks(TestVanillaNotes, EasyTricksLogicNoBKShuffle):
     options = {
         **TestVanillaNotes.options,
-        **EasyTricksLogic.options,
+        **EasyTricksLogicNoBKShuffle.options,
     }
 
-class TestVanillaNotesHardTricks(TestVanillaNotes, HardTricksLogic):
+class TestVanillaNotesHardTricks(TestVanillaNotes, HardTricksLogicNoBKShuffle):
     options = {
         **TestVanillaNotes.options,
-        **HardTricksLogic.options,
+        **HardTricksLogicNoBKShuffle.options,
     }
 
-class TestVanillaNotesGlitches(TestVanillaNotes, GlitchesLogic):
+class TestVanillaNotesGlitches(TestVanillaNotes, GlitchesLogicNoBKShuffle):
     options = {
         **TestVanillaNotes.options,
-        **GlitchesLogic.options,
+        **GlitchesLogicNoBKShuffle.options,
     }

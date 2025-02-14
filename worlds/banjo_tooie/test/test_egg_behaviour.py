@@ -1,5 +1,5 @@
 from ..Names import itemName, locationName
-from ..Options import EggsBehaviour, RandomizeBKMoveList, RandomizeBTMoveList
+from ..Options import EggsBehaviour, RandomizeBKMoveList, RandomizeBTMoveList, RandomizeNotes
 from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 
@@ -49,6 +49,7 @@ class RandomStartEggTest(BanjoTooieTestBase):
         "randomize_moves": RandomizeBTMoveList.option_true,
         "randomize_bk_moves": RandomizeBKMoveList.option_all,
         "egg_behaviour": EggsBehaviour.option_random_starting_egg,
+        "randomize_notes": RandomizeNotes(True),
     }
 
     def test_starting_inventory(self) -> None:
