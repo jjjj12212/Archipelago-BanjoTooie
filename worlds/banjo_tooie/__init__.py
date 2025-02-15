@@ -228,7 +228,7 @@ class BanjoTooieWorld(World):
         # Add Filler items until all locations are filled
         total_locations = len(self.multiworld.get_unfilled_locations(self.player))
         if len(itempool) > total_locations:
-            warnings.warn("Number of total available locations exceeds the number of items, likely there is a bug in the generation.")
+            warnings.warn("Number of total available items exceeds the number of locations, likely there is a bug in the generation.")
 
         itempool += [self.create_filler() for _ in range(total_locations - len(itempool))]
 
