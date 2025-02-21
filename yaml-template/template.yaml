@@ -115,7 +115,7 @@ Banjo-Tooie:
   randomize_notes: 'true'     # adds Notes to the pool
   randomize_treble: 'true'    # adds Trebleclefs to the pool
   extra_trebleclefs_count: 0  # 0 - 21; replace 4 notes with an additional trebleclef. Requires randomize_notes
-  bassclef_amount:  0         # 0 - 30; replace 2 notes with a Bassclef (10 notes). Requires randomize_notes
+  bass_clef_amount:  0         # 0 - 30; replace 2 notes with a Bassclef (10 notes). Requires randomize_notes
 
   randomize_jinjos: 'true'    # adds Jinjos to the pool
   randomize_doubloons: 'true' # adds Doubloons to the pool
@@ -165,7 +165,7 @@ Banjo-Tooie:
   extra_cheats: 'false'
   easy_canary: 'true'
   speed_up_minigames: 'true'    # skip to round 3 of kickball, dodgems
-  skip_tower_of_tragedy: 1    # 0: no skip, 1: skip completely, 2: play 3rd round only
+  tower_of_tragedy: 1    # 0: no skip, 1: skip completely, 2: play 3rd round only
   skip_klungo: 'true'         # Skips Klungo 1 & 2
 
   # Change the Character that announces your obtained moves, worlds, etc.
