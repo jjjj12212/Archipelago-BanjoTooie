@@ -7694,7 +7694,13 @@ end
 ---------------------- MAIN LUA LOOP -------------------------
 
 function main()
-    if not checkBizHawkVersion() then
+    local bizhawk_version = client.getversion()
+    local bizhawk_major, bizhawk_minor, bizhawk_patch = bizhawk_version:match("(%d+)%.(%d+)%.?(%d*)")
+    bizhawk_major = tonumber(bizhawk_major)
+    bizhawk_minor = tonumber(bizhawk_minor)
+    if bizhawk_major == 2 and bizhawk_minor <= 9
+    then
+        print("We only support Bizhawk Version 2.10 and newer. Please download Bizhawk version 2.10")
         return
     end
     print("Banjo-Tooie Archipelago Version " .. BT_VERSION)
