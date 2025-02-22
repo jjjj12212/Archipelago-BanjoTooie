@@ -1,11 +1,11 @@
-/data
+/data/*
 !/data/lua/banjo_tooie_connector.lua
 /docs
 /test
 /typings
 /utilities
 /WebHostLib
-/worlds
+/worlds/*
 !/worlds/banjo_tooie
 /worlds_disabled
 /_speedups.*
