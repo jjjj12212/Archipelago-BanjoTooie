@@ -282,6 +282,11 @@ class BanjoTooieWorld(World):
 
         if item.btid == self.starting_attack:
             return None
+        else:   # Let's check if it's progressive starting move
+            attack_name = self.item_id_to_name[self.starting_attack]
+            if attack_name in progressive_ability_breakdown.keys() and \
+                  name == progressive_ability_breakdown[attack_name]:
+                return None
 
         # START OF PROGRESSIVE MOVES
 
