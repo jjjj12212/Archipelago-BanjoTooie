@@ -91,6 +91,7 @@ class BanjoTooieWorld(World):
         self.jiggy_counter: int = 0
         self.doubloon_counter: int = 0
         self.notecounter: int = 0
+        self.traps_in_pool: int = 0
         self.slot_data = []
         self.randomize_worlds = {}
         self.randomize_order = {}
@@ -161,6 +162,7 @@ class BanjoTooieWorld(World):
 
         if banjoItem.type == "trap":
             item_classification = ItemClassification.trap
+            self.traps_in_pool += 1
 
         created_item = BanjoTooieItem(self.item_id_to_name[banjoItem.btid], item_classification, banjoItem.btid, self.player)
         return created_item
@@ -174,20 +176,6 @@ class BanjoTooieWorld(World):
         itempool = []
 
         # START OF ITEMS CUSTOM LOGIC
-
-        if self.options.nestsanity:
-            removed_enests = 0
-            removed_fnests = 0
-
-            if self.options.traps and self.options.traps_nests_ratio > 0:
-                total_nests = all_item_table[itemName.ENEST].qty + all_item_table[itemName.FNEST].qty
-
-                removed_nests = int(total_nests * self.options.traps_nests_ratio / 100)
-                removed_enests = int(all_item_table[itemName.ENEST].qty * self.options.traps_nests_ratio / 100)
-                removed_fnests = removed_nests - removed_enests
-
-            itempool += [self.create_item(itemName.ENEST) for i in range(all_item_table[itemName.ENEST].qty - removed_enests)]
-            itempool += [self.create_item(itemName.FNEST) for i in range(all_item_table[itemName.FNEST].qty - removed_fnests)]
 
         if self.options.victory_condition == VictoryCondition.option_token_hunt:
             itempool += [self.create_item(itemName.MUMBOTOKEN) for i in range(15)]
@@ -577,22 +565,30 @@ class BanjoTooieWorld(World):
             self.get_location(locationName.JINJOGI3).place_locked_item(item)
 
     def get_filler_item_name(self) -> str:
-        if self.options.traps:
-            return self.random.choices([itemName.GNEST, itemName.TTRAP, itemName.STRAP, itemName.TRTRAP, itemName.SQTRAP, itemName.TITRAP], weights = [
-                self.options.golden_eggs_weight if self.options.nestsanity else 0,
-                self.options.trip_trap_weight,
-                self.options.slip_trap_weight,
-                self.options.transform_trap_weight,
-                self.options.squish_trap_weight,
-                self.options.tip_trap_weight,
-            ], k = 1)[0]
-        elif self.options.nestsanity:
-            return self.random.choices([itemName.ENEST, itemName.FNEST], weights = [
-                all_item_table[itemName.ENEST].qty,
-                all_item_table[itemName.FNEST].qty,
-            ])[0]
+        trap_weights = [
+            (itemName.GNEST, self.options.golden_eggs_weight),
+            (itemName.TTRAP, self.options.trip_trap_weight),
+            (itemName.STRAP, self.options.slip_trap_weight),
+            (itemName.TRTRAP, self.options.transform_trap_weight),
+            (itemName.SQTRAP, self.options.squish_trap_weight),
+            (itemName.TITRAP, self.options.tip_trap_weight),
+        ]
+        filler_weights = [
+            (itemName.ENEST, self.options.egg_nests_weight),
+            (itemName.FNEST, self.options.feather_nests_weight),
+            # Intentionally leaving NONE as last;
+            # because self.random.choices might always choose last if all weights are 0
+            (itemName.NONE, self.options.big_o_pants_weight)
+        ]
+
+        if self.traps_in_pool < self.options.max_traps:
+            weights = trap_weights + filler_weights
         else:
-            return itemName.NONE
+            weights = filler_weights
+
+        names, actual_weights = zip(*weights)
+
+        return self.random.choices(names, actual_weights, k=1)[0]
 
     def banjo_pre_fills(self, itemNameOrGroup: str, group: str, useGroup: bool ) -> None:
         if useGroup:
