@@ -4,6 +4,12 @@ from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, Intende
 from . import BanjoTooieTestBase
 
 class TestClefs(BanjoTooieTestBase):
+    options = {
+        # Makes it simpler to count filler items
+        "feather_nests_weight": 0,
+        "egg_nests_weight": 0,
+        "big_o_pants_weight": 100,
+    }
     def test_clef_count(self) -> None:
         item_pool_names = [item.name for item in self.multiworld.itempool]
         assert item_pool_names.count(itemName.BASS) == self.world.options.bass_clef_amount
@@ -19,6 +25,7 @@ class TestClefs(BanjoTooieTestBase):
 
 class TestMinClefs(TestClefs):
     options = {
+        **TestClefs.options,
         "randomize_notes": RandomizeNotes.option_true,
         "bass_clef_amount": 0,
         "extra_trebleclefs_count": 0
@@ -26,6 +33,7 @@ class TestMinClefs(TestClefs):
 
 class TestNoBassSomeTrebles(TestClefs):
     options = {
+        **TestClefs.options,
         "randomize_notes": RandomizeNotes.option_true,
         "bass_clef_amount": 0,
         "extra_trebleclefs_count": 15
@@ -33,6 +41,7 @@ class TestNoBassSomeTrebles(TestClefs):
 
 class TestSomeBassNoTrebles(TestClefs):
     options = {
+        **TestClefs.options,
         "randomize_notes": RandomizeNotes.option_true,
         "bass_clef_amount": 10,
         "extra_trebleclefs_count": 0
@@ -40,6 +49,7 @@ class TestSomeBassNoTrebles(TestClefs):
 
 class TestSomeOfEach(TestClefs):
     options = {
+        **TestClefs.options,
         "randomize_notes": RandomizeNotes.option_true,
         "bass_clef_amount": 15,
         "extra_trebleclefs_count": 10
@@ -47,6 +57,7 @@ class TestSomeOfEach(TestClefs):
 
 class TestMaxClefs(TestClefs):
     options = {
+        **TestClefs.options,
         "randomize_notes": RandomizeNotes.option_true,
         "bass_clef_amount": BassClefNotes.range_end,
         "extra_trebleclefs_count": TrebleclefNotes.range_end

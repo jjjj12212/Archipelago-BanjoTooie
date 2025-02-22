@@ -7,7 +7,6 @@ from . import BanjoTooieTestBase
 class TestNestsanityEnabled(BanjoTooieTestBase):
     options = {
         "nestsanity": EnableNestsanity.option_true,
-        "traps_nests_ratio": 0
     }
     tested_locations = []
     for locations in NEST_REGIONS.values():
@@ -16,7 +15,7 @@ class TestNestsanityEnabled(BanjoTooieTestBase):
     def test_item_pool(self) -> None:
         item_pool_names = [item.name for item in self.multiworld.itempool]
 
-        # Because with nestsanity on, enests and fnests are used as filler items
+        # Because enests and fnests are used as filler items
         assert item_pool_names.count(itemName.ENEST) + item_pool_names.count(itemName.FNEST)\
             >= len(self.tested_locations)
 
@@ -29,7 +28,9 @@ class TestNestsanityEnabled(BanjoTooieTestBase):
 class TestNestsanityDisabled(BanjoTooieTestBase):
     options = {
         "nestsanity": EnableNestsanity.option_false,
-        "traps_nests_ratio": 0
+        "egg_nests_weight": 0,
+        "feather_nests_weight": 0,
+        "big_o_pants_weight": 100,
     }
     tested_locations = []
     for locations in NEST_REGIONS.values():
