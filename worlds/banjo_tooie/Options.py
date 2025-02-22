@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import Toggle, DeathLink, PerGameCommonOptions, Choice, DefaultOnToggle, Range, StartInventoryPool, FreeText
+from Options import Toggle, DeathLink, PerGameCommonOptions, Choice, DefaultOnToggle, Range, NamedRange, StartInventoryPool, FreeText
 
 class RandomizeBTMoveList(DefaultOnToggle):
     """Jamjars' & Roysten's Movelist are randomized."""
@@ -245,9 +245,14 @@ class TrebleclefNotes(Range):
     range_end = 21
     default = 0
 
-class Traps(Toggle):
-    """Swaps out the Big-O-Pants with Traps!"""
-    display_name = "Traps"
+class MaxTraps(NamedRange):
+    """The maximum possible amount of traps that replace fillers in the pool.
+    Notice that the real number of traps is limited by the number of fillers in the pool, which varies depending on your settings."""
+    display_name = "Max Traps"
+    range_start = 0
+    range_end = 100
+    default = 0
+    special_range_names = {"none": 0, "light": 15, "moderate": 30, "mayhem": 70}
 
 class RandomizeWorldDinoRoar(Toggle):
     """Baby T-Rex's Roar is lost across the MultiWorld. Other players need to help him learn to ROAR!"""
@@ -257,67 +262,82 @@ class EnableNestsanity(Toggle):
     """Eggs and feather nests give checks when you collect them for the first time. They behave as regular egg nests after they have been collected."""
     display_name = "Nestsanity"
 
-class TrapsToNestRatio(Range):
-    """Select a percentage of feather and egg nests items to be replaced with trap items.
-    Requires Traps and Nestsanity to have an effect."""
-    display_name = "Traps to Nests Ratio"
+# -- START OF FILLERS WEIGHTS -------------------------------------------------
+class EggNestsWeight(Range):
+    """The weight of Egg nests in the filler pool."""
+    display_name = "Egg Nests Weight"
+    range_start = 0
+    range_end = 100
+    default = 100
+
+class FeatherNestsWeight(Range):
+    """The weight of Egg nests in the filler pool."""
+    display_name = "Feather Nests Weight"
+    range_start = 0
+    range_end = 100
+    default = 50
+
+class BigOPantsWeight(Range):
+    """The weight of Big-O-Pants (nothing) in the filler pool."""
+    display_name = "Big-O-Pants Weight"
     range_start = 0
     range_end = 100
     default = 0
 
 class GoldenEggsWeight(Range):
-    """The weight of Golden Eggs in the trap pool.
+    """The weight of Golden Eggs in the filler pool.
     You are forced to use Golden Eggs for a minute upon receiving the trap.
-    Requires Traps and Nestsanity to have an effect"""
+    Requires Max Traps to be nonzero to have an effect"""
     display_name = "Golden Eggs Weight"
     range_start = 0
     range_end = 100
-    default = 40
+    default = 25
 
 class TripTrapWeight(Range):
-    """The weight of Trip Traps in the trap pool.
+    """The weight of Trip Traps in the filler pool.
     You trip upon receiving the trap.
-    Requires Traps to have an effect"""
+    Requires Max Traps to be nonzero to have an effect"""
     display_name = "Trip Trap Weight"
     range_start = 0
     range_end = 100
-    default = 40
+    default = 30
 
 class SlipTrapWeight(Range):
-    """The weight of Slip Traps in the trap pool.
+    """The weight of Slip Traps in the filler pool.
     You slip upon receiving the trap.
-    Requires Traps to have an effect"""
+    Requires Max Traps to be nonzero to have an effect"""
     display_name = "Slip Trap Weight"
     range_start = 0
     range_end = 100
-    default = 40
+    default = 30
 
 class TransformTrapWeight(Range):
-    """The weight of Transform Traps in the trap pool.^
+    """The weight of Transform Traps in the filler pool.
     A transformation animation upon receiving the trap.
-    Requires Traps to have an effect"""
+    Requires Max Traps to be nonzero to have an effect"""
     display_name = "Transform Trap Weight"
     range_start = 0
     range_end = 100
-    default = 40
+    default = 30
 
 class SquishTrapWeight(Range):
-    """The weight of Squish Traps in the trap pool.
+    """The weight of Squish Traps in the filler pool.
     Stomponadon attempts to squish you upon receiving the trap.
-    Requires Traps to have an effect"""
+    Requires Max Traps to be nonzero to have an effect"""
     display_name = "Squish Trap Weight"
     range_start = 0
     range_end = 100
-    default = 20
+    default = 15
 
 class TipTrapWeight(Range):
-    """The weight of Tip Traps in the trap pool.
+    """The weight of Tip Traps in the filler pool.
     You receive a random textbox upon receiving the trap.
-    Requires Traps to have an effect"""
+    Requires Max Traps to be nonzero to have an effect"""
     display_name = "Tip Trap Weight"
     range_start = 0
     range_end = 100
-    default = 40
+    default = 20
+# -- END OF FILLERS WEIGHTS ---------------------------------------------------
 
 class KingJingalingHasJiggy(DefaultOnToggle):
     """King Jingaling will always have a Jiggy for you."""
@@ -557,15 +577,16 @@ class BanjoTooieOptions(PerGameCommonOptions):
     nestsanity: EnableNestsanity
     randomize_signposts: RandomizeSignposts
 
-    traps: Traps
-    traps_nests_ratio: TrapsToNestRatio
-
+    egg_nests_weight: EggNestsWeight
+    feather_nests_weight: FeatherNestsWeight
+    big_o_pants_weight: BigOPantsWeight
     golden_eggs_weight: GoldenEggsWeight
     trip_trap_weight: TripTrapWeight
     slip_trap_weight: SlipTrapWeight
     transform_trap_weight: TransformTrapWeight
     squish_trap_weight: SquishTrapWeight
     tip_trap_weight: TipTrapWeight
+    max_traps: MaxTraps
 
     randomize_stations: RandomizeTrainStationSwitches
     randomize_chuffy: RandomizeChuffyTrain
