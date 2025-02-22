@@ -252,7 +252,7 @@ class MaxTraps(NamedRange):
     range_start = 0
     range_end = 100
     default = 0
-    special_range_names = {"none": 0, "light": 15, "moderate": 30, "mayhem": 70}
+    special_range_names = {"none": 0, "light": 15, "moderate": 30, "mayhem": 70, "unlimited": 99999}
 
 class RandomizeWorldDinoRoar(Toggle):
     """Baby T-Rex's Roar is lost across the MultiWorld. Other players need to help him learn to ROAR!"""

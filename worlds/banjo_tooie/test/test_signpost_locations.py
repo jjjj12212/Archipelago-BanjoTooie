@@ -7,6 +7,10 @@ from . import BanjoTooieTestBase
 class TestRandomizedSignposts(BanjoTooieTestBase):
     options = {
         "randomize_signposts": RandomizeSignposts.option_true,
+        # Makes it simpler to count filler items
+        "feather_nests_weight": 0,
+        "egg_nests_weight": 0,
+        "big_o_pants_weight": 100,
     }
 
     tested_locations = []
@@ -30,6 +34,10 @@ class TestRandomizedSignposts(BanjoTooieTestBase):
 class TestNonRandomizedSignposts(BanjoTooieTestBase):
     options = {
         "randomize_signposts": RandomizeSignposts.option_false,
+        # Makes it simpler to count filler items
+        "feather_nests_weight": 0,
+        "egg_nests_weight": 0,
+        "big_o_pants_weight": 100,
     }
     tested_locations = []
     for locations in SIGNPOST_REGIONS.values():

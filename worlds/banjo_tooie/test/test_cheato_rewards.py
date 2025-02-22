@@ -34,6 +34,10 @@ class TestRandomizedCheatoRewards(BanjoTooieTestBase):
 class TestVanillaCheatoRewards(BanjoTooieTestBase):
     options = {
         "cheato_rewards": EnableCheatoRewards.option_false,
+        # Makes it simpler to count filler items
+        "feather_nests_weight": 0,
+        "egg_nests_weight": 0,
+        "big_o_pants_weight": 100,
     }
     def test_item_pool(self) -> None:
         item_pool_names = [item.name for item in self.multiworld.itempool]
