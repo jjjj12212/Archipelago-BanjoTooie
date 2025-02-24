@@ -5,6 +5,8 @@
     - You are guaranteed enough to access all checks, plus a reasonable buffer. The rest can be replaced with other filler items.
     - You can also customize how likely these appear by changing the appropriate settings.
     - Yes, you can have a jiggy jamboree if you want (up to 250 jiggies)
+  - Read hints will now be added to Archipelego.
+    - Due to a limitation, only your own locations will be added as hints in AP; your items in other people worlds won't be added.
 
 # 4.2.1
   - randomize BK moves requires either randomize notes, nestanity, or randomize signposts to fix generation issues
