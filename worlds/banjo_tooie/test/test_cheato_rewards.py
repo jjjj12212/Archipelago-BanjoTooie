@@ -9,10 +9,6 @@ class TestRandomizedCheatoRewards(BanjoTooieTestBase):
     options = {
         "cheato_rewards": EnableCheatoRewards.option_true,
     }
-    def test_item_pool(self) -> None:
-        item_pool_names = [item.name for item in self.multiworld.itempool]
-        assert item_pool_names.count(itemName.NONE) ==\
-            0 if self.world.options.randomize_bk_moves == RandomizeBKMoveList.option_all else 16
 
     def test_item_classification(self) -> None:
         items = [item for item in self.multiworld.itempool if item.name == itemName.PAGES]
@@ -34,15 +30,12 @@ class TestRandomizedCheatoRewards(BanjoTooieTestBase):
 class TestVanillaCheatoRewards(BanjoTooieTestBase):
     options = {
         "cheato_rewards": EnableCheatoRewards.option_false,
-        # Makes it simpler to count filler items
-        "feather_nests_weight": 0,
-        "egg_nests_weight": 0,
-        "big_o_pants_weight": 100,
     }
-    def test_item_pool(self) -> None:
-        item_pool_names = [item.name for item in self.multiworld.itempool]
-        assert item_pool_names.count(itemName.NONE) ==\
-            (0 if self.world.options.randomize_bk_moves == RandomizeBKMoveList.option_all else 11)
+
+    def test_item_classification(self) -> None:
+        items = [item for item in self.multiworld.itempool if item.name == itemName.PAGES]
+        for item in items:
+            assert item.classification == ItemClassification.filler
 
     def test_locations(self) -> None:
         location_names = [
@@ -55,12 +48,6 @@ class TestVanillaCheatoRewards(BanjoTooieTestBase):
         world_location_names = [location.name for location in self.world.get_locations()]
         for name in location_names:
             assert not name in world_location_names
-
-    def test_item_classification(self) -> None:
-        items = [item for item in self.multiworld.itempool if item.name == itemName.PAGES]
-        for item in items:
-            assert item.classification == ItemClassification.filler
-
 
 class TestRandomizedCheatoRewardsIntended(TestRandomizedCheatoRewards, IntendedLogic):
     options = {

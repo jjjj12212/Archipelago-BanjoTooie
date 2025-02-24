@@ -7,23 +7,11 @@ from . import BanjoTooieTestBase
 class TestRandomizedSignposts(BanjoTooieTestBase):
     options = {
         "randomize_signposts": RandomizeSignposts.option_true,
-        # Makes it simpler to count filler items
-        "feather_nests_weight": 0,
-        "egg_nests_weight": 0,
-        "big_o_pants_weight": 100,
     }
 
     tested_locations = []
     for locations in SIGNPOST_REGIONS.values():
         tested_locations.extend(locations)
-
-    def test_item_pool(self) -> None:
-        item_pool_names = [item.name for item in self.multiworld.itempool]
-        assert item_pool_names.count(itemName.NONE) == (
-            len(self.tested_locations)
-            if self.world.options.randomize_bk_moves == RandomizeBKMoveList.option_all
-            else len(self.tested_locations) + 16
-        )
 
     def test_locations(self) -> None:
         assert len(self.tested_locations) == 61
@@ -34,22 +22,10 @@ class TestRandomizedSignposts(BanjoTooieTestBase):
 class TestNonRandomizedSignposts(BanjoTooieTestBase):
     options = {
         "randomize_signposts": RandomizeSignposts.option_false,
-        # Makes it simpler to count filler items
-        "feather_nests_weight": 0,
-        "egg_nests_weight": 0,
-        "big_o_pants_weight": 100,
     }
     tested_locations = []
     for locations in SIGNPOST_REGIONS.values():
         tested_locations.extend(locations)
-
-    def test_item_pool(self) -> None:
-        item_pool_names = [item.name for item in self.multiworld.itempool]
-        assert item_pool_names.count(itemName.NONE) == (
-            0
-            if self.world.options.randomize_bk_moves == RandomizeBKMoveList.option_all
-            else 16
-        )
 
     def test_locations(self) -> None:
         assert len(self.tested_locations) == 61

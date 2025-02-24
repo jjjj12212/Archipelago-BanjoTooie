@@ -2,6 +2,7 @@ from ..Regions import NEST_REGIONS
 from ..Names import itemName
 from ..Options import EnableNestsanity
 from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
+from .test_fillers_and_traps import ONLY_BIG_O_PANTS_FILLER
 from . import BanjoTooieTestBase
 
 class TestNestsanityEnabled(BanjoTooieTestBase):
@@ -12,13 +13,6 @@ class TestNestsanityEnabled(BanjoTooieTestBase):
     for locations in NEST_REGIONS.values():
         tested_locations.extend(locations)
 
-    def test_item_pool(self) -> None:
-        item_pool_names = [item.name for item in self.multiworld.itempool]
-
-        # Because enests and fnests are used as filler items
-        assert item_pool_names.count(itemName.ENEST) + item_pool_names.count(itemName.FNEST)\
-            >= len(self.tested_locations)
-
     def test_locations(self) -> None:
         assert len(self.tested_locations) == 473
         world_location_names = [location.name for location in self.world.get_locations()]
@@ -27,10 +21,7 @@ class TestNestsanityEnabled(BanjoTooieTestBase):
 
 class TestNestsanityDisabled(BanjoTooieTestBase):
     options = {
-        "nestsanity": EnableNestsanity.option_false,
-        "egg_nests_weight": 0,
-        "feather_nests_weight": 0,
-        "big_o_pants_weight": 100,
+        **ONLY_BIG_O_PANTS_FILLER
     }
     tested_locations = []
     for locations in NEST_REGIONS.values():
