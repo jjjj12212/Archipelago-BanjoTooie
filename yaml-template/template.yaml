@@ -129,9 +129,12 @@ Banjo-Tooie:
   nestsanity: 'false'            # Every egg nest and feather nest give a check when you collect them for the first time. They behave as normal afterwards.
   randomize_signposts: 'false'   # Signposts as checks
 
-  egg_nests_weight: 100          # 0 - 100; weight of egg nests in the filler pool.
-  feather_nests_weight: 40       # 0 - 100; weight of feather nests in the filler pool.
-  big_o_pants_weight: 10         # 0 - 100; weight of big-o-pants in the filler pool.
+  extra_jiggies_weight: 15       # 0 - 100; weight of extra jiggies in the filler pool. You are guarenteed enough jigges to open all levels. These are extra.
+  extra_notes_weight: 10         # 0 - 100; weight of extra 5 pack notes in the filler pool. Requires randomize_notes. You are guarenteed enough notes to open all jamjars silos. These are extra.
+  extra_doubloons_weight: 10     # 0 - 100; weight of extra doubloons in the filler pool. Requires randomize_doubloons. You are guarenteed the original 30 doubloons. These are extra.
+  egg_nests_weight: 30           # 0 - 100; weight of egg nests in the filler pool.
+  feather_nests_weight: 15       # 0 - 100; weight of feather nests in the filler pool.
+  big_o_pants_weight: 5          # 0 - 100; weight of big-o-pants in the filler pool.
   golden_eggs_weight: 25         # 0 - 100; weight of golden eggs in the filler pool. Requires nonzero max_traps.
   trip_trap_weight: 30           # 0 - 100; weight of trip traps in the filler pool. Requires nonzero max_traps.
   slip_trap_weight: 30           # 0 - 100; weight of slip traps in the filler pool. Requires nonzero max_trap.
@@ -171,6 +174,12 @@ Banjo-Tooie:
   signpost_hints: 0           # 0-61; how many signposts will give you hints
   signpost_move_hint: 0       # 0-61; how many signpost hints from the option above will hint move items
   hint_clarity: 1             # 0 or 1; 0 means what type of item is hinted, 1 means tells you the exact item that is hinted
+
+  # 0 = signpost hints are never added to AP as hints
+  # 1 = hints are added only if the hinted location has a progression item.
+  # 2 = hints are always added.
+  # Requires signpost_hints and hint_clarity. Notice that due to a limitation, only your own locations will be hinted.
+  add_signpost_hints_to_ap: 1
 
   # Change the Character that announces your obtained moves, worlds, etc.
   # The list is massive which will be at the bottom of the file to reference

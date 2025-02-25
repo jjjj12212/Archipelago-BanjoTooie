@@ -1,4 +1,13 @@
 # 4.3
+  - New filler options
+    - We retired the "traps" option in favor of "max_traps". Now you can set a hard limit for how much suffering you want!
+    - We now allow you full customization of how likely each filler or trap item would appear in the filler pool.
+    - Jiggies, 5-Pack Notes and Doubloons can all now appear as filler items!
+      - You are guaranteed enough to access all checks, plus a reasonable buffer. The rest can be replaced with other filler items.
+      - You can also customize how likely these appear by changing the appropriate settings.
+      - Yes, you can have a jiggy jamboree if you want (up to 250 jiggies)
+  - Read hints will now be added to Archipelego.
+    - Due to a limitation, only your own locations will be added as hints in AP; your items in other people worlds won't be added.
   - Logic fixes
     - Plateau stuff: talon trot can be gotten from the Cliff Top Claw Clamber Boots.
     - MT to GGM: Intended logic no longer logically requires the stony.

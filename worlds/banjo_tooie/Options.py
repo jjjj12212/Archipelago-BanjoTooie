@@ -263,26 +263,51 @@ class EnableNestsanity(Toggle):
     display_name = "Nestsanity"
 
 # -- START OF FILLERS WEIGHTS -------------------------------------------------
+
+class ExtraJiggiesWeight(Range):
+    """The weight of Jiggies in the filler pool.
+    You are guarenteed enough jigges to open all levels. These are extra."""
+    display_name = "Extra Jiggies Weight"
+    range_start = 0
+    range_end = 100
+    default = 15
+
+class ExtraNotesWeight(Range):
+    """The weight of 5 pack notes in the filler pool. Only has effect if randomize_notes is on.
+    You are guarenteed enough notes to open all jamjars silos. These are extra."""
+    display_name = "Extra 5 Notes Weight"
+    range_start = 0
+    range_end = 100
+    default = 10
+
+class ExtraDoubloonsWeight(Range):
+    """The weight of extra doubloons in the filler pool. Only has effect if randomize_doubloons is on.
+    You are guarenteed the original 30 doubloons. These are extra."""
+    display_name = "Extra Doubloons Weight"
+    range_start = 0
+    range_end = 100
+    default = 10
+
 class EggNestsWeight(Range):
-    """The weight of Egg nests in the filler pool."""
+    """The weight of Egg nests in the filler pool. The weight is doubled if nestsanity is on."""
     display_name = "Egg Nests Weight"
     range_start = 0
     range_end = 100
-    default = 100
+    default = 30
 
 class FeatherNestsWeight(Range):
-    """The weight of Egg nests in the filler pool."""
+    """The weight of Egg nests in the filler pool. The weight is doubled if nestsanity is on."""
     display_name = "Feather Nests Weight"
     range_start = 0
     range_end = 100
-    default = 50
+    default = 15
 
 class BigOPantsWeight(Range):
     """The weight of Big-O-Pants (nothing) in the filler pool."""
     display_name = "Big-O-Pants Weight"
     range_start = 0
     range_end = 100
-    default = 0
+    default = 5
 
 class GoldenEggsWeight(Range):
     """The weight of Golden Eggs in the filler pool.
@@ -512,17 +537,20 @@ class SignpostMoveHints(Range):
     default = 20
 
 # Soon (tm), once this gets merged: https://github.com/ArchipelagoMW/Archipelago/pull/4317
-# class AddSignpostHintsToArchipelagoHints(Choice):
-#     """Choose if a signpost hint is added to the Archipelago hints upon reading the hint.
-#     Never: signpost hints are never added
-#     Progression: hints are added only if the hinted location has a progression item.
-#     Always: hints are always added.
-#     This option only has an effect if signpost hints are enabled."""
-#     display_name = "Add Signpost Hints to Archipelago Hints"
-#     option_never = 0
-#     option_progression = 1
-#     option_always = 2
-#     default = 2
+# we can add hints for other players locations as well
+class AddSignpostHintsToArchipelagoHints(Choice):
+    """Choose if a signpost hint is added to the Archipelago hints upon reading the hint.
+    Due to a limitation, only your own locations will be added as hints; your items in
+    other people worlds won't be hinted.
+    Never: signpost hints are never added
+    Progression: hints are added only if the hinted location has a progression item.
+    Always: hints are always added.
+    This option only has an effect if signpost hints are enabled."""
+    display_name = "Add Signpost Hints to Archipelago Hints"
+    option_never = 0
+    option_progression = 1
+    option_always = 2
+    default = 1
 
 class HintClarity(Choice):
     """Choose how clear hints are.
@@ -577,6 +605,9 @@ class BanjoTooieOptions(PerGameCommonOptions):
     nestsanity: EnableNestsanity
     randomize_signposts: RandomizeSignposts
 
+    extra_jiggies_weight: ExtraJiggiesWeight
+    extra_notes_weight: ExtraNotesWeight
+    extra_doubloons_weight: ExtraDoubloonsWeight
     egg_nests_weight: EggNestsWeight
     feather_nests_weight: FeatherNestsWeight
     big_o_pants_weight: BigOPantsWeight
@@ -606,7 +637,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
 
     signpost_hints: SignpostHints
     signpost_move_hints: SignpostMoveHints
-    # add_signpost_hints_to_ap: AddSignpostHintsToArchipelagoHints
+    add_signpost_hints_to_ap: AddSignpostHintsToArchipelagoHints
     hint_clarity: HintClarity
 
     dialog_character:DialogCharacters # Keep this at the bottom so that the huge list stays at the bottom of the yaml.
