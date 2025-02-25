@@ -1,7 +1,7 @@
 from math import ceil, floor
 import random
 from multiprocessing import Process
-from Options import DeathLink
+from Options import DeathLink, OptionError
 import settings
 import typing
 from typing import Dict, Any, Optional
@@ -374,30 +374,30 @@ class BanjoTooieWorld(World):
 
     def generate_early(self) -> None:
         if self.options.randomize_worlds and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none and self.options.logic_type == LogicType.option_intended:
-            raise ValueError("Randomize Worlds and Randomize BK Moves is not compatible with Beginner Logic.")
+            raise OptionError("Randomize Worlds and Randomize BK Moves is not compatible with Beginner Logic.")
         if (not self.options.randomize_notes and not self.options.randomize_signposts and not self.options.nestsanity) and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none:
             if self.multiworld.players == 1:
-                raise ValueError("Randomize Notes, signposts or nestsanity is required for Randomize BK Moves.")
+                raise OptionError("Randomize Notes, signposts or nestsanity is required for Randomize BK Moves.")
         if not self.options.randomize_notes and (self.options.extra_trebleclefs_count != 0 and self.options.bass_clef_amount != 0):
-            raise ValueError("Randomize Notes is required to add extra Treble Clefs or Bass Clefs")
+            raise OptionError("Randomize Notes is required to add extra Treble Clefs or Bass Clefs")
         if self.options.progressive_beak_buster and (not self.options.randomize_bk_moves or not self.options.randomize_moves):
-            raise ValueError("You cannot have progressive Beak Buster without randomizing moves and randomizing BK moves")
+            raise OptionError("You cannot have progressive Beak Buster without randomizing moves and randomizing BK moves")
         if self.options.egg_behaviour == EggsBehaviour.option_random_starting_egg and (not self.options.randomize_bk_moves or not self.options.randomize_moves):
-            raise ValueError("You cannot have Randomize Starting Egg without randomizing moves and randomizing BK moves")
+            raise OptionError("You cannot have Randomize Starting Egg without randomizing moves and randomizing BK moves")
         elif self.options.egg_behaviour == EggsBehaviour.option_progressive_eggs and not self.options.randomize_moves:
-            raise ValueError("You cannot have progressive Eggs without randomizing moves")
+            raise OptionError("You cannot have progressive Eggs without randomizing moves")
         if self.options.progressive_shoes and not (self.options.randomize_bk_moves and self.options.randomize_moves and (self.options.randomize_signposts or self.options.nestsanity)):
-            raise ValueError("You cannot have progressive Shoes without randomizing moves, randomizing BK moves and enabling either nestanity or randomize signpost")
+            raise OptionError("You cannot have progressive Shoes without randomizing moves, randomizing BK moves and enabling either nestanity or randomize signpost")
         if self.options.progressive_water_training != ProgressiveWaterTraining.option_none and (self.options.randomize_bk_moves == RandomizeBKMoveList.option_none or not self.options.randomize_moves):
-            raise ValueError("You cannot have progressive Water Training without randomizing moves and randomizing BK moves")
+            raise OptionError("You cannot have progressive Water Training without randomizing moves and randomizing BK moves")
         if self.options.progressive_flight and (not self.options.randomize_bk_moves or not self.options.randomize_moves):
-            raise ValueError("You cannot have progressive flight without randomizing moves and randomizing BK moves")
+            raise OptionError("You cannot have progressive flight without randomizing moves and randomizing BK moves")
         if self.options.progressive_egg_aiming != ProgressiveEggAim.option_none and (not self.options.randomize_bk_moves or not self.options.randomize_moves):
-            raise ValueError("You cannot have progressive egg aiming without randomizing moves and randomizing BK moves")
+            raise OptionError("You cannot have progressive egg aiming without randomizing moves and randomizing BK moves")
         if self.options.progressive_bash_attack and (not self.options.randomize_stop_n_swap or not self.options.randomize_moves):
-            raise ValueError("You cannot have progressive bash attack without randomizing Stop N Swap and randomizing BK moves")
+            raise OptionError("You cannot have progressive bash attack without randomizing Stop N Swap and randomizing BK moves")
         if not self.options.randomize_moves and self.options.jamjars_silo_costs != JamjarsSiloCosts.option_vanilla:
-            raise ValueError("You cannot change the silo costs without randomizing Jamjars' moves.")
+            raise OptionError("You cannot change the silo costs without randomizing Jamjars' moves.")
         if not self.options.open_hag1 and self.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
             self.options.open_hag1.value = True
 

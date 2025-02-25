@@ -27,6 +27,7 @@
     - CCL Sack Race Note, Cheese Wedge Exit Note: Can be gotten with glide + claw clamber boots
     - CCL Green Pool Stuff: Jumping from the outside to skip dive is now in easy tricks.
     - CCL Indoors Glowbo: can be gotten with Shack Pack
+  - The generation now throws an OptionError when a yaml has incompatible options.
 
 # 4.2.1
   - randomize BK moves requires either randomize notes, nestanity, or randomize signposts to fix generation issues
