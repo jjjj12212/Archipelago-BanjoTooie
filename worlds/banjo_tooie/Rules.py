@@ -738,7 +738,7 @@ class BanjoTooieRules:
 
             locationName.NESTGM21:    lambda state: self.GM_boulders(state),
 
-            locationName.NESTGM26:    lambda state: self.notes_prospector(state),
+            locationName.NESTGM26:    lambda state: self.notes_prospector_hard(state),
 
             locationName.NESTGM27:    lambda state: self.nest_ggm_mumbo(state),
             locationName.NESTGM28:    lambda state: self.nest_ggm_mumbo(state),
@@ -8210,7 +8210,7 @@ class BanjoTooieRules:
             logic = state.has(itemName.HUMBAWW, self.player) and self.flap_flip(state) and self.grip_grab(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = state.has(itemName.HUMBAWW, self.player) and self.flap_flip(state)\
-                ((self.flap_flip(state) and self.grip_grab(state)) \
+                 and ((self.flap_flip(state) and self.grip_grab(state)) \
                  or (self.climb(state) and self.veryLongJump(state)) or self.leg_spring(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = state.has(itemName.HUMBAWW, self.player) and \
