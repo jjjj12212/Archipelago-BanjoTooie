@@ -9,7 +9,11 @@
 -- local camera_pointer_pointer = 0x127728;
 -- local global_flag_pointer = 0x12C780;
 
-local socket = require("socket")
+local socket_loaded, socket = pcall(require, "socket")
+if not socket_loaded then
+  print("Please place this file in the 'Archipelago/data/lua' directory. Use the Archipelago Launcher's 'Browse Files' button to find the Archipelago directory.")
+  return
+end
 local json = require('json')
 local math = require('math')
 require('common')
@@ -6664,7 +6668,7 @@ local station_names = {
     [1230790] = "Train Station in Grunty Industries",
     [1230792] = "Train Station on the Lava Side of Hailfire Peaks",
     [1230793] = "Train Station on the Icy Side of Hailfire Peaks",
-    [1230795] = "Train Station in Witchy World",
+    [1230795] = "Train Station in Witchyworld",
 }
 
 local magic_names = {
@@ -6874,8 +6878,8 @@ function get_item_message_text(item_id, item, player)
         or (item_id == 1230800 or item_id == 1230802) -- Stop'n'Swap Moves
     then
         return own
-            and string.format("You can now use the %s.", item)
-            or string.format("%s taught you how to use the %s.", player, item)
+            and string.format("You can now use %s.", item)
+            or string.format("%s taught you how to use %s.", player, item)
     elseif 1230944 <= item_id and item_id <= 1230952 -- Worlds
     then
         return own
@@ -6971,9 +6975,12 @@ function get_item_message_char(item_id)
         elseif item_id == 1230949 or item_id == 1230790 -- Grunty Industries
         then
             return 103 -- Weldar
-        elseif item_id == 1230950 or item_id == 1230792 or item_id == 1230793 -- Hailfire Peaks
+        elseif item_id == 1230950 or item_id == 1230793 -- Hailfire Peaks
         then
             return 65 -- Chilly Willy
+        elseif item_id == 1230792
+        then
+            return 66
         elseif item_id == 1230951 -- Cloud Cuckooland
         then
             return 27 -- Canary Mary
