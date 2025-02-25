@@ -7128,13 +7128,13 @@ class BanjoTooieRules:
     def ggm_to_ww(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.backdoors_enabled(state) and self.small_elevation(state) and state.has(itemName.HUMBAGM, self.player)
+            logic = self.backdoors_enabled(state) and self.small_elevation(state) and self.humbaGGM(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.backdoors_enabled(state) and self.small_elevation(state) and state.has(itemName.HUMBAGM, self.player)
+            logic = self.backdoors_enabled(state) and self.small_elevation(state) and self.humbaGGM(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.backdoors_enabled(state) and self.small_elevation(state) and state.has(itemName.HUMBAGM, self.player)
+            logic = self.backdoors_enabled(state) and self.small_elevation(state) and self.humbaGGM(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = (self.clockwork_eggs(state) or self.backdoors_enabled(state)) and self.small_elevation(state) and state.has(itemName.HUMBAGM, self.player)
+            logic = (self.clockwork_eggs(state) or self.backdoors_enabled(state)) and self.small_elevation(state) and self.humbaGGM(state)
         return logic
 
     def ww_to_fuel_depot(self, state: CollectionState) -> bool:
