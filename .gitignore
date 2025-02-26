@@ -26,3 +26,7 @@ __pycache__
 /.github
 /.run
 /.vscode
+
+host.yaml
+/Players
+/logs
