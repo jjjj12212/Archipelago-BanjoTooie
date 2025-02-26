@@ -8,6 +8,7 @@
       - Yes, you can have a jiggy jamboree if you want (up to 250 jiggies)
   - Read hints will now be added to Archipelego.
     - Due to a limitation, only your own locations will be added as hints in AP; your items in other people worlds won't be added.
+  - Fixed a bug where some regions can be logically inaccessible despite having the required items to reach them.
   - Logic fixes
     - Plateau stuff: talon trot can be gotten from the Cliff Top Claw Clamber Boots.
     - MT to GGM: Intended logic no longer logically requires the stony.
