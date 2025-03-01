@@ -1,4 +1,5 @@
 # 4.3
+  - You are now required to use Bizhawk 2.10. 2.9.1 and lower are not supported.
   - New filler options
     - We retired the "traps" option in favor of "max_traps". Now you can set a hard limit for how much suffering you want!
     - We now allow you full customization of how likely each filler or trap item would appear in the filler pool.
