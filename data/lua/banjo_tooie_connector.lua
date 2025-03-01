@@ -19,7 +19,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V4.2"
+local BT_VERSION = "V4.3"
 local PLAYER = ""
 local SEED = 0
 

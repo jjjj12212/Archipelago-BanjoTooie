@@ -29,6 +29,9 @@
     - CCL Green Pool Stuff: Jumping from the outside to skip dive is now in easy tricks.
     - CCL Indoors Glowbo: can be gotten with Shack Pack
   - The generation now throws an OptionError when a yaml has incompatible options.
+  - Lots of Test fixes (development)
+  - Should now be compatible with other AP games that uses get_all_state()
+  - changed Dialog messages when receiving your own items (normanhenges)
 
 # 4.2.1
   - randomize BK moves requires either randomize notes, nestanity, or randomize signposts to fix generation issues
