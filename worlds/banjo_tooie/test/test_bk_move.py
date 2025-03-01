@@ -1,11 +1,11 @@
-from .Options import LogicType, RandomizeBKMoveList
-from .test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
+from ..Options import LogicType, RandomizeBKMoveList, RandomizeNotes
 from . import BanjoTooieTestBase
 from .. import all_group_table
 
 class BKMovesAll(BanjoTooieTestBase):
     options = {
-        "randomize_bk_moves": RandomizeBKMoveList.option_all
+        "randomize_bk_moves": RandomizeBKMoveList.option_all,
+        "randomize_notes": RandomizeNotes(True)
     }
     def test_item_pool(self) -> None:
         bk_moves_count = len(all_group_table["bk_moves"])
@@ -22,7 +22,8 @@ class BKMovesAll(BanjoTooieTestBase):
 
 class BKMovesMcJiggy(BanjoTooieTestBase):
     options = {
-        "randomize_bk_moves": RandomizeBKMoveList.option_mcjiggy_special
+        "randomize_bk_moves": RandomizeBKMoveList.option_mcjiggy_special,
+        "randomize_notes": RandomizeNotes(True)
     }
     def test_item_pool(self) -> None:
         bk_moves_count = len(all_group_table["bk_moves"])

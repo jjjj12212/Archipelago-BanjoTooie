@@ -1,5 +1,5 @@
-from .Options import VictoryCondition
-from .test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
+from ..Options import BossHuntLength, JinjoFamilyRescueLength, MinigameHuntLength, VictoryCondition
+from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 from ..Names import locationName, itemName, regionName
 from .. import all_item_table, all_group_table
@@ -30,7 +30,7 @@ class TokenTest(BanjoTooieTestBase):
 
 class TestVictoryHAG1(TokenTest):
     options = {
-        'victory_condition': VictoryCondition.option_hag1,
+        "victory_condition": VictoryCondition.option_hag1,
     }
     mumbo_token_location_group = {
         locationName.MUMBOTKNGAME1,
@@ -49,24 +49,24 @@ class TestVictoryHAG1Intended(TestVictoryHAG1, IntendedLogic):
 class TestVictoryHAG1EasyTricks(TestVictoryHAG1, EasyTricksLogic):
     options = {
         **TestVictoryHAG1.options,
-        **IntendedLogic.options
+        **EasyTricksLogic.options
     }
 
-class TestVictoryHAG1Intended(TestVictoryHAG1, HardTricksLogic):
+class TestVictoryHAG1HardTricks(TestVictoryHAG1, HardTricksLogic):
     options = {
         **TestVictoryHAG1.options,
-        **IntendedLogic.options
+        **HardTricksLogic.options
     }
 
-class TestVictoryHAG1Intended(TestVictoryHAG1, GlitchesLogic):
+class TestVictoryHAG1Glitches(TestVictoryHAG1, GlitchesLogic):
     options = {
         **TestVictoryHAG1.options,
-        **IntendedLogic.options
+        **GlitchesLogic.options
     }
 
 class TestVictoryMinigames(TokenTest):
     options = {
-        'victory_condition': VictoryCondition.option_minigame_hunt
+        "victory_condition": VictoryCondition.option_minigame_hunt
     }
     mumbo_token_location_group = {
         locationName.MUMBOTKNGAME1,
@@ -86,6 +86,18 @@ class TestVictoryMinigames(TokenTest):
         locationName.MUMBOTKNGAME15
     }
 
+class TestVictoryMinigamesShort(TestVictoryMinigames):
+    options = {
+        **TestVictoryMinigames.options,
+        "minigame_hunt_length": MinigameHuntLength.range_start
+    }
+
+class TestVictoryMinigamesLong(TestVictoryMinigames):
+    options = {
+        **TestVictoryMinigames.options,
+        "minigame_hunt_length": MinigameHuntLength.range_end
+    }
+
 class TestVictoryMinigamesIntended(TestVictoryMinigames, IntendedLogic):
     options = {
         **TestVictoryMinigames.options,
@@ -95,24 +107,73 @@ class TestVictoryMinigamesIntended(TestVictoryMinigames, IntendedLogic):
 class TestVictoryMinigamesEasyTricks(TestVictoryMinigames, EasyTricksLogic):
     options = {
         **TestVictoryMinigames.options,
+        **EasyTricksLogic.options
+    }
+
+class TestVictoryMinigamesHardTricks(TestVictoryMinigames, HardTricksLogic):
+    options = {
+        **TestVictoryMinigames.options,
+        **HardTricksLogic.options
+    }
+
+class TestVictoryMinigamesGlitches(TestVictoryMinigames, GlitchesLogic):
+    options = {
+        **TestVictoryMinigames.options,
+        **GlitchesLogic.options
+    }
+
+class TestVictoryMinigamesShortIntended(TestVictoryMinigamesShort, IntendedLogic):
+    options = {
+        **TestVictoryMinigamesShort.options,
         **IntendedLogic.options
     }
 
-class TestVictoryMinigamesIntended(TestVictoryMinigames, HardTricksLogic):
+class TestVictoryMinigamesShortEasyTricks(TestVictoryMinigamesShort, EasyTricksLogic):
     options = {
-        **TestVictoryMinigames.options,
+        **TestVictoryMinigamesShort.options,
+        **EasyTricksLogic.options
+    }
+
+class TestVictoryMinigamesShortHardTricks(TestVictoryMinigamesShort, HardTricksLogic):
+    options = {
+        **TestVictoryMinigamesShort.options,
+        **HardTricksLogic.options
+    }
+
+class TestVictoryMinigamesShortGlitches(TestVictoryMinigamesShort, GlitchesLogic):
+    options = {
+        **TestVictoryMinigamesShort.options,
+        **GlitchesLogic.options
+    }
+
+class TestVictoryMinigamesLongIntended(TestVictoryMinigamesLong, IntendedLogic):
+    options = {
+        **TestVictoryMinigamesLong.options,
         **IntendedLogic.options
     }
 
-class TestVictoryMinigamesIntended(TestVictoryMinigames, GlitchesLogic):
+class TestVictoryMinigamesLongEasyTricks(TestVictoryMinigamesLong, EasyTricksLogic):
     options = {
-        **TestVictoryMinigames.options,
-        **IntendedLogic.options
+        **TestVictoryMinigamesLong.options,
+        **EasyTricksLogic.options
     }
+
+class TestVictoryMinigamesLongHardTricks(TestVictoryMinigamesLong, HardTricksLogic):
+    options = {
+        **TestVictoryMinigamesLong.options,
+        **HardTricksLogic.options
+    }
+
+class TestVictoryMinigamesLongGlitches(TestVictoryMinigamesLong, GlitchesLogic):
+    options = {
+        **TestVictoryMinigamesLong.options,
+        **GlitchesLogic.options
+    }
+
 
 class TestVictoryBosses(TokenTest):
     options = {
-        'victory_condition': VictoryCondition.option_boss_hunt
+        "victory_condition": VictoryCondition.option_boss_hunt
     }
     mumbo_token_location_group = {
         locationName.MUMBOTKNBOSS1,
@@ -125,6 +186,18 @@ class TestVictoryBosses(TokenTest):
         locationName.MUMBOTKNBOSS8
     }
 
+class TestVictoryBossesShort(TestVictoryBosses):
+    options = {
+        **TestVictoryBosses.options,
+        "boss_hunt_length": BossHuntLength.range_start
+    }
+
+class TestVictoryBossesLong(TestVictoryBosses):
+    options = {
+        **TestVictoryBosses.options,
+        "boss_hunt_length": BossHuntLength.range_end
+    }
+
 class TestVictoryBossesIntended(TestVictoryBosses, IntendedLogic):
     options = {
         **TestVictoryBosses.options,
@@ -134,25 +207,73 @@ class TestVictoryBossesIntended(TestVictoryBosses, IntendedLogic):
 class TestVictoryBossesEasyTricks(TestVictoryBosses, EasyTricksLogic):
     options = {
         **TestVictoryBosses.options,
+        **EasyTricksLogic.options
+    }
+
+class TestVictoryBossesHardTricks(TestVictoryBosses, HardTricksLogic):
+    options = {
+        **TestVictoryBosses.options,
+        **HardTricksLogic.options
+    }
+
+class TestVictoryBossesGlitches(TestVictoryBosses, GlitchesLogic):
+    options = {
+        **TestVictoryBosses.options,
+        **GlitchesLogic.options
+    }
+
+class TestVictoryBossesShortIntended(TestVictoryBossesShort, IntendedLogic):
+    options = {
+        **TestVictoryBossesShort.options,
         **IntendedLogic.options
     }
 
-class TestVictoryBossesIntended(TestVictoryBosses, HardTricksLogic):
+class TestVictoryBossesShortEasyTricks(TestVictoryBossesShort, EasyTricksLogic):
     options = {
-        **TestVictoryBosses.options,
+        **TestVictoryBossesShort.options,
+        **EasyTricksLogic.options
+    }
+
+class TestVictoryBossesShortHardTricks(TestVictoryBossesShort, HardTricksLogic):
+    options = {
+        **TestVictoryBossesShort.options,
+        **HardTricksLogic.options
+    }
+
+class TestVictoryBossesShortGlitches(TestVictoryBossesShort, GlitchesLogic):
+    options = {
+        **TestVictoryBossesShort.options,
+        **GlitchesLogic.options
+    }
+
+class TestVictoryBossesLongIntended(TestVictoryBossesLong, IntendedLogic):
+    options = {
+        **TestVictoryBossesLong.options,
         **IntendedLogic.options
     }
 
-class TestVictoryBossesIntended(TestVictoryBosses, GlitchesLogic):
+class TestVictoryBossesLongEasyTricks(TestVictoryBossesLong, EasyTricksLogic):
     options = {
-        **TestVictoryBosses.options,
-        **IntendedLogic.options
+        **TestVictoryBossesLong.options,
+        **EasyTricksLogic.options
+    }
+
+class TestVictoryBossesLongHardTricks(TestVictoryBossesLong, HardTricksLogic):
+    options = {
+        **TestVictoryBossesLong.options,
+        **HardTricksLogic.options
+    }
+
+class TestVictoryBossesLongGlitches(TestVictoryBossesLong, GlitchesLogic):
+    options = {
+        **TestVictoryBossesLong.options,
+        **GlitchesLogic.options
     }
 
 class TestVictoryJinjos(TokenTest):
     options = {
-        'victory_condition': VictoryCondition.option_jinjo_family_rescue,
-        'logic_type': 0
+        "victory_condition": VictoryCondition.option_jinjo_family_rescue,
+        "logic_type": 0
     }
     mumbo_token_location_group = {
         locationName.MUMBOTKNJINJO1,
@@ -166,6 +287,18 @@ class TestVictoryJinjos(TokenTest):
         locationName.MUMBOTKNJINJO9,
     }
 
+class TestVictoryJinjosShort(TestVictoryJinjos):
+    options = {
+        **TestVictoryJinjos.options,
+        "jinjo_family_rescue_length": JinjoFamilyRescueLength.range_start
+    }
+
+class TestVictoryJinjosLong(TestVictoryJinjos):
+    options = {
+        **TestVictoryJinjos.options,
+        "jinjo_family_rescue_length": JinjoFamilyRescueLength.range_end
+    }
+
 class TestVictoryJinjosIntended(TestVictoryJinjos, IntendedLogic):
     options = {
         **TestVictoryJinjos.options,
@@ -175,24 +308,72 @@ class TestVictoryJinjosIntended(TestVictoryJinjos, IntendedLogic):
 class TestVictoryJinjosEasyTricks(TestVictoryJinjos, EasyTricksLogic):
     options = {
         **TestVictoryJinjos.options,
+        **EasyTricksLogic.options
+    }
+
+class TestVictoryJinjosHardTricks(TestVictoryJinjos, HardTricksLogic):
+    options = {
+        **TestVictoryJinjos.options,
+        **HardTricksLogic.options
+    }
+
+class TestVictoryJinjosGlitches(TestVictoryJinjos, GlitchesLogic):
+    options = {
+        **TestVictoryJinjos.options,
+        **GlitchesLogic.options
+    }
+
+class TestVictoryJinjosShortIntended(TestVictoryJinjosShort, IntendedLogic):
+    options = {
+        **TestVictoryJinjosShort.options,
         **IntendedLogic.options
     }
 
-class TestVictoryJinjosIntended(TestVictoryJinjos, HardTricksLogic):
+class TestVictoryJinjosShortEasyTricks(TestVictoryJinjosShort, EasyTricksLogic):
     options = {
-        **TestVictoryJinjos.options,
+        **TestVictoryJinjosShort.options,
+        **EasyTricksLogic.options
+    }
+
+class TestVictoryJinjosShortHardTricks(TestVictoryJinjosShort, HardTricksLogic):
+    options = {
+        **TestVictoryJinjosShort.options,
+        **HardTricksLogic.options
+    }
+
+class TestVictoryJinjosShortGlitches(TestVictoryJinjosShort, GlitchesLogic):
+    options = {
+        **TestVictoryJinjosShort.options,
+        **GlitchesLogic.options
+    }
+
+class TestVictoryJinjosLongIntended(TestVictoryJinjosLong, IntendedLogic):
+    options = {
+        **TestVictoryJinjosLong.options,
         **IntendedLogic.options
     }
 
-class TestVictoryJinjosIntended(TestVictoryJinjos, GlitchesLogic):
+class TestVictoryJinjosLongEasyTricks(TestVictoryJinjosLong, EasyTricksLogic):
     options = {
-        **TestVictoryJinjos.options,
-        **IntendedLogic.options
+        **TestVictoryJinjosLong.options,
+        **EasyTricksLogic.options
+    }
+
+class TestVictoryJinjosLongHardTricks(TestVictoryJinjosLong, HardTricksLogic):
+    options = {
+        **TestVictoryJinjosLong.options,
+        **HardTricksLogic.options
+    }
+
+class TestVictoryJinjosLongGlitches(TestVictoryJinjosLong, GlitchesLogic):
+    options = {
+        **TestVictoryJinjosLong.options,
+        **GlitchesLogic.options
     }
 
 class TestVictoryWonderwing(TokenTest):
     options = {
-        'victory_condition': VictoryCondition.option_wonderwing_challenge
+        "victory_condition": VictoryCondition.option_wonderwing_challenge
     }
     mumbo_token_location_group = {
         locationName.MUMBOTKNGAME1,
@@ -238,24 +419,24 @@ class TestVictoryWonderwingIntended(TestVictoryWonderwing, IntendedLogic):
 class TestVictoryWonderwingEasyTricks(TestVictoryWonderwing, EasyTricksLogic):
     options = {
         **TestVictoryWonderwing.options,
-        **IntendedLogic.options
+        **EasyTricksLogic.options
     }
 
-class TestVictoryWonderwingIntended(TestVictoryWonderwing, HardTricksLogic):
+class TestVictoryWonderwingHardTricks(TestVictoryWonderwing, HardTricksLogic):
     options = {
         **TestVictoryWonderwing.options,
-        **IntendedLogic.options
+        **HardTricksLogic.options
     }
 
-class TestVictoryWonderwingIntended(TestVictoryWonderwing, GlitchesLogic):
+class TestVictoryWonderwingGlitches(TestVictoryWonderwing, GlitchesLogic):
     options = {
         **TestVictoryWonderwing.options,
-        **IntendedLogic.options
+        **GlitchesLogic.options
     }
 
 class TestVictoryBossesHAG1(TokenTest):
     options = {
-        'victory_condition': VictoryCondition.option_boss_hunt_and_hag1
+        "victory_condition": VictoryCondition.option_boss_hunt_and_hag1
     }
     mumbo_token_location_group = {
         locationName.MUMBOTKNBOSS1,
@@ -268,6 +449,18 @@ class TestVictoryBossesHAG1(TokenTest):
         locationName.MUMBOTKNBOSS8
     }
 
+class TestVictoryBossesHAG1Short(TestVictoryBossesHAG1):
+    options = {
+        **TestVictoryBossesHAG1.options,
+        "boss_hunt_length": BossHuntLength.range_start
+    }
+
+class TestVictoryBossesHAG1Long(TestVictoryBossesHAG1):
+    options = {
+        **TestVictoryBossesHAG1.options,
+        "boss_hunt_length": BossHuntLength.range_end
+    }
+
 class TestVictoryBossesHAG1Intended(TestVictoryBossesHAG1, IntendedLogic):
     options = {
         **TestVictoryBossesHAG1.options,
@@ -277,17 +470,65 @@ class TestVictoryBossesHAG1Intended(TestVictoryBossesHAG1, IntendedLogic):
 class TestVictoryBossesHAG1EasyTricks(TestVictoryBossesHAG1, EasyTricksLogic):
     options = {
         **TestVictoryBossesHAG1.options,
+        **EasyTricksLogic.options
+    }
+
+class TestVictoryBossesHAG1HardTricks(TestVictoryBossesHAG1, HardTricksLogic):
+    options = {
+        **TestVictoryBossesHAG1.options,
+        **HardTricksLogic.options
+    }
+
+class TestVictoryBossesHAG1Glitches(TestVictoryBossesHAG1, GlitchesLogic):
+    options = {
+        **TestVictoryBossesHAG1.options,
+        **GlitchesLogic.options
+    }
+
+class TestVictoryBossesHAG1ShortIntended(TestVictoryBossesHAG1Short, IntendedLogic):
+    options = {
+        **TestVictoryBossesHAG1Short.options,
         **IntendedLogic.options
     }
 
-class TestVictoryBossesHAG1Intended(TestVictoryBossesHAG1, HardTricksLogic):
+class TestVictoryBossesHAG1ShortEasyTricks(TestVictoryBossesHAG1Short, EasyTricksLogic):
     options = {
-        **TestVictoryBossesHAG1.options,
+        **TestVictoryBossesHAG1Short.options,
+        **EasyTricksLogic.options
+    }
+
+class TestVictoryBossesHAG1ShortHardTricks(TestVictoryBossesHAG1Short, HardTricksLogic):
+    options = {
+        **TestVictoryBossesHAG1Short.options,
+        **HardTricksLogic.options
+    }
+
+class TestVictoryBossesHAG1ShortGlitches(TestVictoryBossesHAG1Short, GlitchesLogic):
+    options = {
+        **TestVictoryBossesHAG1Short.options,
+        **GlitchesLogic.options
+    }
+
+class TestVictoryBossesHAG1LongIntended(TestVictoryBossesHAG1Long, IntendedLogic):
+    options = {
+        **TestVictoryBossesHAG1Long.options,
         **IntendedLogic.options
     }
 
-class TestVictoryBossesHAG1Intended(TestVictoryBossesHAG1, GlitchesLogic):
+class TestVictoryBossesHAG1LongEasyTricks(TestVictoryBossesHAG1Long, EasyTricksLogic):
     options = {
-        **TestVictoryBossesHAG1.options,
-        **IntendedLogic.options
+        **TestVictoryBossesHAG1Long.options,
+        **EasyTricksLogic.options
+    }
+
+class TestVictoryBossesHAG1LongHardTricks(TestVictoryBossesHAG1Long, HardTricksLogic):
+    options = {
+        **TestVictoryBossesHAG1Long.options,
+        **HardTricksLogic.options
+    }
+
+class TestVictoryBossesHAG1LongGlitches(TestVictoryBossesHAG1Long, GlitchesLogic):
+    options = {
+        **TestVictoryBossesHAG1Long.options,
+        **GlitchesLogic.options
     }

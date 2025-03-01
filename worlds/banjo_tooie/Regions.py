@@ -1435,6 +1435,10 @@ def connect_regions(self):
                          regionName.GI5: lambda state: rules.F1_to_F5(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.gi_to_chuffy(state)})
 
+    # We explicitly add this indirect connection as F1_to_F5 check has a region check on GI4
+    entrance_GI1_to_GI5 = next(e for e in region_GI1.exits if e.connected_region.name == regionName.GI5)
+    self.multiworld.register_indirect_condition(self.get_region(regionName.GI4), entrance_GI1_to_GI5)
+
     region_GI2 = self.get_region(regionName.GI2)
     region_GI2.add_exits({regionName.GIOB, regionName.GI1, regionName.GI2EM, regionName.GI3},
                         {regionName.GI1: lambda state: rules.F2_to_F1(state),

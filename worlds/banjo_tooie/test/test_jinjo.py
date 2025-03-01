@@ -1,14 +1,16 @@
-from .Items import all_item_table
-from .Options import RandomizeJinjos
-from .test.test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
+from ..Items import all_item_table
+from ..Options import RandomizeJinjos
+from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 from ..Names import locationName, itemName
 
 class JinjosEnabled(BanjoTooieTestBase):
     options = {
-        "randomize_jinjos": RandomizeJinjos.option_true
+        "randomize_jinjos": RandomizeJinjos.option_true,
+        "game_length": "custom",
+        "custom_worlds": "1,1,1,1,1,1,1,1,51", # add jingaling's jiggy
     }
-    def _item_pool(self) -> None:
+    def test_item_pool_jinjos(self) -> None:
         jinjo_count = 0
         jinjo_counter = 0
 
@@ -21,11 +23,17 @@ class JinjosEnabled(BanjoTooieTestBase):
 
         assert jinjo_count == jinjo_counter
 
+    def test_item_pool_jiggies(self) -> None:
+        assert [item.name for item in self.multiworld.itempool if item.advancement].count(itemName.JIGGY) == 50
+        assert [item.name for item in self.multiworld.itempool if item.useful].count(itemName.JIGGY) == 20
+
 class JinjosDisabled(BanjoTooieTestBase):
     options = {
-        "randomize_jinjos": RandomizeJinjos.option_false
+        "randomize_jinjos": RandomizeJinjos.option_false,
+        "game_length": "custom",
+        "custom_worlds": "1,1,1,1,1,1,1,1,51", # add jingaling's jiggy
     }
-    def _disabled_item_pool(self) -> None:
+    def test_disabled_item_pool(self) -> None:
         jinjo_counter = 0
 
         for jinjo in self.world.item_name_groups["Jinjo"]:
@@ -36,14 +44,14 @@ class JinjosDisabled(BanjoTooieTestBase):
 
         assert 0 == jinjo_counter
 
-    def _prefills(self) -> None:
+    def test_prefills(self) -> None:
         jinjos = 0
         placed_correctly = 0
         for name in self.world.item_name_groups["Jinjo"]:
             banjoItem = all_item_table.get(name)
             jinjos += banjoItem.qty
             try:
-                location_item = ''
+                location_item = ""
                 if name == itemName.WJINJO:
                     location_item = self.multiworld.get_location(locationName.JINJOJR5, self.player).item.name
                     if location_item == name:
@@ -193,6 +201,9 @@ class JinjosDisabled(BanjoTooieTestBase):
                 placed_correctly += 0
         assert jinjos == placed_correctly
 
+    def test_item_pool_jiggies(self) -> None:
+        assert [item.name for item in self.multiworld.itempool if item.advancement].count(itemName.JIGGY) == 50
+        assert [item.name for item in self.multiworld.itempool if item.useful].count(itemName.JIGGY) == 11
 
 class TestJinjosEnabledIntended(JinjosEnabled, IntendedLogic):
     options = {

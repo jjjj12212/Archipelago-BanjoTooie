@@ -1,3 +1,43 @@
+# 4.3
+  - You are now required to use Bizhawk 2.10. 2.9.1 and lower are not supported.
+  - New filler options
+    - We retired the "traps" option in favor of "max_traps". Now you can set a hard limit for how much suffering you want!
+    - We now allow you full customization of how likely each filler or trap item would appear in the filler pool.
+    - Jiggies, 5-Pack Notes and Doubloons can all now appear as filler items!
+      - You are guaranteed enough to access all checks, plus a reasonable buffer. The rest can be replaced with other filler items.
+      - You can also customize how likely these appear by changing the appropriate settings.
+      - Yes, you can have a jiggy jamboree if you want (up to 250 jiggies)
+  - Read hints will now be added to Archipelego.
+    - Due to a limitation, only your own locations will be added as hints in AP; your items in other people worlds won't be added.
+  - Fixed a bug where some regions can be logically inaccessible despite having the required items to reach them.
+  - Logic fixes
+    - Plateau stuff: talon trot can be gotten from the Cliff Top Claw Clamber Boots.
+    - MT to GGM: Intended logic no longer logically requires the stony.
+    - Nests Near Bill Drill silo: can be gotten with the detonator
+    - Prospector Notes: for intended logic, added tall jump + grip grab for all the notes except top-right.
+    - Chuffy Signpost: fixed a bug where intended logic was looking for the HFP train station to reach Chuffy from IOH
+    - Saucer of Peril, WW to GGM: Fixed logic to grip grab the wire.
+    - Humba in WW: requires Flap Flip if you climb there as BK.
+    - Mrs Boggy Jiggy: Now requires moves to reach the burger switch
+    - Jolly's Notes: can be gotten with roll.
+    - Springy Step Shoes silo: Springy Step Shoes readded
+    - Stomping Plains stuff: talon trot can be gotten from shoes, the jiggy can be gotten by crossing with separate character then combining at the end.
+    - Inside the Mountain Egg Nests: can be gotten with Shack Pack
+    - GI Floor 1 High pipe nests: reworked logic to fix tall jump + claw clamber boots not being in logic.
+    - Oil Drill Notes: if not on intended logic, can be gotten with Claw Clamber Boots.
+    - HFP Colosseum stuff: reworked intended and easy tricks logic for crossing the pillars to the colosseum.
+    - CCL Sack Race Note, Cheese Wedge Exit Note: Can be gotten with glide + claw clamber boots
+    - CCL Green Pool Stuff: Jumping from the outside to skip dive is now in easy tricks.
+    - CCL Indoors Glowbo: can be gotten with Shack Pack
+  - The generation now throws an OptionError when a yaml has incompatible options.
+  - Lots of Test fixes (development)
+  - Should now be compatible with other AP games that uses get_all_state()
+  - changed Dialog messages when receiving your own items (normanhenges)
+
+# 4.2.1
+  - randomize BK moves requires either randomize notes, nestanity, or randomize signposts to fix generation issues
+  - progressive shoes now requires nestanity, or randomize signposts
+
 # 4.2.0
   - New victory condition: Boss Hunt + Hag 1.
     - Defeat bosses chosen from a new yaml option, then defeat Hag 1 to win.
@@ -9,7 +49,7 @@
   - New trap: tip trap.
     - Upon receiving the trap, you will receive one of the vanilla sign texts as a dialogue. No, you cannot skip the textbox!
   - You can choose whether you want to be able to use SUPERBANJO, SUPERBADDY, NESTKING, HONEYKING at will during gameplay.
-  - New option to make Canary Mary minigames much easier. 
+  - New option to make Canary Mary minigames much easier.
   - New options
     - Boss Hunt + Hag 1 length
     - Choose how many signposts give hints.
@@ -84,7 +124,7 @@
     - Area 51 notes: added glide as a way to get them, if not on intended logic
     - Dodgem Dome Jinjo: if not on intended logic, can be gotten with leg spring + glide
     - Space Zone Honeycomb: Removed tightrope walk as solo Kazooie from easy tricks logic
-    - Waste Disposal Pump Room collectables: in hard tricks and glitch logics, you can clear the pipes with tall jump + beak buster, tall jump + flutter, or talon trot + (flutter or air rat-a-tat rap) + beak buster 
+    - Waste Disposal Pump Room collectables: in hard tricks and glitch logics, you can clear the pipes with tall jump + beak buster, tall jump + flutter, or talon trot + (flutter or air rat-a-tat rap) + beak buster
     - Oogle Boogle Jiggy: added tall jump to use the spring pad
     - Trash Compactor Jiggy: added tall jump as a requirement if pack whacking accross
     - Trash Compactor Nests: if not on intended logic, having a clockwork walk to the nests is now in logic
@@ -145,7 +185,7 @@
     - Contains ALL of our existing features!
     - This Randomizer is fully compatible with the Everdrive! You will need to run a special application that we provide while you have a USB cable connected. We know the Everdrive X7 is compatible. (Your everdrive needs a USB port. (2.5 is not compatible)). The Expansion Pak is required.
     - You can now "Instant" Transform to mumbo or Humba Transformation with the left D-pad. HOWEVER! Due to logic issues, you will have to enter Mumbo's Skull or Humba's Wigwam to unlock the "Instant" transformation (no longer requires map transitions).
-      - There are a few maps where you cannot do this, but you will get sound feedback saying that you cannot transform. 
+      - There are a few maps where you cannot do this, but you will get sound feedback saying that you cannot transform.
   - New Features / Changes!
     - Nestsanity
       - All feather and egg nests are checks. 473 new locations!
@@ -352,7 +392,7 @@
    - Open All Silos.
 - Randomize World Entrance loading zones
  - This also includes Cauldron Keep's entrance
- - Grunty Industries and Cauldron Keep cannot appear your first loading zone. 
+ - Grunty Industries and Cauldron Keep cannot appear your first loading zone.
 - Deathlink now works under water and in toxic caves, and kills much faster.
 - Implement Inventory Items from Item Pool
 - Readme update
@@ -409,7 +449,7 @@
 # 3.1-beta
  - Lots of bug fixes:
   - Fix Crashing when removing associated Egg near Silo + Crashing transitioning maps
-  - Fix Heggy 
+  - Fix Heggy
   - Fix Honeycomb CCL Location
   - Fix Cutscene Jiggies
   - Fix HAG1 Complete
@@ -486,7 +526,7 @@
    - Generator Cavern jiggy: For normal logic, removed split up for a light source. Oops.
    - Cactus of Strength Jinjo: Can be reached with leg spring. Also, jumping from the gondola platform can now be done with air rat-a-tat.
    - Hoop Hurry Jiggy: added move requirements to reach the pump room. Beginner logic gets turbo trainers.
-   - Balloon Burst Jiggy: added move requirements to reach the pump room. 
+   - Balloon Burst Jiggy: added move requirements to reach the pump room.
    - JRL Alcove Jinjo: if doing the slope abuse, it now requires flutter or air rat-a-tat rap.
    - Terry's Kids Jiggy: Tall jump is now a hard requirement, due to the egg in the Oogle cave.
    - GI Floor 2 Cheato page: Added logic to account for BK moves and glitched logic.
@@ -512,7 +552,7 @@
  - Banjo-Tooie AP will now check Generated, BTClient and Lua Versions. If any mismatch, it will let you know and no longer run.
 
 # 2.1.1-beta
- - remove Wonderwing's Randomized Notes and Cheato requirement 
+ - remove Wonderwing's Randomized Notes and Cheato requirement
  - Fix Issue with duplicate items if randomize_moves disabled
  - Fix Issue with Treble Clefs if randomize_moves disabled
 
@@ -683,7 +723,7 @@
    - Mingy Jongo jiggy: beginner logic gets talon trot to dodge the attacks.
    - Plateau Sign notes: can be gotten with leg spring.
    - In advanced and glitched logic, any check where using (talon trot + flutter + beak buster) can now be done with (talon trot + air rat-a-tat rap + beak buster)
-  
+
 # 1.8.2-beta
  - Location Renaming:
    - Clockwork Silo (1)/(2) Note -> Clockwork Silo Bottom/Top Note
@@ -722,7 +762,7 @@
    - Pot o' Gold jiggy: requires tall jump if using Mumbo is in logic.
    - Cheese Wedge jiggy: requires tall jump if using Mumbo is in logic.
    - Train logic: entering the train requires Flap Flip or Climb. The train is at the ground level in the GI station, so you don't need these moves here.
-   
+
 # 1.8-beta
  - Make Randomize Worlds Compatible with BK Moves (Using Warp Silos)
  - King Jingaling Intro can now be skipped (as an option)
@@ -797,7 +837,7 @@
    - Climb
    - Flutter
    - Wonderwing
-   
+
 # 1.6.2-beta
  - Token Hunt will always generate 15 tokens.
 
@@ -854,7 +894,7 @@
 # 1.4.1-Beta
  - logic fix for HAG-1 when open option is set
  - set Prison code: sun, moon, star, moon, sun
- 
+
 # 1.4-Beta
  - Refactor Region logic
    - Beginner logic: it is now in logic to leave a level from the main entrance, as long as the level is open.
@@ -891,7 +931,7 @@
 
 # 1.3.1-Beta
  - Fix Randomize Worlds for beginners. Allow randomization
- - Fix GI access for beginners logic 
+ - Fix GI access for beginners logic
 
 # 1.3-Beta
  - Logic fixes with certain collectibles
@@ -900,11 +940,11 @@
    - Water Storage Jinjo: Now with proper logic!
  - Customizable lengths of Boss hunt and Minigame hunt.
    - Can also be randomized
-   - If Boss Hunt or Minigame Hunt is selected, Cheato Pages WILL BE RANDOMIZED  
+   - If Boss Hunt or Minigame Hunt is selected, Cheato Pages WILL BE RANDOMIZED
  - New Goal:
    - Jinjo family rescue
     - With customizable length or randomized
- - Lua and Text overlay will remind you of your goal each session 
+ - Lua and Text overlay will remind you of your goal each session
  - jjjj12212 will no longer be the ONLY ONE having a text overlay on his screen. Everyone gets it now!
  - Fixed randomize worlds when multiple players use it in the same AP. Now everyone wont have the same order.
  - 20 note nests are set to be filler items when randomize_notes are enabled.
@@ -994,7 +1034,7 @@
 - Chuffy at multiple stations fixed
 - Logic changes:
  - Checks pinegrove access if you have Dragon unlocked
- - Pot o' Gold now requires Split Up or Rain dance in advanced logic 
+ - Pot o' Gold now requires Split Up or Rain dance in advanced logic
 
 
 # 1.0.1-Beta
@@ -1004,7 +1044,7 @@
  - Intermediate logic doesn't need faster swimming, oxygenate or ice eggs to reach the Seemee Cheato page.
  - Advanced logic got (Pack Whack or Claw Clamber Boots) added to the Dragon Brothers logic to prevent softlocks.
  - Advanced logic can get the JRL trebleclef with the sub.
- 
+
 
 # 1.0-Beta
 - Jinjos are now added to the pool
@@ -1015,7 +1055,7 @@
   - Auto Flush Bizhawk Ram between loading zones. Should avoid hard crashes during gameplay and lose "a lot" of progress
 - YAML Option name changes
   - multiworld_ to randomize_
-- Doubloons near Wing Wack Silo will not have any Unlockable Silo Moves (bug fix for this silo) 
+- Doubloons near Wing Wack Silo will not have any Unlockable Silo Moves (bug fix for this silo)
 - Fix Levitation pad for Chuffy gone when Chuffy is not in the pool.
 - Logic for Jinjos and Jinjo Family Jiggies
   - Jinjo Family Option to NOT allow Moves behind them
@@ -1051,7 +1091,7 @@
 - Hag 1 require 55 Jiggies Option
 
 # 0.8.2-beta
-- Swapped wrong Glowbos.  
+- Swapped wrong Glowbos.
 
 # 0.8-beta
 - Treble Clefs are added
@@ -1072,7 +1112,7 @@
 - JRL Puzzle bugfix
 - Fix bug where all moves are learnt when learning first move.
 - Logic Changes:
- - doubloon requirement checks require 28 doubloons, gernade or clockwork eggs or Drill Bill 
+ - doubloon requirement checks require 28 doubloons, gernade or clockwork eggs or Drill Bill
  - change Note Logic
  - change requirements for JRL Pipe Honeycomb
  - change requirements for HFP lava side Honeycomb
@@ -1119,7 +1159,7 @@
   - Saving and Quitting while touching a jiggy no longer sends false checks
   - Witchyworld Pads no longer floating
   - sending items don't duplicate
-- QOL: 
+- QOL:
   - Split Up Pads in Ancient Baths moved to better location
   - Jamjar Silo proximity only allow learnable moves for the silos on the same map
   - Receiving Eggs from Archipelago fills your eggs
