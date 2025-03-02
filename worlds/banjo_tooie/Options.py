@@ -427,15 +427,6 @@ class LogicType(Choice):
     option_glitches = 3
     default = 0
 
-class OpenSilos(Choice):
-    """Choose if you want IoH Silos to be closed, randomly open 1, or enable all. If you enabled Randomized Worlds with BK Moves randomized and
-       silos set to none, it will be enforced to one."""
-    display_name = "Open Silos"
-    option_none = 0
-    option_one = 1
-    option_all = 2
-    default = 0
-
 class VictoryCondition(Choice):
     """Choose the victory condition.
         HAG1: Unlock the HAG1 fight and defeat Gruntilda.
@@ -561,6 +552,24 @@ class HintClarity(Choice):
     option_clear = 1
     default = 1
 
+
+class OpenSilos(Range):
+    """Choose how many overworld silos are pre-opened.
+    If you have Randomized Worlds, pre-opened silos are guaranteed to lead to the first world.
+    If you enabled Randomized Worlds with BK Moves randomized, you must have at least 2 silos opened."""
+    display_name = "Open Silos"
+    range_start = 0
+    range_end = 7
+    default = 2
+
+class RandomizeSilos(Toggle):
+    """Overworld silos give checks when tagging them. They can only be used once you receive the corresponding item to use a silo."""
+    display_name = "Randomize Silos"
+
+class RandomizeWarpPads(Toggle):
+    """Warp Pads give checks when tagging them. They can only be used once you receive the corresponding item to use a warp pad."""
+    display_name = "Randomize Silos"
+
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
@@ -621,13 +630,15 @@ class BanjoTooieOptions(PerGameCommonOptions):
 
     randomize_stations: RandomizeTrainStationSwitches
     randomize_chuffy: RandomizeChuffyTrain
+    randomize_warp_pads: RandomizeWarpPads
+    randomize_silos: RandomizeSilos
+    open_silos: OpenSilos
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
     randomize_worlds: RandomizeWorlds
     randomize_world_loading_zone: RandomizeWorldZones
     open_hag1: OpenHag1
     backdoors:Backdoors
-    open_silos: OpenSilos
 
     extra_cheats: ExtraCheats
     easy_canary: EasyCanary

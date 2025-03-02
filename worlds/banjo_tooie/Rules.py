@@ -8276,7 +8276,7 @@ class BanjoTooieRules:
         return self.tall_jump(state) and state.has(itemName.MUMBOCC, self.player)
 
     def humbaJRL(self, state: CollectionState) -> bool:
-        return state.can_reach_region(regionName.JRU2, self.player) and state.has(itemName.HUMBAJR, self.player)
+        return state.can_reach_region(regionName.JRAT, self.player) and state.has(itemName.HUMBAJR, self.player)
 
     def humbaTDL(self, state: CollectionState) -> bool:
         logic = True

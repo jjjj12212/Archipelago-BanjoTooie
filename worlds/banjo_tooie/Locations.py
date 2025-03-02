@@ -7,7 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
 
 class LocationData(typing.NamedTuple):
-    #last good ID: 1231482 (SIGNCC4)
+    #last good ID: 1231543 (SIGNCC4)
     #12C770 pointer instead (1230704)
     btid: int = 0
     # Save + mem addr
@@ -94,6 +94,8 @@ JVLoc_table = {
     locationName.NESTIH17: LocationData(1231051),
 
     locationName.SIGNIH1:   LocationData(1231483, 0, 0, "Signpost"),
+
+    locationName.SILOIOHJV:   LocationData(1231550, 0, 0, "Silos"),
 }
 
 MTLoc_Table = {
@@ -216,6 +218,8 @@ IHPLLoc_table = {
     locationName.NESTIH31: LocationData(1231065),
     locationName.NESTIH32: LocationData(1231066),
     locationName.NESTIH33: LocationData(1231067),
+
+    locationName.SILOIOHPL:   LocationData(1231552, 0, 0, "Silos"),
 }
 
 GMLoc_table = {
@@ -314,7 +318,7 @@ GMLoc_table = {
     locationName.SIGNGM4:   LocationData(1231514, 0, 0, "Signpost"),
 }
 
-PGLoc_table = {
+IHPGLoc_table = {
     locationName.GEGGS:    LocationData(1230759, 0x1E, 2),
     locationName.NOTEIH5:   LocationData(1230932, 0x96, 3, "Note"),
     locationName.NOTEIH6:   LocationData(1230933, 0x96, 4, "Note"),
@@ -334,6 +338,8 @@ PGLoc_table = {
     locationName.SIGNIH15:   LocationData(1231497, 0, 0, "Signpost"),
     locationName.SIGNIH16:   LocationData(1231498, 0, 0, "Signpost"),
     locationName.SIGNIH17:   LocationData(1231499, 0, 0, "Signpost"),
+
+    locationName.SILOIOHPG:   LocationData(1231553, 0, 0, "Silos"),
 }
 
 WWLoc_table = {
@@ -1020,19 +1026,21 @@ IHWHLoc_table = {
     locationName.NESTIH25: LocationData(1231059),
     locationName.NESTIH26: LocationData(1231060),
 
-    locationName.SIGNIH2:   LocationData(1231484, 0, 0, "Signpost"), 
-    locationName.SIGNIH3:   LocationData(1231485, 0, 0, "Signpost"), 
-    locationName.SIGNIH4:   LocationData(1231486, 0, 0, "Signpost"), 
-    locationName.SIGNIH5:   LocationData(1231487, 0, 0, "Signpost"), 
-    locationName.SIGNIH6:   LocationData(1231488, 0, 0, "Signpost"), 
-    locationName.SIGNIH7:   LocationData(1231489, 0, 0, "Signpost"), 
-    locationName.SIGNIH8:   LocationData(1231490, 0, 0, "Signpost"), 
-    locationName.SIGNIH9:   LocationData(1231491, 0, 0, "Signpost"), 
+    locationName.SIGNIH2:   LocationData(1231484, 0, 0, "Signpost"),
+    locationName.SIGNIH3:   LocationData(1231485, 0, 0, "Signpost"),
+    locationName.SIGNIH4:   LocationData(1231486, 0, 0, "Signpost"),
+    locationName.SIGNIH5:   LocationData(1231487, 0, 0, "Signpost"),
+    locationName.SIGNIH6:   LocationData(1231488, 0, 0, "Signpost"),
+    locationName.SIGNIH7:   LocationData(1231489, 0, 0, "Signpost"),
+    locationName.SIGNIH8:   LocationData(1231490, 0, 0, "Signpost"),
+    locationName.SIGNIH9:   LocationData(1231491, 0, 0, "Signpost"),
     locationName.SIGNIH10:   LocationData(1231492, 0, 0, "Signpost"),
     locationName.SIGNIH11:   LocationData(1231493, 0, 0, "Signpost"),
     locationName.SIGNIH12:   LocationData(1231494, 0, 0, "Signpost"),
     locationName.SIGNIH13:   LocationData(1231495, 0, 0, "Signpost"),
     locationName.SIGNIH14:   LocationData(1231496, 0, 0, "Signpost"),
+
+    locationName.SILOIOHWH:   LocationData(1231551, 0, 0, "Silos"),
 }
 
 IHWLLoc_table = {
@@ -1056,6 +1064,8 @@ IHWLLoc_table = {
     locationName.NESTIH57: LocationData(1231091),
 
     locationName.SIGNIH19:   LocationData(1231501, 0, 0, "Signpost"),
+
+    locationName.SILOIOHWL:   LocationData(1231555, 0, 0, "Silos"),
 }
 
 IHQMLoc_table = {
@@ -1065,6 +1075,8 @@ IHQMLoc_table = {
     locationName.NESTIH61: LocationData(1231095),
     locationName.NESTIH62: LocationData(1231096),
     locationName.NESTIH63: LocationData(1231097),
+
+    locationName.SILOIOHQM:   LocationData(1231556, 0, 0, "Silos"),
 }
 
 IHCTLoc_table = {
@@ -1086,6 +1098,8 @@ IHCTLoc_table = {
     locationName.NESTIH64: LocationData(1231482), #Out of order.
 
     locationName.SIGNIH18:   LocationData(1231500, 0, 0, "Signpost"),
+
+    locationName.SILOIOHCT:   LocationData(1231554, 0, 0, "Silos"),
 }
 
 boss_table = {
@@ -1140,7 +1154,7 @@ all_location_table = {
     **MTLoc_Table,
     **IHPLLoc_table,
     **GMLoc_table,
-    **PGLoc_table,
+    **IHPGLoc_table,
     **WWLoc_table,
     **IHCTLoc_table,
     **JRLoc_table,

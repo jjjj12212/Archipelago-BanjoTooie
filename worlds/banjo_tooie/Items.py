@@ -187,6 +187,58 @@ nest_table= {
     itemName.FNEST:           ItemData(1230807,   135, "filler", ""),
 }
 
+silo_table = {
+    itemName.SILOIOHJV:           ItemData(1230870,   1, "progress", locationName.SILOIOHJV),
+    itemName.SILOIOHWH:           ItemData(1230871,   1, "progress", locationName.SILOIOHWH),
+    itemName.SILOIOHPL:           ItemData(1230872,   1, "progress", locationName.SILOIOHPL),
+    itemName.SILOIOHPG:           ItemData(1230873,   1, "progress", locationName.SILOIOHPG),
+    itemName.SILOIOHCT:           ItemData(1230874,   1, "progress", locationName.SILOIOHCT),
+    itemName.SILOIOHWL:           ItemData(1230875,   1, "progress", locationName.SILOIOHWL),
+    itemName.SILOIOHQM:           ItemData(1230876,   1, "progress", locationName.SILOIOHQM),
+}
+
+warp_pad_table = {
+    itemName.WARPMT1:           ItemData(1230877,   1, "progress", locationName.WARPMT1),
+    itemName.WARPMT2:           ItemData(1230878,   1, "progress", locationName.WARPMT2),
+    itemName.WARPMT3:           ItemData(1230879,   1, "progress", locationName.WARPMT3),
+    itemName.WARPMT4:           ItemData(1230880,   1, "progress", locationName.WARPMT4),
+    itemName.WARPMT5:           ItemData(1230881,   1, "progress", locationName.WARPMT5),
+    itemName.WARPGM1:           ItemData(1230882,   1, "progress", locationName.WARPGM1),
+    itemName.WARPGM2:           ItemData(1230883,   1, "progress", locationName.WARPGM2),
+    itemName.WARPGM3:           ItemData(1230884,   1, "progress", locationName.WARPGM3),
+    itemName.WARPGM4:           ItemData(1230885,   1, "progress", locationName.WARPGM4),
+    itemName.WARPGM5:           ItemData(1230886,   1, "progress", locationName.WARPGM5),
+    itemName.WARPWW1:           ItemData(1230887,   1, "progress", locationName.WARPWW1),
+    itemName.WARPWW2:           ItemData(1230888,   1, "progress", locationName.WARPWW2),
+    itemName.WARPWW3:           ItemData(1230889,   1, "progress", locationName.WARPWW3),
+    itemName.WARPWW4:           ItemData(1230890,   1, "progress", locationName.WARPWW4),
+    itemName.WARPWW5:           ItemData(1230891,   1, "progress", locationName.WARPWW5),
+    itemName.WARPJR1:           ItemData(1230892,   1, "progress", locationName.WARPJR1),
+    itemName.WARPJR2:           ItemData(1230893,   1, "progress", locationName.WARPJR2),
+    itemName.WARPJR3:           ItemData(1230894,   1, "progress", locationName.WARPJR3),
+    itemName.WARPJR4:           ItemData(1230895,   1, "progress", locationName.WARPJR4),
+    itemName.WARPJR5:           ItemData(1230896,   1, "progress", locationName.WARPJR5),
+    itemName.WARPTL1:           ItemData(1230897,   1, "progress", locationName.WARPTL1),
+    itemName.WARPTL2:           ItemData(1230898,   1, "progress", locationName.WARPTL2),
+    itemName.WARPTL3:           ItemData(1230899,   1, "progress", locationName.WARPTL3),
+    itemName.WARPTL4:           ItemData(1230900,   1, "progress", locationName.WARPTL4),
+    itemName.WARPTL5:           ItemData(1230901,   1, "progress", locationName.WARPTL5),
+    itemName.WARPGI1:           ItemData(1230902,   1, "progress", locationName.WARPGI1),
+    itemName.WARPGI2:           ItemData(1230903,   1, "progress", locationName.WARPGI2),
+    itemName.WARPGI3:           ItemData(1230904,   1, "progress", locationName.WARPGI3),
+    itemName.WARPGI4:           ItemData(1230905,   1, "progress", locationName.WARPGI4),
+    itemName.WARPGI5:           ItemData(1230906,   1, "progress", locationName.WARPGI5),
+    itemName.WARPHP1:           ItemData(1230907,   1, "progress", locationName.WARPHP1),
+    itemName.WARPHP2:           ItemData(1230908,   1, "progress", locationName.WARPHP2),
+    itemName.WARPHP3:           ItemData(1230909,   1, "progress", locationName.WARPHP3),
+    itemName.WARPHP4:           ItemData(1230910,   1, "progress", locationName.WARPHP4),
+    itemName.WARPHP5:           ItemData(1230911,   1, "progress", locationName.WARPHP5),
+    itemName.WARPCC1:           ItemData(1230912,   1, "progress", locationName.WARPCC1),
+    itemName.WARPCC2:           ItemData(1230913,   1, "progress", locationName.WARPCC2),
+    itemName.WARPCK1:           ItemData(1230914,   1, "progress", locationName.WARPCK1),
+    itemName.WARPCK2:           ItemData(1230915,   1, "progress", locationName.WARPCK2),
+}
+
 
 all_item_table: Dict[str, ItemData] = {
     **moves_table,

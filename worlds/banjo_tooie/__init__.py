@@ -8,7 +8,7 @@ from typing import Dict, Any, Optional
 import warnings
 
 from .Hints import HintData, generate_hints
-from .Items import BanjoTooieItem, ItemData, all_item_table, all_group_table, progressive_ability_breakdown
+from .Items import BanjoTooieItem, ItemData, all_item_table, all_group_table, progressive_ability_breakdown, silo_table
 from .Locations import BanjoTooieLocation, LocationData, all_location_table, MTLoc_Table, GMLoc_table, WWLoc_table, JRLoc_table, TLLoc_table, GILoc_table, HPLoc_table, CCLoc_table, MumboTokenGames_table, MumboTokenBoss_table, MumboTokenJinjo_table
 from .Regions import create_regions, connect_regions
 from .Options import BanjoTooieOptions, EggsBehaviour, JamjarsSiloCosts, LogicType, ProgressiveEggAim, ProgressiveWaterTraining, RandomizeBKMoveList, TowerOfTragedy, VictoryCondition
@@ -97,10 +97,10 @@ class BanjoTooieWorld(World):
 
 
         self.slot_data = []
+        self.preopened_silos = []
         self.randomize_worlds = {}
         self.randomize_order = {}
         self.worlds_randomized = False
-        self.single_silo = ""
         self.loading_zones = {}
         self.jamjars_siloname_costs = {}
         self.jamjars_silo_costs = {}
@@ -398,6 +398,8 @@ class BanjoTooieWorld(World):
             raise OptionError("You cannot have progressive bash attack without randomizing Stop N Swap and randomizing BK moves")
         if not self.options.randomize_moves and self.options.jamjars_silo_costs != JamjarsSiloCosts.option_vanilla:
             raise OptionError("You cannot change the silo costs without randomizing Jamjars' moves.")
+        if not self.options.randomize_moves and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none and self.options.open_silos < 2:
+            raise OptionError("If you enabled Randomized Worlds with BK Moves randomized, you must have at least 2 silos opened.")
         if not self.options.open_hag1 and self.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
             self.options.open_hag1.value = True
 
@@ -486,6 +488,12 @@ class BanjoTooieWorld(World):
 
         if not self.options.randomize_stop_n_swap:
             self.banjo_pre_fills("StopnSwap", None, True)
+
+        if not self.options.randomize_silos:
+            self.prefill_silos()
+
+        if not self.options.randomize_warp_pads:
+            self.prefill_warp_pads()
 
         if not self.worlds_randomized and self.options.skip_puzzles:
             self.banjo_pre_fills("Access", None, True)
@@ -636,6 +644,15 @@ class BanjoTooieWorld(World):
 
         return self.random.choices(names, actual_weights, k=1)[0]
 
+    def prefill_silos(self):
+        for name, data in silo_table.items():
+            if name in self.preopened_silos:
+                self.push_precollected(name)
+            else:
+                item = self.create_item(name)
+                location = self.get_location(data.default_location)
+                location.place_locked_item(item)
+
     def banjo_pre_fills(self, itemNameOrGroup: str, group: str, useGroup: bool ) -> None:
         if useGroup:
             for group_name, item_info in self.item_name_groups.items():
@@ -689,8 +706,6 @@ class BanjoTooieWorld(World):
                         spoiler_handle.write(f"\n\t\tGrunty Industries: {cost}")
                     else:
                         spoiler_handle.write(f"\n\t\t{entrances}: {cost}")
-            spoiler_handle.write("\n\tBanjo-Tooie Open Overworld Silos:\n")
-            spoiler_handle.write("\t\t" + currentWorld.single_silo)
             spoiler_handle.write("\n\tJamjars' Silo Costs:")
             for silo, cost in currentWorld.jamjars_siloname_costs.items():
                     spoiler_handle.write(f"\n\t\t{silo}: {cost}")
@@ -758,7 +773,7 @@ class BanjoTooieWorld(World):
 
         btoptions["starting_egg"] = int(self.starting_egg)
         btoptions["starting_attack"] = int(self.starting_attack)
-        btoptions["first_silo"] = self.single_silo
+        btoptions["preopened_silos"] = self.preopened_silos
 
         btoptions["version"] = BanjoTooieWorld.version
 
