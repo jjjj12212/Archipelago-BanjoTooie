@@ -172,7 +172,7 @@ Banjo-Tooie:
   skip_klungo: 'true'         # Skips Klungo 1 & 2
 
   signpost_hints: 0           # 0-61; how many signposts will give you hints
-  signpost_move_hint: 0       # 0-61; how many signpost hints from the option above will hint move items
+  signpost_move_hints: 0       # 0-61; how many signpost hints from the option above will hint move items
   hint_clarity: 1             # 0 or 1; 0 means what type of item is hinted, 1 means tells you the exact item that is hinted
 
   # 0 = signpost hints are never added to AP as hints
