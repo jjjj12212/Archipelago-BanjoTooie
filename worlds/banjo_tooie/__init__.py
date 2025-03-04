@@ -6,6 +6,7 @@ import settings
 import typing
 from typing import Dict, Any, Optional
 import warnings
+from dataclasses import asdict
 
 from .Hints import HintData, generate_hints
 from .Items import BanjoTooieItem, ItemData, all_item_table, all_group_table, progressive_ability_breakdown
@@ -767,7 +768,7 @@ class BanjoTooieWorld(World):
         btoptions["jamjars_siloname_costs"] = self.jamjars_siloname_costs
         btoptions["jamjars_silo_costs"] = self.jamjars_silo_costs #table of silo costs
         btoptions["jamjars_silo_option"] = int(self.options.jamjars_silo_costs)
-        btoptions["hints"] = {location: hint_data._asdict() for location, hint_data in self.hints.items()}
+        btoptions["hints"] = {location: asdict(hint_data) for location, hint_data in self.hints.items()}
         return btoptions
 
     # for the universal tracker, doesn't get called in standard gen
