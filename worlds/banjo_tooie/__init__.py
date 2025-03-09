@@ -385,7 +385,7 @@ class BanjoTooieWorld(World):
             raise OptionError("Randomize Notes is required to add extra Treble Clefs or Bass Clefs")
         if self.options.progressive_beak_buster and (not self.options.randomize_bk_moves or not self.options.randomize_moves):
             raise OptionError("You cannot have progressive Beak Buster without randomizing moves and randomizing BK moves")
-        if self.options.egg_behaviour == EggsBehaviour.option_random_starting_egg and (not self.options.randomize_bk_moves or not self.options.randomize_moves):
+        if (self.options.egg_behaviour == EggsBehaviour.option_random_starting_egg or self.options.egg_behaviour == EggsBehaviour.option_simple_random_starting_egg) and (not self.options.randomize_bk_moves or not self.options.randomize_moves):
             raise OptionError("You cannot have Randomize Starting Egg without randomizing moves and randomizing BK moves")
         elif self.options.egg_behaviour == EggsBehaviour.option_progressive_eggs and not self.options.randomize_moves:
             raise OptionError("You cannot have progressive Eggs without randomizing moves")
@@ -405,8 +405,13 @@ class BanjoTooieWorld(World):
             self.options.open_hag1.value = True
 
 
-        if self.options.egg_behaviour == EggsBehaviour.option_random_starting_egg:
-            eggs = list([itemName.BEGGS, itemName.FEGGS, itemName.GEGGS, itemName.IEGGS, itemName.CEGGS])
+        if self.options.egg_behaviour == EggsBehaviour.option_random_starting_egg or \
+        self.options.egg_behaviour == EggsBehaviour.option_simple_random_starting_egg:
+            eggs: list = []
+            if self.options.egg_behaviour == EggsBehaviour.option_random_starting_egg:
+                eggs = list([itemName.BEGGS, itemName.FEGGS, itemName.GEGGS, itemName.IEGGS, itemName.CEGGS])
+            else:
+                eggs = list([itemName.BEGGS, itemName.FEGGS, itemName.GEGGS, itemName.IEGGS])
             self.random.shuffle(eggs)
             starting_egg = self.create_item(eggs[0])
             self.multiworld.push_precollected(starting_egg)

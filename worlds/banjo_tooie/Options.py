@@ -149,6 +149,7 @@ class EggsBehaviour(Choice):
     option_start_with_blue_eggs = 0
     option_random_starting_egg = 1
     option_progressive_eggs = 2
+    option_simple_random_starting_egg = 3 #no clockworks
     default = 0
 
 class ProgressiveShoes(Toggle):

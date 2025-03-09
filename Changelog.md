@@ -1,3 +1,7 @@
+# 4.4
+ - New Egg Behaviour Option
+  - Simple Randomize Starting Eggs (you will start with a random egg, but it won't be Clockworks)
+
 # 4.3
   - You are now required to use Bizhawk 2.10. 2.9.1 and lower are not supported.
   - New filler options
