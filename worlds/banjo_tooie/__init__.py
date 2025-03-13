@@ -4,7 +4,7 @@ from multiprocessing import Process
 from Options import DeathLink, OptionError
 import settings
 import typing
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 import warnings
 from dataclasses import asdict
 
@@ -187,13 +187,16 @@ class BanjoTooieWorld(World):
         created_item = BanjoTooieItem(name, item_classification, None, self.player)
         return created_item
 
-    def create_items(self) -> None:
+    def calculate_useful_filler(self, total, progression) -> (int, int):
+        # We want to split non-progressive items into two halfs
+        # half is useful, half is filler
+        remainder = total - progression
+        useful = ceil(remainder / 2)
+
+        return (useful, remainder - useful)
+
+    def get_jiggies_in_pool(self) -> List[Item]:
         itempool = []
-
-        # START OF ITEMS CUSTOM LOGIC
-
-        if self.options.victory_condition == VictoryCondition.option_token_hunt:
-            itempool += [self.create_item(itemName.MUMBOTOKEN) for i in range(15)]
 
         if self.options.jingaling_jiggy:
             # Below give the king a guarentee Jiggy if option is set
@@ -207,32 +210,81 @@ class BanjoTooieWorld(World):
                 VictoryCondition.option_boss_hunt_and_hag1):
             progression_jiggies = max(progression_jiggies, 70)
 
-        extra_jiggies = ceil((all_item_table[itemName.JIGGY].qty - progression_jiggies)/2)
+        useful_jiggies, filler_jiggies = \
+            self.calculate_useful_filler(all_item_table[itemName.JIGGY].qty, progression_jiggies)
+
+        if self.kingjingalingjiggy:
+            progression_jiggies -= 1
         if not self.options.randomize_jinjos:
-            extra_jiggies = max(0, extra_jiggies - 9)
+            progression_jiggies -= 9
+
+        # in case preplaced items are over the progression count
+        if progression_jiggies < 0:
+            useful_jiggies += progression_jiggies
+            progression_jiggies = 0
 
         itempool += [
-            self.create_item(itemName.JIGGY) for i in range(progression_jiggies - self.kingjingalingjiggy)
+            self.create_item(itemName.JIGGY) for i in range(progression_jiggies)
         ]
         itempool += [
-            self.create_item(itemName.JIGGY_AS_USEFUL) for i in range(extra_jiggies)
+            self.create_item(itemName.JIGGY_AS_USEFUL) for i in range(useful_jiggies)
         ]
-
-        if self.options.randomize_notes:
-            taken_by_clefs = 4 * (self.options.extra_trebleclefs_count + all_item_table[itemName.TREBLE].qty)\
-                           + 2 * self.options.bass_clef_amount
-
-            progression_notes = ceil(max(self.jamjars_siloname_costs.values()) / 5) - taken_by_clefs
-            progression_notes = max(progression_notes, 0)
-
-            extra_notes = max(0, all_item_table[itemName.NOTE].qty - progression_notes - taken_by_clefs)
-
+        if not self.options.replace_extra_jiggies:
             itempool += [
-                self.create_item(itemName.NOTE) for i in range(progression_notes)
+                self.create_item(itemName.JIGGY_AS_FILLER) for i in range(filler_jiggies)
             ]
+
+        return itempool
+
+    def get_notes_in_pool(self) -> List[Item]:
+        if not self.options.randomize_notes:
+            return []
+
+        itempool = []
+
+        progression_notes = ceil(max(self.jamjars_siloname_costs.values()) / 5)
+
+        useful_notes, filler_notes = \
+            self.calculate_useful_filler(int(900 / 5), progression_notes)
+
+        taken_by_clefs = 4 * (self.options.extra_trebleclefs_count + all_item_table[itemName.TREBLE].qty)\
+            + 2 * self.options.bass_clef_amount
+
+        progression_notes -= taken_by_clefs
+
+        # in case preplaced items are over the progression count
+        if progression_notes < 0:
+            useful_notes += progression_notes
+            progression_notes = 0
+        if useful_notes < 0:
+            filler_notes += useful_notes
+            useful_notes = 0
+        if filler_notes < 0:
+            warnings.warn("Number of notes that need to be inserted is somehow negative.")
+
+        itempool += [
+            self.create_item(itemName.NOTE) for i in range(progression_notes)
+        ]
+        itempool += [
+            self.create_item(itemName.NOTE_AS_USEFUL) for i in range(useful_notes)
+        ]
+        if not self.options.replace_extra_notes:
             itempool += [
-                self.create_item(itemName.NOTE_AS_USEFUL) for i in range(extra_notes)
+                self.create_item(itemName.NOTE_AS_FILLER) for i in range(filler_notes)
             ]
+
+        return itempool
+
+    def create_items(self) -> None:
+        itempool = []
+
+        # START OF ITEMS CUSTOM LOGIC
+
+        if self.options.victory_condition == VictoryCondition.option_token_hunt:
+            itempool += [self.create_item(itemName.MUMBOTOKEN) for i in range(15)]
+
+        itempool += self.get_jiggies_in_pool()
+        itempool += self.get_notes_in_pool()
 
         count = all_item_table[itemName.TREBLE].qty if self.options.randomize_treble else 0
         count += self.options.extra_trebleclefs_count
@@ -537,16 +589,15 @@ class BanjoTooieWorld(World):
                 self.get_location(location_name).place_locked_item(item)
 
         elif not self.options.randomize_jinjos:
-            item = self.create_item(itemName.JIGGY_AS_USEFUL)
-            self.get_location(locationName.JIGGYIH1).place_locked_item(item)
-            self.get_location(locationName.JIGGYIH2).place_locked_item(item)
-            self.get_location(locationName.JIGGYIH3).place_locked_item(item)
-            self.get_location(locationName.JIGGYIH4).place_locked_item(item)
-            self.get_location(locationName.JIGGYIH5).place_locked_item(item)
-            self.get_location(locationName.JIGGYIH6).place_locked_item(item)
-            self.get_location(locationName.JIGGYIH7).place_locked_item(item)
-            self.get_location(locationName.JIGGYIH8).place_locked_item(item)
-            self.get_location(locationName.JIGGYIH9).place_locked_item(item)
+            self.get_location(locationName.JIGGYIH1).place_locked_item(self.create_item(itemName.JIGGY))
+            self.get_location(locationName.JIGGYIH2).place_locked_item(self.create_item(itemName.JIGGY))
+            self.get_location(locationName.JIGGYIH3).place_locked_item(self.create_item(itemName.JIGGY))
+            self.get_location(locationName.JIGGYIH4).place_locked_item(self.create_item(itemName.JIGGY))
+            self.get_location(locationName.JIGGYIH5).place_locked_item(self.create_item(itemName.JIGGY))
+            self.get_location(locationName.JIGGYIH6).place_locked_item(self.create_item(itemName.JIGGY))
+            self.get_location(locationName.JIGGYIH7).place_locked_item(self.create_item(itemName.JIGGY))
+            self.get_location(locationName.JIGGYIH8).place_locked_item(self.create_item(itemName.JIGGY))
+            self.get_location(locationName.JIGGYIH9).place_locked_item(self.create_item(itemName.JIGGY))
 
         if not self.options.randomize_jinjos:
             item = self.create_item(itemName.WJINJO)
@@ -612,6 +663,15 @@ class BanjoTooieWorld(World):
             self.get_location(locationName.JINJOCC4).place_locked_item(item)
             self.get_location(locationName.JINJOGI3).place_locked_item(item)
 
+    def allow_jiggies_as_filler(self) -> bool:
+        return self.options.replace_extra_jiggies and self.jiggies_in_pool < self.hard_item_limit
+
+    def allow_notes_as_filler(self) -> bool:
+        return self.options.replace_extra_notes and self.options.randomize_notes and self.notes_in_pool < self.hard_item_limit
+
+    def allow_doubloons_as_filler(self) -> bool:
+        return self.options.randomize_doubloons and self.doubloons_in_pool < self.hard_item_limit
+
     def get_filler_item_name(self) -> str:
         trap_weights = [
             (itemName.GNEST, self.options.golden_eggs_weight),
@@ -622,9 +682,9 @@ class BanjoTooieWorld(World):
             (itemName.TITRAP, self.options.tip_trap_weight),
         ]
         filler_weights = [
-            (itemName.JIGGY_AS_FILLER, self.options.extra_jiggies_weight if self.jiggies_in_pool < self.hard_item_limit else 0),
-            (itemName.NOTE_AS_FILLER, self.options.extra_notes_weight if self.options.randomize_notes and self.notes_in_pool < self.hard_item_limit else 0),
-            (itemName.DOUBLOON_AS_FILLER, self.options.extra_doubloons_weight if self.options.randomize_doubloons and self.doubloons_in_pool < self.hard_item_limit else 0),
+            (itemName.JIGGY_AS_FILLER, self.options.extra_jiggies_weight if self.allow_jiggies_as_filler() else 0),
+            (itemName.NOTE_AS_FILLER, self.options.extra_notes_weight if self.allow_notes_as_filler() else 0),
+            (itemName.DOUBLOON_AS_FILLER, self.options.extra_doubloons_weight if self.allow_doubloons_as_filler() else 0),
             (itemName.ENEST, self.options.egg_nests_weight * (2 if self.options.nestsanity else 1)),
             (itemName.FNEST, self.options.feather_nests_weight * (2 if self.options.nestsanity else 1)),
             # Intentionally leaving NONE as last;
