@@ -78,7 +78,9 @@ class BanjoTooieWorld(World):
         "Stations": all_group_table["stations"],
         "StopnSwap": all_group_table["stopnswap"],
         "Access": all_group_table["levelaccess"],
-        "Dino": all_group_table["dino"]
+        "Dino": all_group_table["dino"],
+        "Silos": all_group_table["Silos"],
+        "Warp Pads": all_group_table["Warp Pads"],
     }
 
     options_dataclass =  BanjoTooieOptions
@@ -309,6 +311,15 @@ class BanjoTooieWorld(World):
         if name in all_group_table['stopnswap'].keys() and not self.options.randomize_stop_n_swap:
             return None
 
+        if name in all_group_table['Warp Pads'].keys() and not self.options.randomize_warp_pads:
+            return None
+
+        if name in all_group_table['Silos'].keys() and not self.options.randomize_silos:
+            return None
+
+        if name in all_group_table['Silos'].keys() and name in self.preopened_silos:
+            return None
+
         if name == itemName.ROAR and not self.options.randomize_dino_roar:
             return None
 
@@ -493,7 +504,7 @@ class BanjoTooieWorld(World):
             self.prefill_silos()
 
         if not self.options.randomize_warp_pads:
-            self.prefill_warp_pads()
+            self.banjo_pre_fills("Warp Pads", None, True)
 
         if not self.worlds_randomized and self.options.skip_puzzles:
             self.banjo_pre_fills("Access", None, True)
@@ -646,8 +657,9 @@ class BanjoTooieWorld(World):
 
     def prefill_silos(self):
         for name, data in silo_table.items():
+            # A vanilla silo that's pre-opened does not give a check, since its item is in the starting inventory.
             if name in self.preopened_silos:
-                self.push_precollected(name)
+                self.push_precollected(self.create_item(name))
             else:
                 item = self.create_item(name)
                 location = self.get_location(data.default_location)

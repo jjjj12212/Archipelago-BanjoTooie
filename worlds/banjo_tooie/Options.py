@@ -651,7 +651,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     add_signpost_hints_to_ap: AddSignpostHintsToArchipelagoHints
     hint_clarity: HintClarity
 
-    dialog_character:DialogCharacters # Keep this at the bottom so that the huge list stays at the bottom of the yaml.
+    dialog_character: DialogCharacters # Keep this at the bottom so that the huge list stays at the bottom of the yaml.
 
     start_inventory_from_pool: StartInventoryPool
 

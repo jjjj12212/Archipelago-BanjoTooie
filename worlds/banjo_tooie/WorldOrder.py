@@ -165,7 +165,7 @@ def choose_unlocked_silos(world: BanjoTooieWorld) -> None:
     # Fully random.
     if world.options.open_silos == 1 or not world.options.randomize_worlds:
         remaining_silos = [itemName.SILOIOHJV, itemName.SILOIOHWH, itemName.SILOIOHPL, itemName.SILOIOHPG, itemName.SILOIOHCT, itemName.SILOIOHWL, itemName.SILOIOHQM]
-        while len(world.preopened_silos) < world.options.preopened_silos:
+        while len(world.preopened_silos) < world.options.open_silos:
             silo = world.random.choice(remaining_silos)
             remaining_silos.remove(silo)
             world.preopened_silos.append(silo)
@@ -197,7 +197,7 @@ def choose_unlocked_silos(world: BanjoTooieWorld) -> None:
         for silo in world.preopened_silos:
             remaining_silos.remove(silo)
 
-        while len(world.preopened_silos) < world.options.preopened_silos:
+        while len(world.preopened_silos) < world.options.open_silos:
             silo = world.random.choice(remaining_silos)
             remaining_silos.remove(silo)
             world.preopened_silos.append(silo)

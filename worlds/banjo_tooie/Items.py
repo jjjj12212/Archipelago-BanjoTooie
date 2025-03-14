@@ -253,7 +253,9 @@ all_item_table: Dict[str, ItemData] = {
     **bk_moves_table,
     **progressive_ability_table,
     **dino_table,
-    **nest_table
+    **nest_table,
+    **silo_table,
+    **warp_pad_table,
 }
 
 all_group_table: Dict[str, Dict[str, ItemData]] = {
@@ -268,5 +270,7 @@ all_group_table: Dict[str, Dict[str, ItemData]] = {
     "stopnswap": stop_n_swap_table,
     "bk_moves": bk_moves_table,
     "dino": dino_table,
-    "nest": nest_table
+    "nest": nest_table,
+    "Silos": silo_table,
+    "Warp Pads": warp_pad_table
 }

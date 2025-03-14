@@ -1227,7 +1227,7 @@ WARPGI5 = "GI Outside: On the Roof Outside Warp Pad Tagged"
 WARPHP1 = "HFP: Fire Side - Lower Area (Mumbo) Warp Pad Tagged"
 WARPHP2 = "HFP: Fire Side - Upper Area Warp Pad Tagged"
 WARPHP3 = "HFP: Ice Side - Upper Area Warp Pad Tagged"
-WARPHP4 = "HFP: Ice Side - Lower Area (Wumba) Pad Tagged"
+WARPHP4 = "HFP: Ice Side - Lower Area (Wumba) Warp Pad Tagged"
 WARPHP5 = "HFP: Ice Side - Inside Icicle Grotto Warp Pad Tagged"
 
 WARPCC1 = "CCL: World Entry and Exit Warp Pad Tagged"

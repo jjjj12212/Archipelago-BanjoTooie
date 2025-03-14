@@ -2,6 +2,7 @@ import copy
 import typing
 from BaseClasses import Region
 from .Options import VictoryCondition
+from .Items import silo_table
 
 from .Names import regionName, locationName, itemName
 from .Locations import BanjoTooieLocation
@@ -545,6 +546,17 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.HFPE: [],
     regionName.CCLE: [],
     regionName.CKE: [],
+
+    regionName.IHSILOS: [],
+    regionName.MTWARP: [],
+    regionName.GMWARP: [],
+    regionName.WWWARP: [],
+    regionName.JRWARP: [],
+    regionName.TLWARP: [],
+    regionName.GIWARP: [],
+    regionName.HPWARP: [],
+    regionName.CCWARP: [],
+    regionName.CKWARP: [],
 }
 
 #Regions for nests. Regions that don't contain anything are omitted.
@@ -1202,6 +1214,110 @@ SIGNPOST_REGIONS = {
     ],
 }
 
+SILO_REGIONS: typing.Dict[str, typing.List[str]] = {
+    regionName.IOHJV:       [
+      locationName.SILOIOHJV,
+    ],
+    regionName.IOHWH:       [
+      locationName.SILOIOHWH,
+    ],
+    regionName.IOHPL:       [
+      locationName.SILOIOHPL,
+    ],
+    regionName.IOHPG:       [
+      locationName.SILOIOHPG,
+    ],
+    regionName.IOHCT:       [
+      locationName.SILOIOHCT,
+    ],
+    regionName.IOHQM:       [
+      locationName.SILOIOHQM,
+    ],
+    regionName.IOHWL:       [
+      locationName.SILOIOHWL,
+    ],
+}
+# TODO: fix
+WARP_PAD_REGIONS: typing.Dict[str, typing.List[str]] = {
+    regionName.MT:       [
+        locationName.WARPMT1,
+        locationName.WARPMT2,
+        locationName.WARPMT3,
+        locationName.WARPMT4,
+        locationName.WARPMT5,
+    ],
+    regionName.MTJSG:    [
+
+    ],
+    regionName.MTPC:    [
+
+    ],
+    regionName.GM:       [
+        locationName.WARPGM1,
+        locationName.WARPGM2,
+        locationName.WARPGM3,
+        locationName.WARPGM4,
+        locationName.WARPGM5,
+    ],
+    regionName.WW:      [
+        locationName.WARPWW1,
+        locationName.WARPWW2,
+        locationName.WARPWW3,
+        locationName.WARPWW4,
+        locationName.WARPWW5,
+    ],
+    regionName.JR:      [
+        locationName.WARPJR1,
+        locationName.WARPJR2,
+        locationName.WARPJR3,
+        locationName.WARPJR4,
+        locationName.WARPJR5,
+    ],
+    regionName.JRU: [
+    ],
+    regionName.JRAT: [
+    ],
+    regionName.TL:      [
+        locationName.WARPTL1,
+        locationName.WARPTL2,
+        locationName.WARPTL3,
+        locationName.WARPTL4,
+        locationName.WARPTL5,
+    ],
+    regionName.GI1: [
+        locationName.WARPGI1,
+        locationName.WARPGI2,
+        locationName.WARPGI3,
+        locationName.WARPGI4,
+        locationName.WARPGI5,
+    ],
+    regionName.GI2: [
+    ],
+    regionName.GI3: [
+    ],
+    regionName.GI4: [
+
+    ],
+    regionName.GI5: [
+    ],
+    regionName.HP: [
+        locationName.WARPHP1,
+        locationName.WARPHP2,
+        locationName.WARPHP3,
+        locationName.WARPHP4,
+        locationName.WARPHP5,
+    ],
+    regionName.CC: [
+        locationName.WARPCC1,
+        locationName.WARPCC2,
+    ],
+    regionName.CK: [
+        locationName.WARPCK1,
+        locationName.WARPCK2,
+
+    ],
+}
+
 def create_regions(self):
     player = self.player
     active_locations = self.location_name_to_id
@@ -1275,12 +1391,34 @@ def create_regions(self):
             for location in locations:
                 region_map[region].append(location)
 
+    add_silo_locations(self, region_map)
+
+    warp_map = copy.deepcopy(WARP_PAD_REGIONS)
+    for region, locations in warp_map.items():
+        for location in locations:
+            region_map[region].append(location)
+
 
     self.multiworld.regions.extend(create_region(self.multiworld, self.player,\
           active_locations, region, locations) for region, locations in region_map.items())
     if self.options.victory_condition in (VictoryCondition.option_hag1, VictoryCondition.option_wonderwing_challenge, VictoryCondition.option_boss_hunt_and_hag1):
         self.multiworld.get_location(locationName.HAG1, player).place_locked_item(self.create_event_item(itemName.VICTORY))
 
+def add_silo_locations(self, region_map):
+    silo_map = copy.deepcopy(SILO_REGIONS)
+
+    # If silos not randomised, pre-opened silos don't have a check.
+    ignored_silos = []
+    if not self.options.randomize_silos:
+        items_to_locations = {silo_name: silo_data.default_location for silo_name, silo_data in silo_table.items()}
+        for item, location in items_to_locations.items():
+            if item in self.preopened_silos:
+                ignored_silos.append(items_to_locations[item])
+
+    for region, locations in silo_map.items():
+        for location in locations:
+            if location not in ignored_silos:
+                region_map[region].append(location)
 
 def create_region(multiworld, player: int, active_locations, name: str, locations=None):
     ret = Region(name, player, multiworld)
@@ -1539,7 +1677,7 @@ def connect_regions(self):
     region_ck_entrance = self.get_region(regionName.CKE)
     region_ck_entrance.add_exits({regionName.IOHQM}, {regionName.IOHQM: lambda state: rules.CK_to_Quag(state)})
 
-    region_ioh_silos = self.get_region(regionName.CKE)
+    region_ioh_silos = self.get_region(regionName.IHSILOS)
     region_ioh_silos.add_exits({regionName.IOHJV, regionName.IOHWH, regionName.IOHPL, regionName.IOHPG, regionName.IOHCT, regionName.IOHWL, regionName.IOHQM}, {
                                   regionName.IOHJV: lambda state: state.has(itemName.SILOIOHJV, player),
                                   regionName.IOHWH: lambda state: state.has(itemName.SILOIOHWH, player),
