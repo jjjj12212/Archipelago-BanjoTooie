@@ -1,4 +1,9 @@
+# 4.4
+ - New Egg Behaviour Option
+  - Simple Randomize Starting Eggs (you will start with a random egg, but it won't be Clockworks)
+
 # 4.3
+  - You are now required to use Bizhawk 2.10. 2.9.1 and lower are not supported.
   - New filler options
     - We retired the "traps" option in favor of "max_traps". Now you can set a hard limit for how much suffering you want!
     - We now allow you full customization of how likely each filler or trap item would appear in the filler pool.
@@ -8,6 +13,7 @@
       - Yes, you can have a jiggy jamboree if you want (up to 250 jiggies)
   - Read hints will now be added to Archipelego.
     - Due to a limitation, only your own locations will be added as hints in AP; your items in other people worlds won't be added.
+  - Fixed a bug where some regions can be logically inaccessible despite having the required items to reach them.
   - Logic fixes
     - Plateau stuff: talon trot can be gotten from the Cliff Top Claw Clamber Boots.
     - MT to GGM: Intended logic no longer logically requires the stony.
@@ -28,6 +34,9 @@
     - CCL Green Pool Stuff: Jumping from the outside to skip dive is now in easy tricks.
     - CCL Indoors Glowbo: can be gotten with Shack Pack
   - The generation now throws an OptionError when a yaml has incompatible options.
+  - Lots of Test fixes (development)
+  - Should now be compatible with other AP games that uses get_all_state()
+  - changed Dialog messages when receiving your own items (normanhenges)
 
 # 4.2.1
   - randomize BK moves requires either randomize notes, nestanity, or randomize signposts to fix generation issues

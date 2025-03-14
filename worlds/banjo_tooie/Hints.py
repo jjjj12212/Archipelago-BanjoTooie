@@ -1,18 +1,30 @@
-from typing import List, NamedTuple, Union
+from typing import List, Union
+from dataclasses import dataclass
 from BaseClasses import ItemClassification, Location
 from worlds.AutoWorld import World
 from .Options import HintClarity, AddSignpostHintsToArchipelagoHints
 from .Items import moves_table, bk_moves_table, progressive_ability_table
 from .Locations import all_location_table
 from .Names import locationName
+import re
+
 
 TOTAL_HINTS = 61
 
-class HintData(NamedTuple):
+@dataclass
+class HintData:
     text: str # The displayed text in the game.
     location_id: Union[int, None] = None
     location_player_id: Union[int, None] = None
     should_add_hint: bool = False
+
+    def __post_init__(self):
+        self.text = self.sanitize_text(self.text)
+
+    def sanitize_text(self, text: str) -> str:
+        text = text.replace('_', ' ')
+        # split any text that is larger than 20 characters
+        return ' '.join(re.findall(r'\S{1,20}', text))
 
 def generate_hints(world: World):
     hint_datas: List[HintData] = []

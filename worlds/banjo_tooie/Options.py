@@ -149,6 +149,7 @@ class EggsBehaviour(Choice):
     option_start_with_blue_eggs = 0
     option_random_starting_egg = 1
     option_progressive_eggs = 2
+    option_simple_random_starting_egg = 3 #no clockworks
     default = 0
 
 class ProgressiveShoes(Toggle):
@@ -262,10 +263,22 @@ class EnableNestsanity(Toggle):
     """Eggs and feather nests give checks when you collect them for the first time. They behave as regular egg nests after they have been collected."""
     display_name = "Nestsanity"
 
+class ReplaceExtraJiggies(DefaultOnToggle):
+    """Jiggies over the maximum needed to beat the seed (plus a generous buffer) are replaced by fillers/traps.
+       If turned off, you are guranteed exactly 90 jiggies.
+       You can control how likely extra jiggies show up as fillers by extra_jiggies_weight."""
+    display_name = "Replace Extra Jiggies with filler"
+
+class ReplaceExtraNotes(DefaultOnToggle):
+    """Notes over the maximum needed to beat the seed (plus a generous buffer) are replaced by fillers/traps.
+       If turned off, you are guranteed exactly 900 notes in total.
+       You can control how likely extra notes show up as fillers by extra_notes_weight."""
+    display_name = "Replace Extra Notes with filler"
+
 # -- START OF FILLERS WEIGHTS -------------------------------------------------
 
 class ExtraJiggiesWeight(Range):
-    """The weight of Jiggies in the filler pool.
+    """The weight of Jiggies in the filler pool. Requires replace_extra_jiggies.
     You are guarenteed enough jigges to open all levels. These are extra."""
     display_name = "Extra Jiggies Weight"
     range_start = 0
@@ -273,7 +286,7 @@ class ExtraJiggiesWeight(Range):
     default = 15
 
 class ExtraNotesWeight(Range):
-    """The weight of 5 pack notes in the filler pool. Only has effect if randomize_notes is on.
+    """The weight of 5 pack notes in the filler pool. Requires randomize_notes and replace_extra_notes.
     You are guarenteed enough notes to open all jamjars silos. These are extra."""
     display_name = "Extra 5 Notes Weight"
     range_start = 0
@@ -281,7 +294,7 @@ class ExtraNotesWeight(Range):
     default = 10
 
 class ExtraDoubloonsWeight(Range):
-    """The weight of extra doubloons in the filler pool. Only has effect if randomize_doubloons is on.
+    """The weight of extra doubloons in the filler pool. Requires randomize_doubloons.
     You are guarenteed the original 30 doubloons. These are extra."""
     display_name = "Extra Doubloons Weight"
     range_start = 0
@@ -613,6 +626,9 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_dino_roar: RandomizeWorldDinoRoar
     nestsanity: EnableNestsanity
     randomize_signposts: RandomizeSignposts
+
+    replace_extra_jiggies: ReplaceExtraJiggies
+    replace_extra_notes: ReplaceExtraNotes
 
     extra_jiggies_weight: ExtraJiggiesWeight
     extra_notes_weight: ExtraNotesWeight
