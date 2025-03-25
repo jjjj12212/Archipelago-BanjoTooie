@@ -9,7 +9,7 @@ import warnings
 
 from .Hints import HintData, generate_hints
 from .Items import BanjoTooieItem, ItemData, all_item_table, all_group_table, progressive_ability_breakdown
-from .Locations import BanjoTooieLocation, LocationData, all_location_table, MTLoc_Table, GMLoc_table, WWLoc_table, JRLoc_table, TLLoc_table, GILoc_table, HPLoc_table, CCLoc_table, MumboTokenGames_table, MumboTokenBoss_table, MumboTokenJinjo_table
+from .Locations import BanjoTooieLocation, LocationData, all_location_table, MTLoc_Table, GMLoc_table, WWLoc_table, JRLoc_table, TLLoc_table, GILoc_table, HPLoc_table, CCLoc_table, MumboTokenGames_table, MumboTokenBoss_table, MumboTokenJinjo_table, SMLoc_table, JVLoc_table, IHWHLoc_table, IHPLLoc_table, PGLoc_table, IHCTLoc_table, IHWLLoc_table, IHQMLoc_table, SMCRLoc_table, JVJRLoc_table, IHHBLoc_table
 from .Regions import create_regions, connect_regions
 from .Options import BanjoTooieOptions, EggsBehaviour, JamjarsSiloCosts, LogicType, ProgressiveEggAim, ProgressiveWaterTraining, RandomizeBKMoveList, TowerOfTragedy, VictoryCondition
 from .Rules import BanjoTooieRules
@@ -82,6 +82,28 @@ class BanjoTooieWorld(World):
         "Access": all_group_table["levelaccess"],
         "Dino": all_group_table["dino"]
     }
+
+    location_name_groups = {}
+    location_name_groups["Mayahem Temple"] = MTLoc_Table.keys()
+    location_name_groups["Glitter Gulch Mine"] = GMLoc_table.keys()
+    location_name_groups["WitchyWorld"] = WWLoc_table.keys()
+    location_name_groups["Jolly Roger's Lagoon"] = JRLoc_table.keys()
+    location_name_groups["Terrydactyland"] = TLLoc_table.keys()
+    location_name_groups["Grunty Industries"] = GILoc_table.keys()
+    location_name_groups["Hailfire Peaks"] = HPLoc_table.keys()
+    location_name_groups["Cloud Cuckooland"] = CCLoc_table.keys()
+    location_name_groups["Isle O' Hags"] = SMLoc_table.keys() | JVLoc_table.keys() | IHWHLoc_table.keys() | IHPLLoc_table.keys() | PGLoc_table.keys() | IHCTLoc_table.keys() | IHWLLoc_table.keys() | IHQMLoc_table.keys()
+    
+    location_name_groups["Cheato Rewards"] = SMCRLoc_table.keys()
+    location_name_groups["Jinjo Rewards"] = JVJRLoc_table.keys()
+    location_name_groups["Honey B Rewards"] = IHHBLoc_table.keys()
+
+    location_name_groups["Empty Honeycombs"] = {c for c in all_location_table if all_location_table[c].group == "Honeycomb"}
+    location_name_groups["Cheato Pages"] = {c for c in all_location_table if all_location_table[c].group == "Cheato Page"}
+    location_name_groups["Notes"] = {c for c in all_location_table if all_location_table[c].group == "Note"}
+    location_name_groups["Treble Clefs"] = {c for c in all_location_table if all_location_table[c].group == "Treble Clef"}
+    location_name_groups["Doubloons"] = {c for c in JRLoc_table if JRLoc_table[c].group == "Doubloon"}
+    location_name_groups["Signposts"] = {c for c in all_location_table if all_location_table[c].group == "Signpost"}
 
     options_dataclass =  BanjoTooieOptions
     options: BanjoTooieOptions
