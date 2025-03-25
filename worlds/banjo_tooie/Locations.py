@@ -23,12 +23,6 @@ SMLoc_table = {
     locationName.ROYSTEN1:   LocationData(1230777, 0x36, 2), #obtained when breaking out roysten
     locationName.ROYSTEN2:   LocationData(1230778, 0x9E, 6), #obtained when breaking out roysten
 
-    locationName.CHEATOR1:  LocationData(1230992, 0x08, 4),
-    locationName.CHEATOR2:  LocationData(1230993, 0x08, 5),
-    locationName.CHEATOR3:  LocationData(1230994, 0x08, 6),
-    locationName.CHEATOR4:  LocationData(1230995, 0x08, 7),
-    locationName.CHEATOR5:  LocationData(1230996, 0x09, 0),
-
     locationName.PMEGG:     LocationData(1230956, 0x77, 5),
     locationName.BMEGG:     LocationData(1230957, 0x77, 3),
 
@@ -60,16 +54,15 @@ SMLoc_table = {
     locationName.NESTSM25: LocationData(1231034),
 }
 
+SMCRLoc_table = {
+    locationName.CHEATOR1:  LocationData(1230992, 0x08, 4),
+    locationName.CHEATOR2:  LocationData(1230993, 0x08, 5),
+    locationName.CHEATOR3:  LocationData(1230994, 0x08, 6),
+    locationName.CHEATOR4:  LocationData(1230995, 0x08, 7),
+    locationName.CHEATOR5:  LocationData(1230996, 0x09, 0),
+}
+
 JVLoc_table = {
-    locationName.JIGGYIH1:  LocationData(1230676, 0x4F, 0),
-    locationName.JIGGYIH2:  LocationData(1230677, 0x4F, 1),
-    locationName.JIGGYIH3:  LocationData(1230678, 0x4F, 2),
-    locationName.JIGGYIH4:  LocationData(1230679, 0x4F, 3),
-    locationName.JIGGYIH5:  LocationData(1230680, 0x4F, 4),
-    locationName.JIGGYIH6:  LocationData(1230681, 0x4F, 5),
-    locationName.JIGGYIH7:  LocationData(1230682, 0x4F, 6),
-    locationName.JIGGYIH8:  LocationData(1230683, 0x4F, 7),
-    locationName.JIGGYIH9:  LocationData(1230684, 0x50, 0),
     locationName.JIGGYIH10: LocationData(1230685, 0x50, 1),
     locationName.TREBLEJV:  LocationData(1230789, 0x97, 7, "Treble Clef"),  #Set last ID for Clef Family. Client Reasons
     locationName.IKEY:      LocationData(1230958, 0, 0), #Needs to be handled on client side
@@ -96,6 +89,18 @@ JVLoc_table = {
     locationName.SIGNIH1:   LocationData(1231483, 0, 0, "Signpost"),
 
     locationName.SILOIOHJV:   LocationData(1231550, 0, 0, "Silos"),
+}
+
+JVJRLoc_table = {
+    locationName.JIGGYIH1:  LocationData(1230676, 0x4F, 0),
+    locationName.JIGGYIH2:  LocationData(1230677, 0x4F, 1),
+    locationName.JIGGYIH3:  LocationData(1230678, 0x4F, 2),
+    locationName.JIGGYIH4:  LocationData(1230679, 0x4F, 3),
+    locationName.JIGGYIH5:  LocationData(1230680, 0x4F, 4),
+    locationName.JIGGYIH6:  LocationData(1230681, 0x4F, 5),
+    locationName.JIGGYIH7:  LocationData(1230682, 0x4F, 6),
+    locationName.JIGGYIH8:  LocationData(1230683, 0x4F, 7),
+    locationName.JIGGYIH9:  LocationData(1230684, 0x50, 0),
 }
 
 MTLoc_Table = {
@@ -211,12 +216,6 @@ IHPLLoc_table = {
     locationName.NOTEIH3:   LocationData(1230930, 0x96, 1, "Note"),
     locationName.NOTEIH4:   LocationData(1230931, 0x96, 2, "Note"),
 
-    locationName.HONEYBR1:  LocationData(1230997, 0x98, 2),
-    locationName.HONEYBR2:  LocationData(1230998, 0x98, 3),
-    locationName.HONEYBR3:  LocationData(1230999, 0x98, 0), #binary. bit 2 and 3 is set
-    locationName.HONEYBR4:  LocationData(1231000, 0x98, 4),
-    locationName.HONEYBR5:  LocationData(1231001, 0x98, 0), #binary. bit 2 and 4 is set
-
     locationName.NESTIH27: LocationData(1231061),
     locationName.NESTIH28: LocationData(1231062),
     locationName.NESTIH29: LocationData(1231063),
@@ -226,6 +225,14 @@ IHPLLoc_table = {
     locationName.NESTIH33: LocationData(1231067),
 
     locationName.SILOIOHPL:   LocationData(1231552, 0, 0, "Silos"),
+}
+
+IHHBLoc_table = {
+    locationName.HONEYBR1:  LocationData(1230997, 0x98, 2),
+    locationName.HONEYBR2:  LocationData(1230998, 0x98, 3),
+    locationName.HONEYBR3:  LocationData(1230999, 0x98, 0), #binary. bit 2 and 3 is set
+    locationName.HONEYBR4:  LocationData(1231000, 0x98, 4),
+    locationName.HONEYBR5:  LocationData(1231001, 0x98, 0), #binary. bit 2 and 4 is set
 }
 
 GMLoc_table = {
@@ -1094,6 +1101,18 @@ IHWHLoc_table = {
     locationName.SILOIOHWH:   LocationData(1231551, 0, 0, "Silos"),
 }
 
+IHWHWLoc_table = {
+    locationName.W1:      LocationData(1230944, 0, 0),
+    locationName.W2:      LocationData(1230945, 0, 0),
+    locationName.W3:      LocationData(1230946, 0, 0),
+    locationName.W4:      LocationData(1230947, 0, 0),
+    locationName.W5:      LocationData(1230948, 0, 0),
+    locationName.W6:      LocationData(1230949, 0, 0),
+    locationName.W7:      LocationData(1230950, 0, 0),
+    locationName.W8:      LocationData(1230951, 0, 0),
+    locationName.W9:      LocationData(1230952, 0, 0),
+}
+
 IHWLLoc_table = {
     locationName.JINJOIH2: LocationData(1230592, 0x3E, 5),
     locationName.CEGGS:   LocationData(1230767, 0x1E, 3),
@@ -1205,10 +1224,14 @@ MumboTokenJinjo_table = {
 
 all_location_table = {
     **SMLoc_table,
+    **SMCRLoc_table,
     **JVLoc_table,
+    **JVJRLoc_table,
     **IHWHLoc_table,
+    **IHWHWLoc_table,
     **MTLoc_Table,
     **IHPLLoc_table,
+    **IHHBLoc_table,
     **GMLoc_table,
     **IHPGLoc_table,
     **WWLoc_table,
