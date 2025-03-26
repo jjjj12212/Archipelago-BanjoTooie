@@ -22,9 +22,26 @@ class HintData:
         self.text = self.sanitize_text(self.text)
 
     def sanitize_text(self, text: str) -> str:
+        N = 18
         text = text.replace('_', ' ')
-        # split any text that is larger than 20 characters
-        return ' '.join(re.findall(r'\S{1,20}', text))
+
+        words = text.split()
+        modified_words = []
+
+        for word in words:
+            if len(word) > N:
+                # Try to split by PascalCase (uppercase letters within the word)
+                split_by_pascal = re.sub(r'([a-z])([A-Z])', r'\1 \2', word)
+
+                if word != split_by_pascal:
+                    modified_words.append(split_by_pascal)
+                else:
+                    forced_split = ' '.join(word[i:i+N] for i in range(0, len(word), N))
+                    modified_words.append(forced_split)
+            else:
+                modified_words.append(word)
+
+        return ' '.join(modified_words)
 
 def generate_hints(world: World):
     hint_datas: List[HintData] = []
