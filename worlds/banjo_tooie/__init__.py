@@ -117,8 +117,10 @@ class BanjoTooieWorld(World):
         locationName.JIGGYGM1,
         locationName.JIGGYWW3,
         locationName.JIGGYJR7,
+        locationName.JIGGYTD1,
         locationName.JIGGYTD4,
         locationName.JIGGYGI2,
+        locationName.CHEATOGI3,
         locationName.JIGGYHP1,
         locationName.JIGGYCC1,
     }
