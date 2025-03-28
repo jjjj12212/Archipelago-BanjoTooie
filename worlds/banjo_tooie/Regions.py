@@ -577,7 +577,6 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
 }
 
 #Regions for nests. Regions that don't contain anything are omitted.
-#TODO: double-check region split
 NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
     "Menu":              [],
     regionName.SM:       [
@@ -773,8 +772,7 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.NESTWW17,
       locationName.NESTWW18,
       locationName.NESTWW19,
-      locationName.NESTWW20,
-      locationName.NESTWW21,
+
       locationName.NESTWW22,
       locationName.NESTWW23,
       locationName.NESTWW24,
@@ -796,6 +794,10 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.NESTWW40,
       locationName.NESTWW41,
       locationName.NESTWW42,
+    ],
+    regionName.WWI:     [
+      locationName.NESTWW20,
+      locationName.NESTWW21,
     ],
     regionName.WWA51NESTS:   [
       locationName.NESTWW5,
@@ -1286,7 +1288,7 @@ SILO_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.SILOIOHWL,
     ],
 }
-# TODO: fix
+
 WARP_PAD_REGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.MT:       [
         locationName.WARPMT1,
@@ -1313,6 +1315,8 @@ WARP_PAD_REGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.WARPWW2,
         locationName.WARPWW3,
         locationName.WARPWW4,
+    ],
+    regionName.WWI:     [
         locationName.WARPWW5,
     ],
     regionName.JR:      [
@@ -1333,9 +1337,13 @@ WARP_PAD_REGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.TL:      [
         locationName.WARPTL1,
         locationName.WARPTL2,
-        locationName.WARPTL3,
         locationName.WARPTL4,
+    ],
+    regionName.TLTOP:   [
         locationName.WARPTL5,
+    ],
+    regionName.TLSP:    [
+        locationName.WARPTL3,
     ],
     regionName.GI1: [
         locationName.WARPGI1,
@@ -1512,13 +1520,12 @@ def connect_regions(self):
                         })
 
     region_MT = self.get_region(regionName.MT)
-    region_MT.add_exits({regionName.MTWARP, regionName.MTJSG, regionName.MTPC, regionName.MTKS, regionName.TL_HATCH, regionName.HP}, { #TODO: all the transitions in this
+    region_MT.add_exits({regionName.MTWARP, regionName.MTJSG, regionName.MTPC, regionName.MTKS, regionName.TL_HATCH}, {
                             regionName.MTWARP: lambda state: state.has(itemName.WARPMT1, player) or state.has(itemName.WARPMT2, player),
                             regionName.MTJSG: lambda state: rules.MT_to_JSG(state),
                             regionName.MTPC: lambda state: rules.prison_compound_open(state),
                             regionName.MTKS: lambda state: rules.MT_to_KS(state),
-                            regionName.TL_HATCH: lambda state: rules.jiggy_treasure_chamber(state),
-                            regionName.HP: lambda state: rules.mt_hfp_backdoor(state)
+                            regionName.TL_HATCH: lambda state: rules.jiggy_treasure_chamber(state)
                         })
 
     region_MTJSG = self.get_region(regionName.MTJSG)
@@ -1527,13 +1534,15 @@ def connect_regions(self):
                         })
 
     region_MTPC = self.get_region(regionName.MTPC)
-    region_MTPC.add_exits({regionName.MT, regionName.MTWARP, regionName.GM}, { # TODO: GM
-                            regionName.MTWARP: lambda state: state.has(itemName.WARPMT3, player)
+    region_MTPC.add_exits({regionName.MT, regionName.MTWARP, regionName.GM}, {
+                            regionName.MTWARP: lambda state: state.has(itemName.WARPMT3, player),
+                            regionName.GM: lambda state: rules.prison_compound_as_banjo(state) and rules.bill_drill(state)
                         })
 
     region_MTKS = self.get_region(regionName.MTKS)
-    region_MTKS.add_exits({regionName.MT, regionName.MTWARP, regionName.HP}, { # TODO: Only banjo to HFP.
-                            regionName.MTWARP: lambda state: state.has(itemName.WARPMT5, player)
+    region_MTKS.add_exits({regionName.MT, regionName.MTWARP, regionName.HP}, {
+                            regionName.MTWARP: lambda state: state.has(itemName.WARPMT5, player),
+                            regionName.HP: lambda state: rules.mt_hfp_backdoor(state),
                         })
 
     region_MTWARP = self.get_region(regionName.MTWARP)
@@ -1602,7 +1611,6 @@ def connect_regions(self):
                             regionName.JRU: lambda state: rules.can_dive_in_JRL(state),
                             regionName.JRWARP: lambda state: state.has(itemName.WARPJR1, self.player),})
 
-    # TODO: transitions
     region_JRU = self.get_region(regionName.JRU)
     region_JRU.add_exits({regionName.JRAT},
                         {regionName.JRAT: lambda state: rules.can_pass_octopi(state)})
@@ -1672,10 +1680,10 @@ def connect_regions(self):
                          regionName.TLWARP: lambda state: rules.tdl_to_warp_pads(state),
                          })
 
-    # TODO: fix the transitions.
     region_TLTOP = self.get_region(regionName.TLTOP)
     region_TLTOP.add_exits({regionName.TLSP, regionName.TLWARP},
-                        {regionName.TLSP: lambda state: rules.can_cross_bonfire_cavern(state)
+                        {regionName.TLSP: lambda state: rules.can_cross_bonfire_cavern(state),
+                        regionName.TLWARP: lambda state: state.has(itemName.WARPTL5, player),
                          })
 
     region_TLSP = self.get_region(regionName.TLSP)
