@@ -4,7 +4,7 @@ from .Names import itemName, locationName
 
 
 class BanjoTooieItem(Item):
-    # 1230833 (TITRAP) but beware of level access keys that are way higher!
+    # 1230915 (CKWARP2) but beware of level access keys that are way higher!
     game: str = "Banjo-Tooie"
 class ItemData(NamedTuple):
     btid: int = 0

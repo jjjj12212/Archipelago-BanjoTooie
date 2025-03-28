@@ -413,8 +413,6 @@ class BanjoTooieRules:
 
         }
         self.glowbo_rules = {
-            locationName.GLOWBOMT2: lambda state: self.can_access_JSG(state),
-
             locationName.GLOWBOGM1: lambda state: self.glowbo_entrance_ggm(state),
 
             locationName.GLOWBOWW1: lambda state: self.glowbo_inferno(state),
@@ -475,8 +473,7 @@ class BanjoTooieRules:
 
             locationName.EGGAIM: lambda state: self.check_notes(state, locationName.EGGAIM),
             locationName.BBLASTER: lambda state: self.check_notes(state, locationName.BBLASTER),
-            locationName.GGRAB: lambda state: self.can_access_JSG(state) and
-                                              self.check_notes(state, locationName.GGRAB),
+            locationName.GGRAB: lambda state: self.check_notes(state, locationName.GGRAB),
 
             locationName.BDRILL: lambda state: self.silo_bill_drill(state),
             locationName.BBAYONET: lambda state: self.GM_boulders(state) and self.check_notes(state, locationName.BBAYONET),
@@ -487,7 +484,7 @@ class BanjoTooieRules:
 
             locationName.AUQAIM: lambda state: (self.has_explosives(state) or state.has(itemName.DOUBLOON, self.player, 28)) and
                                                self.check_notes(state, locationName.AUQAIM),
-            locationName.TTORP: lambda state:  self.can_access_talon_torpedo_silde(state) and
+            locationName.TTORP: lambda state:  self.can_access_talon_torpedo_silo(state) and
                                                self.check_notes(state, locationName.TTORP),
             locationName.WWHACK: lambda state: (self.has_explosives(state)) and self.split_up(state) and
                                                self.check_notes(state, locationName.WWHACK),
@@ -1009,8 +1006,7 @@ class BanjoTooieRules:
             locationName.SIGNIH5: lambda state: self.signpost_jiggywiggy_back(state),
 
             locationName.SIGNMT3: lambda state: self.nest_pillars(state),
-            locationName.SIGNMT5: lambda state: self.glowbo_JSG(state),
-            locationName.SIGNMT6: lambda state: self.glowbo_JSG(state),
+
             locationName.SIGNMT7: lambda state: self.signpost_code_chamber(state),
             locationName.SIGNMT8: lambda state: self.breegull_blaster(state),
             locationName.SIGNMT9: lambda state: self.breegull_blaster(state),
@@ -1092,13 +1088,13 @@ class BanjoTooieRules:
     def jiggy_mayahem_kickball(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.humbaMT(state) and self.check_mumbo_magic(state, itemName.MUMBOMT)
+            logic = self.humbaMT(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.humbaMT(state) and self.check_mumbo_magic(state, itemName.MUMBOMT)
+            logic = self.humbaMT(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.humbaMT(state) and self.check_mumbo_magic(state, itemName.MUMBOMT)
+            logic = self.humbaMT(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.humbaMT(state) and self.glitchedJSGAccess(state)
+            logic = self.humbaMT(state)
         return logic
 
     def jiggy_bovina(self, state: CollectionState) -> bool:
@@ -3087,18 +3083,6 @@ class BanjoTooieRules:
                 self.clockwork_shot(state)
         return logic
 
-    def glowbo_JSG(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.check_mumbo_magic(state, itemName.MUMBOMT)
-        elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.check_mumbo_magic(state, itemName.MUMBOMT)
-        elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.check_mumbo_magic(state, itemName.MUMBOMT)
-        elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.glitchedJSGAccess(state)
-        return logic
-
     def glowbo_entrance_ggm(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
@@ -3339,19 +3323,16 @@ class BanjoTooieRules:
     def jinjo_jadesnakegrove(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.grip_grab(state) and self.check_mumbo_magic(state, itemName.MUMBOMT) and self.flap_flip(state)
+            logic = self.grip_grab(state) and self.flap_flip(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.check_mumbo_magic(state, itemName.MUMBOMT) and self.flap_flip(state) and\
+            logic = self.flap_flip(state) and\
                     (self.beak_buster(state) or self.grip_grab(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.check_mumbo_magic(state, itemName.MUMBOMT) and (
-                    (self.flap_flip(state) and (self.beak_buster(state) or self.grip_grab(state))) or\
-                    self.clockwork_shot(state))
+            logic = (self.flap_flip(state) and (self.beak_buster(state) or self.grip_grab(state))) or\
+                    self.clockwork_shot(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.glitchedJSGAccess(state) and (
-                    (self.flap_flip(state) and (self.beak_buster(state) or self.grip_grab(state))) or\
-                    self.clockwork_shot(state))\
-                    or state.has(itemName.MUMBOMT, self.player)
+            logic = (self.flap_flip(state) and (self.beak_buster(state) or self.grip_grab(state))) or\
+                    self.clockwork_shot(state)
         return logic
 
     def jinjo_stadium(self, state: CollectionState) -> bool:
@@ -6222,17 +6203,17 @@ class BanjoTooieRules:
     def signpost_code_chamber(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.check_mumbo_magic(state, itemName.MUMBOMT) and self.grip_grab(state)\
-                  and self.talon_trot(state) and self.flap_flip(state)
+            logic = self.grip_grab(state)\
+                    and self.talon_trot(state) and self.flap_flip(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.check_mumbo_magic(state, itemName.MUMBOMT) and self.grip_grab(state)\
-                  and self.talon_trot(state) and self.flap_flip(state)
+            logic = self.grip_grab(state)\
+                    and self.talon_trot(state) and self.flap_flip(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.check_mumbo_magic(state, itemName.MUMBOMT) and self.grip_grab(state)\
-                  and self.talon_trot(state) and self.flap_flip(state)
+            logic = self.grip_grab(state)\
+                    and self.talon_trot(state) and self.flap_flip(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.glitchedJSGAccess(state) and self.grip_grab(state)\
-                  and self.talon_trot(state) and self.flap_flip(state)
+            logic = self.grip_grab(state)\
+                    and self.talon_trot(state) and self.flap_flip(state)
         return logic
 
     def signpost_gloomy_cavern(self, state: CollectionState) -> bool:
@@ -6911,6 +6892,15 @@ class BanjoTooieRules:
                              or state.has(itemName.WARPMT4, self.player) or state.has(itemName.WARPMT5, self.player))
                 )
 
+    def kickball_stadium_as_banjo(self, state: CollectionState) -> bool:
+        return state.can_reach_region(regionName.HP, self.player) and self.HFP_to_MT(state)\
+                or state.has(itemName.WARPMT5, self.player) and (
+                    state.has(itemName.WARPMT1, self.player)\
+                    or state.has(itemName.WARPMT2, self.player)\
+                    or state.has(itemName.WARPMT3, self.player) and self.prison_compound_as_banjo(state)\
+                    or state.has(itemName.WARPMT4, self.player) and state.can_reach_region(regionName.MTJSG, self.player)
+                )
+
     def dilberta_free(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == LogicType.option_intended:
             return self.prison_compound_as_banjo(state) and self.bill_drill(state)
@@ -7435,21 +7425,7 @@ class BanjoTooieRules:
         return logic
 
     def mt_hfp_backdoor(self, state: CollectionState) -> bool:
-        logic = True
-        if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and\
-                   self.backdoors_enabled(state)
-        elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
-                   self.backdoors_enabled(state)
-        elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT) and \
-                   self.backdoors_enabled(state)
-        elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = (self.check_humba_magic(state, itemName.HUMBAMT) and self.check_mumbo_magic(state, itemName.MUMBOMT)\
-                        or self.MT_flight_pad(state) and self.beak_bomb(state))\
-                    and self.backdoors_enabled(state)
-        return logic
+        return self.backdoors_enabled(state) and self.kickball_stadium_as_banjo(state)
 
 
     def ww_tdl_backdoor(self, state: CollectionState) -> bool:

@@ -175,17 +175,17 @@ def choose_unlocked_silos(world: BanjoTooieWorld) -> None:
         world_silo = ""
         if list(world.randomize_order.keys())[0] == regionName.GIO:
             # GI is special. If loading zones are not randomized, the only way to make progress in the level is by riding the train into the level from Cliff Top.
-            world_silo = regionName.IOHQM if world.options.randomize_world_loading_zone else regionName.IOHCT
+            world_silo = itemName.SILOIOHQM if world.options.randomize_world_loading_zone else itemName.SILOIOHCT
         else:
             overworld_lookup = {
-                regionName.MT: world.random.choice([regionName.IOHPL, regionName.IOHPG, regionName.IOHCT, regionName.IOHQM]), # You can already get there, so we give a random silo.
-                regionName.GM: regionName.IOHPL,
-                regionName.WW: regionName.IOHPG,
-                regionName.JR: regionName.IOHCT,
-                regionName.TL: regionName.IOHWL,
-                regionName.HP: regionName.IOHCT,
-                regionName.CC: regionName.IOHWL,
-                regionName.CK: regionName.IOHQM,
+                regionName.MT: world.random.choice([itemName.SILOIOHPL, itemName.SILOIOHPG, itemName.SILOIOHCT, itemName.SILOIOHWL, itemName.SILOIOHQM]), # You can already get there, so we give a random silo.
+                regionName.GM: itemName.SILOIOHPL,
+                regionName.WW: itemName.SILOIOHPG,
+                regionName.JR: itemName.SILOIOHCT,
+                regionName.TL: itemName.SILOIOHWL,
+                regionName.HP: itemName.SILOIOHCT,
+                regionName.CC: itemName.SILOIOHWL,
+                regionName.CK: itemName.SILOIOHQM,
             }
             world_silo = overworld_lookup[list(world.randomize_order.keys())[0]]
 
@@ -203,6 +203,7 @@ def choose_unlocked_silos(world: BanjoTooieWorld) -> None:
             world.preopened_silos.append(silo)
     else:
         raise OptionError("These settings were not considered when randomizing loading zones. Please give us your settings so that we fix it.")
+
 
 def handle_early_moves(world: BanjoTooieWorld) -> None:
     first_level = list(world.randomize_worlds.keys())[0]

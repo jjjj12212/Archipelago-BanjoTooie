@@ -7,7 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
 
 class LocationData(typing.NamedTuple):
-    #last good ID: 1231543 (SIGNCC4)
+    #last good ID: 1231595 (SILOCK2)
     #12C770 pointer instead (1230704)
     btid: int = 0
     # Save + mem addr

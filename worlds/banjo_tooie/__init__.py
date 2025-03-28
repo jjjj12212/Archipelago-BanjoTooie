@@ -439,6 +439,13 @@ class BanjoTooieWorld(World):
         self.pre_fill_me()
 
     def generate_early(self) -> None:
+        self.validate_yaml_options()
+        self.choose_starter_egg()
+        self.choose_starter_attack()
+        WorldRandomize(self)
+        self.hand_preopened_silos()
+
+    def validate_yaml_options(self) -> None:
         if self.options.randomize_worlds and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none and self.options.logic_type == LogicType.option_intended:
             raise OptionError("Randomize Worlds and Randomize BK Moves is not compatible with Beginner Logic.")
         if (not self.options.randomize_notes and not self.options.randomize_signposts and not self.options.nestsanity) and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none:
@@ -469,7 +476,7 @@ class BanjoTooieWorld(World):
         if not self.options.open_hag1 and self.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
             self.options.open_hag1.value = True
 
-
+    def choose_starter_egg(self) -> None:
         if self.options.egg_behaviour == EggsBehaviour.option_random_starting_egg or \
         self.options.egg_behaviour == EggsBehaviour.option_simple_random_starting_egg:
             eggs: list = []
@@ -488,6 +495,7 @@ class BanjoTooieWorld(World):
             banjoItem = all_item_table.get(itemName.BEGGS)
             self.starting_egg = banjoItem.btid
 
+    def choose_starter_attack(self) -> None:
         if self.options.randomize_bk_moves != RandomizeBKMoveList.option_none:
             chosen_attack: str
             base_attacks: list
@@ -520,7 +528,10 @@ class BanjoTooieWorld(World):
             self.multiworld.push_precollected(starting_attack)
             banjoItem = all_item_table.get(chosen_attack)
             self.starting_attack = banjoItem.btid
-        WorldRandomize(self)
+
+    def hand_preopened_silos(self) -> None:
+        for silo in self.preopened_silos:
+            self.multiworld.push_precollected(self.create_item(silo))
 
     def set_rules(self) -> None:
         rules = Rules.BanjoTooieRules(self)
@@ -726,9 +737,7 @@ class BanjoTooieWorld(World):
     def prefill_silos(self):
         for name, data in silo_table.items():
             # A vanilla silo that's pre-opened does not give a check, since its item is in the starting inventory.
-            if name in self.preopened_silos:
-                self.push_precollected(self.create_item(name))
-            else:
+            if name not in self.preopened_silos:
                 item = self.create_item(name)
                 location = self.get_location(data.default_location)
                 location.place_locked_item(item)

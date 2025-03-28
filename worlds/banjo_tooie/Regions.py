@@ -1377,7 +1377,7 @@ def create_regions(self):
         region_map[regionName.WW].append(locationName.MUMBOTKNGAME4)
         region_map[regionName.WW].append(locationName.MUMBOTKNGAME5)
         region_map[regionName.WW].append(locationName.MUMBOTKNGAME6)
-        region_map[regionName.JRAT].append(locationName.MUMBOTKNGAME7)
+        region_map[regionName.JRLC].append(locationName.MUMBOTKNGAME7)
         region_map[regionName.TL].append(locationName.MUMBOTKNGAME8)
         region_map[regionName.GI4B].append(locationName.MUMBOTKNGAME9)
         region_map[regionName.GI3B].append(locationName.MUMBOTKNGAME10)
@@ -1393,7 +1393,7 @@ def create_regions(self):
         region_map[regionName.MT].append(locationName.MUMBOTKNBOSS1)
         region_map[regionName.CHUFFY].append(locationName.MUMBOTKNBOSS2)
         region_map[regionName.WW].append(locationName.MUMBOTKNBOSS3)
-        region_map[regionName.JRAT].append(locationName.MUMBOTKNBOSS4)
+        region_map[regionName.JRLC].append(locationName.MUMBOTKNBOSS4)
         region_map[regionName.TLTOP].append(locationName.MUMBOTKNBOSS5)
         region_map[regionName.GI1].append(locationName.MUMBOTKNBOSS6)
         region_map[regionName.HP].append(locationName.MUMBOTKNBOSS7)
@@ -1629,17 +1629,17 @@ def connect_regions(self):
                          regionName.JRWARP: lambda state: state.has(itemName.WARPJR5, player)})
 
     region_JRBFC = self.get_region(regionName.JRBFC)
-    region_JRBFC.add_exits({regionName.JRLC, region_JRSS2},
+    region_JRBFC.add_exits({regionName.JRLC, regionName.JRSS2},
                         {regionName.JRLC: lambda state: rules.can_escape_big_fish_cave_from_water(state),
                          regionName.JRWARP: lambda state: state.has(itemName.WARPJR5, player)})
 
     region_JRWARP = self.get_region(regionName.JRWARP)
     region_JRWARP.add_exits({regionName.JR, regionName.JRAT, regionName.JRSS, regionName.JRLC, regionName.JRBFC},
                         {regionName.JR: lambda state: state.has(itemName.WARPJR1),
-                         regionName.JRAT: lambda state: state.has(itemName.WARPJR2) and rules.air_pit_from_jrl_warp_pads(state),
-                         regionName.JRSS: lambda state: state.has(itemName.WARPJR3) and rules.air_pit_from_jrl_warp_pads(state),
-                         regionName.JRLC: lambda state: state.has(itemName.WARPJR5) and rules.air_pit_from_jrl_warp_pads(state),
-                         regionName.JRBFC: lambda state: state.has(itemName.WARPJR4) and rules.air_pit_from_jrl_warp_pads(state),
+                         regionName.JRAT: lambda state: state.has(itemName.WARPJR2, player) and rules.air_pit_from_jrl_warp_pads(state),
+                         regionName.JRSS: lambda state: state.has(itemName.WARPJR3, player) and rules.air_pit_from_jrl_warp_pads(state),
+                         regionName.JRLC: lambda state: state.has(itemName.WARPJR5, player) and rules.air_pit_from_jrl_warp_pads(state),
+                         regionName.JRBFC: lambda state: state.has(itemName.WARPJR4, player) and rules.air_pit_from_jrl_warp_pads(state),
                          })
 
     region_HP = self.get_region(regionName.HP)
@@ -1670,12 +1670,12 @@ def connect_regions(self):
     # TODO: fix the transitions.
     region_TLTOP = self.get_region(regionName.TLTOP)
     region_TLTOP.add_exits({regionName.TLSP, regionName.TLWARP},
-                        {regionName.TLSP: lambda state: rules.cross_bonfire_cavern(state)
+                        {regionName.TLSP: lambda state: rules.can_cross_bonfire_cavern(state)
                          })
 
     region_TLSP = self.get_region(regionName.TLSP)
     region_TLSP.add_exits({regionName.TLSP, regionName.TLWARP}, {
-                         regionName.TLTOP: lambda state: rules.cross_bonfire_cavern(state),
+                         regionName.TLTOP: lambda state: rules.can_cross_bonfire_cavern(state),
                          regionName.TLWARP: lambda state: state.has(itemName.WARPTL5, player),
                          })
 
