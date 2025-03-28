@@ -1195,13 +1195,18 @@ SIGNPOST_REGIONS = {
     regionName.MT: [
         locationName.SIGNMT1,
         locationName.SIGNMT2,
-        locationName.SIGNMT3,
-        locationName.SIGNMT4,
+        locationName.SIGNMT8,
+        locationName.SIGNMT9,
+    ],
+    regionName.MTJSG: [
         locationName.SIGNMT5,
         locationName.SIGNMT6,
         locationName.SIGNMT7,
-        locationName.SIGNMT8,
-        locationName.SIGNMT9,
+    ],
+    regionName.MTPC: [
+        locationName.SIGNMT3,
+        locationName.SIGNMT4,
+
     ],
     regionName.GM: [
         locationName.SIGNGM1,
