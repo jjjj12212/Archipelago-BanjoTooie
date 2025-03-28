@@ -452,8 +452,8 @@ class TestNoReplaceExtraNotesRespectCount(FillersTrapTestBase):
         **ADD_16_FILLERS_FROM_BK_MOVES,
 
         # This also adds 9 filler
-        "extra_trebleclefs_count": 21,
-        "bass_clef_amount": 30,
+        "extra_trebleclefs_count": 15,
+        "bass_clef_amount": 20,
         "randomize_notes": "true",
 
         "replace_extra_notes": "false",
@@ -462,8 +462,8 @@ class TestNoReplaceExtraNotesRespectCount(FillersTrapTestBase):
     def test_fillers_and_traps_pool(self) -> None:
         pool = self.pool()
 
-        assert pool.total_distribution[itemName.BASS] == 30
-        assert pool.total_distribution[itemName.TREBLE] == 9 + 21
+        assert pool.total_distribution[itemName.BASS] == 20
+        assert pool.total_distribution[itemName.TREBLE] == 9 + 15
 
         assert pool.total_distribution[itemName.NOTE] * 5 \
                + pool.total_distribution[itemName.BASS] * 10 \
