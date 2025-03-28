@@ -57,7 +57,7 @@ class BanjoTooieWorld(World):
     """
 
     game: str = "Banjo-Tooie"
-    version = "V4.3"
+    version = "V4.4"
     web = BanjoTooieWeb()
     topology_present = True
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
@@ -471,8 +471,8 @@ class BanjoTooieWorld(World):
             raise OptionError("You cannot have progressive bash attack without randomizing Stop N Swap and randomizing BK moves")
         if not self.options.randomize_moves and self.options.jamjars_silo_costs != JamjarsSiloCosts.option_vanilla:
             raise OptionError("You cannot change the silo costs without randomizing Jamjars' moves.")
-        if not self.options.randomize_moves and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none and self.options.open_silos < 2:
-            raise OptionError("If you enabled Randomized Worlds with BK Moves randomized, you must have at least 2 silos opened.")
+        # if not self.options.randomize_moves and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none and self.options.open_silos < 2:
+        #     raise OptionError("If you enabled Randomized Worlds with BK Moves randomized, you must have at least 2 silos opened.")
         if not self.options.open_hag1 and self.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
             self.options.open_hag1.value = True
 
@@ -848,6 +848,8 @@ class BanjoTooieWorld(World):
             "randomize_signposts",
             "signpost_hints",
             "signpost_move_hints",
+            "randomize_warp_pads",
+            "randomize_silos",
             "hint_clarity",
             "dialog_character"
         )
@@ -862,7 +864,7 @@ class BanjoTooieWorld(World):
 
         btoptions["starting_egg"] = int(self.starting_egg)
         btoptions["starting_attack"] = int(self.starting_attack)
-        btoptions["preopened_silos"] = self.preopened_silos
+        btoptions["preopened_silos"] = [self.item_name_to_id[name] for name in self.preopened_silos]
 
         btoptions["version"] = BanjoTooieWorld.version
 

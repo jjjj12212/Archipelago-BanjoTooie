@@ -171,7 +171,7 @@ def choose_unlocked_silos(world: BanjoTooieWorld) -> None:
             world.preopened_silos.append(silo)
 
     # A pair leads to the first level.
-    elif world.options.randomize_bk_moves == RandomizeBKMoveList.option_all and world.options.randomize_worlds:
+    elif world.options.randomize_bk_moves == RandomizeBKMoveList.option_all and world.options.randomize_worlds or world.options.open_silos >= 2:
         world_silo = ""
         if list(world.randomize_order.keys())[0] == regionName.GIO:
             # GI is special. If loading zones are not randomized, the only way to make progress in the level is by riding the train into the level from Cliff Top.
