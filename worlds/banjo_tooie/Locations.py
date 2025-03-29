@@ -994,12 +994,7 @@ CCLoc_table = {
     locationName.SIGNCC4:   LocationData(1231543, 0, 0, "Signpost"),
 }
 
-IHWHLoc_table = {
-    locationName.JINJOIH1: LocationData(1230591, 0x3E, 4),
-    locationName.YMEGGH:   LocationData(1230953, 0x77, 7),
-    locationName.PMEGGH:   LocationData(1230954, 0x77, 6),
-    locationName.BMEGGH:   LocationData(1230955, 0x77, 4),
-
+WorldUnlocks_table = {
     locationName.W1:      LocationData(1230944, 0, 0),
     locationName.W2:      LocationData(1230945, 0, 0),
     locationName.W3:      LocationData(1230946, 0, 0),
@@ -1009,6 +1004,15 @@ IHWHLoc_table = {
     locationName.W7:      LocationData(1230950, 0, 0),
     locationName.W8:      LocationData(1230951, 0, 0),
     locationName.W9:      LocationData(1230952, 0, 0),
+}
+
+IHWHLoc_table = {
+    locationName.JINJOIH1: LocationData(1230591, 0x3E, 4),
+    locationName.YMEGGH:   LocationData(1230953, 0x77, 7),
+    locationName.PMEGGH:   LocationData(1230954, 0x77, 6),
+    locationName.BMEGGH:   LocationData(1230955, 0x77, 4),
+
+    **WorldUnlocks_table,
 
     locationName.NESTIH18: LocationData(1231052),
     locationName.NESTIH19: LocationData(1231053),
@@ -1020,14 +1024,14 @@ IHWHLoc_table = {
     locationName.NESTIH25: LocationData(1231059),
     locationName.NESTIH26: LocationData(1231060),
 
-    locationName.SIGNIH2:   LocationData(1231484, 0, 0, "Signpost"), 
-    locationName.SIGNIH3:   LocationData(1231485, 0, 0, "Signpost"), 
-    locationName.SIGNIH4:   LocationData(1231486, 0, 0, "Signpost"), 
-    locationName.SIGNIH5:   LocationData(1231487, 0, 0, "Signpost"), 
-    locationName.SIGNIH6:   LocationData(1231488, 0, 0, "Signpost"), 
-    locationName.SIGNIH7:   LocationData(1231489, 0, 0, "Signpost"), 
-    locationName.SIGNIH8:   LocationData(1231490, 0, 0, "Signpost"), 
-    locationName.SIGNIH9:   LocationData(1231491, 0, 0, "Signpost"), 
+    locationName.SIGNIH2:   LocationData(1231484, 0, 0, "Signpost"),
+    locationName.SIGNIH3:   LocationData(1231485, 0, 0, "Signpost"),
+    locationName.SIGNIH4:   LocationData(1231486, 0, 0, "Signpost"),
+    locationName.SIGNIH5:   LocationData(1231487, 0, 0, "Signpost"),
+    locationName.SIGNIH6:   LocationData(1231488, 0, 0, "Signpost"),
+    locationName.SIGNIH7:   LocationData(1231489, 0, 0, "Signpost"),
+    locationName.SIGNIH8:   LocationData(1231490, 0, 0, "Signpost"),
+    locationName.SIGNIH9:   LocationData(1231491, 0, 0, "Signpost"),
     locationName.SIGNIH10:   LocationData(1231492, 0, 0, "Signpost"),
     locationName.SIGNIH11:   LocationData(1231493, 0, 0, "Signpost"),
     locationName.SIGNIH12:   LocationData(1231494, 0, 0, "Signpost"),

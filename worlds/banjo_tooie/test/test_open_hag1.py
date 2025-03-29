@@ -12,7 +12,7 @@ class TestProgressionJiggies(BanjoTooieTestBase):
         assert expected_progression_jiggies == len([
             item.name for item in self.multiworld.itempool
             if item.name == itemName.JIGGY
-            and item.classification == ItemClassification.progression
+            and item.advancement
         ])
 
 class TestOpenHag1WithHag1(TestProgressionJiggies):
