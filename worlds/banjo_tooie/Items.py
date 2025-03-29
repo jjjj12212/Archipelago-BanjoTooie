@@ -27,7 +27,7 @@ jinjo_table = {
 }
 
 jiggy_table = {
-    itemName.JIGGY:         ItemData(1230515, 90, "progression_skip_balancing", ""),
+    itemName.JIGGY:         ItemData(1230515, 90, "progress", ""),
 }
 
 token_table = {

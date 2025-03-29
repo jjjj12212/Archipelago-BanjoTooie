@@ -6,12 +6,13 @@
   - Hints to progression items are slightly more likely to show than hints to useless items, but slower locations are still likely to be hinted.
   - Excluded locations should no longer show up as hints
   - Cryptic hints are now clearer
-    - One of a kind progression items will be hinted as "legendary".
-    - Currency-like items (plentiful progression items, like Notes and Jiggies in Banjo-Tooie) will be hinted as "great" instead of "wonderful". This might not be perfect for all games.
+    - One of a kind progression items will be hinted as "legendary one-of-a-kind".
+    - Currency-like items (plentiful progression items, like Notes in Banjo-Tooie) will be hinted as "great" instead of "wonderful". This might not be perfect for all games.
     - Useful, but not required items will be hinted as "good"
- - Jiggies, Notes, Cheato Pages, Honeycombs will no longer be more likely to appear in earlier spheres, instead, they will be spread more evenly across the playthrough.
+ - Notes, Cheato Pages, Honeycombs are no longer be more likely to appear in earlier spheres, instead, they will be spread more evenly across the playthrough.
  - Mumbo Tokens will be considered for progression balancing.
  - Added options replace_extra_jiggies and replace_extra_notes, disabling these options will cause the game to always have exactly 900 notes and 90 jiggies instead of potentially some of them being other filler items.
+ - Jamjars will now announce which Move Silo is unlocked when you get enough notes!
 
 # 4.3
   - You are now required to use Bizhawk 2.10. 2.9.1 and lower are not supported.
