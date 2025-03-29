@@ -1591,10 +1591,15 @@ def connect_regions(self):
     region_WW = self.get_region(regionName.WW)
     region_WW.add_exits({regionName.CHUFFY, regionName.WWI, regionName.TL, regionName.GMFD, regionName.WWA51NESTS},
                         {regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.ww_to_chuffy(state),
-                        regionName.WWI: lambda state: rules.ww_to_inferno(state),
-                        regionName.TL: lambda state: rules.ww_tdl_backdoor(state),
-                        regionName.GMFD: lambda state: rules.ww_to_fuel_depot(state),
-                        regionName.WWA51NESTS: lambda state: rules.a51_nests_from_WW(state),
+                            regionName.WWI: lambda state: rules.ww_to_inferno(state),
+                            regionName.TL: lambda state: rules.ww_tdl_backdoor(state),
+                            regionName.GMFD: lambda state: rules.ww_to_fuel_depot(state),
+                            regionName.WWA51NESTS: lambda state: rules.a51_nests_from_WW(state),
+                        })
+
+    region_WWWARP = self.get_region(regionName.WWWARP)
+    region_WWWARP.add_exits({regionName.WWI}, {
+                            regionName.WWI: lambda state: state.has(itemName.WARPWW5, player),
                         })
 
     region_IOHCT = self.get_region(regionName.IOHCT)
@@ -1690,6 +1695,13 @@ def connect_regions(self):
     region_TLSP.add_exits({regionName.TLSP, regionName.TLWARP}, {
                          regionName.TLTOP: lambda state: rules.can_cross_bonfire_cavern(state),
                          regionName.TLWARP: lambda state: state.has(itemName.WARPTL5, player),
+                         })
+    region_TLWARP = self.get_region(regionName.TLWARP)
+    region_TLWARP.add_exits({regionName.TL, regionName.TLSP, regionName.TLTOP}, {
+                         regionName.TL: lambda state: state.has(itemName.WARPTL1, player) or state.has(itemName.WARPTL3, player)\
+                                                         or state.has(itemName.WARPTL4, player),
+                         regionName.TLTOP: lambda state: state.has(itemName.WARPTL5, player),
+                         regionName.TLSP: lambda state: state.has(itemName.WARPTL2, player),
                          })
 
     region_QM = self.get_region(regionName.IOHQM)

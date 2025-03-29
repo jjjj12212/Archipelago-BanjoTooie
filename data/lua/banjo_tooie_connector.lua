@@ -56,8 +56,8 @@ local DEBUG_DOUBLOON = false
 local DEBUG_AMAZE = false
 local DEBUG_NESTS = false
 local DEBUG_SIGNPOSTS = false
-local DEBUG_WARPSILOS = true
-local DEBUG_WARPPADS = true
+local DEBUG_WARPSILOS = false
+local DEBUG_WARPPADS = false
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 local AP_TIMEOUT_COUNTER = 0
@@ -6892,7 +6892,7 @@ function warpsilo_check()
         then
             for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["WARPSILOS"])
             do
-                checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["WARPSILOS"][locationId]['addr'], ADDRESS_MAP["WARPSILOS"][locationId]['bit'])
+                checks[locationId] = BTH:checkFakeFlag(ADDRESS_MAP["WARPSILOS"][locationId]['addr'], ADDRESS_MAP["WARPSILOS"][locationId]['bit'])
                 if DEBUG_WARPSILOS == true
                 then
                     print(ADDRESS_MAP["WARPSILOS"][locationId]['name']..":"..tostring(checks[locationId]))
@@ -6944,7 +6944,7 @@ function warppad_check()
         then
             for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["WARPPADS"])
             do
-                checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["WARPPADS"][locationId]['addr'], ADDRESS_MAP["WARPPADS"][locationId]['bit'])
+                checks[locationId] = BTH:checkFakeFlag(ADDRESS_MAP["WARPPADS"][locationId]['addr'], ADDRESS_MAP["WARPPADS"][locationId]['bit'])
                 if DEBUG_WARPPADS == true
                 then
                     print(ADDRESS_MAP["WARPPADS"][locationId]['name']..":"..tostring(checks[locationId]))

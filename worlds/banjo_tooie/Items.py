@@ -143,7 +143,7 @@ misc_collectable_table = {
     itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY),
     itemName.NOTE:          ItemData(1230797, 144, "progress", ""),
     itemName.BASS:          ItemData(1230781,  0, "progress", ""),
-    itemName.NONE:          ItemData(1230888,  0, "filler", ""),
+    itemName.NONE:          ItemData(1230834,  0, "filler", ""),
     itemName.TTRAP:         ItemData(1230786,  0, "trap", ""),
     itemName.STRAP:         ItemData(1230787,  0, "trap", ""),
     itemName.TRTRAP:        ItemData(1230788,  0, "trap", ""),
