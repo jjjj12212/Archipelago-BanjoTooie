@@ -4,6 +4,7 @@
  - Improved the hint system
   - Underscores (_) and long names should no longer cause an issue while reading the hint in game.
   - Hints to progression items are slightly more likely to show than hints to useless items, but slower locations are still likely to be hinted.
+  - Excluded locations should no longer show up as hints
   - Cryptic hints are now clearer
     - One of a kind progression items will be hinted as "legendary".
     - Currency-like items (plentiful progression items, like Notes and Jiggies in Banjo-Tooie) will be hinted as "great" instead of "wonderful". This might not be perfect for all games.
