@@ -590,6 +590,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     logic_type: LogicType
 
     victory_condition: VictoryCondition
+    open_hag1: OpenHag1
     minigame_hunt_length: MinigameHuntLength
     boss_hunt_length: BossHuntLength
     jinjo_family_rescue_length: JinjoFamilyRescueLength
@@ -653,7 +654,6 @@ class BanjoTooieOptions(PerGameCommonOptions):
     skip_puzzles: SkipPuzzles
     randomize_worlds: RandomizeWorlds
     randomize_world_loading_zone: RandomizeWorldZones
-    open_hag1: OpenHag1
     backdoors:Backdoors
 
     extra_cheats: ExtraCheats

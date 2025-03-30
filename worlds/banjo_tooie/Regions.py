@@ -458,8 +458,11 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.GI5: [
         locationName.JINJOGI1,
         locationName.JIGGYGI5,
+    ],
+    regionName.GIF: [
         locationName.HONEYCGI3,
     ],
+    regionName.GIR: [],
     regionName.HP: [
         locationName.JINJOHP1,
         locationName.JINJOHP2,
@@ -1052,17 +1055,18 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.NESTGI78,
     ],
     regionName.GI5: [
-      locationName.NESTGI1,
-      locationName.NESTGI2,
-      locationName.NESTGI3,
-
-      locationName.NESTGI26,
-
-      locationName.NESTGI31,
-
       locationName.NESTGI53,
       locationName.NESTGI54,
       locationName.NESTGI55,
+    ],
+    regionName.GIR: [
+      locationName.NESTGI1,
+      locationName.NESTGI2,
+      locationName.NESTGI3,
+    ],
+    regionName.GIF: [
+      locationName.NESTGI26,
+      locationName.NESTGI31,
     ],
     regionName.HP: [
       locationName.NESTHP1,
@@ -1357,7 +1361,7 @@ WARP_PAD_REGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.GI4: [
         locationName.WARPGI4,
     ],
-    regionName.GI5: [
+    regionName.GIR: [
         locationName.WARPGI5,
     ],
     regionName.HP: [
@@ -1713,18 +1717,18 @@ def connect_regions(self):
                         })
 
     region_GIO = self.get_region(regionName.GIO)
-    region_GIO.add_exits({regionName.GI1, regionName.GIOB, regionName.GI5},
+    region_GIO.add_exits({regionName.GI1, regionName.GIOB, regionName.GIF},
                         {regionName.GI1: lambda state: rules.outside_gi_to_floor1(state),
                          regionName.GIOB: lambda state: rules.outside_gi_to_outside_back(state),
-                         regionName.GI5: lambda state: rules.outside_gi_to_floor_5(state)})
+                         regionName.GIF: lambda state: rules.outside_gi_to_flight(state)})
 
     region_GIOB = self.get_region(regionName.GIOB)
-    region_GIOB.add_exits({regionName.GIO, regionName.GI2, regionName.GI3, regionName.GI4, regionName.GI5},
+    region_GIOB.add_exits({regionName.GIO, regionName.GI2, regionName.GI3, regionName.GI4, regionName.GIF},
                         {regionName.GIO: lambda state: rules.climb(state),
                          regionName.GI2: lambda state: rules.outside_gi_back_to_floor2(state),
                          regionName.GI3: lambda state: rules.outside_gi_back_to_floor_3(state),
                          regionName.GI4: lambda state: rules.outside_gi_back_to_floor_4(state),
-                         regionName.GI5: lambda state: rules.outside_gi_back_to_floor_5(state)
+                         regionName.GIF: lambda state: rules.outside_gi_back_to_flight(state)
                          })
 
     region_GIES = self.get_region(regionName.GIES)
@@ -1735,25 +1739,24 @@ def connect_regions(self):
                          regionName.GI4B: lambda state: rules.elevator_shaft_to_floor_4(state)})
 
     region_GI1 = self.get_region(regionName.GI1)
-    region_GI1.add_exits({regionName.GIO, regionName.GIES, regionName.GI2, regionName.GI5, regionName.GIWARP, regionName.CHUFFY},
+    region_GI1.add_exits({regionName.GIO, regionName.GIES, regionName.GI2, regionName.GIWARP, regionName.CHUFFY},
                         {regionName.GIO: lambda state: rules.split_up(state),
                          regionName.GI2: lambda state: rules.F1_to_F2(state),
-                         regionName.GI5: lambda state: rules.F1_to_F5(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.gi_to_chuffy(state),
                          regionName.GIWARP: lambda state: rules.split_up(state) and state.has(itemName.WARPGI1, player)})
 
     region_GIWARP = self.get_region(regionName.GIWARP)
     # Warping to floor 1 does nothing to the logic, since you're stuck between 2 doors.
-    region_GIWARP.add_exits({regionName.GI2,regionName.GI3,regionName.GI4,regionName.GI5},
+    region_GIWARP.add_exits({regionName.GI2,regionName.GI3,regionName.GI4,regionName.GIR},
                             {regionName.GI2: lambda state: state.has(itemName.WARPGI2, player),
                             regionName.GI3: lambda state: state.has(itemName.WARPGI3, player),
                             regionName.GI4: lambda state: state.has(itemName.WARPGI4, player),
-                            regionName.GI5: lambda state: state.has(itemName.WARPGI5, player),
+                            regionName.GIR: lambda state: state.has(itemName.WARPGI5, player),
                          })
 
-    # We explicitly add this indirect connection as F1_to_F5 check has a region check on GI4
-    entrance_GI1_to_GI5 = next(e for e in region_GI1.exits if e.connected_region.name == regionName.GI5)
-    self.multiworld.register_indirect_condition(self.get_region(regionName.GI4), entrance_GI1_to_GI5)
+    # We explicitly add this indirect connection due to the flight pad switch
+    entrance_GIO_to_GIR = next(e for e in region_GIO.exits if e.connected_region.name == regionName.GIF)
+    self.multiworld.register_indirect_condition(self.get_region(regionName.GI4), entrance_GIO_to_GIR)
 
     region_GI2 = self.get_region(regionName.GI2)
     region_GI2.add_exits({regionName.GIOB, regionName.GI1, regionName.GI2EM, regionName.GI3, regionName.GIWARP},
@@ -1769,12 +1772,12 @@ def connect_regions(self):
                          })
 
     region_GI3 = self.get_region(regionName.GI3)
-    region_GI3.add_exits({regionName.GIOB, regionName.GI2, regionName.GI3B, regionName.GI4, regionName.GI5, regionName.GIWARP}, {
+    region_GI3.add_exits({regionName.GIOB, regionName.GI2, regionName.GI3B, regionName.GI4, regionName.GIWARP}, {
                             regionName.GIOB: lambda state: rules.floor_3_to_outside_back(state),
                             regionName.GI2: lambda state: rules.F3_to_F2(state),
                             regionName.GI3B: lambda state: rules.floor_3_to_boiler_plant(state),
                             regionName.GI4: lambda state: rules.F3_to_F4(state),
-                            regionName.GI5: lambda state: rules.floor_3_to_floor_5(state),
+                            #regionName.GI5: lambda state: rules.floor_3_to_floor_5(state),
                             regionName.GIWARP: lambda state: rules.small_elevation(state) and state.has(itemName.WARPGI3, player)
                             })
 
@@ -1784,11 +1787,11 @@ def connect_regions(self):
                           })
 
     region_GI4 = self.get_region(regionName.GI4)
-    region_GI4.add_exits({regionName.GIOB, regionName.GI3, regionName.GI4B, regionName.GI5, regionName.GIWARP}, {
+    region_GI4.add_exits({regionName.GIOB, regionName.GI3, regionName.GI4B, regionName.GIWARP}, {
                             regionName.GIOB: lambda state: rules.floor_4_to_outside_back(state),
                             regionName.GI3: lambda state: rules.floor_4_to_floor_3(state),
                             regionName.GI4B: lambda state: rules.floor_4_to_floor_4_back(state),
-                            regionName.GI5: lambda state: rules.floor_4_to_floor_5(state),
+                            #regionName.GI5: lambda state: rules.floor_4_to_floor_5(state),
                             regionName.GIWARP: lambda state: rules.warp_pad_floor_4(state) and state.has(itemName.WARPGI4, player)
                             })
 
@@ -1797,12 +1800,21 @@ def connect_regions(self):
                             regionName.GIES: lambda state: rules.floor_4_back_to_elevator_shaft(state)
                             })
 
-    region_GI5 = self.get_region(regionName.GI5)
-    region_GI5.add_exits({regionName.GI1, regionName.GI3, regionName.GI3B, regionName.GI4, regionName.GIWARP}, { # If you can fly and reach the roof, you have access to floor 3 and 4.
-                            regionName.GI1:  lambda state: rules.floor_5_to_floor_1(state),
-                            regionName.GI3B: lambda state: rules.floor_5_to_boiler_plant(state),
+    region_GIF = self.get_region(regionName.GIF)
+    region_GIF.add_exits({regionName.GIO, regionName.GIOB, regionName.GI1, regionName.GI3, regionName.GI3B, regionName.GI4, regionName.GI5}, {
+                            regionName.GI1:  lambda state: rules.flight_to_floor_1(state),
+                            regionName.GI3B: lambda state: rules.flight_to_boiler_plant(state),
                             regionName.GIWARP: lambda state: state.has(itemName.WARPGI5, player)
                             })
+    region_GIR = self.get_region(regionName.GIR)
+    region_GIR.add_exits({regionName.GIO, regionName.GIOB, regionName.GIF, regionName.GI3, regionName.GI4, regionName.GI5, regionName.GIWARP}, {
+                            regionName.GIO: lambda state: rules.roof_to_ground_level(state),
+                            regionName.GIOB: lambda state: rules.roof_to_ground_level(state),
+                            regionName.GIF: lambda state: rules.flight_pad(state),
+                            regionName.GI3: lambda state: rules.roof_to_upper_floors(state),
+                            regionName.GI4: lambda state: rules.roof_to_upper_floors(state),
+                            regionName.GI5: lambda state: rules.roof_to_floor5(state),
+                        })
 
     region_CK = self.get_region(regionName.CK)
     region_CK.add_exits({regionName.H1},

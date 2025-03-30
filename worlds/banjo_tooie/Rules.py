@@ -202,11 +202,11 @@ class BanjoTooieRules:
 
         if self.world.options.honeyb_rewards:
             self.honeyb_rewards_rules = {
-                locationName.HONEYBR1: lambda state: state.has(itemName.HONEY, self.player, 1) and self.talon_trot(state),
-                locationName.HONEYBR2: lambda state: state.has(itemName.HONEY, self.player, 4) and self.talon_trot(state),
-                locationName.HONEYBR3: lambda state: state.has(itemName.HONEY, self.player, 9) and self.talon_trot(state),
-                locationName.HONEYBR4: lambda state: state.has(itemName.HONEY, self.player, 16) and self.talon_trot(state),
-                locationName.HONEYBR5: lambda state: state.has(itemName.HONEY, self.player, 25) and self.talon_trot(state),
+                locationName.HONEYBR1: lambda state: state.has(itemName.HONEY, self.player, 1) and self.can_reach_honey_b(state),
+                locationName.HONEYBR2: lambda state: state.has(itemName.HONEY, self.player, 4) and self.can_reach_honey_b(state),
+                locationName.HONEYBR3: lambda state: state.has(itemName.HONEY, self.player, 9) and self.can_reach_honey_b(state),
+                locationName.HONEYBR4: lambda state: state.has(itemName.HONEY, self.player, 16) and self.can_reach_honey_b(state),
+                locationName.HONEYBR5: lambda state: state.has(itemName.HONEY, self.player, 25) and self.can_reach_honey_b(state),
             }
 
 
@@ -773,7 +773,7 @@ class BanjoTooieRules:
 
             locationName.NESTJR10:    lambda state: self.nest_seaweed_bottom(state),
             locationName.NESTJR11:    lambda state: self.nest_seaweed_others(state),
-            locationName.NESTJR12:    lambda state: self.nest_seaweed_others(state),
+            locationName.NESTJR12:    lambda state: self.nest_seaweed_top(state),
             locationName.NESTJR13:    lambda state: self.nest_seaweed_others(state),
 
             locationName.NESTJR14:    lambda state: self.jiggy_merry_maggie(state),
@@ -1914,19 +1914,19 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.humbaGI(state) and self.bill_drill(state)\
-                    and state.can_reach_region(regionName.GI5, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))\
+                    and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))\
                     and self.floor_2_skivvy_switch(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = self.humbaGI(state) and self.bill_drill(state)\
-                    and state.can_reach_region(regionName.GI5, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))\
+                    and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))\
                     and self.floor_2_skivvy_switch(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.humbaGI(state) and self.bill_drill(state)\
-                    and state.can_reach_region(regionName.GI5, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))\
+                    and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))\
                     and self.floor_2_skivvy_switch(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.humbaGI(state) and self.bill_drill(state)\
-                    and state.can_reach_region(regionName.GI5, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))\
+                    and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))\
                     and self.floor_2_skivvy_switch(state)
         return logic
 
@@ -2054,19 +2054,19 @@ class BanjoTooieRules:
             logic = self.can_use_battery(state) and (self.tall_jump(state) or self.grip_grab(state))\
                     and (self.leg_spring(state)\
                         or (self.glide(state) or self.wing_whack(state)) and self.tall_jump(state)
-                        or state.can_reach_region(regionName.GI5, self.player) and self.floor_5_to_boiler_plant(state)
+                        or state.can_reach_region(regionName.GIF, self.player) and self.flight_to_boiler_plant(state)
                         or self.turbo_trainers(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = logic = self.can_use_battery(state) and (self.tall_jump(state) or self.grip_grab(state))\
                     and (self.leg_spring(state)\
                         or (self.glide(state) or self.wing_whack(state)) and self.tall_jump(state)
-                        or state.can_reach_region(regionName.GI5, self.player) and self.floor_5_to_boiler_plant(state)
+                        or state.can_reach_region(regionName.GIF, self.player) and self.flight_to_boiler_plant(state)
                         or self.turbo_trainers(state))
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = logic = self.can_use_battery(state) and (self.tall_jump(state) or self.grip_grab(state))\
                     and (self.leg_spring(state)\
                         or (self.glide(state) or self.wing_whack(state)) and self.tall_jump(state)
-                        or state.can_reach_region(regionName.GI5, self.player) and self.floor_5_to_boiler_plant(state)
+                        or state.can_reach_region(regionName.GIF, self.player) and self.flight_to_boiler_plant(state)
                         or self.turbo_trainers(state))
         return logic
 
@@ -2979,16 +2979,16 @@ class BanjoTooieRules:
     def cheato_window(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = state.can_reach_region(regionName.GI5, self.player) and (self.egg_aim(state) or self.airborne_egg_aiming(state) or self.beak_bomb(state))
+            logic = state.can_reach_region(regionName.GIF, self.player) and (self.egg_aim(state) or self.airborne_egg_aiming(state) or self.beak_bomb(state))
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = state.can_reach_region(regionName.GI5, self.player) and (self.egg_aim(state) or self.airborne_egg_aiming(state) or self.beak_bomb(state))\
+            logic = state.can_reach_region(regionName.GIF, self.player) and (self.egg_aim(state) or self.airborne_egg_aiming(state) or self.beak_bomb(state))\
                     or state.can_reach_region(regionName.GI1, self.player) and self.leg_spring(state) and self.claw_clamber_boots(state) and self.wing_whack(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = state.can_reach_region(regionName.GI5, self.player) and (self.egg_aim(state) or self.airborne_egg_aiming(state) or self.beak_bomb(state))\
+            logic = state.can_reach_region(regionName.GIF, self.player) and (self.egg_aim(state) or self.airborne_egg_aiming(state) or self.beak_bomb(state))\
                     or state.can_reach_region(regionName.GI1, self.player) and self.leg_spring(state) and self.claw_clamber_boots(state) and self.wing_whack(state)\
                     or self.clockwork_shot(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = state.can_reach_region(regionName.GI5, self.player) and (self.egg_aim(state) or self.airborne_egg_aiming(state) or self.beak_bomb(state))\
+            logic = state.can_reach_region(regionName.GIF, self.player) and (self.egg_aim(state) or self.airborne_egg_aiming(state) or self.beak_bomb(state))\
                     or state.can_reach_region(regionName.GI1, self.player) and self.leg_spring(state) and self.claw_clamber_boots(state) and self.wing_whack(state)\
                     or state.can_reach_region(regionName.GI2, self.player) and self.clockwork_shot(state) and self.solo_kazooie_gi(state)\
                     or self.clockwork_shot(state)
@@ -3106,21 +3106,25 @@ class BanjoTooieRules:
     def glowbo_wigwam(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.flap_flip(state) and self.grip_grab(state)
+            logic = self.flap_flip(state) and self.grip_grab(state)\
+                    or self.warp_to_ww_wumba(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = ((self.flap_flip(state) and self.grip_grab(state)) \
+            logic = (self.flap_flip(state) and self.grip_grab(state)) \
                     or (self.climb(state) and self.veryLongJump(state))\
-                    or self.leg_spring(state))
+                    or self.leg_spring(state)\
+                    or self.warp_to_ww_wumba(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = ((self.flap_flip(state) and self.grip_grab(state)) \
+            logic = (self.flap_flip(state) and self.grip_grab(state)) \
                     or (self.climb(state) and self.veryLongJump(state) and self.flap_flip(state))\
                     or (self.clockwork_shot(state) and self.climb(state))\
-                    or self.leg_spring(state))
+                    or self.leg_spring(state)\
+                    or self.warp_to_ww_wumba(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = ((self.flap_flip(state) and self.grip_grab(state)) \
+            logic = (self.flap_flip(state) and self.grip_grab(state)) \
                     or (self.climb(state) and self.veryLongJump(state) and self.flap_flip(state))\
-                    or (self.clockwork_shot(state) and self.climb(state))\
-                    or self.leg_spring(state))
+                    or (self.clockwork_shot(state) and self.climb(state)\
+                    or self.leg_spring(state))\
+                    or self.warp_to_ww_wumba(state)
         return logic
 
     def glowbo_underwigwam(self, state: CollectionState) -> bool:
@@ -3413,7 +3417,7 @@ class BanjoTooieRules:
             logic = self.grip_grab(state) and self.flap_flip(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = (self.grip_grab(state) and self.flap_flip(state))\
-                    or (self.climb(state) and self.talon_trot(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state)))\
+                    or (self.climb(state) and self.talon_trot(state) and self.flutter(state))\
                     or self.leg_spring(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = (self.grip_grab(state) and self.flap_flip(state))\
@@ -3511,7 +3515,7 @@ class BanjoTooieRules:
                 or state.can_reach_region(regionName.JRBFC, self.player)
             )
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.grip_grab(state) or self.beak_buster(state) and self.flap_flip(state)\
+            logic = (self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state)\
                     and (
                         (self.slightly_elevated_ledge(state) or self.flap_flip(state))\
                             and self.tall_jump(state)\
@@ -3602,17 +3606,17 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = state.can_reach_region(regionName.GI2, self.player) and self.floor_2_split_up(state)\
                         and self.pack_whack(state) and self.wing_whack(state) and self.claw_clamber_boots(state)\
-                    or state.can_reach_region(regionName.GI5, self.player) and self.solo_kazooie_gi(state) and (self.wing_whack(state) or self.can_shoot_any_egg(state)) # Both characters drop from the roof, Banjo gets the jinjo.
+                    or state.can_reach_region(regionName.GIR, self.player) and self.solo_kazooie_gi(state) and (self.wing_whack(state) or self.can_shoot_any_egg(state)) # Both characters drop from the roof, Banjo gets the jinjo.
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = state.can_reach_region(regionName.GI2, self.player) and self.floor_2_split_up(state)\
                         and self.pack_whack(state) and self.wing_whack(state) and self.claw_clamber_boots(state)\
-                    or state.can_reach_region(regionName.GI5, self.player) and self.solo_kazooie_gi(state) and (self.wing_whack(state) or self.can_shoot_any_egg(state))
+                    or state.can_reach_region(regionName.GIR, self.player) and self.solo_kazooie_gi(state) and (self.wing_whack(state) or self.can_shoot_any_egg(state))
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = state.can_reach_region(regionName.GI2, self.player) and self.floor_2_split_up(state)\
                         and self.pack_whack(state) and self.wing_whack(state) and self.claw_clamber_boots(state)\
-                    or state.can_reach_region(regionName.GI5, self.player) and self.solo_kazooie_gi(state) and (self.wing_whack(state) or self.can_shoot_any_egg(state))\
-                    or state.can_reach_region(regionName.GI5, self.player) and self.taxi_pack(state)\
-                    or (state.can_reach_region(regionName.GIOB, self.player) and self.claw_clamber_boots(state) or state.can_reach_region(regionName.GI5, self.player)) and self.egg_barge(state)
+                    or state.can_reach_region(regionName.GIR, self.player) and self.solo_kazooie_gi(state) and (self.wing_whack(state) or self.can_shoot_any_egg(state))\
+                    or state.can_reach_region(regionName.GIR, self.player) and self.taxi_pack(state)\
+                    or (state.can_reach_region(regionName.GIOB, self.player) and self.claw_clamber_boots(state) or state.can_reach_region(regionName.GIR, self.player)) and self.egg_barge(state)
         return logic
 
     def jinjo_waste_disposal(self, state: CollectionState) -> bool:
@@ -3634,16 +3638,16 @@ class BanjoTooieRules:
     def jinjo_boiler(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = state.can_reach_region(regionName.GI5, self.player) and self.floor_5_to_boiler_plant(state)
+            logic = state.can_reach_region(regionName.GIF, self.player) and self.flight_to_boiler_plant(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = state.can_reach_region(regionName.GI5, self.player) and self.floor_5_to_boiler_plant(state)\
+            logic = state.can_reach_region(regionName.GIF, self.player) and self.flight_to_boiler_plant(state)\
                     or state.can_reach_region(regionName.GI3, self.player) and self.small_elevation(state) and self.leg_spring(state) and self.glide(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = state.can_reach_region(regionName.GI5, self.player) and self.floor_5_to_boiler_plant(state)\
+            logic = state.can_reach_region(regionName.GIF, self.player) and self.flight_to_boiler_plant(state)\
                     or state.can_reach_region(regionName.GI3, self.player) and self.small_elevation(state) and self.leg_spring(state) and self.glide(state)\
                     or self.clockwork_shot(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = state.can_reach_region(regionName.GI5, self.player) and self.floor_5_to_boiler_plant(state)\
+            logic = state.can_reach_region(regionName.GIF, self.player) and self.flight_to_boiler_plant(state)\
                     or state.can_reach_region(regionName.GI3, self.player) and self.small_elevation(state) and self.leg_spring(state) and self.glide(state)\
                     or self.clockwork_shot(state)
         return logic
@@ -3856,21 +3860,21 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
             logic = state.can_reach_region(regionName.GI1, self.player) and self.split_up(state) and self.claw_clamber_boots(state)\
-                    or state.can_reach_region(regionName.GI5, self.player)
+                    or state.can_reach_region(regionName.GIF, self.player)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = state.can_reach_region(regionName.GI1, self.player) and (self.split_up(state) and self.claw_clamber_boots(state)\
                     or self.leg_spring(state) and self.glide(state) and\
                         (self.wing_whack(state) or self.egg_aim(state)))\
-                    or state.can_reach_region(regionName.GI5, self.player)
+                    or state.can_reach_region(regionName.GIF, self.player)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = state.can_reach_region(regionName.GI1, self.player) and (self.split_up(state) and self.claw_clamber_boots(state)\
                         or self.leg_spring(state) and self.glide(state) and (self.wing_whack(state) or self.egg_aim(state)))\
-                    or state.can_reach_region(regionName.GI5, self.player)\
+                    or state.can_reach_region(regionName.GIF, self.player)\
                     or self.clockwork_shot(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = state.can_reach_region(regionName.GI1, self.player) and (self.split_up(state) and self.claw_clamber_boots(state)\
                         or self.leg_spring(state) and self.glide(state) and (self.wing_whack(state) or self.egg_aim(state)))\
-                    or state.can_reach_region(regionName.GI5, self.player)\
+                    or state.can_reach_region(regionName.GIF, self.player)\
                     or self.clockwork_shot(state)
         return logic
 
@@ -4079,6 +4083,21 @@ class BanjoTooieRules:
                     or self.split_up(state) and self.grip_grab(state)\
                     or self.split_up(state) and self.tall_jump(state)\
                     or self.glide(state)
+        return logic
+
+    def can_reach_honey_b(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = self.talon_trot(state)
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = self.talon_trot(state)\
+                    or state.can_reach_region(regionName.IOHCT, self.player) and self.claw_clamber_boots(state)
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = self.talon_trot(state)\
+                    or state.can_reach_region(regionName.IOHCT, self.player) and self.claw_clamber_boots(state)
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = self.talon_trot(state)\
+                    or state.can_reach_region(regionName.IOHCT, self.player) and self.claw_clamber_boots(state)
         return logic
 
     def notes_ww_area51_right(self, state: CollectionState) -> bool:
@@ -5161,33 +5180,83 @@ class BanjoTooieRules:
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.flap_flip(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.flap_flip(state)\
-                    or self.has_explosives(state) and self.pack_whack(state) and self.tall_jump(state)
+            logic = self.flap_flip(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.flap_flip(state)\
-                    or self.has_explosives(state) and self.pack_whack(state) and self.tall_jump(state)\
                     or self.clockwork_shot(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.flap_flip(state)\
-                    or self.has_explosives(state) and self.pack_whack(state) and self.tall_jump(state)\
                     or self.clockwork_shot(state)
         return logic
 
     def nest_seaweed_others(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.flap_flip(state) or (self.tall_jump(state) or self.talon_trot(state) and self.flutter(state)) and self.grip_grab(state)
+            logic = self.tall_jump(state) and self.grip_grab(state) and (
+                        self.flap_flip(state)\
+                        or (self.tall_jump(state) or self.talon_trot(state) and self.flutter(state)) and self.grip_grab(state)
+                    )
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.flap_flip(state)\
-                    or self.has_explosives(state) and self.pack_whack(state) and self.tall_jump(state)
+            logic = self.tall_jump(state) and self.grip_grab(state) and (
+                        self.flap_flip(state)\
+                        or (self.tall_jump(state) or self.talon_trot(state) and self.flutter(state)) and self.grip_grab(state)
+                    )\
+                    or state.can_reach_region(regionName.JRBFC, self.player) and (self.flutter(state) or self.air_rat_a_tat_rap(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.flap_flip(state)\
-                    or self.has_explosives(state) and self.pack_whack(state) and self.tall_jump(state)\
-                    or self.clockwork_shot(state)
+            logic = self.tall_jump(state) and self.grip_grab(state) and (
+                        self.flap_flip(state)\
+                        or (self.tall_jump(state) or self.talon_trot(state) and self.flutter(state)) and self.grip_grab(state)\
+                        or self.clockwork_shot(state)
+                    )\
+                    or state.can_reach_region(regionName.JRBFC, self.player) and (
+                        self.flutter(state) or self.air_rat_a_tat_rap(state)\
+                        or self.clockwork_shot(state)
+                    )
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.flap_flip(state)\
-                    or self.has_explosives(state) and self.pack_whack(state) and self.tall_jump(state)\
-                    or self.clockwork_shot(state)
+            logic = self.tall_jump(state) and self.grip_grab(state) and (
+                        self.flap_flip(state)\
+                        or (self.tall_jump(state) or self.talon_trot(state) and self.flutter(state)) and self.grip_grab(state)\
+                        or self.clockwork_shot(state)
+                    )\
+                    or state.can_reach_region(regionName.JRBFC, self.player) and (
+                        self.flutter(state) or self.air_rat_a_tat_rap(state)\
+                        or self.clockwork_shot(state)
+                    )
+        return logic
+
+    def nest_seaweed_top(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = self.grip_grab(state) and self.flap_flip(state) and (
+                self.tall_jump(state) and self.grip_grab(state)\
+                or state.can_reach_region(regionName.JRBFC, self.player)
+            )
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = (self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state)\
+                    and (
+                        (self.slightly_elevated_ledge(state) or self.flap_flip(state))\
+                            and self.tall_jump(state)\
+                            and (self.beak_buster(state) or self.grip_grab(state))
+                        or state.can_reach_region(regionName.JRBFC, self.player)
+                    )
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = ((self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state)\
+                        or self.clockwork_shot(state))\
+                    and (
+                        (self.slightly_elevated_ledge(state) or self.flap_flip(state))\
+                            and self.tall_jump(state)\
+                            and (self.beak_buster(state) or self.grip_grab(state))
+                        or state.can_reach_region(regionName.JRBFC, self.player)
+                    )
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = ((self.grip_grab(state) or self.beak_buster(state)) and self.flap_flip(state)\
+                        or self.clockwork_shot(state))\
+                    and (
+                        (self.slightly_elevated_ledge(state) or self.flap_flip(state))\
+                            and self.tall_jump(state)\
+                            and (self.beak_buster(state) or self.grip_grab(state))
+                        or state.can_reach_region(regionName.JRBFC, self.player)
+                    )
         return logic
 
     def nest_bacon(self, state: CollectionState) -> bool:
@@ -5412,20 +5481,20 @@ class BanjoTooieRules:
                     or state.can_reach_region(regionName.GIOB, self.player) and self.climb(state)\
                     or state.can_reach_region(regionName.GI1, self.player) and (self.split_up(state) and self.tall_jump(state) or self.leg_spring(state))\
                     or state.can_reach_region(regionName.GI2, self.player) and (self.floor_2_split_up(state) and (self.tall_jump(state) or self.leg_spring(state)))\
-                    or state.can_reach_region(regionName.GI5, self.player)
+                    or state.can_reach_region(regionName.GIF, self.player)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = state.can_reach_region(regionName.GIO, self.player) and self.outside_gi_to_outside_back(state)\
                     or state.can_reach_region(regionName.GIOB, self.player) and self.climb(state)\
                     or state.can_reach_region(regionName.GI1, self.player) and (self.split_up(state) and self.tall_jump(state) or self.leg_spring(state))\
                     or state.can_reach_region(regionName.GI2, self.player) and (self.floor_2_split_up(state) and (self.tall_jump(state) or self.leg_spring(state)))\
-                    or state.can_reach_region(regionName.GI5, self.player)\
+                    or state.can_reach_region(regionName.GIF, self.player)\
                     or self.clockwork_shot(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = state.can_reach_region(regionName.GIO, self.player) and self.outside_gi_to_outside_back(state)\
                     or state.can_reach_region(regionName.GIOB, self.player) and self.climb(state)\
                     or state.can_reach_region(regionName.GI1, self.player) and (self.split_up(state) and self.tall_jump(state) or self.leg_spring(state))\
                     or state.can_reach_region(regionName.GI2, self.player) and (self.floor_2_split_up(state) and (self.tall_jump(state) or self.leg_spring(state)))\
-                    or state.can_reach_region(regionName.GI5, self.player)\
+                    or state.can_reach_region(regionName.GIF, self.player)\
                     or self.clockwork_shot(state)
         return logic
 
@@ -5437,20 +5506,20 @@ class BanjoTooieRules:
             logic = self.climb(state)\
                     or state.can_reach_region(regionName.GI1, self.player) and self.leg_spring(state)\
                     or state.can_reach_region(regionName.GI2, self.player) and self.floor_2_split_up(state) and self.leg_spring(state)\
-                    or state.can_reach_region(regionName.GI5, self.player)
+                    or state.can_reach_region(regionName.GIF, self.player)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.climb(state)\
                     or state.can_reach_region(regionName.GIOB, self.player) and self.claw_clamber_boots(state)\
                     or state.can_reach_region(regionName.GI1, self.player) and self.leg_spring(state)\
                     or state.can_reach_region(regionName.GI2, self.player) and self.floor_2_split_up(state) and self.leg_spring(state)\
-                    or state.can_reach_region(regionName.GI5, self.player)\
+                    or state.can_reach_region(regionName.GIF, self.player)\
                     or self.clockwork_shot(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.climb(state)\
                     or state.can_reach_region(regionName.GIOB, self.player) and self.claw_clamber_boots(state)\
                     or state.can_reach_region(regionName.GI1, self.player) and self.leg_spring(state)\
                     or state.can_reach_region(regionName.GI2, self.player) and self.floor_2_split_up(state) and self.leg_spring(state)\
-                    or state.can_reach_region(regionName.GI5, self.player)\
+                    or state.can_reach_region(regionName.GIF, self.player)\
                     or self.clockwork_shot(state)
         return logic
 
@@ -6405,19 +6474,19 @@ class BanjoTooieRules:
                     or state.can_reach_region(regionName.GIOB, self.player) and self.climb(state)\
                     or state.can_reach_region(regionName.GI1, self.player) and (self.split_up(state) and self.tall_jump(state) or self.leg_spring(state))\
                     or state.can_reach_region(regionName.GI2, self.player) and (self.floor_2_split_up(state) and (self.tall_jump(state) or self.leg_spring(state)))\
-                    or state.can_reach_region(regionName.GI5, self.player)
+                    or state.can_reach_region(regionName.GIF, self.player)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = state.can_reach_region(regionName.GIO, self.player) and self.outside_gi_to_outside_back(state)\
                     or state.can_reach_region(regionName.GIOB, self.player) and self.climb(state)\
                     or state.can_reach_region(regionName.GI1, self.player) and (self.split_up(state) and self.tall_jump(state) or self.leg_spring(state))\
                     or state.can_reach_region(regionName.GI2, self.player) and (self.floor_2_split_up(state) and (self.tall_jump(state) or self.leg_spring(state)))\
-                    or state.can_reach_region(regionName.GI5, self.player)
+                    or state.can_reach_region(regionName.GIF, self.player)
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = state.can_reach_region(regionName.GIO, self.player) and self.outside_gi_to_outside_back(state)\
                     or state.can_reach_region(regionName.GIOB, self.player) and self.climb(state)\
                     or state.can_reach_region(regionName.GI1, self.player) and (self.split_up(state) and self.tall_jump(state) or self.leg_spring(state))\
                     or state.can_reach_region(regionName.GI2, self.player) and (self.floor_2_split_up(state) and (self.tall_jump(state) or self.leg_spring(state)))\
-                    or state.can_reach_region(regionName.GI5, self.player)
+                    or state.can_reach_region(regionName.GIF, self.player)
         return logic
 
 
@@ -7669,10 +7738,10 @@ class BanjoTooieRules:
             logic = self.clockwork_eggs(state) and (self.climb(state) or self.extremelyLongJump(state))
         return logic
 
-    def outside_gi_to_floor_5(self, state: CollectionState) -> bool:
+    def outside_gi_to_flight(self, state: CollectionState) -> bool:
         return self.outside_gi_to_outside_back(state) and self.flight_pad(state) and self.gi_flight_pad_switch(state)
 
-    def outside_gi_back_to_floor_5(self, state: CollectionState) -> bool:
+    def outside_gi_back_to_flight(self, state: CollectionState) -> bool:
         return self.climb(state) and self.flight_pad(state) and self.gi_flight_pad_switch(state)
 
     def outside_gi_back_to_floor_4(self, state: CollectionState) -> bool:
@@ -7719,30 +7788,30 @@ class BanjoTooieRules:
         return logic
 
     # If you can fly, then you can enter floor 1 from the window.
-    def floor_5_to_floor_1(self, state: CollectionState) -> bool:
+    def flight_to_floor_1(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.flight_pad(state) and (self.beak_bomb(state) or self.egg_aim(state) or self.airborne_egg_aiming(state))\
+            logic = (self.beak_bomb(state) or self.egg_aim(state) or self.airborne_egg_aiming(state))\
                     and (self.flutter(state) or self.air_rat_a_tat_rap(state))
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.flight_pad(state) and (self.beak_bomb(state)\
-                                                or self.egg_aim(state)\
-                                                or self.airborne_egg_aiming(state)\
-                                                or self.has_explosives(state))\
+            logic = (self.beak_bomb(state)\
+                        or self.egg_aim(state)\
+                        or self.airborne_egg_aiming(state)\
+                        or self.has_explosives(state))\
                     and (self.flutter(state) or self.air_rat_a_tat_rap(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.flight_pad(state) and (self.beak_bomb(state)\
-                                                or self.egg_aim(state)\
-                                                or self.airborne_egg_aiming(state)\
-                                                or self.has_explosives(state))
+            logic = (self.beak_bomb(state)\
+                    or self.egg_aim(state)\
+                    or self.airborne_egg_aiming(state)\
+                    or self.has_explosives(state))
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.flight_pad(state) and (self.beak_bomb(state)\
-                                                or self.egg_aim(state)\
-                                                or self.airborne_egg_aiming(state)\
-                                                or self.has_explosives(state))
+            logic = (self.beak_bomb(state)\
+                    or self.egg_aim(state)\
+                    or self.airborne_egg_aiming(state)\
+                    or self.has_explosives(state))
         return logic
 
-    def floor_5_to_boiler_plant(self, state: CollectionState) -> bool:
+    def flight_to_boiler_plant(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.flight_pad(state) and (self.beak_bomb(state) or self.has_explosives(state) and (self.egg_aim(state) or self.airborne_egg_aiming(state)))
@@ -7753,6 +7822,34 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.flight_pad(state) and (self.beak_bomb(state) or self.has_explosives(state) and (self.egg_aim(state) or self.airborne_egg_aiming(state)))
         return logic
+
+    def roof_to_upper_floors(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = False
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = self.beak_buster(state) or self.flutter(state) or self.air_rat_a_tat_rap(state)
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = True
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = True
+        return logic
+
+    def roof_to_ground_level(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = False
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = self.beak_buster(state)
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = self.beak_buster(state)
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = self.beak_buster(state)
+        return logic
+
+    # This is disgusting, but will get rewritten later.
+    def roof_to_floor5(self, state: CollectionState) -> bool:
+        return self.leg_spring(state) or self.spring_pad(state)
 
     def elevator_shaft_to_floor_1(self, state: CollectionState) -> bool:
         logic = True

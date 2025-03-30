@@ -1,6 +1,20 @@
 # 4.4
- - New Egg Behaviour Option
-  - Simple Randomize Starting Eggs (you will start with a random egg, but it won't be Clockworks)
+  - Warp Pads and Silos can now be randomised.
+    - Warp Pads and Silos become unusable until you receive the corresponding item them.
+    - Getting near them gives a check.
+  - Options
+    - Randomise Warp Pads
+    - Randomise Silos
+    - Open Silos rework
+      - You can now choose how many silos are pre-opened, from 0 to 7.
+    - New Egg Behaviour Option
+      - Simple Randomize Starting Eggs (you will start with a random egg, but it won't be Clockworks).
+    - Open Hag 1
+      - Was moved among the victory condition options
+  - Logic Fixes
+    - Due to warp pads being randomised and constraints from the existing code, a lot of the solo Kazooie exploration has been removed from the logic. It may return in the future.
+    - Honey B Rewards: can now be gotten by getting the Claw Clamber Boots from Cliff Top.
+    - Cactus of Strength Jinjo: removed climb + talon trot + air rat-a-tat rap from easy tricks because it was too hard.
 
 # 4.3
   - You are now required to use Bizhawk 2.10. 2.9.1 and lower are not supported.
