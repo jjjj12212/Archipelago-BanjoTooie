@@ -13,7 +13,7 @@ class TestRandomizedCheatoRewards(BanjoTooieTestBase):
     def test_item_classification(self) -> None:
         items = [item for item in self.multiworld.itempool if item.name == itemName.PAGES]
         for item in items:
-            assert item.classification == ItemClassification.progression
+            assert item.advancement
 
     def test_locations(self) -> None:
         location_names = [

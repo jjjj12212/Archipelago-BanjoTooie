@@ -31,7 +31,7 @@ jiggy_table = {
 }
 
 token_table = {
-    itemName.MUMBOTOKEN:    ItemData(1230798, 20, "progression_skip_balancing", ""),
+    itemName.MUMBOTOKEN:    ItemData(1230798, 20, "progress", ""),
 }
 
 moves_table = {
@@ -65,7 +65,7 @@ moves_table = {
 }
 
 dino_table = {
-        itemName.ROAR:      ItemData(1230780, 1, "progress", locationName.ROARDINO)
+    itemName.ROAR:      ItemData(1230780, 1, "progress", locationName.ROARDINO)
 }
 
 bk_moves_table = {
@@ -139,10 +139,10 @@ misc_collectable_table = {
     itemName.HONEY:         ItemData(1230512, 25, "varies", ""),
     itemName.PAGES:         ItemData(1230513, 25, "varies", ""),
     itemName.DOUBLOON:      ItemData(1230514, 30, "progress", ""),
-    itemName.TREBLE:        ItemData(1230516,  9, "progress", ""),
+    itemName.TREBLE:        ItemData(1230516,  9, "progression_skip_balancing", ""),
     itemName.CHUFFY:        ItemData(1230796,  1, "progress", locationName.CHUFFY),
-    itemName.NOTE:          ItemData(1230797, 144, "progress", ""),
-    itemName.BASS:          ItemData(1230781,  0, "progress", ""),
+    itemName.NOTE:          ItemData(1230797, 144, "progression_skip_balancing", ""),
+    itemName.BASS:          ItemData(1230781,  0, "progression_skip_balancing", ""),
     itemName.NONE:          ItemData(1230834,  0, "filler", ""),
     itemName.TTRAP:         ItemData(1230786,  0, "trap", ""),
     itemName.STRAP:         ItemData(1230787,  0, "trap", ""),

@@ -190,7 +190,7 @@ Banjo-Tooie:
 
 
   # Start with these items.
-  # start_inventory: {"Grip Grab": 1, "Fire Eggs": 1}
+  # start_inventory_from_pool: {"Grip Grab": 1, "Fire Eggs": 1}
 
   # if cheato_as_filler is true, add locations you don't want to deal with... like Scrotty.
   # exclude_locations: {"CCL: Canary Mary Jiggy", "CCL: Canary Mary Cheato Page"}
