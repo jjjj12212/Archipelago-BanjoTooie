@@ -1,6 +1,6 @@
 # 4.4
   - Warp Pads and Silos can now be randomized.
-    - Warp Pads and Silos become unusable until you receive the corresponding item.
+    - Warp Pads and Silos are unusable until you receive the corresponding item.
     - Getting near them gives a check.
   - Options
     - Randomize Warp Pads
@@ -16,11 +16,17 @@
   - Improved the hint system
     - Underscores (_) and long names should no longer cause an issue while reading the hint in game.
     - Hints to progression items are slightly more likely to show than hints to useless items, but slower locations are still likely to be hinted.
-    - Excluded locations should no longer show up as hints
+    - These locations no longer show up in signpost hints:
+      - Excluded locations;
+      - World openings;
+      - Boss, minigame and jinjo family Mumbo Token locations.
     - Cryptic hints are now clearer
       - One of a kind progression items will be hinted as "legendary one-of-a-kind".
       - Currency-like items (plentiful progression items, like Notes in Banjo-Tooie) will be hinted as "great" instead of "wonderful". This might not be perfect for all games.
       - Useful, but not required items will be hinted as "good"
+      - Fillers (normal items) will be hinted as "useless"
+      - Multi-classification items are hinted as "weird"
+      - Traps are hinted as "bad" items.
   - Notes, Cheato Pages, Honeycombs are no longer considered during progression balancing, they may be spread more evenly across the playthrough.
   - Mumbo Tokens will be considered for progression balancing.
   - Jamjars will now announce which Move Silo is unlocked when you get enough notes!
