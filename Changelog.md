@@ -16,7 +16,10 @@
   - Improved the hint system
     - Underscores (_) and long names should no longer cause an issue while reading the hint in game.
     - Hints to progression items are slightly more likely to show than hints to useless items, but slower locations are still likely to be hinted.
-    - Excluded locations should no longer show up as hints
+    - These locations no longer show up in signpost hints:
+      - Excluded locations;
+      - World openings;
+      - Boss, minigame and jinjo family Mumbo Token locations.
     - Cryptic hints are now clearer
       - One of a kind progression items will be hinted as "legendary one-of-a-kind".
       - Currency-like items (plentiful progression items, like Notes in Banjo-Tooie) will be hinted as "great" instead of "wonderful". This might not be perfect for all games.

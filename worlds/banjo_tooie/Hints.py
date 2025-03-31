@@ -5,7 +5,7 @@ from BaseClasses import ItemClassification, Location, LocationProgressType
 from worlds.AutoWorld import World
 from .Options import HintClarity, AddSignpostHintsToArchipelagoHints
 from .Items import moves_table, bk_moves_table, progressive_ability_table
-from .Locations import all_location_table, WorldUnlocks_table
+from .Locations import MumboTokenBoss_table, MumboTokenGames_table, MumboTokenJinjo_table, all_location_table, WorldUnlocks_table
 from .Names import locationName
 
 TOTAL_HINTS = 61
@@ -50,13 +50,13 @@ class Hint:
 
     def __format_location(self, capitalize: bool) -> str:
         if self.location.player == self.world.player:
-            return f"{"Your" if capitalize else "your"} {self.location.name}"
+            return f"{'Your' if capitalize else 'your'} {self.location.name}"
 
         return f"{Hint.__player_id_to_name(self.world, self.location.player)}'s {Hint.__sanitize_text(self.location.name)}"
 
     def __format_item(self, capitalize: bool) -> str:
         if self.location.item.player == self.world.player:
-            return f"{"Your" if capitalize else "your"} {Hint.__sanitize_text(self.location.item.name)}"
+            return f"{'Your' if capitalize else 'your'} {Hint.__sanitize_text(self.location.item.name)}"
 
         return f"{Hint.__player_id_to_name(self.world, self.location.item.player)}'s {Hint.__sanitize_text(self.location.item.name)}"
 
@@ -414,9 +414,15 @@ def should_consider_location(location: Location) -> bool:
         return False
     if location.progress_type == LocationProgressType.EXCLUDED:
         return False
-    if location.name in WorldUnlocks_table.keys():
-        return False
 
+    location_hint_blacklist = [
+        *WorldUnlocks_table.keys(),
+        *MumboTokenBoss_table.keys(),
+        *MumboTokenGames_table.keys(),
+        *MumboTokenJinjo_table.keys(),
+    ]
+    if location.name in location_hint_blacklist:
+        return False
     return True
 
 def get_signpost_location_ids() -> List[int]:
