@@ -29,6 +29,7 @@
     - Honey B Rewards: can now be gotten by getting the Claw Clamber Boots from Cliff Top.
     - Cactus of Strength Jinjo: removed climb + talon trot + air rat-a-tat rap from easy tricks because it was too hard.
     - Bunch of Logic fixes.
+  - We are temporarily supporting Bizhawk 2.9.1 until the next Archipelago major release is out. (Version 6)
 
 # 4.3
   - You are now required to use Bizhawk 2.10. 2.9.1 and lower are not supported.
