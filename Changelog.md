@@ -1,18 +1,18 @@
 # 4.4
-  - Warp Pads and Silos can now be randomised.
-    - Warp Pads and Silos become unusable until you receive the corresponding item them.
+  - Warp Pads and Silos can now be randomized.
+    - Warp Pads and Silos become unusable until you receive the corresponding item.
     - Getting near them gives a check.
   - Options
-    - Randomise Warp Pads
-    - Randomise Silos
+    - Randomize Warp Pads
+    - Randomize Silos
     - Open Silos rework
       - You can now choose how many silos are pre-opened, from 0 to 7.
     - New Egg Behaviour Option
       - Simple Randomize Starting Eggs (you will start with a random egg, but it won't be Clockworks).
     - Open Hag 1
       - Was moved among the victory condition options
-     - Added options replace_extra_jiggies and replace_extra_notes.
-       - Disabling these options will cause the game to always have exactly 900 notes and 90 jiggies instead of potentially some of them being other filler items.
+    - Added options replace_extra_jiggies and replace_extra_notes.
+      - Disable these options will cause the game to always have exactly 900 notes and 90 jiggies instead of potentially some of them being other filler items.
   - Improved the hint system
     - Underscores (_) and long names should no longer cause an issue while reading the hint in game.
     - Hints to progression items are slightly more likely to show than hints to useless items, but slower locations are still likely to be hinted.
@@ -25,9 +25,10 @@
   - Mumbo Tokens will be considered for progression balancing.
   - Jamjars will now announce which Move Silo is unlocked when you get enough notes!
   - Logic Fixes
-    - Due to warp pads being randomised and constraints from the existing code, a lot of the solo Kazooie exploration has been removed from the logic. It may return in the future.
+    - Due to warp pads being randomized and constraints from the existing code, a lot of the solo Kazooie exploration has been removed from the logic. It may return in the future.
     - Honey B Rewards: can now be gotten by getting the Claw Clamber Boots from Cliff Top.
     - Cactus of Strength Jinjo: removed climb + talon trot + air rat-a-tat rap from easy tricks because it was too hard.
+    - Bunch of Logic fixes.
 
 # 4.3
   - You are now required to use Bizhawk 2.10. 2.9.1 and lower are not supported.
