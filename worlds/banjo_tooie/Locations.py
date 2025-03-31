@@ -7,7 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
 
 class LocationData(typing.NamedTuple):
-    #last good ID: 1231482 (SIGNCC4)
+    #last good ID: 1231595 (SILOCK2)
     #12C770 pointer instead (1230704)
     btid: int = 0
     # Save + mem addr
@@ -94,6 +94,8 @@ JVLoc_table = {
     locationName.NESTIH17: LocationData(1231051),
 
     locationName.SIGNIH1:   LocationData(1231483, 0, 0, "Signpost"),
+
+    locationName.SILOIOHJV:   LocationData(1231550, 0, 0, "Silos"),
 }
 
 MTLoc_Table = {
@@ -192,6 +194,12 @@ MTLoc_Table = {
     locationName.SIGNMT7:   LocationData(1231508, 0, 0, "Signpost"),
     locationName.SIGNMT8:   LocationData(1231509, 0, 0, "Signpost"),
     locationName.SIGNMT9:   LocationData(1231510, 0, 0, "Signpost"),
+
+    locationName.WARPMT1:   LocationData(1231557, 0, 0, "Warp Pads"),
+    locationName.WARPMT2:   LocationData(1231558, 0, 0, "Warp Pads"),
+    locationName.WARPMT3:   LocationData(1231559, 0, 0, "Warp Pads"),
+    locationName.WARPMT4:   LocationData(1231560, 0, 0, "Warp Pads"),
+    locationName.WARPMT5:   LocationData(1231561, 0, 0, "Warp Pads"),
 }
 
 IHPLLoc_table = {
@@ -216,6 +224,8 @@ IHPLLoc_table = {
     locationName.NESTIH31: LocationData(1231065),
     locationName.NESTIH32: LocationData(1231066),
     locationName.NESTIH33: LocationData(1231067),
+
+    locationName.SILOIOHPL:   LocationData(1231552, 0, 0, "Silos"),
 }
 
 GMLoc_table = {
@@ -312,9 +322,16 @@ GMLoc_table = {
     locationName.SIGNGM2:   LocationData(1231512, 0, 0, "Signpost"),
     locationName.SIGNGM3:   LocationData(1231513, 0, 0, "Signpost"),
     locationName.SIGNGM4:   LocationData(1231514, 0, 0, "Signpost"),
+
+
+    locationName.WARPGM1:   LocationData(1231562, 0, 0, "Warp Pads"),
+    locationName.WARPGM2:   LocationData(1231563, 0, 0, "Warp Pads"),
+    locationName.WARPGM3:   LocationData(1231564, 0, 0, "Warp Pads"),
+    locationName.WARPGM4:   LocationData(1231565, 0, 0, "Warp Pads"),
+    locationName.WARPGM5:   LocationData(1231566, 0, 0, "Warp Pads"),
 }
 
-PGLoc_table = {
+IHPGLoc_table = {
     locationName.GEGGS:    LocationData(1230759, 0x1E, 2),
     locationName.NOTEIH5:   LocationData(1230932, 0x96, 3, "Note"),
     locationName.NOTEIH6:   LocationData(1230933, 0x96, 4, "Note"),
@@ -334,6 +351,8 @@ PGLoc_table = {
     locationName.SIGNIH15:   LocationData(1231497, 0, 0, "Signpost"),
     locationName.SIGNIH16:   LocationData(1231498, 0, 0, "Signpost"),
     locationName.SIGNIH17:   LocationData(1231499, 0, 0, "Signpost"),
+
+    locationName.SILOIOHPG:   LocationData(1231553, 0, 0, "Silos"),
 }
 
 WWLoc_table = {
@@ -432,7 +451,13 @@ WWLoc_table = {
     locationName.SIGNWW5:   LocationData(1231519, 0, 0, "Signpost"),
     locationName.SIGNWW6:   LocationData(1231520, 0, 0, "Signpost"),
     locationName.SIGNWW7:   LocationData(1231521, 0, 0, "Signpost"),
-    locationName.SIGNWW8:   LocationData(1231522, 0, 0, "Signpost")
+    locationName.SIGNWW8:   LocationData(1231522, 0, 0, "Signpost"),
+
+    locationName.WARPWW1:   LocationData(1231567, 0, 0, "Warp Pads"),
+    locationName.WARPWW2:   LocationData(1231568, 0, 0, "Warp Pads"),
+    locationName.WARPWW3:   LocationData(1231569, 0, 0, "Warp Pads"),
+    locationName.WARPWW4:   LocationData(1231570, 0, 0, "Warp Pads"),
+    locationName.WARPWW5:   LocationData(1231571, 0, 0, "Warp Pads"),
 }
 JRLoc_table = {
     locationName.JRLDB1: LocationData(1230521, 0x22, 7, "Doubloon"),
@@ -554,6 +579,12 @@ JRLoc_table = {
     locationName.SIGNJR2:   LocationData(1231524, 0, 0, "Signpost"),
     locationName.SIGNJR3:   LocationData(1231525, 0, 0, "Signpost"),
     locationName.SIGNJR4:   LocationData(1231526, 0, 0, "Signpost"),
+
+    locationName.WARPJR1:   LocationData(1231572, 0, 0, "Warp Pads"),
+    locationName.WARPJR2:   LocationData(1231573, 0, 0, "Warp Pads"),
+    locationName.WARPJR3:   LocationData(1231574, 0, 0, "Warp Pads"),
+    locationName.WARPJR4:   LocationData(1231575, 0, 0, "Warp Pads"),
+    locationName.WARPJR5:   LocationData(1231576, 0, 0, "Warp Pads"),
 }
 
 TLLoc_table = {
@@ -666,6 +697,12 @@ TLLoc_table = {
     locationName.SIGNTL2:   LocationData(1231528, 0, 0, "Signpost"),
     locationName.SIGNTL3:   LocationData(1231529, 0, 0, "Signpost"),
     locationName.SIGNTL4:   LocationData(1231530, 0, 0, "Signpost"),
+
+    locationName.WARPTL1:   LocationData(1231577, 0, 0, "Warp Pads"),
+    locationName.WARPTL2:   LocationData(1231578, 0, 0, "Warp Pads"),
+    locationName.WARPTL3:   LocationData(1231579, 0, 0, "Warp Pads"),
+    locationName.WARPTL4:   LocationData(1231580, 0, 0, "Warp Pads"),
+    locationName.WARPTL5:   LocationData(1231581, 0, 0, "Warp Pads"),
 }
 
 GILoc_table = {
@@ -797,6 +834,12 @@ GILoc_table = {
     locationName.SIGNGI2:   LocationData(1231532, 0, 0, "Signpost"),
     locationName.SIGNGI3:   LocationData(1231533, 0, 0, "Signpost"),
     locationName.SIGNGI4:   LocationData(1231534, 0, 0, "Signpost"),
+
+    locationName.WARPGI1:   LocationData(1231582, 0, 0, "Warp Pads"),
+    locationName.WARPGI2:   LocationData(1231583, 0, 0, "Warp Pads"),
+    locationName.WARPGI3:   LocationData(1231584, 0, 0, "Warp Pads"),
+    locationName.WARPGI4:   LocationData(1231585, 0, 0, "Warp Pads"),
+    locationName.WARPGI5:   LocationData(1231586, 0, 0, "Warp Pads"),
 }
 
 HPLoc_table = {
@@ -892,6 +935,12 @@ HPLoc_table = {
     locationName.SIGNHP3:   LocationData(1231537, 0, 0, "Signpost"),
     locationName.SIGNHP4:   LocationData(1231538, 0, 0, "Signpost"),
     locationName.SIGNHP5:   LocationData(1231539, 0, 0, "Signpost"),
+
+    locationName.WARPHP1:   LocationData(1231587, 0, 0, "Warp Pads"),
+    locationName.WARPHP2:   LocationData(1231588, 0, 0, "Warp Pads"),
+    locationName.WARPHP3:   LocationData(1231589, 0, 0, "Warp Pads"),
+    locationName.WARPHP4:   LocationData(1231590, 0, 0, "Warp Pads"),
+    locationName.WARPHP5:   LocationData(1231591, 0, 0, "Warp Pads"),
 }
 
 CCLoc_table = {
@@ -992,6 +1041,10 @@ CCLoc_table = {
     locationName.SIGNCC2:   LocationData(1231541, 0, 0, "Signpost"),
     locationName.SIGNCC3:   LocationData(1231542, 0, 0, "Signpost"),
     locationName.SIGNCC4:   LocationData(1231543, 0, 0, "Signpost"),
+
+
+    locationName.WARPCC1:   LocationData(1231592, 0, 0, "Warp Pads"),
+    locationName.WARPCC2:   LocationData(1231593, 0, 0, "Warp Pads"),
 }
 
 WorldUnlocks_table = {
@@ -1037,6 +1090,8 @@ IHWHLoc_table = {
     locationName.SIGNIH12:   LocationData(1231494, 0, 0, "Signpost"),
     locationName.SIGNIH13:   LocationData(1231495, 0, 0, "Signpost"),
     locationName.SIGNIH14:   LocationData(1231496, 0, 0, "Signpost"),
+
+    locationName.SILOIOHWH:   LocationData(1231551, 0, 0, "Silos"),
 }
 
 IHWLLoc_table = {
@@ -1060,6 +1115,8 @@ IHWLLoc_table = {
     locationName.NESTIH57: LocationData(1231091),
 
     locationName.SIGNIH19:   LocationData(1231501, 0, 0, "Signpost"),
+
+    locationName.SILOIOHWL:   LocationData(1231555, 0, 0, "Silos"),
 }
 
 IHQMLoc_table = {
@@ -1069,6 +1126,8 @@ IHQMLoc_table = {
     locationName.NESTIH61: LocationData(1231095),
     locationName.NESTIH62: LocationData(1231096),
     locationName.NESTIH63: LocationData(1231097),
+
+    locationName.SILOIOHQM:   LocationData(1231556, 0, 0, "Silos"),
 }
 
 IHCTLoc_table = {
@@ -1090,6 +1149,13 @@ IHCTLoc_table = {
     locationName.NESTIH64: LocationData(1231482), #Out of order.
 
     locationName.SIGNIH18:   LocationData(1231500, 0, 0, "Signpost"),
+
+    locationName.SILOIOHCT:   LocationData(1231554, 0, 0, "Silos"),
+}
+
+CKLoc_table = {
+    locationName.WARPCK1:   LocationData(1231594, 0, 0, "Warp Pads"),
+    locationName.WARPCK2:   LocationData(1231595, 0, 0, "Warp Pads"),
 }
 
 boss_table = {
@@ -1144,7 +1210,7 @@ all_location_table = {
     **MTLoc_Table,
     **IHPLLoc_table,
     **GMLoc_table,
-    **PGLoc_table,
+    **IHPGLoc_table,
     **WWLoc_table,
     **IHCTLoc_table,
     **JRLoc_table,
@@ -1154,12 +1220,9 @@ all_location_table = {
     **GILoc_table,
     **HPLoc_table,
     **CCLoc_table,
+    **CKLoc_table,
     **boss_table,
     **MumboTokenBoss_table,
     **MumboTokenGames_table,
     **MumboTokenJinjo_table
 }
-
-
-
-

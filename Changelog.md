@@ -1,18 +1,33 @@
 # 4.4
- - New Egg Behaviour Option
-  - Simple Randomize Starting Eggs (you will start with a random egg, but it won't be Clockworks)
- - Improved the hint system
-  - Underscores (_) and long names should no longer cause an issue while reading the hint in game.
-  - Hints to progression items are slightly more likely to show than hints to useless items, but slower locations are still likely to be hinted.
-  - Excluded locations should no longer show up as hints
-  - Cryptic hints are now clearer
-    - One of a kind progression items will be hinted as "legendary one-of-a-kind".
-    - Currency-like items (plentiful progression items, like Notes in Banjo-Tooie) will be hinted as "great" instead of "wonderful". This might not be perfect for all games.
-    - Useful, but not required items will be hinted as "good"
- - Notes, Cheato Pages, Honeycombs are no longer be more likely to appear in earlier spheres, instead, they will be spread more evenly across the playthrough.
- - Mumbo Tokens will be considered for progression balancing.
- - Added options replace_extra_jiggies and replace_extra_notes, disabling these options will cause the game to always have exactly 900 notes and 90 jiggies instead of potentially some of them being other filler items.
- - Jamjars will now announce which Move Silo is unlocked when you get enough notes!
+  - Warp Pads and Silos can now be randomised.
+    - Warp Pads and Silos become unusable until you receive the corresponding item them.
+    - Getting near them gives a check.
+  - Options
+    - Randomise Warp Pads
+    - Randomise Silos
+    - Open Silos rework
+      - You can now choose how many silos are pre-opened, from 0 to 7.
+    - New Egg Behaviour Option
+      - Simple Randomize Starting Eggs (you will start with a random egg, but it won't be Clockworks).
+    - Open Hag 1
+      - Was moved among the victory condition options
+     - Added options replace_extra_jiggies and replace_extra_notes.
+       - Disabling these options will cause the game to always have exactly 900 notes and 90 jiggies instead of potentially some of them being other filler items.
+  - Improved the hint system
+    - Underscores (_) and long names should no longer cause an issue while reading the hint in game.
+    - Hints to progression items are slightly more likely to show than hints to useless items, but slower locations are still likely to be hinted.
+    - Excluded locations should no longer show up as hints
+    - Cryptic hints are now clearer
+      - One of a kind progression items will be hinted as "legendary one-of-a-kind".
+      - Currency-like items (plentiful progression items, like Notes in Banjo-Tooie) will be hinted as "great" instead of "wonderful". This might not be perfect for all games.
+      - Useful, but not required items will be hinted as "good"
+  - Notes, Cheato Pages, Honeycombs are no longer considered during progression balancing, they may be spread more evenly across the playthrough.
+  - Mumbo Tokens will be considered for progression balancing.
+  - Jamjars will now announce which Move Silo is unlocked when you get enough notes!
+  - Logic Fixes
+    - Due to warp pads being randomised and constraints from the existing code, a lot of the solo Kazooie exploration has been removed from the logic. It may return in the future.
+    - Honey B Rewards: can now be gotten by getting the Claw Clamber Boots from Cliff Top.
+    - Cactus of Strength Jinjo: removed climb + talon trot + air rat-a-tat rap from easy tricks because it was too hard.
 
 # 4.3
   - You are now required to use Bizhawk 2.10. 2.9.1 and lower are not supported.

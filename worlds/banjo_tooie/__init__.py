@@ -9,7 +9,7 @@ import warnings
 from dataclasses import asdict
 
 from .Hints import HintData, generate_hints
-from .Items import BanjoTooieItem, ItemData, all_item_table, all_group_table, progressive_ability_breakdown
+from .Items import BanjoTooieItem, ItemData, all_item_table, all_group_table, progressive_ability_breakdown, silo_table
 from .Locations import BanjoTooieLocation, LocationData, all_location_table, MTLoc_Table, GMLoc_table, WWLoc_table, JRLoc_table, TLLoc_table, GILoc_table, HPLoc_table, CCLoc_table, MumboTokenGames_table, MumboTokenBoss_table, MumboTokenJinjo_table
 from .Regions import create_regions, connect_regions
 from .Options import BanjoTooieOptions, EggsBehaviour, JamjarsSiloCosts, LogicType, ProgressiveEggAim, ProgressiveWaterTraining, RandomizeBKMoveList, TowerOfTragedy, VictoryCondition
@@ -57,7 +57,7 @@ class BanjoTooieWorld(World):
     """
 
     game: str = "Banjo-Tooie"
-    version = "V4.3"
+    version = "V4.4"
     web = BanjoTooieWeb()
     topology_present = True
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
@@ -81,7 +81,9 @@ class BanjoTooieWorld(World):
         "Stations": all_group_table["stations"],
         "StopnSwap": all_group_table["stopnswap"],
         "Access": all_group_table["levelaccess"],
-        "Dino": all_group_table["dino"]
+        "Dino": all_group_table["dino"],
+        "Silos": all_group_table["Silos"],
+        "Warp Pads": all_group_table["Warp Pads"],
     }
 
     options_dataclass =  BanjoTooieOptions
@@ -100,10 +102,10 @@ class BanjoTooieWorld(World):
 
 
         self.slot_data = []
+        self.preopened_silos = []
         self.randomize_worlds = {}
         self.randomize_order = {}
         self.worlds_randomized = False
-        self.single_silo = ""
         self.loading_zones = {}
         self.jamjars_siloname_costs = {}
         self.jamjars_silo_costs = {}
@@ -364,6 +366,15 @@ class BanjoTooieWorld(World):
         if name in all_group_table['stopnswap'].keys() and not self.options.randomize_stop_n_swap:
             return None
 
+        if name in all_group_table['Warp Pads'].keys() and not self.options.randomize_warp_pads:
+            return None
+
+        if name in all_group_table['Silos'].keys() and not self.options.randomize_silos:
+            return None
+
+        if name in all_group_table['Silos'].keys() and name in self.preopened_silos:
+            return None
+
         if name == itemName.ROAR and not self.options.randomize_dino_roar:
             return None
 
@@ -428,6 +439,13 @@ class BanjoTooieWorld(World):
         self.pre_fill_me()
 
     def generate_early(self) -> None:
+        self.validate_yaml_options()
+        self.choose_starter_egg()
+        self.choose_starter_attack()
+        WorldRandomize(self)
+        self.hand_preopened_silos()
+
+    def validate_yaml_options(self) -> None:
         if self.options.randomize_worlds and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none and self.options.logic_type == LogicType.option_intended:
             raise OptionError("Randomize Worlds and Randomize BK Moves is not compatible with Beginner Logic.")
         if (not self.options.randomize_notes and not self.options.randomize_signposts and not self.options.nestsanity) and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none:
@@ -453,10 +471,12 @@ class BanjoTooieWorld(World):
             raise OptionError("You cannot have progressive bash attack without randomizing Stop N Swap and randomizing BK moves")
         if not self.options.randomize_moves and self.options.jamjars_silo_costs != JamjarsSiloCosts.option_vanilla:
             raise OptionError("You cannot change the silo costs without randomizing Jamjars' moves.")
+        # if not self.options.randomize_moves and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none and self.options.open_silos < 2:
+        #     raise OptionError("If you enabled Randomized Worlds with BK Moves randomized, you must have at least 2 silos opened.")
         if not self.options.open_hag1 and self.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
             self.options.open_hag1.value = True
 
-
+    def choose_starter_egg(self) -> None:
         if self.options.egg_behaviour == EggsBehaviour.option_random_starting_egg or \
         self.options.egg_behaviour == EggsBehaviour.option_simple_random_starting_egg:
             eggs: list = []
@@ -475,6 +495,7 @@ class BanjoTooieWorld(World):
             banjoItem = all_item_table.get(itemName.BEGGS)
             self.starting_egg = banjoItem.btid
 
+    def choose_starter_attack(self) -> None:
         if self.options.randomize_bk_moves != RandomizeBKMoveList.option_none:
             chosen_attack: str
             base_attacks: list
@@ -507,7 +528,10 @@ class BanjoTooieWorld(World):
             self.multiworld.push_precollected(starting_attack)
             banjoItem = all_item_table.get(chosen_attack)
             self.starting_attack = banjoItem.btid
-        WorldRandomize(self)
+
+    def hand_preopened_silos(self) -> None:
+        for silo in self.preopened_silos:
+            self.multiworld.push_precollected(self.create_item(silo))
 
     def set_rules(self) -> None:
         rules = Rules.BanjoTooieRules(self)
@@ -546,6 +570,12 @@ class BanjoTooieWorld(World):
 
         if not self.options.randomize_stop_n_swap:
             self.banjo_pre_fills("StopnSwap", None, True)
+
+        if not self.options.randomize_silos:
+            self.prefill_silos()
+
+        if not self.options.randomize_warp_pads:
+            self.banjo_pre_fills("Warp Pads", None, True)
 
         if not self.worlds_randomized and self.options.skip_puzzles:
             self.banjo_pre_fills("Access", None, True)
@@ -704,6 +734,14 @@ class BanjoTooieWorld(World):
 
         return self.random.choices(names, actual_weights, k=1)[0]
 
+    def prefill_silos(self):
+        for name, data in silo_table.items():
+            # A vanilla silo that's pre-opened does not give a check, since its item is in the starting inventory.
+            if name not in self.preopened_silos:
+                item = self.create_item(name)
+                location = self.get_location(data.default_location)
+                location.place_locked_item(item)
+
     def banjo_pre_fills(self, itemNameOrGroup: str, group: str, useGroup: bool ) -> None:
         if useGroup:
             for group_name, item_info in self.item_name_groups.items():
@@ -757,8 +795,6 @@ class BanjoTooieWorld(World):
                         spoiler_handle.write(f"\n\t\tGrunty Industries: {cost}")
                     else:
                         spoiler_handle.write(f"\n\t\t{entrances}: {cost}")
-            spoiler_handle.write("\n\tBanjo-Tooie Open Overworld Silos:\n")
-            spoiler_handle.write("\t\t" + currentWorld.single_silo)
             spoiler_handle.write("\n\tJamjars' Silo Costs:")
             for silo, cost in currentWorld.jamjars_siloname_costs.items():
                     spoiler_handle.write(f"\n\t\t{silo}: {cost}")
@@ -812,6 +848,8 @@ class BanjoTooieWorld(World):
             "randomize_signposts",
             "signpost_hints",
             "signpost_move_hints",
+            "randomize_warp_pads",
+            "randomize_silos",
             "hint_clarity",
             "dialog_character"
         )
@@ -826,7 +864,7 @@ class BanjoTooieWorld(World):
 
         btoptions["starting_egg"] = int(self.starting_egg)
         btoptions["starting_attack"] = int(self.starting_attack)
-        btoptions["first_silo"] = self.single_silo
+        btoptions["preopened_silos"] = [self.item_name_to_id[name] for name in self.preopened_silos]
 
         btoptions["version"] = BanjoTooieWorld.version
 
