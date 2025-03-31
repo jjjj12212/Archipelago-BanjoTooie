@@ -64,7 +64,7 @@ bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_i
 script_version: int = 4
 version: str = "V4.4"
 game_append_version: str = "V44"
-patch_md5: str = "f3727b89a1f93cbdc145df73142499ba"
+patch_md5: str = "70a5a8793e9b84d0e591d90119f5bbe7"
 
 def get_item_value(ap_id):
     return ap_id
