@@ -2,7 +2,7 @@ from collections import defaultdict
 from ..Names import itemName
 from . import BanjoTooieTestBase
 
-ALL_90_JIGGIES_AND_900_NOTES = {
+ALL_90_JIGGIES_AND_900_NOTES_PROGRESSION = {
     "game_length": "custom",
     "custom_worlds": "1,1,1,1,1,1,1,1,90",
     "randomize_notes": "false",
@@ -82,7 +82,7 @@ class TestMaxTrapsZero(FillersTrapTestBase):
         "max_traps": 0,
         "nestsanity": "false",
 
-        **ALL_90_JIGGIES_AND_900_NOTES,
+        **ALL_90_JIGGIES_AND_900_NOTES_PROGRESSION,
         **ADD_16_FILLERS_FROM_BK_MOVES,
     }
 
@@ -97,7 +97,7 @@ class TestMaxTrapsNonZero(FillersTrapTestBase):
         "max_traps": 100,
         "nestsanity": "false",
 
-        **ALL_90_JIGGIES_AND_900_NOTES,
+        **ALL_90_JIGGIES_AND_900_NOTES_PROGRESSION,
         **ADD_16_FILLERS_FROM_BK_MOVES,
     }
 
@@ -115,7 +115,7 @@ class TestMaxTrapsZeroWithNestsanity(FillersTrapTestBase):
         "max_traps": 0,
         "nestsanity": "true",
 
-        **ALL_90_JIGGIES_AND_900_NOTES,
+        **ALL_90_JIGGIES_AND_900_NOTES_PROGRESSION,
         **ADD_NO_FILLERS_FROM_BK_MOVES,
     }
 
@@ -130,7 +130,7 @@ class TestFillersExtraClefs(FillersTrapTestBase):
     options = {
         "max_traps": 0,
 
-        **ALL_90_JIGGIES_AND_900_NOTES,
+        **ALL_90_JIGGIES_AND_900_NOTES_PROGRESSION,
         **ADD_NO_FILLERS_FROM_BK_MOVES,
 
         "randomize_notes": "true",
@@ -367,3 +367,105 @@ class TestDefaultFillersWithoutNestsanityReasonable(FillersTrapTestBase):
         # adding reasonable expectations here
         assert 0 <= pool.filler_distribution[itemName.NOTE] <= 90
         assert 15 <= pool.filler_distribution[itemName.JIGGY] <= 65
+
+class TestNoReplaceExtraNotesAndJiggies(FillersTrapTestBase):
+    options = {
+        **ADD_16_FILLERS_FROM_BK_MOVES,
+
+        # exactly 50 jiggies are progressive
+        "jingaling_jiggy": "false",
+        "game_length": "custom",
+        "custom_worlds": "1,1,1,1,1,1,1,1,50",
+
+        # This also adds 9 filler
+        "extra_trebleclefs_count": 2,
+        "bass_clef_amount": 3,
+        "randomize_notes": "true",
+
+        "replace_extra_jiggies": "false",
+        "replace_extra_notes": "false",
+    }
+
+    def test_fillers_and_traps_pool(self) -> None:
+        pool = self.pool()
+
+        assert pool.total_distribution[itemName.BASS] == 3
+        assert pool.total_distribution[itemName.TREBLE] == 9 + 2
+
+        assert pool.total_distribution[itemName.NOTE] * 5 \
+               + pool.total_distribution[itemName.BASS] * 10 \
+               + pool.total_distribution[itemName.TREBLE] * 20 \
+                   == 900
+
+        assert pool.total_distribution[itemName.JIGGY] == 90
+
+        assert sum(pool.distribution.values()) == \
+               pool.filler_distribution[itemName.JIGGY]\
+               + pool.filler_distribution[itemName.NOTE]\
+               + 25
+
+        assert pool.filler_distribution[itemName.JIGGY] == 20
+        # clefts account for 250 total.
+        # leaving 650 by packs
+        # 765 is progression (max cost for jamjars)
+        # all clefts are progression, so 515 is progression by packs
+        # so 515 / 650 or 103 / 130
+        # so leftover is 27
+        assert pool.filler_distribution[itemName.NOTE] == 13
+
+class TestNoReplaceExtraJiggiesMinimalRespectCount(FillersTrapTestBase):
+    options = {
+        **ADD_16_FILLERS_FROM_BK_MOVES,
+        "game_length": "custom",
+        "custom_worlds": "1,1,1,1,1,1,1,1,1",
+
+        "randomize_jinjos": "false",
+
+        "replace_extra_jiggies": "false",
+    }
+
+    def test_fillers_and_traps_pool(self) -> None:
+        pool = self.pool()
+
+        assert pool.total_distribution[itemName.JIGGY] == 90 - 9 - 1 # remove jinjos' and jingaling
+
+
+class TestNoReplaceExtraJiggiesMaximalRespectCount(FillersTrapTestBase):
+    options = {
+        **ADD_16_FILLERS_FROM_BK_MOVES,
+        "game_length": "custom",
+        "custom_worlds": "1,1,1,1,1,1,1,1,90",
+
+        "randomize_jinjos": "false",
+
+        "replace_extra_jiggies": "false",
+    }
+
+    def test_fillers_and_traps_pool(self) -> None:
+        pool = self.pool()
+
+        assert pool.total_distribution[itemName.JIGGY] == 90 - 9 - 1 # remove jinjos' and jingaling
+
+
+class TestNoReplaceExtraNotesRespectCount(FillersTrapTestBase):
+    options = {
+        **ADD_16_FILLERS_FROM_BK_MOVES,
+
+        # This also adds 9 filler
+        "extra_trebleclefs_count": 15,
+        "bass_clef_amount": 20,
+        "randomize_notes": "true",
+
+        "replace_extra_notes": "false",
+    }
+
+    def test_fillers_and_traps_pool(self) -> None:
+        pool = self.pool()
+
+        assert pool.total_distribution[itemName.BASS] == 20
+        assert pool.total_distribution[itemName.TREBLE] == 9 + 15
+
+        assert pool.total_distribution[itemName.NOTE] * 5 \
+               + pool.total_distribution[itemName.BASS] * 10 \
+               + pool.total_distribution[itemName.TREBLE] * 20 \
+                   == 900

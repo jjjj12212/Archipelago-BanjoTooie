@@ -1,3 +1,43 @@
+# 4.4
+  - Warp Pads and Silos can now be randomized.
+    - Warp Pads and Silos are unusable until you receive the corresponding item.
+    - Getting near them gives a check.
+  - Options
+    - Randomize Warp Pads
+    - Randomize Silos
+    - Open Silos rework
+      - You can now choose how many silos are pre-opened, from 0 to 7.
+    - New Egg Behaviour Option
+      - Simple Randomize Starting Eggs (you will start with a random egg, but it won't be Clockworks).
+    - Open Hag 1
+      - Was moved among the victory condition options
+    - Added options replace_extra_jiggies and replace_extra_notes.
+      - Disable these options will cause the game to always have exactly 900 notes and 90 jiggies instead of potentially some of them being other filler items.
+  - Improved the hint system
+    - Underscores (_) and long names should no longer cause an issue while reading the hint in game.
+    - Hints to progression items are slightly more likely to show than hints to useless items, but slower locations are still likely to be hinted.
+    - These locations no longer show up in signpost hints:
+      - Excluded locations;
+      - World openings;
+      - Boss, minigame and jinjo family Mumbo Token locations.
+    - Cryptic hints are now clearer
+      - One of a kind progression items will be hinted as "legendary one-of-a-kind".
+      - Currency-like items (plentiful progression items, like Notes in Banjo-Tooie) will be hinted as "great" instead of "wonderful". This might not be perfect for all games.
+      - Useful, but not required items will be hinted as "good"
+      - Fillers (normal items) will be hinted as "useless"
+      - Multi-classification items are hinted as "weird"
+      - Traps are hinted as "bad" items.
+  - Notes, Cheato Pages, Honeycombs are no longer considered during progression balancing, they may be spread more evenly across the playthrough.
+  - Mumbo Tokens will be considered for progression balancing.
+  - Jamjars will now announce which Move Silo is unlocked when you get enough notes!
+  - Archipelago Menu contains a menu for Warp Silos and Warp Pads.
+  - Logic Fixes
+    - Due to warp pads being randomized and constraints from the existing code, a lot of the solo Kazooie exploration has been removed from the logic. It may return in the future.
+    - Honey B Rewards: can now be gotten by getting the Claw Clamber Boots from Cliff Top.
+    - Cactus of Strength Jinjo: removed climb + talon trot + air rat-a-tat rap from easy tricks because it was too hard.
+    - Bunch of Logic fixes.
+  - We are temporarily supporting Bizhawk 2.9.1 until the next Archipelago major release is out. (Version 6)
+
 # 4.3
   - You are now required to use Bizhawk 2.10. 2.9.1 and lower are not supported.
   - New filler options

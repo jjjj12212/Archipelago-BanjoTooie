@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | 4.2
+# Archipelago Banjo-Tooie (US-Only) | 4.4
 Banjo Tooie for Archipelago 
 
 # Current Implementation
@@ -20,6 +20,8 @@ Banjo Tooie for Archipelago
 - T-Rex Roar
 - Nests
 - Traps
+- Isle O' Hag Silos
+- Warp Pads
 
 \*: Jiggies are the only collectibles that are forced to be randomized.
 
@@ -67,6 +69,7 @@ Banjo Tooie for Archipelago
 - Different Logic types for different skill levels
 - Customizable world requirements
 - Console support (Everdrive with USB support + Expansion Pak required)
+- Signpost Hints
 
 # How to install
 Go to worlds/banjo_tooie/docs/setup_en.md for detailed instructions how to setup this APWorld.

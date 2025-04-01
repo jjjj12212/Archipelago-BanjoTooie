@@ -19,7 +19,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V4.3"
+local BT_VERSION = "V4.4"
 local PLAYER = ""
 local SEED = 0
 
@@ -56,6 +56,8 @@ local DEBUG_DOUBLOON = false
 local DEBUG_AMAZE = false
 local DEBUG_NESTS = false
 local DEBUG_SIGNPOSTS = false
+local DEBUG_WARPSILOS = false
+local DEBUG_WARPPADS = false
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 local AP_TIMEOUT_COUNTER = 0
@@ -265,7 +267,8 @@ local ASSET_MAP_CHECK = {
             "1231046",
             "1231047"
         },
-        ["SIGNPOSTS"] = {"1231483"}
+        ["SIGNPOSTS"] = {"1231483"},
+        ["WARPSILOS"] = {"1231550"},
     },
     [0x143] = { --JV - Bottles' House
         ["AMAZE"] = {"1231005"},
@@ -303,7 +306,8 @@ local ASSET_MAP_CHECK = {
             "1231079",
             "1231482",
         },
-        ["SIGNPOSTS"] = {"1231500"}
+        ["SIGNPOSTS"] = {"1231500"},
+        ["WARPSILOS"] = {"1231554"},
     },
     [0x150] = { --IoH - Heggy's Egg Shed
         ["STOPNSWAP"] = {
@@ -335,7 +339,9 @@ local ASSET_MAP_CHECK = {
             "1231499",
             "1231498",
             "1231497",
-        }
+        },
+        ["WARPSILOS"] = {"1231553"},
+
     },
     [0x157] = { -- Pine Grove Humba
         ["NESTS"] = {
@@ -367,7 +373,8 @@ local ASSET_MAP_CHECK = {
             "1231065",
             "1231066",
             "1231067",
-        }
+        },
+        ["WARPSILOS"] = {"1231552"},
     },
     [0x153] = { --IoH - Plateau - Honey B's Hive
         ["HONEYB"] = {
@@ -407,7 +414,8 @@ local ASSET_MAP_CHECK = {
             "1231088",
             "1231089",
         },
-        ["SIGNPOSTS"] = {"1231501"}
+        ["SIGNPOSTS"] = {"1231501"},
+        ["WARPSILOS"] = {"1231555"},
     },
     [0x14F] = { --IoH - Wooded Hollow
         ["JINJOS"] = {
@@ -430,7 +438,8 @@ local ASSET_MAP_CHECK = {
             "1231485",
             "1231487",
             "1231484",
-        }
+        },
+        ["WARPSILOS"] = {"1231551"},
     },
     [0x151] = { --IoH - Jiggywiggy's Temple
         ["SIGNPOSTS"] = {
@@ -452,7 +461,9 @@ local ASSET_MAP_CHECK = {
             "1231095",
             "1231096",
             "1231097",
-        }
+        },
+        ["WARPSILOS"] = {"1231556"},
+
     },
     --MAYAHEM TEMPLE
     [0xB8] = { --MT
@@ -509,7 +520,11 @@ local ASSET_MAP_CHECK = {
             "1231110",
             "1231111",
         },
-        ["SIGNPOSTS"] = {"1231503"}
+        ["SIGNPOSTS"] = {"1231503"},
+        ["WARPPADS"] = {
+            "1231557",
+            "1231558",
+        }
     },
     [0xC4] = { --MT - Jade Snake Grove
         ["JIGGIES"] = {
@@ -537,6 +552,9 @@ local ASSET_MAP_CHECK = {
             "1231508",
             "1231507",
             "1231506",
+        },
+        ["WARPPADS"] = {
+            "1231560",
         }
     },
     [0xB6] = { -- MT - Humba
@@ -548,6 +566,9 @@ local ASSET_MAP_CHECK = {
     [0xBB] = { --MT - Mayan Kickball Stadium (Lobby)
         ["JIGGIES"] = {
             "1230598", -- Kickball
+        },
+        ["WARPPADS"] = {
+            "1231561",
         }
     },
     [0xB7] = { --MT - Mumbo's Skull
@@ -580,6 +601,9 @@ local ASSET_MAP_CHECK = {
         ["SIGNPOSTS"] = {
             "1231504",
             "1231505",
+        },
+        ["WARPPADS"] = {
+            "1231559",
         }
     },
     [0x179] = { -- MT - Temple Lobby
@@ -683,6 +707,15 @@ local ASSET_MAP_CHECK = {
             "1231141",
             "1231142",
         },
+        ["WARPPADS"] = {
+            "1231562",
+            "1231563",
+            "1231565",
+            "1231566",
+        }
+    },
+    [0xE9] = { --GGM - Humba
+        ["WARPPADS"] = { "1231564"}
     },
     [0xCC] ={ --GGM - Flooded Caves
         ["JIGGIES"] = {
@@ -902,7 +935,14 @@ local ASSET_MAP_CHECK = {
             "1231519",
             "1231518",
             "1231515",
-        }
+        },
+        ["WARPPADS"] = {
+            "1231567",
+            "1231568",
+            "1231569",
+            "1231570"
+        },
+
     },
     [0xEA] = { --WW - Cave of Horrors
         ["JINJOS"] = {
@@ -995,7 +1035,10 @@ local ASSET_MAP_CHECK = {
         ["NESTS"] = {
             "1231196",
             "1231197",
-        }
+        },
+        ["WARPPADS"] = {
+            "1231571"
+        },
     },
     [0x176] = { -- WW - Mumbo Skull
         ["HONEYCOMB"] = {
@@ -1066,7 +1109,10 @@ local ASSET_MAP_CHECK = {
         ["NESTS"] = {
             "1231245",
         },
-        ["SIGNPOSTS"] = {"1231526"}
+        ["SIGNPOSTS"] = {"1231526"},
+        ["WARPPADS"] = {
+            "1231572"
+        },
     },
     [0xF4] = { --JRL - Ancient Swimming Baths
         ["PAGES"] = {
@@ -1104,7 +1150,11 @@ local ASSET_MAP_CHECK = {
             "1231249",
             "1231250",
             "1231251",
-        }
+        },
+        ["WARPPADS"] = {
+            "1231573",
+            "1231574"
+        },
     },
     [0xFF] = { --JRL - Blubber's Wave Race Hire
         ["JINJOS"] = {
@@ -1211,7 +1261,11 @@ local ASSET_MAP_CHECK = {
             "1231256",
             "1231257",
             "1231258",
-        }
+        },
+        ["WARPPADS"] = {
+            "1231575",
+            "1231576"
+        },
     },
     [0x181] =	{ --JRL - Sea Botom Cavern
         ["JIGGIES"] = {
@@ -1334,7 +1388,13 @@ local ASSET_MAP_CHECK = {
             "1231277",
             "1231278",
         },
-        ["SIGNPOSTS"] = {"1231527"}
+        ["SIGNPOSTS"] = {"1231527"},
+        ["WARPPADS"] = {
+            "1231577",
+            "1231579",
+            "1231580",
+            "1231581"
+        },
     },
     [0x123] = { --TDL - Inside Chompa's Belly
         ["JIGGIES"] = {
@@ -1416,7 +1476,8 @@ local ASSET_MAP_CHECK = {
             "1231307",
             "1231308",
             "1231309",
-        }
+        },
+        ["WARPPADS"] = {"1231578"},
     },
     [0x118] =	{ --TDL - Styracosaurus Family Cave
         ["HONEYCOMB"] = {
@@ -1483,7 +1544,9 @@ local ASSET_MAP_CHECK = {
             "1231317",
             "1231318",
         },
-        ["SIGNPOSTS"] = {"1231531"}
+        ["SIGNPOSTS"] = {"1231531"},
+        ["WARPPADS"] = {"1231586"},
+
     },
     [0x10F] = { --GI - Basement
         ["JIGGIES"] = {
@@ -1553,7 +1616,9 @@ local ASSET_MAP_CHECK = {
             "1231322",
             "1231323",
             "1231324",
-        }
+        },
+        ["WARPPADS"] = {"1231582"},
+
     },
     [0x105] = { --GI - Elevator Shaft
         ["NESTS"] = {
@@ -1600,7 +1665,9 @@ local ASSET_MAP_CHECK = {
             "1231342",
             "1231343",
             "1231344",
-        }
+        },
+        ["WARPPADS"] = {"1231583"},
+
     },
     [0x107] = { --GI - Floor 2 Electromagnetic Chamber
         ["NESTS"] = {
@@ -1627,7 +1694,9 @@ local ASSET_MAP_CHECK = {
             "1231351",
             "1231352",
             "1231353",
-        }
+        },
+        ["WARPPADS"] = {"1231584"},
+
     },
     [0x109] =	{ --GI - Floor 3 (Boiler Plant)
         ["JIGGIES"] = {
@@ -1655,7 +1724,9 @@ local ASSET_MAP_CHECK = {
             "1231360",
             "1231361",
             "1231362",
-        }
+        },
+        ["WARPPADS"] = {"1231585"},
+
     },
     [0x10D] =	{ --GI - Floor 4 (Quality Control)
         ["JIGGIES"] = {
@@ -1780,7 +1851,8 @@ local ASSET_MAP_CHECK = {
             "1231425",
             "1231426",
             "1231427",
-        }
+        },
+        ["WARPPADS"] = {"1231591"},
     },
     [0x128] =	{ --HFP - Icy Side
         ["JIGGIES"] = {
@@ -1821,7 +1893,12 @@ local ASSET_MAP_CHECK = {
             "1231407",
             "1231408",
             "1231409",
-        }
+        },
+        ["WARPPADS"] = {
+            "1231589",
+            "1231590"
+        },
+
     },
     [0x133] =	{ --HFP - Inside the Volcano
         ["JIGGIES"] = {
@@ -1898,7 +1975,11 @@ local ASSET_MAP_CHECK = {
         ["SIGNPOSTS"] = {
             "1231536",
             "1231535",
-        }
+        },
+        ["WARPPADS"] = {
+            "1231587",
+            "1231588"
+        },
     },
     [0x129] =	{ --HFP - Lava Train Station
         ["HONEYCOMB"] = {
@@ -1983,7 +2064,8 @@ local ASSET_MAP_CHECK = {
             "1231464",
             "1231466",
             "1231465",
-        }
+        },
+        ["WARPPADS"] = {"1231592"},
 
     },
     [0x13A] =	{ --CCL - Central Cavern
@@ -2033,7 +2115,8 @@ local ASSET_MAP_CHECK = {
             "1231540",
             "1231542",
             "1231541",
-        }
+        },
+        ["WARPPADS"] = {"1231593"},
     },
     [0x138] =	{ --CCL - Inside the Cheese Wedge
         ["JIGGIES"] = {
@@ -2104,6 +2187,12 @@ local ASSET_MAP_CHECK = {
         ["PAGES"] = {
             "1230751" -- Zubba
         }
+    },
+    [0x15D] = { -- CK Outside
+        ["WARPPADS"] = {
+            "1231594",
+            "1231595"
+        },
     }
 }
 
@@ -2214,6 +2303,53 @@ local ROM_ITEM_TABLE = {
     "AP_ITEM_CCA",
     "AP_ITEM_CKA",
     "AP_ITEM_H1A",
+    "AP_ITEM_WARPMT_HUMBA",
+    "AP_ITEM_WARPMT_PRISON",
+    "AP_ITEM_WARPMT_MUMBO",
+    "AP_ITEM_WARPMT_ENTRANCE",
+    "AP_ITEM_WARPMT_KICKBALL",
+    "AP_ITEM_WARPGG_TRAIN",
+    "AP_ITEM_WARPGG_CRUSHING",
+    "AP_ITEM_WARPGG_HUMBA",
+    "AP_ITEM_WARPGG_MUMBO",
+    "AP_ITEM_WARPGG_ENTRANCE",
+    "AP_ITEM_WARPWW_BIGTOP",
+    "AP_ITEM_WARPWW_ENTRANCE",
+    "AP_ITEM_WARPWW_MUMBO",
+    "AP_ITEM_WARPWW_HUMBA",
+    "AP_ITEM_WARPWW_SPACE",
+    "AP_ITEM_WARPJR_LOCKERS",
+    "AP_ITEM_WARPJR_BIGFISH",
+    "AP_ITEM_WARPJR_SHIP",
+    "AP_ITEM_WARPJR_ATLANTIS",
+    "AP_ITEM_WARPJR_ENTRANCE",
+    "AP_ITEM_WARPGI_MUMBO",
+    "AP_ITEM_WARPGI_HUMBA",
+    "AP_ITEM_WARPGI_ENTRANCE",
+    "AP_ITEM_WARPGI_ROOF",
+    "AP_ITEM_WARPGI_CRUSHER",
+    "AP_ITEM_WARPTD_TOP",
+    "AP_ITEM_WARPTD_HUMBA",
+    "AP_ITEM_WARPTD_MUMBO",
+    "AP_ITEM_WARPTD_STOMPING",
+    "AP_ITEM_WARPTD_ENTRANCE",
+    "AP_ITEM_WARPCC_ENTRANCE",
+    "AP_ITEM_WARPCC_CENTER",
+    "AP_ITEM_WARPHF_ICICLE",
+    "AP_ITEM_WARPHF_HUMBA",
+    "AP_ITEM_WARPHF_ICYUPPER",
+    "AP_ITEM_WARPHF_LAVAUPPER",
+    "AP_ITEM_WARPHF_ENTRANCE",
+    "AP_ITEM_WARPCK_HAG1",
+    "AP_ITEM_WARPCK_ENTRANCE",
+    "AP_ITEM_SILO_JINJO_VILLAGE",
+    "AP_ITEM_SILO_WOODED_HOLLOW",
+    "AP_ITEM_SILO_PLATEAU",
+    "AP_ITEM_SILO_PINE_GROVE",
+    "AP_ITEM_SILO_CLIFF_TOP",
+    "AP_ITEM_SILO_WASTELAND",
+    "AP_ITEM_SILO_QUAGMIRE",
+    "AP_ITEM_MAX",
 };
 
 local TRAP_TABLE = {};
@@ -5030,6 +5166,195 @@ local ADDRESS_MAP = {
         ['1231542'] = 0x3A,
         ['1231541'] = 0x3B,
         ['1231543'] = 0x3C,
+    },
+    ['WARPSILOS'] = {
+        ['1231550'] = {
+            ['addr'] = 0x60,
+            ['bit'] = 5,
+        },
+        ['1231551'] = {
+            ['addr'] = 0x60,
+            ['bit'] = 6,
+        },
+        ['1231552'] = {
+            ['addr'] = 0x60,
+            ['bit'] = 7,
+        },
+        ['1231553'] = {
+            ['addr'] = 0x61,
+            ['bit'] = 0,
+        },
+        ['1231554'] = {
+            ['addr'] = 0x61,
+            ['bit'] = 1,
+        },
+        ['1231555'] = {
+            ['addr'] = 0x61,
+            ['bit'] = 2,
+        },
+        ['1231556'] = {
+            ['addr'] = 0x61,
+            ['bit'] = 3,
+        },
+
+    },
+    ['WARPPADS'] = {
+        ['1231557'] = {
+            ['addr'] = 0x70,
+            ['bit'] = 4,
+        },
+        ['1231558'] = {
+            ['addr'] = 0x70,
+            ['bit'] = 5,
+        },
+        ['1231559'] = {
+            ['addr'] = 0x70,
+            ['bit'] = 6,
+        },
+        ['1231560'] = {
+            ['addr'] = 0x70,
+            ['bit'] = 7,
+        },
+        ['1231561'] = {
+            ['addr'] = 0x71,
+            ['bit'] = 0,
+        },
+        ['1231562'] = {
+            ['addr'] = 0x71,
+            ['bit'] = 1,
+        },
+        ['1231563'] = {
+            ['addr'] = 0x71,
+            ['bit'] = 2,
+        },
+        ['1231564'] = {
+            ['addr'] = 0x71,
+            ['bit'] = 3,
+        },
+        ['1231565'] = {
+            ['addr'] = 0x71,
+            ['bit'] = 4,
+        },
+        ['1231566'] = {
+            ['addr'] = 0x71,
+            ['bit'] = 5,
+        },
+        ['1231567'] = {
+            ['addr'] = 0x71,
+            ['bit'] = 6,
+        },
+        ['1231568'] = {
+            ['addr'] = 0x71,
+            ['bit'] = 7,
+        },
+        ['1231569'] = {
+            ['addr'] = 0x72,
+            ['bit'] = 0,
+        },
+        ['1231570'] = {
+            ['addr'] = 0x72,
+            ['bit'] = 1,
+        },
+        ['1231571'] = {
+            ['addr'] = 0x72,
+            ['bit'] = 2,
+        },
+        ['1231572'] = {
+            ['addr'] = 0x72,
+            ['bit'] = 3,
+        },
+        ['1231573'] = {
+            ['addr'] = 0x72,
+            ['bit'] = 4,
+        },
+        ['1231574'] = {
+            ['addr'] = 0x72,
+            ['bit'] = 5,
+        },
+        ['1231575'] = {
+            ['addr'] = 0x72,
+            ['bit'] = 6,
+        },
+        ['1231576'] = {
+            ['addr'] = 0x72,
+            ['bit'] = 7,
+        },
+        ['1231577'] = {
+            ['addr'] = 0x73,
+            ['bit'] = 0,
+        },
+        ['1231578'] = {
+            ['addr'] = 0x73,
+            ['bit'] = 1,
+        },
+        ['1231579'] = {
+            ['addr'] = 0x73,
+            ['bit'] = 2,
+        },
+        ['1231580'] = {
+            ['addr'] = 0x73,
+            ['bit'] = 3,
+        },
+        ['1231581'] = {
+            ['addr'] = 0x73,
+            ['bit'] = 4,
+        },
+        ['1231582'] = {
+            ['addr'] = 0x73,
+            ['bit'] = 5,
+        },
+        ['1231583'] = {
+            ['addr'] = 0x73,
+            ['bit'] = 6,
+        },
+        ['1231584'] = {
+            ['addr'] = 0x73,
+            ['bit'] = 7,
+        },
+        ['1231585'] = {
+            ['addr'] = 0x74,
+            ['bit'] = 0,
+        },
+        ['1231586'] = {
+            ['addr'] = 0x74,
+            ['bit'] = 1,
+        },
+        ['1231587'] = {
+            ['addr'] = 0x74,
+            ['bit'] = 2,
+        },
+        ['1231588'] = {
+            ['addr'] = 0x74,
+            ['bit'] = 3,
+        },
+        ['1231589'] = {
+            ['addr'] = 0x74,
+            ['bit'] = 4,
+        },
+        ['1231590'] = {
+            ['addr'] = 0x74,
+            ['bit'] = 5,
+        },
+        ['1231591'] = {
+            ['addr'] = 0x74,
+            ['bit'] = 6,
+        },
+        ['1231592'] = {
+            ['addr'] = 0x74,
+            ['bit'] = 7,
+        },
+        ['1231593'] = {
+            ['addr'] = 0x75,
+            ['bit'] = 0,
+        },
+        ['1231594'] = {
+            ['addr'] = 0x75,
+            ['bit'] = 4,
+        },
+        ['1231595'] = {
+            ['addr'] = 0x75,
+            ['bit'] = 5,
+        },
     }
 }
 
@@ -5146,7 +5471,7 @@ BTHACK = {
     RDRAMBase = 0x80000000,
     RDRAMSize = 0x800000,
     base_index = 0x400000,
-        version = 0x0,
+    version = 0x0,
     pc = 0x4,
         pc_death_us = 0x0,
         pc_death_ap = 0x1,
@@ -5158,19 +5483,20 @@ BTHACK = {
         setting_victory_condition = 0x4,
         setting_chuffy = 0x5,
         setting_nests = 0x6,
-        setting_puzzle = 0x7,
-        setting_backdoors = 0x8,
-        setting_klungo = 0x9,
-        setting_tot = 0xA,
-        setting_minigames = 0xB,
-        setting_dialog_character = 0xC,
-        setting_max_mumbo_tokens = 0xD,
-        setting_signpost_hints = 0xE,
-        setting_extra_cheats = 0xF,
-        setting_easy_canary = 0x10,
-        setting_jiggy_requirements = 0x11,
-        setting_open_silos = 0x1C,
-        setting_silo_requirements = 0x24,
+        setting_warppads = 0x7,
+        setting_warpsilos = 0x8,
+        setting_puzzle = 0x9,
+        setting_backdoors = 0xA,
+        setting_klungo = 0xB,
+        setting_tot = 0xC,
+        setting_minigames = 0xD,
+        setting_dialog_character = 0xE,
+        setting_max_mumbo_tokens = 0xF,
+        setting_signpost_hints = 0x10,
+        setting_extra_cheats = 0x11,
+        setting_easy_canary = 0x12,
+        setting_jiggy_requirements = 0x13,
+        setting_silo_requirements = 0x1E,
     pc_items = 0x14,
     pc_traps = 0x18,
     pc_exit_map = 0x1C,
@@ -5297,6 +5623,14 @@ end
 
 function BTHACK:setSettingChuffy(chuffy)
     mainmemory.writebyte(self.setting_chuffy + BTHACK:getSettingPointer(), chuffy);
+end
+
+function BTHACK:setSettingSilos(silo)
+    mainmemory.writebyte(self.setting_warpsilos + BTHACK:getSettingPointer(), silo);
+end
+
+function BTHACK:setSettingWarpPads(warppad)
+    mainmemory.writebyte(self.setting_warppads + BTHACK:getSettingPointer(), warppad);
 end
 
 function BTHACK:getNestPointer()
@@ -6549,6 +6883,242 @@ function signpost_check()
     return checks
 end
 
+---------------------- SILOS LOCATIONS ---------------------
+function warpsilo_check()
+    local checks = {}
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK[CURRENT_MAP]["WARPSILOS"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["WARPSILOS"])
+            do
+                checks[locationId] = BTH:checkFakeFlag(ADDRESS_MAP["WARPSILOS"][locationId]['addr'], ADDRESS_MAP["WARPSILOS"][locationId]['bit'])
+                if DEBUG_WARPSILOS == true
+                then
+                    print(ADDRESS_MAP["WARPSILOS"][locationId]['name']..":"..tostring(checks[locationId]))
+                end
+            end
+        end
+    end
+    return checks
+end
+
+function obtain_silos(itemId)
+    if itemId == 1230870
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_SILO_JINJO_VILLAGE"], 1)
+    end
+    if itemId == 1230871
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_SILO_WOODED_HOLLOW"], 1)
+    end
+    if itemId == 1230872
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_SILO_PLATEAU"], 1)
+    end
+    if itemId == 1230873
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_SILO_PINE_GROVE"], 1)
+    end
+    if itemId == 1230874
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_SILO_CLIFF_TOP"], 1)
+    end
+    if itemId == 1230875
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_SILO_WASTELAND"], 1)
+    end
+    if itemId == 1230876
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_SILO_QUAGMIRE"], 1)
+    end
+
+end
+
+---------------------- WARPPAD LOCATIONS ---------------------
+function warppad_check()
+    local checks = {}
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK[CURRENT_MAP]["WARPPADS"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["WARPPADS"])
+            do
+                checks[locationId] = BTH:checkFakeFlag(ADDRESS_MAP["WARPPADS"][locationId]['addr'], ADDRESS_MAP["WARPPADS"][locationId]['bit'])
+                if DEBUG_WARPPADS == true
+                then
+                    print(ADDRESS_MAP["WARPPADS"][locationId]['name']..":"..tostring(checks[locationId]))
+                end
+            end
+        end
+    end
+    return checks
+end
+
+function obtain_warppads(itemId)
+    if itemId == 1230877
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPMT_ENTRANCE"], 1)
+    end
+    if itemId == 1230878
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPMT_MUMBO"], 1)
+    end
+    if itemId == 1230879
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPMT_PRISON"], 1)
+    end
+    if itemId == 1230880
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPMT_HUMBA"], 1)
+    end
+    if itemId == 1230881
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPMT_KICKBALL"], 1)
+    end
+    if itemId == 1230882
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPGG_ENTRANCE"], 1)
+    end
+    if itemId == 1230883
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPGG_MUMBO"], 1)
+    end
+    if itemId == 1230884
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPGG_HUMBA"], 1)
+    end
+    if itemId == 1230885
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPGG_CRUSHING"], 1)
+    end
+    if itemId == 1230886
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPGG_TRAIN"], 1)
+    end
+    if itemId == 1230887
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPWW_ENTRANCE"], 1)
+    end
+    if itemId == 1230888
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPWW_BIGTOP"], 1)
+    end
+    if itemId == 1230889
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPWW_SPACE"], 1)
+    end
+    if itemId == 1230890
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPWW_HUMBA"], 1)
+    end
+    if itemId == 1230891
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPWW_MUMBO"], 1)
+    end
+    if itemId == 1230892
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPJR_ENTRANCE"], 1)
+    end
+    if itemId == 1230893
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPJR_ATLANTIS"], 1)
+    end
+    if itemId == 1230894
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPJR_SHIP"], 1)
+    end
+    if itemId == 1230895
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPJR_BIGFISH"], 1)
+    end
+    if itemId == 1230896
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPJR_LOCKERS"], 1)
+    end
+    if itemId == 1230897
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPTD_ENTRANCE"], 1)
+    end
+    if itemId == 1230898
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPTD_STOMPING"], 1)
+    end
+    if itemId == 1230899
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPTD_MUMBO"], 1)
+    end
+    if itemId == 1230900
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPTD_HUMBA"], 1)
+    end
+    if itemId == 1230901
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPTD_TOP"], 1)
+    end
+    if itemId == 1230902
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPGI_ENTRANCE"], 1)
+    end
+    if itemId == 1230902
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPGI_ENTRANCE"], 1)
+    end
+    if itemId == 1230903
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPGI_HUMBA"], 1)
+    end
+    if itemId == 1230904
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPGI_MUMBO"], 1)
+    end
+    if itemId == 1230905
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPGI_CRUSHER"], 1)
+    end
+    if itemId == 1230906
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPGI_ROOF"], 1)
+    end
+    if itemId == 1230907
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPHF_ENTRANCE"], 1)
+    end
+    if itemId == 1230908
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPHF_LAVAUPPER"], 1)
+    end
+    if itemId == 1230909
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPHF_ICYUPPER"], 1)
+    end
+    if itemId == 1230910
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPHF_HUMBA"], 1)
+    end
+    if itemId == 1230911
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPHF_ICICLE"], 1)
+    end
+    if itemId == 1230912
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPCC_ENTRANCE"], 1)
+    end
+    if itemId == 1230913
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPCC_CENTER"], 1)
+    end
+    if itemId == 1230914
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPCK_ENTRANCE"], 1)
+    end
+    if itemId == 1230915
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_WARPCK_HAG1"], 1)
+    end
+
+end
+
 ---------------------- GAME FUNCTIONS -------------------
 
 function zoneWarp(zone_table)
@@ -6924,6 +7494,16 @@ function get_item_message_text(item_id, item, player)
                 and string.format("Banjo can now be transformed into a %s.", transformation_names[item_id]["name"])
                 or string.format("%s has just unlocked the %s transformation.", player, transformation_names[item_id]["name"])
         end
+    elseif 1230870 <= item_id and item_id <= 1230876 -- Silos
+    then
+        return own
+            and string.format("%s is now open!", item)
+            or string.format("%s has just opened the %s!", player, item)
+    elseif 1230877 <= item_id and item_id <= 1230915 -- Warppads
+    then
+        return own
+            and string.format("You can now use the %s.", item)
+            or string.format("%s has just unlocked the %s.", player, item)
     end
 
     return nil
@@ -6998,7 +7578,34 @@ function get_item_message_char(item_id)
             return 8 -- Mumbo
         elseif 1230174 <= item_id and item_id <= 1230182 -- Humba Transformations
         then
-            return 37 -- Humba
+            return 37 -- Humba    
+        elseif 1230870 <= item_id and item_id <= 1230876 -- Silos
+        then
+            return 17 -- Jamjars
+        elseif 1230877 <= item_id and item_id <= 1230881 -- Warppad MT
+        then
+            return 100 -- Targitzan
+        elseif 1230882 <= item_id and item_id <= 1230886 -- Warppad GM
+        then
+            return 39 -- Old King Coal
+        elseif 1230887 <= item_id and item_id <= 1230891 -- Warppad WW
+        then
+            return 31 -- Mr Patch
+        elseif 1230892 <= item_id and item_id <= 1230896 -- Warppad JR
+        then
+            return 102 -- Lord Woo Fak Fak
+        elseif 1230897 <= item_id and item_id <= 1230901 -- Warppad TD
+        then
+            return 49 -- Terry
+        elseif 1230902 <= item_id and item_id <= 1230906 -- Warppad GI
+        then
+            return 103 -- Weldar
+        elseif 1230907 <= item_id and item_id <= 1230911 -- Warppad HP
+        then
+            return 65 -- Chilly Willy
+        elseif 1230912 <= item_id and item_id <= 1230915 -- Warppad CC
+        then
+            return 27 -- Canary
         else -- Default
             return 7 -- Bottles
         end
@@ -7093,6 +7700,12 @@ function processAGIItem(item_list)
             elseif( 1230805 <= memlocation and memlocation <= 1230807) -- Nests
             then
                 obtain_nests(memlocation)
+            elseif( 1230870 <= memlocation and memlocation <= 1230876) -- Silos
+            then
+                obtain_silos(memlocation)
+            elseif( 1230877 <= memlocation and memlocation <= 1230915) -- Warppads
+            then
+                obtain_warppads(memlocation)
             elseif(memlocation == 1230514) -- Doubloon Item
             then
                 obtained_AP_DOUBLOON()
@@ -7224,6 +7837,8 @@ function SendToBTClient()
     retTable["dino_kids"] = dino_kids_check();
     retTable["nests"] = nest_check();
     retTable["signposts"] = signpost_check();
+    retTable["silos"] = warpsilo_check();
+    retTable["warppads"] = warppad_check();
     retTable["DEMO"] = false;
     retTable["sync_ready"] = "true"
 
@@ -7544,40 +8159,55 @@ function process_slot(block)
            BTH:setSettingSiloRequirements(JAMJAR_SILO_TABLE[locationId], value)
         end
     end
-    if block['slot_open_silo'] ~= nil
+    if block['slot_preopened_silo'] ~= nil
     then
-        OPEN_SILO = block['slot_open_silo']
-        if OPEN_SILO == "ALL"
-        then
-            BTH:setSettingOpenSilos(0, 1) -- JV
-            BTH:setSettingOpenSilos(1, 1) -- WH
-            BTH:setSettingOpenSilos(2, 1) -- PL
-            BTH:setSettingOpenSilos(3, 1) -- PG
-            BTH:setSettingOpenSilos(4, 1) -- CT
-            BTH:setSettingOpenSilos(5, 1) -- WL
-            BTH:setSettingOpenSilos(6, 1) -- QM
-            SILO_MESSAGE = "All Isle O' Hags Silos are open."
-        elseif string.find(OPEN_SILO, "Wasteland") ~= nil then
-            BTH:setSettingOpenSilos(0, 1)
-            BTH:setSettingOpenSilos(5, 1) -- WL
-            SILO_MESSAGE = "The Isle O' Hags Wasteland Silo is open."
-        elseif string.find(OPEN_SILO, "Quagmire") ~= nil then
-            BTH:setSettingOpenSilos(0, 1)
-            BTH:setSettingOpenSilos(6, 1) -- QM
-            SILO_MESSAGE = "The Isle O' Hags Quagmire Silo is open."
-        elseif string.find(OPEN_SILO, "Plateau") ~= nil then
-            BTH:setSettingOpenSilos(0, 1)
-            BTH:setSettingOpenSilos(2, 1) -- PL
-            SILO_MESSAGE = "The Isle O' Hags Plateau Silo is open."
-        elseif string.find(OPEN_SILO, "Pine Grove") ~= nil then
-            BTH:setSettingOpenSilos(0, 1)
-            BTH:setSettingOpenSilos(3, 1) -- PG
-            SILO_MESSAGE = "The Isle O' Hags Pine Grove Silo is open."
-        elseif string.find(OPEN_SILO, "Cliff Top") ~= nil then
-            BTH:setSettingOpenSilos(0, 1)
-            BTH:setSettingOpenSilos(4, 1) -- CT
-            SILO_MESSAGE = "The Isle O' Hags Cliff Top Silo is open."
+        OPEN_SILO = block['slot_preopened_silo']
+        for _, silos in pairs(OPEN_SILO)
+        do
+            if silos == 1230870
+            then
+                BTH:setItem(ITEM_TABLE["AP_ITEM_SILO_JINJO_VILLAGE"], 1)
+                SILO_MESSAGE = "The Isle O' Hags Jinjo Village Silo is open."
+            end
+            if silos == 1230871
+            then
+                BTH:setItem(ITEM_TABLE["AP_ITEM_SILO_WOODED_HOLLOW"], 1)
+                SILO_MESSAGE = "The Isle O' Hags Wooded Hollow Silo is open."
+            end
+            if silos == 1230872
+            then
+                BTH:setItem(ITEM_TABLE["AP_ITEM_SILO_PLATEAU"], 1)
+                SILO_MESSAGE = "The Isle O' Hags Plateau Silo is open."
+            end
+            if silos == 1230873
+            then
+                BTH:setItem(ITEM_TABLE["AP_ITEM_SILO_PINE_GROVE"], 1)
+                SILO_MESSAGE = "The Isle O' Hags Pine Grove Silo is open."
+            end
+            if silos == 1230874
+            then
+                BTH:setItem(ITEM_TABLE["AP_ITEM_SILO_CLIFF_TOP"], 1)
+                SILO_MESSAGE = "The Isle O' Hags Cliff Top Silo is open."
+            end
+            if silos == 1230875
+            then
+                BTH:setItem(ITEM_TABLE["AP_ITEM_SILO_WASTELAND"], 1)
+                SILO_MESSAGE = "The Isle O' Hags Wasteland Silo is open."
+            end
+            if silos == 1230876
+            then
+                BTH:setItem(ITEM_TABLE["AP_ITEM_SILO_QUAGMIRE"], 1)
+                SILO_MESSAGE = "The Isle O' Hags Quagmire Silo is open."
+            end
         end
+    end
+    if block['slot_randomize_warp_pads'] ~= nil and block['slot_randomize_warp_pads'] ~= 0
+    then
+        BTH:setSettingWarpPads(1)
+    end
+    if block['slot_randomize_silos'] ~= nil and block['slot_randomize_silos'] ~= 0
+    then
+        BTH:setSettingSilos(1)
     end
     if block['slot_hints'] ~= nil and (block['slot_hints_activated'] ~= 0 or block["slot_randomize_signposts"] ~= 0)
     then
@@ -7705,10 +8335,14 @@ function main()
     local bizhawk_major, bizhawk_minor, bizhawk_patch = bizhawk_version:match("(%d+)%.(%d+)%.?(%d*)")
     bizhawk_major = tonumber(bizhawk_major)
     bizhawk_minor = tonumber(bizhawk_minor)
-    if bizhawk_major == 2 and bizhawk_minor <= 9
+    if bizhawk_major == 2 and bizhawk_minor <= 8
     then
         print("We only support Bizhawk Version 2.10 and newer. Please download Bizhawk version 2.10")
         return
+    end
+    if bizhawk_major == 2 and bizhawk_minor == 9
+    then
+        print("We will be dropping support for Bizhawk 2.9.1 in the near future. Please consider upgrading to 2.10.")
     end
     print("Banjo-Tooie Archipelago Version " .. BT_VERSION)
     BTH = BTHACK:new(nil)

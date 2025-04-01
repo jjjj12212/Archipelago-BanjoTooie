@@ -10,6 +10,7 @@ Our implementation also supports the Everdrive 3.0 and X7. (USB Support)
 
 -   PC Emulation:
     -   BizHawk:  [BizHawk Releases from TASVideos](https://tasvideos.org/BizHawk/ReleaseHistory)
+        -   Version <b>2.9.1</b> will be dropping support soon.
         -   Version <b>2.10</b> and later are supported.
         -   Detailed installation instructions for BizHawk can be found at the above link.
         -   Windows users must run the prereq installer first, which can also be found at the above link.

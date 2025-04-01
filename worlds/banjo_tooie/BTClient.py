@@ -62,9 +62,9 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_to_id"]
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 script_version: int = 4
-version: str = "V4.3"
-game_append_version: str = "V43"
-patch_md5: str = "d373b526b0dee970a15f4ae664072e8c"
+version: str = "V4.4"
+game_append_version: str = "V44"
+patch_md5: str = "70a5a8793e9b84d0e591d90119f5bbe7"
 
 def get_item_value(ap_id):
     return ap_id
@@ -151,6 +151,8 @@ class BanjoTooieContext(CommonContext):
         self.goggles_table = False
         self.dino_kids_table = {}
         self.signpost_table = {}
+        self.warppads_table = {}
+        self.silos_table = {}
         self.nests_table = {}
         self.roar = False
         self.jiggy_table = {}
@@ -368,7 +370,9 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_token_hunt_length": ctx.slot_data["token_hunt_length"],
             "slot_version": version,
             "slot_silo_costs": ctx.slot_data["jamjars_silo_costs"],
-            "slot_open_silo": ctx.slot_data["first_silo"],
+            "slot_preopened_silo": ctx.slot_data["preopened_silos"],
+            "slot_randomize_warp_pads": ctx.slot_data["randomize_warp_pads"],
+            "slot_randomize_silos": ctx.slot_data["randomize_silos"],
             "slot_zones": ctx.slot_data["loading_zones"],
             "slot_dialog_character": ctx.slot_data["dialog_character"],
             "slot_nestsanity": ctx.slot_data["nestsanity"],
@@ -429,6 +433,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     nests = payload["nests"]
     roar_obtain = payload["roar"]
     signposts = payload["signposts"]
+    warp_pads = payload["warppads"]
+    silos = payload["silos"]
     worldslist = payload["worlds"]
     banjo_map = payload["banjo_map"]
 
@@ -483,6 +489,10 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         doubloonlist = {}
     if isinstance(noteslist, list):
         noteslist = {}
+    if isinstance(warp_pads, list):
+        warp_pads = {}
+    if isinstance(silos, list):
+        silos = {}
     if isinstance(hag, bool) == False:
         hag = False
     if isinstance(roar_obtain, bool) == False:
@@ -552,6 +562,16 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                             id = hint['location_id']
                             if not id in ctx.handled_scouts:
                                 scouts1.append(id)
+        if ctx.warppads_table != warp_pads:
+            ctx.warppads_table = warp_pads
+            for locationId, value in warp_pads.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.silos_table != silos:
+            ctx.silos_table = silos
+            for locationId, value in silos.items():
+                if value == True:
+                    locs1.append(int(locationId))        
         if ctx.roar != roar_obtain:
             ctx.roar = roar_obtain
             if roar_obtain == True:

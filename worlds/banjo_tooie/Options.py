@@ -149,6 +149,7 @@ class EggsBehaviour(Choice):
     option_start_with_blue_eggs = 0
     option_random_starting_egg = 1
     option_progressive_eggs = 2
+    option_simple_random_starting_egg = 3 #no clockworks
     default = 0
 
 class ProgressiveShoes(Toggle):
@@ -262,10 +263,22 @@ class EnableNestsanity(Toggle):
     """Eggs and feather nests give checks when you collect them for the first time. They behave as regular egg nests after they have been collected."""
     display_name = "Nestsanity"
 
+class ReplaceExtraJiggies(DefaultOnToggle):
+    """Jiggies over the maximum needed to beat the seed (plus a generous buffer) are replaced by fillers/traps.
+       If turned off, you are guranteed exactly 90 jiggies.
+       You can control how likely extra jiggies show up as fillers by extra_jiggies_weight."""
+    display_name = "Replace Extra Jiggies with filler"
+
+class ReplaceExtraNotes(DefaultOnToggle):
+    """Notes over the maximum needed to beat the seed (plus a generous buffer) are replaced by fillers/traps.
+       If turned off, you are guranteed exactly 900 notes in total.
+       You can control how likely extra notes show up as fillers by extra_notes_weight."""
+    display_name = "Replace Extra Notes with filler"
+
 # -- START OF FILLERS WEIGHTS -------------------------------------------------
 
 class ExtraJiggiesWeight(Range):
-    """The weight of Jiggies in the filler pool.
+    """The weight of Jiggies in the filler pool. Requires replace_extra_jiggies.
     You are guarenteed enough jigges to open all levels. These are extra."""
     display_name = "Extra Jiggies Weight"
     range_start = 0
@@ -273,7 +286,7 @@ class ExtraJiggiesWeight(Range):
     default = 15
 
 class ExtraNotesWeight(Range):
-    """The weight of 5 pack notes in the filler pool. Only has effect if randomize_notes is on.
+    """The weight of 5 pack notes in the filler pool. Requires randomize_notes and replace_extra_notes.
     You are guarenteed enough notes to open all jamjars silos. These are extra."""
     display_name = "Extra 5 Notes Weight"
     range_start = 0
@@ -281,7 +294,7 @@ class ExtraNotesWeight(Range):
     default = 10
 
 class ExtraDoubloonsWeight(Range):
-    """The weight of extra doubloons in the filler pool. Only has effect if randomize_doubloons is on.
+    """The weight of extra doubloons in the filler pool. Requires randomize_doubloons.
     You are guarenteed the original 30 doubloons. These are extra."""
     display_name = "Extra Doubloons Weight"
     range_start = 0
@@ -427,15 +440,6 @@ class LogicType(Choice):
     option_glitches = 3
     default = 0
 
-class OpenSilos(Choice):
-    """Choose if you want IoH Silos to be closed, randomly open 1, or enable all. If you enabled Randomized Worlds with BK Moves randomized and
-       silos set to none, it will be enforced to one."""
-    display_name = "Open Silos"
-    option_none = 0
-    option_one = 1
-    option_all = 2
-    default = 0
-
 class VictoryCondition(Choice):
     """Choose the victory condition.
         HAG1: Unlock the HAG1 fight and defeat Gruntilda.
@@ -561,6 +565,24 @@ class HintClarity(Choice):
     option_clear = 1
     default = 1
 
+
+class OpenSilos(Range):
+    """Choose how many overworld silos are pre-opened.
+    If you have Randomized Worlds, pre-opened silos are guaranteed to lead to the first world.
+    If you enabled Randomized Worlds with BK Moves randomized, you must have at least 2 silos opened."""
+    display_name = "Open Silos"
+    range_start = 0
+    range_end = 7
+    default = 2
+
+class RandomizeSilos(Toggle):
+    """Overworld silos give checks when tagging them. They can only be used once you receive the corresponding item to use a silo."""
+    display_name = "Randomize Silos"
+
+class RandomizeWarpPads(Toggle):
+    """Warp Pads give checks when tagging them. They can only be used once you receive the corresponding item to use a warp pad."""
+    display_name = "Randomize Silos"
+
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
     death_link: DeathLink
@@ -568,6 +590,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     logic_type: LogicType
 
     victory_condition: VictoryCondition
+    open_hag1: OpenHag1
     minigame_hunt_length: MinigameHuntLength
     boss_hunt_length: BossHuntLength
     jinjo_family_rescue_length: JinjoFamilyRescueLength
@@ -605,6 +628,9 @@ class BanjoTooieOptions(PerGameCommonOptions):
     nestsanity: EnableNestsanity
     randomize_signposts: RandomizeSignposts
 
+    replace_extra_jiggies: ReplaceExtraJiggies
+    replace_extra_notes: ReplaceExtraNotes
+
     extra_jiggies_weight: ExtraJiggiesWeight
     extra_notes_weight: ExtraNotesWeight
     extra_doubloons_weight: ExtraDoubloonsWeight
@@ -621,13 +647,14 @@ class BanjoTooieOptions(PerGameCommonOptions):
 
     randomize_stations: RandomizeTrainStationSwitches
     randomize_chuffy: RandomizeChuffyTrain
+    randomize_warp_pads: RandomizeWarpPads
+    randomize_silos: RandomizeSilos
+    open_silos: OpenSilos
     jingaling_jiggy: KingJingalingHasJiggy
     skip_puzzles: SkipPuzzles
     randomize_worlds: RandomizeWorlds
     randomize_world_loading_zone: RandomizeWorldZones
-    open_hag1: OpenHag1
     backdoors:Backdoors
-    open_silos: OpenSilos
 
     extra_cheats: ExtraCheats
     easy_canary: EasyCanary
@@ -640,7 +667,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     add_signpost_hints_to_ap: AddSignpostHintsToArchipelagoHints
     hint_clarity: HintClarity
 
-    dialog_character:DialogCharacters # Keep this at the bottom so that the huge list stays at the bottom of the yaml.
+    dialog_character: DialogCharacters # Keep this at the bottom so that the huge list stays at the bottom of the yaml.
 
     start_inventory_from_pool: StartInventoryPool
 

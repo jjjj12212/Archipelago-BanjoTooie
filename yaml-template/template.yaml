@@ -129,6 +129,9 @@ Banjo-Tooie:
   nestsanity: 'false'            # Every egg nest and feather nest give a check when you collect them for the first time. They behave as normal afterwards.
   randomize_signposts: 'false'   # Signposts as checks
 
+  replace_extra_jiggies: 'true'  # jiggies over the maximum needed to beat the seed (plus a generous buffer) are replaced by fillers/traps.
+  replace_extra_notes: 'true'    # notes over the maximum needed to beat the seed (plus a generous buffer) are replaced by fillers/traps.
+
   extra_jiggies_weight: 15       # 0 - 100; weight of extra jiggies in the filler pool. You are guarenteed enough jigges to open all levels. These are extra.
   extra_notes_weight: 10         # 0 - 100; weight of extra 5 pack notes in the filler pool. Requires randomize_notes. You are guarenteed enough notes to open all jamjars silos. These are extra.
   extra_doubloons_weight: 10     # 0 - 100; weight of extra doubloons in the filler pool. Requires randomize_doubloons. You are guarenteed the original 30 doubloons. These are extra.
@@ -187,7 +190,7 @@ Banjo-Tooie:
 
 
   # Start with these items.
-  # start_inventory: {"Grip Grab": 1, "Fire Eggs": 1}
+  # start_inventory_from_pool: {"Grip Grab": 1, "Fire Eggs": 1}
 
   # if cheato_as_filler is true, add locations you don't want to deal with... like Scrotty.
   # exclude_locations: {"CCL: Canary Mary Jiggy", "CCL: Canary Mary Cheato Page"}

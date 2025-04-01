@@ -4,6 +4,7 @@ from .test_logic import EasyTricksLogic, EasyTricksLogicNoBKShuffle, GlitchesLog
 from .test_fillers_and_traps import ONLY_BIG_O_PANTS_FILLER
 from ..Locations import all_location_table
 from . import BanjoTooieTestBase
+from math import floor, ceil
 
 class TestRandomizedNotes(BanjoTooieTestBase):
     options = {
@@ -14,8 +15,14 @@ class TestRandomizedNotes(BanjoTooieTestBase):
         # max jamjars cost is 765. There are 9 trebleclefs by default.
         progression_notes_default = (765 - 9*20) / 5
 
-        item_pool_names = [item.name for item in self.multiworld.itempool]
-        assert item_pool_names.count(itemName.NOTE) == progression_notes_default
+        notes_in_pool = [item for item in self.multiworld.itempool if item.name == itemName.NOTE]
+
+        progresssion = sum(1 for item in notes_in_pool if item.advancement)
+        useful = sum(1 for item in notes_in_pool if item.useful)
+        filler = sum(1 for item in notes_in_pool if item.filler)
+
+        assert progresssion == progression_notes_default
+        assert useful == 14 #  (144 - progression_notes_default) / 2
 
 class TestVanillaNotes(BanjoTooieTestBase):
     options = {
