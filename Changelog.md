@@ -1,3 +1,7 @@
+# 4.4.1
+  - Logic fixes:
+    - Landing on the roof in GI is back in logic.
+
 # 4.4
   - Warp Pads and Silos can now be randomized.
     - Warp Pads and Silos are unusable until you receive the corresponding item.

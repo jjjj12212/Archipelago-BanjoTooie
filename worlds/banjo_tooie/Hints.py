@@ -160,7 +160,7 @@ def generate_generic_joke_hint(world: World, hint_datas: List[HintData]):
         "A hint is what you want, but instead here's a taunt.",
         "This is an information signpost.",
         "This joke hint features no newline.",
-        "Press \x86 to read this signpost.",
+        "Press \x86 to read this signpost.", # That's the B button
         "Banjo-Kazooie: Grunty's Revenge is a collectathon that was released on the GBA.",
         "Did you know that Banjo-Kazooie had 2 mobile games? Me neither.",
         "After collecting all 9 black jinjos, enter their house for a happy sound.",

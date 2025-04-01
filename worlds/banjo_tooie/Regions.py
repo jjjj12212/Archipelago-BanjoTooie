@@ -1801,7 +1801,7 @@ def connect_regions(self):
                             })
 
     region_GIF = self.get_region(regionName.GIF)
-    region_GIF.add_exits({regionName.GIO, regionName.GIOB, regionName.GI1, regionName.GI3, regionName.GI3B, regionName.GI4, regionName.GI5}, {
+    region_GIF.add_exits({regionName.GIO, regionName.GIOB, regionName.GI1, regionName.GI3, regionName.GI3B, regionName.GI4, regionName.GI5, regionName.GIR}, {
                             regionName.GI1:  lambda state: rules.flight_to_floor_1(state),
                             regionName.GI3B: lambda state: rules.flight_to_boiler_plant(state),
                             regionName.GIWARP: lambda state: state.has(itemName.WARPGI5, player)
