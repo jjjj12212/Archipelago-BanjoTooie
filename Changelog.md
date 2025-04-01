@@ -31,6 +31,7 @@
   - Mumbo Tokens will be considered for progression balancing.
   - Jamjars will now announce which Move Silo is unlocked when you get enough notes!
   - Archipelago Menu contains a menu for Warp Silos and Warp Pads.
+  - Everdrive fix for signpost checks
   - Logic Fixes
     - Due to warp pads being randomized and constraints from the existing code, a lot of the solo Kazooie exploration has been removed from the logic. It may return in the future.
     - Honey B Rewards: can now be gotten by getting the Claw Clamber Boots from Cliff Top.
