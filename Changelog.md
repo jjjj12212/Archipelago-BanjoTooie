@@ -1,3 +1,8 @@
+# 4.4.1
+  - Logic fixes:
+    - Landing on the roof in GI is back in logic.
+  - You are now required to use Bizhawk 2.10. 2.9.1 and lower are not supported... again.
+
 # 4.4
   - Warp Pads and Silos can now be randomized.
     - Warp Pads and Silos are unusable until you receive the corresponding item.

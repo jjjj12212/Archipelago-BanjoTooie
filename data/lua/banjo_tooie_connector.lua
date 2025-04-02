@@ -19,7 +19,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V4.4"
+local BT_VERSION = "V4.4.1"
 local PLAYER = ""
 local SEED = 0
 
@@ -8335,14 +8335,10 @@ function main()
     local bizhawk_major, bizhawk_minor, bizhawk_patch = bizhawk_version:match("(%d+)%.(%d+)%.?(%d*)")
     bizhawk_major = tonumber(bizhawk_major)
     bizhawk_minor = tonumber(bizhawk_minor)
-    if bizhawk_major == 2 and bizhawk_minor <= 8
+    if bizhawk_major == 2 and bizhawk_minor <= 9
     then
         print("We only support Bizhawk Version 2.10 and newer. Please download Bizhawk version 2.10")
         return
-    end
-    if bizhawk_major == 2 and bizhawk_minor == 9
-    then
-        print("We will be dropping support for Bizhawk 2.9.1 in the near future. Please consider upgrading to 2.10.")
     end
     print("Banjo-Tooie Archipelago Version " .. BT_VERSION)
     BTH = BTHACK:new(nil)
