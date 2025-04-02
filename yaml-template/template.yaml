@@ -81,6 +81,7 @@ Banjo-Tooie:
   # 0: Default (Start with Blue Eggs, get other eggs randomly in AP)
   # 1: Randomize Starting Eggs (you will start with a random egg)
   # 2: Progressive Eggs (Blue -> Fire -> Grenade -> Ice -> Clockwork)
+  # 3: Simple Randomize Starting Eggs (you will start with a random egg except for Clockworks)
   # Requires randomize_bk_moves & randomize_moves
   egg_behaviour: 0
 
@@ -149,6 +150,9 @@ Banjo-Tooie:
 
   randomize_stations: 'true'  # adds Stations to the pool
   randomize_chuffy: 'true'    # Chuffy as a AP Item. You can also "call" Chuffy at any unlocked station without needing to fight King Coal.
+  randomize_silos: 'true'     # adds Isle O' Hag Silos to the pool
+  randomize_warp_pads: 'true' # adds warp pads to the pool
+
   jingaling_jiggy: 'true'     # Always start the game with 1 Jiggy from Jingaling
   skip_puzzles: 'true'        # you won't be able to utilize randomizing worlds / loading zones if this is disabled
   randomize_worlds: 'false'   # Changes the order in which levels open
@@ -161,12 +165,7 @@ Banjo-Tooie:
   # George is also pre-dropped to make HFP>JRL more accessible
   backdoors: 'false'
 
-  # Choose if you want IoH Silos to be closed, randomly open 1 or enable all. If you enabled Randomized Worlds with BK Moves randomized and
-  # silos set to none, it will be enforced to one
-  # 0: None
-  # 1: one random silo
-  # 2: All Silos Open
-  open_silos: 0
+  open_silos: 0 # select between 1-7 how many IOH silos are in your starting inventory
 
   extra_cheats: 'false'       # Extra cheats from the original game will be added to the "CHEATS" sub-menu
   easy_canary: 'true'         # Makes Canary Mary Races much easier.
