@@ -165,7 +165,7 @@ Banjo-Tooie:
   # George is also pre-dropped to make HFP>JRL more accessible
   backdoors: 'false'
 
-  open_silos: 0 # select between 1-7 how many IOH silos are in your starting inventory
+  open_silos: 0 # select between 0-7 how many IOH silos are in your starting inventory
 
   extra_cheats: 'false'       # Extra cheats from the original game will be added to the "CHEATS" sub-menu
   easy_canary: 'true'         # Makes Canary Mary Races much easier.
