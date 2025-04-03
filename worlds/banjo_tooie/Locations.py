@@ -54,7 +54,7 @@ SMLoc_table = {
     locationName.NESTSM25: LocationData(1231034, 0, 0, "Nest"),
 }
 
-SMCRLoc_table = {
+CheatoRewardsLoc_table = {
     locationName.CHEATOR1:  LocationData(1230992, 0x08, 4),
     locationName.CHEATOR2:  LocationData(1230993, 0x08, 5),
     locationName.CHEATOR3:  LocationData(1230994, 0x08, 6),
@@ -92,7 +92,7 @@ JVLoc_table = {
     locationName.SILOIOHJV:   LocationData(1231550, 0, 0, "Silos"),
 }
 
-JVJRLoc_table = {
+JinjoRewardsLoc_table = {
     locationName.JIGGYIH1:  LocationData(1230676, 0x4F, 0),
     locationName.JIGGYIH2:  LocationData(1230677, 0x4F, 1),
     locationName.JIGGYIH3:  LocationData(1230678, 0x4F, 2),
@@ -128,9 +128,9 @@ MTLoc_Table = {
     locationName.CHEATOMT1: LocationData(1230728, 0x56, 3, "Cheato Page"),
     locationName.CHEATOMT2: LocationData(1230729, 0x56, 4, "Cheato Page"),
     locationName.CHEATOMT3: LocationData(1230730, 0x56, 5, "Cheato Page"),
-    locationName.EGGAIM:    LocationData(1230753, 0x1B, 3, "Silo"),
-    locationName.BBLASTER:  LocationData(1230754, 0x1B, 2, "Silo"),
-    locationName.GGRAB:     LocationData(1230755, 0x1B, 1, "Silo"),
+    locationName.EGGAIM:    LocationData(1230753, 0x1B, 3, "Jamjars Silo"),
+    locationName.BBLASTER:  LocationData(1230754, 0x1B, 2, "Jamjars Silo"),
+    locationName.GGRAB:     LocationData(1230755, 0x1B, 1, "Jamjars Silo"),
     locationName.TREBLEMT:  LocationData(1230781, 0x86, 7, "Treble Clef"),
     locationName.NOTEMT1:   LocationData(1230800, 0x84, 7, "Note"),
     locationName.NOTEMT2:   LocationData(1230801, 0x85, 0, "Note"),
@@ -211,7 +211,7 @@ MTLoc_Table = {
 IHPLLoc_table = {
     locationName.JINJOIH4:  LocationData(1230594, 0x3E, 7, "Jinjo"),
     locationName.HONEYCIH1: LocationData(1230727, 0x42, 2, "Honeycomb"),
-    locationName.FEGGS:     LocationData(1230756, 0x1E, 1, "Silo"),
+    locationName.FEGGS:     LocationData(1230756, 0x1E, 1, "Jamjars Silo"),
     locationName.NOTEIH1:   LocationData(1230928, 0x95, 7, "Note"),
     locationName.NOTEIH2:   LocationData(1230929, 0x96, 0, "Note"),
     locationName.NOTEIH3:   LocationData(1230930, 0x96, 1, "Note"),
@@ -228,7 +228,7 @@ IHPLLoc_table = {
     locationName.SILOIOHPL:   LocationData(1231552, 0, 0, "Silos"),
 }
 
-IHHBLoc_table = {
+HoneyBRewardsLoc_table = {
     locationName.HONEYBR1:  LocationData(1230997, 0x98, 2),
     locationName.HONEYBR2:  LocationData(1230998, 0x98, 3),
     locationName.HONEYBR3:  LocationData(1230999, 0x98, 0), #binary. bit 2 and 3 is set
@@ -261,8 +261,8 @@ GMLoc_table = {
     locationName.CHEATOGM1: LocationData(1230731, 0x56, 6, "Cheato Page"),
     locationName.CHEATOGM2: LocationData(1230732, 0x56, 7, "Cheato Page"),
     locationName.CHEATOGM3: LocationData(1230733, 0x57, 0, "Cheato Page"),
-    locationName.BDRILL:    LocationData(1230757, 0x1B, 6, "Silo"),
-    locationName.BBAYONET:  LocationData(1230758, 0x1B, 7, "Silo"),
+    locationName.BDRILL:    LocationData(1230757, 0x1B, 6, "Jamjars Silo"),
+    locationName.BBAYONET:  LocationData(1230758, 0x1B, 7, "Jamjars Silo"),
     locationName.TREBLEGM:  LocationData(1230782, 0x89, 0, "Treble Clef"),
     locationName.CHUFFY:    LocationData(1230796, 0x0B, 6, "Chuffy"),
     locationName.NOTEGGM1:   LocationData(1230816, 0x87, 0, "Note"),
@@ -340,7 +340,7 @@ GMLoc_table = {
 }
 
 IHPGLoc_table = {
-    locationName.GEGGS:    LocationData(1230759, 0x1E, 2, "Silo"),
+    locationName.GEGGS:    LocationData(1230759, 0x1E, 2, "Jamjars Silo"),
     locationName.NOTEIH5:   LocationData(1230932, 0x96, 3, "Note"),
     locationName.NOTEIH6:   LocationData(1230933, 0x96, 4, "Note"),
     locationName.NOTEIH7:   LocationData(1230934, 0x96, 5, "Note"),
@@ -387,9 +387,9 @@ WWLoc_table = {
     locationName.CHEATOWW1: LocationData(1230734, 0x57, 1, "Cheato Page"),
     locationName.CHEATOWW2: LocationData(1230735, 0x57, 2, "Cheato Page"),
     locationName.CHEATOWW3: LocationData(1230736, 0x57, 3, "Cheato Page"),
-    locationName.AIREAIM:   LocationData(1230760, 0x1C, 0, "Silo"),
-    locationName.SPLITUP:   LocationData(1230761, 0x1C, 1, "Silo"),
-    locationName.PACKWH:    LocationData(1230762, 0x1D, 6, "Silo"),
+    locationName.AIREAIM:   LocationData(1230760, 0x1C, 0, "Jamjars Silo"),
+    locationName.SPLITUP:   LocationData(1230761, 0x1C, 1, "Jamjars Silo"),
+    locationName.PACKWH:    LocationData(1230762, 0x1D, 6, "Jamjars Silo"),
     locationName.TREBLEWW:  LocationData(1230783, 0x8B, 1, "Treble Clef"),
     locationName.TRAINSWWW: LocationData(1230795, 0x0D, 6, "Train Switch"),
     locationName.NOTEWW1:   LocationData(1230832, 0x89, 1, "Note"),
@@ -521,9 +521,9 @@ JRLoc_table = {
     locationName.CHEATOJR1: LocationData(1230737, 0x57, 4, "Cheato Page"),
     locationName.CHEATOJR2: LocationData(1230738, 0x57, 5, "Cheato Page"),
     locationName.CHEATOJR3: LocationData(1230739, 0x57, 6, "Cheato Page"),
-    locationName.WWHACK:   LocationData(1230764, 0x1C, 2, "Silo"),
-    locationName.TTORP:    LocationData(1230765, 0x1C, 3, "Silo"),
-    locationName.AUQAIM:   LocationData(1230766, 0x1C, 4, "Silo"),
+    locationName.WWHACK:   LocationData(1230764, 0x1C, 2, "Jamjars Silo"),
+    locationName.TTORP:    LocationData(1230765, 0x1C, 3, "Jamjars Silo"),
+    locationName.AUQAIM:   LocationData(1230766, 0x1C, 4, "Jamjars Silo"),
     locationName.TREBLEJR: LocationData(1230784, 0x8D, 2, "Treble Clef"),
     locationName.NOTEJRL1:   LocationData(1230848, 0x8B, 2, "Note"),
     locationName.NOTEJRL2:   LocationData(1230849, 0x8B, 3, "Note"),
@@ -619,9 +619,9 @@ TLLoc_table = {
     locationName.CHEATOTL1: LocationData(1230740, 0x57, 7, "Cheato Page"),
     locationName.CHEATOTL2: LocationData(1230741, 0x58, 0, "Cheato Page"),
     locationName.CHEATOTL3: LocationData(1230742, 0x58, 1, "Cheato Page"),
-    locationName.SPRINGB:   LocationData(1230768, 0x1D, 3, "Silo"),
-    locationName.TAXPACK:   LocationData(1230769, 0x1D, 4, "Silo"),
-    locationName.HATCH:     LocationData(1230770, 0x1D, 5, "Silo"),
+    locationName.SPRINGB:   LocationData(1230768, 0x1D, 3, "Jamjars Silo"),
+    locationName.TAXPACK:   LocationData(1230769, 0x1D, 4, "Jamjars Silo"),
+    locationName.HATCH:     LocationData(1230770, 0x1D, 5, "Jamjars Silo"),
     locationName.TREBLETL:  LocationData(1230785, 0x8F, 3, "Treble Clef"),
     locationName.TRAINSWTD: LocationData(1230791, 0x27, 4, "Train Switch"),
     locationName.NOTETDL1:   LocationData(1230864, 0x8D, 3, "Note"),
@@ -737,9 +737,9 @@ GILoc_table = {
     locationName.CHEATOGI1: LocationData(1230743, 0x58, 2, "Cheato Page"),
     locationName.CHEATOGI2: LocationData(1230744, 0x58, 3, "Cheato Page"),
     locationName.CHEATOGI3: LocationData(1230745, 0x58, 4, "Cheato Page"),
-    locationName.SNPACK:    LocationData(1230771, 0x1D, 0, "Silo"),
-    locationName.LSPRING:   LocationData(1230772, 0x1D, 1, "Silo"),
-    locationName.CLAWBTS:   LocationData(1230773, 0x1D, 2, "Silo"),
+    locationName.SNPACK:    LocationData(1230771, 0x1D, 0, "Jamjars Silo"),
+    locationName.LSPRING:   LocationData(1230772, 0x1D, 1, "Jamjars Silo"),
+    locationName.CLAWBTS:   LocationData(1230773, 0x1D, 2, "Jamjars Silo"),
     locationName.TREBLEGI:  LocationData(1230786, 0x91, 4, "Treble Clef"),
     locationName.TRAINSWGI: LocationData(1230790, 0x27, 3, "Train Switch"),
     locationName.NOTEGI1:   LocationData(1230880, 0x8F, 4, "Note"),
@@ -874,8 +874,8 @@ HPLoc_table = {
     locationName.CHEATOHP1: LocationData(1230746, 0x58, 5, "Cheato Page"),
     locationName.CHEATOHP2: LocationData(1230747, 0x58, 6, "Cheato Page"),
     locationName.CHEATOHP3: LocationData(1230748, 0x58, 7, "Cheato Page"),
-    locationName.SHPACK:   LocationData(1230774, 0x1C, 6, "Silo"),
-    locationName.GLIDE:    LocationData(1230775, 0x1C, 7, "Silo"),
+    locationName.SHPACK:   LocationData(1230774, 0x1C, 6, "Jamjars Silo"),
+    locationName.GLIDE:    LocationData(1230775, 0x1C, 7, "Jamjars Silo"),
     locationName.TREBLEHP: LocationData(1230787, 0x93, 5, "Treble Clef"),
     locationName.TRAINSWHP1: LocationData(1230792, 0x34, 7, "Train Switch"),
     locationName.TRAINSWHP2: LocationData(1230793, 0x35, 0, "Train Switch"),
@@ -975,7 +975,7 @@ CCLoc_table = {
     locationName.CHEATOCC1: LocationData(1230749, 0x59, 0, "Cheato Page"),
     locationName.CHEATOCC2: LocationData(1230750, 0x59, 1, "Cheato Page"),
     locationName.CHEATOCC3: LocationData(1230751, 0x59, 2, "Cheato Page"),
-    locationName.SAPACK:    LocationData(1230776, 0x1D, 7, "Silo"),
+    locationName.SAPACK:    LocationData(1230776, 0x1D, 7, "Jamjars Silo"),
     locationName.TREBLECC:  LocationData(1230788, 0x95, 6, "Treble Clef"),
     locationName.NOTECCL1:   LocationData(1230912, 0x93, 6, "Note"),
     locationName.NOTECCL2:   LocationData(1230913, 0x93, 7, "Note"),
@@ -1073,8 +1073,6 @@ IHWHLoc_table = {
     locationName.PMEGGH:   LocationData(1230954, 0x77, 6, "Stop 'n' Swop"),
     locationName.BMEGGH:   LocationData(1230955, 0x77, 4, "Stop 'n' Swop"),
 
-    **WorldUnlocks_table,
-
     locationName.NESTIH18: LocationData(1231052, 0, 0, "Nest"),
     locationName.NESTIH19: LocationData(1231053, 0, 0, "Nest"),
     locationName.NESTIH20: LocationData(1231054, 0, 0, "Nest"),
@@ -1102,21 +1100,9 @@ IHWHLoc_table = {
     locationName.SILOIOHWH:   LocationData(1231551, 0, 0, "Silos"),
 }
 
-IHWHWLoc_table = {
-    locationName.W1:      LocationData(1230944, 0, 0),
-    locationName.W2:      LocationData(1230945, 0, 0),
-    locationName.W3:      LocationData(1230946, 0, 0),
-    locationName.W4:      LocationData(1230947, 0, 0),
-    locationName.W5:      LocationData(1230948, 0, 0),
-    locationName.W6:      LocationData(1230949, 0, 0),
-    locationName.W7:      LocationData(1230950, 0, 0),
-    locationName.W8:      LocationData(1230951, 0, 0),
-    locationName.W9:      LocationData(1230952, 0, 0),
-}
-
 IHWLLoc_table = {
     locationName.JINJOIH2: LocationData(1230592, 0x3E, 5, "Jinjo"),
-    locationName.CEGGS:   LocationData(1230767, 0x1E, 3, "Silo"),
+    locationName.CEGGS:   LocationData(1230767, 0x1E, 3, "Jamjars Silo"),
     locationName.NOTEIH13:   LocationData(1230940, 0x97, 3, "Note"),
     locationName.NOTEIH14:   LocationData(1230941, 0x97, 4, "Note"),
     locationName.NOTEIH15:   LocationData(1230942, 0x97, 5, "Note"),
@@ -1153,7 +1139,7 @@ IHQMLoc_table = {
 IHCTLoc_table = {
     locationName.JINJOIH3: LocationData(1230593, 0x3E, 6, "Jinjo"),
     locationName.GLOWBOIH1: LocationData(1230702, 0x44, 7, "Glowbo"),
-    locationName.IEGGS:   LocationData(1230763, 0x1E, 4, "Silo"),
+    locationName.IEGGS:   LocationData(1230763, 0x1E, 4, "Jamjars Silo"),
     locationName.TRAINSWIH: LocationData(1230794, 0x7B, 3, "Train Switch"),
     locationName.NOTEIH9:   LocationData(1230936, 0x96, 7, "Note"),
     locationName.NOTEIH10:   LocationData(1230937, 0x97, 0, "Note"),
@@ -1225,14 +1211,14 @@ MumboTokenJinjo_table = {
 
 all_location_table = {
     **SMLoc_table,
-    **SMCRLoc_table,
+    **CheatoRewardsLoc_table,
     **JVLoc_table,
-    **JVJRLoc_table,
+    **JinjoRewardsLoc_table,
+    **WorldUnlocks_table,
     **IHWHLoc_table,
-    **IHWHWLoc_table,
     **MTLoc_Table,
     **IHPLLoc_table,
-    **IHHBLoc_table,
+    **HoneyBRewardsLoc_table,
     **GMLoc_table,
     **IHPGLoc_table,
     **WWLoc_table,
