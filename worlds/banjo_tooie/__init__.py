@@ -152,6 +152,70 @@ class BanjoTooieWorld(World):
         locationName.CHEATOCC3,
     }
 
+    location_name_groups = {}
+    location_name_groups["Mayahem Temple"] = MTLoc_Table.keys()
+    location_name_groups["Glitter Gulch Mine"] = GMLoc_table.keys()
+    location_name_groups["Witchyworld"] = WWLoc_table.keys()
+    location_name_groups["Jolly Roger's Lagoon"] = JRLoc_table.keys()
+    location_name_groups["Terrydactyland"] = TLLoc_table.keys()
+    location_name_groups["Grunty Industries"] = GILoc_table.keys()
+    location_name_groups["Hailfire Peaks"] = HPLoc_table.keys()
+    location_name_groups["Cloud Cuckooland"] = CCLoc_table.keys()
+    location_name_groups["Isle O' Hags"] = SMLoc_table.keys() | JVLoc_table.keys() | IHWHLoc_table.keys() | IHPLLoc_table.keys() | PGLoc_table.keys() | IHCTLoc_table.keys() | IHWLLoc_table.keys() | IHQMLoc_table.keys()
+
+    location_name_groups["Cheato Rewards"] = SMCRLoc_table.keys()
+    location_name_groups["Jinjo Rewards"] = JVJRLoc_table.keys()
+    location_name_groups["Honey B Rewards"] = IHHBLoc_table.keys()
+
+    location_name_groups["Jiggies"] = {c for c in all_location_table if all_location_table[c].group == "Jiggy"}
+    location_name_groups["Jinjos"] = {c for c in all_location_table if all_location_table[c].group == "Jinjo"}
+    location_name_groups["Empty Honeycombs"] = {c for c in all_location_table if all_location_table[c].group == "Honeycomb"}
+    location_name_groups["Cheato Pages"] = {c for c in all_location_table if all_location_table[c].group == "Cheato Page"}
+    location_name_groups["Notes"] = {c for c in all_location_table if all_location_table[c].group == "Note"}
+    location_name_groups["Treble Clefs"] = {c for c in all_location_table if all_location_table[c].group == "Treble Clef"}
+    location_name_groups["Doubloons"] = {c for c in JRLoc_table if JRLoc_table[c].group == "Doubloon"}
+    location_name_groups["Signposts"] = {c for c in all_location_table if all_location_table[c].group == "Signpost"}
+    location_name_groups["Silos"] = {c for c in all_location_table if all_location_table[c].group == "Silo"}
+    location_name_groups["Glowbos"] = {c for c in all_location_table if all_location_table[c].group == "Glowbo"}
+    location_name_groups["Train Switches"] = {c for c in all_location_table if all_location_table[c].group == "Train Switch"}
+    location_name_groups["Stop 'n' Swop"] = {c for c in all_location_table if all_location_table[c].group == "Stop 'n' Swop"}
+    location_name_groups["Nests"] = {c for c in all_location_table if all_location_table[c].group == "Nest"}
+
+    location_name_groups["Bosses"] = {
+        locationName.JIGGYMT1,
+        locationName.JIGGYGM1,
+        locationName.JIGGYWW3,
+        locationName.JIGGYJR7,
+        locationName.JIGGYTD1,
+        locationName.JIGGYTD4,
+        locationName.JIGGYGI2,
+        locationName.CHEATOGI3,
+        locationName.JIGGYHP1,
+        locationName.JIGGYCC1,
+    }
+    location_name_groups["Minigames"] = {
+        locationName.JIGGYMT3,
+        locationName.JIGGYGM2,
+        locationName.JIGGYGM5,
+        locationName.JIGGYWW1,
+        locationName.JIGGYWW2,
+        locationName.JIGGYWW4,
+        locationName.JIGGYWW5,
+        locationName.JIGGYJR1,
+        locationName.JIGGYTD6,
+        locationName.JIGGYGI9,
+        locationName.JIGGYHP8,
+        locationName.JIGGYCC3,
+        locationName.JIGGYCC4,
+        locationName.JIGGYCC5,
+        locationName.JIGGYCC8,
+        locationName.CHEATOGM1,
+        locationName.CHEATOWW3,
+        locationName.CHEATOCC2,
+        locationName.CHEATOCC1,
+        locationName.CHEATOCC3,
+    }
+
     options_dataclass =  BanjoTooieOptions
     options: BanjoTooieOptions
 
