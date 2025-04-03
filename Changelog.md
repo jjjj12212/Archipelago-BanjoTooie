@@ -1,3 +1,7 @@
+# 4.4.2
+  - Logic fixes:
+    - Simple Random Starting Egg doesn't assume you start with Blue Eggs
+
 # 4.4.1
   - Logic fixes:
     - Landing on the roof in GI is back in logic.

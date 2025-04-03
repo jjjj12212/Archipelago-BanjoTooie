@@ -8385,7 +8385,8 @@ class BanjoTooieRules:
         return self.blue_eggs_item(state)
 
     def blue_eggs_item(self, state: CollectionState) -> bool:
-        if self.world.options.egg_behaviour == EggsBehaviour.option_random_starting_egg:
+        if self.world.options.egg_behaviour == EggsBehaviour.option_random_starting_egg or \
+            self.world.options.egg_behaviour == EggsBehaviour.option_simple_random_starting_egg:
             return state.has(itemName.BEGGS, self.player)
         return True
 
