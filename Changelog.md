@@ -1,3 +1,39 @@
+# 4.4.2
+  - Logic fixes:
+    - Simple Random Starting Egg doesn't assume you start with Blue Eggs
+  - Location Groups added (thanks to Axu_AP)
+    - Mayahem Temple
+    - Glitter Gulch Mine
+    - Witchyworld
+    - Jolly Roger's Lagoon
+    - Terrydactyland
+    - Grunty Industries
+    - Hailfire Peaks
+    - Cloud Cuckooland
+    - Isle O' Hags
+
+    - Cheato Rewards
+    - Jinjo Rewards
+    - Honey B Rewards
+
+    - Jiggies
+    - Jinjos
+    - Empty Honeycombs
+    - Cheato Pages
+    - Notes
+    - Treble Clefs
+    - Doubloons
+    - Signposts
+    - Jamjars Silos
+    - Glowbos
+    - Train Switches
+    - Stop 'n' Swop
+    - Nests
+    - Warp Silos
+    - Warp Pads
+    - Bosses
+    - Minigames
+
 # 4.4.1
   - Logic fixes:
     - Landing on the roof in GI is back in logic.

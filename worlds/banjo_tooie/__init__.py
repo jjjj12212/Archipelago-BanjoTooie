@@ -10,7 +10,7 @@ from dataclasses import asdict
 
 from .Hints import HintData, generate_hints
 from .Items import BanjoTooieItem, ItemData, all_item_table, all_group_table, progressive_ability_breakdown, silo_table
-from .Locations import BanjoTooieLocation, LocationData, all_location_table, MTLoc_Table, GMLoc_table, WWLoc_table, JRLoc_table, TLLoc_table, GILoc_table, HPLoc_table, CCLoc_table, MumboTokenGames_table, MumboTokenBoss_table, MumboTokenJinjo_table
+from .Locations import BanjoTooieLocation, LocationData, all_location_table, MTLoc_Table, GMLoc_table, WWLoc_table, JRLoc_table, TLLoc_table, GILoc_table, HPLoc_table, CCLoc_table, MumboTokenGames_table, MumboTokenBoss_table, MumboTokenJinjo_table, SMLoc_table, JVLoc_table, IHWHLoc_table, IHPLLoc_table, IHPGLoc_table, IHCTLoc_table, IHWLLoc_table, IHQMLoc_table, CheatoRewardsLoc_table, JinjoRewardsLoc_table, HoneyBRewardsLoc_table
 from .Regions import create_regions, connect_regions
 from .Options import BanjoTooieOptions, EggsBehaviour, JamjarsSiloCosts, LogicType, ProgressiveEggAim, ProgressiveWaterTraining, RandomizeBKMoveList, TowerOfTragedy, VictoryCondition
 from .Rules import BanjoTooieRules
@@ -57,7 +57,7 @@ class BanjoTooieWorld(World):
     """
 
     game: str = "Banjo-Tooie"
-    version = "V4.4.1"
+    version = "V4.4.2"
     web = BanjoTooieWeb()
     topology_present = True
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
@@ -84,6 +84,72 @@ class BanjoTooieWorld(World):
         "Dino": all_group_table["dino"],
         "Silos": all_group_table["Silos"],
         "Warp Pads": all_group_table["Warp Pads"],
+    }
+
+    location_name_groups = {}
+    location_name_groups["Mayahem Temple"] = MTLoc_Table.keys()
+    location_name_groups["Glitter Gulch Mine"] = GMLoc_table.keys()
+    location_name_groups["Witchyworld"] = WWLoc_table.keys()
+    location_name_groups["Jolly Roger's Lagoon"] = JRLoc_table.keys()
+    location_name_groups["Terrydactyland"] = TLLoc_table.keys()
+    location_name_groups["Grunty Industries"] = GILoc_table.keys()
+    location_name_groups["Hailfire Peaks"] = HPLoc_table.keys()
+    location_name_groups["Cloud Cuckooland"] = CCLoc_table.keys()
+    location_name_groups["Isle O' Hags"] = SMLoc_table.keys() | JVLoc_table.keys() | IHWHLoc_table.keys() | IHPLLoc_table.keys() | IHPGLoc_table.keys() | IHCTLoc_table.keys() | IHWLLoc_table.keys() | IHQMLoc_table.keys()
+
+    location_name_groups["Cheato Rewards"] = CheatoRewardsLoc_table.keys()
+    location_name_groups["Jinjo Rewards"] = JinjoRewardsLoc_table.keys()
+    location_name_groups["Honey B Rewards"] = HoneyBRewardsLoc_table.keys()
+
+    location_name_groups["Jiggies"] = {c for c in all_location_table if all_location_table[c].group == "Jiggy"}
+    location_name_groups["Jinjos"] = {c for c in all_location_table if all_location_table[c].group == "Jinjo"}
+    location_name_groups["Empty Honeycombs"] = {c for c in all_location_table if all_location_table[c].group == "Honeycomb"}
+    location_name_groups["Cheato Pages"] = {c for c in all_location_table if all_location_table[c].group == "Cheato Page"}
+    location_name_groups["Notes"] = {c for c in all_location_table if all_location_table[c].group == "Note"}
+    location_name_groups["Treble Clefs"] = {c for c in all_location_table if all_location_table[c].group == "Treble Clef"}
+    location_name_groups["Doubloons"] = {c for c in JRLoc_table if JRLoc_table[c].group == "Doubloon"}
+    location_name_groups["Signposts"] = {c for c in all_location_table if all_location_table[c].group == "Signpost"}
+    location_name_groups["Jamjars Silos"] = {c for c in all_location_table if all_location_table[c].group == "Jamjars Silo"}
+    location_name_groups["Glowbos"] = {c for c in all_location_table if all_location_table[c].group == "Glowbo"}
+    location_name_groups["Train Switches"] = {c for c in all_location_table if all_location_table[c].group == "Train Switch"}
+    location_name_groups["Stop 'n' Swop"] = {c for c in all_location_table if all_location_table[c].group == "Stop 'n' Swop"}
+    location_name_groups["Nests"] = {c for c in all_location_table if all_location_table[c].group == "Nest"}
+    location_name_groups["Warp Pads"] = {c for c in all_location_table if all_location_table[c].group == "Warp Pads"}
+    location_name_groups["Warp Silos"] = {c for c in all_location_table if all_location_table[c].group == "Silos"}
+
+    location_name_groups["Bosses"] = {
+        locationName.JIGGYMT1,
+        locationName.JIGGYGM1,
+        locationName.JIGGYWW3,
+        locationName.JIGGYJR7,
+        locationName.JIGGYTD1,
+        locationName.JIGGYTD4,
+        locationName.JIGGYGI2,
+        locationName.CHEATOGI3,
+        locationName.JIGGYHP1,
+        locationName.JIGGYCC1,
+    }
+    location_name_groups["Minigames"] = {
+        locationName.JIGGYMT3,
+        locationName.JIGGYGM2,
+        locationName.JIGGYGM5,
+        locationName.JIGGYWW1,
+        locationName.JIGGYWW2,
+        locationName.JIGGYWW4,
+        locationName.JIGGYWW5,
+        locationName.JIGGYJR1,
+        locationName.JIGGYTD6,
+        locationName.JIGGYGI9,
+        locationName.JIGGYHP8,
+        locationName.JIGGYCC3,
+        locationName.JIGGYCC4,
+        locationName.JIGGYCC5,
+        locationName.JIGGYCC8,
+        locationName.CHEATOGM1,
+        locationName.CHEATOWW3,
+        locationName.CHEATOCC2,
+        locationName.CHEATOCC1,
+        locationName.CHEATOCC3,
     }
 
     options_dataclass =  BanjoTooieOptions
