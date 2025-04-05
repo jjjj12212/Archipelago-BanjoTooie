@@ -89,7 +89,7 @@ class TestMaxTrapsZero(FillersTrapTestBase):
     def test_fillers_and_traps_pool(self) -> None:
         pool = self.pool()
 
-        assert sum(pool.filler_distribution.values()) == 16
+        assert sum(pool.filler_distribution.values()) == 17
         assert sum(pool.trap_distribution.values()) == 0
 
 class TestMaxTrapsNonZero(FillersTrapTestBase):
@@ -108,7 +108,7 @@ class TestMaxTrapsNonZero(FillersTrapTestBase):
         traps = sum(pool.trap_distribution.values())
         assert fillers > 0
         assert traps > 0
-        assert fillers + traps == 16
+        assert fillers + traps == 17
 
 class TestMaxTrapsZeroWithNestsanity(FillersTrapTestBase):
     options = {
@@ -122,7 +122,7 @@ class TestMaxTrapsZeroWithNestsanity(FillersTrapTestBase):
     def test_fillers_and_traps_pool(self) -> None:
         pool = self.pool()
 
-        assert sum(pool.filler_distribution.values()) == 315 + 135 + 23   # all three nest types
+        assert sum(pool.filler_distribution.values()) == 315 + 135 + 23    # all three nest types
         assert sum(pool.trap_distribution.values()) == 0
 
 
@@ -154,7 +154,7 @@ class TestAllWeightsZeroAddPants(FillersTrapTestBase):
     def test_fillers_and_traps_pool(self) -> None:
         pool = self.pool()
 
-        assert pool.distribution[itemName.NONE] == 687
+        assert pool.distribution[itemName.NONE] == 688
 
 class TestAllFillerWeightsZeroAddRestPants(FillersTrapTestBase):
     options = {
@@ -174,7 +174,7 @@ class TestAllFillerWeightsZeroAddRestPants(FillersTrapTestBase):
         pool = self.pool()
 
         assert pool.distribution[itemName.SQTRAP] == 87
-        assert pool.distribution[itemName.NONE] == 600
+        assert pool.distribution[itemName.NONE] == 601
 
 class TestRespectDistribution(FillersTrapTestBase):
     options = {
@@ -201,7 +201,7 @@ class TestRespectDistribution(FillersTrapTestBase):
     def test_fillers_and_traps_pool(self) -> None:
         pool = self.pool()
 
-        assert sum(pool.distribution.values()) == 687
+        assert sum(pool.distribution.values()) == 688
 
         assert pool.distribution[itemName.JIGGY] == 0
         assert pool.distribution[itemName.NONE] == 0
@@ -242,7 +242,7 @@ class TestRespectDistribution2(FillersTrapTestBase):
     def test_fillers_and_traps_pool(self) -> None:
         pool = self.pool()
 
-        assert sum(pool.distribution.values()) == 687
+        assert sum(pool.distribution.values()) == 688
 
         assert pool.distribution[itemName.DOUBLOON] == 0
         assert pool.distribution[itemName.ENEST] == 0
@@ -273,7 +273,7 @@ class TestRespectMaxTraps(FillersTrapTestBase):
         pool = self.pool()
 
         assert sum(pool.trap_distribution.values()) == 30
-        assert sum(pool.filler_distribution.values()) == 657
+        assert sum(pool.filler_distribution.values()) == 658
 
         assert 280 <= pool.filler_distribution[itemName.ENEST] <= 375
         assert 280 <= pool.filler_distribution[itemName.FNEST] <= 375
@@ -289,7 +289,7 @@ class TestJiggiesHardLimit(FillersTrapTestBase):
     def test_fillers_and_traps_pool(self) -> None:
         pool = self.pool()
 
-        assert sum(pool.distribution.values()) == 687
+        assert sum(pool.distribution.values()) == 688
         assert pool.total_distribution[itemName.JIGGY] == 249 # One more for jingaling's
 
 class TestDoubloonsHardLimit(FillersTrapTestBase):
@@ -303,7 +303,7 @@ class TestDoubloonsHardLimit(FillersTrapTestBase):
     def test_fillers_and_traps_pool(self) -> None:
         pool = self.pool()
 
-        assert sum(pool.distribution.values()) == 687
+        assert sum(pool.distribution.values()) == 688
         assert pool.total_distribution[itemName.DOUBLOON] == 250
 
 
@@ -318,7 +318,7 @@ class TestNotesHardLimit(FillersTrapTestBase):
     def test_fillers_and_traps_pool(self) -> None:
         pool = self.pool()
 
-        assert sum(pool.distribution.values()) == 687
+        assert sum(pool.distribution.values()) == 688
         assert pool.total_distribution[itemName.NOTE] == 250
 
 class TestDefaultFillersWithNestsanityPlenty(FillersTrapTestBase):
@@ -330,7 +330,7 @@ class TestDefaultFillersWithNestsanityPlenty(FillersTrapTestBase):
     def test_fillers_and_traps_pool(self) -> None:
         pool = self.pool()
 
-        assert sum(pool.distribution.values()) == 687
+        assert sum(pool.distribution.values()) == 688
         # adding reasonable expectations here
         assert 0 <= pool.filler_distribution[itemName.NOTE] <= 120
         assert 20 <= pool.filler_distribution[itemName.JIGGY] <= 100
@@ -344,7 +344,7 @@ class TestDefaultFillersWithoutNestsanityPlenty(FillersTrapTestBase):
     def test_fillers_and_traps_pool(self) -> None:
         pool = self.pool()
 
-        assert sum(pool.distribution.values()) == 214
+        assert sum(pool.distribution.values()) == 215
         # adding reasonable expectations here
         assert 0 <= pool.filler_distribution[itemName.NOTE] <= 90
         assert 20 <= pool.filler_distribution[itemName.JIGGY] <= 70
@@ -363,7 +363,7 @@ class TestDefaultFillersWithoutNestsanityReasonable(FillersTrapTestBase):
     def test_fillers_and_traps_pool(self) -> None:
         pool = self.pool()
 
-        assert sum(pool.distribution.values()) == 187
+        assert sum(pool.distribution.values()) == 188
         # adding reasonable expectations here
         assert 0 <= pool.filler_distribution[itemName.NOTE] <= 90
         assert 15 <= pool.filler_distribution[itemName.JIGGY] <= 65

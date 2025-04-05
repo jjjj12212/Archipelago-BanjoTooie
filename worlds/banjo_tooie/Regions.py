@@ -221,7 +221,11 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEWW13,
         locationName.NOTEWW14,
         locationName.NOTEWW15,
-        locationName.NOTEWW16
+        locationName.NOTEWW16,
+
+        locationName.MOGGY,
+        locationName.SOGGY,
+        locationName.GROGGY
     ],
     regionName.WWI: [
         locationName.JIGGYWW9,
@@ -507,7 +511,10 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEHFP13,
         locationName.NOTEHFP14,
         locationName.NOTEHFP15,
-        locationName.NOTEHFP16
+        locationName.NOTEHFP16,
+        locationName.ALPHETTE,
+        locationName.BETETTE,
+        locationName.GAMETTE
     ],
     regionName.CC:      [
         locationName.JINJOCC1,

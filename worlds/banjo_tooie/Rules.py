@@ -233,6 +233,18 @@ class BanjoTooieRules:
             locationName.SCRIT: lambda state: self.scrit(state)
         }
 
+        self.boggy_kids_rules = {
+            locationName.MOGGY: lambda state: self.moggy(state),
+            locationName.SOGGY: lambda state: self.soggy(state),
+            locationName.GROGGY: lambda state: self.groggy(state)
+        }
+
+        self.alien_kids_rules = {
+            locationName.ALPHETTE: lambda state: self.alphette(state),
+            locationName.BETETTE: lambda state: self.betette(state),
+            locationName.GAMETTE: lambda state: self.gamette(state)
+        }
+
         self.jiggy_rules = {
             #Mayahem Temple Jiggies
             locationName.JIGGYMT1:  lambda state: self.jiggy_targitzan(state),
@@ -1483,26 +1495,71 @@ class BanjoTooieRules:
     def jiggy_mrs_boggy(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
+            logic = self.moggy(state) and self.soggy(state) and self.groggy(state)
+
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = self.moggy(state) and self.soggy(state) and self.groggy(state)
+
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = self.moggy(state) and self.soggy(state) and self.groggy(state)
+
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = self.moggy(state) and self.soggy(state) and self.groggy(state)
+        return logic
+    
+    def moggy(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
             logic = self.mumboWW(state) and \
-                self.taxi_pack(state) and \
                 self.has_explosives(state)\
-                and self.spring_pad(state)
 
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = self.mumboWW(state) and \
-                self.taxi_pack(state) and \
                 self.has_explosives(state)\
-                and (self.spring_pad(state) or self.leg_spring(state) or self.glide(state))
 
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.humbaWW(state) and \
-                self.mumboWW(state) and \
+            logic = self.mumboWW(state) and \
+                ((self.split_up(state) and self.spring_pad(state)) or self.leg_spring(state) or self.glide(state) or self.has_explosives(state))
+
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = self.mumboWW(state) and \
+                ((self.split_up(state) and self.spring_pad(state)) or self.leg_spring(state) or self.glide(state))
+        return logic
+    
+    def soggy(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = state.can_reach_region(regionName.WWI, self.player)
+
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = state.can_reach_region(regionName.WWI, self.player)
+
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = state.can_reach_region(regionName.WWI, self.player)
+
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = state.can_reach_region(regionName.WWI, self.player)
+        return logic
+    
+    def groggy(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = state.can_reach_region(regionName.WWI, self.player) and \
+                self.taxi_pack(state) and \
+                self.spring_pad(state)
+
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = state.can_reach_region(regionName.WWI, self.player) and \
+                self.taxi_pack(state) and \
+                (self.spring_pad(state) or self.leg_spring(state) or self.glide(state))
+
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = state.can_reach_region(regionName.WWI, self.player) and \
                 self.taxi_pack(state)\
                 and (self.spring_pad(state) or self.leg_spring(state) or self.glide(state))
 
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.glitchedInfernoAccess(state) and\
-                    (self.mumboWW(state) or self.clockwork_eggs(state)) and \
+            logic = state.can_reach_region(regionName.WWI, self.player) and \
                     self.taxi_pack(state)\
                     and (self.spring_pad(state) or self.leg_spring(state) or self.glide(state))
         return logic
@@ -2253,21 +2310,52 @@ class BanjoTooieRules:
     def jiggy_aliens(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.jiggy_ufo(state) and state.can_reach_region(regionName.JRU, self.player) and self.bill_drill(state) and \
-                    self.hatch(state) and self.glide(state) and \
-                    self.check_mumbo_magic(state, itemName.MUMBOHP)
+            logic = self.alphette(state) and self.betette(state) and self.gamette(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.jiggy_ufo(state) and state.can_reach_region(regionName.JRU, self.player) and self.check_mumbo_magic(state, itemName.MUMBOHP) and \
-                    self.bill_drill(state) and self.hatch(state) and \
-                    ((self.wing_whack(state) and self.tall_jump(state)) or self.glide(state))
+            logic = self.alphette(state) and self.betette(state) and self.gamette(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.jiggy_ufo(state) and state.can_reach_region(regionName.JRU, self.player) and self.check_mumbo_magic(state, itemName.MUMBOHP) and \
-                    self.bill_drill(state) and self.hatch(state) and \
-                    (self.wing_whack(state) or self.tall_jump(state) or self.glide(state))
+            logic = self.alphette(state) and self.betette(state) and self.gamette(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.jiggy_ufo(state) and state.can_reach_region(regionName.JRU, self.player) and self.check_mumbo_magic(state, itemName.MUMBOHP) and \
-                    self.bill_drill(state) and self.hatch(state) and \
-                    (self.wing_whack(state) or self.tall_jump(state) or self.glide(state))
+            logic = self.alphette(state) and self.betette(state) and self.gamette(state)
+        return logic
+    
+    def alphette(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+        return logic
+
+    def betette(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+        return logic
+
+    def gamette(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = self.jiggy_ufo(state) and self.hatch(state) and self.glide(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = self.jiggy_ufo(state) and self.check_mumbo_magic(state, itemName.MUMBOHP) and \
+                    self.hatch(state) and ((self.wing_whack(state) and self.tall_jump(state)) or self.glide(state))
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = self.jiggy_ufo(state) and self.check_mumbo_magic(state, itemName.MUMBOHP) and \
+                     self.hatch(state) and (self.wing_whack(state) or self.tall_jump(state) or self.glide(state))
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = self.jiggy_ufo(state) and self.check_mumbo_magic(state, itemName.MUMBOHP) and \
+                    self.hatch(state) and (self.wing_whack(state) or self.tall_jump(state) or self.glide(state))
         return logic
 
     def jiggy_colosseum_split(self, state: CollectionState) -> bool:
@@ -9041,6 +9129,14 @@ class BanjoTooieRules:
         for location, rules in self.scrit_scrat_scrut_rules.items():
                 dinos = self.world.multiworld.get_location(location, self.player)
                 set_rule(dinos, rules)
+
+        for location, rules in self.boggy_kids_rules.items():
+                kids = self.world.multiworld.get_location(location, self.player)
+                set_rule(kids, rules)
+
+        for location, rules in self.alien_kids_rules.items():
+                kids = self.world.multiworld.get_location(location, self.player)
+                set_rule(kids, rules)
 
         for location, rules in self.warp_pad_rules.items():
                 warp_pads = self.world.multiworld.get_location(location, self.player)

@@ -454,6 +454,12 @@ SCRUT       = "TDL: Scrut (Lost)"
 SCRAT       = "TDL: Scrat (Sick)"
 SCRIT       = "TDL: Scrit (Small)"
 ROARDINO    = "TDL: Baby T-Rex Roar"
+SOGGY       = "WW: Soggy"
+MOGGY       = "WW: Moggy"
+GROGGY      = "WW: Groggy"
+GAMETTE     = "HFP: Gamette (Alien Kid Above Split-Up Pads)"
+BETETTE     = "HFP: Betette (Alien Kid Near Dad)"
+ALPHETTE    = "HFP: Alphette (Alien Kid Near Glowbo)"     
 
 #Jiggy Chunks
 CHUNK1      = "GGM: Crushing Shed Jiggy Chunk 1"

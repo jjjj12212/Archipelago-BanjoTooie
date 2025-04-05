@@ -7,7 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
 
 class LocationData(typing.NamedTuple):
-    #last good ID: 1231595 (SILOCK2)
+    #last good ID: 1231601 (Gamette)
     #12C770 pointer instead (1230704)
     btid: int = 0
     # Save + mem addr
@@ -466,6 +466,11 @@ WWLoc_table = {
     locationName.WARPWW3:   LocationData(1231569, 0, 0, "Warp Pads"),
     locationName.WARPWW4:   LocationData(1231570, 0, 0, "Warp Pads"),
     locationName.WARPWW5:   LocationData(1231571, 0, 0, "Warp Pads"),
+
+    locationName.MOGGY:     LocationData(1231596, 0x0C, 4),
+    locationName.SOGGY:     LocationData(1231597, 0x0C, 5),
+    locationName.GROGGY:    LocationData(1231598, 0x0C, 6)
+
 }
 JRLoc_table = {
     locationName.JRLDB1: LocationData(1230521, 0x22, 7, "Doubloon"),
@@ -949,6 +954,11 @@ HPLoc_table = {
     locationName.WARPHP3:   LocationData(1231589, 0, 0, "Warp Pads"),
     locationName.WARPHP4:   LocationData(1231590, 0, 0, "Warp Pads"),
     locationName.WARPHP5:   LocationData(1231591, 0, 0, "Warp Pads"),
+
+    locationName.ALPHETTE:    LocationData(1231599, 0x69, 1),
+    locationName.BETETTE:    LocationData(1231600, 0x69, 2),
+    locationName.GAMETTE:    LocationData(1231601, 0x69, 3)
+
 }
 
 CCLoc_table = {

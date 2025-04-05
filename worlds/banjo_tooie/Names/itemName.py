@@ -55,6 +55,8 @@ HOMINGEGGS  = "Homing Eggs Toggle"
 AMAZEOGAZE  = "Amaze-O-Gaze"
 ROAR        = "Baby T-Rex Roar"
 
+HEALTHUP    = "Health Upgrade"
+
 DIVE        = "Dive"
 FPAD        = "Flight Pad"
 GRAT        = "Ground Rat-a-tat Rap"

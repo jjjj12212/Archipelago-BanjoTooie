@@ -405,6 +405,9 @@ class BanjoTooieWorld(World):
 
         if name == itemName.HONEY and not self.options.randomize_honeycombs: # Added later in Prefill
             return None
+        
+        if name == itemName.HEALTHUP and not self.options.honeyb_rewards:
+            return None
 
         if name in all_group_table['bk_moves'].keys() and self.options.randomize_bk_moves == RandomizeBKMoveList.option_none:
             return None

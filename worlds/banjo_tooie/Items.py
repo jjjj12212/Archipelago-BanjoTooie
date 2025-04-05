@@ -4,7 +4,7 @@ from .Names import itemName, locationName
 
 
 class BanjoTooieItem(Item):
-    # 1230915 (CKWARP2) but beware of level access keys that are way higher!
+    # 1230916 (Health Upgrade) but beware of level access keys that are way higher!
     game: str = "Banjo-Tooie"
 class ItemData(NamedTuple):
     btid: int = 0
@@ -239,6 +239,10 @@ warp_pad_table = {
     itemName.WARPCK2:           ItemData(1230915,   1, "progress", locationName.WARPCK2),
 }
 
+honeyb_table = {
+    itemName.HEALTHUP:          ItemData(1230916,   5,  "progress", "")
+}
+
 
 all_item_table: Dict[str, ItemData] = {
     **moves_table,
@@ -256,6 +260,7 @@ all_item_table: Dict[str, ItemData] = {
     **nest_table,
     **silo_table,
     **warp_pad_table,
+    **honeyb_table,
 }
 
 all_group_table: Dict[str, Dict[str, ItemData]] = {
@@ -272,5 +277,6 @@ all_group_table: Dict[str, Dict[str, ItemData]] = {
     "dino": dino_table,
     "nest": nest_table,
     "Silos": silo_table,
-    "Warp Pads": warp_pad_table
+    "Warp Pads": warp_pad_table,
+    "honeyb": honeyb_table
 }
