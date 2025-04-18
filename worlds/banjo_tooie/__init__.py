@@ -201,6 +201,9 @@ class BanjoTooieWorld(World):
             itemname = itemName.DOUBLOON
             if not hasattr(self.multiworld, "generation_is_fake"):
                 item_classification = ItemClassification.filler
+        elif itemname == itemName.HEALTHUP and \
+            (self.options.logic_type == LogicType.option_easy_tricks or self.options.logic_type == LogicType.option_intended):
+            item_classification = ItemClassification.useful
 
         banjoItem = all_item_table.get(itemname)
         if not banjoItem:
