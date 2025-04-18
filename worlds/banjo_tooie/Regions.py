@@ -617,6 +617,11 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.NESTSM5,
       locationName.NESTSM6,
       locationName.NESTSM7,
+      locationName.CHEATOR1,
+      locationName.CHEATOR2,
+      locationName.CHEATOR3,
+      locationName.CHEATOR4,
+      locationName.CHEATOR5
     ],
     regionName.IOHJV:    [
       locationName.NESTIH1,
@@ -1434,13 +1439,6 @@ def create_regions(self):
         region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO7)
         region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO8)
         region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO9)
-
-    if self.options.cheato_rewards:
-        region_map[regionName.SMGL].append(locationName.CHEATOR1)
-        region_map[regionName.SMGL].append(locationName.CHEATOR2)
-        region_map[regionName.SMGL].append(locationName.CHEATOR3)
-        region_map[regionName.SMGL].append(locationName.CHEATOR4)
-        region_map[regionName.SMGL].append(locationName.CHEATOR5)
 
     if self.options.honeyb_rewards:
         region_map[regionName.IOHPL].append(locationName.HONEYBR1)

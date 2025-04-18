@@ -243,6 +243,14 @@ honeyb_table = {
     itemName.HEALTHUP:          ItemData(1230916,   5,  "progress", "")
 }
 
+cheats_table = {
+    itemName.CHEATFEATHER:      ItemData(1230917,   1,  "useful", locationName.CHEATOR1),
+    itemName.CHEATEGG:          ItemData(1230918,   1,  "useful", locationName.CHEATOR2),
+    itemName.CHEATFALL:         ItemData(1230919,   1,  "useful", locationName.CHEATOR3),
+    itemName.CHEATHONEY:        ItemData(1230920,   1,  "useful", locationName.CHEATOR4),
+    itemName.CHEATJUKE:         ItemData(1230921,   1,  "useful", locationName.CHEATOR5),
+}
+
 
 all_item_table: Dict[str, ItemData] = {
     **moves_table,
@@ -261,6 +269,7 @@ all_item_table: Dict[str, ItemData] = {
     **silo_table,
     **warp_pad_table,
     **honeyb_table,
+    **cheats_table
 }
 
 all_group_table: Dict[str, Dict[str, ItemData]] = {
@@ -278,5 +287,6 @@ all_group_table: Dict[str, Dict[str, ItemData]] = {
     "nest": nest_table,
     "Silos": silo_table,
     "Warp Pads": warp_pad_table,
-    "honeyb": honeyb_table
+    "honeyb": honeyb_table,
+    "cheats": cheats_table
 }

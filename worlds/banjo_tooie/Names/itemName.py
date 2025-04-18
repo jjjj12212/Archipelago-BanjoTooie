@@ -86,6 +86,12 @@ PEGGAIM     = "Progressive Egg Aim"
 PASWIM      = "Progressive Adv. Water Training"
 PAEGGAIM    = "Progressive Adv. Egg Aiming"
 
+CHEATFEATHER  = "Cheato Reward: Feathers"
+CHEATEGG     = "Cheato Reward: Eggs"
+CHEATFALL     = "Cheato Reward: Fallproof"
+CHEATHONEY    = "Cheato Reward: Honeyback"
+CHEATJUKE     = "Cheato Reward: Jukebox"
+
 # Mumbo Magics
 MUMBOMT = "Mumbo: Golden Goliath"
 MUMBOGM = "Mumbo: Levitate"

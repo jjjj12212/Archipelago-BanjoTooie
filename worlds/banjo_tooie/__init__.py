@@ -84,6 +84,7 @@ class BanjoTooieWorld(World):
         "Dino": all_group_table["dino"],
         "Silos": all_group_table["Silos"],
         "Warp Pads": all_group_table["Warp Pads"],
+        "Cheats": all_group_table["cheats"]
     }
 
     location_name_groups = {}
@@ -443,6 +444,9 @@ class BanjoTooieWorld(World):
 
         if name in all_group_table['Silos'].keys() and not self.options.randomize_silos:
             return None
+        
+        if name in all_group_table['cheats'].keys() and not self.options.cheato_rewards:
+            return None
 
         if name in all_group_table['Silos'].keys() and name in self.preopened_silos:
             return None
@@ -648,6 +652,9 @@ class BanjoTooieWorld(World):
 
         if not self.options.randomize_warp_pads:
             self.banjo_pre_fills("Warp Pads", None, True)
+        
+        if not self.options.cheato_rewards:
+            self.banjo_pre_fills("Cheats", None, True)
 
         if not self.worlds_randomized and self.options.skip_puzzles:
             self.banjo_pre_fills("Access", None, True)
