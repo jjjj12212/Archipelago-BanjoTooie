@@ -245,6 +245,15 @@ class BanjoTooieRules:
             locationName.GAMETTE: lambda state: self.gamette(state)
         }
 
+        self.skivvy_rules = {
+            locationName.SKIVOU: lambda state: self.skivvy_outside(state),
+            locationName.SKIVWQ: lambda state: self.skivvy_worker_quarters(state),
+            locationName.SKIVF1: lambda state: self.skivvy_floor_1(state),
+            locationName.SKIVF2: lambda state: self.skivvy_floor_2(state),
+            locationName.SKIVF3: lambda state: self.skivvy_floor_3(state),
+            locationName.SKIVF5: lambda state: self.skivvy_floor_5(state),
+        }
+
         self.jiggy_rules = {
             #Mayahem Temple Jiggies
             locationName.JIGGYMT1:  lambda state: self.jiggy_targitzan(state),
@@ -1970,21 +1979,21 @@ class BanjoTooieRules:
     def jiggy_skivvy(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.humbaGI(state) and self.bill_drill(state)\
-                    and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))\
-                    and self.floor_2_skivvy_switch(state)
+            logic = self.skivvy_worker_quarters(state) and self.skivvy_worker_quarters(state) \
+                    and self.skivvy_floor_1(state) and self.skivvy_floor_2(state) \
+                    and self.skivvy_floor_3(state) and self.skivvy_floor_5(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.humbaGI(state) and self.bill_drill(state)\
-                    and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))\
-                    and self.floor_2_skivvy_switch(state)
+            logic = self.skivvy_worker_quarters(state) and self.skivvy_worker_quarters(state) \
+                    and self.skivvy_floor_1(state) and self.skivvy_floor_2(state) \
+                    and self.skivvy_floor_3(state) and self.skivvy_floor_5(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.humbaGI(state) and self.bill_drill(state)\
-                    and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))\
-                    and self.floor_2_skivvy_switch(state)
+            logic = self.skivvy_worker_quarters(state) and self.skivvy_worker_quarters(state) \
+                    and self.skivvy_floor_1(state) and self.skivvy_floor_2(state) \
+                    and self.skivvy_floor_3(state) and self.skivvy_floor_5(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.humbaGI(state) and self.bill_drill(state)\
-                    and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))\
-                    and self.floor_2_skivvy_switch(state)
+            logic = self.skivvy_worker_quarters(state) and self.skivvy_worker_quarters(state) \
+                    and self.skivvy_floor_1(state) and self.skivvy_floor_2(state) \
+                    and self.skivvy_floor_3(state) and self.skivvy_floor_5(state)
         return logic
 
     def floor_2_skivvy_switch(self, state: CollectionState) -> bool:
@@ -2017,6 +2026,83 @@ class BanjoTooieRules:
                     or state.can_reach_region(regionName.GI3, self.player) and\
                         (self.climb(state) and (self.veryLongJump(state) or (self.flap_flip(state) or self.tall_jump(state)) and self.grip_grab(state))\
                             or self.small_elevation(state) and self.split_up(state) and self.leg_spring(state))
+        return logic
+    
+    def skivvy_worker_quarters(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = self.humbaGI(state)
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = self.humbaGI(state)
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = self.humbaGI(state)
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = self.humbaGI(state)
+        return logic
+    
+    def skivvy_outside(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = self.humbaGI(state)
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = self.humbaGI(state)
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = self.humbaGI(state)
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = self.humbaGI(state)
+        return logic
+    
+    def skivvy_floor_1(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = self.humbaGI(state) and self.bill_drill(state)\
+                    and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = self.humbaGI(state) and self.bill_drill(state)\
+                    and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state) \
+                    or self.egg_aim(state))
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = self.humbaGI(state) and self.bill_drill(state)\
+                    and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = self.humbaGI(state) and self.bill_drill(state)\
+                    and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))
+        return logic
+    
+    def skivvy_floor_2(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = self.humbaGI(state) and self.floor_2_skivvy_switch(state)
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = self.humbaGI(state) and self.floor_2_skivvy_switch(state)
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = self.humbaGI(state) and self.floor_2_skivvy_switch(state)
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = self.humbaGI(state) and self.floor_2_skivvy_switch(state)
+        return logic
+    
+    def skivvy_floor_3(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = self.humbaGI(state)
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = self.humbaGI(state)
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = self.humbaGI(state)
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = self.humbaGI(state)
+        return logic
+    
+    def skivvy_floor_5(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = self.humbaGI(state)
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = self.humbaGI(state)
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = self.humbaGI(state)
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = self.humbaGI(state)
         return logic
 
     def jiggy_floor5(self, state: CollectionState) -> bool:

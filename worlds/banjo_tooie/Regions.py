@@ -407,6 +407,7 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.GIOB: [
         locationName.TRAINSWGI,
         locationName.JINJOGI5,
+        locationName.SKIVOU
     ],
     regionName.GIES: [],
     regionName.GI1: [
@@ -430,6 +431,8 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEGI12,
         locationName.NOTEGI13,
         locationName.NOTEGI14,
+        locationName.SKIVF1,
+        locationName.SKIVWQ,
     ],
     regionName.GI2: [
         locationName.CHEATOGI2,
@@ -442,6 +445,7 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEGI8,
         locationName.NOTEGI9,
         locationName.NOTEGI10,
+        locationName.SKIVF2
     ],
     regionName.GI2EM: [],
     regionName.GI3: [
@@ -449,6 +453,7 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GLOWBOGI2,
         locationName.NOTEGI15,
         locationName.NOTEGI16,
+        locationName.SKIVF3,
     ],
     regionName.GI3B: [
         locationName.JINJOGI4,
@@ -462,6 +467,7 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.GI5: [
         locationName.JINJOGI1,
         locationName.JIGGYGI5,
+        locationName.SKIVF5
     ],
     regionName.GIF: [
         locationName.HONEYCGI3,
