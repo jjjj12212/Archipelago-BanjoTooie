@@ -7,7 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
 
 class LocationData(typing.NamedTuple):
-    #last good ID: 1231607 (Skivvy)
+    #last good ID: 1231609 (Mr Fit Sack)
     #12C770 pointer instead (1230704)
     btid: int = 0
     # Save + mem addr
@@ -860,8 +860,6 @@ GILoc_table = {
     locationName.SKIVF3:    LocationData(1231605, 0x81, 0),
     locationName.SKIVF5:    LocationData(1231606, 0x80, 6),
     locationName.SKIVOU:    LocationData(1231607, 0x80, 5),
-
-
 }
 
 HPLoc_table = {
@@ -1072,6 +1070,9 @@ CCLoc_table = {
 
     locationName.WARPCC1:   LocationData(1231592, 0, 0, "Warp Pads"),
     locationName.WARPCC2:   LocationData(1231593, 0, 0, "Warp Pads"),
+
+    locationName.FITHJ:     LocationData(1231608, 0x76, 1),
+    locationName.FITSR:     LocationData(1231609, 0x76, 2)
 }
 
 WorldUnlocks_table = {

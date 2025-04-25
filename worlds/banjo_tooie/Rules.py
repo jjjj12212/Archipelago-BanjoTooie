@@ -254,6 +254,11 @@ class BanjoTooieRules:
             locationName.SKIVF5: lambda state: self.skivvy_floor_5(state),
         }
 
+        self.mr_fit_rules = {
+            locationName.FITHJ: lambda state: self.mr_fit_high_jump(state),
+            locationName.FITSR: lambda state: self.mr_fit_sack_race(state),
+        }
+
         self.jiggy_rules = {
             #Mayahem Temple Jiggies
             locationName.JIGGYMT1:  lambda state: self.jiggy_targitzan(state),
@@ -2476,25 +2481,46 @@ class BanjoTooieRules:
     def jiggy_mr_fit(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.springy_step_shoes(state) and self.sack_pack(state) and \
-                    self.grow_beanstalk(state) and self.can_use_floatus(state) and self.climb(state)\
-                    and self.turbo_trainers(state)
+            logic = self.mr_fit_high_jump(state) and self.mr_fit_sack_race(state) and self.turbo_trainers(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = (self.springy_step_shoes(state) or self.flight_pad(state)) and self.sack_pack(state) and \
-                    self.grow_beanstalk(state) and self.can_use_floatus(state) and self.climb(state)\
-                    and (self.turbo_trainers(state) or state.has(itemName.HUMBACC, self.player))
+            logic = self.mr_fit_high_jump(state) and self.mr_fit_sack_race(state) and \
+                    (self.turbo_trainers(state) or state.has(itemName.HUMBACC, self.player))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = (self.springy_step_shoes(state) or self.flight_pad(state) or self.clockwork_shot(state)) and self.sack_pack(state) and \
-                    self.grow_beanstalk(state) and \
-                    (self.can_use_floatus(state) or self.pack_whack(state))\
-                    and self.climb(state)\
-                    and (self.turbo_trainers(state) or state.has(itemName.HUMBACC, self.player))
+            logic = self.mr_fit_high_jump(state) and self.mr_fit_sack_race(state) and \
+                    (self.turbo_trainers(state) or state.has(itemName.HUMBACC, self.player))
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = (self.springy_step_shoes(state) or self.flight_pad(state) or self.clockwork_shot(state)) and self.sack_pack(state) and \
-                    self.grow_beanstalk(state) and \
-                    (self.can_use_floatus(state) or self.pack_whack(state))\
-                    and self.climb(state)\
-                    and (self.turbo_trainers(state) or state.has(itemName.HUMBACC, self.player) or self.clockwork_eggs(state))
+            logic = self.mr_fit_high_jump(state) and self.mr_fit_sack_race(state) and \
+                    (self.turbo_trainers(state) or state.has(itemName.HUMBACC, self.player) or self.clockwork_eggs(state))
+        return logic
+    
+    def mr_fit_high_jump(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = self.springy_step_shoes(state) and self.bill_drill(state)
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = (self.springy_step_shoes(state) and self.bill_drill(state)) or self.flight_pad(state)
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = (self.springy_step_shoes(state) and self.bill_drill(state)) or self.flight_pad(state) or self.clockwork_shot(state)
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = (self.springy_step_shoes(state) and self.bill_drill(state)) or self.flight_pad(state) or self.clockwork_shot(state)
+        return logic
+    
+    def mr_fit_sack_race(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = self.mr_fit_high_jump(state) and self.sack_pack(state) and \
+                    self.grow_beanstalk(state) and self.can_use_floatus(state) and self.climb(state)
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = self.mr_fit_high_jump(state) and self.sack_pack(state) and self.grow_beanstalk(state) \
+                    and self.can_use_floatus(state) and self.climb(state)
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = self.mr_fit_high_jump(state) and self.sack_pack(state) and \
+                    self.grow_beanstalk(state) and (self.can_use_floatus(state) or self.pack_whack(state))\
+                    and self.climb(state)
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = self.mr_fit_high_jump(state) and self.sack_pack(state) and \
+                    self.grow_beanstalk(state) and (self.can_use_floatus(state) or self.pack_whack(state))\
+                    and self.climb(state)
         return logic
 
     def jiggy_pot_of_gold(self, state: CollectionState) -> bool:
@@ -9224,6 +9250,14 @@ class BanjoTooieRules:
         for location, rules in self.alien_kids_rules.items():
                 kids = self.world.multiworld.get_location(location, self.player)
                 set_rule(kids, rules)
+
+        for location, rules in self.skivvy_rules.items():
+                skivvy = self.world.multiworld.get_location(location, self.player)
+                set_rule(skivvy, rules)
+        
+        for location, rules in self.mr_fit_rules.items():
+                fit = self.world.multiworld.get_location(location, self.player)
+                set_rule(fit, rules)
 
         for location, rules in self.warp_pad_rules.items():
                 warp_pads = self.world.multiworld.get_location(location, self.player)

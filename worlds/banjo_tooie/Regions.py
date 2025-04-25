@@ -17,9 +17,15 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.PMEGG,
         locationName.BMEGG,
         locationName.ROYSTEN1,
-        locationName.ROYSTEN2
+        locationName.ROYSTEN2,
     ],
-    regionName.SMGL:     [],
+    regionName.SMGL:     [
+        locationName.CHEATOR1,
+        locationName.CHEATOR2,
+        locationName.CHEATOR3,
+        locationName.CHEATOR4,
+        locationName.CHEATOR5
+    ],
     regionName.IOHJV:    [
         locationName.JIGGYIH1,
         locationName.JIGGYIH2,
@@ -564,7 +570,9 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTECCL13,
         locationName.NOTECCL14,
         locationName.NOTECCL15,
-        locationName.NOTECCL16
+        locationName.NOTECCL16,
+        locationName.FITHJ,
+        locationName.FITSR,
     ],
     regionName.CK: [],
     regionName.H1: [
@@ -623,11 +631,6 @@ NEST_REGIONS: typing.Dict[str, typing.List[str]] = {
       locationName.NESTSM5,
       locationName.NESTSM6,
       locationName.NESTSM7,
-      locationName.CHEATOR1,
-      locationName.CHEATOR2,
-      locationName.CHEATOR3,
-      locationName.CHEATOR4,
-      locationName.CHEATOR5
     ],
     regionName.IOHJV:    [
       locationName.NESTIH1,
