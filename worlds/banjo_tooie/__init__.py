@@ -84,6 +84,7 @@ class BanjoTooieWorld(World):
         "Dino": all_group_table["dino"],
         "Silos": all_group_table["Silos"],
         "Warp Pads": all_group_table["Warp Pads"],
+        "Cheats": all_group_table["cheats"]
     }
 
     location_name_groups = {}
@@ -201,6 +202,9 @@ class BanjoTooieWorld(World):
             itemname = itemName.DOUBLOON
             if not hasattr(self.multiworld, "generation_is_fake"):
                 item_classification = ItemClassification.filler
+        elif itemname == itemName.HEALTHUP and \
+            (self.options.logic_type == LogicType.option_easy_tricks or self.options.logic_type == LogicType.option_intended):
+            item_classification = ItemClassification.useful
 
         banjoItem = all_item_table.get(itemname)
         if not banjoItem:
@@ -272,10 +276,7 @@ class BanjoTooieWorld(World):
             self.kingjingalingjiggy = True
 
         progression_jiggies = max(self.randomize_worlds.values())
-        if not self.options.open_hag1 and self.options.victory_condition in \
-            (VictoryCondition.option_hag1,
-                VictoryCondition.option_wonderwing_challenge,
-                VictoryCondition.option_boss_hunt_and_hag1):
+        if not self.options.open_hag1 and self.options.victory_condition == VictoryCondition.option_hag1:
             progression_jiggies = max(progression_jiggies, 70)
 
         useful_jiggies, filler_jiggies = \
@@ -405,6 +406,9 @@ class BanjoTooieWorld(World):
 
         if name == itemName.HONEY and not self.options.randomize_honeycombs: # Added later in Prefill
             return None
+        
+        if name == itemName.HEALTHUP and not self.options.honeyb_rewards:
+            return None
 
         if name in all_group_table['bk_moves'].keys() and self.options.randomize_bk_moves == RandomizeBKMoveList.option_none:
             return None
@@ -436,6 +440,9 @@ class BanjoTooieWorld(World):
             return None
 
         if name in all_group_table['Silos'].keys() and not self.options.randomize_silos:
+            return None
+        
+        if name in all_group_table['cheats'].keys() and not self.options.cheato_rewards:
             return None
 
         if name in all_group_table['Silos'].keys() and name in self.preopened_silos:
@@ -642,6 +649,9 @@ class BanjoTooieWorld(World):
 
         if not self.options.randomize_warp_pads:
             self.banjo_pre_fills("Warp Pads", None, True)
+        
+        if not self.options.cheato_rewards:
+            self.banjo_pre_fills("Cheats", None, True)
 
         if not self.worlds_randomized and self.options.skip_puzzles:
             self.banjo_pre_fills("Access", None, True)

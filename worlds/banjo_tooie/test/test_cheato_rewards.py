@@ -37,18 +37,6 @@ class TestVanillaCheatoRewards(BanjoTooieTestBase):
         for item in items:
             assert item.classification == ItemClassification.filler
 
-    def test_locations(self) -> None:
-        location_names = [
-            locationName.CHEATOR1,
-            locationName.CHEATOR2,
-            locationName.CHEATOR3,
-            locationName.CHEATOR4,
-            locationName.CHEATOR5
-        ]
-        world_location_names = [location.name for location in self.world.get_locations()]
-        for name in location_names:
-            assert not name in world_location_names
-
 class TestRandomizedCheatoRewardsIntended(TestRandomizedCheatoRewards, IntendedLogic):
     options = {
         **TestRandomizedCheatoRewards.options,

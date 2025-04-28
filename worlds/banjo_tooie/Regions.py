@@ -17,9 +17,15 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.PMEGG,
         locationName.BMEGG,
         locationName.ROYSTEN1,
-        locationName.ROYSTEN2
+        locationName.ROYSTEN2,
     ],
-    regionName.SMGL:     [],
+    regionName.SMGL:     [
+        locationName.CHEATOR1,
+        locationName.CHEATOR2,
+        locationName.CHEATOR3,
+        locationName.CHEATOR4,
+        locationName.CHEATOR5
+    ],
     regionName.IOHJV:    [
         locationName.JIGGYIH1,
         locationName.JIGGYIH2,
@@ -221,7 +227,11 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEWW13,
         locationName.NOTEWW14,
         locationName.NOTEWW15,
-        locationName.NOTEWW16
+        locationName.NOTEWW16,
+
+        locationName.MOGGY,
+        locationName.SOGGY,
+        locationName.GROGGY
     ],
     regionName.WWI: [
         locationName.JIGGYWW9,
@@ -403,6 +413,7 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.GIOB: [
         locationName.TRAINSWGI,
         locationName.JINJOGI5,
+        locationName.SKIVOU
     ],
     regionName.GIES: [],
     regionName.GI1: [
@@ -426,6 +437,8 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEGI12,
         locationName.NOTEGI13,
         locationName.NOTEGI14,
+        locationName.SKIVF1,
+        locationName.SKIVWQ,
     ],
     regionName.GI2: [
         locationName.CHEATOGI2,
@@ -438,6 +451,7 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEGI8,
         locationName.NOTEGI9,
         locationName.NOTEGI10,
+        locationName.SKIVF2
     ],
     regionName.GI2EM: [],
     regionName.GI3: [
@@ -445,6 +459,7 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.GLOWBOGI2,
         locationName.NOTEGI15,
         locationName.NOTEGI16,
+        locationName.SKIVF3,
     ],
     regionName.GI3B: [
         locationName.JINJOGI4,
@@ -458,6 +473,7 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
     regionName.GI5: [
         locationName.JINJOGI1,
         locationName.JIGGYGI5,
+        locationName.SKIVF5
     ],
     regionName.GIF: [
         locationName.HONEYCGI3,
@@ -507,7 +523,10 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTEHFP13,
         locationName.NOTEHFP14,
         locationName.NOTEHFP15,
-        locationName.NOTEHFP16
+        locationName.NOTEHFP16,
+        locationName.ALPHETTE,
+        locationName.BETETTE,
+        locationName.GAMETTE
     ],
     regionName.CC:      [
         locationName.JINJOCC1,
@@ -551,7 +570,9 @@ BANJO_TOOIE_REGIONS: typing.Dict[str, typing.List[str]] = {
         locationName.NOTECCL13,
         locationName.NOTECCL14,
         locationName.NOTECCL15,
-        locationName.NOTECCL16
+        locationName.NOTECCL16,
+        locationName.FITHJ,
+        locationName.FITSR,
     ],
     regionName.CK: [],
     regionName.H1: [
@@ -1427,13 +1448,6 @@ def create_regions(self):
         region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO7)
         region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO8)
         region_map[regionName.IOHJV].append(locationName.MUMBOTKNJINJO9)
-
-    if self.options.cheato_rewards:
-        region_map[regionName.SMGL].append(locationName.CHEATOR1)
-        region_map[regionName.SMGL].append(locationName.CHEATOR2)
-        region_map[regionName.SMGL].append(locationName.CHEATOR3)
-        region_map[regionName.SMGL].append(locationName.CHEATOR4)
-        region_map[regionName.SMGL].append(locationName.CHEATOR5)
 
     if self.options.honeyb_rewards:
         region_map[regionName.IOHPL].append(locationName.HONEYBR1)
