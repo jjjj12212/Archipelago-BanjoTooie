@@ -921,6 +921,7 @@ class BanjoTooieWorld(World):
             "skip_klungo",
             "easy_canary",
             "extra_cheats",
+            "auto_enable_cheats",
             "randomize_signposts",
             "signpost_hints",
             "signpost_move_hints",
