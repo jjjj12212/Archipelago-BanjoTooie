@@ -154,7 +154,11 @@ local DEATH_MESSAGES = {
     [11] = {message = "That death just now, I saw coming,\nYour skill issues are rather stunning!"},
     [12] = {message = "Seeing this pathetic display,\nIs serotonin in my day"},
     [13] = {message = "What a selfish thing to do,\nYour friends just died because of you!"},
-    [14] = {message = "You tried something rather stupid,\nI hope no one will try what you did"}
+    [14] = {message = "You tried something rather stupid,\nI hope no one will try what you did"},
+    [15] = {message = "I see your having trouble with this seed,\nits too bad you never learned how to read."},
+    [16] = {message = "You'll label that one unfair, but I found that beat was rare."},
+    [17] = {message = "You were not prepared for trouble, so now my minions will be working on the double."},
+    [18] = {message = "Seeing you trip and fall is rather funny, I get to watch you run out of honey."}
 }
 
 local receive_map = { -- [ap_id] = item_id; --  Required for Async Items

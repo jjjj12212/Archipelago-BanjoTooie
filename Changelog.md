@@ -1,4 +1,5 @@
 #4.5
+  - More Grunty Death Rhymes
   - New Check Locations:
     - Boggy's Kids
     - Alien Kids
