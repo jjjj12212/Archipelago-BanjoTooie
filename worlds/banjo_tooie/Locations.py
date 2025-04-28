@@ -962,9 +962,9 @@ HPLoc_table = {
     locationName.WARPHP4:   LocationData(1231590, 0, 0, "Warp Pads"),
     locationName.WARPHP5:   LocationData(1231591, 0, 0, "Warp Pads"),
 
-    locationName.ALPHETTE:    LocationData(1231599, 0x69, 1),
-    locationName.BETETTE:    LocationData(1231600, 0x69, 2),
-    locationName.GAMETTE:    LocationData(1231601, 0x69, 3)
+    locationName.ALPHETTE:    LocationData(1231599, 0x69, 2),
+    locationName.BETETTE:    LocationData(1231600, 0x69, 3),
+    locationName.GAMETTE:    LocationData(1231601, 0x69, 4)
 
 }
 
