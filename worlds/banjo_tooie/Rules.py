@@ -8512,28 +8512,34 @@ class BanjoTooieRules:
         return self.bill_drill(state) and self.mumboCCL(state) and self.flight_pad(state) and self.climb(state)
 
     def check_hag1_options(self, state: CollectionState) -> bool:
-        enough_jiggies = self.world.options.open_hag1 == 1 or state.has(itemName.JIGGY, self.player, 70)
+        door_open = False
+        if self.world.options.victory_condition == VictoryCondition.option_hag1:
+            door_open = self.world.options.open_hag1 == 1 or state.has(itemName.JIGGY, self.player, 70)
+        elif self.world.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
+            door_open = state.has(itemName.MUMBOTOKEN, self.player, 32)
+        elif self.world.options.victory_condition == VictoryCondition.option_boss_hunt_and_hag1:
+            door_open = state.has(itemName.MUMBOTOKEN, self.player, self.world.options.boss_hunt_length)
         if self.world.options.logic_type == LogicType.option_intended:
-            return enough_jiggies and \
+            return door_open and \
                 self.warp_pad_ck_top(state) and \
                 self.breegull_blaster(state) and \
                 self.clockwork_eggs(state)\
                 and self.can_shoot_linear_egg(state)\
                 and (self.talon_trot(state) and self.tall_jump(state))
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            return enough_jiggies and \
+            return door_open and \
                 self.warp_pad_ck_top(state) and \
                 self.breegull_blaster(state) and \
                 self.clockwork_eggs(state)\
                 and self.can_shoot_linear_egg(state)\
                 and (self.talon_trot(state) or self.tall_jump(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            return enough_jiggies and \
+            return door_open and \
                 self.warp_pad_ck_top(state) and \
                 self.breegull_blaster(state) and \
                 self.clockwork_eggs(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            return enough_jiggies and \
+            return door_open and \
                 self.warp_pad_ck_top(state) and \
                 self.breegull_blaster(state) and \
                 self.clockwork_eggs(state)
@@ -9296,6 +9302,6 @@ class BanjoTooieRules:
             for location, rules in self.bosstoken_rules.items():
                 tokens = self.world.multiworld.get_location(location, self.player)
                 set_rule(tokens, rules)
-            self.world.multiworld.completion_condition[self.player] = lambda state: state.has(itemName.MUMBOTOKEN, self.player, self.world.options.boss_hunt_length) and state.has("Kick Around", self.player)
+            self.world.multiworld.completion_condition[self.player] = lambda state: state.has("Kick Around", self.player)
         else:
             self.world.multiworld.completion_condition[self.player] = lambda state: state.has("Kick Around", self.player)

@@ -276,10 +276,7 @@ class BanjoTooieWorld(World):
             self.kingjingalingjiggy = True
 
         progression_jiggies = max(self.randomize_worlds.values())
-        if not self.options.open_hag1 and self.options.victory_condition in \
-            (VictoryCondition.option_hag1,
-                VictoryCondition.option_wonderwing_challenge,
-                VictoryCondition.option_boss_hunt_and_hag1):
+        if not self.options.open_hag1 and self.options.victory_condition == VictoryCondition.option_hag1:
             progression_jiggies = max(progression_jiggies, 70)
 
         useful_jiggies, filler_jiggies = \
