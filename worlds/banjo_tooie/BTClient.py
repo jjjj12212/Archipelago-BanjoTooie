@@ -385,7 +385,10 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_extra_cheats": ctx.slot_data["extra_cheats"],
             "slot_easy_canary": ctx.slot_data["easy_canary"],
             "slot_randomize_signposts": ctx.slot_data["randomize_signposts"],
-            "slot_auto_enable_cheats": ctx.slot_data["_auto_enable_cheats"]
+            "slot_auto_enable_cheats": ctx.slot_data["auto_enable_cheats"],
+            "slot_cheato_rewards": ctx.slot_data["cheato_rewards"],
+            "slot_honeyb_rewards": ctx.slot_data["honeyb_rewards"],
+
         })
     ctx.sendSlot = False
     return payload
