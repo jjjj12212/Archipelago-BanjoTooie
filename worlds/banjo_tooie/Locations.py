@@ -1071,8 +1071,8 @@ CCLoc_table = {
     locationName.WARPCC1:   LocationData(1231592, 0, 0, "Warp Pads"),
     locationName.WARPCC2:   LocationData(1231593, 0, 0, "Warp Pads"),
 
-    locationName.FITHJ:     LocationData(1231608, 0x76, 1),
-    locationName.FITSR:     LocationData(1231609, 0x76, 2)
+    locationName.FITHJ:     LocationData(1231608, 0x76, 4),
+    locationName.FITSR:     LocationData(1231609, 0x76, 5)
 }
 
 WorldUnlocks_table = {
