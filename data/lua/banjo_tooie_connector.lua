@@ -7495,6 +7495,14 @@ local transformation_names = {
     [1230182] = {name = "Dragon", attribute = "dangerous"},
 }
 
+local cheat_names = {
+    [1230917] = "Feathers Cheat",
+    [1230918] = "Egg Cheat",
+    [1230919] = "Fallproof Cheat",
+    [1230920] = "Honeyback Cheat. Press D-Pad Down to Toggle this Cheat",
+    [1230921] = "Jukebox Cheat",
+}
+
 function display_item_message(msg_table)
     -- Cancel if not for this player
     if msg_table["to_player"] ~= PLAYER
@@ -7734,6 +7742,11 @@ function get_item_message_text(item_id, item, player)
         return own
             and string.format("You can now use the %s.", item)
             or string.format("%s has just unlocked the %s.", player, item)
+    elseif 1230917 <= item_id and item_id <= 1230921 -- Cheats
+    then
+        return own
+            and string.format("You can now use the %s.", cheat_names[item_id])
+            or string.format("%s has just sent you the %s.", player, cheat_names[item_id])
     end
 
     return nil
@@ -7836,6 +7849,9 @@ function get_item_message_char(item_id)
         elseif 1230912 <= item_id and item_id <= 1230915 -- Warppad CC
         then
             return 27 -- Canary
+        elseif 1230917 <= item_id and item_id <= 1230921 -- Cheats
+        then
+            return 28 -- Cheato
         else -- Default
             return 7 -- Bottles
         end
