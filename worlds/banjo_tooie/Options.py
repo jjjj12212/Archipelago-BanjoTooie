@@ -183,9 +183,13 @@ class ProgressiveBashAttack(Toggle):
     display_name = "Progressive Bash Attack"
 
 class EnableCheatoRewards(DefaultOnToggle):
-    """Cheato rewards you with a cheat and an additional randomized reward.
+    """Each Cheato reward becomes a check and his cheats are in the pool.
     Cheato Pages are set to progression when this setting is enabled."""
     display_name = "Cheato Rewards"
+
+class AutoEnableCheats(Toggle):
+    """When Feathers and Eggs cheats are found, only enable them automatically when received."""
+    display_name = "Auto Enable Cheats"
 
 class RandomizeJinjos(DefaultOnToggle):
     """Jinjos have fled to other worlds. Other players need to return them home."""
@@ -204,12 +208,14 @@ class RandomizeHoneycombs(DefaultOnToggle):
     display_name = "Randomize Honeycombs"
 
 class EnableHoneyBRewards(DefaultOnToggle):
-    """Honey B gives you health and an additional randomized reward."""
+    """Each Honey B reward becomes a check and your health upgrades are now in the pool.
+    Empty Honeycombs are set to progrssion when this setting is enabled."""
     display_name = "Honey B Rewards"
 
 class RandomizeGlowbos(DefaultOnToggle):
-    """Glowbos are randomized."""
-    display_name = "Randomize Glowbos"
+    """Mumbo and Humba Magic are in the pool and automatically unlocked when received.
+    When disabled, collecting a Glowbo will give you either a Mumbo or Humba Magic."""
+    display_name = "Randomize Mumbo and Humba Magic"
 
 class RandomizeTrebleClefs(DefaultOnToggle):
     """Treble Clefs are randomized."""
@@ -620,6 +626,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_doubloons: RandomizeDoubloons
     randomize_cheato: RandomizeCheatoPages
     cheato_rewards: EnableCheatoRewards
+    auto_enable_cheats: AutoEnableCheats
     randomize_honeycombs: RandomizeHoneycombs
     honeyb_rewards: EnableHoneyBRewards
     randomize_glowbos: RandomizeGlowbos
