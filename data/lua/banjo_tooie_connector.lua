@@ -8555,11 +8555,8 @@ function printGoalInfo()
         elseif GOAL_TYPE == 4 then
             message ="You absolute mad lad! You're doing the Wonder Wing Challenge!\nGood Luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(32)
-        elseif GOAL_TYPE == 5 and TH_LENGTH == 15 then
-            message ="You are trying to find all 15 of Mumbo's Tokens scattered throughout the Isle of Hags!\nGood Luck and"..randomEncouragment;
-            BTH:setSettingMaxMumboTokens(TH_LENGTH)
-        elseif GOAL_TYPE == 5 and TH_LENGTH < 15 then
-            message = "You are trying to find "..TH_LENGTH.." of the 15 of Mumbo Tokens scattered throughout the Isle O' Hags!\nGood Luck and"..randomEncouragment;
+        elseif GOAL_TYPE == 5 then
+            message = "You are trying to find "..TH_LENGTH.." Mumbo Tokens scattered throughout the Isle O' Hags!\nGood Luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(TH_LENGTH)
         elseif GOAL_TYPE == 6 then
             message = "You need to defeat "..BH_LENGTH.." Bosses in order to defeat HAG-1!\nGood Luck and"..randomEncouragment;

@@ -350,7 +350,7 @@ class BanjoTooieWorld(World):
         # START OF ITEMS CUSTOM LOGIC
 
         if self.options.victory_condition == VictoryCondition.option_token_hunt:
-            itempool += [self.create_item(itemName.MUMBOTOKEN) for i in range(15)]
+            itempool += [self.create_item(itemName.MUMBOTOKEN) for i in range(self.options.tokens_in_pool)]
 
         itempool += self.get_jiggies_in_pool()
         itempool += self.get_notes_in_pool()
@@ -524,6 +524,13 @@ class BanjoTooieWorld(World):
         if (not self.options.randomize_notes and not self.options.randomize_signposts and not self.options.nestsanity) and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none:
             if self.multiworld.players == 1:
                 raise OptionError("Randomize Notes, signposts or nestsanity is required for Randomize BK Moves.")
+        if self.options.victory_condition == VictoryCondition.option_token_hunt:
+            if self.options.token_hunt_length > self.options.tokens_in_pool:
+                raise OptionError("You cannot set your Token Hunt Length greater that what you have allowed in the pool.")
+            if self.options.tokens_in_pool > 15 and (not self.options.randomize_signposts and not self.options.nestsanity):
+                raise OptionError("You cannot have more than 15 Mumbo Token without enabling randomize Signposts or Nestanity.")
+            if self.options.tokens_in_pool > 50 and not self.options.nestsanity:
+                raise OptionError("You cannot have more than 50 Mumbo Token without enabling Nestanity.")
         if not self.options.randomize_notes and (self.options.extra_trebleclefs_count != 0 and self.options.bass_clef_amount != 0):
             raise OptionError("Randomize Notes is required to add extra Treble Clefs or Bass Clefs")
         if self.options.progressive_beak_buster and (not self.options.randomize_bk_moves or not self.options.randomize_moves):

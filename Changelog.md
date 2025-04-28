@@ -1,3 +1,24 @@
+#4.5
+  - New Check Locations:
+    - Boggy's Kids
+    - Alien Kids
+    - Each Skivvy
+    - Mr Fit's Events
+  - Honey B Rewards now does the following:
+    - Adds Health Upgrades in the Pool
+    - You will now only receive 1 random reward per check (no longer health + 1 random item)
+  - Cheato Rewards now does the following:
+    - Adds Cheato Cheats in the pool
+    - You will now only receive 1 random reward per check (no longer cheat + 1 random item)
+  - Token Hunt Mumbo Token Increase:
+    - If randomize signposts is enabled, you are allowed up to 50 Mumbo Tokens
+    - If nestanity is enabled, you are allowed up to 100 Mumbo Tokens
+  - New Options:
+    - Token Hunt Tokens in Pool:
+      - You can now have more token in the pool without needing to collect all of them
+    - Auto Enable Cheats:
+      - Only automatically enable Feathers and Eggs when obtained
+
 # 4.4.2
   - Logic fixes:
     - Simple Random Starting Egg doesn't assume you start with Blue Eggs

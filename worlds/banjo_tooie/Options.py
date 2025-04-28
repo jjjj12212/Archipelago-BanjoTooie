@@ -490,11 +490,25 @@ class JinjoFamilyRescueLength(Range):
     default = 9
 
 class TokenHuntLength(Range):
-    """How many Mumbo Tokens of the 15 hidden throughout the world do you need to find.
-    Choose a value between 1 and 15."""
+    """How many Mumbo Tokens are hidden throughout the world do you need to find.
+    If Randomize Signpost are enabled, you are allowed up to 50.
+    If Nestanity is enabled, you are allowed up to 100.
+    If niether are enabled, you are allowed up to 15.
+    Choose a value between 1 and 100."""
     display_name = "Token Hunt Length"
     range_start = 1
-    range_end = 15
+    range_end = 100
+    default = 5
+
+class TokenQty(Range):
+    """How many Mumbo Tokens are in the pool.
+    If Randomize Signpost are enabled, you are allowed up to 50.
+    If Nestanity is enabled, you are allowed up to 100.
+    If niether are enabled, you are allowed up to 15.
+    Choose a value between 1 and 100."""
+    display_name = "Token Hunt Tokens in Pool"
+    range_start = 1
+    range_end = 100
     default = 5
 
 class GameLength(Choice):
@@ -601,6 +615,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     boss_hunt_length: BossHuntLength
     jinjo_family_rescue_length: JinjoFamilyRescueLength
     token_hunt_length: TokenHuntLength
+    tokens_in_pool: TokenQty
 
     game_length: GameLength
     custom_worlds:CustomWorlds
