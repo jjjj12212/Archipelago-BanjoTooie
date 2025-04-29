@@ -1,3 +1,32 @@
+# 4.4.3
+  - Renamings:
+    - GGM Mumbo Skull Note 1/2/3 -> Left/Bottom-Right/Top-Right Note.
+    - JRL Locker Cavern Seemee Egg/Feather Nest -> Sea Bottom Seemee Egg/Feather Nest
+  - Logic fixes:
+    - TDL to Chuffy, HFP to Chuffy: can be done with Tall Jump + beak buster, on hard tricks and glitches.
+    - HFP to MT: fixed a bug where the logic did not think you could reach the kickball stadium.
+    - MT Kickball stadium access: fixed a bug where the Archipelago generator forgets to check if you can enter the kickball stadium from the front entrance with the stony.
+    - Overworld silos: Entering the Plateau Silo and the Quagmire Silo is now taken into account in the logic.
+    - Cliff Top Jinjo: Removed Climb from glitch logic
+    - Cliff Top Feather Nest #3: Can be gotten with Claw Clamber Boots or air rat-a-tat rap, if not on intended logic.
+    - Quagmire Feather Nests: can be gotten with Claw Clamber Boots.
+    - MT Pillars Signpost: removed a bug where the logic thought clockworks could read.
+    - GGM Mumbo Skull Left Note: Can be gotten from the warp pad.
+    - GGM Wumba: Fixed a bug where it was not checking to see if you had the moves to reach the Mumbo warp pad, if warping from Mumbo to Wumba was in logic.
+    - Cactus of Strength Jinjo: can be gotten with pack whack + tall jump + grip grab.
+    - Going up the Seaweed Sanctum: added Flap Flip as a hard requirement to reach spring pads.
+    - Sunken Ship and Big Fish Cavern Warp Pads: now check the correct item to know if you can use the warp pads.
+    - Pawno Notes: can be gotten with split up, if not on intended logic.
+    - TDL Flight pad: now checks to see if you can reach the top of TDL to fight Terry.
+    - River Passage Feather Nest: can be gotten as solo Kazooie with Tall Jump.
+    - TDL Mumbo and Stomping Plains Warp Pads: swapped their regions. They were both wrong.
+    - Near Floor 2 Cheato Page Nest: changed the logic so that it's the same as the Cheato page logic.
+    - Icy Side glowbo: added moves so that intended and easy trick logics don't need to damage boost.
+    - Icy Side Train Station Collectibles: added Claw Clamber Boots as a way to pound Gobi.
+    - Icy Side Train Station Egg Nest: Removed moves to dive underwater for hard tricks and glitch logics, as you can get the nest as it's bouncing.
+    - Fire Side Train Station and the nest next to it: can be gotten with talon trot + flutter.
+    - Glide Silo: checks to see if you have split up, on intended logic.
+
 # 4.4.2
   - Logic fixes:
     - Simple Random Starting Egg doesn't assume you start with Blue Eggs

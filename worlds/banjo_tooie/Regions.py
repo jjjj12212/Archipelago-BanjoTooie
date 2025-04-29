@@ -1340,14 +1340,14 @@ WARP_PAD_REGIONS: typing.Dict[str, typing.List[str]] = {
     ],
     regionName.TL:      [
         locationName.WARPTL1,
-        locationName.WARPTL2,
+        locationName.WARPTL3,
         locationName.WARPTL4,
     ],
     regionName.TLTOP:   [
         locationName.WARPTL5,
     ],
     regionName.TLSP:    [
-        locationName.WARPTL3,
+        locationName.WARPTL2,
     ],
     regionName.GI1: [
         locationName.WARPGI1,
@@ -1557,15 +1557,20 @@ def connect_regions(self):
                             regionName.MTKS: lambda state: state.has(itemName.WARPMT5, player)
                         })
 
+    # We explicitly add this indirect connection due to the Stony.
+    entrance_MT_to_KS = next(e for e in region_MT.exits if e.connected_region.name == regionName.MTKS)
+    self.multiworld.register_indirect_condition(self.get_region(regionName.MTJSG), entrance_MT_to_KS)
+
     region_HATCH = self.get_region(regionName.TL_HATCH)
     region_HATCH.add_exits({regionName.TL},
                         {regionName.TL: lambda state: rules.hatch_to_TDL(state)})
 
     region_PL = self.get_region(regionName.IOHPL)
-    region_PL.add_exits({regionName.GGME, regionName.IOHPG, regionName.IOHCT},
+    region_PL.add_exits({regionName.GGME, regionName.IOHPG, regionName.IOHCT, regionName.IHSILOS},
                         {regionName.GGME: lambda state: rules.PL_to_GGM(state),
                          regionName.IOHPG: lambda state: rules.PL_to_PG(state),
-                        regionName.IOHCT: lambda state: rules.split_up(state)})
+                        regionName.IOHCT: lambda state: rules.split_up(state),
+                        regionName.IHSILOS: lambda state: state.has(itemName.SILOIOHPL, player)})
 
     region_GM = self.get_region(regionName.GM)
     region_GM.add_exits({regionName.GMWSJT, regionName.CHUFFY, regionName.GMFD, regionName.WW}, {
@@ -1635,7 +1640,7 @@ def connect_regions(self):
     region_JRSS.add_exits({regionName.JRAT, regionName.JRLC, regionName.JRWARP, regionName.GMWSJT},
                         {regionName.JRAT: lambda state: rules.can_escape_sunken_ship(state),
                          regionName.JRLC: lambda state: rules.can_escape_sunken_ship(state),
-                         regionName.JRWARP: lambda state: state.has(itemName.WARPJR4, player),
+                         regionName.JRWARP: lambda state: state.has(itemName.WARPJR3, player),
                          regionName.GMWSJT: lambda state: rules.sunken_ship_to_ggm(state),
                         })
 
@@ -1653,7 +1658,7 @@ def connect_regions(self):
     region_JRBFC = self.get_region(regionName.JRBFC)
     region_JRBFC.add_exits({regionName.JRLC, regionName.JRSS2},
                         {regionName.JRLC: lambda state: rules.can_escape_big_fish_cave_from_water(state),
-                         regionName.JRWARP: lambda state: state.has(itemName.WARPJR5, player)})
+                         regionName.JRWARP: lambda state: state.has(itemName.WARPJR4, player)})
 
     region_JRWARP = self.get_region(regionName.JRWARP)
     region_JRWARP.add_exits({regionName.JR, regionName.JRAT, regionName.JRSS, regionName.JRLC, regionName.JRBFC},
@@ -1665,8 +1670,8 @@ def connect_regions(self):
                          })
 
     region_HP = self.get_region(regionName.HP)
-    region_HP.add_exits({regionName.MT, regionName.JR, regionName.CHUFFY},
-                        {regionName.MT: lambda state: rules.HFP_to_MT(state),
+    region_HP.add_exits({regionName.MTKS, regionName.JR, regionName.CHUFFY},
+                        {regionName.MTKS: lambda state: rules.HFP_to_MT(state),
                          regionName.JR: lambda state: rules.HFP_to_JRL(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.hfp_to_chuffy(state)})
 
@@ -1709,7 +1714,7 @@ def connect_regions(self):
                          })
 
     region_QM = self.get_region(regionName.IOHQM)
-    region_QM.add_exits({regionName.GIE, regionName.IOHWL, regionName.CKE}, {
+    region_QM.add_exits({regionName.GIE, regionName.IOHWL, regionName.CKE, regionName.IHSILOS}, {
                           regionName.GIE: lambda state: rules.gi_jiggy(state),
                           regionName.IOHWL: lambda state: rules.QM_to_WL(state),
                           regionName.CKE: lambda state: rules.quag_to_CK(state),

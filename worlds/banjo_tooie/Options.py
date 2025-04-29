@@ -230,7 +230,7 @@ class RandomizeNotes(Toggle):
 
 class BassClefNotes(Range):
     """Convert some 5 notes into Bass Clefs (10 notes). How many notes do you want converted?
-       Be aware that 1 Bass Clef removes two 5 notes and adds an additional Big-O-Pants.
+       Be aware that 1 Bass Clef removes two 5 notes and adds an additional filler.
        Randomize Notes is required."""
     display_name = "Bass Clefs (10 notes) Amount"
     range_start = 0
@@ -239,7 +239,7 @@ class BassClefNotes(Range):
 
 class TrebleclefNotes(Range):
     """Convert some 5 notes into Treble Clefs (20 notes). How many notes do you want converted?
-       Be aware that 1 Treble Clef removes four 5 notes and adds three additional Big-O-Pants.
+       Be aware that 1 Treble Clef removes four 5 notes and adds three additional fillers.
        Randomize Notes is required."""
     display_name = "Add additional Treble Clefs (20 notes) Amount"
     range_start = 0
