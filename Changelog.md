@@ -23,6 +23,7 @@
     - GGM Mumbo Skull Note 1/2/3 -> Left/Bottom-Right/Top-Right Note.
     - JRL Locker Cavern Seemee Egg/Feather Nest -> Sea Bottom Seemee Egg/Feather Nest
   - Logic fixes:
+    - Victory Conditions: Boss Hunt + Hag 1 and the Wonderwing Challenge no longer check if you have 70 jiggies to fight Hag 1.
     - TDL to Chuffy, HFP to Chuffy: can be done with Tall Jump + beak buster, on hard tricks and glitches.
     - HFP to MT: fixed a bug where the logic did not think you could reach the kickball stadium.
     - MT Kickball stadium access: fixed a bug where the Archipelago generator forgets to check if you can enter the kickball stadium from the front entrance with the stony.
