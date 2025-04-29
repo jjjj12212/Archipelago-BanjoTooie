@@ -1,4 +1,24 @@
-# 4.4.3
+# 4.5
+  - More Grunty Death Rhymes
+  - New Check Locations:
+    - Individual Boggy's Kids
+    - Individual Alien Kids
+    - Individual Skivvies
+    - Individual Mr Fit's Events
+  - Randomising Honey B Rewards now does the following:
+    - Adds Health Upgrades in the Pool
+    - You will now only receive 1 random reward per check (no longer health + 1 random item)
+  - Randomising Cheato Rewards now does the following:
+    - Adds Cheato Cheats in the pool
+    - You will now only receive 1 random reward per check (no longer cheat + 1 random item)
+  - Token Hunt Mumbo Token Increase
+    - If randomize signposts is enabled, you are allowed up to 50 Mumbo Tokens
+    - If nestanity is enabled, you are allowed up to 100 Mumbo Tokens
+  - New Options:
+    - Token Hunt Tokens in Pool:
+      - You can now choose how many Mumbo tokens are in the pool.
+    - Auto Enable Cheats:
+      - Only automatically enable Feathers and Eggs when obtained
   - Renamings:
     - GGM Mumbo Skull Note 1/2/3 -> Left/Bottom-Right/Top-Right Note.
     - JRL Locker Cavern Seemee Egg/Feather Nest -> Sea Bottom Seemee Egg/Feather Nest

@@ -62,9 +62,9 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_to_id"]
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 script_version: int = 4
-version: str = "V4.4.2"
-game_append_version: str = "V44"
-patch_md5: str = "e1549e5f99c73ea442e1b78d17fdf66b"
+version: str = "V4.5"
+game_append_version: str = "V45"
+patch_md5: str = "c0525b5e3167e73e28957125f9e55d8e"
 
 def get_item_value(ap_id):
     return ap_id
@@ -150,6 +150,10 @@ class BanjoTooieContext(CommonContext):
         self.jiggychunks_table = {}
         self.goggles_table = False
         self.dino_kids_table = {}
+        self.boggy_kids_table = {}
+        self.alien_kids_table = {}
+        self.skivvies_table = {}
+        self.mr_fit_table = {}
         self.signpost_table = {}
         self.warppads_table = {}
         self.silos_table = {}
@@ -380,7 +384,11 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_hints_activated": ctx.slot_data["signpost_hints"],
             "slot_extra_cheats": ctx.slot_data["extra_cheats"],
             "slot_easy_canary": ctx.slot_data["easy_canary"],
-            "slot_randomize_signposts": ctx.slot_data["randomize_signposts"]
+            "slot_randomize_signposts": ctx.slot_data["randomize_signposts"],
+            "slot_auto_enable_cheats": ctx.slot_data["auto_enable_cheats"],
+            "slot_cheato_rewards": ctx.slot_data["cheato_rewards"],
+            "slot_honeyb_rewards": ctx.slot_data["honeyb_rewards"],
+
         })
     ctx.sendSlot = False
     return payload
@@ -430,6 +438,10 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     goggles = payload["goggles"]
     jiggylist = payload["jiggies"]
     dino_kids = payload["dino_kids"]
+    boggy_kids = payload["boggy_kids"]
+    alien_kids = payload["alien_kids"]
+    skivvies = payload["skivvies"]
+    mr_fit = payload["fit_events"]
     nests = payload["nests"]
     roar_obtain = payload["roar"]
     signposts = payload["signposts"]
@@ -463,6 +475,14 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         worldslist = {}
     if isinstance(dino_kids, list):
         dino_kids = {}
+    if isinstance(boggy_kids, list):
+        boggy_kids = {}
+    if isinstance(alien_kids, list):
+        alien_kids = {}
+    if isinstance(skivvies, list):
+        skivvies = {}
+    if isinstance(mr_fit, list):
+        mr_fit = {}
     if isinstance(nests, list):
         nests = {}
     if isinstance(signposts, list):
@@ -540,6 +560,26 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         if ctx.dino_kids_table != dino_kids:
             ctx.dino_kids_table = dino_kids
             for locationId, value in dino_kids.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.boggy_kids_table != boggy_kids:
+            ctx.boggy_kids_table = boggy_kids
+            for locationId, value in boggy_kids.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.alien_kids_table != alien_kids:
+            ctx.alien_kids_table = alien_kids
+            for locationId, value in alien_kids.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.skivvies_table != skivvies:
+            ctx.skivvies_table = skivvies
+            for locationId, value in skivvies.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.mr_fit_table != mr_fit:
+            ctx.mr_fit_table = mr_fit
+            for locationId, value in mr_fit.items():
                 if value == True:
                     locs1.append(int(locationId))
         if ctx.nests_table != nests:

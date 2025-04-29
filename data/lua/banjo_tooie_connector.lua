@@ -5,9 +5,6 @@
 
 -- local RDRAMBase = 0x80000000;
 -- local RDRAMSize = 0x800000;
--- local character_state = 0x136F63;
--- local camera_pointer_pointer = 0x127728;
--- local global_flag_pointer = 0x12C780;
 
 local socket_loaded, socket = pcall(require, "socket")
 if not socket_loaded then
@@ -19,7 +16,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V4.4.2"
+local BT_VERSION = "V4.5"
 local PLAYER = ""
 local SEED = 0
 
@@ -43,6 +40,7 @@ local DEBUG_JIGGY = false
 local DEBUG_TREBLE = false
 local DEBUG_NOTES = false
 local DEBUG_HONEY = false
+local DEBUG_HEALTHUPGRADE = false
 local DEBUG_GLOWBO = false
 local DEBUG_ROYSTEN = false
 local DEBUG_CHUFFY = false
@@ -58,6 +56,12 @@ local DEBUG_NESTS = false
 local DEBUG_SIGNPOSTS = false
 local DEBUG_WARPSILOS = false
 local DEBUG_WARPPADS = false
+local DEBUG_BOGGY_KIDS = true
+local DEBUG_ALIEN_KIDS = true
+local DEBUG_SKIVVIES = true
+local DEBUG_MRFIT = true
+
+
 local DEBUGLVL2 = false
 local DEBUGLVL3 = false
 local AP_TIMEOUT_COUNTER = 0
@@ -80,6 +84,7 @@ local TOTAL_TREBLE = 0;
 local TOTAL_PAGES = 0;
 local TOTAL_DOUBLOONS = 0;
 local TOTAL_NOTES = 0;
+local TOTAL_HEALTHUPGRADE = 0;
 
 local WHITE_JINJO = 0;
 local ORANGE_JINJO = 0;
@@ -149,7 +154,11 @@ local DEATH_MESSAGES = {
     [11] = {message = "That death just now, I saw coming,\nYour skill issues are rather stunning!"},
     [12] = {message = "Seeing this pathetic display,\nIs serotonin in my day"},
     [13] = {message = "What a selfish thing to do,\nYour friends just died because of you!"},
-    [14] = {message = "You tried something rather stupid,\nI hope no one will try what you did"}
+    [14] = {message = "You tried something rather stupid,\nI hope no one will try what you did"},
+    [15] = {message = "I see your having trouble with this seed,\nits too bad you never learned how to read."},
+    [16] = {message = "You'll label that one unfair, but I found that beat was rare."},
+    [17] = {message = "You were not prepared for trouble, so now my minions will be working on the double."},
+    [18] = {message = "Seeing you trip and fall is rather funny, I get to watch you run out of honey."}
 }
 
 local receive_map = { -- [ap_id] = item_id; --  Required for Async Items
@@ -942,13 +951,18 @@ local ASSET_MAP_CHECK = {
             "1231569",
             "1231570"
         },
+        ["BOGGY_KIDS"] = {
+            "1231596",
+            "1231598"
+        }
 
     },
     [0xEA] = { --WW - Cave of Horrors
         ["JINJOS"] = {
             "1230562", -- Cave of Horrors
         },
-        ["SIGNPOSTS"] = {"1231521"}
+        ["SIGNPOSTS"] = {"1231521"},
+        ["BOGGY_KIDS"] = {"1231596"}
     },
     [0xE1] = { --WW - Crazy Castle Stockade
         ["JIGGIES"] = {
@@ -964,7 +978,8 @@ local ASSET_MAP_CHECK = {
         ["NESTS"] = {
             "1231189",
             "1231190",
-        }
+        },
+        ["BOGGY_KIDS"] = {"1231597"}
     },
     [0xE3] = { -- WW - Pump Room
         ["NESTS"] = {
@@ -977,6 +992,7 @@ local ASSET_MAP_CHECK = {
         ["JIGGIES"] = {
             "1230617", -- Dodgem
         },
+        ["BOGGY_KIDS"] = {"1231596"}
     },
     [0xEB] = { --WW - Haunted Cavern
         ["PAGES"] = {
@@ -1020,7 +1036,8 @@ local ASSET_MAP_CHECK = {
             "1231193",
             "1231194",
             "1231195",
-        }
+        },
+        ["BOGGY_KIDS"] = {"1231597"}
     },
     [0xE7] = { --WW - The Inferno
         ["JIGGIES"] = {
@@ -1039,6 +1056,10 @@ local ASSET_MAP_CHECK = {
         ["WARPPADS"] = {
             "1231571"
         },
+        ["BOGGY_KIDS"] = {
+            "1231597",
+            "1231598"
+        }
     },
     [0x176] = { -- WW - Mumbo Skull
         ["HONEYCOMB"] = {
@@ -1055,7 +1076,8 @@ local ASSET_MAP_CHECK = {
         ["NESTS"] = {
             "1231201",
             "1231202",
-        }
+        },
+        ["BOGGY_KIDS"] = {"1231598"}
     },
     --JOLLY ROGER'S LAGOON
     [0x1A7] = { --JRL
@@ -1546,7 +1568,7 @@ local ASSET_MAP_CHECK = {
         },
         ["SIGNPOSTS"] = {"1231531"},
         ["WARPPADS"] = {"1231586"},
-
+        ["SKIVVIES"] = {"1231607"}
     },
     [0x10F] = { --GI - Basement
         ["JIGGIES"] = {
@@ -1618,7 +1640,7 @@ local ASSET_MAP_CHECK = {
             "1231324",
         },
         ["WARPPADS"] = {"1231582"},
-
+        ["SKIVVIES"] = {"1231603"}
     },
     [0x105] = { --GI - Elevator Shaft
         ["NESTS"] = {
@@ -1667,6 +1689,7 @@ local ASSET_MAP_CHECK = {
             "1231344",
         },
         ["WARPPADS"] = {"1231583"},
+        ["SKIVVIES"] = {"1231604"}
 
     },
     [0x107] = { --GI - Floor 2 Electromagnetic Chamber
@@ -1708,7 +1731,8 @@ local ASSET_MAP_CHECK = {
         ["NESTS"] = {
             "1231354",
             "1231355",
-        }
+        },
+        ["SKIVVIES"] = {"1231605"}
     },
     [0x10A] =	{ --GI - Floor 3 (Packing Room)
         ["JIGGIES"] = {
@@ -1750,7 +1774,9 @@ local ASSET_MAP_CHECK = {
             "1231366",
             "1231367",
             "1231368",
-        }
+        },
+        ["SKIVVIES"] = {"1231606"}
+
     },
     [0x187] =	{ --GI - Sewer Entrance
         ["JIGGIES"] = {
@@ -1798,7 +1824,9 @@ local ASSET_MAP_CHECK = {
             "1231328",
             "1231329",
         },
-        ["SIGNPOSTS"] = {"1231532"}
+        ["SIGNPOSTS"] = {"1231532"},
+        ["SKIVVIES"] = {"1231602"}
+
     },
     [0x162] = { --GI - Clinker's Cavern
         ["NESTS"] = {
@@ -1898,6 +1926,11 @@ local ASSET_MAP_CHECK = {
             "1231589",
             "1231590"
         },
+        ["ALIEN_KIDS"] = {
+            "1231599",
+            "1231600",
+            "1231601"
+        }
 
     },
     [0x133] =	{ --HFP - Inside the Volcano
@@ -2066,7 +2099,10 @@ local ASSET_MAP_CHECK = {
             "1231465",
         },
         ["WARPPADS"] = {"1231592"},
-
+        ["MRFIT"] = {
+            "1231608",
+            "1231609"
+        }
     },
     [0x13A] =	{ --CCL - Central Cavern
         ["JIGGIES"] = {
@@ -2217,6 +2253,12 @@ local ROM_ITEM_TABLE = {
     "AP_ITEM_IKEY",
     "AP_ITEM_PMEGG",
     "AP_ITEM_BMEGG",
+    "AP_ITEM_HEALTHUP",
+    "AP_ITEM_CHEATFEATHER",
+    "AP_ITEM_CHEATEGG",
+    "AP_ITEM_CHEATFALL",
+    "AP_ITEM_CHEATHONEY",
+    "AP_ITEM_CHEATJUKE",
     "AP_ITEM_GGRAB",
     "AP_ITEM_BBLASTER",
     "AP_ITEM_EGGAIM",
@@ -5355,7 +5397,72 @@ local ADDRESS_MAP = {
             ['addr'] = 0x75,
             ['bit'] = 5,
         },
+    },
+    ['BOGGY_KIDS'] = {
+        ['1231596'] = {
+            ['addr'] = 0x0C,
+            ['bit'] = 4,
+        },
+        ['1231597'] = {
+            ['addr'] = 0x0C,
+            ['bit'] = 5,
+        },
+        ['1231598'] = {
+            ['addr'] = 0x0C,
+            ['bit'] = 6,
+        }
+    },
+    ['ALIEN_KIDS'] = {
+        ['1231599'] = {
+            ['addr'] = 0x69,
+            ['bit'] = 2,
+        },
+        ['1231600'] = {
+            ['addr'] = 0x69,
+            ['bit'] = 3,
+        },
+        ['1231601'] = {
+            ['addr'] = 0x69,
+            ['bit'] = 4,
+        }
+    },
+    ['SKIVVIES'] = {
+        ['1231602'] = {
+            ['addr'] = 0x81,
+            ['bit'] = 1,
+        },
+        ['1231603'] = {
+            ['addr'] = 0x81,
+            ['bit'] = 2,
+        },
+        ['1231604'] = {
+            ['addr'] = 0x80,
+            ['bit'] = 7,
+        },
+        ['1231605'] = {
+            ['addr'] = 0x81,
+            ['bit'] = 0,
+        },
+        ['1231606'] = {
+            ['addr'] = 0x81,
+            ['bit'] = 6,
+        },
+        ['1231607'] = {
+            ['addr'] = 0x81,
+            ['bit'] = 5,
+        },
+    },
+    ['MRFIT'] = {
+        ['1231608'] = {
+            ['addr'] = 0x76,
+            ['bit'] = 4,
+        },
+        ['1231609'] = {
+            ['addr'] = 0x76,
+            ['bit'] = 5,
+        },
     }
+
 }
 
 -- Properties of world entrances and associated puzzles
@@ -5485,18 +5592,21 @@ BTHACK = {
         setting_nests = 0x6,
         setting_warppads = 0x7,
         setting_warpsilos = 0x8,
-        setting_puzzle = 0x9,
-        setting_backdoors = 0xA,
-        setting_klungo = 0xB,
-        setting_tot = 0xC,
-        setting_minigames = 0xD,
-        setting_dialog_character = 0xE,
-        setting_max_mumbo_tokens = 0xF,
-        setting_signpost_hints = 0x10,
-        setting_extra_cheats = 0x11,
-        setting_easy_canary = 0x12,
-        setting_jiggy_requirements = 0x13,
-        setting_silo_requirements = 0x1E,
+        setting_honeyb = 0x9,
+        setting_cheato_rewards = 0xA,
+        setting_puzzle = 0xB,
+        setting_backdoors = 0xC,
+        setting_klungo = 0xD,
+        setting_tot = 0xE,
+        setting_minigames = 0xF,
+        setting_dialog_character = 0x10,
+        setting_max_mumbo_tokens = 0x11,
+        setting_signpost_hints = 0x12,
+        setting_extra_cheats = 0x13,
+        setting_automatic_cheats = 0x14,
+        setting_easy_canary = 0x15,
+        setting_jiggy_requirements = 0x16,
+        setting_silo_requirements = 0x21,
     pc_items = 0x14,
     pc_traps = 0x18,
     pc_exit_map = 0x1C,
@@ -5631,6 +5741,18 @@ end
 
 function BTHACK:setSettingWarpPads(warppad)
     mainmemory.writebyte(self.setting_warppads + BTHACK:getSettingPointer(), warppad);
+end
+
+function BTHACK:setSettingHoneyB(honeyb)
+    mainmemory.writebyte(self.setting_honeyb + BTHACK:getSettingPointer(), honeyb);
+end
+
+function BTHACK:setSettingCheato(cheato)
+    mainmemory.writebyte(self.setting_cheato_rewards + BTHACK:getSettingPointer(), cheato);
+end
+
+function BTHACK:setSettingAutomaticCheats(cheats)
+    mainmemory.writebyte(self.setting_automatic_cheats + BTHACK:getSettingPointer(), cheats);
 end
 
 function BTHACK:getNestPointer()
@@ -6086,7 +6208,7 @@ function cheato_rewards_check()
         then
             for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["CHEATOR"])
             do
-                checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["CHEATO"][locationId]['addr'], ADDRESS_MAP["CHEATO"][locationId]['bit'])
+                checks[locationId] = BTH:checkFakeFlag(ADDRESS_MAP["CHEATO"][locationId]['addr'], ADDRESS_MAP["CHEATO"][locationId]['bit'])
                 if DEBUG_CHEATO == true
                 then
                     print(ADDRESS_MAP["CHEATO"][locationId]['name']..":"..tostring(checks[locationId]))
@@ -6097,6 +6219,28 @@ function cheato_rewards_check()
     return checks
 end
 
+function obtain_cheats(itemId)
+    if itemId == 1230917
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_CHEATFEATHER"], 1)
+    end
+    if itemId == 1230918
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_CHEATEGG"], 1)
+    end
+    if itemId == 1230919
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_CHEATFALL"], 1)
+    end
+    if itemId == 1230920
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_CHEATHONEY"], 1)
+    end
+    if itemId == 1230921
+    then
+        BTH:setItem(ITEM_TABLE["AP_ITEM_CHEATJUKE"], 1)
+    end
+end
 ---------------------------------- HONEYCOMBS ---------------------------------
 
 function honeycomb_check()
@@ -6161,6 +6305,15 @@ function honey_b_check()
         end
     end
     return checks
+end
+
+function obtained_AP_HEALTHUPGRADE()
+    if DEBUG_HEALTHUPGRADE == true
+    then
+        print("Obtain Health Upgrade")
+    end
+    TOTAL_HEALTHUPGRADE = TOTAL_HEALTHUPGRADE + 1
+    BTH:setItem(ITEM_TABLE["AP_ITEM_HEALTHUP"], TOTAL_HEALTHUPGRADE)
 end
 
 ---------------------------------- GLOWBO AND MAGIC ---------------------------------
@@ -7119,6 +7272,87 @@ function obtain_warppads(itemId)
 
 end
 
+---------------------- BOGGY KIDS ----------------------------
+function boggy_kids_check()
+    local checks = {}
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK[CURRENT_MAP]["BOGGY_KIDS"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["BOGGY_KIDS"])
+            do
+                checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["BOGGY_KIDS"][locationId]['addr'], ADDRESS_MAP["BOGGY_KIDS"][locationId]['bit'])
+                if DEBUG_BOGGY_KIDS == true
+                then
+                    print(ADDRESS_MAP["BOGGY_KIDS"][locationId]['name']..":"..tostring(checks[locationId]))
+                end
+            end
+        end
+    end
+    return checks
+end
+
+---------------------- ALIEN KIDS ----------------------------
+function alien_kids_check()
+    local checks = {}
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK[CURRENT_MAP]["ALIEN_KIDS"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["ALIEN_KIDS"])
+            do
+                checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["ALIEN_KIDS"][locationId]['addr'], ADDRESS_MAP["ALIEN_KIDS"][locationId]['bit'])
+                if DEBUG_ALIEN_KIDS == true
+                then
+                    print(ADDRESS_MAP["ALIEN_KIDS"][locationId]['name']..":"..tostring(checks[locationId]))
+                end
+            end
+        end
+    end
+    return checks
+end
+
+---------------------- SKIVVIES ----------------------------
+function skivvies_check()
+    local checks = {}
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK[CURRENT_MAP]["SKIVVIES"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["SKIVVIES"])
+            do
+                checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["SKIVVIES"][locationId]['addr'], ADDRESS_MAP["SKIVVIES"][locationId]['bit'])
+                if DEBUG_SKIVVIES == true
+                then
+                    print(ADDRESS_MAP["SKIVVIES"][locationId]['name']..":"..tostring(checks[locationId]))
+                end
+            end
+        end
+    end
+    return checks
+end
+
+---------------------- MR FIT EVENTS ----------------------------
+function mr_fit_events_check()
+    local checks = {}
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK[CURRENT_MAP]["MRFIT"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["MRFIT"])
+            do
+                checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["MRFIT"][locationId]['addr'], ADDRESS_MAP["MRFIT"][locationId]['bit'])
+                if DEBUG_MRFIT == true
+                then
+                    print(ADDRESS_MAP["MRFIT"][locationId]['name']..":"..tostring(checks[locationId]))
+                end
+            end
+        end
+    end
+    return checks
+end
+
+
 ---------------------- GAME FUNCTIONS -------------------
 
 function zoneWarp(zone_table)
@@ -7263,6 +7497,14 @@ local transformation_names = {
     [1230180] = {name = "Snowball", attribute = "cool"},
     [1230181] = {name = "Bee", attribute = "cute"},
     [1230182] = {name = "Dragon", attribute = "dangerous"},
+}
+
+local cheat_names = {
+    [1230917] = "Feathers Cheat",
+    [1230918] = "Egg Cheat",
+    [1230919] = "Fallproof Cheat",
+    [1230920] = "Honeyback Cheat. Press D-Pad Down to Toggle this Cheat",
+    [1230921] = "Jukebox Cheat",
 }
 
 function display_item_message(msg_table)
@@ -7504,6 +7746,11 @@ function get_item_message_text(item_id, item, player)
         return own
             and string.format("You can now use the %s.", item)
             or string.format("%s has just unlocked the %s.", player, item)
+    elseif 1230917 <= item_id and item_id <= 1230921 -- Cheats
+    then
+        return own
+            and string.format("You can now use the %s.", cheat_names[item_id])
+            or string.format("%s has just sent you the %s.", player, cheat_names[item_id])
     end
 
     return nil
@@ -7606,6 +7853,9 @@ function get_item_message_char(item_id)
         elseif 1230912 <= item_id and item_id <= 1230915 -- Warppad CC
         then
             return 27 -- Canary
+        elseif 1230917 <= item_id and item_id <= 1230921 -- Cheats
+        then
+            return 28 -- Cheato
         else -- Default
             return 7 -- Bottles
         end
@@ -7706,6 +7956,9 @@ function processAGIItem(item_list)
             elseif( 1230877 <= memlocation and memlocation <= 1230915) -- Warppads
             then
                 obtain_warppads(memlocation)
+            elseif( 1230917 <= memlocation and memlocation <= 1230921) -- Cheats
+            then
+                obtain_cheats(memlocation)
             elseif(memlocation == 1230514) -- Doubloon Item
             then
                 obtained_AP_DOUBLOON()
@@ -7726,6 +7979,9 @@ function processAGIItem(item_list)
             elseif(memlocation == 1230512)  -- Honeycomb Item
             then
                 obtained_AP_HONEYCOMB()
+            elseif(memlocation == 1230916)  -- Health Upgrade Item
+            then
+                obtained_AP_HEALTHUPGRADE()
             elseif(memlocation == 1230797) -- Notes
             then
                 obtain_AP_NOTES()
@@ -7839,6 +8095,11 @@ function SendToBTClient()
     retTable["signposts"] = signpost_check();
     retTable["silos"] = warpsilo_check();
     retTable["warppads"] = warppad_check();
+    retTable["boggy_kids"] = boggy_kids_check();
+    retTable["alien_kids"] = alien_kids_check();
+    retTable["skivvies"] = skivvies_check();
+    retTable["fit_events"] = mr_fit_events_check();
+
     retTable["DEMO"] = false;
     retTable["sync_ready"] = "true"
 
@@ -8205,6 +8466,18 @@ function process_slot(block)
     then
         BTH:setSettingWarpPads(1)
     end
+    if block['slot_cheato_rewards'] ~= nil and block['slot_cheato_rewards'] ~= 0
+    then
+        BTH:setSettingCheato(1)
+    end
+    if block['slot_honeyb_rewards'] ~= nil and block['slot_honeyb_rewards'] ~= 0
+    then
+        BTH:setSettingHoneyB(1)
+    end
+    if block['slot_auto_enable_cheats'] ~= nil and block['slot_auto_enable_cheats'] ~= 0
+    then
+        BTH:setSettingAutomaticCheats(1)
+    end
     if block['slot_randomize_silos'] ~= nil and block['slot_randomize_silos'] ~= 0
     then
         BTH:setSettingSilos(1)
@@ -8286,11 +8559,8 @@ function printGoalInfo()
         elseif GOAL_TYPE == 4 then
             message ="You absolute mad lad! You're doing the Wonder Wing Challenge!\nGood Luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(32)
-        elseif GOAL_TYPE == 5 and TH_LENGTH == 15 then
-            message ="You are trying to find all 15 of Mumbo's Tokens scattered throughout the Isle of Hags!\nGood Luck and"..randomEncouragment;
-            BTH:setSettingMaxMumboTokens(TH_LENGTH)
-        elseif GOAL_TYPE == 5 and TH_LENGTH < 15 then
-            message = "You are trying to find "..TH_LENGTH.." of the 15 of Mumbo Tokens scattered throughout the Isle O' Hags!\nGood Luck and"..randomEncouragment;
+        elseif GOAL_TYPE == 5 then
+            message = "You are trying to find "..TH_LENGTH.." Mumbo Tokens scattered throughout the Isle O' Hags!\nGood Luck and"..randomEncouragment;
             BTH:setSettingMaxMumboTokens(TH_LENGTH)
         elseif GOAL_TYPE == 6 then
             message = "You need to defeat "..BH_LENGTH.." Bosses in order to defeat HAG-1!\nGood Luck and"..randomEncouragment;

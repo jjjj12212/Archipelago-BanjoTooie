@@ -57,7 +57,7 @@ class BanjoTooieWorld(World):
     """
 
     game: str = "Banjo-Tooie"
-    version = "V4.4.2"
+    version = "V4.5"
     web = BanjoTooieWeb()
     topology_present = True
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
@@ -84,6 +84,7 @@ class BanjoTooieWorld(World):
         "Dino": all_group_table["dino"],
         "Silos": all_group_table["Silos"],
         "Warp Pads": all_group_table["Warp Pads"],
+        "Cheats": all_group_table["cheats"]
     }
 
     location_name_groups = {}
@@ -201,6 +202,9 @@ class BanjoTooieWorld(World):
             itemname = itemName.DOUBLOON
             if not hasattr(self.multiworld, "generation_is_fake"):
                 item_classification = ItemClassification.filler
+        elif itemname == itemName.HEALTHUP and \
+            (self.options.logic_type == LogicType.option_easy_tricks or self.options.logic_type == LogicType.option_intended):
+            item_classification = ItemClassification.useful
 
         banjoItem = all_item_table.get(itemname)
         if not banjoItem:
@@ -272,10 +276,7 @@ class BanjoTooieWorld(World):
             self.kingjingalingjiggy = True
 
         progression_jiggies = max(self.randomize_worlds.values())
-        if not self.options.open_hag1 and self.options.victory_condition in \
-            (VictoryCondition.option_hag1,
-                VictoryCondition.option_wonderwing_challenge,
-                VictoryCondition.option_boss_hunt_and_hag1):
+        if not self.options.open_hag1 and self.options.victory_condition == VictoryCondition.option_hag1:
             progression_jiggies = max(progression_jiggies, 70)
 
         useful_jiggies, filler_jiggies = \
@@ -349,7 +350,7 @@ class BanjoTooieWorld(World):
         # START OF ITEMS CUSTOM LOGIC
 
         if self.options.victory_condition == VictoryCondition.option_token_hunt:
-            itempool += [self.create_item(itemName.MUMBOTOKEN) for i in range(15)]
+            itempool += [self.create_item(itemName.MUMBOTOKEN) for i in range(self.options.tokens_in_pool)]
 
         itempool += self.get_jiggies_in_pool()
         itempool += self.get_notes_in_pool()
@@ -405,6 +406,9 @@ class BanjoTooieWorld(World):
 
         if name == itemName.HONEY and not self.options.randomize_honeycombs: # Added later in Prefill
             return None
+        
+        if name == itemName.HEALTHUP and not self.options.honeyb_rewards:
+            return None
 
         if name in all_group_table['bk_moves'].keys() and self.options.randomize_bk_moves == RandomizeBKMoveList.option_none:
             return None
@@ -436,6 +440,9 @@ class BanjoTooieWorld(World):
             return None
 
         if name in all_group_table['Silos'].keys() and not self.options.randomize_silos:
+            return None
+        
+        if name in all_group_table['cheats'].keys() and not self.options.cheato_rewards:
             return None
 
         if name in all_group_table['Silos'].keys() and name in self.preopened_silos:
@@ -517,6 +524,13 @@ class BanjoTooieWorld(World):
         if (not self.options.randomize_notes and not self.options.randomize_signposts and not self.options.nestsanity) and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none:
             if self.multiworld.players == 1:
                 raise OptionError("Randomize Notes, signposts or nestsanity is required for Randomize BK Moves.")
+        if self.options.victory_condition == VictoryCondition.option_token_hunt:
+            if self.options.token_hunt_length > self.options.tokens_in_pool:
+                raise OptionError("You cannot set your Token Hunt Length greater that what you have allowed in the pool.")
+            if self.options.tokens_in_pool > 15 and (not self.options.randomize_signposts and not self.options.nestsanity):
+                raise OptionError("You cannot have more than 15 Mumbo Token without enabling randomize Signposts or Nestanity.")
+            if self.options.tokens_in_pool > 50 and not self.options.nestsanity:
+                raise OptionError("You cannot have more than 50 Mumbo Token without enabling Nestanity.")
         if not self.options.randomize_notes and (self.options.extra_trebleclefs_count != 0 and self.options.bass_clef_amount != 0):
             raise OptionError("Randomize Notes is required to add extra Treble Clefs or Bass Clefs")
         if self.options.progressive_beak_buster and (not self.options.randomize_bk_moves or not self.options.randomize_moves):
@@ -642,6 +656,9 @@ class BanjoTooieWorld(World):
 
         if not self.options.randomize_warp_pads:
             self.banjo_pre_fills("Warp Pads", None, True)
+        
+        if not self.options.cheato_rewards:
+            self.banjo_pre_fills("Cheats", None, True)
 
         if not self.worlds_randomized and self.options.skip_puzzles:
             self.banjo_pre_fills("Access", None, True)
@@ -911,6 +928,7 @@ class BanjoTooieWorld(World):
             "skip_klungo",
             "easy_canary",
             "extra_cheats",
+            "auto_enable_cheats",
             "randomize_signposts",
             "signpost_hints",
             "signpost_move_hints",
