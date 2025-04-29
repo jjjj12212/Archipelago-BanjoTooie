@@ -498,7 +498,7 @@ class TokenHuntLength(Range):
     display_name = "Token Hunt Length"
     range_start = 1
     range_end = 100
-    default = 5
+    default = 10
 
 class TokenQty(Range):
     """How many Mumbo Tokens are in the pool.
@@ -509,7 +509,7 @@ class TokenQty(Range):
     display_name = "Token Hunt: Mumbo Tokens in Pool"
     range_start = 1
     range_end = 100
-    default = 5
+    default = 15
 
 class GameLength(Choice):
     """Choose how quickly the worlds open.
