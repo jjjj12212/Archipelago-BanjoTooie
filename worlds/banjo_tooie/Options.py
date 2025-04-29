@@ -189,7 +189,7 @@ class EnableCheatoRewards(DefaultOnToggle):
 
 class AutoEnableCheats(Toggle):
     """When Feathers and Eggs cheats are found, only enable them automatically when received."""
-    display_name = "Auto Enable Cheats"
+    display_name = "Automatic Cheats"
 
 class RandomizeJinjos(DefaultOnToggle):
     """Jinjos have fled to other worlds. Other players need to return them home."""
@@ -506,7 +506,7 @@ class TokenQty(Range):
     If Nestanity is enabled, you are allowed up to 100.
     If niether are enabled, you are allowed up to 15.
     Choose a value between 1 and 100."""
-    display_name = "Token Hunt Tokens in Pool"
+    display_name = "Token Hunt: Mumbo Tokens in Pool"
     range_start = 1
     range_end = 100
     default = 5
@@ -542,7 +542,7 @@ class SkipKlungo(Toggle):
 
 class RandomizeSignposts(Toggle):
     "Signposts give items when read."
-    display_name = "Randomize Banjo-Kazooie Movelist"
+    display_name = "Randomize Signposts"
 
 class SignpostHints(Range):
     """Choose how many signpost give a hint when read."""
@@ -601,7 +601,7 @@ class RandomizeSilos(Toggle):
 
 class RandomizeWarpPads(Toggle):
     """Warp Pads give checks when tagging them. They can only be used once you receive the corresponding item to use a warp pad."""
-    display_name = "Randomize Silos"
+    display_name = "Randomize Warp Pads"
 
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
