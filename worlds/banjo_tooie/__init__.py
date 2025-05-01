@@ -528,9 +528,9 @@ class BanjoTooieWorld(World):
             if self.options.token_hunt_length > self.options.tokens_in_pool:
                 raise OptionError("You cannot set your Token Hunt Length greater that what you have allowed in the pool.")
             if self.options.tokens_in_pool > 15 and (not self.options.randomize_signposts and not self.options.nestsanity):
-                raise OptionError("You cannot have more than 15 Mumbo Token without enabling randomize Signposts or Nestanity.")
+                raise OptionError("You cannot have more than 15 Mumbo Tokens without enabling randomize Signposts or Nestanity.")
             if self.options.tokens_in_pool > 50 and not self.options.nestsanity:
-                raise OptionError("You cannot have more than 50 Mumbo Token without enabling Nestanity.")
+                raise OptionError("You cannot have more than 50 Mumbo Tokens without enabling Nestanity.")
         if not self.options.randomize_notes and (self.options.extra_trebleclefs_count != 0 and self.options.bass_clef_amount != 0):
             raise OptionError("Randomize Notes is required to add extra Treble Clefs or Bass Clefs")
         if self.options.progressive_beak_buster and (not self.options.randomize_bk_moves or not self.options.randomize_moves):
