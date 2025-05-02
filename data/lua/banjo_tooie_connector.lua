@@ -56,10 +56,10 @@ local DEBUG_NESTS = false
 local DEBUG_SIGNPOSTS = false
 local DEBUG_WARPSILOS = false
 local DEBUG_WARPPADS = false
-local DEBUG_BOGGY_KIDS = true
-local DEBUG_ALIEN_KIDS = true
-local DEBUG_SKIVVIES = true
-local DEBUG_MRFIT = true
+local DEBUG_BOGGY_KIDS = false
+local DEBUG_ALIEN_KIDS = false
+local DEBUG_SKIVVIES = false
+local DEBUG_MRFIT = false
 
 
 local DEBUGLVL2 = false
@@ -7284,7 +7284,7 @@ function boggy_kids_check()
                 checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["BOGGY_KIDS"][locationId]['addr'], ADDRESS_MAP["BOGGY_KIDS"][locationId]['bit'])
                 if DEBUG_BOGGY_KIDS == true
                 then
-                    print(ADDRESS_MAP["BOGGY_KIDS"][locationId]['name']..":"..tostring(checks[locationId]))
+                    print(ADDRESS_MAP["BOGGY_KIDS"][locationId]..":"..tostring(checks[locationId]))
                 end
             end
         end
@@ -7304,7 +7304,7 @@ function alien_kids_check()
                 checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["ALIEN_KIDS"][locationId]['addr'], ADDRESS_MAP["ALIEN_KIDS"][locationId]['bit'])
                 if DEBUG_ALIEN_KIDS == true
                 then
-                    print(ADDRESS_MAP["ALIEN_KIDS"][locationId]['name']..":"..tostring(checks[locationId]))
+                    print(ADDRESS_MAP["ALIEN_KIDS"][locationId]..":"..tostring(checks[locationId]))
                 end
             end
         end
@@ -7324,7 +7324,7 @@ function skivvies_check()
                 checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["SKIVVIES"][locationId]['addr'], ADDRESS_MAP["SKIVVIES"][locationId]['bit'])
                 if DEBUG_SKIVVIES == true
                 then
-                    print(ADDRESS_MAP["SKIVVIES"][locationId]['name']..":"..tostring(checks[locationId]))
+                    print(ADDRESS_MAP["SKIVVIES"][locationId]..":"..tostring(checks[locationId]))
                 end
             end
         end
@@ -7344,7 +7344,7 @@ function mr_fit_events_check()
                 checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["MRFIT"][locationId]['addr'], ADDRESS_MAP["MRFIT"][locationId]['bit'])
                 if DEBUG_MRFIT == true
                 then
-                    print(ADDRESS_MAP["MRFIT"][locationId]['name']..":"..tostring(checks[locationId]))
+                    print(ADDRESS_MAP["MRFIT"][locationId]..":"..tostring(checks[locationId]))
                 end
             end
         end
