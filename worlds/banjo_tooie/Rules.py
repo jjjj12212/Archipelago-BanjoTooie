@@ -4842,15 +4842,17 @@ class BanjoTooieRules:
     def glowbo_icy_side(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.long_jump(state)\
-                    or self.flap_flip(state) and self.grip_grab(state)
+            logic = self.hfp_top(state)\
+                    and (self.long_jump(state)\
+                    or self.flap_flip(state) and self.grip_grab(state))
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.long_jump(state)\
-                    or self.flap_flip(state) and self.grip_grab(state)
+            logic = self.hfp_top(state)\
+                    and (self.long_jump(state)\
+                    or self.flap_flip(state) and self.grip_grab(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = True
+            logic = self.hfp_top(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = True
+            logic = self.hfp_top(state)
         return logic
 
     def ccl_glowbo_pool(self, state: CollectionState) -> bool:
