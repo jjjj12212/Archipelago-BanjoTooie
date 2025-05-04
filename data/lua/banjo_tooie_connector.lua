@@ -6283,9 +6283,9 @@ function honey_b_check()
     then
         if ASSET_MAP_CHECK[CURRENT_MAP]["HONEYB"] ~= nil
         then
-            local result_bit1 = BTH:checkRealFlag(0x98, 2)
-            local result_bit2 = BTH:checkRealFlag(0x98, 3)
-            local result_bit3 = BTH:checkRealFlag(0x98, 4)
+            local result_bit1 = BTH:checkFakeFlag(0x98, 2)
+            local result_bit2 = BTH:checkFakeFlag(0x98, 3)
+            local result_bit3 = BTH:checkFakeFlag(0x98, 4)
             if result_bit1 == true
             then
                 bit1 = 1
