@@ -1537,7 +1537,7 @@ class BanjoTooieRules:
 
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.mumboWW(state) and \
-                ((self.split_up(state) and self.spring_pad(state)) or self.leg_spring(state) or self.glide(state))
+                ((self.split_up(state) and self.spring_pad(state)) or self.leg_spring(state) or self.glide(state) or self.has_explosives(state))
         return logic
     
     def soggy(self, state: CollectionState) -> bool:
