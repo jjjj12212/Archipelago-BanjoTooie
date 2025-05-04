@@ -3463,10 +3463,12 @@ class BanjoTooieRules:
                     and self.flight_pad(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = (self.grenade_eggs(state) or (self.airborne_egg_aiming(state) and self.grenade_eggs_item(state))) \
-                    and self.flight_pad(state)
+                    and self.flight_pad(state) \
+                    or self.egg_aim(state) and self.grenade_eggs(state) and self.clockwork_shot(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = (self.has_explosives(state) or (self.airborne_egg_aiming(state) and self.grenade_eggs_item(state))) \
-                    and self.flight_pad(state)
+                    and self.flight_pad(state) \
+                    or self.egg_aim(state) and self.grenade_eggs(state) and self.clockwork_shot(state)
         return logic
 
     def blue_mystery_egg(self, state: CollectionState) -> bool:
@@ -3494,7 +3496,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.bill_drill(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.bill_drill(state) or self.egg_barge(state)
+            logic = self.bill_drill(state) or self.egg_barge(state) or self.taxi_pack(state)
         return logic
 
     def jinjo_clifftop(self, state: CollectionState) -> bool:
@@ -3535,7 +3537,7 @@ class BanjoTooieRules:
                     self.clockwork_shot(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = (self.flap_flip(state) and (self.beak_buster(state) or self.grip_grab(state))) or\
-                    self.clockwork_shot(state)
+                    self.clockwork_shot(state) or self.check_mumbo_magic(state, itemName.MUMBOMT)
         return logic
 
     def jinjo_stadium(self, state: CollectionState) -> bool:
@@ -7765,11 +7767,11 @@ class BanjoTooieRules:
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.backdoors_enabled(state) and self.small_elevation(state) and self.humbaGGM(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.backdoors_enabled(state) and self.small_elevation(state) and self.humbaGGM(state)
+            logic = self.backdoors_enabled(state) and (self.small_elevation(state) or self.ggm_trot(state)) and self.humbaGGM(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.backdoors_enabled(state) and self.small_elevation(state) and self.humbaGGM(state)
+            logic = self.backdoors_enabled(state) and (self.small_elevation(state) or self.ggm_trot(state)) and self.humbaGGM(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = (self.clockwork_eggs(state) or self.backdoors_enabled(state)) and self.small_elevation(state) and self.humbaGGM(state)
+            logic = (self.clockwork_eggs(state) or self.backdoors_enabled(state)) and (self.small_elevation(state) or self.ggm_trot(state)) and self.humbaGGM(state)
         return logic
 
     def ww_to_fuel_depot(self, state: CollectionState) -> bool:
