@@ -18,7 +18,7 @@ config file.
 - Prison Code Door is always open
 - Allows for instant transformation once Mumbo Skull or Humba Wigwam have been tagged by Banjo & Kazooie
 - Option to customize the dialog character when receiving certain items
-- Pause menu contains a new Arhipelago Menu
+- Pause menu contains a new Archipelago Menu
 - Options to randomize opening of worlds order and randomize world entrances
 - Option to add nest to the list of locations. If it's active, all un-collected nests have the Archipelago logo as their texture
 - Signpost can give out item hints if enabled
