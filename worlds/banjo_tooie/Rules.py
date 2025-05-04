@@ -2651,7 +2651,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.bill_drill(state) or self.humbaGGM(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.bill_drill(state) or self.humbaGGM(state) or self.ground_rat_a_tat_rap(state)
+            logic = self.bill_drill(state) or self.humbaGGM(state) or self.ground_rat_a_tat_rap(state) or self.egg_barge(state)
         return logic
 
     def honeycomb_gm_station(self, state: CollectionState) -> bool:
@@ -3095,6 +3095,7 @@ class BanjoTooieRules:
                     (self.pack_whack(state) and self.grip_grab(state)))
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.talon_torpedo(state) and ((self.glide(state) and self.tall_jump(state)) or self.leg_spring(state) or
+                    self.wing_whack(state) or
                     (self.check_solo_moves(state, itemName.WWING) and self.tall_jump(state)) or
                     (self.tall_jump(state) and self.pack_whack(state) and self.grip_grab(state)))
         return logic
@@ -3909,7 +3910,7 @@ class BanjoTooieRules:
     def jinjo_mildred(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.hfp_top(state) and (self.fire_eggs(state) or self.has_explosives(state) or \
+            logic = self.hfp_top(state) and self.small_elevation(state) and (self.fire_eggs(state) or self.has_explosives(state) or \
                     self.bill_drill(state) or self.dragon_kazooie(state))
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = self.hfp_top(state) and (
@@ -6522,7 +6523,7 @@ class BanjoTooieRules:
                     or state.can_reach_region(regionName.IOHCT, self.player) and state.has(itemName.TRAINSWIH, self.player) and state.has(itemName.CHUFFY, self.player)
 
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = state.can_reach_region(regionName.GM, self.player) and (self.small_elevation(state) or self.beak_buster(state) or self.humbaGGM(state))\
+            logic = state.can_reach_region(regionName.GM, self.player) and (self.small_elevation(state) or self.beak_buster(state) or self.humbaGGM(state) or self.ggm_trot(state))\
                     or state.can_reach_region(regionName.WW, self.player) and state.has(itemName.TRAINSWWW, self.player) and state.has(itemName.CHUFFY, self.player)\
                     or state.can_reach_region(regionName.TL, self.player) and state.has(itemName.TRAINSWTD, self.player) and state.has(itemName.CHUFFY, self.player)\
                     or state.can_reach_region(regionName.GI1, self.player) and state.has(itemName.TRAINSWGI, self.player) and state.has(itemName.CHUFFY, self.player)\
@@ -6534,7 +6535,7 @@ class BanjoTooieRules:
                             or self.claw_clamber_boots(state)\
                             or self.flight_pad(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = state.can_reach_region(regionName.GM, self.player) and (self.small_elevation(state) or self.beak_buster(state) or self.humbaGGM(state))\
+            logic = state.can_reach_region(regionName.GM, self.player) and (self.small_elevation(state) or self.beak_buster(state) or self.humbaGGM(state) or self.ggm_trot(state))\
                     or state.can_reach_region(regionName.WW, self.player) and state.has(itemName.TRAINSWWW, self.player) and state.has(itemName.CHUFFY, self.player)\
                     or state.can_reach_region(regionName.TL, self.player) and state.has(itemName.TRAINSWTD, self.player) and state.has(itemName.CHUFFY, self.player)\
                     or state.can_reach_region(regionName.GI1, self.player) and state.has(itemName.TRAINSWGI, self.player) and state.has(itemName.CHUFFY, self.player)\
@@ -6546,7 +6547,7 @@ class BanjoTooieRules:
                             or self.claw_clamber_boots(state)\
                             or self.flight_pad(state))
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = state.can_reach_region(regionName.GM, self.player) and (self.small_elevation(state) or self.beak_buster(state) or self.humbaGGM(state))\
+            logic = state.can_reach_region(regionName.GM, self.player) and (self.small_elevation(state) or self.beak_buster(state) or self.humbaGGM(state) or self.ggm_trot(state))\
                     or state.can_reach_region(regionName.WW, self.player) and state.has(itemName.TRAINSWWW, self.player) and state.has(itemName.CHUFFY, self.player)\
                     or state.can_reach_region(regionName.TL, self.player) and state.has(itemName.TRAINSWTD, self.player) and state.has(itemName.CHUFFY, self.player)\
                     or state.can_reach_region(regionName.GI1, self.player) and state.has(itemName.TRAINSWGI, self.player) and state.has(itemName.CHUFFY, self.player)\
@@ -6827,6 +6828,7 @@ class BanjoTooieRules:
             logic = self.flap_flip(state) and self.grip_grab(state) \
                     or self.climb(state) and self.veryLongJump(state) and self.flap_flip(state)\
                     or self.clockwork_shot(state) and self.climb(state)\
+                    or self.leg_spring(state)\
                     or self.warp_to_ww_wumba(state)
         return logic
 
