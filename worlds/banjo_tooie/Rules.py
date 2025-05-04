@@ -2050,8 +2050,7 @@ class BanjoTooieRules:
                     and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = self.humbaGI(state) and self.bill_drill(state)\
-                    and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state) \
-                    or self.egg_aim(state))
+                    and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.humbaGI(state) and self.bill_drill(state)\
                     and state.can_reach_region(regionName.GIF, self.player) and (self.airborne_egg_aiming(state) or self.beak_bomb(state))
