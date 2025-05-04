@@ -7327,6 +7327,13 @@ function skivvies_check()
                     print(ADDRESS_MAP["SKIVVIES"][locationId]..":"..tostring(checks[locationId]))
                 end
             end
+            if BTH:checkRealFlag(0x81, 3) == true
+            then
+                for locationId, T in pairs(ADDRESS_MAP["SKIVVIES"])
+                do
+                    checks[locationId] = true
+                end
+            end
         end
     end
     return checks
