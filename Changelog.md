@@ -47,6 +47,15 @@
     - Icy Side Train Station Egg Nest: Removed moves to dive underwater for hard tricks and glitch logics, as you can get the nest as it's bouncing.
     - Fire Side Train Station and the nest next to it: can be gotten with talon trot + flutter.
     - Glide Silo: checks to see if you have split up, on intended logic.
+    - GGM to WW: checks to see if you can smuggle talon trot on easy tricks and above.
+    - Plateau Jinjo: adds taxi pack as a way to clip through the boulder to get the jinjo on glitch logic.
+    - Spiral Mountain Pink Mystery Egg: adds egg aim + grenade eggs + clockwork eggs as a way to get the mystery egg on hard tricks and above.
+    - MT Jade Snake Grove Jinjo: adds golden goliath as a way to get the jinjo to glitch logic - just kick at the wall!
+    - Chuffy Wagon Signpost: from GGM, now accounts for being able to smuggle talon trot to get into the wagon.
+    - GGM Honeycomb near Prospector's Hut: adds egg barge as a way to clip through the boulder to get the honeycomb on glitch logic.
+    - WW Humba's Warp Pad: leg spring has been added to glitch logic and not just hard tricks.
+    - JRL Ancient Swimming Baths Cheato Page: wing whack has been added to glitch logic and not just hard tricks.
+    - HFP Mildred Jinjo: checks to see if you can jump up a small elevation on intended logic.
 
 # 4.4.2
   - Logic fixes:
