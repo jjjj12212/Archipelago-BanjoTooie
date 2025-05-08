@@ -96,7 +96,8 @@ async def apply_patch():
             logger.info("No ROM selected. Please restart the Banjo-Tooie Client to try again.")
             return
         if not patch_path:
-            patch_path = os.path.split(rom) + "/Banjo-Tooie-AP"+game_append_version+".z64"
+           base_dir = os.path.dirname(rom)
+           patch_path = os.path.join(base_dir, f"Banjo-Tooie-AP{game_append_version}.z64")
         patch_rom(rom, patch_path, "Banjo-Tooie.patch")
     if patch_path:
         logger.info("Patched Banjo-Tooie is located in " + patch_path)
