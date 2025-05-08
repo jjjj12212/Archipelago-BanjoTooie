@@ -1,3 +1,16 @@
+# 4.5.1
+  - Renamings:
+    - Floor 3: On Boxes Egg Nest 1/2 -> On High Box Stack/Under Notes Egg Nest
+  - Logic fixes:
+    - Above Code Chamber Nest: checks to see if you have talon trot, on intended logic.
+    - GGM Flooded Cavern Nests: check to see if you can make it to the timed gate in time.
+    - Inferno collectibles: fixed a bug where the inferno was not in logic if your access was by warp pads.
+    - Inferno Jiggy: removed the jump as the van from the hard tricks logic, due to its difficulty.
+    - WW Humba Glowbo: requires flap flip if climbing the platforms to the wigwam, on easy tricks logic.
+    - Grunty's Industries in general: removed more ways to explore GI between different floors as solo Kazooie, due to warp pad randomisation.
+    - Floor 3 Collectibles: they finally have a decent logic.
+    - Leaving the Cauldron Keep entrance: removed the damage boost from easy tricks logic, you must get the jiggies for leaving CK to be in logic.
+
 # 4.5
   - More Grunty Death Rhymes
   - New Check Locations:
