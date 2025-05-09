@@ -24,7 +24,6 @@
     - JRL Locker Cavern Seemee Egg/Feather Nest -> Sea Bottom Seemee Egg/Feather Nest
     - Floor 3: On Boxes Egg Nest 1/2 -> On High Box Stack/Under Notes Egg Nest
   - Correction on how BTClient patches the rom (Thanks Trez)
-
   - Logic fixes:
     - Victory Conditions: Boss Hunt + Hag 1 and the Wonderwing Challenge no longer check if you have 70 jiggies to fight Hag 1.
     - TDL to Chuffy, HFP to Chuffy: can be done with Tall Jump + beak buster, on hard tricks and glitches.
@@ -67,6 +66,15 @@
     - Grunty's Industries in general: removed more ways to explore GI between different floors as solo Kazooie, due to warp pad randomisation.
     - Floor 3 Collectibles: they finally have a decent logic.
     - Leaving the Cauldron Keep entrance: removed the damage boost from easy tricks logic, you must get the jiggies for leaving CK to be in logic.
+    - WW Big Top Jinjo: Added smuggling talon trot from turbo trainers to easy tricks and hard tricks logics. Fix a bug with shoe smuggling on glitch logic. Removed dropping from the gondola to reach the Claw Clamber Boots in hard tricks and glitches logic.
+    - Ooogle Boogle jiggy: Added smuggling talon trot from turbo trainers to reach the Claw Clamber Boots, on easy tricks logic.
+    - TDL to WW backdoor: Added smuggling talon trot from turbo trainers to easy tricks, hard tricks and glitches logic. Removed dropping from the gondola to reach the Claw Clamber Boots in hard tricks and glitches logic.
+    - Space Zone Honeycomb: Removed unnecessary requires to climb the gondola, in hard tricks and glitch logics.
+    - Pig Pool Jiggy: added ways to jump over the pipes in glitch logic, to match the hard tricks logic.
+    - Twinkly Packaging Jiggy: Removed using the elevator shaft, as randomising warp pads may make this check unreachable.
+    - GI Outside Jinjo: added shooting eggs as a way to break the Claw Clamber Boots box, as solo Kazooie.
+    - HFP Trebleclef: added a way to climb the slippery slopes of Icicle Grotto on easy tricks and above. Added using Claw Clamber Boots to reach the top entrance of Icicle Grotto, if not on intended logic.
+    - Davie Jones Locker Nests: Removed a bug where the logic was checking for egg aim or third person egg aiming.
 
 # 4.4.2
   - Logic fixes:
