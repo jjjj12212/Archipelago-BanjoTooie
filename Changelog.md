@@ -75,6 +75,8 @@
     - GI Outside Jinjo: added shooting eggs as a way to break the Claw Clamber Boots box, as solo Kazooie.
     - HFP Trebleclef: added a way to climb the slippery slopes of Icicle Grotto on easy tricks and above. Added using Claw Clamber Boots to reach the top entrance of Icicle Grotto, if not on intended logic.
     - Davie Jones Locker Nests: Removed a bug where the logic was checking for egg aim or third person egg aiming.
+    - Floor 2 to Elevator Shaft: now checks to see if you can enter the Electromagnetic Chamber
+    - Using the GI Roof Warp Pad: now checks to see if you are on the Roof, instead of in flight.
 
 # 4.4.2
   - Logic fixes:
