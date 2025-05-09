@@ -78,7 +78,7 @@
     - Glide Silo: checks to see if you have split up, on intended logic.
     - HFP Mildred Jinjo: checks to see if you can jump up a small elevation on intended logic.
     - HFP Trebleclef: added a way to climb the slippery slopes of Icicle Grotto on easy tricks and above. Added using Claw Clamber Boots to reach the top entrance of Icicle Grotto, if not on intended logic.
-    - Top of Icicle Grotto Nests: Added Claw Clamber Boots as a way to get them, if not on intended logic.
+    - Top of Icicle Grotto Nests: Added Claw Clamber Boots as a way to get to them, if not on intended logic.
 
 
 
