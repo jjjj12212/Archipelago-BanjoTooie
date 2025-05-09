@@ -26,57 +26,61 @@
   - Correction on how BTClient patches the rom (Thanks Trez)
   - Logic fixes:
     - Victory Conditions: Boss Hunt + Hag 1 and the Wonderwing Challenge no longer check if you have 70 jiggies to fight Hag 1.
+    - GGM to WW: checks to see if you can smuggle talon trot on easy tricks and above.
     - TDL to Chuffy, HFP to Chuffy: can be done with Tall Jump + beak buster, on hard tricks and glitches.
     - HFP to MT: fixed a bug where the logic did not think you could reach the kickball stadium.
-    - MT Kickball stadium access: fixed a bug where the Archipelago generator forgets to check if you can enter the kickball stadium from the front entrance with the stony.
+    - Leaving the Cauldron Keep entrance: removed the damage boost from easy tricks logic, you must get the jiggies for leaving CK to be in logic.
+    - TDL to WW backdoor: Added smuggling talon trot from turbo trainers to easy tricks, hard tricks and glitches logic. Removed dropping from the gondola to reach the Claw Clamber Boots in hard tricks and glitches logic.
+    - Plateau Jinjo: adds taxi pack as a way to clip through the boulder to get the jinjo on glitch logic.
     - Overworld silos: Entering the Plateau Silo and the Quagmire Silo is now taken into account in the logic.
+    - MT Kickball stadium access: fixed a bug where the Archipelago generator forgets to check if you can enter the kickball stadium from the front entrance with the stony.
+    - Spiral Mountain Pink Mystery Egg: adds egg aim + grenade eggs + clockwork eggs as a way to get the mystery egg on hard tricks and above.
+    - Plateau Jinjo: adds taxi pack as a way to clip through the boulder to get the jinjo on glitch logic.
     - Cliff Top Jinjo: Removed Climb from glitch logic
     - Cliff Top Feather Nest #3: Can be gotten with Claw Clamber Boots or air rat-a-tat rap, if not on intended logic.
     - Quagmire Feather Nests: can be gotten with Claw Clamber Boots.
     - MT Pillars Signpost: removed a bug where the logic thought clockworks could read.
+    - MT Jade Snake Grove Jinjo: adds golden goliath as a way to get the jinjo to glitch logic - just kick at the wall!
+    - Above Code Chamber Nest: checks to see if you have talon trot, on intended logic.
     - GGM Mumbo Skull Left Note: Can be gotten from the warp pad.
     - GGM Wumba: Fixed a bug where it was not checking to see if you had the moves to reach the Mumbo warp pad, if warping from Mumbo to Wumba was in logic.
+    - GGM Flooded Cavern Nests: check to see if you can make it to the timed gate in time.
+    - Chuffy Wagon Signpost: from GGM, now accounts for being able to smuggle talon trot to get into the wagon.
+    - GGM Honeycomb near Prospector's Hut: adds egg barge as a way to clip through the boulder to get the honeycomb on glitch logic.
     - Cactus of Strength Jinjo: can be gotten with pack whack + tall jump + grip grab.
+    - Inferno collectibles: fixed a bug where the inferno was not in logic if your access was by warp pads.
+    - Inferno Jiggy: removed the jump as the van from the hard tricks logic, due to its difficulty.
+    - WW Humba Glowbo: requires flap flip if climbing the platforms to the wigwam, on easy tricks logic.
+    - WW Big Top Jinjo: Added smuggling talon trot from turbo trainers to easy tricks and hard tricks logics. Fix a bug with shoe smuggling on glitch logic. Removed dropping from the gondola to reach the Claw Clamber Boots in hard tricks and glitches logic.
+    - WW Humba's Warp Pad: leg spring has been added to glitch logic and not just hard tricks.
+    - Space Zone Honeycomb: Removed unnecessary requires to climb the gondola, in hard tricks and glitch logics.
     - Going up the Seaweed Sanctum: added Flap Flip as a hard requirement to reach spring pads.
     - Sunken Ship and Big Fish Cavern Warp Pads: now check the correct item to know if you can use the warp pads.
     - Pawno Notes: can be gotten with split up, if not on intended logic.
+    - JRL Ancient Swimming Baths Cheato Page: wing whack has been added to glitch logic and not just hard tricks.
+    - Pig Pool Jiggy: added ways to jump over the pipes in glitch logic, to match the hard tricks logic.
+    - Davie Jones Locker Nests: Removed a bug where the logic was checking for egg aim or third person egg aiming.
     - TDL Flight pad: now checks to see if you can reach the top of TDL to fight Terry.
     - River Passage Feather Nest: can be gotten as solo Kazooie with Tall Jump.
     - TDL Mumbo and Stomping Plains Warp Pads: swapped their regions. They were both wrong.
+    - Ooogle Boogle jiggy: Added smuggling talon trot from turbo trainers to reach the Claw Clamber Boots, on easy tricks logic.
     - Near Floor 2 Cheato Page Nest: changed the logic so that it's the same as the Cheato page logic.
+    - Grunty's Industries in general: removed more ways to explore GI between different floors as solo Kazooie, due to warp pad randomisation.
+    - Floor 3 Collectibles: they finally have a decent logic.
+    - Twinkly Packaging Jiggy: Removed using the elevator shaft, as randomising warp pads may make this check unreachable.
+    - Floor 2 to Elevator Shaft: now checks to see if you can enter the Electromagnetic Chamber
+    - GI Outside Jinjo: added shooting eggs as a way to break the Claw Clamber Boots box, as solo Kazooie.
+    - Using the GI Roof Warp Pad: now checks to see if you are on the Roof, instead of in flight.
     - Icy Side glowbo: added moves so that intended and easy trick logics don't need to damage boost.
     - Icy Side Train Station Collectibles: added Claw Clamber Boots as a way to pound Gobi.
     - Icy Side Train Station Egg Nest: Removed moves to dive underwater for hard tricks and glitch logics, as you can get the nest as it's bouncing.
     - Fire Side Train Station and the nest next to it: can be gotten with talon trot + flutter.
     - Glide Silo: checks to see if you have split up, on intended logic.
-    - GGM to WW: checks to see if you can smuggle talon trot on easy tricks and above.
-    - Plateau Jinjo: adds taxi pack as a way to clip through the boulder to get the jinjo on glitch logic.
-    - Spiral Mountain Pink Mystery Egg: adds egg aim + grenade eggs + clockwork eggs as a way to get the mystery egg on hard tricks and above.
-    - MT Jade Snake Grove Jinjo: adds golden goliath as a way to get the jinjo to glitch logic - just kick at the wall!
-    - Chuffy Wagon Signpost: from GGM, now accounts for being able to smuggle talon trot to get into the wagon.
-    - GGM Honeycomb near Prospector's Hut: adds egg barge as a way to clip through the boulder to get the honeycomb on glitch logic.
-    - WW Humba's Warp Pad: leg spring has been added to glitch logic and not just hard tricks.
-    - JRL Ancient Swimming Baths Cheato Page: wing whack has been added to glitch logic and not just hard tricks.
     - HFP Mildred Jinjo: checks to see if you can jump up a small elevation on intended logic.
-    - Above Code Chamber Nest: checks to see if you have talon trot, on intended logic.
-    - GGM Flooded Cavern Nests: check to see if you can make it to the timed gate in time.
-    - Inferno collectibles: fixed a bug where the inferno was not in logic if your access was by warp pads.
-    - Inferno Jiggy: removed the jump as the van from the hard tricks logic, due to its difficulty.
-    - WW Humba Glowbo: requires flap flip if climbing the platforms to the wigwam, on easy tricks logic.
-    - Grunty's Industries in general: removed more ways to explore GI between different floors as solo Kazooie, due to warp pad randomisation.
-    - Floor 3 Collectibles: they finally have a decent logic.
-    - Leaving the Cauldron Keep entrance: removed the damage boost from easy tricks logic, you must get the jiggies for leaving CK to be in logic.
-    - WW Big Top Jinjo: Added smuggling talon trot from turbo trainers to easy tricks and hard tricks logics. Fix a bug with shoe smuggling on glitch logic. Removed dropping from the gondola to reach the Claw Clamber Boots in hard tricks and glitches logic.
-    - Ooogle Boogle jiggy: Added smuggling talon trot from turbo trainers to reach the Claw Clamber Boots, on easy tricks logic.
-    - TDL to WW backdoor: Added smuggling talon trot from turbo trainers to easy tricks, hard tricks and glitches logic. Removed dropping from the gondola to reach the Claw Clamber Boots in hard tricks and glitches logic.
-    - Space Zone Honeycomb: Removed unnecessary requires to climb the gondola, in hard tricks and glitch logics.
-    - Pig Pool Jiggy: added ways to jump over the pipes in glitch logic, to match the hard tricks logic.
-    - Twinkly Packaging Jiggy: Removed using the elevator shaft, as randomising warp pads may make this check unreachable.
-    - GI Outside Jinjo: added shooting eggs as a way to break the Claw Clamber Boots box, as solo Kazooie.
     - HFP Trebleclef: added a way to climb the slippery slopes of Icicle Grotto on easy tricks and above. Added using Claw Clamber Boots to reach the top entrance of Icicle Grotto, if not on intended logic.
-    - Davie Jones Locker Nests: Removed a bug where the logic was checking for egg aim or third person egg aiming.
-    - Floor 2 to Elevator Shaft: now checks to see if you can enter the Electromagnetic Chamber
-    - Using the GI Roof Warp Pad: now checks to see if you are on the Roof, instead of in flight.
+    - Top of Icicle Grotto Nests: Added Claw Clamber Boots as a way to get them, if not on intended logic.
+
+
 
 # 4.4.2
   - Logic fixes:
