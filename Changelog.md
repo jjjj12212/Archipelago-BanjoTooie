@@ -1,3 +1,8 @@
+# 4.5.1
+  - When not randomised, silos and warp pads no longer have locations associated with them.
+  - Logic fixes:
+    - GGM Humba: removed clockworks as a way to get to the Wigwam to transform.
+
 # 4.5
   - More Grunty Death Rhymes
   - New Check Locations:

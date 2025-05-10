@@ -406,7 +406,7 @@ class BanjoTooieWorld(World):
 
         if name == itemName.HONEY and not self.options.randomize_honeycombs: # Added later in Prefill
             return None
-        
+
         if name == itemName.HEALTHUP and not self.options.honeyb_rewards:
             return None
 
@@ -441,7 +441,7 @@ class BanjoTooieWorld(World):
 
         if name in all_group_table['Silos'].keys() and not self.options.randomize_silos:
             return None
-        
+
         if name in all_group_table['cheats'].keys() and not self.options.cheato_rewards:
             return None
 
@@ -651,12 +651,6 @@ class BanjoTooieWorld(World):
         if not self.options.randomize_stop_n_swap:
             self.banjo_pre_fills("StopnSwap", None, True)
 
-        if not self.options.randomize_silos:
-            self.prefill_silos()
-
-        if not self.options.randomize_warp_pads:
-            self.banjo_pre_fills("Warp Pads", None, True)
-        
         if not self.options.cheato_rewards:
             self.banjo_pre_fills("Cheats", None, True)
 
@@ -816,14 +810,6 @@ class BanjoTooieWorld(World):
             actual_weights = (*actual_weights[:-1], 1)
 
         return self.random.choices(names, actual_weights, k=1)[0]
-
-    def prefill_silos(self):
-        for name, data in silo_table.items():
-            # A vanilla silo that's pre-opened does not give a check, since its item is in the starting inventory.
-            if name not in self.preopened_silos:
-                item = self.create_item(name)
-                location = self.get_location(data.default_location)
-                location.place_locked_item(item)
 
     def banjo_pre_fills(self, itemNameOrGroup: str, group: str, useGroup: bool ) -> None:
         if useGroup:

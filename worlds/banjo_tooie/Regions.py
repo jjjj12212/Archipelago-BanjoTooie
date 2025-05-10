@@ -1468,12 +1468,17 @@ def create_regions(self):
             for location in locations:
                 region_map[region].append(location)
 
-    add_silo_locations(self, region_map)
+    if self.options.randomize_silos:
+        silo_map = copy.deepcopy(SILO_REGIONS)
+        for region, locations in silo_map.items():
+            for location in locations:
+                region_map[region].append(location)
 
-    warp_map = copy.deepcopy(WARP_PAD_REGIONS)
-    for region, locations in warp_map.items():
-        for location in locations:
-            region_map[region].append(location)
+    if self.options.randomize_warp_pads:
+        warp_map = copy.deepcopy(WARP_PAD_REGIONS)
+        for region, locations in warp_map.items():
+            for location in locations:
+                region_map[region].append(location)
 
 
     self.multiworld.regions.extend(create_region(self.multiworld, self.player,\
@@ -1481,21 +1486,6 @@ def create_regions(self):
     if self.options.victory_condition in (VictoryCondition.option_hag1, VictoryCondition.option_wonderwing_challenge, VictoryCondition.option_boss_hunt_and_hag1):
         self.multiworld.get_location(locationName.HAG1, player).place_locked_item(self.create_event_item(itemName.VICTORY))
 
-def add_silo_locations(self, region_map):
-    silo_map = copy.deepcopy(SILO_REGIONS)
-
-    # If silos not randomised, pre-opened silos don't have a check.
-    ignored_silos = []
-    if not self.options.randomize_silos:
-        items_to_locations = {silo_name: silo_data.default_location for silo_name, silo_data in silo_table.items()}
-        for item, location in items_to_locations.items():
-            if item in self.preopened_silos:
-                ignored_silos.append(items_to_locations[item])
-
-    for region, locations in silo_map.items():
-        for location in locations:
-            if location not in ignored_silos:
-                region_map[region].append(location)
 
 def create_region(multiworld, player: int, active_locations, name: str, locations=None):
     ret = Region(name, player, multiworld)
