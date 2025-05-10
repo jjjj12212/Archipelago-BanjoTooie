@@ -7401,6 +7401,10 @@ function hag1_open()
     then
         return
     end
+    if GOAL_TYPE == 1 or GOAL_TYPE == 2 or GOAL_TYPE == 5
+    then
+        return
+    end
     local opened = false
     if GOAL_TYPE == 0 and (OPEN_HAG1 == true or (OPEN_HAG1 == false and TOTAL_JIGGY >= 70))
     then
