@@ -55,6 +55,8 @@ HOMINGEGGS  = "Homing Eggs Toggle"
 AMAZEOGAZE  = "Amaze-O-Gaze"
 ROAR        = "Baby T-Rex Roar"
 
+HEALTHUP    = "Health Upgrade"
+
 DIVE        = "Dive"
 FPAD        = "Flight Pad"
 GRAT        = "Ground Rat-a-tat Rap"
@@ -83,6 +85,12 @@ PFLIGHT     = "Progressive Flight"
 PEGGAIM     = "Progressive Egg Aim"
 PASWIM      = "Progressive Adv. Water Training"
 PAEGGAIM    = "Progressive Adv. Egg Aiming"
+
+CHEATFEATHER  = "Cheato Reward: Feathers"
+CHEATEGG     = "Cheato Reward: Eggs"
+CHEATFALL     = "Cheato Reward: Fallproof"
+CHEATHONEY    = "Cheato Reward: Honeyback"
+CHEATJUKE     = "Cheato Reward: Jukebox"
 
 # Mumbo Magics
 MUMBOMT = "Mumbo: Golden Goliath"

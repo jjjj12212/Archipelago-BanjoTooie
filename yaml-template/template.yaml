@@ -46,11 +46,21 @@ Banjo-Tooie:
   # 5 = Token Hunt: Mumbo's Tokens are scattered around the world. Help him find them
   # 6 = Boss Hunt + HAG1: Defeat bosses in order to unlock HAG-1
   victory_condition: 0
-
   minigame_hunt_length: 14      # 1-15
   boss_hunt_length: 8           # 1-8
   jinjo_family_rescue_length: 9 # 1-9
-  token_hunt_length: 10         # 1-15
+
+  #Token Hunt:
+  # How many Tokens are required to win
+  # if Randomize_signpost is enabled: 1-50
+  # if Nestanity is enabled: 1-100
+  # if both are disabled: 1-15
+  token_hunt_length: 10
+
+  #Tokens in Pool:
+  # How many Tokens are in the pool
+  # It must be equal or greater than token_hunt_length
+  tokens_in_pool: 15
 
   # Game Length
   # 0: Quick  - 1,3,6,10,15,21,28,35,44
@@ -121,9 +131,10 @@ Banjo-Tooie:
   randomize_jinjos: 'true'       # adds Jinjos to the pool
   randomize_doubloons: 'true'    # adds Doubloons to the pool
   randomize_cheato: 'true'       # adds Cheato Pages to the pool
-  cheato_rewards: 'true'         # handing in pages gives you an item. Pages will be set as progressive items
+  cheato_rewards: 'true'         # handing in pages gives you an item. Pages will be set as progressive items. Cheats are in the pool.
+  auto_enable_cheats: 'false'    # auto enable feathers and egg cheat when received.
   randomize_honeycombs: 'true'   # adds honeycombs to the pool
-  honeyb_rewards: 'true'         # handing in honeycombs gives you an item. Honeycombs will be set as progressive items
+  honeyb_rewards: 'true'         # handing in honeycombs gives you an item. Honeycombs will be set as progressive items. Health Upgrades are in the pool.
   randomize_glowbos: 'true'      # adds Mumbo / Humba Magic to the pool
   randomize_stop_n_swap: 'true'  # Ice key + Eggs + Egg rewards are added to the item pool
   randomize_dino_roar: 'true'    # Roar is in the pool
@@ -157,7 +168,7 @@ Banjo-Tooie:
   skip_puzzles: 'true'        # you won't be able to utilize randomizing worlds / loading zones if this is disabled
   randomize_worlds: 'false'   # Changes the order in which levels open
   randomize_world_loading_zone: 'false' # World Entrances will warp you to a different world. This only affects main entrances.
-  open_hag1: 'true'           # HAG1's door is open
+  open_hag1: 'true'           # HAG1's door is open if HAG-1 victory condition is set.
 
   # The following gates are preopened: MT>TDL, MT>HFP, GGM>WW, WW>TDL
   # For MT>TDL only the gate accessed from TDL's side is opened and for GGM>WW the boulders are still unexploded

@@ -4,7 +4,7 @@ from .Names import itemName, locationName
 
 
 class BanjoTooieItem(Item):
-    # 1230915 (CKWARP2) but beware of level access keys that are way higher!
+    # 1230916 (Health Upgrade) but beware of level access keys that are way higher!
     game: str = "Banjo-Tooie"
 class ItemData(NamedTuple):
     btid: int = 0
@@ -239,6 +239,18 @@ warp_pad_table = {
     itemName.WARPCK2:           ItemData(1230915,   1, "progress", locationName.WARPCK2),
 }
 
+honeyb_table = {
+    itemName.HEALTHUP:          ItemData(1230916,   5,  "progress", "")
+}
+
+cheats_table = {
+    itemName.CHEATFEATHER:      ItemData(1230917,   1,  "useful", locationName.CHEATOR1),
+    itemName.CHEATEGG:          ItemData(1230918,   1,  "useful", locationName.CHEATOR2),
+    itemName.CHEATFALL:         ItemData(1230919,   1,  "useful", locationName.CHEATOR3),
+    itemName.CHEATHONEY:        ItemData(1230920,   1,  "useful", locationName.CHEATOR4),
+    itemName.CHEATJUKE:         ItemData(1230921,   1,  "useful", locationName.CHEATOR5),
+}
+
 
 all_item_table: Dict[str, ItemData] = {
     **moves_table,
@@ -256,6 +268,8 @@ all_item_table: Dict[str, ItemData] = {
     **nest_table,
     **silo_table,
     **warp_pad_table,
+    **honeyb_table,
+    **cheats_table
 }
 
 all_group_table: Dict[str, Dict[str, ItemData]] = {
@@ -272,5 +286,7 @@ all_group_table: Dict[str, Dict[str, ItemData]] = {
     "dino": dino_table,
     "nest": nest_table,
     "Silos": silo_table,
-    "Warp Pads": warp_pad_table
+    "Warp Pads": warp_pad_table,
+    "honeyb": honeyb_table,
+    "cheats": cheats_table
 }

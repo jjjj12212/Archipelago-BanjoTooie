@@ -63,7 +63,7 @@ class TestClosedHag1WithBossesHag1(TestProgressionJiggies):
     }
 
     def test_progression_jiggies(self):
-        self._test_progression_jiggies(70)
+        self._test_progression_jiggies(55)
 
 class TestClosedHag1WithBosses(TestProgressionJiggies):
     options = {

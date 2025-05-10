@@ -7,7 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
 
 class LocationData(typing.NamedTuple):
-    #last good ID: 1231595 (SILOCK2)
+    #last good ID: 1231609 (Mr Fit Sack)
     #12C770 pointer instead (1230704)
     btid: int = 0
     # Save + mem addr
@@ -466,6 +466,11 @@ WWLoc_table = {
     locationName.WARPWW3:   LocationData(1231569, 0, 0, "Warp Pads"),
     locationName.WARPWW4:   LocationData(1231570, 0, 0, "Warp Pads"),
     locationName.WARPWW5:   LocationData(1231571, 0, 0, "Warp Pads"),
+
+    locationName.MOGGY:     LocationData(1231596, 0x0C, 4),
+    locationName.SOGGY:     LocationData(1231597, 0x0C, 5),
+    locationName.GROGGY:    LocationData(1231598, 0x0C, 6)
+
 }
 JRLoc_table = {
     locationName.JRLDB1: LocationData(1230521, 0x22, 7, "Doubloon"),
@@ -848,6 +853,13 @@ GILoc_table = {
     locationName.WARPGI3:   LocationData(1231584, 0, 0, "Warp Pads"),
     locationName.WARPGI4:   LocationData(1231585, 0, 0, "Warp Pads"),
     locationName.WARPGI5:   LocationData(1231586, 0, 0, "Warp Pads"),
+
+    locationName.SKIVWQ:    LocationData(1231602, 0x81, 1),
+    locationName.SKIVF1:    LocationData(1231603, 0x81, 2),
+    locationName.SKIVF2:    LocationData(1231604, 0x80, 7),
+    locationName.SKIVF3:    LocationData(1231605, 0x81, 0),
+    locationName.SKIVF5:    LocationData(1231606, 0x80, 6),
+    locationName.SKIVOU:    LocationData(1231607, 0x80, 5),
 }
 
 HPLoc_table = {
@@ -949,6 +961,11 @@ HPLoc_table = {
     locationName.WARPHP3:   LocationData(1231589, 0, 0, "Warp Pads"),
     locationName.WARPHP4:   LocationData(1231590, 0, 0, "Warp Pads"),
     locationName.WARPHP5:   LocationData(1231591, 0, 0, "Warp Pads"),
+
+    locationName.ALPHETTE:    LocationData(1231599, 0x69, 2),
+    locationName.BETETTE:    LocationData(1231600, 0x69, 3),
+    locationName.GAMETTE:    LocationData(1231601, 0x69, 4)
+
 }
 
 CCLoc_table = {
@@ -1053,6 +1070,9 @@ CCLoc_table = {
 
     locationName.WARPCC1:   LocationData(1231592, 0, 0, "Warp Pads"),
     locationName.WARPCC2:   LocationData(1231593, 0, 0, "Warp Pads"),
+
+    locationName.FITHJ:     LocationData(1231608, 0x76, 4),
+    locationName.FITSR:     LocationData(1231609, 0x76, 5)
 }
 
 WorldUnlocks_table = {
