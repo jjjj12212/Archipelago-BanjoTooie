@@ -7039,11 +7039,24 @@ class BanjoTooieRules:
                 )
 
     def warp_to_inferno(self, state: CollectionState) -> bool:
+        can_reach_humba_warp_pad = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            can_reach_humba_warp_pad = self.flap_flip(state) and self.grip_grab(state)
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            can_reach_humba_warp_pad = self.flap_flip(state) and self.grip_grab(state)\
+                                        or self.climb(state) and self.veryLongJump(state) and self.flap_flip(state)
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            can_reach_humba_warp_pad = self.flap_flip(state) and self.grip_grab(state)\
+                                        or self.climb(state) and self.veryLongJump(state) and self.flap_flip(state)
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            can_reach_humba_warp_pad = self.flap_flip(state) and self.grip_grab(state)\
+                                        or self.climb(state) and self.veryLongJump(state) and self.flap_flip(state)
+
         return state.has(itemName.WARPWW5, self.player) and (
                     state.has(itemName.WARPWW1, self.player)\
                     or state.has(itemName.WARPWW2, self.player)\
                     or state.has(itemName.WARPWW3, self.player)\
-                    or state.has(itemName.WARPWW4, self.player) and state.can_reach_location(locationName.WARPWW4, self.player)\
+                    or state.has(itemName.WARPWW4, self.player) and can_reach_humba_warp_pad\
                 )
 
     # The Wumba warp pad is always as hard or harder to reach, so warping from Wumba to Mumbo is not considered to avoid infinite loops.
@@ -7087,7 +7100,7 @@ class BanjoTooieRules:
         state.has(itemName.WARPTL3, self.player) and (
             state.has(itemName.WARPTL1, self.player)\
             or state.has(itemName.WARPTL2, self.player) and state.can_reach_region(regionName.TLSP, self.player)\
-            or state.has(itemName.WARPTL4, self.player) and state.can_reach_location(locationName.WARPTL4, self.player)\
+            or state.has(itemName.WARPTL4, self.player) and self.small_elevation(state)\
             or state.has(itemName.WARPTL5, self.player) and state.can_reach_region(regionName.TLTOP, self.player)\
         )
 
@@ -7104,15 +7117,29 @@ class BanjoTooieRules:
         return logic
 
     def tdl_to_warp_pads(self, state: CollectionState) -> bool:
-        return state.has(itemName.WARPTL1, self.player)\
-                or state.has(itemName.WARPTL3, self.player) and state.can_reach_location(locationName.WARPTL3, self.player)\
-                or state.has(itemName.WARPTL4, self.player) and state.can_reach_location(locationName.WARPTL4, self.player)
+        if self.world.options.logic_type == LogicType.option_intended:
+            return state.has(itemName.WARPTL1, self.player)\
+                    or state.has(itemName.WARPTL3, self.player) and self.stilt_stride(state)\
+                    or state.has(itemName.WARPTL4, self.player) and self.small_elevation(state)
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            return state.has(itemName.WARPTL1, self.player)\
+                    or state.has(itemName.WARPTL3, self.player)\
+                    or state.has(itemName.WARPTL4, self.player)
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            return state.has(itemName.WARPTL1, self.player)\
+                    or state.has(itemName.WARPTL3, self.player)\
+                    or state.has(itemName.WARPTL4, self.player)
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            return state.has(itemName.WARPTL1, self.player)\
+                    or state.has(itemName.WARPTL3, self.player)\
+                    or state.has(itemName.WARPTL4, self.player)
 
     def warp_to_tdl_wumba(self, state: CollectionState) -> bool:
+        reach_mumbo_warp_pad = self.world.options.logic_type != LogicType.option_intended or self.stilt_stride(state)
         state.has(itemName.WARPTL4, self.player) and (
             state.has(itemName.WARPTL1, self.player)\
             or state.has(itemName.WARPTL2, self.player) and state.can_reach_region(regionName.TLSP, self.player)\
-            or state.has(itemName.WARPTL3, self.player) and state.can_reach_location(locationName.WARPTL3, self.player)\
+            or state.has(itemName.WARPTL3, self.player) and reach_mumbo_warp_pad\
             or state.has(itemName.WARPTL5, self.player) and state.can_reach_region(regionName.TLTOP, self.player)\
         )
 
@@ -7572,27 +7599,43 @@ class BanjoTooieRules:
                self.humbaGI(state) and self.grenade_eggs(state) and \
                self.bill_drill(state) and self.climb(state) and self.flap_flip(state)\
                 and self.grip_grab(state)\
-                and state.has(itemName.WARPGI2, self.player) and state.has(itemName.WARPGI3, self.player)
+                and (
+                    state.has(itemName.WARPGI2, self.player) and state.has(itemName.WARPGI3, self.player)
+                    if self.world.options.randomize_warp_pads
+                    else state.can_reach_region(regionName.GI2, self.player) and state.can_reach_region(regionName.GI3, self.player)
+                )
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = self.can_use_battery(state) and self.mumboGI(state) and \
                self.humbaGI(state) and self.grenade_eggs(state) and \
                self.bill_drill(state) and self.climb(state) and self.flap_flip(state) and\
-               state.has(itemName.WARPGI2, self.player) and state.has(itemName.WARPGI3, self.player) and\
-               (self.grip_grab(state) or (self.tall_jump(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state))))
+               (self.grip_grab(state) or (self.tall_jump(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state))))\
+               and (
+                    state.has(itemName.WARPGI2, self.player) and state.has(itemName.WARPGI3, self.player)
+                    if self.world.options.randomize_warp_pads
+                    else state.can_reach_region(regionName.GI2, self.player) and state.can_reach_region(regionName.GI3, self.player)
+                )
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.can_use_battery(state) and self.mumboGI(state) and \
                self.humbaGI(state) and self.grenade_eggs(state) and \
                self.bill_drill(state) and self.climb(state) and self.flap_flip(state) and\
-               state.has(itemName.WARPGI2, self.player) and state.has(itemName.WARPGI3, self.player) and\
                ((self.grip_grab(state) or (self.tall_jump(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state))))\
-                    or self.extremelyLongJump(state))
+                    or self.extremelyLongJump(state))\
+                and (
+                    state.has(itemName.WARPGI2, self.player) and state.has(itemName.WARPGI3, self.player)
+                    if self.world.options.randomize_warp_pads
+                    else state.can_reach_region(regionName.GI2, self.player) and state.can_reach_region(regionName.GI3, self.player)
+                )
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.can_use_battery(state) and self.mumboGI(state) and \
                self.humbaGI(state) and self.grenade_eggs(state) and \
                self.bill_drill(state) and self.climb(state) and self.flap_flip(state) and\
-               state.has(itemName.WARPGI2, self.player) and state.has(itemName.WARPGI3, self.player) and\
                ((self.grip_grab(state) or (self.tall_jump(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state))))\
-                    or self.extremelyLongJump(state))
+                    or self.extremelyLongJump(state))\
+                and (
+                    state.has(itemName.WARPGI2, self.player) and state.has(itemName.WARPGI3, self.player)
+                    if self.world.options.randomize_warp_pads
+                    else state.can_reach_region(regionName.GI2, self.player) and state.can_reach_region(regionName.GI3, self.player)
+                )
         return logic
 
 
@@ -8569,16 +8612,31 @@ class BanjoTooieRules:
     def floor_4_to_floor_4_back(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.mumboGI(state) and self.tall_jump(state)\
-                    and state.has(itemName.WARPGI3, self.player) and state.has(itemName.WARPGI4, self.player)
+                    and (
+                        state.has(itemName.WARPGI3, self.player) and state.has(itemName.WARPGI4, self.player)
+                        if self.world.options.randomize_warp_pads
+                        else state.can_reach_region(regionName.GI3, self.player) and state.can_reach_region(regionName.GI4, self.player)
+                    )
         elif self.world.options.logic_type == LogicType.option_easy_tricks : # normal
             logic = self.mumboGI(state) and self.tall_jump(state)\
-                    and state.has(itemName.WARPGI3, self.player) and state.has(itemName.WARPGI4, self.player)
+                    and (
+                        state.has(itemName.WARPGI3, self.player) and state.has(itemName.WARPGI4, self.player)
+                        if self.world.options.randomize_warp_pads
+                        else state.can_reach_region(regionName.GI3, self.player) and state.can_reach_region(regionName.GI4, self.player)
+                    )
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.mumboGI(state) and self.tall_jump(state)\
-                    and state.has(itemName.WARPGI3, self.player) and state.has(itemName.WARPGI4, self.player)
+                    and (
+                        state.has(itemName.WARPGI3, self.player) and state.has(itemName.WARPGI4, self.player)
+                        if self.world.options.randomize_warp_pads
+                        else state.can_reach_region(regionName.GI3, self.player) and state.can_reach_region(regionName.GI4, self.player)
+                    )
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.mumboGI(state) and self.tall_jump(state)\
-                        and state.has(itemName.WARPGI3, self.player) and state.has(itemName.WARPGI4, self.player)\
+            logic = self.mumboGI(state) and self.tall_jump(state) and (
+                        state.has(itemName.WARPGI3, self.player) and state.has(itemName.WARPGI4, self.player)
+                        if self.world.options.randomize_warp_pads
+                        else state.can_reach_region(regionName.GI3, self.player) and state.can_reach_region(regionName.GI4, self.player)
+                    )\
                     or self.tall_jump(state) and self.pack_whack(state)\
                     or self.precise_clockwork_warp(state) and (self.spring_pad(state) or self.flap_flip(state))
         return logic
@@ -9098,7 +9156,16 @@ class BanjoTooieRules:
         return state.can_reach_region(regionName.MTJSG, self.player) and state.has(itemName.HUMBAMT, self.player)
 
     def humbaGGM(self, state: CollectionState) -> bool:
-        return state.has(itemName.HUMBAGM, self.player) and state.can_reach_location(locationName.WARPGM3, self.player)
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = state.has(itemName.HUMBAGM, self.player) and (self.ggm_trot(state) or self.warp_to_ggm_wumba(state))
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = state.has(itemName.HUMBAGM, self.player) and (self.ggm_trot(state) or self.warp_to_ggm_wumba(state))
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = state.has(itemName.HUMBAGM, self.player) and (self.ggm_trot(state) or self.warp_to_ggm_wumba(state))
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = state.has(itemName.HUMBAGM, self.player) and (self.ggm_trot(state) or self.warp_to_ggm_wumba(state))
+        return logic
 
 
     def mumboGGM(self, state: CollectionState) -> bool:
@@ -9536,9 +9603,10 @@ class BanjoTooieRules:
                 fit = self.world.multiworld.get_location(location, self.player)
                 set_rule(fit, rules)
 
-        for location, rules in self.warp_pad_rules.items():
-                warp_pads = self.world.multiworld.get_location(location, self.player)
-                set_rule(warp_pads, rules)
+        if self.world.options.randomize_warp_pads:
+            for location, rules in self.warp_pad_rules.items():
+                    warp_pads = self.world.multiworld.get_location(location, self.player)
+                    set_rule(warp_pads, rules)
 
         if self.world.options.victory_condition == VictoryCondition.option_minigame_hunt:
             for location, rules in self.gametoken_rules.items():

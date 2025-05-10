@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | 4.5
+# Archipelago Banjo-Tooie (US-Only) | 4.5.1
 Banjo Tooie for Archipelago 
 
 # Current Implementation
@@ -14,8 +14,8 @@ Banjo Tooie for Archipelago
 - Treble Clef
 - Train Switches
 - Chuffy
-- Cheato Rewards
-- Honey B Rewards
+- Cheato Cheats
+- Honey B Health Upgrades
 - Moves from Banjo-Kazooie
 - T-Rex Roar
 - Nests

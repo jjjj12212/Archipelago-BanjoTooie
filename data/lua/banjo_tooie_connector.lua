@@ -16,7 +16,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V4.5"
+local BT_VERSION = "V4.5.1"
 local PLAYER = ""
 local SEED = 0
 
@@ -7398,6 +7398,10 @@ end
 
 function hag1_open()
     if BTH:getItem(ITEM_TABLE["AP_ITEM_H1A"]) == 1
+    then
+        return
+    end
+    if GOAL_TYPE == 1 or GOAL_TYPE == 2 or GOAL_TYPE == 5
     then
         return
     end
