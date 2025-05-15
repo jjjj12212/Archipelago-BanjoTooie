@@ -2418,39 +2418,39 @@ class BanjoTooieRules:
     def alphette(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+            logic = state.can_reach_location(locationName.JIGGYJR10, self.player) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+            logic = state.can_reach_location(locationName.JIGGYJR10, self.player) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+            logic = state.can_reach_location(locationName.JIGGYJR10, self.player) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+            logic = state.can_reach_location(locationName.JIGGYJR10, self.player) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
         return logic
 
     def betette(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+            logic = state.can_reach_location(locationName.JIGGYJR10, self.player) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+            logic = state.can_reach_location(locationName.JIGGYJR10, self.player) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+            logic = state.can_reach_location(locationName.JIGGYJR10, self.player) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.jiggy_ufo(state) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+            logic = state.can_reach_location(locationName.JIGGYJR10, self.player) and self.bill_drill(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
         return logic
 
     def gamette(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.jiggy_ufo(state) and self.hatch(state) and self.glide(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
+            logic = state.can_reach_location(locationName.JIGGYJR10, self.player) and self.hatch(state) and self.glide(state) and self.check_mumbo_magic(state, itemName.MUMBOHP)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.jiggy_ufo(state) and self.check_mumbo_magic(state, itemName.MUMBOHP) and \
+            logic = state.can_reach_location(locationName.JIGGYJR10, self.player) and self.check_mumbo_magic(state, itemName.MUMBOHP) and \
                     self.hatch(state) and ((self.wing_whack(state) and self.tall_jump(state)) or self.glide(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.jiggy_ufo(state) and self.check_mumbo_magic(state, itemName.MUMBOHP) and \
+            logic = state.can_reach_location(locationName.JIGGYJR10, self.player) and self.check_mumbo_magic(state, itemName.MUMBOHP) and \
                      self.hatch(state) and (self.wing_whack(state) or self.tall_jump(state) or self.glide(state))
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.jiggy_ufo(state) and self.check_mumbo_magic(state, itemName.MUMBOHP) and \
+            logic = state.can_reach_location(locationName.JIGGYJR10, self.player) and self.check_mumbo_magic(state, itemName.MUMBOHP) and \
                     self.hatch(state) and (self.wing_whack(state) or self.tall_jump(state) or self.glide(state))
         return logic
 

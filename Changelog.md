@@ -1,3 +1,7 @@
+# a
+  - Logic fixes:
+    - Individual alien kids: check if you can reach JRL to do the UFO jiggy.
+
 # 4.5.1
   - When not randomized, silos and warp pads no longer have locations associated with them.
   - remove debugging features from ROM
