@@ -46,21 +46,23 @@ Banjo-Tooie:
   # 5 = Token Hunt: Mumbo's Tokens are scattered around the world. Help him find them
   # 6 = Boss Hunt + HAG1: Defeat bosses in order to unlock HAG-1
   victory_condition: 0
+  open_hag1: 'true' # HAG1's door is open if HAG-1 victory condition is set.
   minigame_hunt_length: 14      # 1-15
   boss_hunt_length: 8           # 1-8
   jinjo_family_rescue_length: 9 # 1-9
 
-  #Token Hunt:
-  # How many Tokens are required to win
+  #Tokens in Pool:
+  # How many Tokens are in the pool
   # if Randomize_signpost is enabled: 1-50
   # if Nestanity is enabled: 1-100
   # if both are disabled: 1-15
+  tokens_in_pool: 15
+
+  #Token Hunt:
+  # How many Tokens are required to win
+  # It must be equal or less than tokens_in_pool
   token_hunt_length: 10
 
-  #Tokens in Pool:
-  # How many Tokens are in the pool
-  # It must be equal or greater than token_hunt_length
-  tokens_in_pool: 15
 
   # Game Length
   # 0: Quick  - 1,3,6,10,15,21,28,35,44
@@ -168,7 +170,6 @@ Banjo-Tooie:
   skip_puzzles: 'true'        # you won't be able to utilize randomizing worlds / loading zones if this is disabled
   randomize_worlds: 'false'   # Changes the order in which levels open
   randomize_world_loading_zone: 'false' # World Entrances will warp you to a different world. This only affects main entrances.
-  open_hag1: 'true'           # HAG1's door is open if HAG-1 victory condition is set.
 
   # The following gates are preopened: MT>TDL, MT>HFP, GGM>WW, WW>TDL
   # For MT>TDL only the gate accessed from TDL's side is opened and for GGM>WW the boulders are still unexploded
