@@ -158,7 +158,9 @@ local DEATH_MESSAGES = {
     [15] = {message = "I see your having trouble with this seed,\nits too bad you never learned how to read."},
     [16] = {message = "You'll label that one unfair, but I found that beat was rare."},
     [17] = {message = "You were not prepared for trouble, so now my minions will be working on the double."},
-    [18] = {message = "Seeing you trip and fall is rather funny, I get to watch you run out of honey."}
+    [18] = {message = "Seeing you trip and fall is rather funny, I get to watch you run out of honey."},
+    [19] = {message = "Welcome bozos to death's door... \nWait, hold on, you're back for more?"},
+    [20] = {message = "Can't believe you died at this stage, \nWhy don't you look elsewhere on your tracker page!"}
 }
 
 local receive_map = { -- [ap_id] = item_id; --  Required for Async Items
