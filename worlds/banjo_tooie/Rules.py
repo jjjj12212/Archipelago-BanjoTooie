@@ -8210,13 +8210,13 @@ class BanjoTooieRules:
     def outside_gi_to_floor1(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = False
+            logic = self.world.options.open_gi_frontdoor
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = False
+            logic = self.world.options.open_gi_frontdoor
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = False
+            logic = self.world.options.open_gi_frontdoor
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.clockwork_shot(state)
+            logic = self.clockwork_shot(state) or self.world.options.open_gi_frontdoor
         return logic
 
     def outside_gi_to_outside_back(self, state: CollectionState) -> bool:

@@ -175,7 +175,7 @@ def choose_unlocked_silos(world: BanjoTooieWorld) -> None:
         world_silo = ""
         if list(world.randomize_order.keys())[0] == regionName.GIO:
             # GI is special. If loading zones are not randomized, the only way to make progress in the level is by riding the train into the level from Cliff Top.
-            world_silo = itemName.SILOIOHQM if world.options.randomize_world_loading_zone else itemName.SILOIOHCT
+            world_silo = itemName.SILOIOHQM if world.options.randomize_world_loading_zone or world.options.open_gi_frontdoor else itemName.SILOIOHCT
         else:
             overworld_lookup = {
                 regionName.MT: world.random.choice([itemName.SILOIOHPL, itemName.SILOIOHPG, itemName.SILOIOHCT, itemName.SILOIOHWL, itemName.SILOIOHQM]), # You can already get there, so we give a random silo.

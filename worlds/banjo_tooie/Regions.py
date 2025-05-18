@@ -1749,7 +1749,7 @@ def connect_regions(self):
 
     region_GI1 = self.get_region(regionName.GI1)
     region_GI1.add_exits({regionName.GIO, regionName.GIES, regionName.GI2, regionName.GIWARP, regionName.CHUFFY},
-                        {regionName.GIO: lambda state: rules.split_up(state),
+                        {regionName.GIO: lambda state: rules.split_up(state) or self.options.open_gi_frontdoor,
                          regionName.GI2: lambda state: rules.F1_to_F2(state),
                          regionName.CHUFFY: lambda state: rules.can_beat_king_coal(state) and rules.gi_to_chuffy(state),
                          regionName.GIWARP: lambda state: rules.split_up(state) and state.has(itemName.WARPGI1, player)})

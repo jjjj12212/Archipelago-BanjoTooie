@@ -16,7 +16,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V4.5.1"
+local BT_VERSION = "V4.6"
 local PLAYER = ""
 local SEED = 0
 
@@ -5594,20 +5594,21 @@ BTHACK = {
         setting_nests = 0x6,
         setting_warppads = 0x7,
         setting_warpsilos = 0x8,
-        setting_honeyb = 0x9,
+        setting_honeyb_rewards = 0x9,
         setting_cheato_rewards = 0xA,
         setting_puzzle = 0xB,
         setting_backdoors = 0xC,
-        setting_klungo = 0xD,
-        setting_tot = 0xE,
-        setting_minigames = 0xF,
-        setting_dialog_character = 0x10,
-        setting_max_mumbo_tokens = 0x11,
-        setting_signpost_hints = 0x12,
-        setting_extra_cheats = 0x13,
-        setting_automatic_cheats = 0x14,
-        setting_easy_canary = 0x15,
-        setting_jiggy_requirements = 0x16,
+        setting_gi_open_frontdoor = 0xD,
+        setting_klungo = 0xE,
+        setting_tot = 0xF,
+        setting_minigames = 0x10,
+        setting_dialog_character = 0x11,
+        setting_max_mumbo_tokens = 0x12,
+        setting_signpost_hints = 0x13,
+        setting_extra_cheats = 0x14,
+        setting_automatic_cheats = 0x15,
+        setting_easy_canary = 0x16,
+        setting_jiggy_requirements = 0x17,
         setting_silo_requirements = 0x22,
     pc_items = 0x14,
     pc_traps = 0x18,
@@ -5617,7 +5618,7 @@ BTHACK = {
         exit_to_map = 0x4,
         exit_og_exit = 0x6,
         exit_to_exit = 0x7,
-        exit_map_struct_size = 0x8,
+        exit_map_struct_size = 0x4,
         world_index = 0,
     n64 = 0x20,
         n64_show_text = 0x0,
@@ -5746,7 +5747,7 @@ function BTHACK:setSettingWarpPads(warppad)
 end
 
 function BTHACK:setSettingHoneyB(honeyb)
-    mainmemory.writebyte(self.setting_honeyb + BTHACK:getSettingPointer(), honeyb);
+    mainmemory.writebyte(self.setting_honeyb_rewards + BTHACK:getSettingPointer(), honeyb);
 end
 
 function BTHACK:setSettingCheato(cheato)
@@ -5789,6 +5790,10 @@ end
 
 function BTHACK:setSettingBackdoors(backdoors)
     mainmemory.writebyte(self.setting_backdoors + BTHACK:getSettingPointer(), backdoors);
+end
+
+function BTHACK:setSettingGIFrontdoor(gifrontdoor)
+    mainmemory.writebyte(self.setting_gi_open_frontdoor + BTHACK:getSettingPointer(), gifrontdoor);
 end
 
 function BTHACK:setSettingKlungo(klungo)
@@ -8326,6 +8331,10 @@ function process_slot(block)
     then
         BACKDOORS = true
         BTH:setSettingBackdoors(1)
+    end
+    if block['slot_open_gi_entrance'] ~= nil and block['slot_open_gi_entrance'] ~= 0
+    then
+        BTH:setSettingGIFrontdoor(1)
     end
     if block['slot_skip_klungo'] ~= nil and block['slot_skip_klungo'] ~= 0
     then

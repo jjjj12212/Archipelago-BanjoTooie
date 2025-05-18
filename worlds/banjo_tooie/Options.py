@@ -412,6 +412,10 @@ class Backdoors(Toggle):
     George is pre-dropped to make HFP -> JRL more accessible."""
     display_name = "Open Backdoors"
 
+class GIFrontdoor(Toggle):
+    """Opens Grunty's Industries frontdoor without requiring to get in first."""
+    display_name = "Open GI Frontdoor"
+
 class OpenHag1(DefaultOnToggle):
     """HAG 1 boss fight is opened when Cauldron Keep is opened, requiring fewer Jiggies to win."""
     display_name = "HAG 1 Open"
@@ -675,6 +679,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_worlds: RandomizeWorlds
     randomize_world_loading_zone: RandomizeWorldZones
     backdoors:Backdoors
+    open_gi_frontdoor:GIFrontdoor
 
     extra_cheats: ExtraCheats
     easy_canary: EasyCanary

@@ -57,7 +57,7 @@ class BanjoTooieWorld(World):
     """
 
     game: str = "Banjo-Tooie"
-    version = "V4.5.1"
+    version = "V4.6"
     web = BanjoTooieWeb()
     topology_present = True
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
@@ -908,6 +908,7 @@ class BanjoTooieWorld(World):
             "skip_puzzles",
             "open_hag1",
             "backdoors",
+            "open_gi_frontdoor",
             "open_silos",
             "speed_up_minigames",
             "tower_of_tragedy",
