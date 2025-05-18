@@ -175,23 +175,6 @@ class BanjoTooieContext(CommonContext):
         self.sync_ready = False
         self.startup = False
         self.handled_scouts = []
-        # AquaPhoenix Contributed with the Gruntilda Insults
-        self.death_messages = [
-            "Gruntilda:    Did you hear that lovely clack, \n                     My broomstick gave you such a whack!",
-            "Gruntilda:    AAAH! I see it makes you sad, \n                     To know your skills are really bad!",
-            "Gruntilda:    I hit that bird right on the beak, \n                     Let it be the end of her cheek!",
-            "Gruntilda:    My fiery blast you just tasted, \n                     Grunty's spells on you are wasted!",
-            "Gruntilda:    Hopeless bear runs to and fro, \n                     But takes a whack for being so slow!",
-            "Gruntilda:    So I got you there once more, \n                     I knew your skills were very poor!",
-            "Gruntilda:    Simply put I'm rather proud, \n                     Your yelps and screams I heard quite loud!",
-            "Gruntilda:    Grunty's fireball you did kiss, \n                     You're so slow I can hardly miss!",
-            "Gruntilda:    In this world you breathe your last,\n                     Now your friends had better think fast!",
-            "Gruntilda:    This is fun it's quite a treat, \n                     To see you suffer in defeat",
-            "Gruntilda:    That death just now, I saw coming, \n                     Your skill issues are rather stunning!",
-            "Gruntilda:    Seeing this pathetic display, \n                     Is serotonin in my day",
-            "Gruntilda:    What a selfish thing to do,\n                     Your friends just died because of you!",
-            "Gruntilda:    You tried something rather stupid,\n                     I hope no one will try what you did"
-        ]
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -218,7 +201,7 @@ class BanjoTooieContext(CommonContext):
 
     async def send_death(self, death_text: str = ""):
         if self.server and self.server.socket:
-            logger.info(f"{random.choice(self.death_messages)} \n(DeathLink: Sending death to your friends...)")
+            logger.info(f"(DeathLink: Sending death to your friends...)")
             self.last_death_link = time.time()
             await self.send_msgs([{
                 "cmd": "Bounce", "tags": ["DeathLink"],
@@ -391,7 +374,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_auto_enable_cheats": ctx.slot_data["auto_enable_cheats"],
             "slot_cheato_rewards": ctx.slot_data["cheato_rewards"],
             "slot_honeyb_rewards": ctx.slot_data["honeyb_rewards"],
-
+            "slot_open_gi_entrance": ctx.slot_data["open_gi_frontdoor"]
         })
     ctx.sendSlot = False
     return payload
@@ -590,6 +573,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             for locationId, value in nests.items():
                 if value == True:
                     locs1.append(int(locationId))
+        if ctx.current_map != banjo_map:  #Fix for not resending activated Hints
+            ctx.signpost_table = signposts #sets only when transistioning on a new map
         if ctx.signpost_table != signposts:
                 ctx.signpost_table = signposts
                 actual_hints = ctx.slot_data["hints"]
