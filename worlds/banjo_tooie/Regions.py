@@ -1598,6 +1598,9 @@ def connect_regions(self):
                             regionName.TL_HATCH: lambda state: rules.jiggy_treasure_chamber(state),
                             regionName.MTTT: lambda state: rules.breegull_blaster(state)
                         })
+    
+    region_MTTT = self.get_region(regionName.MTTT)
+    region_MTTT.add_exits({regionName.MT}, {})
 
     region_MTJSG = self.get_region(regionName.MTJSG)
     region_MTJSG.add_exits({regionName.MT, regionName.MTWARP}, {
@@ -1673,6 +1676,9 @@ def connect_regions(self):
                             regionName.WWA51NESTS: lambda state: rules.a51_nests_from_WW(state),
                             regionName.WWBT: lambda state: rules.can_enter_big_top(state)
                         })
+    
+    region_WWBT = self.get_region(regionName.WWBT)
+    region_WWBT.add_exits({regionName.WWI}, {})
 
     region_WWWARP = self.get_region(regionName.WWWARP)
     region_WWWARP.add_exits({regionName.WWI}, {
