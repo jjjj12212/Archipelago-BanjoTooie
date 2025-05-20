@@ -665,6 +665,33 @@ local ASSET_MAP_CHECK = {
         ["SIGNPOSTS"] = {
             "1231509",
             "1231510",
+        },
+        ["GREEN_RELICS"] = {
+            "1231614",
+            "1231615",
+            "1231616",
+            "1231617",
+            "1231618",
+            "1231619",
+            "1231620",
+            "1231621",
+            "1231622",
+            "1231623",
+            "1231624",
+            "1231625",
+            "1231626",
+            "1231627",
+            "1231628",
+            "1231629",
+            "1231630",
+            "1231631",
+            "1231632",
+            "1231633",
+            "1231634",
+            "1231635",
+            "1231636",
+            "1231637",
+            "1231638",
         }
     },
     --GLITTER GULCH MINE
@@ -956,8 +983,13 @@ local ASSET_MAP_CHECK = {
         ["BOGGY_KIDS"] = {
             "1231596",
             "1231598"
+        },
+        ["BIGTOP_TICKETS"] = {
+            "1231610",
+            "1231611",
+            "1231612",
+            "1231613"
         }
-
     },
     [0xEA] = { --WW - Cave of Horrors
         ["JINJOS"] = {
@@ -2393,6 +2425,8 @@ local ROM_ITEM_TABLE = {
     "AP_ITEM_SILO_CLIFF_TOP",
     "AP_ITEM_SILO_WASTELAND",
     "AP_ITEM_SILO_QUAGMIRE",
+    "AP_ITEM_BTTICKET",
+    "AP_ITEM_GRRELIC",
     "AP_ITEM_MAX",
 };
 
@@ -5463,8 +5497,127 @@ local ADDRESS_MAP = {
             ['addr'] = 0x76,
             ['bit'] = 5,
         },
+    },
+    ["BIGTOP_TICKETS"] = {
+        ['1231610'] = {
+            ['addr'] = 0x9C,
+            ['bit'] = 4
+        },
+        ['1231611'] = {
+            ['addr'] = 0x9C,
+            ['bit'] = 5
+        },
+        ['1231612'] = {
+            ['addr'] = 0x9C,
+            ['bit'] = 6
+        },
+        ['1231613'] = {
+            ['addr'] = 0x9C,
+            ['bit'] = 7
+        },
+    },
+    ["GREEN_RELICS"] = {
+        ['1231614'] = {
+            ['addr'] = 0x5A,
+            ['bit'] = 5,
+        },
+        ['1231615'] = {
+            ['addr'] = 0x5A,
+            ['bit'] = 4,
+        },
+        ['1231616'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 7,
+        },
+        ['1231617'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 6,
+        },
+        ['1231618'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 5,
+        },
+        ['1231619'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 3,
+        },
+        ['1231620'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 4,
+        },
+        ['1231621'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 2,
+        },
+        ['1231622'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 1,
+        },
+        ['1231623'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 2,
+        },
+        ['1231624'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 3,
+        },
+        ['1231625'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 5,
+        },
+        ['1231626'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 4,
+        },
+        ['1231627'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 6,
+        },
+        ['1231628'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 7,
+        },
+        ['1231629'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 1,
+        },
+        ['1231630'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 0,
+        },
+        ['1231631'] = {
+            ['addr'] = 0x5D,
+            ['bit'] = 0,
+        },
+        ['1231632'] = {
+            ['addr'] = 0x5D,
+            ['bit'] = 1,
+        },
+        ['1231633'] = {
+            ['addr'] = 0x5D,
+            ['bit'] = 2,
+        },
+        ['1231634'] = {
+            ['addr'] = 0x5D,
+            ['bit'] = 4,
+        },
+        ['1231635'] = {
+            ['addr'] = 0x5D,
+            ['bit'] = 3,
+        },
+        ['1231636'] = {
+            ['addr'] = 0x5A,
+            ['bit'] = 6,
+        },
+        ['1231637'] = {
+            ['addr'] = 0x5A,
+            ['bit'] = 7,
+        },
+        ['1231638'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 0,
+        },
     }
-
 }
 
 -- Properties of world entrances and associated puzzles
@@ -5596,20 +5749,22 @@ BTHACK = {
         setting_warpsilos = 0x8,
         setting_honeyb_rewards = 0x9,
         setting_cheato_rewards = 0xA,
-        setting_puzzle = 0xB,
-        setting_backdoors = 0xC,
-        setting_gi_open_frontdoor = 0xD,
-        setting_klungo = 0xE,
-        setting_tot = 0xF,
-        setting_minigames = 0x10,
-        setting_dialog_character = 0x11,
-        setting_max_mumbo_tokens = 0x12,
-        setting_signpost_hints = 0x13,
-        setting_extra_cheats = 0x14,
-        setting_automatic_cheats = 0x15,
-        setting_easy_canary = 0x16,
-        setting_jiggy_requirements = 0x17,
-        setting_silo_requirements = 0x22,
+        setting_randomize_tickets = 0xB,
+        setting_randomize_green_relics = 0xC,
+        setting_puzzle = 0xD,
+        setting_backdoors = 0xE,
+        setting_gi_open_frontdoor = 0xF,
+        setting_klungo = 0x10,
+        setting_tot = 0x11,
+        setting_minigames = 0x12,
+        setting_dialog_character = 0x13,
+        setting_max_mumbo_tokens = 0x14,
+        setting_signpost_hints = 0x15,
+        setting_extra_cheats = 0x16,
+        setting_automatic_cheats = 0x17,
+        setting_easy_canary = 0x18,
+        setting_jiggy_requirements = 0x19,
+        setting_silo_requirements = 0x24,
     pc_items = 0x14,
     pc_traps = 0x18,
     pc_exit_map = 0x1C,
@@ -5752,6 +5907,14 @@ end
 
 function BTHACK:setSettingCheato(cheato)
     mainmemory.writebyte(self.setting_cheato_rewards + BTHACK:getSettingPointer(), cheato);
+end
+
+function BTHACK:setSettingRandomizeTickets(tickets)
+    mainmemory.writebyte(self.setting_randomize_tickets + BTHACK:getSettingPointer(), tickets);
+end
+
+function BTHACK:setSettingRandomizeGreenRelics(grelic)
+    mainmemory.writebyte(self.setting_randomize_green_relics + BTHACK:getSettingPointer(), grelic);
 end
 
 function BTHACK:setSettingAutomaticCheats(cheats)
@@ -7366,6 +7529,37 @@ function mr_fit_events_check()
     return checks
 end
 
+---------------------- BIGTOP TICKETS ----------------------------
+function bttickets_check()
+    local checks = {}
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK[CURRENT_MAP]["BIGTOP_TICKETS"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["BIGTOP_TICKETS"])
+            do
+                checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["BIGTOP_TICKETS"][locationId]['addr'], ADDRESS_MAP["BIGTOP_TICKETS"][locationId]['bit'])
+            end
+        end
+    end
+    return checks
+end
+
+---------------------- GREEN RELICS ----------------------------
+function grrelic_check()
+    local checks = {}
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK[CURRENT_MAP]["GREEN_RELICS"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["GREEN_RELICS"])
+            do
+                checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["GREEN_RELICS"][locationId]['addr'], ADDRESS_MAP["GREEN_RELICS"][locationId]['bit'])
+            end
+        end
+    end
+    return checks
+end
 
 ---------------------- GAME FUNCTIONS -------------------
 
@@ -8117,6 +8311,8 @@ function SendToBTClient()
     retTable["alien_kids"] = alien_kids_check();
     retTable["skivvies"] = skivvies_check();
     retTable["fit_events"] = mr_fit_events_check();
+    retTable["bt_tickets"] = bttickets_check();
+    retTable["green_relics"] = grrelic_check();
 
     retTable["DEMO"] = false;
     retTable["sync_ready"] = "true"
@@ -8335,6 +8531,14 @@ function process_slot(block)
     if block['slot_open_gi_entrance'] ~= nil and block['slot_open_gi_entrance'] ~= 0
     then
         BTH:setSettingGIFrontdoor(1)
+    end
+    if block['slot_randomize_tickets'] ~= nil and block['slot_randomize_tickets'] ~= 0
+    then
+        BTH:setSettingRandomizeTickets(1)
+    end
+        if block['slot_randomize_green_relics'] ~= nil and block['slot_randomize_green_relics'] ~= 0
+    then
+        BTH:setSettingRandomizeGreenRelics(1)
     end
     if block['slot_skip_klungo'] ~= nil and block['slot_skip_klungo'] ~= 0
     then

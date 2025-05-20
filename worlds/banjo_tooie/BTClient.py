@@ -157,6 +157,8 @@ class BanjoTooieContext(CommonContext):
         self.alien_kids_table = {}
         self.skivvies_table = {}
         self.mr_fit_table = {}
+        self.bt_tickets_table = {}
+        self.green_relics_table = {}
         self.signpost_table = {}
         self.warppads_table = {}
         self.silos_table = {}
@@ -374,7 +376,9 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_auto_enable_cheats": ctx.slot_data["auto_enable_cheats"],
             "slot_cheato_rewards": ctx.slot_data["cheato_rewards"],
             "slot_honeyb_rewards": ctx.slot_data["honeyb_rewards"],
-            "slot_open_gi_entrance": ctx.slot_data["open_gi_frontdoor"]
+            "slot_open_gi_entrance": ctx.slot_data["open_gi_frontdoor"],
+            "slot_randomize_tickets": ctx.slot_data["randomize_tickets"],
+            "slot_randomize_green_relics": ctx.slot_data["randomize_green_relics"]
         })
     ctx.sendSlot = False
     return payload
@@ -435,6 +439,9 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     silos = payload["silos"]
     worldslist = payload["worlds"]
     banjo_map = payload["banjo_map"]
+    bt_tickets = payload["bt_tickets"]
+    green_relics = payload["green_relics"]
+
 
     # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
     # if isinstance(locations, list):
@@ -503,6 +510,10 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         hag = False
     if isinstance(roar_obtain, bool) == False:
         roar_obtain = False
+    if isinstance(bt_tickets, list):
+        bt_tickets = {}
+    if isinstance(green_relics, list):
+        green_relics = {}
 
     if demo == False and ctx.sync_ready == True:
         locs1 = []
@@ -599,7 +610,17 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             ctx.silos_table = silos
             for locationId, value in silos.items():
                 if value == True:
-                    locs1.append(int(locationId))        
+                    locs1.append(int(locationId))
+        if ctx.bt_tickets_table != bt_tickets:
+            ctx.bt_tickets_table = bt_tickets
+            for locationId, value in bt_tickets.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.green_relics_table != green_relics:
+            ctx.green_relics_table = green_relics
+            for locationId, value in green_relics.items():
+                if value == True:
+                    locs1.append(int(locationId))
         if ctx.roar != roar_obtain:
             ctx.roar = roar_obtain
             if roar_obtain == True:

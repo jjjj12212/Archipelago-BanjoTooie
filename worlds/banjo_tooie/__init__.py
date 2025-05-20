@@ -907,6 +907,8 @@ class BanjoTooieWorld(World):
             "cheato_rewards",
             "randomize_honeycombs",
             "honeyb_rewards",
+            "randomize_tickets",
+            "randomize_green_relics",
             "randomize_glowbos",
             "randomize_stop_n_swap",
             "randomize_dino_roar",
