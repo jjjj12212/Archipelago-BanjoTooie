@@ -117,6 +117,8 @@ class BanjoTooieWorld(World):
     location_name_groups["Nests"] = {c for c in all_location_table if all_location_table[c].group == "Nest"}
     location_name_groups["Warp Pads"] = {c for c in all_location_table if all_location_table[c].group == "Warp Pads"}
     location_name_groups["Warp Silos"] = {c for c in all_location_table if all_location_table[c].group == "Silos"}
+    location_name_groups["Ticket"] = {c for c in all_location_table if all_location_table[c].group == "Ticket"}
+    location_name_groups["Green Relic"] = {c for c in all_location_table if all_location_table[c].group == "Green Relic"}
 
     location_name_groups["Bosses"] = {
         locationName.JIGGYMT1,
@@ -449,6 +451,12 @@ class BanjoTooieWorld(World):
             return None
 
         if name == itemName.ROAR and not self.options.randomize_dino_roar:
+            return None
+        
+        if name == itemName.GRRELIC and not self.options.randomize_green_relics:
+            return None
+        
+        if name == itemName.BTTICKET and not self.options.randomize_tickets:
             return None
 
         if item.btid == self.starting_egg:

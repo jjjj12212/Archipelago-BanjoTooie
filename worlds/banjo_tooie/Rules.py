@@ -539,7 +539,6 @@ class BanjoTooieRules:
 
             locationName.JINJOMT1: lambda state: self.jinjo_jadesnakegrove(state),
             locationName.JINJOMT2: lambda state: self.jinjo_stadium(state),
-            locationName.JINJOMT3: lambda state: self.breegull_blaster(state),
             locationName.JINJOMT4: lambda state: self.jinjo_pool(state),
 
             #Water Storage Jinjo always true because it's in the GMWSJT area
@@ -724,20 +723,6 @@ class BanjoTooieRules:
 
             locationName.NESTMT22: lambda state: self.nest_code_chamber(state),
 
-            locationName.NESTMT25:    lambda state: self.breegull_blaster(state),
-            locationName.NESTMT26:    lambda state: self.breegull_blaster(state),
-            locationName.NESTMT27:    lambda state: self.breegull_blaster(state),
-            locationName.NESTMT28:    lambda state: self.breegull_blaster(state),
-            locationName.NESTMT29:    lambda state: self.breegull_blaster(state),
-            locationName.NESTMT30:    lambda state: self.breegull_blaster(state),
-            locationName.NESTMT31:    lambda state: self.breegull_blaster(state),
-            locationName.NESTMT32:    lambda state: self.breegull_blaster(state),
-            locationName.NESTMT33:    lambda state: self.breegull_blaster(state),
-            locationName.NESTMT34:    lambda state: self.breegull_blaster(state),
-            locationName.NESTMT35:    lambda state: self.breegull_blaster(state),
-
-
-
             locationName.NESTGM3:    lambda state: self.nest_bill_drill(state),
             locationName.NESTGM4:    lambda state: self.nest_bill_drill(state),
 
@@ -772,24 +757,6 @@ class BanjoTooieRules:
 
             locationName.NESTWW15:    lambda state: self.nest_pump_room(state),
             locationName.NESTWW16:    lambda state: self.nest_pump_room(state),
-
-            locationName.NESTWW27:    lambda state: self.nest_big_top(state),
-            locationName.NESTWW28:    lambda state: self.nest_big_top(state),
-            locationName.NESTWW29:    lambda state: self.nest_big_top(state),
-            locationName.NESTWW30:    lambda state: self.nest_big_top(state),
-            locationName.NESTWW31:    lambda state: self.nest_big_top(state),
-            locationName.NESTWW32:    lambda state: self.nest_big_top(state),
-            locationName.NESTWW33:    lambda state: self.nest_big_top(state),
-            locationName.NESTWW34:    lambda state: self.nest_big_top(state),
-            locationName.NESTWW35:    lambda state: self.nest_big_top(state),
-            locationName.NESTWW36:    lambda state: self.nest_big_top(state),
-            locationName.NESTWW37:    lambda state: self.nest_big_top(state),
-            locationName.NESTWW38:    lambda state: self.nest_big_top(state),
-            locationName.NESTWW39:    lambda state: self.nest_big_top(state),
-            locationName.NESTWW40:    lambda state: self.nest_big_top(state),
-            locationName.NESTWW41:    lambda state: self.nest_big_top(state),
-            locationName.NESTWW42:    lambda state: self.nest_big_top(state),
-
 
             locationName.NESTJR3:    lambda state: self.has_explosives(state) or state.has(itemName.DOUBLOON, self.player, 28),
             locationName.NESTJR4:    lambda state: self.has_explosives(state) or state.has(itemName.DOUBLOON, self.player, 28),
@@ -1029,8 +996,6 @@ class BanjoTooieRules:
             locationName.SIGNMT3: lambda state: self.signpost_pillars(state),
 
             locationName.SIGNMT7: lambda state: self.signpost_code_chamber(state),
-            locationName.SIGNMT8: lambda state: self.breegull_blaster(state),
-            locationName.SIGNMT9: lambda state: self.breegull_blaster(state),
 
             locationName.SIGNGM1: lambda state: self.signpost_gloomy_cavern(state),
             locationName.SIGNGM4: lambda state: self.signpost_chuffy(state),
@@ -1075,20 +1040,34 @@ class BanjoTooieRules:
             locationName.WARPCK2: lambda state: self.warp_pad_ck_top(state),
         }
 
+        if self.world.options.randomize_tickets:
+            self.big_top_tickets_rules = {
+                locationName.BTTICK1: lambda state: self.can_kill_fruity(state),
+                locationName.BTTICK2: lambda state: self.can_kill_fruity(state),
+                locationName.BTTICK3: lambda state: self.can_kill_fruity(state),
+                locationName.BTTICK4: lambda state: self.can_kill_fruity(state),
+            }
+
+    def has_green_relics(self, state: CollectionState, amt) -> bool:
+        if self.world.options.randomize_green_relics:
+            return state.has(itemName.GRRELIC, self.player, amt)
+        else:
+            return True
+
     def jiggy_targitzan(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-          logic = self.jiggy_sschamber(state) and (self.blue_eggs_item(state) or self.fire_eggs_item(state) or self.grenade_eggs_item(state))
+          logic = self.has_green_relics(state, 20) and (self.blue_eggs_item(state) or self.fire_eggs_item(state) or self.grenade_eggs_item(state))
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-          logic = self.jiggy_sschamber(state)\
+          logic = self.has_green_relics(state, 20)\
                          and ((self.blue_eggs_item(state) or self.fire_eggs_item(state) or self.grenade_eggs_item(state))\
                               or self.ice_eggs_item(state) and self.beak_bayonet(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-          logic = self.jiggy_sschamber(state)\
+          logic = self.has_green_relics(state, 20)\
                          and ((self.blue_eggs_item(state) or self.fire_eggs_item(state) or self.grenade_eggs_item(state))\
                               or self.ice_eggs_item(state) and self.beak_bayonet(state))
         elif self.world.options.logic_type == LogicType.option_glitches:
-          logic = self.jiggy_sschamber(state)\
+          logic = self.has_green_relics(state, 20)\
                          and ((self.blue_eggs_item(state) or self.fire_eggs_item(state) or self.grenade_eggs_item(state))\
                               or self.ice_eggs_item(state) and self.beak_bayonet(state))
         return logic
@@ -1096,13 +1075,13 @@ class BanjoTooieRules:
     def jiggy_sschamber(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.breegull_blaster(state)
+            logic = self.has_green_relics(state, 10)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.breegull_blaster(state)
+            logic = self.has_green_relics(state, 10)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.breegull_blaster(state)
+            logic = self.has_green_relics(state, 10)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.breegull_blaster(state)
+            logic = self.has_green_relics(state, 10)
         return logic
 
     def jiggy_mayahem_kickball(self, state: CollectionState) -> bool:
@@ -5471,17 +5450,23 @@ class BanjoTooieRules:
                     or self.clockwork_shot(state) and self.small_elevation(state)
                     ) and self.has_explosives(state)
         return logic
-
-    def nest_big_top(self, state: CollectionState) -> bool:
+    
+    def has_enough_bigtop_tickets(self, state: CollectionState) -> bool:
+        if self.world.options.randomize_tickets:
+            return state.has(itemName.BTTICKET, self.player, 4)
+        else:
+            return self.can_kill_fruity(state)
+    
+    def can_enter_big_top(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.grenade_eggs_item(state) and self.airborne_egg_aiming(state) and self.can_kill_fruity(state)
+            logic = self.grenade_eggs_item(state) and self.airborne_egg_aiming(state) and self.has_enough_bigtop_tickets(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.grenade_eggs_item(state) and self.airborne_egg_aiming(state) and self.can_kill_fruity(state)
+            logic = self.grenade_eggs_item(state) and self.airborne_egg_aiming(state) and self.has_enough_bigtop_tickets(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.grenade_eggs_item(state) and self.airborne_egg_aiming(state) and self.can_kill_fruity(state)
+            logic = self.grenade_eggs_item(state) and self.airborne_egg_aiming(state) and self.has_enough_bigtop_tickets(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.grenade_eggs_item(state) and self.airborne_egg_aiming(state) and self.can_kill_fruity(state)
+            logic = self.grenade_eggs_item(state) and self.airborne_egg_aiming(state) and self.has_enough_bigtop_tickets(state)
         return logic
 
     def nest_jolly_gunpowder(self, state: CollectionState) -> bool:
@@ -9582,6 +9567,11 @@ class BanjoTooieRules:
             for location, rules in self.honeyb_rewards_rules.items():
                 honeyb = self.world.multiworld.get_location(location, self.player)
                 set_rule(honeyb, rules)
+
+        if self.world.options.randomize_tickets:
+            for location, rules in self.big_top_tickets_rules.items():
+                tickets = self.world.multiworld.get_location(location, self.player)
+                set_rule(tickets, rules)
 
         for location, rules in self.scrit_scrat_scrut_rules.items():
                 dinos = self.world.multiworld.get_location(location, self.player)

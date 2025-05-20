@@ -92,6 +92,9 @@ CHEATFALL     = "Cheato Reward: Fallproof"
 CHEATHONEY    = "Cheato Reward: Honeyback"
 CHEATJUKE     = "Cheato Reward: Jukebox"
 
+BTTICKET      = "Big Top Ticket"
+GRRELIC        = "Green Relic"
+
 # Mumbo Magics
 MUMBOMT = "Mumbo: Golden Goliath"
 MUMBOGM = "Mumbo: Levitate"

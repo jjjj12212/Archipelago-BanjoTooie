@@ -212,6 +212,14 @@ class EnableHoneyBRewards(DefaultOnToggle):
     Empty Honeycombs are set to progrssion when this setting is enabled."""
     display_name = "Honey B Rewards"
 
+class RandomizeGreenRelics(DefaultOnToggle):
+    """Targitzan's Green Relics are randomized."""
+    display_name = "Randomize Green Relics"
+
+class RandomizeBigTentTickets(DefaultOnToggle):
+    """Big Top Tickets are randomized."""
+    display_name = "Randomize Big Top Tickets"
+
 class RandomizeGlowbos(DefaultOnToggle):
     """Mumbo and Humba Magic are in the pool and automatically unlocked when received.
     When disabled, collecting a Glowbo will give you either a Mumbo or Humba Magic."""
@@ -646,6 +654,8 @@ class BanjoTooieOptions(PerGameCommonOptions):
     auto_enable_cheats: AutoEnableCheats
     randomize_honeycombs: RandomizeHoneycombs
     honeyb_rewards: EnableHoneyBRewards
+    randomize_tickets:RandomizeBigTentTickets
+    randomize_green_relics:RandomizeGreenRelics
     randomize_glowbos: RandomizeGlowbos
     randomize_stop_n_swap: RandomizeStopnSwap
     randomize_dino_roar: RandomizeWorldDinoRoar

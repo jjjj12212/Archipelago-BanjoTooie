@@ -60,6 +60,7 @@ WWS = "Witchyworld Station"
 WWI = "Witchyworld - The Inferno"
 WWA51NESTS = "Witchyworld - Area 51 Egg Nests"
 WWWARP = "Witchyworld Warp Pads"
+WWBT = "Big Top"
 
 JR = "Jolly Roger's Lagoon - Town Center"
 JRU = "Jolly Roger's Lagoon - Underwater At Start"
