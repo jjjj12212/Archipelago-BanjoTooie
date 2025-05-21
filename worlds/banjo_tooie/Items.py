@@ -4,7 +4,7 @@ from .Names import itemName, locationName
 
 
 class BanjoTooieItem(Item):
-    # 1230918 (Green Relics) but beware of level access keys that are way higher!
+    # 1230923 (Green Relics) but beware of level access keys that are way higher!
     game: str = "Banjo-Tooie"
 class ItemData(NamedTuple):
     btid: int = 0
@@ -149,8 +149,8 @@ misc_collectable_table = {
     itemName.TRTRAP:        ItemData(1230788,  0, "trap", ""),
     itemName.SQTRAP:        ItemData(1230789,  0, "trap", ""),
     itemName.TITRAP:        ItemData(1230833,  0, "trap", ""),
-    itemName.BTTICKET:      ItemData(1230917, 4, "progress", ""),
-    itemName.GRRELIC:        ItemData(1230918, 25, "progress", "")
+    itemName.BTTICKET:      ItemData(1230922, 4, "progress", ""),
+    itemName.GRRELIC:        ItemData(1230923, 25, "progress", "")
 }
 
 stop_n_swap_table = {
