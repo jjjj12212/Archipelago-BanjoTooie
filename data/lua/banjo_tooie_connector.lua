@@ -85,6 +85,8 @@ local TOTAL_PAGES = 0;
 local TOTAL_DOUBLOONS = 0;
 local TOTAL_NOTES = 0;
 local TOTAL_HEALTHUPGRADE = 0;
+local TOTAL_BTTICKETS = 0;
+local TOTAL_GRRELICS = 0;
 
 local WHITE_JINJO = 0;
 local ORANGE_JINJO = 0;
@@ -5732,8 +5734,8 @@ local MAP_ENTRANCES = {
 BTHACK = {
     RDRAMBase = 0x80000000,
     RDRAMSize = 0x800000,
-    base_index = 0x400000,
-    version = 0x0,
+        base_index = 0x400000,
+        version = 0x0,
     pc = 0x4,
         pc_death_us = 0x0,
         pc_death_ap = 0x1,
@@ -7545,6 +7547,11 @@ function bttickets_check()
     return checks
 end
 
+function obtain_AP_TICKETS()
+    TOTAL_BTTICKETS = TOTAL_BTTICKETS + 1
+    BTH:setItem(ITEM_TABLE["AP_ITEM_BTTICKET"], TOTAL_BTTICKETS)
+end
+
 ---------------------- GREEN RELICS ----------------------------
 function grrelic_check()
     local checks = {}
@@ -7559,6 +7566,11 @@ function grrelic_check()
         end
     end
     return checks
+end
+
+function obtain_AP_GRRELIC()
+    TOTAL_GRRELICS = TOTAL_GRRELICS + 1
+    BTH:setItem(ITEM_TABLE["AP_ITEM_GRRELIC"], TOTAL_GRRELICS)
 end
 
 ---------------------- GAME FUNCTIONS -------------------
@@ -8216,6 +8228,12 @@ function processAGIItem(item_list)
             elseif(memlocation == 1230833) -- Tip Trap
             then
                 traps(memlocation)
+            elseif(memlocation == 1230917) -- BigTop Tickets
+            then
+                obtain_AP_TICKETS()
+            elseif(memlocation == 1230918) -- Green Relic
+            then
+                obtain_AP_GRRELIC()
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
         end
