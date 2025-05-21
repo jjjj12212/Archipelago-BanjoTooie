@@ -8228,10 +8228,10 @@ function processAGIItem(item_list)
             elseif(memlocation == 1230833) -- Tip Trap
             then
                 traps(memlocation)
-            elseif(memlocation == 1230917) -- BigTop Tickets
+            elseif(memlocation == 1230922) -- BigTop Tickets
             then
                 obtain_AP_TICKETS()
-            elseif(memlocation == 1230918) -- Green Relic
+            elseif(memlocation == 1230923) -- Green Relic
             then
                 obtain_AP_GRRELIC()
             end
