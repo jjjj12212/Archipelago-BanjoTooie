@@ -1,4 +1,4 @@
-from .Options import EggsBehaviour, GameLength, JamjarsSiloCosts, LogicType, ProgressiveEggAim, ProgressiveWaterTraining, RandomizeBKMoveList
+from .Options import EggsBehaviour, WorldRequirements, JamjarsSiloCosts, LogicType, ProgressiveEggAim, ProgressiveWaterTraining, RandomizeBKMoveList
 from Options import OptionError
 from .Names import itemName, regionName, locationName
 from typing import TYPE_CHECKING, List
@@ -128,15 +128,15 @@ def set_level_costs(world: BanjoTooieWorld) -> None:
             raise ValueError("Custom Cost for world "+str(i+1)+" is too high.")
 
     chosen_costs = []
-    if world.options.game_length == GameLength.option_quick:
+    if world.options.game_length == WorldRequirements.option_quick:
         chosen_costs = quick_costs
-    elif world.options.game_length == GameLength.option_normal:
+    elif world.options.game_length == WorldRequirements.option_normal:
         chosen_costs = normal_costs
-    elif world.options.game_length == GameLength.option_long:
+    elif world.options.game_length == WorldRequirements.option_long:
         chosen_costs = long_costs
-    elif world.options.game_length == GameLength.option_custom:
+    elif world.options.game_length == WorldRequirements.option_custom:
         chosen_costs = custom_costs
-    elif world.options.game_length == GameLength.option_randomize:
+    elif world.options.game_length == WorldRequirements.option_randomize:
         chosen_costs = random_costs
 
     world.randomize_worlds = {list(world.randomize_order.keys())[i]: chosen_costs[i] for i in range(len(list(world.randomize_order.keys())))}

@@ -12,7 +12,7 @@ from .Hints import HintData, generate_hints
 from .Items import BanjoTooieItem, ItemData, all_item_table, all_group_table, progressive_ability_breakdown, silo_table
 from .Locations import BanjoTooieLocation, LocationData, all_location_table, MTLoc_Table, GMLoc_table, WWLoc_table, JRLoc_table, TLLoc_table, GILoc_table, HPLoc_table, CCLoc_table, MumboTokenGames_table, MumboTokenBoss_table, MumboTokenJinjo_table, SMLoc_table, JVLoc_table, IHWHLoc_table, IHPLLoc_table, IHPGLoc_table, IHCTLoc_table, IHWLLoc_table, IHQMLoc_table, CheatoRewardsLoc_table, JinjoRewardsLoc_table, HoneyBRewardsLoc_table
 from .Regions import create_regions, connect_regions
-from .Options import BanjoTooieOptions, EggsBehaviour, JamjarsSiloCosts, LogicType, ProgressiveEggAim, ProgressiveWaterTraining, RandomizeBKMoveList, TowerOfTragedy, VictoryCondition
+from .Options import BanjoTooieOptions, EggsBehaviour, JamjarsSiloCosts, LogicType, ProgressiveEggAim, ProgressiveWaterTraining, RandomizeBKMoveList, TowerOfTragedy, VictoryCondition, bt_option_groups
 from .Rules import BanjoTooieRules
 from .Names import itemName, locationName, regionName
 from .WorldOrder import WorldRandomize
@@ -46,7 +46,7 @@ class BanjoTooieWeb(WebWorld):
         ["g0goTBC"])
 
     tutorials = [setup_en, setup_fr]
-
+    option_groups = bt_option_groups
 
 class BanjoTooieWorld(World):
     """
@@ -152,6 +152,7 @@ class BanjoTooieWorld(World):
         locationName.CHEATOCC1,
         locationName.CHEATOCC3,
     }
+
 
     options_dataclass =  BanjoTooieOptions
     options: BanjoTooieOptions
@@ -415,7 +416,7 @@ class BanjoTooieWorld(World):
         elif (name == itemName.TTROT or name == itemName.TJUMP) and self.options.randomize_bk_moves == RandomizeBKMoveList.option_mcjiggy_special: # talon trot and tall jump not in pool
             return None
 
-        if name in all_group_table['moves'].keys() and not self.options.randomize_moves:
+        if name in all_group_table['moves'].keys() and not self.options.randomize_bt_moves:
             return None
 
         if name in all_group_table['magic'].keys() and not self.options.randomize_glowbos:
@@ -533,25 +534,25 @@ class BanjoTooieWorld(World):
                 raise OptionError("You cannot have more than 50 Mumbo Tokens without enabling Nestanity.")
         if not self.options.randomize_notes and (self.options.extra_trebleclefs_count != 0 and self.options.bass_clef_amount != 0):
             raise OptionError("Randomize Notes is required to add extra Treble Clefs or Bass Clefs")
-        if self.options.progressive_beak_buster and (not self.options.randomize_bk_moves or not self.options.randomize_moves):
+        if self.options.progressive_beak_buster and (not self.options.randomize_bk_moves or not self.options.randomize_bt_moves):
             raise OptionError("You cannot have progressive Beak Buster without randomizing moves and randomizing BK moves")
-        if (self.options.egg_behaviour == EggsBehaviour.option_random_starting_egg or self.options.egg_behaviour == EggsBehaviour.option_simple_random_starting_egg) and (not self.options.randomize_bk_moves or not self.options.randomize_moves):
+        if (self.options.egg_behaviour == EggsBehaviour.option_random_starting_egg or self.options.egg_behaviour == EggsBehaviour.option_simple_random_starting_egg) and (not self.options.randomize_bk_moves or not self.options.randomize_bt_moves):
             raise OptionError("You cannot have Randomize Starting Egg without randomizing moves and randomizing BK moves")
-        elif self.options.egg_behaviour == EggsBehaviour.option_progressive_eggs and not self.options.randomize_moves:
+        elif self.options.egg_behaviour == EggsBehaviour.option_progressive_eggs and not self.options.randomize_bt_moves:
             raise OptionError("You cannot have progressive Eggs without randomizing moves")
-        if self.options.progressive_shoes and not (self.options.randomize_bk_moves and self.options.randomize_moves and (self.options.randomize_signposts or self.options.nestsanity)):
+        if self.options.progressive_shoes and not (self.options.randomize_bk_moves and self.options.randomize_bt_moves and (self.options.randomize_signposts or self.options.nestsanity)):
             raise OptionError("You cannot have progressive Shoes without randomizing moves, randomizing BK moves and enabling either nestanity or randomize signpost")
-        if self.options.progressive_water_training != ProgressiveWaterTraining.option_none and (self.options.randomize_bk_moves == RandomizeBKMoveList.option_none or not self.options.randomize_moves):
+        if self.options.progressive_water_training != ProgressiveWaterTraining.option_none and (self.options.randomize_bk_moves == RandomizeBKMoveList.option_none or not self.options.randomize_bt_moves):
             raise OptionError("You cannot have progressive Water Training without randomizing moves and randomizing BK moves")
-        if self.options.progressive_flight and (not self.options.randomize_bk_moves or not self.options.randomize_moves):
+        if self.options.progressive_flight and (not self.options.randomize_bk_moves or not self.options.randomize_bt_moves):
             raise OptionError("You cannot have progressive flight without randomizing moves and randomizing BK moves")
-        if self.options.progressive_egg_aiming != ProgressiveEggAim.option_none and (not self.options.randomize_bk_moves or not self.options.randomize_moves):
+        if self.options.progressive_egg_aiming != ProgressiveEggAim.option_none and (not self.options.randomize_bk_moves or not self.options.randomize_bt_moves):
             raise OptionError("You cannot have progressive egg aiming without randomizing moves and randomizing BK moves")
-        if self.options.progressive_bash_attack and (not self.options.randomize_stop_n_swap or not self.options.randomize_moves):
+        if self.options.progressive_bash_attack and (not self.options.randomize_stop_n_swap or not self.options.randomize_bt_moves):
             raise OptionError("You cannot have progressive bash attack without randomizing Stop N Swap and randomizing BK moves")
-        if not self.options.randomize_moves and self.options.jamjars_silo_costs != JamjarsSiloCosts.option_vanilla:
+        if not self.options.randomize_bt_moves and self.options.jamjars_silo_costs != JamjarsSiloCosts.option_vanilla:
             raise OptionError("You cannot change the silo costs without randomizing Jamjars' moves.")
-        # if not self.options.randomize_moves and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none and self.options.open_silos < 2:
+        # if not self.options.randomize_bt_moves and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none and self.options.open_silos < 2:
         #     raise OptionError("If you enabled Randomized Worlds with BK Moves randomized, you must have at least 2 silos opened.")
         if not self.options.open_hag1 and self.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
             self.options.open_hag1.value = True
@@ -627,7 +628,7 @@ class BanjoTooieWorld(World):
         if not self.options.randomize_doubloons:
             self.banjo_pre_fills(itemName.DOUBLOON, "Doubloon", False)
 
-        if not self.options.randomize_moves:
+        if not self.options.randomize_bt_moves:
             self.banjo_pre_fills("Moves", None, True)
 
         if not self.options.randomize_dino_roar:
@@ -882,7 +883,7 @@ class BanjoTooieWorld(World):
             "boss_hunt_length",
             "jinjo_family_rescue_length",
             "token_hunt_length",
-            "randomize_moves",
+            "randomize_bt_moves",
             "randomize_bk_moves",
             "egg_behaviour",
             "progressive_beak_buster",
