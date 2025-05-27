@@ -1,4 +1,4 @@
-from ..Options import GameLength
+from ..Options import WorldRequirements
 from ..Names import itemName
 from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
@@ -25,32 +25,32 @@ class GameLengthTest(BanjoTooieTestBase):
 class GameLengthMinTest(GameLengthTest):
     expected_world_costs = [1, 1, 1, 1, 1, 1, 1, 1, 1]
     options = {
-        "game_length": GameLength.option_custom,
+        "game_length": WorldRequirements.option_custom,
         "custom_worlds": "1,1,1,1,1,1,1,1,1"
     }
 
 class GameLengthQuickTest(GameLengthTest):
     expected_world_costs = [1,3,6,10,15,21,28,35,44]
     options = {
-        "game_length": GameLength.option_quick
+        "game_length": WorldRequirements.option_quick
     }
 
 class GameLengthNormalTest(GameLengthTest):
     expected_world_costs = [1,4,8,14,20,28,36,45,55]
     options = {
-        "game_length": GameLength.option_normal
+        "game_length": WorldRequirements.option_normal
     }
 
 class GameLengthLongTest(GameLengthTest):
     expected_world_costs = [1,8,16,25,34,43,52,60,70]
     options = {
-        "game_length": GameLength.option_long
+        "game_length": WorldRequirements.option_long
     }
 
 class GameLengthMaxTest(GameLengthTest):
     expected_world_costs = [1,10,20,30,50,60,70,80,90]
     options = {
-        "game_length": GameLength.option_custom,
+        "game_length": WorldRequirements.option_custom,
         "custom_worlds": "1,10,20,30,50,60,70,80,90"
     }
 
