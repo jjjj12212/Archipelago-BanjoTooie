@@ -1451,6 +1451,13 @@ GREEN_RELIC_REGIONS: typing.Dict[str, typing.List[str]] = {
     ]
 }
 
+BEANS_REGIONS: typing.Dict[str, typing.List[str]] = {
+    regionName.CC:      [
+        locationName.BEANCC1,
+        locationName.BEANCC2
+    ]
+}
+
 
 def create_regions(self):
     player = self.player
@@ -1539,6 +1546,12 @@ def create_regions(self):
     if self.options.randomize_green_relics:
         relic_map = copy.deepcopy(GREEN_RELIC_REGIONS)
         for region, locations in relic_map.items():
+            for location in locations:
+                region_map[region].append(location)
+
+    if self.options.randomize_beans:
+        beans_map = copy.deepcopy(BEANS_REGIONS)
+        for region, locations in beans_map.items():
             for location in locations:
                 region_map[region].append(location)
 

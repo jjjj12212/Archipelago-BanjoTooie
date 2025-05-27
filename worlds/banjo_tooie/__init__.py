@@ -459,6 +459,9 @@ class BanjoTooieWorld(World):
         
         if name == itemName.BTTICKET and not self.options.randomize_tickets:
             return None
+        
+        if name == itemName.BEANS and not self.options.randomize_beans:
+            return None
 
         if item.btid == self.starting_egg:
             return None
@@ -910,6 +913,7 @@ class BanjoTooieWorld(World):
             "honeyb_rewards",
             "randomize_tickets",
             "randomize_green_relics",
+            "randomize_beans",
             "randomize_glowbos",
             "randomize_stop_n_swap",
             "randomize_dino_roar",

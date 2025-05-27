@@ -219,6 +219,10 @@ class RandomizeGreenRelics(DefaultOnToggle):
     """Targitzan's Green Relics are randomized."""
     display_name = "Randomize Green Relics"
 
+class RandomizeBeans(DefaultOnToggle):
+    """CCL Beans are randomized."""
+    display_name = "Randomize Beans"
+
 class RandomizeBigTentTickets(DefaultOnToggle):
     """Big Top Tickets are randomized."""
     display_name = "Randomize Big Top Tickets"
@@ -655,6 +659,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     honeyb_rewards: EnableHoneyBRewards
     randomize_tickets:RandomizeBigTentTickets
     randomize_green_relics:RandomizeGreenRelics
+    randomize_beans:RandomizeBeans
     randomize_glowbos: RandomizeGlowbos
     randomize_stop_n_swap: RandomizeStopnSwap
     randomize_dino_roar: RandomizeWorldDinoRoar
@@ -670,6 +675,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_worlds: RandomizeWorldOrder
     randomize_world_loading_zone: RandomizeWorldZones
     backdoors: Backdoors
+    open_gi_frontdoor: GIFrontdoor
 
     signpost_hints: SignpostHints
     signpost_move_hints: SignpostMoveHints
@@ -744,6 +750,9 @@ bt_option_groups: List[OptionGroup] = [
         RandomizeCheatoRewards,
         RandomizeHoneycombs,
         EnableHoneyBRewards,
+        RandomizeBigTentTickets,
+        RandomizeGreenRelics,
+        RandomizeBeans,
         RandomizeGlowbos,
         RandomizeStopnSwap,
         RandomizeWorldDinoRoar,

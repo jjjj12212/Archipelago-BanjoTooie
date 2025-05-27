@@ -189,6 +189,10 @@ GLOWBOCC2 = "CCL: Indoors Pool Glowbo"
 GLOWBOIH1 = "IoH: Cliff Top Glowbo"
 GLOWBOMEG = "HFP: Mega Glowbo"
 
+#Beans
+BEANCC1 = "CCL: Dirt Patch Bean 1"
+BEANCC2 = "CCL: Dirt Patch Bean 2"
+
 #Honeycombs
 HONEYCMT1  = "MT: Entrance Honeycomb"
 HONEYCMT2  = "MT: Bovina Honeycomb"

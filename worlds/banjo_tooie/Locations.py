@@ -7,7 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
 
 class LocationData(typing.NamedTuple):
-    #last good ID: 1231638 (Green Relic)
+    #last good ID: 1231640 (CCL Bean 2)
     #12C770 pointer instead (1230704)
     btid: int = 0
     # Save + mem addr
@@ -1103,7 +1103,10 @@ CCLoc_table = {
     locationName.WARPCC2:   LocationData(1231593, 0, 0, "Warp Pads"),
 
     locationName.FITHJ:     LocationData(1231608, 0x76, 4),
-    locationName.FITSR:     LocationData(1231609, 0x76, 5)
+    locationName.FITSR:     LocationData(1231609, 0x76, 5),
+
+    locationName.BEANCC1:   LocationData(1231639, 0x62, 6),
+    locationName.BEANCC2:   LocationData(1231640, 0x62, 5),
 }
 
 WorldUnlocks_table = {

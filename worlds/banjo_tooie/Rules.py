@@ -1048,6 +1048,12 @@ class BanjoTooieRules:
                 locationName.BTTICK4: lambda state: self.can_kill_fruity(state),
             }
 
+        if self.world.options.randomize_beans:
+            self.beans_rules = {
+                locationName.BEANCC1: lambda state: self.bill_drill(state),
+                locationName.BEANCC2: lambda state: self.bill_drill(state)
+            }
+
     def has_green_relics(self, state: CollectionState, amt) -> bool:
         if self.world.options.randomize_green_relics:
             return state.has(itemName.GRRELIC, self.player, amt)
@@ -2526,6 +2532,9 @@ class BanjoTooieRules:
                     or (self.leg_spring(state) or (self.split_up(state) and self.tall_jump(state)))\
                         and (self.flight_pad(state) and self.beak_bomb(state) or self.glide(state)))
         return logic
+
+
+    
 
     def jiggy_cheese(self, state: CollectionState) -> bool:
         logic = True
@@ -8822,8 +8831,14 @@ class BanjoTooieRules:
     def can_use_floatus(self, state) -> bool:
         return self.taxi_pack(state) and self.hatch(state)
 
+    def has_enough_beans(self, state: CollectionState) -> bool:
+        if self.world.options.randomize_beans:
+            return state.has(itemName.BEANS, self.player, 2)
+        else:
+            return self.bill_drill(state)
+
     def grow_beanstalk(self, state: CollectionState) -> bool:
-        return self.bill_drill(state) and self.mumboCCL(state) and self.flight_pad(state) and self.climb(state)
+        return self.has_enough_beans(state) and self.mumboCCL(state) and self.flight_pad(state) and self.climb(state)
 
     def check_hag1_options(self, state: CollectionState) -> bool:
         door_open = False
@@ -9151,7 +9166,6 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = state.has(itemName.HUMBAGM, self.player) and (self.ggm_trot(state) or self.warp_to_ggm_wumba(state))
         return logic
-
 
     def mumboGGM(self, state: CollectionState) -> bool:
         return self.small_elevation(state) and state.has(itemName.MUMBOGM, self.player)
@@ -9572,6 +9586,11 @@ class BanjoTooieRules:
             for location, rules in self.big_top_tickets_rules.items():
                 tickets = self.world.multiworld.get_location(location, self.player)
                 set_rule(tickets, rules)
+        
+        if self.world.options.randomize_beans:
+            for location, rules in self.beans_rules.items():
+                beans = self.world.multiworld.get_location(location, self.player)
+                set_rule(beans, rules)
 
         for location, rules in self.scrit_scrat_scrut_rules.items():
                 dinos = self.world.multiworld.get_location(location, self.player)

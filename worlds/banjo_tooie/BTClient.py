@@ -64,7 +64,7 @@ bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_i
 script_version: int = 4
 version: str = "V4.6"
 game_append_version: str = "V46"
-patch_md5: str = "009591561a182bb01a6f4f22aadf9aeb"
+patch_md5: str = "d4e83f4fc9f3badf3828a21837648e2c"
 
 def get_item_value(ap_id):
     return ap_id
@@ -159,6 +159,7 @@ class BanjoTooieContext(CommonContext):
         self.mr_fit_table = {}
         self.bt_tickets_table = {}
         self.green_relics_table = {}
+        self.beans_table = {}
         self.signpost_table = {}
         self.warppads_table = {}
         self.silos_table = {}
@@ -378,7 +379,8 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_honeyb_rewards": ctx.slot_data["honeyb_rewards"],
             "slot_open_gi_entrance": ctx.slot_data["open_gi_frontdoor"],
             "slot_randomize_tickets": ctx.slot_data["randomize_tickets"],
-            "slot_randomize_green_relics": ctx.slot_data["randomize_green_relics"]
+            "slot_randomize_green_relics": ctx.slot_data["randomize_green_relics"],
+            "slot_randomize_beans": ctx.slot_data["randomize_beans"]
         })
     ctx.sendSlot = False
     return payload
@@ -441,6 +443,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     banjo_map = payload["banjo_map"]
     bt_tickets = payload["bt_tickets"]
     green_relics = payload["green_relics"]
+    beans = payload["beans"]
 
 
     # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
@@ -514,6 +517,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         bt_tickets = {}
     if isinstance(green_relics, list):
         green_relics = {}
+    if isinstance(beans, list):
+        beans = {}
 
     if demo == False and ctx.sync_ready == True:
         locs1 = []
@@ -619,6 +624,11 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         if ctx.green_relics_table != green_relics:
             ctx.green_relics_table = green_relics
             for locationId, value in green_relics.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.beans_table != beans:
+            ctx.beans_table = beans
+            for locationId, value in beans.items():
                 if value == True:
                     locs1.append(int(locationId))
         if ctx.roar != roar_obtain:

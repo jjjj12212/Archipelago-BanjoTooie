@@ -87,6 +87,7 @@ local TOTAL_NOTES = 0;
 local TOTAL_HEALTHUPGRADE = 0;
 local TOTAL_BTTICKETS = 0;
 local TOTAL_GRRELICS = 0;
+local TOTAL_BEANS = 0;
 
 local WHITE_JINJO = 0;
 local ORANGE_JINJO = 0;
@@ -2138,7 +2139,11 @@ local ASSET_MAP_CHECK = {
         ["MRFIT"] = {
             "1231608",
             "1231609"
-        }
+        },
+        ["BEANS"] = {
+            "1231639",
+            "1231640"
+        },
     },
     [0x13A] =	{ --CCL - Central Cavern
         ["JIGGIES"] = {
@@ -2429,6 +2434,7 @@ local ROM_ITEM_TABLE = {
     "AP_ITEM_SILO_QUAGMIRE",
     "AP_ITEM_BTTICKET",
     "AP_ITEM_GRRELIC",
+    "AP_ITEM_BEAN",
     "AP_ITEM_MAX",
 };
 
@@ -5619,7 +5625,17 @@ local ADDRESS_MAP = {
             ['addr'] = 0x5B,
             ['bit'] = 0,
         },
-    }
+    },
+    ["BEANS"] = {
+        ['1231639'] = {
+            ['addr'] = 0x62,
+            ['bit'] = 6
+        },
+        ['1231640'] = {
+            ['addr'] = 0x62,
+            ['bit'] = 5
+        }
+    },
 }
 
 -- Properties of world entrances and associated puzzles
@@ -5734,8 +5750,8 @@ local MAP_ENTRANCES = {
 BTHACK = {
     RDRAMBase = 0x80000000,
     RDRAMSize = 0x800000,
-        base_index = 0x400000,
-        version = 0x0,
+    base_index = 0x400000,
+    version = 0x0,
     pc = 0x4,
         pc_death_us = 0x0,
         pc_death_ap = 0x1,
@@ -5753,20 +5769,21 @@ BTHACK = {
         setting_cheato_rewards = 0xA,
         setting_randomize_tickets = 0xB,
         setting_randomize_green_relics = 0xC,
-        setting_puzzle = 0xD,
-        setting_backdoors = 0xE,
-        setting_gi_open_frontdoor = 0xF,
-        setting_klungo = 0x10,
-        setting_tot = 0x11,
-        setting_minigames = 0x12,
-        setting_dialog_character = 0x13,
-        setting_max_mumbo_tokens = 0x14,
-        setting_signpost_hints = 0x15,
-        setting_extra_cheats = 0x16,
-        setting_automatic_cheats = 0x17,
-        setting_easy_canary = 0x18,
-        setting_jiggy_requirements = 0x19,
-        setting_silo_requirements = 0x24,
+        setting_randomize_beans = 0xD,
+        setting_puzzle = 0xE,
+        setting_backdoors = 0xF,
+        setting_gi_open_frontdoor = 0x10,
+        setting_klungo = 0x11,
+        setting_tot = 0x12,
+        setting_minigames = 0x13,
+        setting_dialog_character = 0x14,
+        setting_max_mumbo_tokens = 0x15,
+        setting_signpost_hints = 0x16,
+        setting_extra_cheats = 0x17,
+        setting_automatic_cheats = 0x18,
+        setting_easy_canary = 0x19,
+        setting_jiggy_requirements = 0x1A,
+        setting_silo_requirements = 0x26,
     pc_items = 0x14,
     pc_traps = 0x18,
     pc_exit_map = 0x1C,
@@ -5917,6 +5934,10 @@ end
 
 function BTHACK:setSettingRandomizeGreenRelics(grelic)
     mainmemory.writebyte(self.setting_randomize_green_relics + BTHACK:getSettingPointer(), grelic);
+end
+
+function BTHACK:setSettingRandomizeBeans(beans)
+    mainmemory.writebyte(self.setting_randomize_beans + BTHACK:getSettingPointer(), beans);
 end
 
 function BTHACK:setSettingAutomaticCheats(cheats)
@@ -7573,6 +7594,28 @@ function obtain_AP_GRRELIC()
     BTH:setItem(ITEM_TABLE["AP_ITEM_GRRELIC"], TOTAL_GRRELICS)
 end
 
+---------------------- BEANS ----------------------------
+
+function beans_check()
+    local checks = {}
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK[CURRENT_MAP]["BEANS"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["BEANS"])
+            do
+                checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["BEANS"][locationId]['addr'], ADDRESS_MAP["BEANS"][locationId]['bit'])
+            end
+        end
+    end
+    return checks
+end
+
+function obtain_AP_BEANS()
+    TOTAL_BEANS = TOTAL_BEANS + 1
+    BTH:setItem(ITEM_TABLE["AP_ITEM_BEAN"], TOTAL_BEANS)
+end
+
 ---------------------- GAME FUNCTIONS -------------------
 
 function zoneWarp(zone_table)
@@ -8234,6 +8277,9 @@ function processAGIItem(item_list)
             elseif(memlocation == 1230923) -- Green Relic
             then
                 obtain_AP_GRRELIC()
+            elseif(memlocation == 1230924) -- Beans
+            then
+                obtain_AP_BEANS()
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
         end
@@ -8331,6 +8377,7 @@ function SendToBTClient()
     retTable["fit_events"] = mr_fit_events_check();
     retTable["bt_tickets"] = bttickets_check();
     retTable["green_relics"] = grrelic_check();
+    retTable["beans"] = beans_check();
 
     retTable["DEMO"] = false;
     retTable["sync_ready"] = "true"
@@ -8554,9 +8601,13 @@ function process_slot(block)
     then
         BTH:setSettingRandomizeTickets(1)
     end
-        if block['slot_randomize_green_relics'] ~= nil and block['slot_randomize_green_relics'] ~= 0
+    if block['slot_randomize_green_relics'] ~= nil and block['slot_randomize_green_relics'] ~= 0
     then
         BTH:setSettingRandomizeGreenRelics(1)
+    end
+    if block['slot_randomize_beans'] ~= nil and block['slot_randomize_beans'] ~= 0
+    then
+        BTH:setSettingRandomizeBeans(1)
     end
     if block['slot_skip_klungo'] ~= nil and block['slot_skip_klungo'] ~= 0
     then
