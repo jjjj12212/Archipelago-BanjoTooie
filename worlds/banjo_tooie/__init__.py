@@ -852,7 +852,16 @@ class BanjoTooieWorld(World):
             regionName.GIO: regionName.IOHQM + " (Grunty Industries Entrance)",
             regionName.HP: regionName.IOHCT_HFP_ENTRANCE,
             regionName.CC: regionName.IOHWL + " (Cloud Cuckooland Entrance)",
-            regionName.CK: regionName.IOHQM + " (Caudron Keep Entrance)"
+            regionName.CK: regionName.IOHQM + " (Caudron Keep Entrance)",
+            regionName.BOSSMT: regionName.BOSSMTE,
+            regionName.BOSSGM: regionName.BOSSGME,
+            regionName.BOSSWW: regionName.BOSSWWE,
+            regionName.BOSSJR: regionName.BOSSJRE,
+            regionName.BOSSTD: regionName.BOSSTDE,
+            regionName.BOSSGI: regionName.BOSSGIE,
+            regionName.BOSSHPF: regionName.BOSSHPFE,
+            regionName.BOSSHPI: regionName.BOSSHPIE,
+            regionName.BOSSCL: regionName.BOSSCLE,
         }
         bt_players = world.get_game_players(cls.game)
         spoiler_handle.write('\n\nBanjo-Tooie ({})'.format(BanjoTooieWorld.version))

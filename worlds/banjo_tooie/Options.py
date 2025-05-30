@@ -440,6 +440,10 @@ class RandomizeWorldZones(Toggle):
     """The main entrance of each world will warp you to a random world."""
     display_name = "Randomize World Entrances"
 
+class RandomizeBossZones(Toggle):
+    """The entrance of each boss will warp you to a random boss."""
+    display_name = "Randomize Bosses"
+
 class RandomizeStopnSwap(Toggle):
     """Mystery Eggs, their rewards, and the Ice Key are scattered across the MultiWorld."""
     display_name = "Randomize Stop n Swap"
@@ -674,6 +678,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     skip_puzzles: SkipPuzzles
     randomize_worlds: RandomizeWorldOrder
     randomize_world_loading_zone: RandomizeWorldZones
+    randomize_boss_loading_zone: RandomizeBossZones
     backdoors: Backdoors
     open_gi_frontdoor: GIFrontdoor
 
@@ -769,6 +774,7 @@ bt_option_groups: List[OptionGroup] = [
         SkipPuzzles,
         RandomizeWorldOrder,
         RandomizeWorldZones,
+        RandomizeBossZones,
         Backdoors,
         GIFrontdoor,
     ]),

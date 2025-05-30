@@ -5744,7 +5744,61 @@ local MAP_ENTRANCES = {
         ['entranceId'] = 1,
         ['exitId'] = 3,
         ['exitMap'] = 0x15C
-    }
+    },
+    [0x17A] = {
+        ['name'] = "Targitzan Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 2,
+        ['exitMap'] = 0x178
+    },
+    [0x0D1] = {
+        ['name'] = "King Coal Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 2,
+        ['exitMap'] = 0x0D0
+    },
+    [0x0F9] = {
+        ['name'] = "Mr Patch Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 3,
+        ['exitMap'] = 0x0D6
+    },
+    [0x0FC] = {
+        ['name'] = "Lord Woo Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 0x25, --different lockers
+        ['exitMap'] = 0x1A9
+    },
+    [0x113] = {
+        ['name'] = "Terry Room",
+        ['entranceId'] = 2,
+        ['exitId'] = 0x14,
+        ['exitMap'] = 0x112
+    },
+    [0x110] = {
+        ['name'] = "Weldar Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 3,
+        ['exitMap'] = 0x10F
+    },
+    [0x12B] = {
+        ['name'] = "Chilli Billi Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 0x16,
+        ['exitMap'] = 0x127
+    },
+    [0x12C] = {
+        ['name'] = "Chilli Willy Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 0x0C,
+        ['exitMap'] = 0x128
+    },
+    [0x13F] = {
+        ['name'] = "Mingy Jongo Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 0x16,
+        ['exitMap'] = 0x136
+    },
 }
 
 BTHACK = {
@@ -5803,6 +5857,7 @@ BTHACK = {
     fake_flags = 0x28,
     nest_flags = 0x2C,
     signpost_flags = 0x30,
+
     txt_queue = 0
 }
 
