@@ -1999,7 +1999,7 @@ def connect_regions(self):
             regionName.BOSSHPI: regionName.HP,
             regionName.BOSSCC: regionName.CC,
         }
-    
+
     #World Entrances
     for source, destination in self.loading_zones.items():
         if source in [regionName.BOSSMT,regionName.BOSSGM,regionName.BOSSWW,regionName.BOSSJR,
@@ -2016,51 +2016,44 @@ def connect_regions(self):
             region_actual_world_entrance.add_exits({overworld_entrance}, {overworld_entrance: lambda state: rules.GGM_to_PL(state)})
         else:
             region_actual_world_entrance.add_exits({overworld_entrance})
-    
+
     #Boss Entrances
-    for source, destination in self.loading_zones.items():
+    for source, boss_room in self.loading_zones.items():
         if source in [regionName.MT,regionName.GM,regionName.WW,regionName.JR,regionName.TL,regionName.GIO,
             regionName.HP,regionName.CC,regionName.CK]:
             continue
-        overworld_entrance = lookup_table[source]
 
-        source_region = self.get_region(overworld_entrance)
-        if destination == regionName.BOSSHPF:
-            if overworld_entrance == regionName.GI1:
-                source_region.add_exits({destination}, {destination: lambda state: rules.can_enter_gi_repairdepot(state) and rules.ice_eggs_item(state)})
-            else:
-                source_region.add_exits({destination}, {destination: lambda state: rules.ice_eggs_item(state)})
-        elif destination == regionName.BOSSJR:
-            if overworld_entrance == regionName.GI1:
-                source_region.add_exits({destination}, {destination: lambda state: rules.can_enter_gi_repairdepot(state) and rules.ice_eggs_item(state)})
-            else:
-                source_region.add_exits({destination}, {destination: lambda state: rules.grenade_eggs_item(state) and rules.sub_aqua_egg_aiming(state)})
-        elif destination == regionName.BOSSWW:
-            if overworld_entrance == regionName.GI1:
-                source_region.add_exits({destination}, {destination: lambda state: rules.can_enter_gi_repairdepot(state) and rules.ice_eggs_item(state)})
-            else:
-                source_region.add_exits({destination}, {destination: lambda state: rules.can_enter_big_top(state)})
-        elif destination == regionName.BOSSMT:
-            if overworld_entrance == regionName.GI1:
-                source_region.add_exits({destination}, {destination: lambda state: rules.can_enter_gi_repairdepot(state) and rules.ice_eggs_item(state)})
-            else:
-                source_region.add_exits({destination}, {destination: lambda state: rules.has_green_relics(state, 20)})
-        else:
-            if overworld_entrance == regionName.GI1:
-                source_region.add_exits({destination}, {destination: lambda state: rules.can_enter_gi_repairdepot(state) and rules.ice_eggs_item(state)})
-            else:
-                source_region.add_exits({destination})
+        boss_entrance = lookup_table[source]
+        source_region = self.get_region(boss_entrance)
+        source_rule = None
+        boss_room_rule = None
 
-        if source == regionName.BOSSHPF:
-            source_region.add_exits({destination}, {destination: lambda state: rules.flight_pad(state)})
-        if source == regionName.BOSSHPI: 
-            source_region.add_exits({destination}, {destination: lambda state:rules.can_reach_hfp_ice_crater(state)})
-
+        if source == regionName.BOSSMT:
+            source_rule = lambda state: rules.has_green_relics(state, 20)
         if source == regionName.BOSSGI:
-            entrance_GI1_to_BOSSGI_entrance = next(e for e in source_region.exits if e.connected_region.name == self.loading_zones[regionName.BOSSGI])
-            self.multiworld.register_indirect_condition(self.get_region(regionName.GI3), entrance_GI1_to_BOSSGI_entrance)
+            source_rule = lambda state: rules.can_enter_gi_repairdepot(state)
+            entrace_to_repair_depot = next(e for e in boss_entrance.exits if e.connected_region.name == self.loading_zones[regionName.BOSSGI])
+            self.multiworld.register_indirect_condition(self.get_region(regionName.GI3), entrace_to_repair_depot)
+        if source == regionName.BOSSHPF:
+            source_rule = lambda state: rules.flight_pad(state)
+        if source == regionName.BOSSHPI:
+            source_rule = lambda state: rules.can_reach_hfp_ice_crater(state)
+        else:
+            source_rule = lambda state: True
 
-        region_actual_world_entrance = self.get_region(destination)
+        if boss_room == regionName.BOSSMT:
+            boss_room_rule = lambda state: rules.breegull_blaster(state)
+        if boss_room == regionName.BOSSWW:
+            boss_room_rule = lambda state: rules.can_enter_big_top(state)
+        if boss_room == regionName.BOSSWW:
+            boss_room_rule = lambda state: rules.sub_aqua_egg_aiming(state) and rules.grenade_eggs_item(state)
+        if boss_room == regionName.BOSSGI:
+            boss_room_rule = lambda state: rules.grenade_eggs_item(state)
+        if boss_room == regionName.BOSSHPF:
+            boss_room_rule = lambda state: rules.ice_eggs_item(state)
+        else:
+            boss_room_rule = lambda state: True
 
-        region_actual_world_entrance.add_exits({overworld_entrance})
+        transition_rule = lambda state: source_rule(state) and boss_room_rule(state)
 
+        source_region.add_exits({boss_room}, {boss_room: transition_rule})
