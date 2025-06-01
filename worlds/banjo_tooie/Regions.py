@@ -1993,6 +1993,9 @@ def connect_regions(self):
     region_giboss_entrance = self.get_region(regionName.BOSSGIE)
     region_giboss_entrance.add_exits({regionName.GI1}, {})
 
+    entrance_GI1_to_BOSSGIE = next(e for e in region_GI1.exits if e.connected_region.name == regionName.BOSSGIE)
+    self.multiworld.register_indirect_condition(self.get_region(regionName.GI3), entrance_GI1_to_BOSSGIE)
+
     region_hfp_entrance = self.get_region(regionName.HFPE)
     region_hfp_entrance.add_exits({regionName.IOHCT_HFP_ENTRANCE, regionName.IOHCT},
                                   {regionName.IOHCT_HFP_ENTRANCE: lambda state: rules.HFP_to_CTHFP(state),

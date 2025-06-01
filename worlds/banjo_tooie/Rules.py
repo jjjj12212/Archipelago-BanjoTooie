@@ -7624,7 +7624,7 @@ class BanjoTooieRules:
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.can_use_battery(state) and self.mumboGI(state) and \
                self.humbaGI(state) and self.bill_drill(state) and self.climb(state) \
-                and self.flap_flip(state) and self.grip_grab(state)\
+                and self.flap_flip(state) and self.grip_grab(state) \
                 and (
                     state.has(itemName.WARPGI2, self.player) and state.has(itemName.WARPGI3, self.player)
                     if self.world.options.randomize_warp_pads
