@@ -169,7 +169,7 @@ def randomize_boss_loading_zones(world: BanjoTooieWorld) -> None:
         regionName.BOSSGI,
         regionName.BOSSHPF,
         regionName.BOSSHPI,
-        regionName.BOSSCL
+        regionName.BOSSCC
     ]
     if world.options.randomize_boss_loading_zone:
         randomized_boss_list = copy.deepcopy(boss_list)

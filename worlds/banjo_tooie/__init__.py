@@ -861,7 +861,7 @@ class BanjoTooieWorld(World):
             regionName.BOSSGI: regionName.BOSSGIE,
             regionName.BOSSHPF: regionName.BOSSHPFE,
             regionName.BOSSHPI: regionName.BOSSHPIE,
-            regionName.BOSSCL: regionName.BOSSCLE,
+            regionName.BOSSCC: regionName.BOSSCLE,
         }
         bt_players = world.get_game_players(cls.game)
         spoiler_handle.write('\n\nBanjo-Tooie ({})'.format(BanjoTooieWorld.version))
