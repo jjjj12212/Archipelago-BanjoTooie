@@ -2210,32 +2210,22 @@ class BanjoTooieRules:
             logic = self.claw_clamber_boots(state) 
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             # In case people go for the damage boost for Chilly Willy then die before getting the jiggy, we also require Pack Whack to prevent softlocks.
-            logic = (self.claw_clamber_boots(state)\
-                        or ((self.tall_jump(state) and self.roll(state) or self.talon_trot(state))\
-                            and (self.flutter(state) or self.air_rat_a_tat_rap(state))\
-                            and self.grip_grab(state)
-                        )
-                    )
+            logic = self.claw_clamber_boots(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
             # In case people go for the damage boost for Chilly Willy then die before getting the jiggy, we also require Pack Whack to prevent softlocks.
-            logic = (self.claw_clamber_boots(state)\
-                        or ((self.tall_jump(state) and self.roll(state) or self.talon_trot(state))\
-                            and (self.flutter(state) or self.air_rat_a_tat_rap(state))\
-                            and self.grip_grab(state)
-                        )
-                    )
+            logic = self.claw_clamber_boots(state)
         return logic
 
     def jiggy_dragons_bros(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.fire_eggs(state) and self.ice_eggs(state) and \
-                    self.claw_clamber_boots(state) and self.flight_pad(state) and self.third_person_egg_shooting(state)\
+                    self.third_person_egg_shooting(state) and state.can_reach_region(regionName.BOSSHPI, self.player)\
                     and (self.tall_jump(state) or self.talon_trot(state))\
                     and self.climb(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = self.fire_eggs(state) and self.ice_eggs(state) and \
-                    self.claw_clamber_boots(state) and self.flight_pad(state) and self.third_person_egg_shooting(state)\
+                    state.can_reach_region(regionName.BOSSHPI, self.player) and self.third_person_egg_shooting(state)\
                     and (self.tall_jump(state) or self.talon_trot(state))\
                     and (self.climb(state)\
                         or self.flap_flip(state)\
@@ -2243,36 +2233,58 @@ class BanjoTooieRules:
                         or self.talon_trot(state) and self.grip_grab(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             # In case people go for the damage boost for Chilly Willy then die before getting the jiggy, we also require Pack Whack to prevent softlocks.
-            logic = self.fire_eggs(state) and self.ice_eggs(state) and self.flight_pad(state) and self.third_person_egg_shooting(state)\
-                    and self.pack_whack(state)\
-                    and (self.claw_clamber_boots(state)\
-                        or ((self.tall_jump(state) and self.roll(state) or self.talon_trot(state))\
-                            and (self.flutter(state) or self.air_rat_a_tat_rap(state))\
-                            and self.grip_grab(state)
+            if self.world.options.randomize_boss_loading_zone:
+                logic = self.fire_eggs(state) and self.ice_eggs(state) and state.can_reach_region(regionName.BOSSHPI, self.player) and \
+                        self.third_person_egg_shooting(state)\
+                        and self.claw_clamber_boots(state)\
+                        and (self.tall_jump(state) or self.talon_trot(state))\
+                        and (self.climb(state)\
+                            or self.flap_flip(state)\
+                            or self.tall_jump(state) and self.grip_grab(state)\
+                            or self.talon_trot(state) and self.grip_grab(state)
                         )
-                    )\
-                    and (self.tall_jump(state) or self.talon_trot(state))\
-                    and (self.climb(state)\
-                        or self.flap_flip(state)\
-                        or self.tall_jump(state) and self.grip_grab(state)\
-                        or self.talon_trot(state) and self.grip_grab(state)
-                    )
+            else:
+                logic = self.fire_eggs(state) and self.ice_eggs(state) and self.flight_pad(state) and self.third_person_egg_shooting(state)\
+                        and self.pack_whack(state)\
+                        and (self.claw_clamber_boots(state)\
+                            or ((self.tall_jump(state) and self.roll(state) or self.talon_trot(state))\
+                                and (self.flutter(state) or self.air_rat_a_tat_rap(state))\
+                                and self.grip_grab(state)
+                            )
+                        )\
+                        and (self.tall_jump(state) or self.talon_trot(state))\
+                        and (self.climb(state)\
+                            or self.flap_flip(state)\
+                            or self.tall_jump(state) and self.grip_grab(state)\
+                            or self.talon_trot(state) and self.grip_grab(state)
+                        )
         elif self.world.options.logic_type == LogicType.option_glitches:
             # In case people go for the damage boost for Chilly Willy then die before getting the jiggy, we also require Pack Whack to prevent softlocks.
-            logic = self.fire_eggs(state) and self.ice_eggs(state) and self.flight_pad(state) and self.third_person_egg_shooting(state)\
-                    and self.pack_whack(state)\
-                    and (self.claw_clamber_boots(state)\
-                        or ((self.tall_jump(state) and self.roll(state) or self.talon_trot(state))\
-                            and (self.flutter(state) or self.air_rat_a_tat_rap(state))\
-                            and self.grip_grab(state)
+            if self.world.options.randomize_boss_loading_zone:
+                logic = self.fire_eggs(state) and self.ice_eggs(state) and state.can_reach_region(regionName.BOSSHPI, self.player) and \
+                        self.third_person_egg_shooting(state)\
+                        and self.claw_clamber_boots(state)\
+                        and (self.tall_jump(state) or self.talon_trot(state))\
+                        and (self.climb(state)\
+                            or self.flap_flip(state)\
+                            or self.tall_jump(state) and self.grip_grab(state)\
+                            or self.talon_trot(state) and self.grip_grab(state)
                         )
-                    )\
-                    and (self.tall_jump(state) or self.talon_trot(state))\
-                    and (self.climb(state)\
-                        or self.flap_flip(state)\
-                        or self.tall_jump(state) and self.grip_grab(state)\
-                        or self.talon_trot(state) and self.grip_grab(state)
-                    )
+            else:
+                logic = self.fire_eggs(state) and self.ice_eggs(state) and self.flight_pad(state) and self.third_person_egg_shooting(state)\
+                        and self.pack_whack(state)\
+                        and (self.claw_clamber_boots(state)\
+                            or ((self.tall_jump(state) and self.roll(state) or self.talon_trot(state))\
+                                and (self.flutter(state) or self.air_rat_a_tat_rap(state))\
+                                and self.grip_grab(state)
+                            )
+                        )\
+                        and (self.tall_jump(state) or self.talon_trot(state))\
+                        and (self.climb(state)\
+                            or self.flap_flip(state)\
+                            or self.tall_jump(state) and self.grip_grab(state)\
+                            or self.talon_trot(state) and self.grip_grab(state)
+                        )
         return logic
 
     def jiggy_volcano(self, state: CollectionState) -> bool:

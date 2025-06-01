@@ -2030,30 +2030,34 @@ def connect_regions(self):
 
         if source == regionName.BOSSMT:
             source_rule = lambda state: rules.has_green_relics(state, 20)
-        if source == regionName.BOSSGI:
+        elif source == regionName.BOSSJR:
+            source_rule = lambda state: ((rules.grenade_eggs_item(state) or rules.clockwork_eggs_item(state)) and rules.sub_aqua_egg_aiming(state)) \
+                or rules.humbaJRL(state)
+        elif source == regionName.BOSSGI:
             source_rule = lambda state: rules.can_enter_gi_repairdepot(state)
-            entrace_to_repair_depot = next(e for e in boss_entrance.exits if e.connected_region.name == self.loading_zones[regionName.BOSSGI])
-            self.multiworld.register_indirect_condition(self.get_region(regionName.GI3), entrace_to_repair_depot)
-        if source == regionName.BOSSHPF:
+        elif source == regionName.BOSSHPF:
             source_rule = lambda state: rules.flight_pad(state)
-        if source == regionName.BOSSHPI:
+        elif source == regionName.BOSSHPI:
             source_rule = lambda state: rules.can_reach_hfp_ice_crater(state)
         else:
             source_rule = lambda state: True
 
         if boss_room == regionName.BOSSMT:
             boss_room_rule = lambda state: rules.breegull_blaster(state)
-        if boss_room == regionName.BOSSWW:
+        elif boss_room == regionName.BOSSWW:
             boss_room_rule = lambda state: rules.can_enter_big_top(state)
-        if boss_room == regionName.BOSSWW:
+        elif boss_room == regionName.BOSSWW:
             boss_room_rule = lambda state: rules.sub_aqua_egg_aiming(state) and rules.grenade_eggs_item(state)
-        if boss_room == regionName.BOSSGI:
+        elif boss_room == regionName.BOSSGI:
             boss_room_rule = lambda state: rules.grenade_eggs_item(state)
-        if boss_room == regionName.BOSSHPF:
+        elif boss_room == regionName.BOSSHPF:
             boss_room_rule = lambda state: rules.ice_eggs_item(state)
         else:
             boss_room_rule = lambda state: True
 
-        transition_rule = lambda state: source_rule(state) and boss_room_rule(state)
-
+        transition_rule = lambda state, sr = source_rule, brr = boss_room_rule: sr(state) and brr(state)
         source_region.add_exits({boss_room}, {boss_room: transition_rule})
+
+        if source == regionName.BOSSGI:
+            entrance_to_repair_depot = next(e for e in source_region.exits if e.connected_region.name == self.loading_zones[regionName.BOSSGI])
+            self.multiworld.register_indirect_condition(self.get_region(regionName.GI3), entrance_to_repair_depot)
