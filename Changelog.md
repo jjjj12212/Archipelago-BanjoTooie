@@ -1,6 +1,18 @@
 # a
+  - Grunty gives more varied messages when you die.
+  - The options have been embellished
+    - Game length has been renamed to World Requirements.
+    - A couple of option descriptions have been reworded.
+    - The options page now uses option groups for make it more organised.
+    - The options in the yaml have been reordered to match the option page.
   - Logic fixes:
+    - IoH Another Digger Tunnel Nests: easy tricks can get them by arriving from wasteland and using beak buster.
+    - MT Pool Jinjo: Added Golden Goliath and Stony for intended logic.
+    - WW Dodgem Dome Jiggy: Fixed some nonsense logic.
+    - TDL Train Station access: easy tricks can get them with beak buster.
+    - GI Floor 1 to Floor 2: Removed solo Kazooie from the logic because it made seeds unbeatable with randomised warp pads.
     - Individual alien kids: check if you can reach JRL to do the UFO jiggy.
+    - Icicle Grotto Near Spring Pads Nest: can be gotten by warping there.
 
 # 4.5.1
   - When not randomized, silos and warp pads no longer have locations associated with them.

@@ -512,7 +512,7 @@ class WorldRequirements(Choice):
     """Choose how quickly the worlds open.
     quick: Worlds open at 1, 3, 6, 10, 15, 21, 28, 36, and 44 Jiggys
     normal: Worlds open at 1, 4, 8, 14, 20, 28, 36, 45, and 55 Jiggys
-    long: Worlds open at 1, 8, 16, 25, 34, 43, 52, 61, and 70 Jiggys
+    long: Worlds open at 1, 8, 16, 25, 34, 43, 52, 60, and 70 Jiggys
     custom: You pick when worlds open
     """
     display_name = "World Requirements"
