@@ -615,7 +615,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     token_hunt_length: TokenHuntLength
 
 
-    game_length: WorldRequirements
+    world_requirements: WorldRequirements
     custom_worlds: CustomWorldCosts
 
     randomize_bt_moves: RandomizeBTMoveList
