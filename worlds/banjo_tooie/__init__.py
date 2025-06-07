@@ -57,7 +57,7 @@ class BanjoTooieWorld(World):
     """
 
     game: str = "Banjo-Tooie"
-    version = "V4.5.1"
+    version = "V4.6"
     web = BanjoTooieWeb()
     topology_present = True
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
@@ -117,6 +117,8 @@ class BanjoTooieWorld(World):
     location_name_groups["Nests"] = {c for c in all_location_table if all_location_table[c].group == "Nest"}
     location_name_groups["Warp Pads"] = {c for c in all_location_table if all_location_table[c].group == "Warp Pads"}
     location_name_groups["Warp Silos"] = {c for c in all_location_table if all_location_table[c].group == "Silos"}
+    location_name_groups["Ticket"] = {c for c in all_location_table if all_location_table[c].group == "Ticket"}
+    location_name_groups["Green Relic"] = {c for c in all_location_table if all_location_table[c].group == "Green Relic"}
 
     location_name_groups["Bosses"] = {
         locationName.JIGGYMT1,
@@ -450,6 +452,15 @@ class BanjoTooieWorld(World):
             return None
 
         if name == itemName.ROAR and not self.options.randomize_dino_roar:
+            return None
+        
+        if name == itemName.GRRELIC and not self.options.randomize_green_relics:
+            return None
+        
+        if name == itemName.BTTICKET and not self.options.randomize_tickets:
+            return None
+        
+        if name == itemName.BEANS and not self.options.randomize_beans:
             return None
 
         if item.btid == self.starting_egg:
@@ -841,7 +852,16 @@ class BanjoTooieWorld(World):
             regionName.GIO: regionName.IOHQM + " (Grunty Industries Entrance)",
             regionName.HP: regionName.IOHCT_HFP_ENTRANCE,
             regionName.CC: regionName.IOHWL + " (Cloud Cuckooland Entrance)",
-            regionName.CK: regionName.IOHQM + " (Caudron Keep Entrance)"
+            regionName.CK: regionName.IOHQM + " (Caudron Keep Entrance)",
+            regionName.BOSSMT: regionName.MTTT,
+            regionName.BOSSGM: regionName.CHUFFY,
+            regionName.BOSSWW: regionName.WW,
+            regionName.BOSSJR: regionName.JRLC,
+            regionName.BOSSTD: regionName.TLTOP,
+            regionName.BOSSGI: regionName.GI1,
+            regionName.BOSSHPF: regionName.HP,
+            regionName.BOSSHPI: regionName.HP,
+            regionName.BOSSCC: regionName.CC,
         }
         bt_players = world.get_game_players(cls.game)
         spoiler_handle.write('\n\nBanjo-Tooie ({})'.format(BanjoTooieWorld.version))
@@ -900,6 +920,9 @@ class BanjoTooieWorld(World):
             "cheato_rewards",
             "randomize_honeycombs",
             "honeyb_rewards",
+            "randomize_tickets",
+            "randomize_green_relics",
+            "randomize_beans",
             "randomize_glowbos",
             "randomize_stop_n_swap",
             "randomize_dino_roar",
@@ -909,6 +932,7 @@ class BanjoTooieWorld(World):
             "skip_puzzles",
             "open_hag1",
             "backdoors",
+            "open_gi_frontdoor",
             "open_silos",
             "speed_up_minigames",
             "tower_of_tragedy",

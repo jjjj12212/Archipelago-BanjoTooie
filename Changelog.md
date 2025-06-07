@@ -1,5 +1,9 @@
-# a
+# 4.6
+  - Big Top Tickets are now randomized (seperate option)
+  - Targitzan's Green Relics are now randomized (seperate option)
+  - New option to open the front door to Grunty's Industries
   - Logic fixes:
+    - Added additional regions
     - Individual alien kids: check if you can reach JRL to do the UFO jiggy.
 
 # 4.5.1

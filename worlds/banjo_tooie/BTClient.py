@@ -62,9 +62,9 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_to_id"]
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 script_version: int = 4
-version: str = "V4.5.1"
-game_append_version: str = "V451"
-patch_md5: str = "525c8f04832488cfa96dbd04a12f9bc6"
+version: str = "V4.6"
+game_append_version: str = "V46"
+patch_md5: str = "d4e83f4fc9f3badf3828a21837648e2c"
 
 def get_item_value(ap_id):
     return ap_id
@@ -157,6 +157,9 @@ class BanjoTooieContext(CommonContext):
         self.alien_kids_table = {}
         self.skivvies_table = {}
         self.mr_fit_table = {}
+        self.bt_tickets_table = {}
+        self.green_relics_table = {}
+        self.beans_table = {}
         self.signpost_table = {}
         self.warppads_table = {}
         self.silos_table = {}
@@ -175,23 +178,6 @@ class BanjoTooieContext(CommonContext):
         self.sync_ready = False
         self.startup = False
         self.handled_scouts = []
-        # AquaPhoenix Contributed with the Gruntilda Insults
-        self.death_messages = [
-            "Gruntilda:    Did you hear that lovely clack, \n                     My broomstick gave you such a whack!",
-            "Gruntilda:    AAAH! I see it makes you sad, \n                     To know your skills are really bad!",
-            "Gruntilda:    I hit that bird right on the beak, \n                     Let it be the end of her cheek!",
-            "Gruntilda:    My fiery blast you just tasted, \n                     Grunty's spells on you are wasted!",
-            "Gruntilda:    Hopeless bear runs to and fro, \n                     But takes a whack for being so slow!",
-            "Gruntilda:    So I got you there once more, \n                     I knew your skills were very poor!",
-            "Gruntilda:    Simply put I'm rather proud, \n                     Your yelps and screams I heard quite loud!",
-            "Gruntilda:    Grunty's fireball you did kiss, \n                     You're so slow I can hardly miss!",
-            "Gruntilda:    In this world you breathe your last,\n                     Now your friends had better think fast!",
-            "Gruntilda:    This is fun it's quite a treat, \n                     To see you suffer in defeat",
-            "Gruntilda:    That death just now, I saw coming, \n                     Your skill issues are rather stunning!",
-            "Gruntilda:    Seeing this pathetic display, \n                     Is serotonin in my day",
-            "Gruntilda:    What a selfish thing to do,\n                     Your friends just died because of you!",
-            "Gruntilda:    You tried something rather stupid,\n                     I hope no one will try what you did"
-        ]
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -218,7 +204,7 @@ class BanjoTooieContext(CommonContext):
 
     async def send_death(self, death_text: str = ""):
         if self.server and self.server.socket:
-            logger.info(f"{random.choice(self.death_messages)} \n(DeathLink: Sending death to your friends...)")
+            logger.info(f"(DeathLink: Sending death to your friends...)")
             self.last_death_link = time.time()
             await self.send_msgs([{
                 "cmd": "Bounce", "tags": ["DeathLink"],
@@ -391,7 +377,10 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_auto_enable_cheats": ctx.slot_data["auto_enable_cheats"],
             "slot_cheato_rewards": ctx.slot_data["cheato_rewards"],
             "slot_honeyb_rewards": ctx.slot_data["honeyb_rewards"],
-
+            "slot_open_gi_entrance": ctx.slot_data["open_gi_frontdoor"],
+            "slot_randomize_tickets": ctx.slot_data["randomize_tickets"],
+            "slot_randomize_green_relics": ctx.slot_data["randomize_green_relics"],
+            "slot_randomize_beans": ctx.slot_data["randomize_beans"]
         })
     ctx.sendSlot = False
     return payload
@@ -452,6 +441,10 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     silos = payload["silos"]
     worldslist = payload["worlds"]
     banjo_map = payload["banjo_map"]
+    bt_tickets = payload["bt_tickets"]
+    green_relics = payload["green_relics"]
+    beans = payload["beans"]
+
 
     # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
     # if isinstance(locations, list):
@@ -520,6 +513,12 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         hag = False
     if isinstance(roar_obtain, bool) == False:
         roar_obtain = False
+    if isinstance(bt_tickets, list):
+        bt_tickets = {}
+    if isinstance(green_relics, list):
+        green_relics = {}
+    if isinstance(beans, list):
+        beans = {}
 
     if demo == False and ctx.sync_ready == True:
         locs1 = []
@@ -590,6 +589,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             for locationId, value in nests.items():
                 if value == True:
                     locs1.append(int(locationId))
+        if ctx.current_map != banjo_map:  #Fix for not resending activated Hints
+            ctx.signpost_table = signposts #sets only when transistioning on a new map
         if ctx.signpost_table != signposts:
                 ctx.signpost_table = signposts
                 actual_hints = ctx.slot_data["hints"]
@@ -614,7 +615,22 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             ctx.silos_table = silos
             for locationId, value in silos.items():
                 if value == True:
-                    locs1.append(int(locationId))        
+                    locs1.append(int(locationId))
+        if ctx.bt_tickets_table != bt_tickets:
+            ctx.bt_tickets_table = bt_tickets
+            for locationId, value in bt_tickets.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.green_relics_table != green_relics:
+            ctx.green_relics_table = green_relics
+            for locationId, value in green_relics.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.beans_table != beans:
+            ctx.beans_table = beans
+            for locationId, value in beans.items():
+                if value == True:
+                    locs1.append(int(locationId))
         if ctx.roar != roar_obtain:
             ctx.roar = roar_obtain
             if roar_obtain == True:

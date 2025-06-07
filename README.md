@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | 4.5.1
+# Archipelago Banjo-Tooie (US-Only) | 4.6
 Banjo Tooie for Archipelago 
 
 # Current Implementation
@@ -22,6 +22,8 @@ Banjo Tooie for Archipelago
 - Traps
 - Isle O' Hag Silos
 - Warp Pads
+- Big Top Tickets
+- Targitzan's Green Relics
 
 \*: Jiggies are the only collectibles that are forced to be randomized.
 
@@ -31,7 +33,7 @@ Banjo Tooie for Archipelago
 - Defeating World Bosses
 - Completing Jinjo Families: Once you have saved enough jinjo families, party at Bottles' House
 - <b>Wonderwing Challenge!</b>: Collect all 32 Mumbo Tokens from Jinjo families, mini-games, and World bosses, then beat Hag-1.
-- Mumbo Token Hunt: Collect up to 15 tokens, then party at Bottles' House.
+- Mumbo Token Hunt: Collect up to 100 tokens, then party at Bottles' House.
 
 ## Progressive Abilities
 - Eggs (Blue -> Fire -> Grenade -> Ice -> Clockworks)

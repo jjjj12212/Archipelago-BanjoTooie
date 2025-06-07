@@ -16,7 +16,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 4
-local BT_VERSION = "V4.5.1"
+local BT_VERSION = "V4.6"
 local PLAYER = ""
 local SEED = 0
 
@@ -85,6 +85,9 @@ local TOTAL_PAGES = 0;
 local TOTAL_DOUBLOONS = 0;
 local TOTAL_NOTES = 0;
 local TOTAL_HEALTHUPGRADE = 0;
+local TOTAL_BTTICKETS = 0;
+local TOTAL_GRRELICS = 0;
+local TOTAL_BEANS = 0;
 
 local WHITE_JINJO = 0;
 local ORANGE_JINJO = 0;
@@ -665,6 +668,33 @@ local ASSET_MAP_CHECK = {
         ["SIGNPOSTS"] = {
             "1231509",
             "1231510",
+        },
+        ["GREEN_RELICS"] = {
+            "1231614",
+            "1231615",
+            "1231616",
+            "1231617",
+            "1231618",
+            "1231619",
+            "1231620",
+            "1231621",
+            "1231622",
+            "1231623",
+            "1231624",
+            "1231625",
+            "1231626",
+            "1231627",
+            "1231628",
+            "1231629",
+            "1231630",
+            "1231631",
+            "1231632",
+            "1231633",
+            "1231634",
+            "1231635",
+            "1231636",
+            "1231637",
+            "1231638",
         }
     },
     --GLITTER GULCH MINE
@@ -956,8 +986,13 @@ local ASSET_MAP_CHECK = {
         ["BOGGY_KIDS"] = {
             "1231596",
             "1231598"
+        },
+        ["BIGTOP_TICKETS"] = {
+            "1231610",
+            "1231611",
+            "1231612",
+            "1231613"
         }
-
     },
     [0xEA] = { --WW - Cave of Horrors
         ["JINJOS"] = {
@@ -2104,7 +2139,11 @@ local ASSET_MAP_CHECK = {
         ["MRFIT"] = {
             "1231608",
             "1231609"
-        }
+        },
+        ["BEANS"] = {
+            "1231639",
+            "1231640"
+        },
     },
     [0x13A] =	{ --CCL - Central Cavern
         ["JIGGIES"] = {
@@ -2393,6 +2432,9 @@ local ROM_ITEM_TABLE = {
     "AP_ITEM_SILO_CLIFF_TOP",
     "AP_ITEM_SILO_WASTELAND",
     "AP_ITEM_SILO_QUAGMIRE",
+    "AP_ITEM_BTTICKET",
+    "AP_ITEM_GRRELIC",
+    "AP_ITEM_BEAN",
     "AP_ITEM_MAX",
 };
 
@@ -5463,8 +5505,137 @@ local ADDRESS_MAP = {
             ['addr'] = 0x76,
             ['bit'] = 5,
         },
-    }
-
+    },
+    ["BIGTOP_TICKETS"] = {
+        ['1231610'] = {
+            ['addr'] = 0x9C,
+            ['bit'] = 4
+        },
+        ['1231611'] = {
+            ['addr'] = 0x9C,
+            ['bit'] = 5
+        },
+        ['1231612'] = {
+            ['addr'] = 0x9C,
+            ['bit'] = 6
+        },
+        ['1231613'] = {
+            ['addr'] = 0x9C,
+            ['bit'] = 7
+        },
+    },
+    ["GREEN_RELICS"] = {
+        ['1231614'] = {
+            ['addr'] = 0x5A,
+            ['bit'] = 5,
+        },
+        ['1231615'] = {
+            ['addr'] = 0x5A,
+            ['bit'] = 4,
+        },
+        ['1231616'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 7,
+        },
+        ['1231617'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 6,
+        },
+        ['1231618'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 5,
+        },
+        ['1231619'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 3,
+        },
+        ['1231620'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 4,
+        },
+        ['1231621'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 2,
+        },
+        ['1231622'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 1,
+        },
+        ['1231623'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 2,
+        },
+        ['1231624'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 3,
+        },
+        ['1231625'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 5,
+        },
+        ['1231626'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 4,
+        },
+        ['1231627'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 6,
+        },
+        ['1231628'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 7,
+        },
+        ['1231629'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 1,
+        },
+        ['1231630'] = {
+            ['addr'] = 0x5C,
+            ['bit'] = 0,
+        },
+        ['1231631'] = {
+            ['addr'] = 0x5D,
+            ['bit'] = 0,
+        },
+        ['1231632'] = {
+            ['addr'] = 0x5D,
+            ['bit'] = 1,
+        },
+        ['1231633'] = {
+            ['addr'] = 0x5D,
+            ['bit'] = 2,
+        },
+        ['1231634'] = {
+            ['addr'] = 0x5D,
+            ['bit'] = 4,
+        },
+        ['1231635'] = {
+            ['addr'] = 0x5D,
+            ['bit'] = 3,
+        },
+        ['1231636'] = {
+            ['addr'] = 0x5A,
+            ['bit'] = 6,
+        },
+        ['1231637'] = {
+            ['addr'] = 0x5A,
+            ['bit'] = 7,
+        },
+        ['1231638'] = {
+            ['addr'] = 0x5B,
+            ['bit'] = 0,
+        },
+    },
+    ["BEANS"] = {
+        ['1231639'] = {
+            ['addr'] = 0x62,
+            ['bit'] = 6
+        },
+        ['1231640'] = {
+            ['addr'] = 0x62,
+            ['bit'] = 5
+        }
+    },
 }
 
 -- Properties of world entrances and associated puzzles
@@ -5573,7 +5744,61 @@ local MAP_ENTRANCES = {
         ['entranceId'] = 1,
         ['exitId'] = 3,
         ['exitMap'] = 0x15C
-    }
+    },
+    [0x17A] = {
+        ['name'] = "Targitzan Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 2,
+        ['exitMap'] = 0x178
+    },
+    [0x0D1] = {
+        ['name'] = "King Coal Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 2,
+        ['exitMap'] = 0x0D0
+    },
+    [0x0F9] = {
+        ['name'] = "Mr Patch Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 3,
+        ['exitMap'] = 0x0D6
+    },
+    [0x0FC] = {
+        ['name'] = "Lord Woo Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 0x25, --different lockers
+        ['exitMap'] = 0x1A9
+    },
+    [0x113] = {
+        ['name'] = "Terry Room",
+        ['entranceId'] = 2,
+        ['exitId'] = 0x14,
+        ['exitMap'] = 0x112
+    },
+    [0x110] = {
+        ['name'] = "Weldar Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 3,
+        ['exitMap'] = 0x10F
+    },
+    [0x12B] = {
+        ['name'] = "Chilli Billi Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 0x16,
+        ['exitMap'] = 0x127
+    },
+    [0x12C] = {
+        ['name'] = "Chilli Willy Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 0x0C,
+        ['exitMap'] = 0x128
+    },
+    [0x13F] = {
+        ['name'] = "Mingy Jongo Room",
+        ['entranceId'] = 1,
+        ['exitId'] = 0x16,
+        ['exitMap'] = 0x136
+    },
 }
 
 BTHACK = {
@@ -5594,21 +5819,25 @@ BTHACK = {
         setting_nests = 0x6,
         setting_warppads = 0x7,
         setting_warpsilos = 0x8,
-        setting_honeyb = 0x9,
+        setting_honeyb_rewards = 0x9,
         setting_cheato_rewards = 0xA,
-        setting_puzzle = 0xB,
-        setting_backdoors = 0xC,
-        setting_klungo = 0xD,
-        setting_tot = 0xE,
-        setting_minigames = 0xF,
-        setting_dialog_character = 0x10,
-        setting_max_mumbo_tokens = 0x11,
-        setting_signpost_hints = 0x12,
-        setting_extra_cheats = 0x13,
-        setting_automatic_cheats = 0x14,
-        setting_easy_canary = 0x15,
-        setting_jiggy_requirements = 0x16,
-        setting_silo_requirements = 0x22,
+        setting_randomize_tickets = 0xB,
+        setting_randomize_green_relics = 0xC,
+        setting_randomize_beans = 0xD,
+        setting_puzzle = 0xE,
+        setting_backdoors = 0xF,
+        setting_gi_open_frontdoor = 0x10,
+        setting_klungo = 0x11,
+        setting_tot = 0x12,
+        setting_minigames = 0x13,
+        setting_dialog_character = 0x14,
+        setting_max_mumbo_tokens = 0x15,
+        setting_signpost_hints = 0x16,
+        setting_extra_cheats = 0x17,
+        setting_automatic_cheats = 0x18,
+        setting_easy_canary = 0x19,
+        setting_jiggy_requirements = 0x1A,
+        setting_silo_requirements = 0x26,
     pc_items = 0x14,
     pc_traps = 0x18,
     pc_exit_map = 0x1C,
@@ -5628,6 +5857,7 @@ BTHACK = {
     fake_flags = 0x28,
     nest_flags = 0x2C,
     signpost_flags = 0x30,
+
     txt_queue = 0
 }
 
@@ -5746,11 +5976,23 @@ function BTHACK:setSettingWarpPads(warppad)
 end
 
 function BTHACK:setSettingHoneyB(honeyb)
-    mainmemory.writebyte(self.setting_honeyb + BTHACK:getSettingPointer(), honeyb);
+    mainmemory.writebyte(self.setting_honeyb_rewards + BTHACK:getSettingPointer(), honeyb);
 end
 
 function BTHACK:setSettingCheato(cheato)
     mainmemory.writebyte(self.setting_cheato_rewards + BTHACK:getSettingPointer(), cheato);
+end
+
+function BTHACK:setSettingRandomizeTickets(tickets)
+    mainmemory.writebyte(self.setting_randomize_tickets + BTHACK:getSettingPointer(), tickets);
+end
+
+function BTHACK:setSettingRandomizeGreenRelics(grelic)
+    mainmemory.writebyte(self.setting_randomize_green_relics + BTHACK:getSettingPointer(), grelic);
+end
+
+function BTHACK:setSettingRandomizeBeans(beans)
+    mainmemory.writebyte(self.setting_randomize_beans + BTHACK:getSettingPointer(), beans);
 end
 
 function BTHACK:setSettingAutomaticCheats(cheats)
@@ -5789,6 +6031,10 @@ end
 
 function BTHACK:setSettingBackdoors(backdoors)
     mainmemory.writebyte(self.setting_backdoors + BTHACK:getSettingPointer(), backdoors);
+end
+
+function BTHACK:setSettingGIFrontdoor(gifrontdoor)
+    mainmemory.writebyte(self.setting_gi_open_frontdoor + BTHACK:getSettingPointer(), gifrontdoor);
 end
 
 function BTHACK:setSettingKlungo(klungo)
@@ -7361,6 +7607,69 @@ function mr_fit_events_check()
     return checks
 end
 
+---------------------- BIGTOP TICKETS ----------------------------
+function bttickets_check()
+    local checks = {}
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK[CURRENT_MAP]["BIGTOP_TICKETS"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["BIGTOP_TICKETS"])
+            do
+                checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["BIGTOP_TICKETS"][locationId]['addr'], ADDRESS_MAP["BIGTOP_TICKETS"][locationId]['bit'])
+            end
+        end
+    end
+    return checks
+end
+
+function obtain_AP_TICKETS()
+    TOTAL_BTTICKETS = TOTAL_BTTICKETS + 1
+    BTH:setItem(ITEM_TABLE["AP_ITEM_BTTICKET"], TOTAL_BTTICKETS)
+end
+
+---------------------- GREEN RELICS ----------------------------
+function grrelic_check()
+    local checks = {}
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK[CURRENT_MAP]["GREEN_RELICS"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["GREEN_RELICS"])
+            do
+                checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["GREEN_RELICS"][locationId]['addr'], ADDRESS_MAP["GREEN_RELICS"][locationId]['bit'])
+            end
+        end
+    end
+    return checks
+end
+
+function obtain_AP_GRRELIC()
+    TOTAL_GRRELICS = TOTAL_GRRELICS + 1
+    BTH:setItem(ITEM_TABLE["AP_ITEM_GRRELIC"], TOTAL_GRRELICS)
+end
+
+---------------------- BEANS ----------------------------
+
+function beans_check()
+    local checks = {}
+    if ASSET_MAP_CHECK[CURRENT_MAP] ~= nil
+    then
+        if ASSET_MAP_CHECK[CURRENT_MAP]["BEANS"] ~= nil
+        then
+            for _,locationId in pairs(ASSET_MAP_CHECK[CURRENT_MAP]["BEANS"])
+            do
+                checks[locationId] = BTH:checkRealFlag(ADDRESS_MAP["BEANS"][locationId]['addr'], ADDRESS_MAP["BEANS"][locationId]['bit'])
+            end
+        end
+    end
+    return checks
+end
+
+function obtain_AP_BEANS()
+    TOTAL_BEANS = TOTAL_BEANS + 1
+    BTH:setItem(ITEM_TABLE["AP_ITEM_BEAN"], TOTAL_BEANS)
+end
 
 ---------------------- GAME FUNCTIONS -------------------
 
@@ -8017,6 +8326,15 @@ function processAGIItem(item_list)
             elseif(memlocation == 1230833) -- Tip Trap
             then
                 traps(memlocation)
+            elseif(memlocation == 1230922) -- BigTop Tickets
+            then
+                obtain_AP_TICKETS()
+            elseif(memlocation == 1230923) -- Green Relic
+            then
+                obtain_AP_GRRELIC()
+            elseif(memlocation == 1230924) -- Beans
+            then
+                obtain_AP_BEANS()
             end
             receive_map[tostring(ap_id)] = tostring(memlocation)
         end
@@ -8112,6 +8430,9 @@ function SendToBTClient()
     retTable["alien_kids"] = alien_kids_check();
     retTable["skivvies"] = skivvies_check();
     retTable["fit_events"] = mr_fit_events_check();
+    retTable["bt_tickets"] = bttickets_check();
+    retTable["green_relics"] = grrelic_check();
+    retTable["beans"] = beans_check();
 
     retTable["DEMO"] = false;
     retTable["sync_ready"] = "true"
@@ -8326,6 +8647,22 @@ function process_slot(block)
     then
         BACKDOORS = true
         BTH:setSettingBackdoors(1)
+    end
+    if block['slot_open_gi_entrance'] ~= nil and block['slot_open_gi_entrance'] ~= 0
+    then
+        BTH:setSettingGIFrontdoor(1)
+    end
+    if block['slot_randomize_tickets'] ~= nil and block['slot_randomize_tickets'] ~= 0
+    then
+        BTH:setSettingRandomizeTickets(1)
+    end
+    if block['slot_randomize_green_relics'] ~= nil and block['slot_randomize_green_relics'] ~= 0
+    then
+        BTH:setSettingRandomizeGreenRelics(1)
+    end
+    if block['slot_randomize_beans'] ~= nil and block['slot_randomize_beans'] ~= 0
+    then
+        BTH:setSettingRandomizeBeans(1)
     end
     if block['slot_skip_klungo'] ~= nil and block['slot_skip_klungo'] ~= 0
     then
