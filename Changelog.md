@@ -1,6 +1,11 @@
 # 4.6
   - Big Top Tickets are now randomized (seperate option)
   - Targitzan's Green Relics are now randomized (seperate option)
+  - Beans are now randomized (seperate option)
+    - Locations that requires the bean item will not be in-logic until both beans are collected.
+  - Tag-Link
+    - If you don't have the ability to transform, you will get the buzzer sound instead if someone "tags".
+    - only applies if you use the D-Pad Instant Transformation. Will not work if you manual transform.
   - New option to open the front door to Grunty's Industries
   - Logic fixes:
     - Added additional regions
