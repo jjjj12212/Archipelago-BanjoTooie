@@ -131,10 +131,10 @@ class BanjoTooieCommandProcessor(ClientCommandProcessor):
             self.ctx.taglink_enabled = not self.ctx.taglink_enabled
             async_start(self.ctx.update_tag_link(self.ctx.taglink_enabled), name="Update Taglink")
 
-    def _cmd_tag(self):
-        """Toggle a tag for Taglink."""
-        if isinstance(self.ctx, BanjoTooieContext):
-            async_start(self.ctx.send_tag_link(), name="Send Taglink")
+    # def _cmd_tag(self):
+    #     """Toggle a tag for Taglink."""
+    #     if isinstance(self.ctx, BanjoTooieContext):
+    #         async_start(self.ctx.send_tag_link(), name="Send Taglink")
 
 
 class BanjoTooieContext(CommonContext):
