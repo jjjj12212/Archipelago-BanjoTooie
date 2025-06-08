@@ -15,7 +15,7 @@ local json = require('json')
 local math = require('math')
 require('common')
 
-local SCRIPT_VERSION = 4
+local SCRIPT_VERSION = 5
 local BT_VERSION = "V4.6"
 local PLAYER = ""
 local SEED = 0
@@ -124,6 +124,10 @@ local TH_LENGTH = nil;
 --------------- DEATH LINK ----------------------
 local DEATH_LINK_TRIGGERED = false;
 local DEATH_LINK = false
+
+--------------- TAG LINK ------------------------
+local TAG_LINK_TRIGGERED = false
+local TAG_LINK = false
 
 ---------------- IOH SILO VARS -------------
 local OPEN_SILO = "NONE"
@@ -5804,12 +5808,14 @@ local MAP_ENTRANCES = {
 BTHACK = {
     RDRAMBase = 0x80000000,
     RDRAMSize = 0x800000,
-    base_index = 0x400000,
-    version = 0x0,
+        base_index = 0x400000,
+        version = 0x0,
     pc = 0x4,
         pc_death_us = 0x0,
         pc_death_ap = 0x1,
-        pc_show_txt = 0x2,
+        pc_tag_us = 0x2,
+        pc_tag_ap = 0x3,
+        pc_show_txt = 0x4,
     pc_messages = 0x8,
     signpost_messages = 0xC,
     pc_settings = 0x10,
@@ -5852,7 +5858,9 @@ BTHACK = {
         n64_show_text = 0x0,
         n64_death_us = 0x1,
         n64_death_ap = 0x2,
-        current_map = 0x4,
+        n64_tag_us = 0x3,
+        n64_tag_ap = 0x4,
+        current_map = 0x6,
     real_flags = 0x24,
     fake_flags = 0x28,
     nest_flags = 0x2C,
@@ -6089,7 +6097,7 @@ function BTHACK:getMap()
         return 0x0
     end
 	local n64_ptr = BTHACK:dereferencePointer(self.n64 + hackPointerIndex);
-    return mainmemory.read_u16_be(n64_ptr + 4)
+    return mainmemory.read_u16_be(n64_ptr + self.current_map)
 end
 
 function BTHACK:getTrapPointer()
@@ -6154,19 +6162,35 @@ function BTHACK:getPCHintPointer()
 end
 
 function BTHACK:getPCDeath()
-    return mainmemory.readbyte(self:getPCPointer());
+    return mainmemory.readbyte(self:getPCPointer() + self.pc_death_us);
+end
+
+function BTHACK:getPCTag()
+    return mainmemory.readbyte(self:getPCPointer() + self.pc_tag_us);
 end
 
 function BTHACK:setPCDeath(DEATH_COUNT)
-    mainmemory.writebyte(self:getPCPointer(), DEATH_COUNT);
+    mainmemory.writebyte(self:getPCPointer() + self.pc_death_us, DEATH_COUNT);
+end
+
+function BTHACK:setPCTag(TAG_COUNT)
+    mainmemory.writebyte(self:getPCPointer() + self.pc_tag_us, TAG_COUNT);
 end
 
 function BTHACK:getAPDeath()
    return mainmemory.readbyte(self:getPCPointer() + self.pc_death_ap);
 end
 
+function BTHACK:getAPTag()
+   return mainmemory.readbyte(self:getPCPointer() + self.pc_tag_ap);
+end
+
 function BTHACK:setAPDeath(DEATH_COUNT)
     mainmemory.writebyte(self:getPCPointer() + self.pc_death_ap, DEATH_COUNT);
+end
+
+function BTHACK:setAPTag(TAG_COUNT)
+    mainmemory.writebyte(self:getPCPointer() + self.pc_tag_ap, TAG_COUNT);
 end
 
 function BTHACK:getNPointer()
@@ -6180,6 +6204,10 @@ end
 
 function BTHACK:getNLocalDeath()
    return mainmemory.readbyte(BTHACK:getNPointer() + self.n64_death_us);
+end
+
+function BTHACK:getNLocalTag()
+   return mainmemory.readbyte(BTHACK:getNPointer() + self.n64_tag_us);
 end
 
 function BTHACK:setTextQueue(icon_id)
@@ -8369,6 +8397,11 @@ function process_block(block)
         local randomDeathMsg = DEATH_MESSAGES[math.random(1, #DEATH_MESSAGES)]["message"]
         table.insert(MESSAGE_TABLE, {randomDeathMsg, 15})
     end
+    if block['triggerTag'] == true and TAG_LINK == true
+    then
+        local tag = BTH:getAPTag()
+        BTH:setAPTag(tag + 1)
+    end
 
     if DEBUGLVL3 == true then
         print(block)
@@ -8378,6 +8411,8 @@ end
 function SendToBTClient()
     local retTable = {}
     local detect_death = false
+    local detect_tag = false
+
     if BTH:getPCDeath() ~= BTH:getNLocalDeath() and DEATH_LINK == false
     then
         local randomDeathMsg = DEATH_MESSAGES[math.random(1, #DEATH_MESSAGES)]["message"]
@@ -8396,9 +8431,28 @@ function SendToBTClient()
     else
         DEATH_LINK_TRIGGERED = false
     end
+
+    if BTH:getPCTag() ~= BTH:getNLocalTag() and TAG_LINK == false
+    then
+        local tag = BTH:getPCTag()
+        BTH:setPCTag(tag + 1)
+    end
+    if BTH:getPCTag() ~= BTH:getNLocalTag() and TAG_LINK == true and TAG_LINK_TRIGGERED == false
+    then
+        detect_tag = true
+        local tag = BTH:getPCTag()
+        BTH:setPCTag(tag + 1)
+        TAG_LINK_TRIGGERED = true
+    else
+        TAG_LINK_TRIGGERED = false
+    end
     retTable["scriptVersion"] = SCRIPT_VERSION;
     retTable["playerName"] = PLAYER;
     retTable["deathlinkActive"] = DEATH_LINK;
+    retTable["taglinkActive"] = TAG_LINK;
+    retTable["isDead"] = detect_death;
+    retTable["isTag"] = detect_tag;
+
     retTable["jiggies"] = jiggy_check()
     retTable["jinjos"] = jinjo_check()
     retTable["pages"] = pages_check()
@@ -8411,7 +8465,6 @@ function SendToBTClient()
     retTable['treble'] = treble_check();
     retTable['stations'] = train_station_check();
     retTable['chuffy'] = chuffy_check();
-    retTable["isDead"] = detect_death;
     retTable["jinjofam"] = jinjo_family_check();
     retTable["worlds"] = UNLOCKED_WORLDS;
     retTable["mystery"] = mystery_check();
@@ -8587,6 +8640,10 @@ function process_slot(block)
     if block['slot_deathlink'] ~= nil and block['slot_deathlink'] ~= 0
     then
         DEATH_LINK = true
+    end
+    if block['slot_taglink'] ~= nil and block['slot_taglink'] ~= 0
+    then
+        TAG_LINK = true
     end
     if block['slot_logic_type'] ~= nil and block['slot_logic_type'] ~= "false"
     then

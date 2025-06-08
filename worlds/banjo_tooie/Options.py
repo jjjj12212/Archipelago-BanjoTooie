@@ -6,6 +6,10 @@ class RandomizeBTMoveList(DefaultOnToggle):
     """Jamjars' & Roysten's Movelist are randomized."""
     display_name = "Randomize Banjo-Tooie Movelist"
 
+class TagLink(Toggle):
+    """When other multiworld games tag/swap characters, you will auto swap with them and vise versa."""
+    display_name = "Tag Link"
+
 class DialogCharacters(Choice):
     """Change the character that announces your obtained moves, worlds, etc."""
     display_name = "Dialog Character"
@@ -622,6 +626,7 @@ class RandomizeWarpPads(Toggle):
 
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
+    tag_link:TagLink
     death_link: DeathLink
 
     logic_type: LogicType

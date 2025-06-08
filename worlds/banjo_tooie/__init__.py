@@ -897,6 +897,7 @@ class BanjoTooieWorld(World):
         generate_hints(self)
         btoptions = self.options.as_dict(
             "death_link",
+            "tag_link",
             "logic_type",
             "victory_condition",
             "minigame_hunt_length",
