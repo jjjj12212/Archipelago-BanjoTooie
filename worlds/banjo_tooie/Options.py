@@ -6,6 +6,10 @@ class RandomizeBTMoveList(DefaultOnToggle):
     """Jamjars' & Roysten's Movelist are randomized."""
     display_name = "Randomize Banjo-Tooie Movelist"
 
+class TagLink(Toggle):
+    """When other multiworld games tag/swap characters, you will auto swap with them and vise versa."""
+    display_name = "Tag Link"
+
 class DialogCharacters(Choice):
     """Change the character that announces your obtained moves, worlds, etc."""
     display_name = "Dialog Character"
@@ -215,6 +219,18 @@ class EnableHoneyBRewards(DefaultOnToggle):
     """Health Upgrades are added to the pool."""
     display_name = "Randomize Honey B Rewards"
 
+class RandomizeGreenRelics(DefaultOnToggle):
+    """Targitzan's Green Relics are randomized."""
+    display_name = "Randomize Green Relics"
+
+class RandomizeBeans(DefaultOnToggle):
+    """CCL Beans are randomized."""
+    display_name = "Randomize Beans"
+
+class RandomizeBigTentTickets(DefaultOnToggle):
+    """Big Top Tickets are randomized."""
+    display_name = "Randomize Big Top Tickets"
+
 class RandomizeGlowbos(DefaultOnToggle):
     """Mumbo and Humba Magic are in the pool and automatically unlocked when received.
     When disabled, collecting a Glowbo will give you either a Mumbo or Humba Magic."""
@@ -412,6 +428,10 @@ class Backdoors(Toggle):
     George is pre-dropped to make HFP -> JRL more accessible."""
     display_name = "Open Backdoors"
 
+class GIFrontdoor(Toggle):
+    """Opens Grunty's Industries frontdoor without requiring to get in first."""
+    display_name = "Open GI Frontdoor"
+
 class OpenHag1(DefaultOnToggle):
     """HAG 1 boss fight is opened when Cauldron Keep is opened, requiring fewer Jiggies to win."""
     display_name = "Open HAG 1"
@@ -423,6 +443,10 @@ class RandomizeWorldOrder(Toggle):
 class RandomizeWorldZones(Toggle):
     """The main entrance of each world will warp you to a random world."""
     display_name = "Randomize World Entrances"
+
+class RandomizeBossZones(Toggle):
+    """The entrance of each boss will warp you to a random boss."""
+    display_name = "Randomize Bosses"
 
 class RandomizeStopnSwap(Toggle):
     """Mystery Eggs, their rewards, and the Ice Key are scattered across the MultiWorld."""
@@ -602,6 +626,7 @@ class RandomizeWarpPads(Toggle):
 
 @dataclass
 class BanjoTooieOptions(PerGameCommonOptions):
+    tag_link:TagLink
     death_link: DeathLink
 
     logic_type: LogicType
@@ -641,6 +666,9 @@ class BanjoTooieOptions(PerGameCommonOptions):
     cheato_rewards: RandomizeCheatoRewards
     randomize_honeycombs: RandomizeHoneycombs
     honeyb_rewards: EnableHoneyBRewards
+    randomize_tickets:RandomizeBigTentTickets
+    randomize_green_relics:RandomizeGreenRelics
+    randomize_beans:RandomizeBeans
     randomize_glowbos: RandomizeGlowbos
     randomize_stop_n_swap: RandomizeStopnSwap
     randomize_dino_roar: RandomizeWorldDinoRoar
@@ -655,7 +683,9 @@ class BanjoTooieOptions(PerGameCommonOptions):
     skip_puzzles: SkipPuzzles
     randomize_worlds: RandomizeWorldOrder
     randomize_world_loading_zone: RandomizeWorldZones
+    randomize_boss_loading_zone: RandomizeBossZones
     backdoors: Backdoors
+    open_gi_frontdoor: GIFrontdoor
 
     signpost_hints: SignpostHints
     signpost_move_hints: SignpostMoveHints
@@ -730,6 +760,9 @@ bt_option_groups: List[OptionGroup] = [
         RandomizeCheatoRewards,
         RandomizeHoneycombs,
         EnableHoneyBRewards,
+        RandomizeBigTentTickets,
+        RandomizeGreenRelics,
+        RandomizeBeans,
         RandomizeGlowbos,
         RandomizeStopnSwap,
         RandomizeWorldDinoRoar,
@@ -746,7 +779,9 @@ bt_option_groups: List[OptionGroup] = [
         SkipPuzzles,
         RandomizeWorldOrder,
         RandomizeWorldZones,
+        RandomizeBossZones,
         Backdoors,
+        GIFrontdoor,
     ]),
 
     OptionGroup("Signpost Hints", [

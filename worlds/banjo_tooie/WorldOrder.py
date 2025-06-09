@@ -1,3 +1,4 @@
+import copy
 from .Options import EggsBehaviour, WorldRequirements, JamjarsSiloCosts, LogicType, ProgressiveEggAim, ProgressiveWaterTraining, RandomizeBKMoveList
 from Options import OptionError
 from .Names import itemName, regionName, locationName
@@ -29,6 +30,7 @@ def WorldRandomize(world: BanjoTooieWorld) -> None:
         randomize_level_order(world)
         set_level_costs(world)
         randomize_entrance_loading_zones(world)
+        randomize_boss_loading_zones(world)
         choose_unlocked_silos(world)
         handle_early_moves(world)
         generate_jamjars_costs(world)
@@ -157,6 +159,28 @@ def randomize_entrance_loading_zones(world: BanjoTooieWorld) -> None:
 
         world.loading_zones = {randomizable_levels[i]: randomized_levels[i] for i in range(len(randomizable_levels))}
 
+def randomize_boss_loading_zones(world: BanjoTooieWorld) -> None:
+    boss_list = [
+        regionName.BOSSMT,
+        regionName.BOSSGM,
+        regionName.BOSSWW,
+        regionName.BOSSJR,
+        regionName.BOSSTD,
+        regionName.BOSSGI,
+        regionName.BOSSHPF,
+        regionName.BOSSHPI,
+        regionName.BOSSCC
+    ]
+    if world.options.randomize_boss_loading_zone:
+        randomized_boss_list = copy.deepcopy(boss_list)
+        world.random.shuffle(boss_list)
+        world.random.shuffle(randomized_boss_list)
+        for i in range(len(boss_list)):
+            world.loading_zones[randomized_boss_list[i]] = boss_list[i]
+    else:
+        for i in range(len(boss_list)):
+            world.loading_zones[boss_list[i]] = boss_list[i]
+
 
 def choose_unlocked_silos(world: BanjoTooieWorld) -> None:
     if world.options.open_silos == 0:
@@ -175,7 +199,7 @@ def choose_unlocked_silos(world: BanjoTooieWorld) -> None:
         world_silo = ""
         if list(world.randomize_order.keys())[0] == regionName.GIO:
             # GI is special. If loading zones are not randomized, the only way to make progress in the level is by riding the train into the level from Cliff Top.
-            world_silo = itemName.SILOIOHQM if world.options.randomize_world_loading_zone else itemName.SILOIOHCT
+            world_silo = itemName.SILOIOHQM if world.options.randomize_world_loading_zone or world.options.open_gi_frontdoor else itemName.SILOIOHCT
         else:
             overworld_lookup = {
                 regionName.MT: world.random.choice([itemName.SILOIOHPL, itemName.SILOIOHPG, itemName.SILOIOHCT, itemName.SILOIOHWL, itemName.SILOIOHQM]), # You can already get there, so we give a random silo.

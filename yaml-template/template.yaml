@@ -28,6 +28,7 @@ game: Banjo-Tooie
 
 Banjo-Tooie:
   death_link: 'false'           # If someone "kicks the bucket", you all perish together
+  tag_link: 'false'             # If someone "tags", you will also switch characters if you already met the tranformation criteria
 
   # Choose your logic difficulty and difficulty of tricks you are expected to perform to reach certain areas.
   # 0 = intended
@@ -139,6 +140,9 @@ Banjo-Tooie:
   randomize_glowbos: 'true'      # adds Mumbo / Humba Magic to the pool
   randomize_stop_n_swap: 'true'  # Ice key + Eggs + Egg rewards are added to the item pool
   randomize_dino_roar: 'true'    # Roar is in the pool
+  randomize_green_relics: 'true' # adds Targitzan's Green Relics to the pool
+  randomize_tickets: 'true'      # adds Big Top Tickets to the pool
+  randomize_beans: 'true'        # adds CCL Beans to the Pool
   nestsanity: 'false'            # Every egg nest and feather nest give a check when you collect them for the first time. They behave as normal afterwards.
   randomize_signposts: 'false'   # Signposts as checks
 

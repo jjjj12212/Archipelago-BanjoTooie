@@ -1,11 +1,22 @@
-# a
-  - Grunty gives more varied messages when you die.
-  - The options have been embellished
-    - Game length has been renamed to World Requirements.
-    - A couple of option descriptions have been reworded.
-    - The options page now uses option groups for make it more organised.
-    - The options in the yaml have been reordered to match the option page.
+# 4.6
+  - Options
+    - New options
+      - Big Top Tickets are now randomized
+      - Targitzan's Green Relics are now randomized
+      - Beans are now randomized
+        - Locations that requires the bean item will not be in-logic until both beans are collected.
+      - Tag-Link
+        - If you don't have the ability to transform, you will get the buzzer sound instead if someone "tags".
+        - only applies if you use the D-Pad Instant Transformation. Will not work if you manual transform.
+      - Having the front door of Grunty's Industries pre-opened.
+    - The existing options have been embellished
+      - Game length has been renamed to World Requirements.
+      - A couple of option descriptions have been reworded.
+      - The options page now uses option groups for make it more organised.
+      - The options in the yaml have been reordered to match the option page.
   - Logic fixes:
+    - Added additional regions for randomised bosses.
+    - Many bugs related to indirect conditions have been fixed.
     - IoH Another Digger Tunnel Nests: easy tricks can get them by arriving from wasteland and using beak buster.
     - MT Pool Jinjo: Added Golden Goliath and Stony for intended logic.
     - WW Dodgem Dome Jiggy: Fixed some nonsense logic.
@@ -13,6 +24,7 @@
     - GI Floor 1 to Floor 2: Removed solo Kazooie from the logic because it made seeds unbeatable with randomised warp pads.
     - Individual alien kids: check if you can reach JRL to do the UFO jiggy.
     - Icicle Grotto Near Spring Pads Nest: can be gotten by warping there.
+  - Grunty gives more varied messages when you die.
 
 # 4.5.1
   - When not randomized, silos and warp pads no longer have locations associated with them.
