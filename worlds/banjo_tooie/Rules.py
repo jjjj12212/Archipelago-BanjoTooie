@@ -2201,7 +2201,7 @@ class BanjoTooieRules:
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.claw_clamber_boots(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.claw_clamber_boots(state) 
+            logic = self.claw_clamber_boots(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             # In case people go for the damage boost for Chilly Willy then die before getting the jiggy, we also require Pack Whack to prevent softlocks.
             logic = self.claw_clamber_boots(state)
@@ -2561,7 +2561,7 @@ class BanjoTooieRules:
         return logic
 
 
-    
+
 
     def jiggy_cheese(self, state: CollectionState) -> bool:
         logic = True
@@ -5488,13 +5488,13 @@ class BanjoTooieRules:
                     or self.clockwork_shot(state) and self.small_elevation(state)
                     ) and self.has_explosives(state)
         return logic
-    
+
     def has_enough_bigtop_tickets(self, state: CollectionState) -> bool:
         if self.world.options.randomize_tickets:
             return state.has(itemName.BTTICKET, self.player, 4)
         else:
             return self.can_kill_fruity(state)
-    
+
     def can_enter_big_top(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
@@ -7552,8 +7552,10 @@ class BanjoTooieRules:
 
     #deprecated but might be useful for ticket randomization
     def can_kill_fruity(self, state: CollectionState) -> bool:
-        return self.has_explosives(state) or \
-               self.humbaWW(state)
+        return state.can_reach_region(regionName.WW, self.player) and (
+                self.has_explosives(state) or \
+                self.humbaWW(state)
+               )
 
     def saucer_door_open(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == LogicType.option_intended:
@@ -7596,7 +7598,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             return self.can_shoot_linear_egg(state) and (self.flap_flip(state) or self.egg_aim(state))
         elif self.world.options.logic_type == LogicType.option_glitches:
-            return self.can_shoot_any_egg(state) and (self.flap_flip(state) or self.egg_aim(state)) 
+            return self.can_shoot_any_egg(state) and (self.flap_flip(state) or self.egg_aim(state))
 
     def smuggle_food(self, state: CollectionState) -> bool:
         logic = True
@@ -9652,7 +9654,7 @@ class BanjoTooieRules:
             for location, rules in self.big_top_tickets_rules.items():
                 tickets = self.world.multiworld.get_location(location, self.player)
                 set_rule(tickets, rules)
-        
+
         if self.world.options.randomize_beans:
             for location, rules in self.beans_rules.items():
                 beans = self.world.multiworld.get_location(location, self.player)
