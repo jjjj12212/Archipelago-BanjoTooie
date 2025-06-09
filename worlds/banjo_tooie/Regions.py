@@ -1,5 +1,6 @@
 import copy
-import typing
+from dataclasses import dataclass
+from typing import List, Tuple
 from BaseClasses import Region
 from .Options import VictoryCondition
 from .Items import silo_table
@@ -1561,9 +1562,6 @@ def connect_regions(self):
                             regionName.MTKS: lambda state: state.has(itemName.WARPMT5, player)
                         })
 
-    # We explicitly add this indirect connection due to the Stony.
-    entrance_MT_to_KS = next(e for e in region_MT.exits if e.connected_region.name == regionName.MTKS)
-    self.multiworld.register_indirect_condition(self.get_region(regionName.MTJSG), entrance_MT_to_KS)
 
     region_HATCH = self.get_region(regionName.TL_HATCH)
     region_HATCH.add_exits({regionName.TL},
@@ -1763,10 +1761,6 @@ def connect_regions(self):
                             regionName.GIR: lambda state: state.has(itemName.WARPGI5, player),
                          })
 
-    # We explicitly add this indirect connection due to the flight pad switch
-    entrance_GIO_to_GIR = next(e for e in region_GIO.exits if e.connected_region.name == regionName.GIF)
-    self.multiworld.register_indirect_condition(self.get_region(regionName.GI4), entrance_GIO_to_GIR)
-
     region_GI2 = self.get_region(regionName.GI2)
     region_GI2.add_exits({regionName.GIOB, regionName.GI1, regionName.GI2EM, regionName.GI3, regionName.GIWARP},
                         {regionName.GI1: lambda state: rules.F2_to_F1(state),
@@ -1903,3 +1897,28 @@ def connect_regions(self):
             region_actual_world_entrance.add_exits({overworld_entrance}, {overworld_entrance: lambda state: rules.GGM_to_PL(state)})
         else:
             region_actual_world_entrance.add_exits({overworld_entrance})
+
+    @dataclass
+    class IndirectTransitionCondition:
+        source: str
+        destination: str
+        regions_in_rules: List[str]
+
+    indirect_transition_definitions: List[IndirectTransitionCondition] = [
+        IndirectTransitionCondition(regionName.MT, regionName.MTKS, [regionName.MTJSG]),
+        IndirectTransitionCondition(regionName.GIO, regionName.GIF, [regionName.GI4]),
+        IndirectTransitionCondition(regionName.HP, regionName.JR, [regionName.CC]),
+        IndirectTransitionCondition(regionName.JRSS, regionName.JRAT, [regionName.JRAT]),
+        IndirectTransitionCondition(regionName.JRSS, regionName.JRLC, [regionName.JRAT]),
+        IndirectTransitionCondition(regionName.JRLC, regionName.JRSS, [regionName.JRAT]),
+        IndirectTransitionCondition(regionName.JRLC, regionName.JRBFC, [regionName.JRAT]),
+        IndirectTransitionCondition(regionName.JRBFC, regionName.JRLC, [regionName.JRAT]),
+    ]
+
+    # Read this to know what this code does.
+    # https://github.com/ArchipelagoMW/Archipelago/blob/main/docs/apworld_dev_faq.md#i-learned-about-indirect-conditions-in-the-world-api-document-but-i-want-to-know-more-what-are-they-and-why-are-they-necessary
+    for definition in indirect_transition_definitions:
+        source_region = self.get_region(definition.source)
+        entrance = next(e for e in source_region.exits if e.connected_region.name == definition.destination)
+        for rule_region_name in definition.regions_in_rules:
+            self.multiworld.register_indirect_condition(self.get_region(rule_region_name), entrance)
