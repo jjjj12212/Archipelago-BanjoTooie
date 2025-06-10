@@ -180,6 +180,8 @@ Banjo-Tooie:
   # The bridge from HFPs entrance is pre-moved to allow secondary access to clifftop
   # George is also pre-dropped to make HFP>JRL more accessible
   backdoors: 'false'
+  open_gi_frontdoor: 'false' #opens GI front factory doors 
+
 
   open_silos: 0 # select between 0-7 how many IOH silos are in your starting inventory
 
