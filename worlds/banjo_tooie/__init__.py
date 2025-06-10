@@ -947,6 +947,8 @@ class BanjoTooieWorld(World):
             "randomize_warp_pads",
             "randomize_silos",
             "hint_clarity",
+            "randomize_world_loading_zone",
+            "randomize_boss_loading_zone",
             "dialog_character"
         )
 
