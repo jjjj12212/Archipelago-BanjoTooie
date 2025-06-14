@@ -6,6 +6,7 @@
   - Tag-Link
     - If you don't have the ability to transform, you will get the buzzer sound instead if someone "tags".
     - only applies if you use the D-Pad Instant Transformation. Will not work if you manual transform.
+  - HFP flight pad & Claw Clamber Boots no longer requires Dragon Brothers to shoot at.
   - New option to open the front door to Grunty's Industries
   - Logic fixes:
     - Added additional regions

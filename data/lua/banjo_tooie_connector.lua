@@ -5705,7 +5705,7 @@ local MAP_ENTRANCES = {
         ['entranceId'] = 10,
         ['exitId'] = 2,
         ['exitMap'] = 0x14F,
-        ["access"] = {ITEM_TABLE["AP_ITEM_BBLASTER"]}
+        ["access"] = {}
     },
     [0xC7] = {
         ['name'] = "Glitter Gulch Mine",
@@ -5793,7 +5793,7 @@ local MAP_ENTRANCES = {
     },
     [0x113] = {
         ['name'] = "Terry's Nest",
-        ['entranceId'] = 2,
+        ['entranceId'] = 0x05,
         ['exitId'] = 0x14,
         ['exitMap'] = 0x112,
         ["access"] = {}
@@ -5822,7 +5822,7 @@ local MAP_ENTRANCES = {
     [0x13F] = {
         ['name'] = "Fake Mumbo Skull",
         ['entranceId'] = 1,
-        ['exitId'] = 0x16,
+        ['exitId'] = 0x09,
         ['exitMap'] = 0x136,
         ["access"] = {}
     },
