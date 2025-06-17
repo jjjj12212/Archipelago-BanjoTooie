@@ -5705,126 +5705,152 @@ local MAP_ENTRANCES = {
         ['entranceId'] = 10,
         ['exitId'] = 2,
         ['exitMap'] = 0x14F,
-        ["access"] = {}
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
     [0xC7] = {
         ['name'] = "Glitter Gulch Mine",
         ['entranceId'] = 17,
         ['exitId'] = 2,
         ['exitMap'] = 0x152,
-        ["access"] = {}
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
     [0xD6] = {
         ['name'] = "Witchyworld",
         ['entranceId'] = 18,
         ['exitId'] = 2,
         ['exitMap'] = 0x154,
-        ["access"] = {}
+        ["access"] = {},
+        ["reverse_access"] = {},
+
     },
     [0x1A7] = {
         ['name'] = "Jolly Roger's Lagoon - Town Center",
         ['entranceId'] = 3,
         ['exitId'] = 5,
         ['exitMap'] = 0x155,
-        ["access"] = {}
+        ["access"] = {},
+        ["reverse_access"] = {},
+
     },
     [0x112] = {
         ['name'] = "Terrydactyland",
         ['entranceId'] = 23,
         ['exitId'] = 2,
         ['exitMap'] = 0x15A,
-        ["access"] = {}
+        ["access"] = {},
+        ["reverse_access"] = {},
+
     },
     [0x100] = {
         ['name'] = "Outside Grunty Industries",
         ['entranceId'] = 9,
         ['exitId'] = 2,
         ['exitMap'] = 0x15C,
-        ["access"] = {}
+        ["access"] = {},
+        ["reverse_access"] = {},
+
     },
     [0x127] = {
         ['name'] = "Hailfire Peaks",
         ['entranceId'] = 21,
         ['exitId'] = 6,
         ['exitMap'] = 0x155,
-        ["access"] = {}
+        ["access"] = {},
+        ["reverse_access"] = {},
+
     },
     [0x136] = {
         ['name'] = "Cloud Cuckooland",
         ['entranceId'] = 20,
         ['exitId'] = 5,
         ['exitMap'] = 0x15A,
-        ["access"] = {}
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
     [0x15D] = {
         ['name'] = "Cauldron Keep",
         ['entranceId'] = 1,
         ['exitId'] = 3,
         ['exitMap'] = 0x15C,
-        ["access"] = {}
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
     [0x17A] = {
         ['name'] = "Targitzan's Really Sacred Chamber",
         ['entranceId'] = 1,
         ['exitId'] = 2,
         ['exitMap'] = 0x178,
-        ["access"] = {ITEM_TABLE["AP_ITEM_BBLASTER"]}
+        ["access"] = {ITEM_TABLE["AP_ITEM_BBLASTER"]},
+        ["reverse_access"] = {ITEM_TABLE["AP_ITEM_BBLASTER"]},
+
     },
     [0x0D1] = {
         ['name'] = "Inside Chuffy's Boiler",
         ['entranceId'] = 1,
         ['exitId'] = 2,
         ['exitMap'] = 0x0D0,
-        ["access"] = {}
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
     [0x0F9] = {
         ['name'] = "Big Top Interior",
         ['entranceId'] = 1,
         ['exitId'] = 3,
         ['exitMap'] = 0x0D6,
-        ["access"] = {}
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
     [0x0FC] = {
         ['name'] = "Davy Jones' Locker",
         ['entranceId'] = 1,
         ['exitId'] = 0x25, --different lockers
         ['exitMap'] = 0x1A9,
-        ["access"] = {ITEM_TABLE["AP_ITEM_GEGGS"], ITEM_TABLE["AP_ITEM_AUQAIM"]}
+        ["access"] = {ITEM_TABLE["AP_ITEM_GEGGS"], ITEM_TABLE["AP_ITEM_AUQAIM"]},
+        ["reverse_access"] = {},
     },
     [0x113] = {
         ['name'] = "Terry's Nest",
         ['entranceId'] = 0x05,
         ['exitId'] = 0x14,
         ['exitMap'] = 0x112,
-        ["access"] = {}
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
     [0x110] = {
         ['name'] = "Repair Depot",
         ['entranceId'] = 1,
         ['exitId'] = 3,
         ['exitMap'] = 0x10F,
-        ["access"] = {ITEM_TABLE["AP_ITEM_GEGGS"]}
+        ["access"] = {ITEM_TABLE["AP_ITEM_GEGGS"]},
+        ["reverse_access"] = {},
     },
     [0x12B] = {
         ['name'] = "Chilli Billi Crater",
         ['entranceId'] = 1,
         ['exitId'] = 0x16,
         ['exitMap'] = 0x127,
-        ["access"] = {ITEM_TABLE["AP_ITEM_IEGGS"]}
+        ["access"] = {ITEM_TABLE["AP_ITEM_IEGGS"]},
+        ["reverse_access"] = {},
+
     },
     [0x12C] = {
         ['name'] = "Chilli Willy Crater",
         ['entranceId'] = 1,
         ['exitId'] = 0x0C,
         ['exitMap'] = 0x128,
-        ["access"] = {}
+        ["access"] = {},
+        ["reverse_access"] = {},
+
     },
     [0x13F] = {
         ['name'] = "Fake Mumbo Skull",
         ['entranceId'] = 1,
         ['exitId'] = 0x09,
         ['exitMap'] = 0x136,
-        ["access"] = {}
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
 }
 
@@ -7760,7 +7786,7 @@ function zoneWarp(zone_table)
        end
        while success == false do
             BTH:setWorldEntrance(orig_map, new_map, orig_table['entranceId'], orig_table['exitMap'], new_table['entranceId'], new_table['access'])
-            success = BTH:setWorldEntrance(new_table['exitMap'], orig_table['exitMap'], new_table['exitId'], new_map, orig_table['exitId'], orig_table['access'])
+            success = BTH:setWorldEntrance(new_table['exitMap'], orig_table['exitMap'], new_table['exitId'], new_map, orig_table['exitId'], orig_table['reverse_access'])
             if orig_map == 0xC7 -- Glitter Gulch Mine
             then
                 BTH:setWorldEntrance(orig_map, new_map, 16, orig_table['exitMap'], new_table['entranceId'], new_table['access'])
@@ -9051,8 +9077,15 @@ function main()
     end
     print("Banjo-Tooie Archipelago Version " .. BT_VERSION)
     BTH = BTHACK:new(nil)
+    local check = 0
     while BTHACK:getSettingPointer() == nil
     do
+        check = check + 1
+        if(check == 75 and BTH:getRomVersion() == "0")
+        then
+            print("This is the vanilla rom. Please use the patched version of Banjo-Tooie.")
+            return
+        end
         emu.frameadvance()
     end
     server, error = socket.bind('localhost', 21221)
