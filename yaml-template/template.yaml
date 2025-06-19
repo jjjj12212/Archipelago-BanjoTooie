@@ -158,12 +158,15 @@ Banjo-Tooie:
   skip_puzzles: 'true'        # you won't be able to utilize randomizing worlds / loading zones if this is disabled
   randomize_worlds: 'false'   # Changes the order in which levels open
   randomize_world_loading_zone: 'false' # World Entrances will warp you to a different world. This only affects main entrances.
+  randomize_boss_loading_zone: 'false' # Boss loading zones will warp you to a different boss.
 
   # The following gates are preopened: MT>TDL, MT>HFP, GGM>WW, WW>TDL
   # For MT>TDL only the gate accessed from TDL's side is opened and for GGM>WW the boulders are still unexploded
   # The bridge from HFPs entrance is pre-moved to allow secondary access to clifftop
   # George is also pre-dropped to make HFP>JRL more accessible
   backdoors: 'false'
+
+  open_gi_frontdoor: 'false' # The front door of Grunty Industries is open.
 
   signpost_hints: 0           # 0-61; how many signposts will give you hints
   signpost_move_hints: 0       # 0-61; how many signpost hints from the option above will hint move items

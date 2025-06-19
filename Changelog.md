@@ -5,14 +5,21 @@
       - Targitzan's Green Relics are now randomized
       - Beans are now randomized
         - Locations that requires the bean item will not be in-logic until both beans are collected.
+      - New option to open the front door to Grunty's Industries
       - Tag-Link
         - If you don't have the ability to transform, you will get the buzzer sound instead if someone "tags".
         - only applies if you use the D-Pad Instant Transformation. Will not work if you manual transform.
       - Having the front door of Grunty's Industries pre-opened.
+      - You can now randomise boss loading zones
+        - Loading zones check for the requirement of the randomised boss to see if you can go through them.
+        - Terry loading zone behaviour
+          - The loading zone at the top of the mountain is randomised, but the one that leads inside the mountain is not.
+          - Both loading zones leading to the nest lead to Terry if you're going through them as solo Banjo.
+        - HFP flight pad & Claw Clamber Boots no longer requires Dragon Brothers to shoot at, even if bosses are not randomised.
     - The existing options have been embellished
       - Game length has been renamed to World Requirements.
       - A couple of option descriptions have been reworded.
-      - The options page now uses option groups for make it more organised.
+      - The options page now uses option groups to make it more organised.
       - The options in the yaml have been reordered to match the option page.
   - Logic fixes:
     - Added additional regions for randomised bosses.

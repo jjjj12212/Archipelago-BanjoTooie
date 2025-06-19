@@ -67,7 +67,7 @@ bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_i
 script_version: int = 5
 version: str = "V4.6"
 game_append_version: str = "V46"
-patch_md5: str = "7c5449670f4453a942ea0aa48d215d0a"
+patch_md5: str = "8890f42f100c30916a60a1c66591e256"
 
 def get_item_value(ap_id):
     return ap_id
@@ -107,6 +107,23 @@ async def apply_patch():
     if patch_path:
         logger.info("Patched Banjo-Tooie is located in " + patch_path)
 
+class BanjoTooieItemTracker:
+
+  def __init__(self, ctx):
+    self.ctx = ctx
+    self.items = {item_name: 0 for item_name in bt_itm_name_to_id}
+    self.refresh_items()
+
+  def refresh_items(self):
+    for item in self.items:
+      self.items[item] = 0
+    for item in self.ctx.items_received:
+      self.items[self.ctx.item_names.lookup_in_game(item.item)] += 1
+    self.ctx.tab_items.content.data = []
+    for item_name, amount in sorted(self.items.items()):
+      if amount == 0: continue
+      if amount > 1: self.ctx.tab_items.content.data.append({"text":f"{item_name}: {amount}"})
+      else: self.ctx.tab_items.content.data.append({"text":f"{item_name}"})
 
 class BanjoTooieCommandProcessor(ClientCommandProcessor):
     def __init__(self, ctx):
@@ -123,7 +140,7 @@ class BanjoTooieCommandProcessor(ClientCommandProcessor):
             self.ctx.deathlink_client_override = True
             self.ctx.deathlink_enabled = not self.ctx.deathlink_enabled
             async_start(self.ctx.update_death_link(self.ctx.deathlink_enabled), name="Update Deathlink")
-    
+
     def _cmd_taglink(self):
         """Toggle taglink from client. Overrides default setting."""
         if isinstance(self.ctx, BanjoTooieContext):
@@ -254,11 +271,11 @@ class BanjoTooieContext(CommonContext):
         await self.send_msgs([{"cmd": "Bounce", "tags": ["TagLink"],
              "data": {
                 "time": time.time(),
-                "source": self.instance_id, 
+                "source": self.instance_id,
                 "tag": True}}])
 
     def run_gui(self):
-        from kvui import GameManager
+        from kvui import GameManager, UILog
 
         class BanjoTooieManager(GameManager):
             logging_pairs = [
@@ -266,12 +283,18 @@ class BanjoTooieContext(CommonContext):
             ]
             base_title = "Banjo-Tooie Client "+ version + " for AP"
 
+            def build(self):
+                ret = super().build()
+                self.ctx.tab_items = self.add_client_tab("Items", UILog())
+                return ret
+
         self.ui = BanjoTooieManager(self)
         self.ui_task = asyncio.create_task(self.ui.async_run(), name="UI")
         asyncio.create_task(apply_patch())
 
     def on_package(self, cmd, args):
         if cmd == "Connected":
+            self.tracker = BanjoTooieItemTracker(self)
             self.slot_data = args.get("slot_data", None)
             if version != self.slot_data["version"]:
                 logger.error("Your Banjo-Tooie AP does not match with the generated world.")
@@ -290,6 +313,7 @@ class BanjoTooieContext(CommonContext):
             async_start(run_game(os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".z64")))
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
         elif cmd == "ReceivedItems":
+            self.tracker.refresh_items()
             if self.startup == False:
                 for item in args["items"]:
                     player = ""
@@ -365,7 +389,7 @@ def get_payload(ctx: BanjoTooieContext):
         ctx.deathlink_pending = False
     else:
         trigger_death = False
-    
+
     if ctx.taglink_enabled and ctx.pending_tag_link:
         trigger_tag = True
         ctx.taglink_sent_this_tag = True
@@ -475,7 +499,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     if payload["deathlinkActive"] and ctx.deathlink_enabled and not ctx.deathlink_client_override:
         await ctx.update_death_link(True)
         ctx.deathlink_enabled = True
-    
+
     # Turn on taglink if it is on, and if the client hasn't overriden it
     if payload["taglinkActive"] and ctx.taglink_enabled and not ctx.taglink_client_override:
         await ctx.update_tag_link(True)
@@ -867,7 +891,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 await ctx.send_death()
         else: # Banjo is somehow still alive
             ctx.deathlink_sent_this_death = False
-    
+
     if ctx.taglink_enabled:
         if payload["isTag"]: #Banjo tagged
             ctx.pending_tag_link = False

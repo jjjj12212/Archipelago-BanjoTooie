@@ -2279,168 +2279,173 @@ local ASSET_MAP_CHECK = {
 
 local ITEM_TABLE = {}; -- reverses ROM_ITEM so the key is the Item
 local ROM_ITEM_TABLE = {
-    "AP_ITEM_PAGES",
-    "AP_ITEM_HONEY",
-    "AP_ITEM_WJINJO",
-    "AP_ITEM_OJINJO",
-    "AP_ITEM_YJINJO",
-    "AP_ITEM_BRJINJO",
-    "AP_ITEM_GJINJO",
-    "AP_ITEM_RJINJO",
-    "AP_ITEM_BLJINJO",
-    "AP_ITEM_PJINJO",
-    "AP_ITEM_BKJINJO",
-    "AP_ITEM_DOUBLOON",
-    "AP_ITEM_JIGGY",
-    "AP_ITEM_TREBLE",
-    "AP_ITEM_NOTE",
-    "AP_ITEM_MUMBOTOKEN",
-    "AP_ITEM_IKEY",
-    "AP_ITEM_PMEGG",
-    "AP_ITEM_BMEGG",
-    "AP_ITEM_HEALTHUP",
-    "AP_ITEM_CHEATFEATHER",
-    "AP_ITEM_CHEATEGG",
-    "AP_ITEM_CHEATFALL",
-    "AP_ITEM_CHEATHONEY",
-    "AP_ITEM_CHEATJUKE",
-    "AP_ITEM_GGRAB",
-    "AP_ITEM_BBLASTER",
-    "AP_ITEM_EGGAIM",
-    "AP_ITEM_BDRILL",
-    "AP_ITEM_BBAYONET",
-    "AP_ITEM_AIREAIM",
-    "AP_ITEM_SPLITUP",
-    "AP_ITEM_WWHACK",
-    "AP_ITEM_TTORP",
-    "AP_ITEM_AUQAIM",
-    "AP_ITEM_SHPACK",
-    "AP_ITEM_GLIDE",
-    "AP_ITEM_SNPACK",
-    "AP_ITEM_LSPRING",
-    "AP_ITEM_CLAWBTS",
-    "AP_ITEM_SPRINGB",
-    "AP_ITEM_TAXPACK",
-    "AP_ITEM_HATCH",
-    "AP_ITEM_PACKWH",
-    "AP_ITEM_SAPACK",
-    "AP_ITEM_FEGGS",
-    "AP_ITEM_GEGGS",
-    "AP_ITEM_CEGGS",
-    "AP_ITEM_IEGGS",
-    "AP_ITEM_FSWIM",
-    "AP_ITEM_DAIR",
-    "AP_ITEM_BBASH",
-    "AP_ITEM_HOMINGEGGS",
-    "AP_ITEM_AMAZEOGAZE",
-    "AP_ITEM_ROAR",
-    "AP_ITEM_DIVE",
-    "AP_ITEM_FPAD",
-    "AP_ITEM_GRAT",
-    "AP_ITEM_ROLL",
-    "AP_ITEM_ARAT",
-    "AP_ITEM_BBARGE",
-    "AP_ITEM_TJUMP",
-    "AP_ITEM_FLUTTER",
-    "AP_ITEM_FFLIP",
-    "AP_ITEM_CLIMB",
-    "AP_ITEM_BEGGS",
-    "AP_ITEM_TTROT",
-    "AP_ITEM_BBUST",
-    "AP_ITEM_WWING",
-    "AP_ITEM_SSTRIDE",
-    "AP_ITEM_TTRAIN",
-    "AP_ITEM_BBOMB",
-    "AP_ITEM_EGGSHOOT",
-    "AP_ITEM_MUMBOMT",
-    "AP_ITEM_MUMBOGM",
-    "AP_ITEM_MUMBOWW",
-    "AP_ITEM_MUMBOJR",
-    "AP_ITEM_MUMBOTD",
-    "AP_ITEM_MUMBOGI",
-    "AP_ITEM_MUMBOHP",
-    "AP_ITEM_MUMBOCC",
-    "AP_ITEM_MUMBOIH",
-    "AP_ITEM_HUMBAMT",
-    "AP_ITEM_HUMBAGM",
-    "AP_ITEM_HUMBAWW",
-    "AP_ITEM_HUMBAJR",
-    "AP_ITEM_HUMBATD",
-    "AP_ITEM_HUMBAGI",
-    "AP_ITEM_HUMBAHP",
-    "AP_ITEM_HUMBACC",
-    "AP_ITEM_HUMBAIH",
-    "AP_ITEM_TRAINSWIH",
-    "AP_ITEM_TRAINSWTD",
-    "AP_ITEM_TRAINSWGI",
-    "AP_ITEM_TRAINSWHP1",
-    "AP_ITEM_TRAINSWHP2",
-    "AP_ITEM_TRAINSWWW",
-    "AP_ITEM_CHUFFY",
-    "AP_ITEM_GNEST",
-    "AP_ITEM_ENEST",
-    "AP_ITEM_FNEST",
-    "AP_ITEM_MTA",
-    "AP_ITEM_GGA",
-    "AP_ITEM_WWA",
-    "AP_ITEM_JRA",
-    "AP_ITEM_TDA",
-    "AP_ITEM_GIA",
-    "AP_ITEM_HFA",
-    "AP_ITEM_CCA",
-    "AP_ITEM_CKA",
-    "AP_ITEM_H1A",
-    "AP_ITEM_WARPMT_HUMBA",
-    "AP_ITEM_WARPMT_PRISON",
-    "AP_ITEM_WARPMT_MUMBO",
-    "AP_ITEM_WARPMT_ENTRANCE",
-    "AP_ITEM_WARPMT_KICKBALL",
-    "AP_ITEM_WARPGG_TRAIN",
-    "AP_ITEM_WARPGG_CRUSHING",
-    "AP_ITEM_WARPGG_HUMBA",
-    "AP_ITEM_WARPGG_MUMBO",
-    "AP_ITEM_WARPGG_ENTRANCE",
-    "AP_ITEM_WARPWW_BIGTOP",
-    "AP_ITEM_WARPWW_ENTRANCE",
-    "AP_ITEM_WARPWW_MUMBO",
-    "AP_ITEM_WARPWW_HUMBA",
-    "AP_ITEM_WARPWW_SPACE",
-    "AP_ITEM_WARPJR_LOCKERS",
-    "AP_ITEM_WARPJR_BIGFISH",
-    "AP_ITEM_WARPJR_SHIP",
-    "AP_ITEM_WARPJR_ATLANTIS",
-    "AP_ITEM_WARPJR_ENTRANCE",
-    "AP_ITEM_WARPGI_MUMBO",
-    "AP_ITEM_WARPGI_HUMBA",
-    "AP_ITEM_WARPGI_ENTRANCE",
-    "AP_ITEM_WARPGI_ROOF",
-    "AP_ITEM_WARPGI_CRUSHER",
-    "AP_ITEM_WARPTD_TOP",
-    "AP_ITEM_WARPTD_HUMBA",
-    "AP_ITEM_WARPTD_MUMBO",
-    "AP_ITEM_WARPTD_STOMPING",
-    "AP_ITEM_WARPTD_ENTRANCE",
-    "AP_ITEM_WARPCC_ENTRANCE",
-    "AP_ITEM_WARPCC_CENTER",
-    "AP_ITEM_WARPHF_ICICLE",
-    "AP_ITEM_WARPHF_HUMBA",
-    "AP_ITEM_WARPHF_ICYUPPER",
-    "AP_ITEM_WARPHF_LAVAUPPER",
-    "AP_ITEM_WARPHF_ENTRANCE",
-    "AP_ITEM_WARPCK_HAG1",
-    "AP_ITEM_WARPCK_ENTRANCE",
-    "AP_ITEM_SILO_JINJO_VILLAGE",
-    "AP_ITEM_SILO_WOODED_HOLLOW",
-    "AP_ITEM_SILO_PLATEAU",
-    "AP_ITEM_SILO_PINE_GROVE",
-    "AP_ITEM_SILO_CLIFF_TOP",
-    "AP_ITEM_SILO_WASTELAND",
-    "AP_ITEM_SILO_QUAGMIRE",
-    "AP_ITEM_BTTICKET",
-    "AP_ITEM_GRRELIC",
-    "AP_ITEM_BEAN",
-    "AP_ITEM_MAX",
+  "AP_ITEM_GGRAB",
+  "AP_ITEM_BBLASTER",
+  "AP_ITEM_EGGAIM",
+  "AP_ITEM_BDRILL",
+  "AP_ITEM_BBAYONET",
+  "AP_ITEM_AIREAIM",
+  "AP_ITEM_SPLITUP",
+  "AP_ITEM_WWHACK",
+  "AP_ITEM_TTORP",
+  "AP_ITEM_AUQAIM",
+  "AP_ITEM_SHPACK",
+  "AP_ITEM_GLIDE",
+  "AP_ITEM_SNPACK",
+  "AP_ITEM_LSPRING",
+  "AP_ITEM_CLAWBTS",
+  "AP_ITEM_SPRINGB",
+  "AP_ITEM_TAXPACK",
+  "AP_ITEM_HATCH",
+  "AP_ITEM_PACKWH",
+  "AP_ITEM_SAPACK",
+  "AP_ITEM_FEGGS",
+  "AP_ITEM_GEGGS",
+  "AP_ITEM_CEGGS",
+  "AP_ITEM_IEGGS",
+  "AP_ITEM_FSWIM",
+  "AP_ITEM_DAIR",
+  "AP_ITEM_BBASH",
+  "AP_ITEM_AMAZEOGAZE",
+  "AP_ITEM_ROAR",
+  "AP_ITEM_DIVE",
+  "AP_ITEM_FPAD",
+  "AP_ITEM_GRAT",
+  "AP_ITEM_ROLL",
+  "AP_ITEM_ARAT",
+  "AP_ITEM_BBARGE",
+  "AP_ITEM_TJUMP",
+  "AP_ITEM_FLUTTER",
+  "AP_ITEM_FFLIP",
+  "AP_ITEM_CLIMB",
+  "AP_ITEM_BEGGS",
+  "AP_ITEM_TTROT",
+  "AP_ITEM_BBUST",
+  "AP_ITEM_WWING",
+  "AP_ITEM_SSTRIDE",
+  "AP_ITEM_TTRAIN",
+  "AP_ITEM_BBOMB",
+  "AP_ITEM_EGGSHOOT",
+  "AP_ITEM_PAGES",
+  "AP_ITEM_HONEY",
+  "AP_ITEM_WJINJO",
+  "AP_ITEM_OJINJO",
+  "AP_ITEM_YJINJO",
+  "AP_ITEM_BRJINJO",
+  "AP_ITEM_GJINJO",
+  "AP_ITEM_RJINJO",
+  "AP_ITEM_BLJINJO",
+  "AP_ITEM_PJINJO",
+  "AP_ITEM_BKJINJO",
+  "AP_ITEM_DOUBLOON",
+  "AP_ITEM_JIGGY",
+  "AP_ITEM_TREBLE",
+  "AP_ITEM_NOTE",
+  "AP_ITEM_MUMBOTOKEN",
+  "AP_ITEM_IKEY",
+  "AP_ITEM_PMEGG",
+  "AP_ITEM_BMEGG",
+  "AP_ITEM_HEALTHUP",
+  "AP_ITEM_HOMINGEGGS",
+  "AP_ITEM_CHEATFEATHER",
+  "AP_ITEM_CHEATEGG",
+  "AP_ITEM_CHEATFALL",
+  "AP_ITEM_CHEATHONEY",
+  "AP_ITEM_CHEATJUKE",
+  "AP_ITEM_MUMBOMT",
+  "AP_ITEM_MUMBOGM",
+  "AP_ITEM_MUMBOWW",
+  "AP_ITEM_MUMBOJR",
+  "AP_ITEM_MUMBOTD",
+  "AP_ITEM_MUMBOGI",
+  "AP_ITEM_MUMBOHP",
+  "AP_ITEM_MUMBOCC",
+  "AP_ITEM_MUMBOIH",
+  "AP_ITEM_HUMBAMT",
+  "AP_ITEM_HUMBAGM",
+  "AP_ITEM_HUMBAWW",
+  "AP_ITEM_HUMBAJR",
+  "AP_ITEM_HUMBATD",
+  "AP_ITEM_HUMBAGI",
+  "AP_ITEM_HUMBAHP",
+  "AP_ITEM_HUMBACC",
+  "AP_ITEM_HUMBAIH",
+  "AP_ITEM_TRAINSWIH",
+  "AP_ITEM_TRAINSWTD",
+  "AP_ITEM_TRAINSWGI",
+  "AP_ITEM_TRAINSWHP1",
+  "AP_ITEM_TRAINSWHP2",
+  "AP_ITEM_TRAINSWWW",
+  "AP_ITEM_CHUFFY",
+  "AP_ITEM_GNEST",
+  "AP_ITEM_ENEST",
+  "AP_ITEM_FNEST",
+  "AP_ITEM_MTA",
+  "AP_ITEM_GGA",
+  "AP_ITEM_WWA",
+  "AP_ITEM_JRA",
+  "AP_ITEM_TDA",
+  "AP_ITEM_GIA",
+  "AP_ITEM_HFA",
+  "AP_ITEM_CCA",
+  "AP_ITEM_CKA",
+  "AP_ITEM_H1A",
+  "AP_ITEM_WARPMT_HUMBA",
+  "AP_ITEM_WARPMT_PRISON",
+  "AP_ITEM_WARPMT_MUMBO",
+  "AP_ITEM_WARPMT_ENTRANCE",
+  "AP_ITEM_WARPMT_KICKBALL",
+  "AP_ITEM_WARPGG_TRAIN",
+  "AP_ITEM_WARPGG_CRUSHING",
+  "AP_ITEM_WARPGG_HUMBA",
+  "AP_ITEM_WARPGG_MUMBO",
+  "AP_ITEM_WARPGG_ENTRANCE",
+  "AP_ITEM_WARPWW_BIGTOP",
+  "AP_ITEM_WARPWW_ENTRANCE",
+  "AP_ITEM_WARPWW_MUMBO",
+  "AP_ITEM_WARPWW_HUMBA",
+  "AP_ITEM_WARPWW_SPACE",
+  "AP_ITEM_WARPJR_LOCKERS",
+  "AP_ITEM_WARPJR_BIGFISH",
+  "AP_ITEM_WARPJR_SHIP",
+  "AP_ITEM_WARPJR_ATLANTIS",
+  "AP_ITEM_WARPJR_ENTRANCE",
+  "AP_ITEM_WARPGI_MUMBO",
+  "AP_ITEM_WARPGI_HUMBA",
+  "AP_ITEM_WARPGI_ENTRANCE",
+  "AP_ITEM_WARPGI_ROOF",
+  "AP_ITEM_WARPGI_CRUSHER",
+  "AP_ITEM_WARPTD_TOP",
+  "AP_ITEM_WARPTD_HUMBA",
+  "AP_ITEM_WARPTD_MUMBO",
+  "AP_ITEM_WARPTD_STOMPING",
+  "AP_ITEM_WARPTD_ENTRANCE",
+  "AP_ITEM_WARPCC_ENTRANCE",
+  "AP_ITEM_WARPCC_CENTER",
+  "AP_ITEM_WARPHF_ICICLE",
+  "AP_ITEM_WARPHF_HUMBA",
+  "AP_ITEM_WARPHF_ICYUPPER",
+  "AP_ITEM_WARPHF_LAVAUPPER",
+  "AP_ITEM_WARPHF_ENTRANCE",
+  "AP_ITEM_WARPCK_HAG1",
+  "AP_ITEM_WARPCK_ENTRANCE",
+  "AP_ITEM_SILO_JINJO_VILLAGE",
+  "AP_ITEM_SILO_WOODED_HOLLOW",
+  "AP_ITEM_SILO_PLATEAU",
+  "AP_ITEM_SILO_PINE_GROVE",
+  "AP_ITEM_SILO_CLIFF_TOP",
+  "AP_ITEM_SILO_WASTELAND",
+  "AP_ITEM_SILO_QUAGMIRE",
+  "AP_ITEM_BTTICKET",
+  "AP_ITEM_GRRELIC",
+  "AP_ITEM_BEAN",
+  "AP_ITEM_MAX",
 };
+
+for index, item in pairs(ROM_ITEM_TABLE)
+do
+    ITEM_TABLE[item] = index - 1
+end
 
 local TRAP_TABLE = {};
 local TRAPS = {
@@ -5699,117 +5704,162 @@ local MAP_ENTRANCES = {
         ['name'] = "Mayahem Temple",
         ['entranceId'] = 10,
         ['exitId'] = 2,
-        ['exitMap'] = 0x14F
+        ['exitMap'] = 0x14F,
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
     [0xC7] = {
         ['name'] = "Glitter Gulch Mine",
         ['entranceId'] = 17,
         ['exitId'] = 2,
-        ['exitMap'] = 0x152
+        ['exitMap'] = 0x152,
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
     [0xD6] = {
         ['name'] = "Witchyworld",
         ['entranceId'] = 18,
         ['exitId'] = 2,
-        ['exitMap'] = 0x154
+        ['exitMap'] = 0x154,
+        ["access"] = {},
+        ["reverse_access"] = {},
+
     },
     [0x1A7] = {
         ['name'] = "Jolly Roger's Lagoon - Town Center",
         ['entranceId'] = 3,
         ['exitId'] = 5,
-        ['exitMap'] = 0x155
+        ['exitMap'] = 0x155,
+        ["access"] = {},
+        ["reverse_access"] = {},
+
     },
     [0x112] = {
         ['name'] = "Terrydactyland",
         ['entranceId'] = 23,
         ['exitId'] = 2,
-        ['exitMap'] = 0x15A
+        ['exitMap'] = 0x15A,
+        ["access"] = {},
+        ["reverse_access"] = {},
+
     },
     [0x100] = {
         ['name'] = "Outside Grunty Industries",
         ['entranceId'] = 9,
         ['exitId'] = 2,
-        ['exitMap'] = 0x15C
+        ['exitMap'] = 0x15C,
+        ["access"] = {},
+        ["reverse_access"] = {},
+
     },
     [0x127] = {
         ['name'] = "Hailfire Peaks",
         ['entranceId'] = 21,
         ['exitId'] = 6,
-        ['exitMap'] = 0x155
+        ['exitMap'] = 0x155,
+        ["access"] = {},
+        ["reverse_access"] = {},
+
     },
     [0x136] = {
         ['name'] = "Cloud Cuckooland",
         ['entranceId'] = 20,
         ['exitId'] = 5,
-        ['exitMap'] = 0x15A
+        ['exitMap'] = 0x15A,
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
     [0x15D] = {
         ['name'] = "Cauldron Keep",
         ['entranceId'] = 1,
         ['exitId'] = 3,
-        ['exitMap'] = 0x15C
+        ['exitMap'] = 0x15C,
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
     [0x17A] = {
-        ['name'] = "Targitzan Room",
+        ['name'] = "Targitzan's Really Sacred Chamber",
         ['entranceId'] = 1,
         ['exitId'] = 2,
-        ['exitMap'] = 0x178
+        ['exitMap'] = 0x178,
+        ["access"] = {ITEM_TABLE["AP_ITEM_BBLASTER"]},
+        ["reverse_access"] = {ITEM_TABLE["AP_ITEM_BBLASTER"]},
+
     },
     [0x0D1] = {
-        ['name'] = "King Coal Room",
+        ['name'] = "Inside Chuffy's Boiler",
         ['entranceId'] = 1,
         ['exitId'] = 2,
-        ['exitMap'] = 0x0D0
+        ['exitMap'] = 0x0D0,
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
     [0x0F9] = {
-        ['name'] = "Mr Patch Room",
+        ['name'] = "Big Top Interior",
         ['entranceId'] = 1,
         ['exitId'] = 3,
-        ['exitMap'] = 0x0D6
+        ['exitMap'] = 0x0D6,
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
     [0x0FC] = {
-        ['name'] = "Lord Woo Room",
+        ['name'] = "Davy Jones' Locker",
         ['entranceId'] = 1,
-        ['exitId'] = 0x25, --different lockers
-        ['exitMap'] = 0x1A9
+        ['exitId'] = 0x28, --different lockers
+        ['exitMap'] = 0x1A9,
+        ["access"] = {ITEM_TABLE["AP_ITEM_GEGGS"], ITEM_TABLE["AP_ITEM_AUQAIM"]},
+        ["reverse_access"] = {},
     },
     [0x113] = {
-        ['name'] = "Terry Room",
-        ['entranceId'] = 2,
+        ['name'] = "Terry's Nest",
+        ['entranceId'] = 0x05,
         ['exitId'] = 0x14,
-        ['exitMap'] = 0x112
+        ['exitMap'] = 0x112,
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
     [0x110] = {
-        ['name'] = "Weldar Room",
+        ['name'] = "Repair Depot",
         ['entranceId'] = 1,
         ['exitId'] = 3,
-        ['exitMap'] = 0x10F
+        ['exitMap'] = 0x10F,
+        ["access"] = {ITEM_TABLE["AP_ITEM_GEGGS"]},
+        ["reverse_access"] = {},
     },
     [0x12B] = {
-        ['name'] = "Chilli Billi Room",
+        ['name'] = "Chilli Billi Crater",
         ['entranceId'] = 1,
         ['exitId'] = 0x16,
-        ['exitMap'] = 0x127
+        ['exitMap'] = 0x127,
+        ["access"] = {ITEM_TABLE["AP_ITEM_IEGGS"]},
+        ["reverse_access"] = {},
+
     },
     [0x12C] = {
-        ['name'] = "Chilli Willy Room",
+        ['name'] = "Chilli Willy Crater",
         ['entranceId'] = 1,
         ['exitId'] = 0x0C,
-        ['exitMap'] = 0x128
+        ['exitMap'] = 0x128,
+        ["access"] = {},
+        ["reverse_access"] = {},
+
     },
     [0x13F] = {
-        ['name'] = "Mingy Jongo Room",
+        ['name'] = "Fake Mumbo Skull",
         ['entranceId'] = 1,
-        ['exitId'] = 0x16,
-        ['exitMap'] = 0x136
+        ['exitId'] = 0x09,
+        ['exitMap'] = 0x136,
+        ["access"] = {},
+        ["reverse_access"] = {},
     },
 }
 
 BTHACK = {
     RDRAMBase = 0x80000000,
     RDRAMSize = 0x800000,
-        base_index = 0x400000,
-        version = 0x0,
+
+    base_index = 0x400000,
+    version = 0x0,
     pc = 0x4,
         pc_death_us = 0x0,
         pc_death_ap = 0x1,
@@ -5852,7 +5902,9 @@ BTHACK = {
         exit_to_map = 0x4,
         exit_og_exit = 0x6,
         exit_to_exit = 0x7,
-        exit_map_struct_size = 0x8,
+        exit_access_rules = 0x8,
+        exit_access_rules_size = 0x6,
+        exit_map_struct_size = 0xE,
         world_index = 0,
     n64 = 0x20,
         n64_show_text = 0x0,
@@ -6113,7 +6165,7 @@ function BTHACK:sendTrap(index, value)
     mainmemory.writebyte(index + self:getTrapPointer(), value);
 end
 
-function BTHACK:setWorldEntrance(currentWorldId, newWorldId, entranceId, currentMap, newEntanceId)
+function BTHACK:setWorldEntrance(currentWorldId, newWorldId, entranceId, currentMap, newEntanceId, access)
     local hackPointerIndex = BTHACK:dereferencePointer(self.base_index);
     if hackPointerIndex == nil
     then
@@ -6131,6 +6183,15 @@ function BTHACK:setWorldEntrance(currentWorldId, newWorldId, entranceId, current
     mainmemory.write_u16_be(exit_maps_ptr + world_index + self.exit_to_map, newWorldId)
     mainmemory.writebyte(exit_maps_ptr + world_index + self.exit_to_exit, newEntanceId)
     mainmemory.writebyte(exit_maps_ptr + world_index + self.exit_og_exit, entranceId)
+
+    for _, move_id in pairs(access)
+    do
+        local offset_byte = math.floor(move_id / 8)
+        local bitbit = math.fmod(move_id, 8)
+        local currentValue = mainmemory.readbyte(exit_maps_ptr + world_index + self.exit_access_rules + offset_byte);
+        local new_value = bit.set(currentValue, bitbit)
+        mainmemory.writebyte(exit_maps_ptr + world_index + self.exit_access_rules + offset_byte, new_value)
+    end
     return true
 end
 
@@ -7724,11 +7785,11 @@ function zoneWarp(zone_table)
             end
        end
        while success == false do
-            BTH:setWorldEntrance(orig_map, new_map, orig_table['entranceId'], orig_table['exitMap'], new_table['entranceId'])
-            success = BTH:setWorldEntrance(new_table['exitMap'], orig_table['exitMap'], new_table['exitId'], new_map, orig_table['exitId'])
+            BTH:setWorldEntrance(orig_map, new_map, orig_table['entranceId'], orig_table['exitMap'], new_table['entranceId'], new_table['access'])
+            success = BTH:setWorldEntrance(new_table['exitMap'], orig_table['exitMap'], new_table['exitId'], new_map, orig_table['exitId'], orig_table['reverse_access'])
             if orig_map == 0xC7 -- Glitter Gulch Mine
             then
-                BTH:setWorldEntrance(orig_map, new_map, 16, orig_table['exitMap'], new_table['entranceId'])
+                BTH:setWorldEntrance(orig_map, new_map, 16, orig_table['exitMap'], new_table['entranceId'], new_table['access'])
             end
             emu.frameadvance()
        end
@@ -8412,7 +8473,8 @@ function SendToBTClient()
     local retTable = {}
     local detect_death = false
     local detect_tag = false
-
+    -- print(BTH:getNLocalDeath())
+    -- print(BTH:getPCDeath())
     if BTH:getPCDeath() ~= BTH:getNLocalDeath() and DEATH_LINK == false
     then
         local randomDeathMsg = DEATH_MESSAGES[math.random(1, #DEATH_MESSAGES)]["message"]
@@ -8607,10 +8669,6 @@ function process_slot(block)
         print("slot_data")
         print(block)
         print("EO_slot_data")
-    end
-    for index, item in pairs(ROM_ITEM_TABLE)
-    do
-        ITEM_TABLE[item] = index - 1
     end
     for index, item in pairs(DAILOG_KEY_TABLE)
     do
@@ -9019,8 +9077,15 @@ function main()
     end
     print("Banjo-Tooie Archipelago Version " .. BT_VERSION)
     BTH = BTHACK:new(nil)
+    local check = 0
     while BTHACK:getSettingPointer() == nil
     do
+        check = check + 1
+        if(check == 75 and BTH:getRomVersion() == "0")
+        then
+            print("This is the vanilla rom. Please use the patched version of Banjo-Tooie.")
+            return
+        end
         emu.frameadvance()
     end
     server, error = socket.bind('localhost', 21221)

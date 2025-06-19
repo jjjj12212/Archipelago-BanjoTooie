@@ -428,7 +428,7 @@ class Backdoors(Toggle):
     George is pre-dropped to make HFP -> JRL more accessible."""
     display_name = "Open Backdoors"
 
-class GIFrontdoor(Toggle):
+class GIFrontDoor(Toggle):
     """Opens Grunty's Industries frontdoor without requiring to get in first."""
     display_name = "Open GI Frontdoor"
 
@@ -685,7 +685,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     randomize_world_loading_zone: RandomizeWorldZones
     randomize_boss_loading_zone: RandomizeBossZones
     backdoors: Backdoors
-    open_gi_frontdoor: GIFrontdoor
+    open_gi_frontdoor: GIFrontDoor
 
     signpost_hints: SignpostHints
     signpost_move_hints: SignpostMoveHints
@@ -781,7 +781,7 @@ bt_option_groups: List[OptionGroup] = [
         RandomizeWorldZones,
         RandomizeBossZones,
         Backdoors,
-        GIFrontdoor,
+        GIFrontDoor,
     ]),
 
     OptionGroup("Signpost Hints", [
