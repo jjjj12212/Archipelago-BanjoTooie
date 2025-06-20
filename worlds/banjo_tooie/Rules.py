@@ -2171,13 +2171,13 @@ class BanjoTooieRules:
                         or state.can_reach_region(regionName.GIF, self.player) and self.flight_to_boiler_plant(state)
                         or self.turbo_trainers(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = logic = self.can_use_battery(state) and (self.tall_jump(state) or self.grip_grab(state))\
+            logic = self.can_use_battery(state) and (self.tall_jump(state) or self.grip_grab(state))\
                     and (self.leg_spring(state)\
                         or (self.glide(state) or self.wing_whack(state)) and self.tall_jump(state)
                         or state.can_reach_region(regionName.GIF, self.player) and self.flight_to_boiler_plant(state)
                         or self.turbo_trainers(state))
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = logic = self.can_use_battery(state) and (self.tall_jump(state) or self.grip_grab(state))\
+            logic = self.can_use_battery(state) and (self.tall_jump(state) or self.grip_grab(state))\
                     and (self.leg_spring(state)\
                         or (self.glide(state) or self.wing_whack(state)) and self.tall_jump(state)
                         or state.can_reach_region(regionName.GIF, self.player) and self.flight_to_boiler_plant(state)
@@ -7183,7 +7183,7 @@ class BanjoTooieRules:
             or state.has(itemName.WARPTL5, self.player) and state.can_reach_region(regionName.TLTOP, self.player)\
         )
 
-    # TODO: readd leg spring + glide
+    # TODO: readd leg spring + glide in the big rewrite
     def tdl_to_tdl_top(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == LogicType.option_intended:
             return self.springy_step_shoes(state)\
@@ -7196,9 +7196,50 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             return self.springy_step_shoes(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            return (self.springy_step_shoes(state) or \
-                    (self.flight_pad(state) and (self.tall_jump(state) or self.beak_buster(state) or self.grip_grab(state))\
-                     and (self.beak_bomb(state) or self.clockwork_warp(state))))
+            return self.springy_step_shoes(state)
+
+    def solo_banjo_to_terry(self, state: CollectionState) -> bool:
+        return self.split_up(state) and state.has(itemName.WARPTL5, self.player) and (
+                    state.has(itemName.WARPTL1, self.player) and state.can_reach_region(regionName.TL, self.player)\
+                    or state.has(itemName.WARPTL2, self.player) and state.can_reach_region(regionName.TLSP, self.player)\
+                    or state.has(itemName.WARPTL3, self.player) and self.world.options.logic_type != LogicType.option_intended\
+                        and state.can_reach_region(regionName.TL, self.player)\
+                    or state.has(itemName.WARPTL4, self.player) and state.can_reach_region(regionName.TL, self.player)\
+                )
+
+    def inside_the_mountain_to_top(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = self.flight_pad(state)\
+                    and (self.tall_jump(state) or self.grip_grab(state))
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic = self.flight_pad(state)\
+                    and (self.tall_jump(state) or self.beak_buster(state) or self.grip_grab(state))
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = self.flight_pad(state)\
+                    and (self.tall_jump(state) or self.beak_buster(state) or self.grip_grab(state))
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = self.flight_pad(state)\
+                    and (self.tall_jump(state) or self.beak_buster(state) or self.grip_grab(state))
+        return logic
+
+    def inside_the_mountain_to_terry(self, state: CollectionState) -> bool:
+        logic = True
+        if self.world.options.logic_type == LogicType.option_intended:
+            logic = state.can_reach_region(regionName.TLBOSS, self.player)
+        elif self.world.options.logic_type == LogicType.option_easy_tricks:
+            logic =  state.can_reach_region(regionName.TLBOSS, self.player) or self.solo_banjo_to_terry(state)
+        elif self.world.options.logic_type == LogicType.option_hard_tricks:
+            logic = state.can_reach_region(regionName.TLBOSS, self.player) or self.solo_banjo_to_terry(state)
+        elif self.world.options.logic_type == LogicType.option_glitches:
+            logic = state.can_reach_region(regionName.TLBOSS, self.player)\
+                    or self.solo_banjo_to_terry(state)\
+                    or self.clockwork_warp(state)\
+                    or (
+                        self.flight_pad(state) and self.beak_bomb(state)\
+                        and (self.tall_jump(state) or self.beak_buster(state) or self.grip_grab(state))
+                    )
+        return logic
 
     def warp_pad_floor_1(self, state: CollectionState) -> bool:
         logic = True

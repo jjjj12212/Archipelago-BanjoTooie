@@ -75,6 +75,7 @@ TLS = "Terrydactyland Station"
 TL_HATCH = "Terrydactyland - Hatch Cave"
 TLSP = "Terrydactyland - Stomping Plains"
 TLTOP = "Terrydactyland - Top of the Mountain"
+TLIMTOP = "Terrydactyland - Inside the Mountain, Top"
 TLWARP = "Terrydactyland Warp Pads"
 
 GIO = "Outside Grunty Industries"

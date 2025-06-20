@@ -410,6 +410,7 @@ BANJO_TOOIE_REGIONS: Dict[str, List[str]] = {
         locationName.JINJOTL5,
     ],
     regionName.TLTOP:   [],
+    regionName.TLIMTOP:  [],
     regionName.TLBOSS: [
         locationName.JIGGYTD1,
         locationName.JIGGYTD4,
@@ -1294,8 +1295,10 @@ SIGNPOST_REGIONS = {
     regionName.TL: [
         locationName.SIGNTL1,
         locationName.SIGNTL2,
-        locationName.SIGNTL3,
         locationName.SIGNTL4,
+    ],
+    regionName.TLIMTOP:  [
+        locationName.SIGNTL3,
     ],
     regionName.GIO: [
         locationName.SIGNGI1,
@@ -1792,7 +1795,16 @@ def connect_regions(self):
                          regionName.WWA51NESTS: lambda state: rules.a51_nests_from_TDL(state),
                          regionName.TLTOP: lambda state: rules.tdl_to_tdl_top(state),
                          regionName.TLWARP: lambda state: rules.tdl_to_warp_pads(state),
+                         regionName.TLIMTOP: lambda state: rules.inside_the_mountain_to_top(state),
                          })
+
+    region_TLIMTOP = self.get_region(regionName.TLIMTOP)
+    region_TLIMTOP.add_exits({regionName.TL, regionName.TLBOSS}, {
+                                regionName.TLBOSS: lambda state: rules.inside_the_mountain_to_terry(state),
+                            })
+
+    region_TLBOSS = self.get_region(regionName.TLBOSS)
+    region_TLBOSS.add_exits({regionName.TLIMTOP}, {})
 
     region_TLTOP = self.get_region(regionName.TLTOP)
     region_TLTOP.add_exits({regionName.TLSP, regionName.TLWARP},
@@ -2077,6 +2089,7 @@ def connect_regions(self):
         IndirectTransitionCondition(regionName.GI1, regionName.CHUFFY, [regionName.GM, regionName.GMBOSS]),
         IndirectTransitionCondition(regionName.HP, regionName.CHUFFY, [regionName.GM, regionName.GMBOSS]),
         IndirectTransitionCondition(regionName.IOHCT, regionName.CHUFFY, [regionName.GM, regionName.GMBOSS]),
+        IndirectTransitionCondition(regionName.TLIMTOP, regionName.TLBOSS, [regionName.TL, regionName.TLSP]),
     ]
 
     # Read this to know what this code does.
