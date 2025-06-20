@@ -2214,12 +2214,12 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.fire_eggs(state) and self.ice_eggs(state) and \
-                    self.third_person_egg_shooting(state) and state.can_reach_region(regionName.BOSSHPI, self.player)\
+                    self.third_person_egg_shooting(state) and state.can_reach_region(regionName.HPIBOSS, self.player)\
                     and (self.tall_jump(state) or self.talon_trot(state))\
                     and self.climb(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = self.fire_eggs(state) and self.ice_eggs(state) and \
-                    state.can_reach_region(regionName.BOSSHPI, self.player) and self.third_person_egg_shooting(state)\
+                    state.can_reach_region(regionName.HPIBOSS, self.player) and self.third_person_egg_shooting(state)\
                     and (self.tall_jump(state) or self.talon_trot(state))\
                     and (self.climb(state)\
                         or self.flap_flip(state)\
@@ -2228,7 +2228,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             # In case people go for the damage boost for Chilly Willy then die before getting the jiggy, we also require Pack Whack to prevent softlocks.
             if self.world.options.randomize_boss_loading_zone:
-                logic = self.fire_eggs(state) and self.ice_eggs(state) and state.can_reach_region(regionName.BOSSHPI, self.player) and \
+                logic = self.fire_eggs(state) and self.ice_eggs(state) and state.can_reach_region(regionName.HPIBOSS, self.player) and \
                         self.third_person_egg_shooting(state)\
                         and self.claw_clamber_boots(state)\
                         and (self.tall_jump(state) or self.talon_trot(state))\
@@ -2255,7 +2255,7 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_glitches:
             # In case people go for the damage boost for Chilly Willy then die before getting the jiggy, we also require Pack Whack to prevent softlocks.
             if self.world.options.randomize_boss_loading_zone:
-                logic = self.fire_eggs(state) and self.ice_eggs(state) and state.can_reach_region(regionName.BOSSHPI, self.player) and \
+                logic = self.fire_eggs(state) and self.ice_eggs(state) and state.can_reach_region(regionName.HPIBOSS, self.player) and \
                         self.third_person_egg_shooting(state)\
                         and self.claw_clamber_boots(state)\
                         and (self.tall_jump(state) or self.talon_trot(state))\
@@ -7532,25 +7532,8 @@ class BanjoTooieRules:
             hasAttack = self.blue_eggs(state) or self.grenade_eggs(state) or self.ice_eggs(state) or self.beak_barge(state) or self.roll(state)\
             or self.air_rat_a_tat_rap(state) or self.ground_rat_a_tat_rap(state) or self.breegull_bash(state)
 
-        if not self.world.options.randomize_boss_loading_zone:
-            if not self.world.options.randomize_chuffy:
-                return self.mumboGGM(state) and state.can_reach_region(regionName.GM, self.player) and self.ggm_to_chuffy(state) and hasAttack
-            else:
-                return state.has(itemName.CHUFFY, self.player) and hasAttack
-        else:
-            if not self.world.options.randomize_chuffy:
-                return self.mumboGGM(state) and state.can_reach_region(regionName.BOSSGM, self.player) and self.ggm_to_chuffy(state) and hasAttack
-            else:
-                return state.has(itemName.CHUFFY, self.player) and hasAttack
+        return state.can_reach_region(regionName.GMBOSS, self.player) and hasAttack
 
-    def can_get_to_chuffy(self, state) -> bool:
-        if not self.world.options.randomize_chuffy:
-            return self.mumboGGM(state) and state.can_reach_region(regionName.GM, self.player) and self.ggm_to_chuffy(state)
-        else:
-            return state.has(itemName.CHUFFY, self.player)
-
-
-    #deprecated but might be useful for ticket randomization
     def can_kill_fruity(self, state: CollectionState) -> bool:
         return state.can_reach_region(regionName.WW, self.player) and (
                 self.has_explosives(state) or \
@@ -8151,38 +8134,67 @@ class BanjoTooieRules:
 
     def ggm_to_chuffy(self, state: CollectionState) -> bool:
         logic = True
+        train_available = state.has(itemName.CHUFFY, self.player)\
+                            if self.world.options.randomize_chuffy\
+                            else self.mumboGGM(state)
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.climb(state) and self.small_elevation(state)
+            logic = train_available and (
+                        self.climb(state) and self.small_elevation(state)\
+                    )
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.small_elevation(state) or self.climb(state)
+            logic = train_available and (
+                        self.small_elevation(state)\
+                        or self.climb(state)
+                    )
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.small_elevation(state) or self.climb(state) or self.beak_buster(state)
+            logic = train_available and (
+                        self.small_elevation(state)\
+                        or self.climb(state)\
+                        or self.beak_buster(state)\
+                    )
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.small_elevation(state) or self.climb(state) or self.beak_buster(state)
+            logic = train_available and (
+                        self.small_elevation(state)\
+                        or self.climb(state)\
+                        or self.beak_buster(state)\
+                    )
         return logic
+
+    def can_call_train(self, state: CollectionState) -> bool:
+        return state.has(itemName.CHUFFY, self.player)\
+            if self.world.options.randomize_chuffy\
+            else self.can_beat_king_coal(state) and self.mumboGGM(state)
 
     def ww_to_chuffy(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = state.has(itemName.TRAINSWWW, self.player) and (self.climb(state) and self.small_elevation(state))
+            logic = state.has(itemName.TRAINSWWW, self.player) and (self.climb(state) and self.small_elevation(state))\
+                    and self.can_call_train(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state))
+            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state))\
+                    and self.can_call_train(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state))
+            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state))\
+                    and self.can_call_train(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state))
+            logic = state.has(itemName.TRAINSWWW, self.player) and (self.small_elevation(state) or self.climb(state))\
+                    and self.can_call_train(state)
         return logic
 
     def ioh_to_chuffy(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = state.has(itemName.TRAINSWIH, self.player) and (self.climb(state) and self.small_elevation(state))
+            logic = state.has(itemName.TRAINSWIH, self.player) and (self.climb(state) and self.small_elevation(state))\
+                    and self.can_call_train(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state))
+            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state))\
+                    and self.can_call_train(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state) or self.beak_buster(state))
+            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state) or self.beak_buster(state))\
+                    and self.can_call_train(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state) or self.beak_buster(state))
+            logic = state.has(itemName.TRAINSWIH, self.player) and (self.small_elevation(state) or self.climb(state) or self.beak_buster(state))\
+                    and self.can_call_train(state)
         return logic
 
     # For this one, the ladder is farther off the ground.
@@ -8190,60 +8202,76 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
             logic = state.has(itemName.TRAINSWTD, self.player)\
-                        and (self.climb(state) and self.small_elevation(state))
+                    and (self.climb(state) and self.small_elevation(state))\
+                    and self.can_call_train(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = state.has(itemName.TRAINSWTD, self.player)\
-                        and ((self.small_elevation(state) or self.beak_buster(state)) and self.climb(state)\
-                            or self.flap_flip(state) and self.beak_buster(state))
+                    and ((self.small_elevation(state) or self.beak_buster(state)) and self.climb(state)\
+                        or self.flap_flip(state) and self.beak_buster(state))\
+                    and self.can_call_train(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = state.has(itemName.TRAINSWTD, self.player)\
-                        and (((self.small_elevation(state) or self.beak_buster(state)) and self.climb(state))\
-                            or self.extremelyLongJump(state)\
-                            or self.flap_flip(state) and self.beak_buster(state)\
-                            or self.tall_jump(state) and self.beak_buster(state))
+                    and (
+                        ((self.small_elevation(state) or self.beak_buster(state)) and self.climb(state))\
+                        or self.extremelyLongJump(state)\
+                        or self.flap_flip(state) and self.beak_buster(state)\
+                        or self.tall_jump(state) and self.beak_buster(state)
+                    )\
+                    and self.can_call_train(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = state.has(itemName.TRAINSWTD, self.player)\
-                        and (((self.small_elevation(state) or self.beak_buster(state)) and self.climb(state))\
-                            or self.extremelyLongJump(state)\
-                            or self.flap_flip(state) and self.beak_buster(state)\
-                            or self.tall_jump(state) and self.beak_buster(state))
+                    and (
+                        ((self.small_elevation(state) or self.beak_buster(state)) and self.climb(state))\
+                        or self.extremelyLongJump(state)\
+                        or self.flap_flip(state) and self.beak_buster(state)\
+                        or self.tall_jump(state) and self.beak_buster(state)
+                    )\
+                    and self.can_call_train(state)
         return logic
 
     #The train door is at ground level.
     def gi_to_chuffy(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = state.has(itemName.TRAINSWGI, self.player)
+            logic = state.has(itemName.TRAINSWGI, self.player)\
+                    and self.can_call_train(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = state.has(itemName.TRAINSWGI, self.player)
+            logic = state.has(itemName.TRAINSWGI, self.player)\
+                    and self.can_call_train(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = state.has(itemName.TRAINSWGI, self.player)
+            logic = state.has(itemName.TRAINSWGI, self.player)\
+                    and self.can_call_train(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = state.has(itemName.TRAINSWGI, self.player)
+            logic = state.has(itemName.TRAINSWGI, self.player)\
+                    and self.can_call_train(state)
         return logic
 
     #This one is pixels higher than WW or IoH, you can't just short jump to the ladder.
     def hfp_to_chuffy(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = state.has(itemName.TRAINSWHP1, self.player) and self.climb(state) and self.small_elevation(state)
+            logic = state.has(itemName.TRAINSWHP1, self.player) and self.climb(state) and self.small_elevation(state)\
+                    and self.can_call_train(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = state.has(itemName.TRAINSWHP1, self.player) and (
                         self.climb(state) and (self.small_elevation(state) or self.beak_buster(state))\
                         or self.talon_trot(state)
-                    )
+                    )\
+                    and self.can_call_train(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = state.has(itemName.TRAINSWHP1, self.player) and (
                         self.climb(state) and (self.small_elevation(state) or self.beak_buster(state))\
                         or self.talon_trot(state)\
                         or self.tall_jump(state) and self.beak_buster(state)
-                    )
+                    )\
+                    and self.can_call_train(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = state.has(itemName.TRAINSWHP1, self.player) and (
                         self.climb(state) and (self.small_elevation(state) or self.beak_buster(state))\
                         or self.talon_trot(state)\
                         or self.tall_jump(state) and self.beak_buster(state)
-                    )
+                    )\
+                    and self.can_call_train(state)
         return logic
 
     def PGU_to_PG(self, state: CollectionState) -> bool:
@@ -9236,7 +9264,8 @@ class BanjoTooieRules:
         return logic
 
     def mumboGGM(self, state: CollectionState) -> bool:
-        return self.small_elevation(state) and state.has(itemName.MUMBOGM, self.player)
+        return self.small_elevation(state) and state.has(itemName.MUMBOGM, self.player)\
+                and state.can_reach_region(regionName.GM, self.player)
 
     def ggm_trot(self, state: CollectionState) -> bool:
         logic = True

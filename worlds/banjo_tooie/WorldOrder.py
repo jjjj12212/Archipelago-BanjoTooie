@@ -161,20 +161,19 @@ def randomize_entrance_loading_zones(world: BanjoTooieWorld) -> None:
 
 def randomize_boss_loading_zones(world: BanjoTooieWorld) -> None:
     boss_list = [
-        regionName.BOSSMT,
-        regionName.BOSSGM,
-        regionName.BOSSWW,
-        regionName.BOSSJR,
-        regionName.BOSSTD,
-        regionName.BOSSGI,
-        regionName.BOSSHPF,
-        regionName.BOSSHPI,
-        regionName.BOSSCC
+        regionName.MTBOSS,
+        regionName.GMBOSS,
+        regionName.WWBOSS,
+        regionName.JRBOSS,
+        regionName.TLBOSS,
+        regionName.GIBOSS,
+        regionName.HPFBOSS,
+        regionName.HPIBOSS,
+        regionName.CCBOSS
     ]
     if world.options.randomize_boss_loading_zone:
         randomized_boss_list = copy.deepcopy(boss_list)
         world.random.shuffle(boss_list)
-        world.random.shuffle(randomized_boss_list)
         for i in range(len(boss_list)):
             world.loading_zones[randomized_boss_list[i]] = boss_list[i]
     else:

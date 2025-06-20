@@ -31,6 +31,7 @@
     - GI Floor 1 to Floor 2: Removed solo Kazooie from the logic because it made seeds unbeatable with randomised warp pads.
     - Individual alien kids: check if you can reach JRL to do the UFO jiggy.
     - Icicle Grotto Near Spring Pads Nest: can be gotten by warping there.
+    - Dragon Brothers Jiggy: Removed Pack Whack from the advanced logic requirement due to the fact that Biggafoot is pre-hit.
   - Grunty gives more varied messages when you die.
 
 # 4.5.1

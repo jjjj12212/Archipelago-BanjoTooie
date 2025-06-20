@@ -453,13 +453,13 @@ class BanjoTooieWorld(World):
 
         if name == itemName.ROAR and not self.options.randomize_dino_roar:
             return None
-        
+
         if name == itemName.GRRELIC and not self.options.randomize_green_relics:
             return None
-        
+
         if name == itemName.BTTICKET and not self.options.randomize_tickets:
             return None
-        
+
         if name == itemName.BEANS and not self.options.randomize_beans:
             return None
 
@@ -853,15 +853,15 @@ class BanjoTooieWorld(World):
             regionName.HP: regionName.IOHCT_HFP_ENTRANCE,
             regionName.CC: regionName.IOHWL + " (Cloud Cuckooland Entrance)",
             regionName.CK: regionName.IOHQM + " (Caudron Keep Entrance)",
-            regionName.BOSSMT: regionName.MTTT,
-            regionName.BOSSGM: regionName.CHUFFY,
-            regionName.BOSSWW: regionName.WW,
-            regionName.BOSSJR: regionName.JRLC,
-            regionName.BOSSTD: regionName.TLTOP,
-            regionName.BOSSGI: regionName.GI1,
-            regionName.BOSSHPF: regionName.HP,
-            regionName.BOSSHPI: regionName.HP,
-            regionName.BOSSCC: regionName.CC,
+            regionName.MTBOSS: regionName.MTTT,
+            regionName.GMBOSS: regionName.CHUFFY,
+            regionName.WWBOSS: regionName.WW,
+            regionName.JRBOSS: regionName.JRLC,
+            regionName.TLBOSS: regionName.TLTOP,
+            regionName.GIBOSS: regionName.GI1,
+            regionName.HPFBOSS: regionName.HP,
+            regionName.HPIBOSS: regionName.HP,
+            regionName.CCBOSS: regionName.CC,
         }
         bt_players = world.get_game_players(cls.game)
         spoiler_handle.write('\n\nBanjo-Tooie ({})'.format(BanjoTooieWorld.version))
