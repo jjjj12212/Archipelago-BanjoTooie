@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import List
 from Options import OptionGroup, Toggle, DeathLink, PerGameCommonOptions, Choice, DefaultOnToggle, Range, NamedRange, StartInventoryPool, FreeText
 
 class RandomizeBTMoveList(DefaultOnToggle):

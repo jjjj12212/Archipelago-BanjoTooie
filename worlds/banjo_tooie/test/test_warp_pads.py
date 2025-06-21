@@ -1,7 +1,5 @@
-from ..Names import itemName
 from ..Options import RandomizeWarpPads
 from ..Items import warp_pad_table
-from ..Locations import all_location_table
 from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 

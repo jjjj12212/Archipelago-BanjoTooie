@@ -113,7 +113,7 @@ progressive_ability_breakdown = {
     itemName.PAEGGAIM:      [itemName.EGGSHOOT, itemName.AMAZEOGAZE, itemName.EGGAIM, itemName.BBLASTER],
 }
 
-level_progress_table = {
+glowbo_table = {
     itemName.MUMBOMT:        ItemData(1230855, 1, "progress", locationName.GLOWBOMT1),
     itemName.MUMBOGM:        ItemData(1230856, 1, "progress", locationName.GLOWBOGM2),
     itemName.MUMBOWW:        ItemData(1230857, 1, "progress", locationName.GLOWBOWW1),
@@ -172,7 +172,7 @@ stations_table = {
     itemName.TRAINSWWW:     ItemData(1230795,  1, "progress", locationName.TRAINSWWW),
 }
 
-rando_key_table = {
+world_unlock_table = {
     itemName.MTA:           ItemData(1230944,   1, "progress", locationName.W1),
     itemName.GGA:           ItemData(1230945,   1, "progress", locationName.W2),
     itemName.WWA:           ItemData(1230946,   1, "progress", locationName.W3),
@@ -258,11 +258,11 @@ cheats_table = {
 all_item_table: Dict[str, ItemData] = {
     **moves_table,
     **jinjo_table,
-    **level_progress_table,
+    **glowbo_table,
     **misc_collectable_table,
     **jiggy_table,
     **stations_table,
-    **rando_key_table,
+    **world_unlock_table,
     **token_table,
     **stop_n_swap_table,
     **bk_moves_table,
@@ -280,9 +280,9 @@ all_group_table: Dict[str, Dict[str, ItemData]] = {
     "jinjo": jinjo_table,
     "misc": misc_collectable_table,
     "moves": moves_table,
-    "magic": level_progress_table,
+    "magic": glowbo_table,
     "stations": stations_table,
-    "levelaccess": rando_key_table,
+    "levelaccess": world_unlock_table,
     "token": token_table,
     "stopnswap": stop_n_swap_table,
     "bk_moves": bk_moves_table,

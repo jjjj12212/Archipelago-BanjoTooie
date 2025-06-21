@@ -1,7 +1,7 @@
 from BaseClasses import ItemClassification
 from worlds.banjo_tooie.Names import locationName
 from ..Names import itemName
-from ..Options import RandomizeCheatoRewards, RandomizeBKMoveList
+from ..Options import RandomizeCheatoRewards
 from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 

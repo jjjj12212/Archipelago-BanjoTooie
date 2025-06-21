@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from typing import List, Dict
 from BaseClasses import Region
 from .Options import VictoryCondition
-from .Items import silo_table
 
 from .Names import regionName, locationName, itemName
 from .Locations import BanjoTooieLocation
@@ -11,7 +10,7 @@ from .Rules import BanjoTooieRules
 
 # This dict contains all the regions, as well as all the locations that are always tracked by Archipelago.
 BANJO_TOOIE_REGIONS: Dict[str, List[str]] = {
-    "Menu":              [],
+    regionName.MENU:              [],
     regionName.SM:       [
         locationName.CHEATOSM1,
         locationName.JINJOIH5,

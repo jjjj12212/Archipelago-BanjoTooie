@@ -1,18 +1,18 @@
-from math import ceil, floor
-import random
-from multiprocessing import Process
-from Options import DeathLink, OptionError
-import settings
+from math import ceil
+from Options import OptionError
 import typing
 from typing import Dict, Any, Optional, List
 import warnings
 from dataclasses import asdict
 
 from .Hints import HintData, generate_hints
-from .Items import BanjoTooieItem, ItemData, all_item_table, all_group_table, progressive_ability_breakdown, silo_table
-from .Locations import BanjoTooieLocation, LocationData, all_location_table, MTLoc_Table, GMLoc_table, WWLoc_table, JRLoc_table, TLLoc_table, GILoc_table, HPLoc_table, CCLoc_table, MumboTokenGames_table, MumboTokenBoss_table, MumboTokenJinjo_table, SMLoc_table, JVLoc_table, IHWHLoc_table, IHPLLoc_table, IHPGLoc_table, IHCTLoc_table, IHWLLoc_table, IHQMLoc_table, CheatoRewardsLoc_table, JinjoRewardsLoc_table, HoneyBRewardsLoc_table
+from .Items import BanjoTooieItem, ItemData, all_item_table, all_group_table, progressive_ability_breakdown
+from .Locations import LocationData, all_location_table, MTLoc_Table, GMLoc_table, WWLoc_table, JRLoc_table, TLLoc_table,\
+    GILoc_table, HPLoc_table, CCLoc_table, MumboTokenGames_table, MumboTokenBoss_table, MumboTokenJinjo_table, SMLoc_table,\
+    JVLoc_table, IHWHLoc_table, IHPLLoc_table, IHPGLoc_table, IHCTLoc_table, IHWLLoc_table, IHQMLoc_table, CheatoRewardsLoc_table,\
+    JinjoRewardsLoc_table, HoneyBRewardsLoc_table
 from .Regions import create_regions, connect_regions
-from .Options import BanjoTooieOptions, EggsBehaviour, JamjarsSiloCosts, LogicType, ProgressiveEggAim, ProgressiveWaterTraining, RandomizeBKMoveList, TowerOfTragedy, VictoryCondition, bt_option_groups
+from .Options import BanjoTooieOptions, EggsBehaviour, JamjarsSiloCosts, LogicType, ProgressiveEggAim, ProgressiveWaterTraining, RandomizeBKMoveList, VictoryCondition, bt_option_groups
 from .Rules import BanjoTooieRules
 from .Names import itemName, locationName, regionName
 from .WorldOrder import WorldRandomize
@@ -62,8 +62,6 @@ class BanjoTooieWorld(World):
     topology_present = True
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
     item_name_to_id = {}
-    # TODO add implicit edges instead of this hack
-    explicit_indirect_conditions: False
 
     for name, data in all_item_table.items():
         if data.btid is None:  # Skip Victory Item
@@ -173,8 +171,8 @@ class BanjoTooieWorld(World):
 
         self.slot_data = []
         self.preopened_silos = []
-        self.randomize_worlds = {}
-        self.randomize_order = {}
+        self.world_requirements = {}
+        self.world_order = {}
         self.worlds_randomized = False
         self.loading_zones = {}
         self.jamjars_siloname_costs = {}
@@ -262,7 +260,7 @@ class BanjoTooieWorld(World):
         created_item = BanjoTooieItem(name, item_classification, None, self.player)
         return created_item
 
-    def calculate_useful_filler(self, total, progression) -> (int, int):
+    def calculate_useful_filler(self, total, progression) -> tuple[int, int]:
         # We want to split non-progressive items into two halfs
         # half is useful, half is filler
         remainder = total - progression
@@ -278,7 +276,7 @@ class BanjoTooieWorld(World):
             self.get_location(locationName.JIGGYIH10).place_locked_item(self.create_item(itemName.JIGGY))
             self.kingjingalingjiggy = True
 
-        progression_jiggies = max(self.randomize_worlds.values())
+        progression_jiggies = max(self.world_requirements.values())
         if not self.options.open_hag1 and self.options.victory_condition == VictoryCondition.option_hag1:
             progression_jiggies = max(progression_jiggies, 70)
 
@@ -626,7 +624,7 @@ class BanjoTooieWorld(World):
             self.multiworld.push_precollected(self.create_item(silo))
 
     def set_rules(self) -> None:
-        rules = Rules.BanjoTooieRules(self)
+        rules = BanjoTooieRules(self)
         return rules.set_rules()
 
     def pre_fill_me(self) -> None:
@@ -670,7 +668,7 @@ class BanjoTooieWorld(World):
             self.banjo_pre_fills("Access", None, True)
         elif self.worlds_randomized:
             world_num = 1
-            for world, amt in self.randomize_worlds.items():
+            for world, amt in self.world_requirements.items():
                 if world == regionName.GIO:
                     item = self.create_item(itemName.GIA)
                 elif world == regionName.JR:
@@ -681,7 +679,7 @@ class BanjoTooieWorld(World):
                 world_num += 1
         else:
             world_num = 1
-            for world, amt in self.randomize_worlds.items():
+            for world, amt in self.world_requirements.items():
                 item = self.create_item(itemName.NONE)
                 self.get_location("World "+ str(world_num) +" Unlocked").place_locked_item(item)
                 world_num += 1
@@ -823,7 +821,7 @@ class BanjoTooieWorld(World):
 
         return self.random.choices(names, actual_weights, k=1)[0]
 
-    def banjo_pre_fills(self, itemNameOrGroup: str, group: str, useGroup: bool ) -> None:
+    def banjo_pre_fills(self, itemNameOrGroup: str, group: str | None, useGroup: bool ) -> None:
         if useGroup:
             for group_name, item_info in self.item_name_groups.items():
                 if group_name == itemNameOrGroup:
@@ -878,7 +876,7 @@ class BanjoTooieWorld(World):
                     else:
                         spoiler_handle.write(f"\n\t\t{entrance_hags[starting_zone]} -> {actual_world}")
             spoiler_handle.write("\n\tWorld Costs:")
-            for entrances, cost in currentWorld.randomize_worlds.items():
+            for entrances, cost in currentWorld.world_requirements.items():
                     if entrances == regionName.JR:
                         spoiler_handle.write(f"\n\t\tJolly Roger's Lagoon: {cost}")
                     elif entrances == regionName.GIO:
@@ -956,8 +954,8 @@ class BanjoTooieWorld(World):
         btoptions["seed"] = self.random.randint(12212, 9090763)
 
         btoptions["worlds"] = "true" if self.worlds_randomized else "false"
-        btoptions["world_order"] = self.randomize_worlds
-        btoptions["world_keys"] = self.randomize_order
+        btoptions["world_order"] = self.world_requirements
+        btoptions["world_keys"] = self.world_order
         btoptions["loading_zones"] = self.loading_zones
 
         btoptions["starting_egg"] = int(self.starting_egg)

@@ -1,3 +1,5 @@
+MENU = "Menu"
+
 IOHJV = "Isle O Hags - Jinjo Village"
 IOHJVKP  = "Isle O Hags - King Jingaling Palace"
 IOHJVGJ  = "Isle O Hags - Green Jinjo House"

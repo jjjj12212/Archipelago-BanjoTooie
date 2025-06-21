@@ -1,7 +1,6 @@
 import typing
 from BaseClasses import ItemClassification
 from ...AutoWorld import call_all
-from test.bases import WorldTestBase
 from ..Options import HintClarity, RandomizeBKMoveList, RandomizeBTMoveList, RandomizeSignposts, SignpostHints, AddSignpostHintsToArchipelagoHints
 from . import BanjoTooieTestBase
 from ..Items import moves_table, bk_moves_table, progressive_ability_table, all_item_table

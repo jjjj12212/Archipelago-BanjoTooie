@@ -62,7 +62,7 @@ class ProgressiveSiloCostTest(BanjoTooieTestBase):
         }
         previous_silo_cost = 0
 
-        for world_entrance in self.world.randomize_order:
+        for world_entrance in self.world.world_order:
 
             next_silo = world_silo[self.world.loading_zones[world_entrance]]
             if next_silo is None:

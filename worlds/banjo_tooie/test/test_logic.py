@@ -1,5 +1,4 @@
 from ..Options import LogicType, RandomizeBKMoveList, RandomizeBTMoveList, RandomizeNotes
-from . import BanjoTooieTestBase
 
 # Many tests inherit from logic tests, to make sure that the logic of all collectibles works.
 class IntendedLogic:

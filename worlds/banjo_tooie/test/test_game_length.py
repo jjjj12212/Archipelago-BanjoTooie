@@ -7,7 +7,7 @@ from math import ceil
 class WorldRequirementTest(BanjoTooieTestBase):
     expected_world_costs = [1, 4, 8, 14, 20, 28, 36, 45, 55]
     def test_check_world_costs(self) -> None:
-        assert list(self.world.randomize_worlds.values()) == self.expected_world_costs
+        assert list(self.world.world_requirements.values()) == self.expected_world_costs
 
     def test_jiggies(self) -> None:
         expected_progression_jiggies = max(self.expected_world_costs)
