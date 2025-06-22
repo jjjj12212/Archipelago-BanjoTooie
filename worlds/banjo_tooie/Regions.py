@@ -620,7 +620,7 @@ BANJO_TOOIE_REGIONS: Dict[str, List[str]] = {
 
 #Regions for nests. Regions that don't contain anything are omitted.
 NEST_REGIONS: Dict[str, List[str]] = {
-    "Menu":              [],
+    regionName.MENU:              [],
     regionName.SM:       [
       locationName.NESTSM8,
       locationName.NESTSM9,
@@ -1605,7 +1605,7 @@ def connect_regions(self):
     player = self.player
     rules = BanjoTooieRules(self)
 
-    region_menu = self.get_region("Menu")
+    region_menu = self.get_region(regionName.MENU)
     region_menu.add_exits({regionName.SM})
 
     region_SM = self.get_region(regionName.SM)
@@ -1983,6 +1983,20 @@ def connect_regions(self):
                                   regionName.IOHQM: lambda state: state.has(itemName.SILOIOHQM, player),
                                 })
 
+    @dataclass
+    class IndirectTransitionCondition:
+        source: str
+        destination: str
+        regions_in_rules: List[str]
+
+    # Read this to know what this code does.
+    # https://github.com/ArchipelagoMW/Archipelago/blob/main/docs/apworld_dev_faq.md#i-learned-about-indirect-conditions-in-the-world-api-document-but-i-want-to-know-more-what-are-they-and-why-are-they-necessary
+    def add_indirect_condition(condition: IndirectTransitionCondition):
+        source_region = self.get_region(condition.source)
+        entrance = next(e for e in source_region.exits if e.connected_region.name == condition.destination)
+        for rule_region_name in condition.regions_in_rules:
+            self.multiworld.register_indirect_condition(self.get_region(rule_region_name), entrance)
+
     # World entrance randomisation (and exits)
     lookup_table = {
             regionName.MT: regionName.MTE,
@@ -2028,8 +2042,6 @@ def connect_regions(self):
             regionName.HP,regionName.CC,regionName.CK]:
             continue
 
-        boss_entrance = lookup_table[source]
-        source_region = self.get_region(boss_entrance)
         source_rule = None
         boss_room_rule = None
 
@@ -2060,21 +2072,31 @@ def connect_regions(self):
         else:
             boss_room_rule = lambda state: True
 
+        boss_entrance = lookup_table[source]
+        source_region = self.get_region(boss_entrance)
         transition_rule = lambda state, sr = source_rule, brr = boss_room_rule: sr(state) and brr(state)
         source_region.add_exits({boss_room}, {boss_room: transition_rule})
 
+        # Entering Repair Depot has a very convoluted process.
         if source == regionName.GIBOSS:
-            entrance_to_repair_depot = next(e for e in source_region.exits if e.connected_region.name == self.loading_zones[regionName.GIBOSS])
-            self.multiworld.register_indirect_condition(self.get_region(regionName.GI3), entrance_to_repair_depot)
+            add_indirect_condition(IndirectTransitionCondition(boss_entrance, boss_room, [regionName.GI3]))
 
+        # Terry's nest has 2 loading zones, one of them not randomised, so leaving Terry's nest is logically relevant.
+        if boss_room == regionName.TLBOSS:
+            terry_nest_region = self.get_region(regionName.TLBOSS)
 
-    @dataclass
-    class IndirectTransitionCondition:
-        source: str
-        destination: str
-        regions_in_rules: List[str]
+            if source == regionName.MTBOSS:
+                leave_terry_rule = lambda state: rules.breegull_blaster(state)
+                terry_nest_region.add_exits({boss_entrance}, {source: leave_terry_rule})
 
-    indirect_transition_definitions: List[IndirectTransitionCondition] = [
+            elif source ==regionName.GMBOSS:
+                leave_terry_rule = lambda state: rules.train_raised(state)
+                terry_nest_region.add_exits({boss_entrance}, {source: leave_terry_rule})
+                add_indirect_condition(IndirectTransitionCondition(boss_room, boss_entrance, [regionName.GM]))
+            else:
+                terry_nest_region.add_exits({boss_entrance}, {})
+
+    static_indirect_transition_conditions: List[IndirectTransitionCondition] = [
         IndirectTransitionCondition(regionName.MT, regionName.MTKS, [regionName.MTJSG]),
         IndirectTransitionCondition(regionName.GIO, regionName.GIF, [regionName.GI4]),
         IndirectTransitionCondition(regionName.HP, regionName.JR, [regionName.CC]),
@@ -2089,12 +2111,8 @@ def connect_regions(self):
         IndirectTransitionCondition(regionName.HP, regionName.CHUFFY, [regionName.GM, regionName.GMBOSS]),
         IndirectTransitionCondition(regionName.IOHCT, regionName.CHUFFY, [regionName.GM, regionName.GMBOSS]),
         IndirectTransitionCondition(regionName.TLIMTOP, regionName.TLBOSS, [regionName.TL, regionName.TLSP]),
+        IndirectTransitionCondition(regionName.TL, regionName.TLTOP, [regionName.TLBOSS])
     ]
 
-    # Read this to know what this code does.
-    # https://github.com/ArchipelagoMW/Archipelago/blob/main/docs/apworld_dev_faq.md#i-learned-about-indirect-conditions-in-the-world-api-document-but-i-want-to-know-more-what-are-they-and-why-are-they-necessary
-    for definition in indirect_transition_definitions:
-        source_region = self.get_region(definition.source)
-        entrance = next(e for e in source_region.exits if e.connected_region.name == definition.destination)
-        for rule_region_name in definition.regions_in_rules:
-            self.multiworld.register_indirect_condition(self.get_region(rule_region_name), entrance)
+    for definition in static_indirect_transition_conditions:
+        add_indirect_condition(definition)
