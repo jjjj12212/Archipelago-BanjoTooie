@@ -7731,7 +7731,7 @@ class BanjoTooieRules:
         if self.world.worlds_randomized:
             return state.has(itemName.MTA, self.player)
         else:
-            amt = self.world.randomize_worlds[regionName.MT]
+            amt = self.world.world_requirements[regionName.MT]
             return state.has(itemName.JIGGY, self.player, amt)
 
     def MT_to_WH(self, state: CollectionState) -> bool: #1
@@ -7811,7 +7811,7 @@ class BanjoTooieRules:
         if self.world.worlds_randomized:
             return state.has(itemName.GGA, self.player)
         else:
-            amt = self.world.randomize_worlds[regionName.GM]
+            amt = self.world.world_requirements[regionName.GM]
             return state.has(itemName.JIGGY, self.player, amt)
 
 
@@ -7885,21 +7885,21 @@ class BanjoTooieRules:
         if self.world.worlds_randomized:
             return state.has(itemName.WWA, self.player)
         else:
-            amt = self.world.randomize_worlds[regionName.WW]
+            amt = self.world.world_requirements[regionName.WW]
             return state.has(itemName.JIGGY, self.player, amt)
 
     def jrl_jiggy(self, state: CollectionState) -> bool: #14
         if self.world.worlds_randomized:
             return state.has(itemName.JRA, self.player)
         else:
-            amt = self.world.randomize_worlds[regionName.JR]
+            amt = self.world.world_requirements[regionName.JR]
             return state.has(itemName.JIGGY, self.player, amt)
 
     def tdl_jiggy(self, state: CollectionState) -> bool: #20
         if self.world.worlds_randomized:
             return state.has(itemName.TDA, self.player)
         else:
-            amt = self.world.randomize_worlds[regionName.TL]
+            amt = self.world.world_requirements[regionName.TL]
             return state.has(itemName.JIGGY, self.player, amt)
 
 
@@ -7907,14 +7907,14 @@ class BanjoTooieRules:
         if self.world.worlds_randomized:
             return state.has(itemName.GIA, self.player)
         else:
-            amt = self.world.randomize_worlds[regionName.GIO]
+            amt = self.world.world_requirements[regionName.GIO]
             return state.has(itemName.JIGGY, self.player, amt)
 
     def ck_jiggy(self, state: CollectionState) -> bool: #55
         if self.world.worlds_randomized:
             return state.has(itemName.CKA, self.player)
         else:
-            amt = self.world.randomize_worlds[regionName.CK]
+            amt = self.world.world_requirements[regionName.CK]
             return state.has(itemName.JIGGY, self.player, amt)
 
     def quag_to_CK(self, state: CollectionState) -> bool:
@@ -8834,14 +8834,14 @@ class BanjoTooieRules:
         if self.world.worlds_randomized:
             return state.has(itemName.HFA, self.player)
         else:
-            amt = self.world.randomize_worlds[regionName.HP]
+            amt = self.world.world_requirements[regionName.HP]
             return state.has(itemName.JIGGY, self.player, amt)
 
     def ccl_jiggy(self, state: CollectionState) -> bool: # 45
         if self.world.worlds_randomized:
             return state.has(itemName.CCA, self.player)
         else:
-            amt = self.world.randomize_worlds[regionName.CC]
+            amt = self.world.world_requirements[regionName.CC]
             return state.has(itemName.JIGGY, self.player, amt)
 
     def HFP_hot_water_cooled(self, state) -> bool:
