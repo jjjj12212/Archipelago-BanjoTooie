@@ -31,6 +31,7 @@
   - Renamings:
     - WW: Inferno Egg Nest -> WW: The Inferno Egg Nest
     - Pawno's Cheato Page -> Pawno Cheato Page
+    - Fake Mumbo Skull Jinjo -> Mingy Jongo Skull Jinjo
   - Logic fixes:
     - Added additional regions for randomised bosses.
     - Many bugs related to indirect conditions have been fixed.
