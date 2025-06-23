@@ -2111,7 +2111,8 @@ def connect_regions(self):
         IndirectTransitionCondition(regionName.HP, regionName.CHUFFY, [regionName.GM, regionName.GMBOSS]),
         IndirectTransitionCondition(regionName.IOHCT, regionName.CHUFFY, [regionName.GM, regionName.GMBOSS]),
         IndirectTransitionCondition(regionName.TLIMTOP, regionName.TLBOSS, [regionName.TL, regionName.TLSP]),
-        IndirectTransitionCondition(regionName.TL, regionName.TLTOP, [regionName.TLBOSS])
+        IndirectTransitionCondition(regionName.TL, regionName.TLTOP, [regionName.TLBOSS]),
+        IndirectTransitionCondition(regionName.WW, regionName.TL, [regionName.WWI])
     ]
 
     for definition in static_indirect_transition_conditions:

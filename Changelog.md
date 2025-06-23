@@ -16,23 +16,37 @@
           - The loading zone at the top of the mountain is randomised, but the one that leads inside the mountain is not.
           - Both loading zones leading to the nest lead to Terry if you're going through them as solo Banjo.
         - HFP flight pad & Claw Clamber Boots no longer requires Dragon Brothers to shoot at, even if bosses are not randomised.
+        - When hinting something that is in a boss room, the area that leads to the boss room will be revealed.
     - The existing options have been embellished
       - Game length has been renamed to World Requirements.
       - A couple of option descriptions have been reworded.
       - The options page now uses option groups to make it more organised.
       - The options in the yaml have been reordered to match the option page.
+  - Grunty gives more varied messages when you die.
+  - Changed the error that happens when you select intended logic and randomised worlds, It now says that you are using intended logic instead of beginner logic.
+  - Renamings:
+    - WW: Inferno Egg Nest -> WW: The Inferno Egg Nest
+    - Pawno's Cheato Page -> Pawno Cheato Page
   - Logic fixes:
     - Added additional regions for randomised bosses.
     - Many bugs related to indirect conditions have been fixed.
+    - SM Cheato Page: in hard tricks, can be gotten by jumping off and on the rock during the spring pad animation, making it reachable without any jump move.
     - IoH Another Digger Tunnel Nests: easy tricks can get them by arriving from wasteland and using beak buster.
     - MT Pool Jinjo: Added Golden Goliath and Stony for intended logic.
-    - WW Dodgem Dome Jiggy: Fixed some nonsense logic.
+    - Fuel Depot Nests: Added the clockwork shot from GGM to glitched logic.
+    - Dodgem Dome Jiggy: Fixed some nonsense logic.
+    - WW Humba Warp Pad: can be tagged with leg spring on easy tricks.
+    - Star Spinner Jiggy: Added Leg Spring and Turbo Trainers as a way to get the jiggy in easy tricks.
     - TDL Train Station access: easy tricks can get them with beak buster.
+    - TDL Stomping Plains jiggy: removed shoe smuggling from the logic. It made seeds unbeatable with randomised warp pads.
+    - GI Floor 1 Guarded Jiggy: Added Tall Jump or Leg Spring to jump high enough to touch the jiggy.
     - GI Floor 1 to Floor 2: Removed solo Kazooie from the logic because it made seeds unbeatable with randomised warp pads.
+    - GI Floor 3 to Floor 2: Added Tall Jump + (Flutter or Air Rat-a-tat Rap) to hard tricks
     - Individual alien kids: check if you can reach JRL to do the UFO jiggy.
     - Icicle Grotto Near Spring Pads Nest: can be gotten by warping there.
     - Dragon Brothers Jiggy: Removed Pack Whack from the advanced logic requirement due to the fact that Biggafoot is pre-hit.
-  - Grunty gives more varied messages when you die.
+    - Central Cavern jinjo: Fixed a bug where the logic did not check for warp pads when it expected the player to warp to the entrance with Claw Clambers.
+    - Sack Race Exit Note: No noeed for glide and Claw Clamber to reach it from inside. Just Claw Clamber Boots is enough.
 
 # 4.5.1
   - When not randomized, silos and warp pads no longer have locations associated with them.

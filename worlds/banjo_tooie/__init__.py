@@ -530,7 +530,7 @@ class BanjoTooieWorld(World):
 
     def validate_yaml_options(self) -> None:
         if self.options.randomize_worlds and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none and self.options.logic_type == LogicType.option_intended:
-            raise OptionError("Randomize Worlds and Randomize BK Moves is not compatible with Beginner Logic.")
+            raise OptionError("Randomize Worlds and Randomize BK Moves is not compatible with Intended Logic.")
         if (not self.options.randomize_notes and not self.options.randomize_signposts and not self.options.nestsanity) and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none:
             if self.multiworld.players == 1:
                 raise OptionError("Randomize Notes, signposts or nestsanity is required for Randomize BK Moves.")
@@ -561,8 +561,6 @@ class BanjoTooieWorld(World):
             raise OptionError("You cannot have progressive bash attack without randomizing Stop N Swap and randomizing BK moves")
         if not self.options.randomize_bt_moves and self.options.jamjars_silo_costs != JamjarsSiloCosts.option_vanilla:
             raise OptionError("You cannot change the silo costs without randomizing Jamjars' moves.")
-        # if not self.options.randomize_bt_moves and self.options.randomize_bk_moves != RandomizeBKMoveList.option_none and self.options.open_silos < 2:
-        #     raise OptionError("If you enabled Randomized Worlds with BK Moves randomized, you must have at least 2 silos opened.")
         if not self.options.open_hag1 and self.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
             self.options.open_hag1.value = True
 
@@ -980,7 +978,10 @@ class BanjoTooieWorld(World):
         # For hints, we choose to hint the level for which the collectible would count.
         # For example, Dippy Jiggy would hint to TDL.
 
-        def add_loading_zone_information(hint_information: Dict[int, str], locations: Dict[str, LocationData], entrance: str):
+        # For items in boss rooms, we hint the level that leads to the boss room, if boss rooms are randomised.
+        # This has priority over the level entrance.
+
+        def add_level_loading_zone_information(hint_information: Dict[int, str], locations: Dict[str, LocationData], entrance: str):
             for data in locations.values():
                 hint_information.update({data.btid: entrance})
 
@@ -994,17 +995,34 @@ class BanjoTooieWorld(World):
             else:
                 return level
 
-        if not self.options.randomize_world_loading_zone:
-            return
+
 
         hints = {}
+        if self.options.randomize_world_loading_zone:
+            add_level_loading_zone_information(hints, MTLoc_Table, get_entrance(regionName.MT))
+            add_level_loading_zone_information(hints, GMLoc_table, get_entrance(regionName.GM))
+            add_level_loading_zone_information(hints, WWLoc_table, get_entrance(regionName.WW))
+            add_level_loading_zone_information(hints, JRLoc_table, get_entrance(regionName.JR))
+            add_level_loading_zone_information(hints, TLLoc_table, get_entrance(regionName.TL))
+            add_level_loading_zone_information(hints, GILoc_table, get_entrance(regionName.GIO))
+            add_level_loading_zone_information(hints, HPLoc_table, get_entrance(regionName.HP))
+            add_level_loading_zone_information(hints, CCLoc_table, get_entrance(regionName.CC))
 
-        add_loading_zone_information(hints, MTLoc_Table, get_entrance(regionName.MT))
-        add_loading_zone_information(hints, GMLoc_table, get_entrance(regionName.GM))
-        add_loading_zone_information(hints, WWLoc_table, get_entrance(regionName.WW))
-        add_loading_zone_information(hints, JRLoc_table, get_entrance(regionName.JR))
-        add_loading_zone_information(hints, TLLoc_table, get_entrance(regionName.TL))
-        add_loading_zone_information(hints, GILoc_table, get_entrance(regionName.GIO))
-        add_loading_zone_information(hints, HPLoc_table, get_entrance(regionName.HP))
-        add_loading_zone_information(hints, CCLoc_table, get_entrance(regionName.CC))
+        if self.options.randomize_boss_loading_zone:
+            boss_entrance_lookup = {
+                regionName.MTBOSS: regionName.MTTT,
+                regionName.GMBOSS: regionName.CHUFFY,
+                regionName.WWBOSS: regionName.WW,
+                regionName.JRBOSS: regionName.JRLC,
+                regionName.TLBOSS: regionName.TLTOP,
+                regionName.GIBOSS: regionName.GI1,
+                regionName.HPFBOSS: regionName.HP,
+                regionName.HPIBOSS: regionName.HP,
+                regionName.CCBOSS: regionName.CC,
+            }
+            for boss_region_name in boss_entrance_lookup.keys():
+                for location in self.get_region(boss_region_name).locations:
+                    entrance_name = list(self.loading_zones.keys())[list(self.loading_zones.values()).index(boss_region_name)]
+                    hints.update({location.address: boss_entrance_lookup[entrance_name]})
+
         hint_data.update({self.player: hints})
