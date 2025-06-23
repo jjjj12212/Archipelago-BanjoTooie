@@ -16,7 +16,11 @@
           - The loading zone at the top of the mountain is randomised, but the one that leads inside the mountain is not.
           - Both loading zones leading to the nest lead to Terry if you're going through them as solo Banjo.
         - HFP flight pad & Claw Clamber Boots no longer requires Dragon Brothers to shoot at, even if bosses are not randomised.
-        - When hinting something that is in a boss room, the area that leads to the boss room will be revealed.
+    - The hints with random entrances have been changed.
+      - When hinting something that is in a boss room, the area that leads to the boss room will be revealed, if boss loading zones are randomised.
+        - An example: g0goTBC's Mumbo Token is at g0goTBC's Weldar's Mumbo Token at Chuffy's Cabin.
+      - For items that are not in boss rooms, if level entrance loading zones are randomised, "Entrance" has been added to the hint to make it more distinguishable from the boss entrance hints.
+        - An example: g0goTBC's Big-O Pants is at g0goTBC's TDL: Scrotty Jiggy at Hailfire Peaks Entrance
     - The existing options have been embellished
       - Game length has been renamed to World Requirements.
       - A couple of option descriptions have been reworded.

@@ -2021,80 +2021,78 @@ def connect_regions(self):
 
     #World Entrances
     for source, destination in self.loading_zones.items():
-        if source in [regionName.MTBOSS,regionName.GMBOSS,regionName.WWBOSS,regionName.JRBOSS,
-            regionName.TLBOSS,regionName.GIBOSS,regionName.HPFBOSS,regionName.HPIBOSS,regionName.CCBOSS]:
-            continue
-        overworld_entrance = lookup_table[source]
+        if source in [regionName.MT,regionName.GM,regionName.WW,regionName.JR,regionName.TL,regionName.GIO,
+            regionName.HP,regionName.CC,regionName.CK]:
+            overworld_entrance = lookup_table[source]
 
-        source_region = self.get_region(overworld_entrance)
-        source_region.add_exits({destination})
+            source_region = self.get_region(overworld_entrance)
+            source_region.add_exits({destination})
 
-        region_actual_world_entrance = self.get_region(destination)
+            region_actual_world_entrance = self.get_region(destination)
 
-        if destination == regionName.GM:
-            region_actual_world_entrance.add_exits({overworld_entrance}, {overworld_entrance: lambda state: rules.GGM_to_PL(state)})
-        else:
-            region_actual_world_entrance.add_exits({overworld_entrance})
+            if destination == regionName.GM:
+                region_actual_world_entrance.add_exits({overworld_entrance}, {overworld_entrance: lambda state: rules.GGM_to_PL(state)})
+            else:
+                region_actual_world_entrance.add_exits({overworld_entrance})
 
     #Boss Entrances
     for source, boss_room in self.loading_zones.items():
-        if source in [regionName.MT,regionName.GM,regionName.WW,regionName.JR,regionName.TL,regionName.GIO,
-            regionName.HP,regionName.CC,regionName.CK]:
-            continue
+        if source in [regionName.MTBOSS,regionName.GMBOSS,regionName.WWBOSS,regionName.JRBOSS,
+            regionName.TLBOSS,regionName.GIBOSS,regionName.HPFBOSS,regionName.HPIBOSS,regionName.CCBOSS]:
 
-        source_rule = None
-        boss_room_rule = None
-
-        if source == regionName.MTBOSS:
-            source_rule = lambda state: rules.has_green_relics(state, 20)
-        elif source == regionName.JRBOSS:
-            source_rule = lambda state: ((rules.grenade_eggs_item(state) or rules.clockwork_eggs_item(state)) and rules.sub_aqua_egg_aiming(state)) \
-                or rules.humbaJRL(state)
-        elif source == regionName.GIBOSS:
-            source_rule = lambda state: rules.can_enter_gi_repairdepot(state)
-        elif source == regionName.HPFBOSS:
-            source_rule = lambda state: rules.flight_pad(state)
-        elif source == regionName.HPIBOSS:
-            source_rule = lambda state: rules.can_reach_hfp_ice_crater(state)
-        else:
-            source_rule = lambda state: True
-
-        if boss_room == regionName.MTBOSS:
-            boss_room_rule = lambda state: rules.breegull_blaster(state)
-        elif boss_room == regionName.WWBOSS:
-            boss_room_rule = lambda state: rules.can_enter_big_top(state)
-        elif boss_room == regionName.WWBOSS:
-            boss_room_rule = lambda state: rules.sub_aqua_egg_aiming(state) and rules.grenade_eggs_item(state)
-        elif boss_room == regionName.GIBOSS:
-            boss_room_rule = lambda state: rules.grenade_eggs_item(state)
-        elif boss_room == regionName.HPFBOSS:
-            boss_room_rule = lambda state: rules.ice_eggs_item(state)
-        else:
-            boss_room_rule = lambda state: True
-
-        boss_entrance = lookup_table[source]
-        source_region = self.get_region(boss_entrance)
-        transition_rule = lambda state, sr = source_rule, brr = boss_room_rule: sr(state) and brr(state)
-        source_region.add_exits({boss_room}, {boss_room: transition_rule})
-
-        # Entering Repair Depot has a very convoluted process.
-        if source == regionName.GIBOSS:
-            add_indirect_condition(IndirectTransitionCondition(boss_entrance, boss_room, [regionName.GI3]))
-
-        # Terry's nest has 2 loading zones, one of them not randomised, so leaving Terry's nest is logically relevant.
-        if boss_room == regionName.TLBOSS:
-            terry_nest_region = self.get_region(regionName.TLBOSS)
+            source_rule = None
+            boss_room_rule = None
 
             if source == regionName.MTBOSS:
-                leave_terry_rule = lambda state: rules.breegull_blaster(state)
-                terry_nest_region.add_exits({boss_entrance}, {source: leave_terry_rule})
-
-            elif source ==regionName.GMBOSS:
-                leave_terry_rule = lambda state: rules.train_raised(state)
-                terry_nest_region.add_exits({boss_entrance}, {source: leave_terry_rule})
-                add_indirect_condition(IndirectTransitionCondition(boss_room, boss_entrance, [regionName.GM]))
+                source_rule = lambda state: rules.has_green_relics(state, 20)
+            elif source == regionName.JRBOSS:
+                source_rule = lambda state: ((rules.grenade_eggs_item(state) or rules.clockwork_eggs_item(state)) and rules.sub_aqua_egg_aiming(state)) \
+                    or rules.humbaJRL(state)
+            elif source == regionName.GIBOSS:
+                source_rule = lambda state: rules.can_enter_gi_repairdepot(state)
+            elif source == regionName.HPFBOSS:
+                source_rule = lambda state: rules.flight_pad(state)
+            elif source == regionName.HPIBOSS:
+                source_rule = lambda state: rules.can_reach_hfp_ice_crater(state)
             else:
-                terry_nest_region.add_exits({boss_entrance}, {})
+                source_rule = lambda state: True
+
+            if boss_room == regionName.MTBOSS:
+                boss_room_rule = lambda state: rules.breegull_blaster(state)
+            elif boss_room == regionName.WWBOSS:
+                boss_room_rule = lambda state: rules.can_enter_big_top(state)
+            elif boss_room == regionName.WWBOSS:
+                boss_room_rule = lambda state: rules.sub_aqua_egg_aiming(state) and rules.grenade_eggs_item(state)
+            elif boss_room == regionName.GIBOSS:
+                boss_room_rule = lambda state: rules.grenade_eggs_item(state)
+            elif boss_room == regionName.HPFBOSS:
+                boss_room_rule = lambda state: rules.ice_eggs_item(state)
+            else:
+                boss_room_rule = lambda state: True
+
+            boss_entrance = lookup_table[source]
+            source_region = self.get_region(boss_entrance)
+            transition_rule = lambda state, sr = source_rule, brr = boss_room_rule: sr(state) and brr(state)
+            source_region.add_exits({boss_room}, {boss_room: transition_rule})
+
+            # Entering Repair Depot has a very convoluted process.
+            if source == regionName.GIBOSS:
+                add_indirect_condition(IndirectTransitionCondition(boss_entrance, boss_room, [regionName.GI3]))
+
+            # Terry's nest has 2 loading zones, one of them not randomised, so leaving Terry's nest is logically relevant.
+            if boss_room == regionName.TLBOSS:
+                terry_nest_region = self.get_region(regionName.TLBOSS)
+
+                if source == regionName.MTBOSS:
+                    leave_terry_rule = lambda state: rules.breegull_blaster(state)
+                    terry_nest_region.add_exits({boss_entrance}, {source: leave_terry_rule})
+
+                elif source ==regionName.GMBOSS:
+                    leave_terry_rule = lambda state: rules.train_raised(state)
+                    terry_nest_region.add_exits({boss_entrance}, {source: leave_terry_rule})
+                    add_indirect_condition(IndirectTransitionCondition(boss_room, boss_entrance, [regionName.GM]))
+                else:
+                    terry_nest_region.add_exits({boss_entrance}, {})
 
     static_indirect_transition_conditions: List[IndirectTransitionCondition] = [
         IndirectTransitionCondition(regionName.MT, regionName.MTKS, [regionName.MTJSG]),

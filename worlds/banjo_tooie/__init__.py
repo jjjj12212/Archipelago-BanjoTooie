@@ -840,15 +840,15 @@ class BanjoTooieWorld(World):
     @classmethod
     def stage_write_spoiler(cls, world, spoiler_handle):
         entrance_hags = {
-            regionName.MT: regionName.IOHWH,
-            regionName.GM: regionName.IOHPL,
-            regionName.WW: regionName.IOHPG,
-            regionName.JR: regionName.IOHCT + " (Jolly Rogers Lagoon Entrance)",
-            regionName.TL: regionName.IOHWL + " (Terrydactyland Entrance)",
-            regionName.GIO: regionName.IOHQM + " (Grunty Industries Entrance)",
-            regionName.HP: regionName.IOHCT_HFP_ENTRANCE,
-            regionName.CC: regionName.IOHWL + " (Cloud Cuckooland Entrance)",
-            regionName.CK: regionName.IOHQM + " (Caudron Keep Entrance)",
+            regionName.MT: regionName.MTE,
+            regionName.GM: regionName.GGME,
+            regionName.WW: regionName.WWE,
+            regionName.JR: regionName.JRLE,
+            regionName.TL: regionName.TDLE,
+            regionName.GIO: regionName.GIE,
+            regionName.HP: regionName.HFPE,
+            regionName.CC: regionName.CCLE,
+            regionName.CK: regionName.CKE,
             regionName.MTBOSS: regionName.MTTT,
             regionName.GMBOSS: regionName.CHUFFY,
             regionName.WWBOSS: regionName.WW,
@@ -873,7 +873,7 @@ class BanjoTooieWorld(World):
                         spoiler_handle.write(f"\n\t\t{entrance_hags[starting_zone]} -> Grunty Industries")
                     else:
                         spoiler_handle.write(f"\n\t\t{entrance_hags[starting_zone]} -> {actual_world}")
-            spoiler_handle.write("\n\tWorld Costs:")
+            spoiler_handle.write("\n\tWorld Requirements:")
             for entrances, cost in currentWorld.world_requirements.items():
                     if entrances == regionName.JR:
                         spoiler_handle.write(f"\n\t\tJolly Roger's Lagoon: {cost}")
@@ -981,32 +981,32 @@ class BanjoTooieWorld(World):
         # For items in boss rooms, we hint the level that leads to the boss room, if boss rooms are randomised.
         # This has priority over the level entrance.
 
-        def add_level_loading_zone_information(hint_information: Dict[int, str], locations: Dict[str, LocationData], entrance: str):
+        def add_level_loading_zone_information(hint_information: Dict[int, str], locations: Dict[str, LocationData], level: str):
+            entrance_lookup = {
+                regionName.MT: regionName.MTE,
+                regionName.GM: regionName.GGME,
+                regionName.WW: regionName.WWE,
+                regionName.JR: regionName.JRLE,
+                regionName.TL: regionName.TDLE,
+                regionName.GIO: regionName.GIE,
+                regionName.HP: regionName.HFPE,
+                regionName.CC: regionName.CCLE,
+                regionName.CK: regionName.CKE,
+            }
             for data in locations.values():
-                hint_information.update({data.btid: entrance})
-
-        #used for Lua/C++ client reasons
-        def get_entrance(level: str):
-            level = list(self.loading_zones.keys())[list(self.loading_zones.values()).index(level)]
-            if level == regionName.JR:
-                return "Jolly Roger's Lagoon"
-            elif level == regionName.GIO:
-                return "Grunty Industries"
-            else:
-                return level
-
-
+                entrance_to_level = list(self.loading_zones.keys())[list(self.loading_zones.values()).index(level)]
+                hint_information.update({data.btid: entrance_lookup[entrance_to_level]})
 
         hints = {}
         if self.options.randomize_world_loading_zone:
-            add_level_loading_zone_information(hints, MTLoc_Table, get_entrance(regionName.MT))
-            add_level_loading_zone_information(hints, GMLoc_table, get_entrance(regionName.GM))
-            add_level_loading_zone_information(hints, WWLoc_table, get_entrance(regionName.WW))
-            add_level_loading_zone_information(hints, JRLoc_table, get_entrance(regionName.JR))
-            add_level_loading_zone_information(hints, TLLoc_table, get_entrance(regionName.TL))
-            add_level_loading_zone_information(hints, GILoc_table, get_entrance(regionName.GIO))
-            add_level_loading_zone_information(hints, HPLoc_table, get_entrance(regionName.HP))
-            add_level_loading_zone_information(hints, CCLoc_table, get_entrance(regionName.CC))
+            add_level_loading_zone_information(hints, MTLoc_Table, regionName.MT)
+            add_level_loading_zone_information(hints, GMLoc_table, regionName.GM)
+            add_level_loading_zone_information(hints, WWLoc_table, regionName.WW)
+            add_level_loading_zone_information(hints, JRLoc_table, regionName.JR)
+            add_level_loading_zone_information(hints, TLLoc_table, regionName.TL)
+            add_level_loading_zone_information(hints, GILoc_table, regionName.GIO)
+            add_level_loading_zone_information(hints, HPLoc_table, regionName.HP)
+            add_level_loading_zone_information(hints, CCLoc_table, regionName.CC)
 
         if self.options.randomize_boss_loading_zone:
             boss_entrance_lookup = {
