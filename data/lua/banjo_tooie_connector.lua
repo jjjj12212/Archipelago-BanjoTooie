@@ -3597,7 +3597,7 @@ local ADDRESS_MAP = {
         ["1230589"] = {
             ['addr'] = 0x3E,
             ['bit'] = 2,
-            ['name'] = 'CCL: Fake Mumbo Skull Jinjo'
+            ['name'] = 'CCL: Mingy Jongo Skull Jinjo'
         },
         ["1230590"] = {
             ['addr'] = 0x3E,
@@ -3659,7 +3659,7 @@ local ADDRESS_MAP = {
         ["1230737"] = {
             ['addr'] = 0x57,
             ['bit'] = 4,
-            ['name'] = "JRL: Pawno's Cheato Page"
+            ['name'] = "JRL: Pawno Cheato Page"
         },
         ["1230738"] = {
             ['addr'] = 0x57,
@@ -5845,7 +5845,7 @@ local MAP_ENTRANCES = {
 
     },
     [0x13F] = {
-        ['name'] = "Fake Mumbo Skull",
+        ['name'] = "Mingy Jongo Skull",
         ['entranceId'] = 1,
         ['exitId'] = 0x09,
         ['exitMap'] = 0x136,
@@ -8236,7 +8236,7 @@ function get_item_message_char(item_id)
             return 8 -- Mumbo
         elseif 1230174 <= item_id and item_id <= 1230182 -- Humba Transformations
         then
-            return 37 -- Humba    
+            return 37 -- Humba
         elseif 1230870 <= item_id and item_id <= 1230876 -- Silos
         then
             return 17 -- Jamjars
