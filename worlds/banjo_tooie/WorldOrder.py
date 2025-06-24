@@ -75,6 +75,9 @@ def generate_world_order(world: BanjoTooieWorld, worlds: List[str]) -> List[str]
         and not world.options.nestsanity:
         bad_first_worlds.update([regionName.CC, regionName.TL])
 
+    if world.options.randomize_boss_loading_zone and not world.options.randomize_world_loading_zone and not world.options.open_gi_frontdoor:
+        bad_first_worlds.update([regionName.GIO])
+        
     world1 = world.random.choice([w for w in worlds if w not in bad_first_worlds])
     # The 2nd world needs to be not too hard to access from the first world.
     easy_2nd_worlds = {
@@ -257,7 +260,7 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
 
         # TDL Easy
 
-        if first_level == regionName.GIO and not world.options.randomize_world_loading_zone: # Moves to enter the train.
+        if first_level == regionName.GIO and not world.options.randomize_world_loading_zone and not world.options.randomize_boss_loading_zone: # Moves to enter the train.
             world.multiworld.early_items[world.player][itemName.CHUFFY] = 1
             world.multiworld.early_items[world.player][itemName.TRAINSWGI] = 1
             world.multiworld.early_items[world.player][itemName.CLIMB] = 1
