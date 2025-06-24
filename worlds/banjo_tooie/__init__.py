@@ -943,7 +943,7 @@ class BanjoTooieWorld(World):
             "randomize_warp_pads",
             "randomize_silos",
             "hint_clarity",
-            "randomize_world_loading_zone",
+            "randomize_world_entrance_loading_zone",
             "randomize_boss_loading_zone",
             "dialog_character"
         )
@@ -998,7 +998,7 @@ class BanjoTooieWorld(World):
                 hint_information.update({data.btid: entrance_lookup[entrance_to_level]})
 
         hints = {}
-        if self.options.randomize_world_loading_zone:
+        if self.options.randomize_world_entrance_loading_zone:
             add_level_loading_zone_information(hints, MTLoc_Table, regionName.MT)
             add_level_loading_zone_information(hints, GMLoc_table, regionName.GM)
             add_level_loading_zone_information(hints, WWLoc_table, regionName.WW)

@@ -682,7 +682,7 @@ class BanjoTooieOptions(PerGameCommonOptions):
     open_silos: OpenSilos
     skip_puzzles: SkipPuzzles
     randomize_worlds: RandomizeWorldOrder
-    randomize_world_loading_zone: RandomizeWorldZones
+    randomize_world_entrance_loading_zone: RandomizeWorldZones
     randomize_boss_loading_zone: RandomizeBossZones
     backdoors: Backdoors
     open_gi_frontdoor: GIFrontDoor
