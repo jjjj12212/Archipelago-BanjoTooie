@@ -694,6 +694,7 @@ NEST_REGIONS: Dict[str, List[str]] = {
       locationName.NESTMT13,
       locationName.NESTMT14,
 
+      locationName.NESTMT36,
       locationName.NESTMT37,
       locationName.NESTMT38,
       locationName.NESTMT39,
@@ -712,7 +713,6 @@ NEST_REGIONS: Dict[str, List[str]] = {
       locationName.NESTMT33,
       locationName.NESTMT34,
       locationName.NESTMT35,
-      locationName.NESTMT36,
     ],
     regionName.MTJSG:   [
       locationName.NESTMT1,
