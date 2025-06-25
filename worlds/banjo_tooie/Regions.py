@@ -2061,7 +2061,7 @@ def connect_regions(self):
                 boss_room_rule = lambda state: rules.breegull_blaster(state)
             elif boss_room == regionName.WWBOSS:
                 boss_room_rule = lambda state: rules.can_enter_big_top(state)
-            elif boss_room == regionName.WWBOSS:
+            elif boss_room == regionName.JRBOSS:
                 boss_room_rule = lambda state: rules.sub_aqua_egg_aiming(state) and rules.grenade_eggs_item(state)
             elif boss_room == regionName.GIBOSS:
                 boss_room_rule = lambda state: rules.grenade_eggs_item(state)
