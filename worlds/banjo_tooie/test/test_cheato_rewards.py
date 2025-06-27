@@ -1,13 +1,13 @@
 from BaseClasses import ItemClassification
 from worlds.banjo_tooie.Names import locationName
 from ..Names import itemName
-from ..Options import EnableCheatoRewards, RandomizeBKMoveList
+from ..Options import RandomizeCheatoRewards
 from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 
 class TestRandomizedCheatoRewards(BanjoTooieTestBase):
     options = {
-        "cheato_rewards": EnableCheatoRewards.option_true,
+        "cheato_rewards": RandomizeCheatoRewards.option_true,
     }
 
     def test_item_classification(self) -> None:
@@ -29,7 +29,7 @@ class TestRandomizedCheatoRewards(BanjoTooieTestBase):
 
 class TestVanillaCheatoRewards(BanjoTooieTestBase):
     options = {
-        "cheato_rewards": EnableCheatoRewards.option_false,
+        "cheato_rewards": RandomizeCheatoRewards.option_false,
     }
 
     def test_item_classification(self) -> None:

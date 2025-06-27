@@ -6,13 +6,11 @@ import os
 import multiprocessing
 import copy
 import pathlib
-import random
 import subprocess
 import sys
 import time
 from typing import Union
 import zipfile
-from asyncio import StreamReader, StreamWriter
 import bsdiff4
 
 
@@ -39,7 +37,9 @@ Payload: lua -> client
     playerName: string,
     locations: dict,
     deathlinkActive: bool,
+    taglinkActive: bool,
     isDead: bool,
+    isTag: bool,
     gameComplete: bool
 }
 
@@ -48,6 +48,7 @@ Payload: client -> lua
     items: list,
     playerNames: list,
     triggerDeath: bool,
+    triggerTag: bool,
     messages: string
 }
 
@@ -61,16 +62,18 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 
 bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_to_id"]
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
-script_version: int = 4
-version: str = "V4.5.1"
-game_append_version: str = "V451"
-patch_md5: str = "525c8f04832488cfa96dbd04a12f9bc6"
+script_version: int = 5
+version: str = "V4.6"
+game_append_version: str = "V46"
+patch_md5: str = "c300778ca54dbe2cc067bb9baa6daa64"
 
 def get_item_value(ap_id):
     return ap_id
 
 async def run_game(romfile):
-        auto_start = settings.get_settings()["banjo-tooie_options"].get("rom_start", True)
+        auto_start = False
+        if "banjo-tooie_options" in settings.get_settings():
+            auto_start = settings.get_settings()["banjo-tooie_options"].get("rom_start", True)
         if auto_start is True:
             import webbrowser
             webbrowser.open(romfile)
@@ -102,6 +105,23 @@ async def apply_patch():
     if patch_path:
         logger.info("Patched Banjo-Tooie is located in " + patch_path)
 
+class BanjoTooieItemTracker:
+
+  def __init__(self, ctx):
+    self.ctx = ctx
+    self.items = {item_name: 0 for item_name in bt_itm_name_to_id}
+    self.refresh_items()
+
+  def refresh_items(self):
+    for item in self.items:
+      self.items[item] = 0
+    for item in self.ctx.items_received:
+      self.items[self.ctx.item_names.lookup_in_game(item.item)] += 1
+    self.ctx.tab_items.content.data = []
+    for item_name, amount in sorted(self.items.items()):
+      if amount == 0: continue
+      if amount > 1: self.ctx.tab_items.content.data.append({"text":f"{item_name}: {amount}"})
+      else: self.ctx.tab_items.content.data.append({"text":f"{item_name}"})
 
 class BanjoTooieCommandProcessor(ClientCommandProcessor):
     def __init__(self, ctx):
@@ -118,6 +138,18 @@ class BanjoTooieCommandProcessor(ClientCommandProcessor):
             self.ctx.deathlink_client_override = True
             self.ctx.deathlink_enabled = not self.ctx.deathlink_enabled
             async_start(self.ctx.update_death_link(self.ctx.deathlink_enabled), name="Update Deathlink")
+
+    def _cmd_taglink(self):
+        """Toggle taglink from client. Overrides default setting."""
+        if isinstance(self.ctx, BanjoTooieContext):
+            self.ctx.taglink_client_override = True
+            self.ctx.taglink_enabled = not self.ctx.taglink_enabled
+            async_start(self.ctx.update_tag_link(self.ctx.taglink_enabled), name="Update Taglink")
+
+    # def _cmd_tag(self):
+    #     """Toggle a tag for Taglink."""
+    #     if isinstance(self.ctx, BanjoTooieContext):
+    #         async_start(self.ctx.send_tag_link(), name="Send Taglink")
 
 
 class BanjoTooieContext(CommonContext):
@@ -155,6 +187,9 @@ class BanjoTooieContext(CommonContext):
         self.alien_kids_table = {}
         self.skivvies_table = {}
         self.mr_fit_table = {}
+        self.bt_tickets_table = {}
+        self.green_relics_table = {}
+        self.beans_table = {}
         self.signpost_table = {}
         self.warppads_table = {}
         self.silos_table = {}
@@ -166,6 +201,11 @@ class BanjoTooieContext(CommonContext):
         self.deathlink_pending = False
         self.deathlink_sent_this_death = False
         self.deathlink_client_override = False
+
+        self.taglink_enabled = False
+        self.pending_tag_link = False
+        self.taglink_sent_this_tag = False
+        self.taglink_client_override = False
         self.version_warning = False
         self.messages = {}
         self.slot_data = {}
@@ -173,23 +213,6 @@ class BanjoTooieContext(CommonContext):
         self.sync_ready = False
         self.startup = False
         self.handled_scouts = []
-        # AquaPhoenix Contributed with the Gruntilda Insults
-        self.death_messages = [
-            "Gruntilda:    Did you hear that lovely clack, \n                     My broomstick gave you such a whack!",
-            "Gruntilda:    AAAH! I see it makes you sad, \n                     To know your skills are really bad!",
-            "Gruntilda:    I hit that bird right on the beak, \n                     Let it be the end of her cheek!",
-            "Gruntilda:    My fiery blast you just tasted, \n                     Grunty's spells on you are wasted!",
-            "Gruntilda:    Hopeless bear runs to and fro, \n                     But takes a whack for being so slow!",
-            "Gruntilda:    So I got you there once more, \n                     I knew your skills were very poor!",
-            "Gruntilda:    Simply put I'm rather proud, \n                     Your yelps and screams I heard quite loud!",
-            "Gruntilda:    Grunty's fireball you did kiss, \n                     You're so slow I can hardly miss!",
-            "Gruntilda:    In this world you breathe your last,\n                     Now your friends had better think fast!",
-            "Gruntilda:    This is fun it's quite a treat, \n                     To see you suffer in defeat",
-            "Gruntilda:    That death just now, I saw coming, \n                     Your skill issues are rather stunning!",
-            "Gruntilda:    Seeing this pathetic display, \n                     Is serotonin in my day",
-            "Gruntilda:    What a selfish thing to do,\n                     Your friends just died because of you!",
-            "Gruntilda:    You tried something rather stupid,\n                     I hope no one will try what you did"
-        ]
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -216,7 +239,7 @@ class BanjoTooieContext(CommonContext):
 
     async def send_death(self, death_text: str = ""):
         if self.server and self.server.socket:
-            logger.info(f"{random.choice(self.death_messages)} \n(DeathLink: Sending death to your friends...)")
+            logger.info(f"(DeathLink: Sending death to your friends...)")
             self.last_death_link = time.time()
             await self.send_msgs([{
                 "cmd": "Bounce", "tags": ["DeathLink"],
@@ -227,8 +250,30 @@ class BanjoTooieContext(CommonContext):
                 }
             }])
 
+    async def update_tag_link(self, tag_link: bool):
+        """Helper function to set tag Link connection tag on/off and update the connection if already connected."""
+        old_tags = self.tags.copy()
+        if tag_link:
+            self.tags.add("TagLink")
+        else:
+            self.tags -= {"TagLink"}
+        if old_tags != self.tags and self.server and not self.server.socket.closed:
+            await self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}])
+
+    async def send_tag_link(self):
+        """Send a tag link message."""
+        if "TagLink" not in self.tags or self.slot is None:
+            return
+        if not hasattr(self, "instance_id"):
+            self.instance_id = time.time()
+        await self.send_msgs([{"cmd": "Bounce", "tags": ["TagLink"],
+             "data": {
+                "time": time.time(),
+                "source": self.instance_id,
+                "tag": True}}])
+
     def run_gui(self):
-        from kvui import GameManager
+        from kvui import GameManager, UILog
 
         class BanjoTooieManager(GameManager):
             logging_pairs = [
@@ -236,12 +281,18 @@ class BanjoTooieContext(CommonContext):
             ]
             base_title = "Banjo-Tooie Client "+ version + " for AP"
 
+            def build(self):
+                ret = super().build()
+                self.ctx.tab_items = self.add_client_tab("Items", UILog())
+                return ret
+
         self.ui = BanjoTooieManager(self)
         self.ui_task = asyncio.create_task(self.ui.async_run(), name="UI")
         asyncio.create_task(apply_patch())
 
     def on_package(self, cmd, args):
         if cmd == "Connected":
+            self.tracker = BanjoTooieItemTracker(self)
             self.slot_data = args.get("slot_data", None)
             if version != self.slot_data["version"]:
                 logger.error("Your Banjo-Tooie AP does not match with the generated world.")
@@ -250,6 +301,7 @@ class BanjoTooieContext(CommonContext):
                 raise Exception("Your Banjo-Tooie AP does not match with the generated world.\n" +
                                 "Your version: "+version+" | Generated version: "+self.slot_data["version"])
             self.deathlink_enabled = bool(self.slot_data["death_link"])
+            self.taglink_enabled = bool(self.slot_data["tag_link"])
             fpath = pathlib.Path(__file__)
             archipelago_root = None
             for i in range(0, 5,+1) :
@@ -259,6 +311,7 @@ class BanjoTooieContext(CommonContext):
             async_start(run_game(os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".z64")))
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
         elif cmd == "ReceivedItems":
+            self.tracker.refresh_items()
             if self.startup == False:
                 for item in args["items"]:
                     player = ""
@@ -274,6 +327,15 @@ class BanjoTooieContext(CommonContext):
                     logger.info(player + " sent " + item_name)
                 logger.info("The above items will be sent when Banjo-Tooie is loaded.")
                 self.startup = True
+        if isinstance(args, dict) and isinstance(args.get("data", {}), dict):
+            source_name = args.get("data", {}).get("source", None)
+            if not hasattr(self, "instance_id"):
+                self.instance_id = time.time()
+            if "TagLink" in self.tags and source_name != self.instance_id and "TagLink" in args.get("tags", []):
+                if not hasattr(self, "pending_tag_link"):
+                    self.pending_tag_link = False
+                else:
+                    self.pending_tag_link = True
 
     def on_print_json(self, args: dict):
         if self.ui:
@@ -326,6 +388,14 @@ def get_payload(ctx: BanjoTooieContext):
     else:
         trigger_death = False
 
+    if ctx.taglink_enabled and ctx.pending_tag_link:
+        trigger_tag = True
+        ctx.taglink_sent_this_tag = True
+        ctx.pending_tag_link = False
+    else:
+        trigger_tag = False
+
+
     # if(len(ctx.items_received) > 0) and ctx.sync_ready == True:
     #   print("Receiving Item")
 
@@ -335,6 +405,7 @@ def get_payload(ctx: BanjoTooieContext):
                 "items": [get_item_value(item.item) for item in ctx.items_received],
                 "playerNames": [name for (i, name) in ctx.player_names.items() if i != 0],
                 "triggerDeath": trigger_death,
+                "triggerTag": trigger_tag,
                 "messages": [message for (i, message) in ctx.messages.items() if i != 0],
             })
     else:
@@ -342,6 +413,7 @@ def get_payload(ctx: BanjoTooieContext):
                 "items": [],
                 "playerNames": [name for (i, name) in ctx.player_names.items() if i != 0],
                 "triggerDeath": trigger_death,
+                "triggerTag": trigger_tag,
                 "messages": [message for (i, message) in ctx.messages.items() if i != 0],
             })
     if len(ctx.messages) > 0:
@@ -357,6 +429,7 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_player": ctx.slot_data["player_name"],
             "slot_seed": ctx.slot_data["seed"],
             "slot_deathlink": ctx.deathlink_enabled,
+            "slot_taglink": ctx.taglink_enabled,
             "slot_tower_of_tragedy": ctx.slot_data["tower_of_tragedy"],
             "slot_randomize_bk_moves": ctx.slot_data["randomize_bk_moves"],
             "slot_speed_up_minigames": ctx.slot_data["speed_up_minigames"],
@@ -389,7 +462,10 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_auto_enable_cheats": ctx.slot_data["auto_enable_cheats"],
             "slot_cheato_rewards": ctx.slot_data["cheato_rewards"],
             "slot_honeyb_rewards": ctx.slot_data["honeyb_rewards"],
-
+            "slot_open_gi_entrance": ctx.slot_data["open_gi_frontdoor"],
+            "slot_randomize_tickets": ctx.slot_data["randomize_tickets"],
+            "slot_randomize_green_relics": ctx.slot_data["randomize_green_relics"],
+            "slot_randomize_beans": ctx.slot_data["randomize_beans"]
         })
     ctx.sendSlot = False
     return payload
@@ -402,12 +478,17 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         logger.warning("ROM change detected. Disconnecting and reconnecting...")
         ctx.deathlink_enabled = False
         ctx.deathlink_client_override = False
+        ctx.deathlink_pending = False
+        ctx.deathlink_sent_this_death = False
+        ctx.taglink_enabled = False
+        ctx.taglink_client_override = False
+        ctx.pending_tag_link = False
+        ctx.taglink_sent_this_tag = False
+
         ctx.finished_game = False
         ctx.location_table = {}
         ctx.chuffy_table = {}
         ctx.movelist_table = {}
-        ctx.deathlink_pending = False
-        ctx.deathlink_sent_this_death = False
         ctx.auth = payload["playerName"]
         await ctx.send_connect()
         return
@@ -416,6 +497,11 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     if payload["deathlinkActive"] and ctx.deathlink_enabled and not ctx.deathlink_client_override:
         await ctx.update_death_link(True)
         ctx.deathlink_enabled = True
+
+    # Turn on taglink if it is on, and if the client hasn't overriden it
+    if payload["taglinkActive"] and ctx.taglink_enabled and not ctx.taglink_client_override:
+        await ctx.update_tag_link(True)
+        ctx.taglink_enabled = True
 
     # Locations handling
     demo = payload["DEMO"]
@@ -450,6 +536,10 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     silos = payload["silos"]
     worldslist = payload["worlds"]
     banjo_map = payload["banjo_map"]
+    bt_tickets = payload["bt_tickets"]
+    green_relics = payload["green_relics"]
+    beans = payload["beans"]
+
 
     # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
     # if isinstance(locations, list):
@@ -518,6 +608,12 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
         hag = False
     if isinstance(roar_obtain, bool) == False:
         roar_obtain = False
+    if isinstance(bt_tickets, list):
+        bt_tickets = {}
+    if isinstance(green_relics, list):
+        green_relics = {}
+    if isinstance(beans, list):
+        beans = {}
 
     if demo == False and ctx.sync_ready == True:
         locs1 = []
@@ -588,6 +684,8 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             for locationId, value in nests.items():
                 if value == True:
                     locs1.append(int(locationId))
+        if ctx.current_map != banjo_map:  #Fix for not resending activated Hints
+            ctx.signpost_table = signposts #sets only when transistioning on a new map
         if ctx.signpost_table != signposts:
                 ctx.signpost_table = signposts
                 actual_hints = ctx.slot_data["hints"]
@@ -612,7 +710,22 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
             ctx.silos_table = silos
             for locationId, value in silos.items():
                 if value == True:
-                    locs1.append(int(locationId))        
+                    locs1.append(int(locationId))
+        if ctx.bt_tickets_table != bt_tickets:
+            ctx.bt_tickets_table = bt_tickets
+            for locationId, value in bt_tickets.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.green_relics_table != green_relics:
+            ctx.green_relics_table = green_relics
+            for locationId, value in green_relics.items():
+                if value == True:
+                    locs1.append(int(locationId))
+        if ctx.beans_table != beans:
+            ctx.beans_table = beans
+            for locationId, value in beans.items():
+                if value == True:
+                    locs1.append(int(locationId))
         if ctx.roar != roar_obtain:
             ctx.roar = roar_obtain
             if roar_obtain == True:
@@ -689,12 +802,6 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "cmd": "LocationChecks",
                 "locations": locs1
             }])
-
-            if len(locs1) > 0:
-                await ctx.send_msgs([{
-                    "cmd": "LocationChecks",
-                    "locations": locs1
-                }])
 
         if len(scouts1) > 0:
             await ctx.send_msgs([{
@@ -782,6 +889,16 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 await ctx.send_death()
         else: # Banjo is somehow still alive
             ctx.deathlink_sent_this_death = False
+
+    if ctx.taglink_enabled:
+        if payload["isTag"]: #Banjo tagged
+            ctx.pending_tag_link = False
+            if not ctx.taglink_sent_this_tag:
+                ctx.taglink_sent_this_tag = True
+
+                await ctx.send_tag_link()
+        else:
+            ctx.taglink_sent_this_tag = False
 
 def mumbo_tokens_loc(locs: list, goaltype: int) -> list:
     for locationId in locs:

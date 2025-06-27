@@ -7,7 +7,7 @@ class BanjoTooieLocation(Location):
     game: str = "Banjo-Tooie"
 
 class LocationData(typing.NamedTuple):
-    #last good ID: 1231609 (Mr Fit Sack)
+    #last good ID: 1231640 (CCL Bean 2)
     #12C770 pointer instead (1230704)
     btid: int = 0
     # Save + mem addr
@@ -206,6 +206,33 @@ MTLoc_Table = {
     locationName.WARPMT3:   LocationData(1231559, 0, 0, "Warp Pads"),
     locationName.WARPMT4:   LocationData(1231560, 0, 0, "Warp Pads"),
     locationName.WARPMT5:   LocationData(1231561, 0, 0, "Warp Pads"),
+
+    locationName.GRRELICE1:   LocationData(1231614, 0x5A, 5, "Green Relic"),
+    locationName.GRRELICE2:   LocationData(1231615, 0x5A, 4, "Green Relic"),
+    locationName.GRRELICB1:   LocationData(1231616, 0x5B, 7, "Green Relic"),
+    locationName.GRRELICB2:   LocationData(1231617, 0x5B, 6, "Green Relic"),
+    locationName.GRRELICB3:   LocationData(1231618, 0x5B, 5, "Green Relic"),
+    locationName.GRRELICC1:   LocationData(1231619, 0x5B, 3, "Green Relic"),
+    locationName.GRRELICC2:   LocationData(1231620, 0x5B, 4, "Green Relic"),
+    locationName.GRRELICC3:   LocationData(1231621, 0x5B, 2, "Green Relic"),
+    locationName.GRRELICC4:   LocationData(1231622, 0x5B, 1, "Green Relic"),
+    locationName.GRRELICC5:   LocationData(1231623, 0x5C, 2, "Green Relic"),
+    locationName.GRRELICG1:   LocationData(1231624, 0x5C, 3, "Green Relic"),
+    locationName.GRRELICG2:   LocationData(1231625, 0x5C, 5, "Green Relic"),
+    locationName.GRRELICG3:   LocationData(1231626, 0x5C, 4, "Green Relic"),
+    locationName.GRRELICG4:   LocationData(1231627, 0x5C, 6, "Green Relic"),
+    locationName.GRRELICG5:   LocationData(1231628, 0x5C, 7, "Green Relic"),
+    locationName.GRRELICT1:   LocationData(1231629, 0x5C, 1, "Green Relic"),
+    locationName.GRRELICT2:   LocationData(1231630, 0x5C, 0, "Green Relic"),
+    locationName.GRRELICP1:   LocationData(1231631, 0x5D, 0, "Green Relic"),
+    locationName.GRRELICP2:   LocationData(1231632, 0x5D, 1, "Green Relic"),
+    locationName.GRRELICP3:   LocationData(1231633, 0x5D, 2, "Green Relic"),
+    locationName.GRRELICS1:   LocationData(1231634, 0x5D, 4, "Green Relic"),
+    locationName.GRRELICS2:   LocationData(1231635, 0x5D, 3, "Green Relic"),
+    locationName.GRRELICR1:   LocationData(1231636, 0x5A, 6, "Green Relic"),
+    locationName.GRRELICR2:   LocationData(1231637, 0x5A, 7, "Green Relic"),
+    locationName.GRRELICR3:   LocationData(1231638, 0x5B, 0, "Green Relic"),
+
 }
 
 IHPLLoc_table = {
@@ -469,8 +496,12 @@ WWLoc_table = {
 
     locationName.MOGGY:     LocationData(1231596, 0x0C, 4),
     locationName.SOGGY:     LocationData(1231597, 0x0C, 5),
-    locationName.GROGGY:    LocationData(1231598, 0x0C, 6)
+    locationName.GROGGY:    LocationData(1231598, 0x0C, 6),
 
+    locationName.BTTICK1:   LocationData(1231610, 0x9C, 4, "Ticket"),
+    locationName.BTTICK2:   LocationData(1231611, 0x9C, 5, "Ticket"),
+    locationName.BTTICK3:   LocationData(1231612, 0x9C, 6, "Ticket"),
+    locationName.BTTICK4:   LocationData(1231613, 0x9C, 7, "Ticket")
 }
 JRLoc_table = {
     locationName.JRLDB1: LocationData(1230521, 0x22, 7, "Doubloon"),
@@ -1072,7 +1103,10 @@ CCLoc_table = {
     locationName.WARPCC2:   LocationData(1231593, 0, 0, "Warp Pads"),
 
     locationName.FITHJ:     LocationData(1231608, 0x76, 4),
-    locationName.FITSR:     LocationData(1231609, 0x76, 5)
+    locationName.FITSR:     LocationData(1231609, 0x76, 5),
+
+    locationName.BEANCC1:   LocationData(1231639, 0x62, 6),
+    locationName.BEANCC2:   LocationData(1231640, 0x62, 5),
 }
 
 WorldUnlocks_table = {

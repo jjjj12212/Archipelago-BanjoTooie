@@ -4,7 +4,7 @@ from .Names import itemName, locationName
 
 
 class BanjoTooieItem(Item):
-    # 1230916 (Health Upgrade) but beware of level access keys that are way higher!
+    # 1230924 (Beans) but beware of level access keys that are way higher!
     game: str = "Banjo-Tooie"
 class ItemData(NamedTuple):
     btid: int = 0
@@ -113,7 +113,7 @@ progressive_ability_breakdown = {
     itemName.PAEGGAIM:      [itemName.EGGSHOOT, itemName.AMAZEOGAZE, itemName.EGGAIM, itemName.BBLASTER],
 }
 
-level_progress_table = {
+glowbo_table = {
     itemName.MUMBOMT:        ItemData(1230855, 1, "progress", locationName.GLOWBOMT1),
     itemName.MUMBOGM:        ItemData(1230856, 1, "progress", locationName.GLOWBOGM2),
     itemName.MUMBOWW:        ItemData(1230857, 1, "progress", locationName.GLOWBOWW1),
@@ -148,7 +148,10 @@ misc_collectable_table = {
     itemName.STRAP:         ItemData(1230787,  0, "trap", ""),
     itemName.TRTRAP:        ItemData(1230788,  0, "trap", ""),
     itemName.SQTRAP:        ItemData(1230789,  0, "trap", ""),
-    itemName.TITRAP:        ItemData(1230833,  0, "trap", "")
+    itemName.TITRAP:        ItemData(1230833,  0, "trap", ""),
+    itemName.BTTICKET:      ItemData(1230922, 4, "progress", ""),
+    itemName.GRRELIC:       ItemData(1230923, 25, "progress", ""),
+    itemName.BEANS:         ItemData(1230924, 2, "progress", "")
 }
 
 stop_n_swap_table = {
@@ -169,7 +172,7 @@ stations_table = {
     itemName.TRAINSWWW:     ItemData(1230795,  1, "progress", locationName.TRAINSWWW),
 }
 
-rando_key_table = {
+world_unlock_table = {
     itemName.MTA:           ItemData(1230944,   1, "progress", locationName.W1),
     itemName.GGA:           ItemData(1230945,   1, "progress", locationName.W2),
     itemName.WWA:           ItemData(1230946,   1, "progress", locationName.W3),
@@ -255,11 +258,11 @@ cheats_table = {
 all_item_table: Dict[str, ItemData] = {
     **moves_table,
     **jinjo_table,
-    **level_progress_table,
+    **glowbo_table,
     **misc_collectable_table,
     **jiggy_table,
     **stations_table,
-    **rando_key_table,
+    **world_unlock_table,
     **token_table,
     **stop_n_swap_table,
     **bk_moves_table,
@@ -277,9 +280,9 @@ all_group_table: Dict[str, Dict[str, ItemData]] = {
     "jinjo": jinjo_table,
     "misc": misc_collectable_table,
     "moves": moves_table,
-    "magic": level_progress_table,
+    "magic": glowbo_table,
     "stations": stations_table,
-    "levelaccess": rando_key_table,
+    "levelaccess": world_unlock_table,
     "token": token_table,
     "stopnswap": stop_n_swap_table,
     "bk_moves": bk_moves_table,

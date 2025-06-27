@@ -5,7 +5,7 @@ from . import BanjoTooieTestBase
 BASE_FILLERS = 4
 
 ALL_90_JIGGIES_AND_900_NOTES_PROGRESSION = {
-    "game_length": "custom",
+    "world_requirements": "custom",
     "custom_worlds": "1,1,1,1,1,1,1,1,90",
     "randomize_notes": "false",
 }
@@ -21,7 +21,7 @@ ADD_NO_FILLERS_FROM_BK_MOVES = {
 ADD_687_FILLERS = {
     **ADD_16_FILLERS_FROM_BK_MOVES,
     # length config (adds 44)
-    "game_length": "custom",
+    "world_requirements": "custom",
     "custom_worlds": "1,1,1,1,1,1,1,1,1",
     # nests config (adds 473)
     "nestsanity": "true",
@@ -376,7 +376,7 @@ class TestNoReplaceExtraNotesAndJiggies(FillersTrapTestBase):
 
         # exactly 50 jiggies are progressive
         "jingaling_jiggy": "false",
-        "game_length": "custom",
+        "world_requirements": "custom",
         "custom_worlds": "1,1,1,1,1,1,1,1,50",
 
         # This also adds 9 filler
@@ -418,7 +418,7 @@ class TestNoReplaceExtraNotesAndJiggies(FillersTrapTestBase):
 class TestNoReplaceExtraJiggiesMinimalRespectCount(FillersTrapTestBase):
     options = {
         **ADD_16_FILLERS_FROM_BK_MOVES,
-        "game_length": "custom",
+        "world_requirements": "custom",
         "custom_worlds": "1,1,1,1,1,1,1,1,1",
 
         "randomize_jinjos": "false",
@@ -435,7 +435,7 @@ class TestNoReplaceExtraJiggiesMinimalRespectCount(FillersTrapTestBase):
 class TestNoReplaceExtraJiggiesMaximalRespectCount(FillersTrapTestBase):
     options = {
         **ADD_16_FILLERS_FROM_BK_MOVES,
-        "game_length": "custom",
+        "world_requirements": "custom",
         "custom_worlds": "1,1,1,1,1,1,1,1,90",
 
         "randomize_jinjos": "false",

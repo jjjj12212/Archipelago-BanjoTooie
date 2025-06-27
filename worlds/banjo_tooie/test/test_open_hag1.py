@@ -1,4 +1,3 @@
-from BaseClasses import ItemClassification
 from ..Names import itemName
 from ..Options import OpenHag1, VictoryCondition
 from . import BanjoTooieTestBase

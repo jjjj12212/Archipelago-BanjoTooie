@@ -69,7 +69,7 @@ JINJOHP5 = "HFP: Mildred Ice Cube Jinjo"
 JINJOCC1 = "CCL: Trash Can Jinjo"
 JINJOCC2 = "CCL: Cheese Wedge Jinjo"
 JINJOCC3 = "CCL: Central Cavern Jinjo"
-JINJOCC4 = "CCL: Fake Mumbo Skull Jinjo"
+JINJOCC4 = "CCL: Mingy Jongo Skull Jinjo"
 JINJOCC5 = "CCL: Wumba Jinjo"
 JINJOIH1 = "IoH: Wooded Hollow Jinjo"
 JINJOIH2 = "IoH: Wasteland Jinjo"
@@ -189,6 +189,10 @@ GLOWBOCC2 = "CCL: Indoors Pool Glowbo"
 GLOWBOIH1 = "IoH: Cliff Top Glowbo"
 GLOWBOMEG = "HFP: Mega Glowbo"
 
+#Beans
+BEANCC1 = "CCL: Dirt Patch Bean 1"
+BEANCC2 = "CCL: Dirt Patch Bean 2"
+
 #Honeycombs
 HONEYCMT1  = "MT: Entrance Honeycomb"
 HONEYCMT2  = "MT: Bovina Honeycomb"
@@ -247,7 +251,7 @@ CHEATOGM3 = "GGM: Water Storage Cheato Page"
 CHEATOWW1 = "WW: The Haunted Cavern Cheato Page"
 CHEATOWW2 = "WW: The Inferno Cheato Page"
 CHEATOWW3 = "WW: Saucer of Peril Cheato Page"
-CHEATOJR1 = "JRL: Pawno's Cheato Page"
+CHEATOJR1 = "JRL: Pawno Cheato Page"
 CHEATOJR2 = "JRL: Seemee Cheato Page"
 CHEATOJR3 = "JRL: Ancient Swimming Baths Cheato Page"
 CHEATOTL1 = "TDL: Dippy's Pool Cheato Page"
@@ -767,8 +771,8 @@ NESTWW17 = "WW: Star Spinner Egg Nest"
 NESTWW18 = "WW: Star Spinner Feather Nest 1"
 NESTWW19 = "WW: Star Spinner Feather Nest 2"
 
-NESTWW20 = "WW: Inferno Egg Nest 1"
-NESTWW21 = "WW: Inferno Egg Nest 2"
+NESTWW20 = "WW: The Inferno Egg Nest 1"
+NESTWW21 = "WW: The Inferno Egg Nest 2"
 
 NESTWW22 = "WW: The Haunted Caverns Egg Nest 1"
 NESTWW23 = "WW: The Haunted Caverns Egg Nest 2"
@@ -1250,3 +1254,43 @@ WARPCC2 = "CCL: Central Cavern Warp Pad Tagged"
 
 WARPCK1 = "CK: Bottom of the Tower Warp Pad Tagged"
 WARPCK2 = "CK: Top of the Tower Warp Pad Tagged"
+
+# Big Tent Tickets
+BTTICK4 = "WW: Western Ticket"
+BTTICK3 = "WW: Spooky Ticket"
+BTTICK2 = "WW: Space Ticket"
+BTTICK1 = "WW: Entrance Ticket"
+
+# Green Relics
+GRRELICE1 = "MT Targitzan's Temple: Right Entrance Relic"
+GRRELICE2 = "MT Targitzan's Temple: Left Entrance Relic"
+
+GRRELICB1 = "MT Targitzan's Temple: Blue Pillar Room Relic 1"
+GRRELICB2 = "MT Targitzan's Temple: Blue Pillar Room Relic 2"
+GRRELICB3 = "MT Targitzan's Temple: Blue Pillar Room Relic 3"
+
+GRRELICC1 = "MT Targitzan's Temple: Near Sput Sput Relic 1"
+GRRELICC2 = "MT Targitzan's Temple: Near Sput Sput Relic 2"
+GRRELICC3 = "MT Targitzan's Temple: Near Sput Sput Relic 3"
+GRRELICC4 = "MT Targitzan's Temple: Near Sput Sput Relic 4"
+GRRELICC5 = "MT Targitzan's Temple: Near Sput Sput Relic 5"
+
+GRRELICG1 = "MT Targitzan's Temple: Green Pillar Room Relic 1"
+GRRELICG2 = "MT Targitzan's Temple: Green Pillar Room Relic 2"
+GRRELICG3 = "MT Targitzan's Temple: Green Pillar Room Relic 3"
+GRRELICG4 = "MT Targitzan's Temple: Green Pillar Room Relic 4"
+GRRELICG5 = "MT Targitzan's Temple: Green Pillar Room Relic 5"
+
+GRRELICT1 = "MT Targitzan's Temple: Near Sacred Chambers Relic 1"
+GRRELICT2 = "MT Targitzan's Temple: Near Sacred Chambers Relic 2"
+
+GRRELICP1 = "MT Targitzan's Temple: Secret Passage Near Sacred Chambers Relic 1"
+GRRELICP2 = "MT Targitzan's Temple: Secret Passage Near Sacred Chambers Relic 2"
+GRRELICP3 = "MT Targitzan's Temple: Secret Passage Near Sacred Chambers Relic 3"
+
+GRRELICS1 = "MT Targitzan's Temple: Secret Passage Near Entrance Relic 1"
+GRRELICS2 = "MT Targitzan's Temple: Secret Passage Near Entrance Relic 2"
+
+GRRELICR1 = "MT Targitzan's Temple: Red Pillar Room Relic 1"
+GRRELICR2 = "MT Targitzan's Temple: Red Pillar Room Relic 2"
+GRRELICR3 = "MT Targitzan's Temple: Red Pillar Room Relic 3"

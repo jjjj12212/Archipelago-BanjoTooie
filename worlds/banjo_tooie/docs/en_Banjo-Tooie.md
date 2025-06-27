@@ -44,6 +44,8 @@ config file.
 - Traps
 - Isle O' Hag Silos
 - Warp Pads
+- Big Top Tickets
+- Targitzan's Green Relics
 
 ## When the player receives an item, what happens?
 
