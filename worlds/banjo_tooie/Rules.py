@@ -1619,22 +1619,26 @@ class BanjoTooieRules:
     def jiggy_lord_woo(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.sub_aqua_egg_aiming(state) and self.grenade_eggs(state)\
+            logic = state.can_reach_region(regionName.JR, self.player) and (
+                        self.sub_aqua_egg_aiming(state) and self.grenade_eggs(state)\
                         and (self.humbaJRL(state) or state.has(itemName.MUMBOJR, self.player))
+                    )
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.sub_aqua_egg_aiming(state) and self.grenade_eggs(state)\
+            logic = state.can_reach_region(regionName.JR, self.player) and (
+                        self.sub_aqua_egg_aiming(state) and self.grenade_eggs(state)\
                         and (self.humbaJRL(state) or state.has(itemName.MUMBOJR, self.player))
+                    )
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.grenade_eggs(state) and self.sub_aqua_egg_aiming(state) and (
                         self.talon_torpedo(state) and self.doubleAir(state)\
-                        or state.has(itemName.MUMBOJR, self.player)\
-                        or self.humbaJRL(state)
+                        or state.can_reach_region(regionName.JR, self.player)\
+                        and (self.humbaJRL(state) or state.has(itemName.MUMBOJR, self.player))
                     )
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.grenade_eggs(state) and self.sub_aqua_egg_aiming(state) and (
                         self.talon_torpedo(state) and self.doubleAir(state)\
-                        or state.has(itemName.MUMBOJR, self.player)\
-                        or self.humbaJRL(state)
+                        or state.can_reach_region(regionName.JR, self.player)\
+                        and (self.humbaJRL(state) or state.has(itemName.MUMBOJR, self.player))
                     )
         return logic
 
