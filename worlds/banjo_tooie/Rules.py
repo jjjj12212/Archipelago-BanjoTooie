@@ -2137,7 +2137,6 @@ class BanjoTooieRules:
             if self.world.options.randomize_boss_loading_zone:
                 logic = self.fire_eggs(state) and self.ice_eggs(state) and state.can_reach_region(regionName.HPIBOSS, self.player) and \
                         self.third_person_egg_shooting(state)\
-                        and self.claw_clamber_boots(state)\
                         and (self.tall_jump(state) or self.talon_trot(state))\
                         and (self.climb(state)\
                             or self.flap_flip(state)\
@@ -2164,7 +2163,6 @@ class BanjoTooieRules:
             if self.world.options.randomize_boss_loading_zone:
                 logic = self.fire_eggs(state) and self.ice_eggs(state) and state.can_reach_region(regionName.HPIBOSS, self.player) and \
                         self.third_person_egg_shooting(state)\
-                        and self.claw_clamber_boots(state)\
                         and (self.tall_jump(state) or self.talon_trot(state))\
                         and (self.climb(state)\
                             or self.flap_flip(state)\
