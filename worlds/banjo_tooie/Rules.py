@@ -5784,11 +5784,11 @@ class BanjoTooieRules:
                     or state.can_reach_region(regionName.GI2, self.player) and (self.floor_2_split_up(state) and self.leg_spring(state) or self.F2_to_F1(state) and self.spring_pad(state))\
                     or self.claw_clamber_boots(state) and (self.wing_whack(state) or self.glide(state)) and (self.egg_aim(state) or self.wing_whack(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.claw_clamber_boots(state) and (self.leg_spring(state) or self.spring_pad(state) or self.clockwork_shot(state))\
+            logic = self.claw_clamber_boots(state)\
                     or state.can_reach_region(regionName.GI2, self.player) and (self.floor_2_split_up(state) and self.leg_spring(state) or self.F2_to_F1(state) and (self.spring_pad(state) or self.clockwork_shot(state)))\
                     or self.claw_clamber_boots(state) and (self.wing_whack(state) or self.glide(state)) and (self.egg_aim(state) or self.wing_whack(state))
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.claw_clamber_boots(state) and (self.leg_spring(state) or self.spring_pad(state) or self.clockwork_shot(state))\
+            logic = self.claw_clamber_boots(state)\
                     or state.can_reach_region(regionName.GI2, self.player) and (self.floor_2_split_up(state) and self.leg_spring(state) or self.F2_to_F1(state) and (self.spring_pad(state) or self.clockwork_shot(state)))\
                     or self.claw_clamber_boots(state) and (self.wing_whack(state) or self.glide(state)) and (self.egg_aim(state) or self.wing_whack(state))
         return logic
