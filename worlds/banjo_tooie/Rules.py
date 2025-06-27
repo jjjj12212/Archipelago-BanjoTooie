@@ -2030,7 +2030,7 @@ class BanjoTooieRules:
                     and (self.spring_pad(state) or self.wing_whack(state) or self.glide(state))\
                     and (self.tall_jump(state) or self.leg_spring(state))
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.split_up(state) and\
+            logic = self.split_up(state) and (self.tall_jump(state) or self.leg_spring(state)) and\
                     ((self.claw_clamber_boots(state) or state.can_reach_region(regionName.GI2, self.player)) and self.spring_pad(state)\
                         or self.claw_clamber_boots(state) and (self.wing_whack(state) or self.glide(state)) and (self.egg_aim(state) or self.wing_whack(state))\
                         or self.leg_spring(state) and self.glide(state) and (self.egg_aim(state) or self.wing_whack(state)))\
