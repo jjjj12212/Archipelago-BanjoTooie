@@ -7456,7 +7456,7 @@ class BanjoTooieRules:
             return self.prison_compound_as_banjo(state) and self.bill_drill(state)
 
     def GM_boulders(self, state: CollectionState) -> bool:
-        return (self.bill_drill(state) and self.small_elevation(state)) or self.humbaGGM(state)
+        return self.bill_drill(state) or self.humbaGGM(state)
 
     def canary_mary_free(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == LogicType.option_intended:
