@@ -24,6 +24,7 @@ Banjo Tooie for Archipelago
 - Warp Pads
 - Big Top Tickets
 - Targitzan's Green Relics
+- CCL Beans
 
 \*: Jiggies are the only collectibles that are forced to be randomized.
 
@@ -65,8 +66,10 @@ Banjo Tooie for Archipelago
 - Skip rounds of the longer minigames
 - Skip Klungo 1 & 2
 - Death Link
+- Tag Link
 - Random level Order (requires some items randomized and puzzle skips)
 - Random level Entrances
+- Random Boss Entrances
 - Change how Eggs works (YAML Option)
 - Different Logic types for different skill levels
 - Customizable world requirements
