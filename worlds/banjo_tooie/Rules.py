@@ -1478,10 +1478,10 @@ class BanjoTooieRules:
             logic = self.split_up(state) and (self.tall_jump(state) or self.leg_spring(state))\
                     or self.flap_flip(state) and (self.talon_trot(state) or self.turbo_trainers(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.split_up(state) and (self.tall_jump(state) or self.leg_spring(state))\
+            logic = self.split_up(state)\
                     or self.flap_flip(state) and (self.talon_trot(state) or self.turbo_trainers(state))
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.split_up(state) and (self.tall_jump(state) or self.leg_spring(state))\
+            logic = self.split_up(state)\
                     or self.flap_flip(state) and (self.talon_trot(state) or self.turbo_trainers(state))
         return logic
 
@@ -2619,9 +2619,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = self.has_explosives(state) and (self.small_elevation(state) or self.split_up(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = (self.has_explosives(state) and (self.small_elevation(state) or self.split_up(state))) or self.clockwork_shot(state)
+            logic = (self.has_explosives(state) and (self.small_elevation(state) or self.split_up(state) or self.grip_grab(state) or self.beak_buster(state))) or self.clockwork_shot(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = (self.has_explosives(state) and (self.small_elevation(state) or self.split_up(state)))\
+            logic = (self.has_explosives(state) and (self.small_elevation(state) or self.split_up(state) or self.grip_grab(state) or self.beak_buster(state)))\
                     or self.clockwork_shot(state)\
                     or self.pack_whack(state)
         return logic
@@ -5384,14 +5384,14 @@ class BanjoTooieRules:
                     or self.leg_spring(state)\
                     or self.split_up(state) and self.grip_grab(state)\
                     or self.pack_whack(state) and self.tall_jump(state)\
-                    or self.clockwork_shot(state) and self.small_elevation(state)
+                    or self.clockwork_shot(state) and (self.small_elevation(state) or self.grip_grab(state) or self.beak_buster(state))
                     ) and self.has_explosives(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = (self.flap_flip(state)\
                     or self.leg_spring(state)\
                     or self.split_up(state) and self.grip_grab(state)\
                     or self.pack_whack(state) and self.tall_jump(state)\
-                    or self.clockwork_shot(state) and self.small_elevation(state)
+                    or self.clockwork_shot(state) and (self.small_elevation(state) or self.grip_grab(state) or self.beak_buster(state))
                     ) and self.has_explosives(state)
         return logic
 
