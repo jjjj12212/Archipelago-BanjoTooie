@@ -1478,10 +1478,10 @@ class BanjoTooieRules:
             logic = self.split_up(state) and (self.tall_jump(state) or self.leg_spring(state))\
                     or self.flap_flip(state) and (self.talon_trot(state) or self.turbo_trainers(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.split_up(state) and (self.tall_jump(state) or self.leg_spring(state))\
+            logic = self.split_up(state)\
                     or self.flap_flip(state) and (self.talon_trot(state) or self.turbo_trainers(state))
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.split_up(state) and (self.tall_jump(state) or self.leg_spring(state))\
+            logic = self.split_up(state)\
                     or self.flap_flip(state) and (self.talon_trot(state) or self.turbo_trainers(state))
         return logic
 
@@ -1619,22 +1619,26 @@ class BanjoTooieRules:
     def jiggy_lord_woo(self, state: CollectionState) -> bool:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
-            logic = self.sub_aqua_egg_aiming(state) and self.grenade_eggs(state)\
+            logic = state.can_reach_region(regionName.JR, self.player) and (
+                        self.sub_aqua_egg_aiming(state) and self.grenade_eggs(state)\
                         and (self.humbaJRL(state) or state.has(itemName.MUMBOJR, self.player))
+                    )
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.sub_aqua_egg_aiming(state) and self.grenade_eggs(state)\
+            logic = state.can_reach_region(regionName.JR, self.player) and (
+                        self.sub_aqua_egg_aiming(state) and self.grenade_eggs(state)\
                         and (self.humbaJRL(state) or state.has(itemName.MUMBOJR, self.player))
+                    )
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.grenade_eggs(state) and self.sub_aqua_egg_aiming(state) and (
                         self.talon_torpedo(state) and self.doubleAir(state)\
-                        or state.has(itemName.MUMBOJR, self.player)\
-                        or self.humbaJRL(state)
+                        or state.can_reach_region(regionName.JR, self.player)\
+                        and (self.humbaJRL(state) or state.has(itemName.MUMBOJR, self.player))
                     )
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.grenade_eggs(state) and self.sub_aqua_egg_aiming(state) and (
                         self.talon_torpedo(state) and self.doubleAir(state)\
-                        or state.has(itemName.MUMBOJR, self.player)\
-                        or self.humbaJRL(state)
+                        or state.can_reach_region(regionName.JR, self.player)\
+                        and (self.humbaJRL(state) or state.has(itemName.MUMBOJR, self.player))
                     )
         return logic
 
@@ -2030,7 +2034,7 @@ class BanjoTooieRules:
                     and (self.spring_pad(state) or self.wing_whack(state) or self.glide(state))\
                     and (self.tall_jump(state) or self.leg_spring(state))
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
-            logic = self.split_up(state) and\
+            logic = self.split_up(state) and (self.tall_jump(state) or self.leg_spring(state)) and\
                     ((self.claw_clamber_boots(state) or state.can_reach_region(regionName.GI2, self.player)) and self.spring_pad(state)\
                         or self.claw_clamber_boots(state) and (self.wing_whack(state) or self.glide(state)) and (self.egg_aim(state) or self.wing_whack(state))\
                         or self.leg_spring(state) and self.glide(state) and (self.egg_aim(state) or self.wing_whack(state)))\
@@ -2137,7 +2141,6 @@ class BanjoTooieRules:
             if self.world.options.randomize_boss_loading_zone:
                 logic = self.fire_eggs(state) and self.ice_eggs(state) and state.can_reach_region(regionName.HPIBOSS, self.player) and \
                         self.third_person_egg_shooting(state)\
-                        and self.claw_clamber_boots(state)\
                         and (self.tall_jump(state) or self.talon_trot(state))\
                         and (self.climb(state)\
                             or self.flap_flip(state)\
@@ -2164,7 +2167,6 @@ class BanjoTooieRules:
             if self.world.options.randomize_boss_loading_zone:
                 logic = self.fire_eggs(state) and self.ice_eggs(state) and state.can_reach_region(regionName.HPIBOSS, self.player) and \
                         self.third_person_egg_shooting(state)\
-                        and self.claw_clamber_boots(state)\
                         and (self.tall_jump(state) or self.talon_trot(state))\
                         and (self.climb(state)\
                             or self.flap_flip(state)\
@@ -2617,9 +2619,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = self.has_explosives(state) and (self.small_elevation(state) or self.split_up(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = (self.has_explosives(state) and (self.small_elevation(state) or self.split_up(state))) or self.clockwork_shot(state)
+            logic = (self.has_explosives(state) and (self.small_elevation(state) or self.split_up(state) or self.grip_grab(state) or self.beak_buster(state))) or self.clockwork_shot(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = (self.has_explosives(state) and (self.small_elevation(state) or self.split_up(state)))\
+            logic = (self.has_explosives(state) and (self.small_elevation(state) or self.split_up(state) or self.grip_grab(state) or self.beak_buster(state)))\
                     or self.clockwork_shot(state)\
                     or self.pack_whack(state)
         return logic
@@ -5382,14 +5384,14 @@ class BanjoTooieRules:
                     or self.leg_spring(state)\
                     or self.split_up(state) and self.grip_grab(state)\
                     or self.pack_whack(state) and self.tall_jump(state)\
-                    or self.clockwork_shot(state) and self.small_elevation(state)
+                    or self.clockwork_shot(state) and (self.small_elevation(state) or self.grip_grab(state) or self.beak_buster(state))
                     ) and self.has_explosives(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = (self.flap_flip(state)\
                     or self.leg_spring(state)\
                     or self.split_up(state) and self.grip_grab(state)\
                     or self.pack_whack(state) and self.tall_jump(state)\
-                    or self.clockwork_shot(state) and self.small_elevation(state)
+                    or self.clockwork_shot(state) and (self.small_elevation(state) or self.grip_grab(state) or self.beak_buster(state))
                     ) and self.has_explosives(state)
         return logic
 
@@ -5782,11 +5784,11 @@ class BanjoTooieRules:
                     or state.can_reach_region(regionName.GI2, self.player) and (self.floor_2_split_up(state) and self.leg_spring(state) or self.F2_to_F1(state) and self.spring_pad(state))\
                     or self.claw_clamber_boots(state) and (self.wing_whack(state) or self.glide(state)) and (self.egg_aim(state) or self.wing_whack(state))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.claw_clamber_boots(state) and (self.leg_spring(state) or self.spring_pad(state) or self.clockwork_shot(state))\
+            logic = self.claw_clamber_boots(state)\
                     or state.can_reach_region(regionName.GI2, self.player) and (self.floor_2_split_up(state) and self.leg_spring(state) or self.F2_to_F1(state) and (self.spring_pad(state) or self.clockwork_shot(state)))\
                     or self.claw_clamber_boots(state) and (self.wing_whack(state) or self.glide(state)) and (self.egg_aim(state) or self.wing_whack(state))
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.claw_clamber_boots(state) and (self.leg_spring(state) or self.spring_pad(state) or self.clockwork_shot(state))\
+            logic = self.claw_clamber_boots(state)\
                     or state.can_reach_region(regionName.GI2, self.player) and (self.floor_2_split_up(state) and self.leg_spring(state) or self.F2_to_F1(state) and (self.spring_pad(state) or self.clockwork_shot(state)))\
                     or self.claw_clamber_boots(state) and (self.wing_whack(state) or self.glide(state)) and (self.egg_aim(state) or self.wing_whack(state))
         return logic
@@ -6390,7 +6392,7 @@ class BanjoTooieRules:
                     )
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = (self.split_up(state) and self.ice_cube_kazooie(state) and (self.tall_jump(state) or self.wing_whack(state) or self.glide(state) or self.leg_spring(state)))\
-                    or (self.hfp_top(state) and (self.spring_pad(state) and self.ice_cube_BK(state) or self.clockwork_shot(state)) and self.talon_trot(state))\
+                    or (self.hfp_top(state) and (self.ice_cube_BK(state) or self.clockwork_shot(state)) and self.talon_trot(state))\
                     or (self.extremelyLongJump(state) and self.clockwork_shot(state))\
                     or self.warp_to_icicle_grotto(state) and (
                         self.ice_cube_BK(state)\
@@ -6398,7 +6400,7 @@ class BanjoTooieRules:
                     )
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = (self.split_up(state) and self.ice_cube_kazooie(state) and (self.tall_jump(state) or self.wing_whack(state) or self.glide(state) or self.leg_spring(state)))\
-                    or (self.hfp_top(state) and (self.spring_pad(state) and self.ice_cube_BK(state) or self.clockwork_shot(state)) and self.talon_trot(state))\
+                    or (self.hfp_top(state) and (self.ice_cube_BK(state) or self.clockwork_shot(state)) and self.talon_trot(state))\
                     or (self.extremelyLongJump(state) and self.clockwork_shot(state))\
                     or self.warp_to_icicle_grotto(state) and (
                         self.ice_cube_BK(state)\
@@ -7201,12 +7203,12 @@ class BanjoTooieRules:
                     or self.warp_to_icicle_grotto(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.split_up(state) and (self.tall_jump(state) or self.wing_whack(state) or self.glide(state) or self.leg_spring(state))\
-                    or self.hfp_top(state) and self.spring_pad(state) and self.talon_trot(state)\
+                    or self.hfp_top(state) and self.talon_trot(state)\
                     or (self.extremelyLongJump(state) and self.clockwork_shot(state))\
                     or self.warp_to_icicle_grotto(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.split_up(state) and (self.tall_jump(state) or self.wing_whack(state) or self.glide(state) or self.leg_spring(state))\
-                    or self.hfp_top(state) and self.spring_pad(state) and self.talon_trot(state)\
+                    or self.hfp_top(state) and self.talon_trot(state)\
                     or (self.extremelyLongJump(state) and self.clockwork_shot(state))\
                     or self.warp_to_icicle_grotto(state)
         return logic
@@ -7454,7 +7456,7 @@ class BanjoTooieRules:
             return self.prison_compound_as_banjo(state) and self.bill_drill(state)
 
     def GM_boulders(self, state: CollectionState) -> bool:
-        return (self.bill_drill(state) and self.small_elevation(state)) or self.humbaGGM(state)
+        return self.bill_drill(state) or self.humbaGGM(state)
 
     def canary_mary_free(self, state: CollectionState) -> bool:
         if self.world.options.logic_type == LogicType.option_intended:
@@ -8339,9 +8341,9 @@ class BanjoTooieRules:
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = self.claw_clamber_boots(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state)) and self.small_elevation(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
-            logic = self.claw_clamber_boots(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state)) and self.small_elevation(state)
+            logic = self.claw_clamber_boots(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state) and self.small_elevation(state))
         elif self.world.options.logic_type == LogicType.option_glitches:
-            logic = self.claw_clamber_boots(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state)) and self.small_elevation(state)
+            logic = self.claw_clamber_boots(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state) and self.small_elevation(state))
         return logic
 
     def outside_gi_back_to_floor_3(self, state: CollectionState) -> bool:
