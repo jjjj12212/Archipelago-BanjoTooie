@@ -1,4 +1,5 @@
 # 4.6.1
+  - Fix CCL Loading Zone when randomizing world Entrances 
   - Logic Fixes
     - Fixed Dragon Brothers requiring Claw Clamber Boots for Boss Entrance Randomizer on Hard Tricks and above (they only need it when that setting is disabled).
     - Fixed the Lord Woo Fak Fak boss fight assuming you can defeat the boss due to Mumbo: Oxygenate or Humba: Sub even if you didn't have access to JRL to set them up.
@@ -30,7 +31,7 @@
         - HFP flight pad & Claw Clamber Boots no longer requires Dragon Brothers to shoot at, even if bosses are not randomized.
     - The hints with random entrances have been changed.
       - When hinting something that is in a boss room, the area that leads to the boss room will be revealed, if boss loading zones are randomized.
-        - An example: g0goTBC's Mumbo Token is at jjjj12212's Weldar's Mumbo Token at Chuffy's Cabin.
+        - An example: g0goTBC's Mumbo Token is at g0goTBC's Weldar's Mumbo Token at Chuffy's Cabin.
       - For items that are not in boss rooms, if level entrance loading zones are randomized, "Entrance" has been added to the hint to make it more distinguishable from the boss entrance hints.
         - An example: g0goTBC's Big-O Pants is at MiaSchemes' TDL: Scrotty Jiggy at Hailfire Peaks Entrance
     - The existing options have been embellished
