@@ -1,4 +1,25 @@
+# 4.6.1
+  - Banjo-Tooie AP client now has a Items Tab.
+    - Quick view of all collected items
+    - Collected Green Relics are not recorded anywhere in-game unless its been collected. Use this tab to review how many Green Relics you have obtained.
+  - Fix CCL Loading Zone when randomizing world Entrances 
+  - Logic Fixes
+    - Fixed Dragon Brothers requiring Claw Clamber Boots for Boss Entrance Randomizer on Hard Tricks and above (they only need it when that setting is disabled).
+    - Fixed the Lord Woo Fak Fak boss fight assuming you can defeat the boss due to Mumbo: Oxygenate or Humba: Sub even if you didn't have access to JRL to set them up.
+    - GGM boulders no longer require small elevation to be Bill Drilled on Easy Tricks and above.
+    - WW Pump Room can be reached without Tall Jump if you have Grip Grab or Beak Buster on Hard Tricks and above.
+    - WW Inferno Jiggy doesn't need Tall Jump to use the Shock Spring Pad when using the trick (added to Hard Tricks and above).
+    - Fixed a bug where leaving Chuffy to access the TDL station nests was expecting the Chuffy item.
+    - Chompa Jiggy: added Beak Buster as a way to reach the Flight Pad in Easy Tricks.
+    - GI F1 High Pipe nests and Top Pipe nest: can use the Spring Pad trick to reach them on Hard Tricks and above.
+    - GIOB -> GIF4, you can get from the fire escape to floor 4 without Tall Jump if Flutter was how you got to the fire escape (doesn't work with Air Ratatat Rap-- only Flutter). Added to Hard Tricks and above.
+    - HFP Icicle Grotto Warp Pad and the egg nest near it with can be obtained without Tall Jump for the Spring Pad if you have Talon Trot (or can smuggle it with Claw Clamber Boots) by jumping up the crystals. Added to Hard Tricks and above.
+    - Fire Side Train Station: Removed Talon Trot + Flutter from Easy Tricks.
+
 # 4.6
+  - Banjo-Tooie AP client now has a Items Tab.
+    - Quick view of all collected items
+    - Collected Green Relics are not recorded anywhere in-game unless its been collected. Use this tab to review how many Green Relics you have obtained.
   - Options
     - New options
       - Big Top Tickets are now randomized
@@ -16,7 +37,7 @@
         - HFP flight pad & Claw Clamber Boots no longer requires Dragon Brothers to shoot at, even if bosses are not randomized.
     - The hints with random entrances have been changed.
       - When hinting something that is in a boss room, the area that leads to the boss room will be revealed, if boss loading zones are randomized.
-        - An example: g0goTBC's Mumbo Token is at jjjj12212's Weldar's Mumbo Token at Chuffy's Cabin.
+        - An example: g0goTBC's Mumbo Token is at g0goTBC's Weldar's Mumbo Token at Chuffy's Cabin.
       - For items that are not in boss rooms, if level entrance loading zones are randomized, "Entrance" has been added to the hint to make it more distinguishable from the boss entrance hints.
         - An example: g0goTBC's Big-O Pants is at MiaSchemes' TDL: Scrotty Jiggy at Hailfire Peaks Entrance
     - The existing options have been embellished
