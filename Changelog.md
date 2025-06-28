@@ -1,4 +1,7 @@
 # 4.6.1
+  - Banjo-Tooie AP client now has a Items Tab.
+    - Quick view of all collected items
+    - Collected Green Relics are not recorded anywhere in-game unless its been collected. Use this tab to review how many Green Relics you have obtained.
   - Fix CCL Loading Zone when randomizing world Entrances 
   - Logic Fixes
     - Fixed Dragon Brothers requiring Claw Clamber Boots for Boss Entrance Randomizer on Hard Tricks and above (they only need it when that setting is disabled).
@@ -14,6 +17,9 @@
     - Fire Side Train Station: Removed Talon Trot + Flutter from Easy Tricks.
 
 # 4.6
+  - Banjo-Tooie AP client now has a Items Tab.
+    - Quick view of all collected items
+    - Collected Green Relics are not recorded anywhere in-game unless its been collected. Use this tab to review how many Green Relics you have obtained.
   - Options
     - New options
       - Big Top Tickets are now randomized
