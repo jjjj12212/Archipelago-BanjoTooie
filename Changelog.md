@@ -1,16 +1,16 @@
 # 4.6.1
   - Logic Fixes
-    - fixed dragon brothers requiring claw clambers for boss entrance rando on hard tricks and above (they only need it for not boss entrance rando)
-    - fixed lord woo fak fak jiggy assuming you have mumbo: oxygenate or humba: sub even if you don't have JRL access to go get them
-    - GGM boulders don't need small elevation to be bill drilled (videos posted in ap channel)
-    - WW pump room can skip tall jump if you have grip grab or beak buster (video posted in ap channel), I put this on hard tricks+
-    - WW inferno jiggy can skip tall jump using the spring pad trick, I put this on hard tricks+ (just like the SM cheato page has it)
-    - Fixed a bug where leaving Chuffy to access the TDL station nests was expecting Chuffy
-    - Chompa jiggy: added beak buster as a way to reach the flight pad, in easy tricks
-    - GI F1 high pipe nests and top pipe nest: can use the spring pad trick
-    - GIOB -> GIF4, you can get from the fire escape to floor 4 without tall jump if flutter was how you got to the fire escape (doesn't work with arat, only flutter). hard tricks+
-    - HFP icicle grotto warp pad and the egg nest near it with talon trot for hard tricks and glitches
-    - Fire Side Train Station: Removed Talon Trot + flutter from easy tricks
+    - Fixed Dragon Brothers requiring Claw Clamber Boots for Boss Entrance Randomizer on Hard Tricks and above (they only need it when that setting is disabled).
+    - Fixed the Lord Woo Fak Fak boss fight assuming you can defeat the boss due to Mumbo: Oxygenate or Humba: Sub even if you didn't have access to JRL to set them up.
+    - GGM boulders no longer require small elevation to be Bill Drilled on Easy Tricks and above.
+    - WW Pump Room can be reached without Tall Jump if you have Grip Grab or Beak Buster on Hard Tricks and above.
+    - WW Inferno Jiggy doesn't need Tall Jump to use the Shock Spring Pad when using the trick (added to Hard Tricks and above).
+    - Fixed a bug where leaving Chuffy to access the TDL station nests was expecting the Chuffy item.
+    - Chompa Jiggy: added Beak Buster as a way to reach the Flight Pad in Easy Tricks.
+    - GI F1 High Pipe nests and Top Pipe nest: can use the Spring Pad trick to reach them on Hard Tricks and above.
+    - GIOB -> GIF4, you can get from the fire escape to floor 4 without Tall Jump if Flutter was how you got to the fire escape (doesn't work with Air Ratatat Rap-- only Flutter). Added to Hard Tricks and above.
+    - HFP Icicle Grotto Warp Pad and the egg nest near it with can be obtained without Tall Jump for the Spring Pad if you have Talon Trot (or can smuggle it with Claw Clamber Boots) by jumping up the crystals. Added to Hard Tricks and above.
+    - Fire Side Train Station: Removed Talon Trot + Flutter from Easy Tricks.
 
 # 4.6
   - Options
