@@ -177,6 +177,14 @@ def randomize_boss_loading_zones(world: BanjoTooieWorld) -> None:
     if world.options.randomize_boss_loading_zone:
         randomized_boss_list = copy.deepcopy(boss_list)
         world.random.shuffle(boss_list)
+
+        while world.options.logic_type == LogicType.option_intended and not world.options.open_gi_frontdoor and boss_list[5] == regionName.GMBOSS:
+            world.random.shuffle(boss_list)
+
+        while world.options.logic_type != LogicType.option_glitches and not world.options.randomize_bt_moves and \
+            not world.options.open_gi_frontdoor and boss_list[5] == regionName.GMBOSS:
+            world.random.shuffle(boss_list)
+
         for i in range(len(boss_list)):
             world.loading_zones[randomized_boss_list[i]] = boss_list[i]
     else:

@@ -15,6 +15,8 @@
     - GIOB -> GIF4, you can get from the fire escape to floor 4 without Tall Jump if Flutter was how you got to the fire escape (doesn't work with Air Ratatat Rap-- only Flutter). Added to Hard Tricks and above.
     - HFP Icicle Grotto Warp Pad and the egg nest near it with can be obtained without Tall Jump for the Spring Pad if you have Talon Trot (or can smuggle it with Claw Clamber Boots) by jumping up the crystals. Added to Hard Tricks and above.
     - Fire Side Train Station: Removed Talon Trot + Flutter from Easy Tricks.
+  - Old King Coal will not be randomized in GI if it makes the seed unbeatable.
+ 
 
 # 4.6
   - Banjo-Tooie AP client now has a Items Tab.
