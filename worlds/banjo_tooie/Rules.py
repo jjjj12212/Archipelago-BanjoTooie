@@ -1766,7 +1766,7 @@ class BanjoTooieRules:
             )
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = self.breegull_blaster(state) and (
-                ((self.tall_jump(state) or self.grip_grab(state)) and self.flight_pad(state)
+                ((self.tall_jump(state) or self.grip_grab(state) or self.beak_buster(state)) and self.flight_pad(state)
                  or (self.egg_aim(state) and self.has_explosives(state) and self.springy_step_shoes(state))
                  or (self.springy_step_shoes(state) and self.veryLongJump(state)))
             )
@@ -4173,8 +4173,7 @@ class BanjoTooieRules:
                         and (self.flutter(state) or self.air_rat_a_tat_rap(state))\
                     or self.flight_pad(state)\
                     or self.leg_spring(state)\
-                    or self.split_up(state) and self.tall_jump(state)\
-                    or self.talon_trot(state) and self.flutter(state)
+                    or self.split_up(state) and self.tall_jump(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.grip_grab(state)\
                         and (self.tall_jump(state) or self.talon_trot(state))\
@@ -5558,13 +5557,13 @@ class BanjoTooieRules:
         logic = True
         if self.world.options.logic_type == LogicType.option_intended:
             logic = self.small_elevation(state)\
-                    or state.can_reach_region(regionName.CHUFFY, self.player) and state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWTD, self.player)
+                    or state.can_reach_region(regionName.CHUFFY, self.player) and state.has(itemName.TRAINSWTD, self.player) and self.can_beat_king_coal(state)
         elif self.world.options.logic_type == LogicType.option_easy_tricks:
             logic = self.small_elevation(state)\
                     or self.turbo_trainers(state)\
                     or self.springy_step_shoes(state)\
                     or self.beak_buster(state)\
-                    or state.can_reach_region(regionName.CHUFFY, self.player) and state.has(itemName.CHUFFY, self.player) and state.has(itemName.TRAINSWTD, self.player)
+                    or state.can_reach_region(regionName.CHUFFY, self.player) and state.has(itemName.TRAINSWTD, self.player) and self.can_beat_king_coal(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = True
         elif self.world.options.logic_type == LogicType.option_glitches:
@@ -5767,12 +5766,10 @@ class BanjoTooieRules:
                         or self.claw_clamber_boots(state) and (self.wing_whack(state) or self.glide(state)) and (self.egg_aim(state) or self.wing_whack(state)))
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.split_up(state) and\
-                    ((self.claw_clamber_boots(state) or state.can_reach_region(regionName.GI2, self.player)) and self.spring_pad(state)\
-                        or self.claw_clamber_boots(state) and (self.wing_whack(state) or self.glide(state)) and (self.egg_aim(state) or self.wing_whack(state)))
+                    (self.claw_clamber_boots(state) or state.can_reach_region(regionName.GI2, self.player) and self.floor_2_split_up(state))
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.split_up(state) and\
-                    ((self.claw_clamber_boots(state) or state.can_reach_region(regionName.GI2, self.player)) and self.spring_pad(state)\
-                        or self.claw_clamber_boots(state) and (self.wing_whack(state) or self.glide(state)) and (self.egg_aim(state) or self.wing_whack(state)))
+                    (self.claw_clamber_boots(state) or state.can_reach_region(regionName.GI2, self.player) and self.floor_2_split_up(state))
         return logic
 
     def nest_gi_floor1_high_pipe(self, state: CollectionState) -> bool:
@@ -7583,20 +7580,6 @@ class BanjoTooieRules:
                     or state.can_reach_region(regionName.WW, self.player) and self.ww_tdl_backdoor(state)\
                     or self.clockwork_warp(state)
         return logic
-
-    def enter_GI(self, state: CollectionState) -> bool:
-        return self.can_beat_king_coal(state) or self.claw_clamber_boots(state)
-
-    def GI_front_door(self, state: CollectionState) -> bool:
-        return self.enter_GI(state) and self.split_up(state)
-
-    def can_reach_GI_2F(self, state: CollectionState) -> bool:
-        return self.claw_clamber_boots(state) or \
-               (self.GI_front_door(state) and
-                self.leg_spring(state) and
-                self.glide(state) and
-                (self.wing_whack(state) or
-                self.egg_aim(state)))
 
     def can_enter_gi_repairdepot(self, state: CollectionState) -> bool:
         logic = True

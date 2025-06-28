@@ -1,3 +1,17 @@
+# 4.6.1
+  - Logic Fixes
+    - fixed dragon brothers requiring claw clambers for boss entrance rando on hard tricks and above (they only need it for not boss entrance rando)
+    - fixed lord woo fak fak jiggy assuming you have mumbo: oxygenate or humba: sub even if you don't have JRL access to go get them
+    - GGM boulders don't need small elevation to be bill drilled (videos posted in ap channel)
+    - WW pump room can skip tall jump if you have grip grab or beak buster (video posted in ap channel), I put this on hard tricks+
+    - WW inferno jiggy can skip tall jump using the spring pad trick, I put this on hard tricks+ (just like the SM cheato page has it)
+    - Fixed a bug where leaving Chuffy to access the TDL station nests was expecting Chuffy
+    - Chompa jiggy: added beak buster as a way to reach the flight pad, in easy tricks
+    - GI F1 high pipe nests and top pipe nest: can use the spring pad trick
+    - GIOB -> GIF4, you can get from the fire escape to floor 4 without tall jump if flutter was how you got to the fire escape (doesn't work with arat, only flutter). hard tricks+
+    - HFP icicle grotto warp pad and the egg nest near it with talon trot for hard tricks and glitches
+    - Fire Side Train Station: Removed Talon Trot + flutter from easy tricks
+
 # 4.6
   - Options
     - New options
