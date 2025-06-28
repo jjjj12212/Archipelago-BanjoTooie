@@ -6389,7 +6389,7 @@ class BanjoTooieRules:
                     )
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = (self.split_up(state) and self.ice_cube_kazooie(state) and (self.tall_jump(state) or self.wing_whack(state) or self.glide(state) or self.leg_spring(state)))\
-                    or (self.hfp_top(state) and (self.ice_cube_BK(state) or self.clockwork_shot(state)) and self.talon_trot(state))\
+                    or (self.hfp_top(state) and (self.ice_cube_BK(state) or self.clockwork_shot(state)) and (self.talon_trot(state) or self.claw_clamber_boots(state)))\
                     or (self.extremelyLongJump(state) and self.clockwork_shot(state))\
                     or self.warp_to_icicle_grotto(state) and (
                         self.ice_cube_BK(state)\
@@ -6397,7 +6397,7 @@ class BanjoTooieRules:
                     )
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = (self.split_up(state) and self.ice_cube_kazooie(state) and (self.tall_jump(state) or self.wing_whack(state) or self.glide(state) or self.leg_spring(state)))\
-                    or (self.hfp_top(state) and (self.ice_cube_BK(state) or self.clockwork_shot(state)) and self.talon_trot(state))\
+                    or (self.hfp_top(state) and (self.ice_cube_BK(state) or self.clockwork_shot(state)) and (self.talon_trot(state) or self.claw_clamber_boots(state)))\
                     or (self.extremelyLongJump(state) and self.clockwork_shot(state))\
                     or self.warp_to_icicle_grotto(state) and (
                         self.ice_cube_BK(state)\
@@ -7200,12 +7200,12 @@ class BanjoTooieRules:
                     or self.warp_to_icicle_grotto(state)
         elif self.world.options.logic_type == LogicType.option_hard_tricks:
             logic = self.split_up(state) and (self.tall_jump(state) or self.wing_whack(state) or self.glide(state) or self.leg_spring(state))\
-                    or self.hfp_top(state) and self.talon_trot(state)\
+                    or self.hfp_top(state) and (self.talon_trot(state) or self.claw_clamber_boots(state))\
                     or (self.extremelyLongJump(state) and self.clockwork_shot(state))\
                     or self.warp_to_icicle_grotto(state)
         elif self.world.options.logic_type == LogicType.option_glitches:
             logic = self.split_up(state) and (self.tall_jump(state) or self.wing_whack(state) or self.glide(state) or self.leg_spring(state))\
-                    or self.hfp_top(state) and self.talon_trot(state)\
+                    or self.hfp_top(state) and (self.talon_trot(state) or self.claw_clamber_boots(state))\
                     or (self.extremelyLongJump(state) and self.clockwork_shot(state))\
                     or self.warp_to_icicle_grotto(state)
         return logic
