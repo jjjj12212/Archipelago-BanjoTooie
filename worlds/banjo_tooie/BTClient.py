@@ -862,7 +862,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                         }])
                         ctx.finished_game = True
 
-        # Ozone Banjo-Tooie Tracker
+        # Ozone & Mia's Banjo-Tooie Tracker
         if ctx.current_map != banjo_map:
             ctx.current_map = banjo_map
             await ctx.send_msgs([{
@@ -873,7 +873,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "operations": [{"operation": "replace",
                     "value": hex(banjo_map)}]
             }])
-    #Send Aync Data.
+    #Send Sync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:
         # ctx.items_handling = 0b101
         # await ctx.send_connect()
