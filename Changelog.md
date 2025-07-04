@@ -1,11 +1,13 @@
 # 4.6.2
  - Fix Loading Zone Entrance Randomizer
+ - Logic fixes:
+   - Fixed a bug where the AP generator would forget that leaving the train is part of the logic.
 
 # 4.6.1
   - Banjo-Tooie AP client now has a Items Tab.
     - Quick view of all collected items
     - Collected Green Relics are not recorded anywhere in-game unless its been collected. Use this tab to review how many Green Relics you have obtained.
-  - Fix CCL Loading Zone when randomizing world Entrances 
+  - Fix CCL Loading Zone when randomizing world Entrances
   - Logic Fixes
     - Fixed Dragon Brothers requiring Claw Clamber Boots for Boss Entrance Randomizer on Hard Tricks and above (they only need it when that setting is disabled).
     - Fixed the Lord Woo Fak Fak boss fight assuming you can defeat the boss due to Mumbo: Oxygenate or Humba: Sub even if you didn't have access to JRL to set them up.
@@ -19,7 +21,7 @@
     - HFP Icicle Grotto Warp Pad and the egg nest near it with can be obtained without Tall Jump for the Spring Pad if you have Talon Trot (or can smuggle it with Claw Clamber Boots) by jumping up the crystals. Added to Hard Tricks and above.
     - Fire Side Train Station: Removed Talon Trot + Flutter from Easy Tricks.
   - Old King Coal will not be randomized in GI if it makes the seed unbeatable.
- 
+
 
 # 4.6
   - Banjo-Tooie AP client now has a Items Tab.
