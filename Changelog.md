@@ -1,3 +1,6 @@
+# 4.6.2
+ - Fix Loading Zone Entrance Randomizer
+
 # 4.6.1
   - Banjo-Tooie AP client now has a Items Tab.
     - Quick view of all collected items
