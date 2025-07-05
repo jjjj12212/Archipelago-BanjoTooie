@@ -1,7 +1,8 @@
 # 4.6.2
- - Fix Loading Zone Entrance Randomizer
- - Logic fixes:
-   - Fixed a bug where the AP generator would forget that leaving the train is part of the logic.
+  - Fix Loading Zone Entrance Randomizer
+  - Logic fixes:
+    - Fixed a bug where the AP generator would forget that leaving the train is part of the logic.
+    - GIOB -> GIF4, you can get from the fire escape to floor 4 without Tall Jump (works with both Air Ratatat Rap and Flutter, apparently). Added to Hard Tricks and above.
 
 # 4.6.1
   - Banjo-Tooie AP client now has a Items Tab.
