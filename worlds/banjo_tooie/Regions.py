@@ -2108,6 +2108,12 @@ def connect_regions(self):
         IndirectTransitionCondition(regionName.GI1, regionName.CHUFFY, [regionName.GM, regionName.GMBOSS]),
         IndirectTransitionCondition(regionName.HP, regionName.CHUFFY, [regionName.GM, regionName.GMBOSS]),
         IndirectTransitionCondition(regionName.IOHCT, regionName.CHUFFY, [regionName.GM, regionName.GMBOSS]),
+        IndirectTransitionCondition(regionName.CHUFFY, regionName.GM, [regionName.GMBOSS]),
+        IndirectTransitionCondition(regionName.CHUFFY, regionName.WW, [regionName.GMBOSS]),
+        IndirectTransitionCondition(regionName.CHUFFY, regionName.TL, [regionName.GMBOSS]),
+        IndirectTransitionCondition(regionName.CHUFFY, regionName.GI1, [regionName.GMBOSS]),
+        IndirectTransitionCondition(regionName.CHUFFY, regionName.HP, [regionName.GMBOSS]),
+        IndirectTransitionCondition(regionName.CHUFFY, regionName.IOHCT, [regionName.GMBOSS]),
         IndirectTransitionCondition(regionName.TLIMTOP, regionName.TLBOSS, [regionName.TL, regionName.TLSP]),
         IndirectTransitionCondition(regionName.TL, regionName.TLTOP, [regionName.TLBOSS]),
         IndirectTransitionCondition(regionName.WW, regionName.TL, [regionName.WWI])
