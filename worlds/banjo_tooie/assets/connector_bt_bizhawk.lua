@@ -9150,16 +9150,13 @@ function main()
             end
         elseif (CUR_STATE == STATE_UNINITIALIZED) then
             if  (FRAME % 60 == 1) then
-                server:settimeout(2)
+                server:settimeout(0)
                 local client, timeout = server:accept()
                 if timeout == nil then
                     print('Initial Connection Made')
                     CUR_STATE = STATE_INITIAL_CONNECTION_MADE
                     BT_SOCK = client
                     BT_SOCK:settimeout(0)
-                else
-                    print('Connection failed, ensure Banjo Tooie Client is running, connected, reboot Core and rerun banjotooie_connector.lua')
-                    return
                 end
             end
         end
