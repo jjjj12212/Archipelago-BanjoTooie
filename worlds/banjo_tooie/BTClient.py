@@ -162,11 +162,11 @@ async def patch_and_run(show_path):
       program_args = bt_options.program_args
       if program_args:
         if program_args == "--lua=":
-          lua = Utils.local_path("data", "lua", "connector_bt_bizhawk.lua")
+          lua = Utils.local_path("data", "lua", "connector_banjo_tooie_bizhawk.lua")
           program_args = f'--lua={lua}'
           if os.access(os.path.split(lua)[0], os.W_OK):
             with open(lua, "w") as to:
-              with open_world_file("assets/connector_bt_bizhawk.lua") as f:
+              with open_world_file("assets/connector_banjo_tooie_bizhawk.lua") as f:
                 to.write(f.read().decode())
         args.append(program_args)
       args.append(patch_path)
