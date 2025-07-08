@@ -1,7 +1,23 @@
+# 4.7
+  - Fix Rom Patching so it can be patched in any foldername (not "Archipelago\")
+  - New Commands
+    - /autostart
+      - Allows configuring a program to automatically start with the client. This allows you to, for example, automatically start Bizhawk with the patched ROM and lua Or the Everdrive connector. If already configured, disables the configuration.
+    - /path
+      - Reruns the ROM patcher
+    - /rom_path (path)
+      - Sets (or unsets) the file path of the vanilla ROM used for patching.
+    - /patch_path (path)
+      - Sets (or unsets) the folder path of where to save the patched ROM.
+    - /program_args (path)
+      - Sets (or unsets) the arguments to pass to the automatically run program. Defaults to passing the lua to Bizhawk.
+    
+
 # 4.6.2
- - Fix Loading Zone Entrance Randomizer
- - Logic fixes:
-   - Fixed a bug where the AP generator would forget that leaving the train is part of the logic.
+  - Fix Loading Zone Entrance Randomizer
+  - Logic fixes:
+    - Fixed a bug where the AP generator would forget that leaving the train is part of the logic.
+    - GIOB -> GIF4, you can get from the fire escape to floor 4 without Tall Jump (works with both Air Ratatat Rap and Flutter, apparently). Added to Hard Tricks and above.
 
 # 4.6.1
   - Banjo-Tooie AP client now has a Items Tab.

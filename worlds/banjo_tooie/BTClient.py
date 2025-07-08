@@ -12,6 +12,7 @@ import time
 from typing import Union
 import zipfile
 import bsdiff4
+import atexit
 
 
 # CommonClient import first to trigger ModuleUpdater
@@ -63,47 +64,122 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_to_id"]
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 script_version: int = 5
-version: str = "V4.6.2"
-game_append_version: str = "V462"
-patch_md5: str = "530f43222bf05627ff4a10469123621e"
+version: str = "V4.7"
+patch_md5: str = "0fc49fc7c8a8f73f0fc730e144b39c9e"
+bt_options = settings.get_settings().banjo_tooie_options
+program = None
+
+def read_file(path):
+  with open(path, "rb") as fi:
+    data = fi.read()
+  return data
+
+def write_file(path, data):
+  with open(path, "wb") as fi:
+    fi.write(data)
+
+def open_world_file(resource: str, mode: str = "rb", encoding: str = None):
+  filename = sys.modules[__name__].__file__
+  apworldExt = ".apworld"
+  game = "banjo_tooie/"
+  if apworldExt in filename:
+    zip_path = pathlib.Path(filename[:filename.index(apworldExt) + len(apworldExt)])
+    with zipfile.ZipFile(zip_path) as zf:
+      zipFilePath = game + resource
+      if mode == "rb":
+        return zf.open(zipFilePath, "r")
+      else:
+        return io.TextIOWrapper(zf.open(zipFilePath, "r"), encoding)
+  else:
+    return open(os.path.join(pathlib.Path(__file__).parent, resource), mode, encoding=encoding)
+
+def patch_rom(rom_path, dst_path, patch_path):
+  rom = read_file(rom_path)
+  md5 = hashlib.md5(rom).hexdigest()
+  if md5 == "ca0df738ae6a16bfb4b46d3860c159d9": # byte swapped
+    swapped = bytearray(b'\0'*len(rom))
+    for i in range(0, len(rom), 2):
+      swapped[i] = rom[i+1]
+      swapped[i+1] = rom[i]
+    rom = bytes(swapped)
+  elif md5 != "40e98faa24ac3ebe1d25cb5e5ddf49e4":
+    logger.error(f"Unknown ROM! Please use /patch or restart the {game_name} Client to try again.")
+    return False
+  with open_world_file(patch_path) as f:
+    patch = f.read()
+  write_file(dst_path, bsdiff4.patch(rom, patch))
+  return True
+
+async def patch_and_run(show_path):
+  global program
+  game_name = "Banjo-Tooie"
+  patch_path = bt_options.get("patch_path", "")
+  patch_name = f"{game_name} AP {version}.z64"
+  if patch_path and os.access(patch_path, os.W_OK):
+    patch_path = os.path.join(patch_path, patch_name)
+  elif os.access(Utils.user_path(), os.W_OK):
+    patch_path = Utils.user_path(patch_name)
+  elif os.access(Utils.cache_path(), os.W_OK):
+    patch_path = Utils.cache_path(patch_name)
+  else:
+    patch_path = None
+  existing_md5 = None
+  if patch_path and os.path.isfile(patch_path):
+    rom = read_file(patch_path)
+    existing_md5 = hashlib.md5(rom).hexdigest()
+  await asyncio.sleep(0.01)
+  patch_successful = True
+  if not patch_path or existing_md5 != patch_md5:
+    rom = bt_options.get("rom_path", "")
+    if not rom or not os.path.isfile(rom):
+      rom = Utils.open_filename(f"Open your {game_name} US ROM", (("Rom Files", (".z64", ".n64")), ("All Files", "*"),))
+    if not rom:
+      logger.error(f"No ROM selected. Please use /patch or restart the {game_name} Client to try again.")
+      return
+    if not patch_path:
+      patch_path = os.path.split(rom)[0]
+      if os.access(patch_path, os.W_OK):
+        patch_path = os.path.join(patch_path, patch_name)
+      else:
+        logger.error(f"Unable to find writable path... Please use /patch or restart the {game_name} Client to try again.")
+        return
+    logger.info("Patching...")
+    patch_successful = patch_rom(rom, patch_path, "assets/Banjo-Tooie.patch")
+    if patch_successful:
+      bt_options.rom_path = rom
+      bt_options.patch_path = os.path.split(patch_path)[0]
+    else:
+      bt_options.rom_path = None
+    bt_options._changed = True
+  if patch_successful:
+    if show_path:
+      logger.info(f"Patched {game_name} is located here: {patch_path}")
+    program_path = bt_options.get("program_path", "")
+    if program_path and os.path.isfile(program_path) and (not program or program.poll() != None):
+      import shlex, subprocess
+      logger.info(f"Automatically starting {program_path}")
+      args = [*shlex.split(program_path)]
+      program_args = bt_options.program_args
+      if program_args:
+        if program_args == "--lua=":
+          lua = Utils.local_path("data", "lua", "connector_bt_bizhawk.lua")
+          program_args = f'--lua={lua}'
+          if os.access(os.path.split(lua)[0], os.W_OK):
+            with open(lua, "w") as to:
+              with open_world_file("assets/connector_bt_bizhawk.lua") as f:
+                to.write(f.read().decode())
+        args.append(program_args)
+      args.append(patch_path)
+      program = subprocess.Popen(
+        args,
+        cwd=Utils.local_path("."),
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+      )
 
 def get_item_value(ap_id):
     return ap_id
-
-async def run_game(romfile):
-        auto_start = False
-        if "banjo-tooie_options" in settings.get_settings():
-            auto_start = settings.get_settings()["banjo-tooie_options"].get("rom_start", True)
-        if auto_start is True:
-            import webbrowser
-            webbrowser.open(romfile)
-        elif os.path.isfile(auto_start):
-            subprocess.Popen([auto_start, romfile],
-                            stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-async def apply_patch():
-    fpath = pathlib.Path(__file__)
-    archipelago_root = None
-    for i in range(0, 5,+1) :
-        if fpath.parents[i].stem == "Archipelago":
-            archipelago_root = pathlib.Path(__file__).parents[i]
-            break
-    patch_path = None
-    if archipelago_root:
-        patch_path = os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".z64")
-    if not patch_path or check_rom(patch_path) != patch_md5:
-        logger.info("Please open Banjo-Tooie and load banjo_tooie_connector.lua")
-        await asyncio.sleep(0.01)
-        rom = Utils.open_filename("Open your Banjo-Tooie US ROM", (("Rom Files", (".z64", ".n64")), ("All Files", "*"),))
-        if not rom:
-            logger.info("No ROM selected. Please restart the Banjo-Tooie Client to try again.")
-            return
-        if not patch_path:
-           base_dir = os.path.dirname(rom)
-           patch_path = os.path.join(base_dir, f"Banjo-Tooie-AP{game_append_version}.z64")
-        patch_rom(rom, patch_path, "Banjo-Tooie.patch")
-    if patch_path:
-        logger.info("Patched Banjo-Tooie is located in " + patch_path)
 
 class BanjoTooieItemTracker:
 
@@ -126,6 +202,63 @@ class BanjoTooieItemTracker:
 class BanjoTooieCommandProcessor(ClientCommandProcessor):
     def __init__(self, ctx):
         super().__init__(ctx)
+
+    def _cmd_patch(self):
+        """Reruns the patcher."""
+        asyncio.create_task(patch_and_run(True))
+        return True
+
+    def _cmd_autostart(self):
+        """Allows configuring a program to automatically start with the client.
+            This allows you to, for example, automatically start Bizhawk with the patched ROM and lua.
+            If already configured, disables the configuration."""
+        program_path = bt_options.get("program_path", "")
+        if program_path == "" or not os.path.isfile(program_path):
+            program_path = Utils.open_filename(f"Select your program to automatically start", (("All Files", "*"),))
+            if program_path:
+                bt_options.program_path = program_path
+                bt_options._changed = True
+                logger.info(f"Autostart configured for: {program_path}")
+                if not program or program.poll() != None:
+                    asyncio.create_task(patch_and_run(False))
+            else:
+                logger.error("No file selected...")
+                return False
+        else:
+            bt_options.program_path = ""
+            bt_options._changed = True
+            logger.info("Autostart disabled.")
+        return True
+
+    def _cmd_rom_path(self, path=""):
+        """Sets (or unsets) the file path of the vanilla ROM used for patching."""
+        bt_options.rom_path = path
+        bt_options._changed = True
+        if path:
+            logger.info("rom_path set!")
+        else:
+            logger.info("rom_path unset!")
+        return True
+
+    def _cmd_patch_path(self, path=""):
+        """Sets (or unsets) the folder path of where to save the patched ROM."""
+        bt_options.patch_path = path
+        bt_options._changed = True
+        if path:
+            logger.info("patch_path set!")
+        else:
+            logger.info("patch_path unset!")
+        return True
+
+    def _cmd_program_args(self, path=""):
+        """Sets (or unsets) the arguments to pass to the automatically run program. Defaults to passing the lua to Bizhawk."""
+        bt_options.program_args = path
+        bt_options._changed = True
+        if path:
+            logger.info("program_args set!")
+        else:
+            logger.info("program_args unset!")
+        return True
 
     def _cmd_n64(self):
         """Check N64 Connection State"""
@@ -273,7 +406,10 @@ class BanjoTooieContext(CommonContext):
                 "tag": True}}])
 
     def run_gui(self):
-        from kvui import GameManager, UILog
+        from kvui import GameManager, Window, UILog
+
+        Window.bind(on_request_close=self.on_request_close)
+        asyncio.create_task(patch_and_run(True))
 
         class BanjoTooieManager(GameManager):
             logging_pairs = [
@@ -288,7 +424,19 @@ class BanjoTooieContext(CommonContext):
 
         self.ui = BanjoTooieManager(self)
         self.ui_task = asyncio.create_task(self.ui.async_run(), name="UI")
-        asyncio.create_task(apply_patch())
+
+    def on_request_close(self, *args):
+        title = "Warning: Autostart program still running!"
+        message = "Attempting to close this window again will forcibly close it."
+        def cleanup(messagebox):
+            self._messagebox = None
+        if self._messagebox and self._messagebox.title == title:
+            return False
+        if program and program.poll() == None:
+            self.gui_error(title, message)
+            self._messagebox.bind(on_dismiss=cleanup)
+            return True
+        return False
 
     def on_package(self, cmd, args):
         if cmd == "Connected":
@@ -302,13 +450,6 @@ class BanjoTooieContext(CommonContext):
                                 "Your version: "+version+" | Generated version: "+self.slot_data["version"])
             self.deathlink_enabled = bool(self.slot_data["death_link"])
             self.taglink_enabled = bool(self.slot_data["tag_link"])
-            fpath = pathlib.Path(__file__)
-            archipelago_root = None
-            for i in range(0, 5,+1) :
-                if fpath.parents[i].stem == "Archipelago":
-                    archipelago_root = pathlib.Path(__file__).parents[i]
-                    break
-            async_start(run_game(os.path.join(archipelago_root, "Banjo-Tooie-AP"+game_append_version+".z64")))
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
         elif cmd == "ReceivedItems":
             self.tracker.refresh_items()
@@ -862,7 +1003,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                         }])
                         ctx.finished_game = True
 
-        # Ozone Banjo-Tooie Tracker
+        # Ozone & Mia's Banjo-Tooie Tracker
         if ctx.current_map != banjo_map:
             ctx.current_map = banjo_map
             await ctx.send_msgs([{
@@ -873,7 +1014,7 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "operations": [{"operation": "replace",
                     "value": hex(banjo_map)}]
             }])
-    #Send Aync Data.
+    #Send Sync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:
         # ctx.items_handling = 0b101
         # await ctx.send_connect()
@@ -1057,55 +1198,12 @@ async def n64_sync_task(ctx: BanjoTooieContext):
                 ctx.n64_status = CONNECTION_REFUSED_STATUS
                 break
 
-def read_file(path):
-    with open(path, "rb") as fi:
-        data = fi.read()
-    return data
-
-def write_file(path, data):
-    with open(path, "wb") as fi:
-        fi.write(data)
-
-def swap(data):
-    swapped_data = bytearray(b'\0'*len(data))
-    for i in range(0, len(data), 2):
-        swapped_data[i] = data[i+1]
-        swapped_data[i+1] = data[i]
-    return bytes(swapped_data)
-
-def check_rom(patchedRom):
-    if os.path.isfile(patchedRom):
-        rom = read_file(patchedRom)
-        md5 = hashlib.md5(rom).hexdigest()
-        return md5
-    else:
-        return "00000"
-
-def patch_rom(romPath, dstPath, patchPath):
-    rom = read_file(romPath)
-    md5 = hashlib.md5(rom).hexdigest()
-    if (md5 == "ca0df738ae6a16bfb4b46d3860c159d9"): # byte swapped
-        rom = swap(rom)
-    elif (md5 != "40e98faa24ac3ebe1d25cb5e5ddf49e4"):
-        logger.error("Unknown ROM!")
-        return
-    patch = openFile(patchPath).read()
-    write_file(dstPath, bsdiff4.patch(rom, patch))
-
-def openFile(resource: str, mode: str = "rb", encoding: str = None):
-    filename = sys.modules[__name__].__file__
-    apworldExt = ".apworld"
-    game = "banjo_tooie/"
-    if apworldExt in filename:
-        zip_path = pathlib.Path(filename[:filename.index(apworldExt) + len(apworldExt)])
-        with zipfile.ZipFile(zip_path) as zf:
-            zipFilePath = game + resource
-            if mode == "rb":
-                return zf.open(zipFilePath, "r")
-            else:
-                return io.TextIOWrapper(zf.open(zipFilePath, "r"), encoding)
-    else:
-        return open(os.path.join(pathlib.Path(__file__).parent, resource), mode, encoding=encoding)
+@atexit.register
+def close_program():
+  global program
+  if program and program.poll() == None:
+    program.kill()
+    program = None
 
 def main():
     Utils.init_logging("Banjo-Tooie Client")

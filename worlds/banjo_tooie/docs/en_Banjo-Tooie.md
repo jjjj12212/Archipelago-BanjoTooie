@@ -22,6 +22,14 @@ config file.
 - Options to randomize opening of worlds order and randomize world entrances
 - Option to add nest to the list of locations. If it's active, all un-collected nests have the Archipelago logo as their texture
 - Signpost can give out item hints if enabled
+- Option to open backdoors:
+    - MT -> TDL
+    - MT -> HFP
+    - GGM -> WW
+    - WW -> TDL
+    - HFP -> Clifftop
+    - George is predropped to make HFP -> JRL more accessible
+- Option to open GI frontdoor
 
 ## What items and locations can get shuffled?
 
@@ -46,6 +54,7 @@ config file.
 - Warp Pads
 - Big Top Tickets
 - Targitzan's Green Relics
+- Beans
 
 ## When the player receives an item, what happens?
 
@@ -56,3 +65,10 @@ When the player receives a collectable, the received a collectable will appear o
 The following commands are available when using the Banjo-Tooie Client to play with Archipelago.
 
 - `/n64` Check N64 Connection State
+- `/deathlink` Enable/Disable Deathlink
+- `/taglink` Enable/Disable Taglink
+- `/autostart` Allows configuring a program to automatically start with the client. This allows you to, for example, automatically start Bizhawk with the patched ROM and lua Or the Everdrive connector. If already configured, disables the configuration.
+- `/path` Reruns the ROM patcher
+- `/rom_path (path)` Sets (or unsets) the file path of the vanilla ROM used for patching.
+- `/patch_path (path)` Sets (or unsets) the folder path of where to save the patched ROM.
+- `/program_args (path)` Sets (or unsets) the arguments to pass to the automatically run program. Defaults to passing the lua to Bizhawk.

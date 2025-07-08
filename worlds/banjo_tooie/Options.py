@@ -548,7 +548,7 @@ class WorldRequirements(Choice):
     default = 1
 
 class CustomWorldCosts(FreeText):
-    """Enter a list of jiggy requirements you want for each world unlock. Max values of each world are: 1,20,30,40,50,60,70,80,90.
+    """Enter a list of jiggy requirements you want for each world unlock. Max values of each world are: 1,10,20,30,50,60,70,80,90.
     This option only functions if the World Requirements option is set to custom."""
     display_name = "Custom World Cost List"
     default = "1,4,8,14,20,28,36,45,55"
