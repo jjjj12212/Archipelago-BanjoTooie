@@ -1,5 +1,7 @@
 # 4.7
   - Fix Rom Patching so it can be patched in any foldername (not "Archipelago\")
+  - Lua script name is now "connector_banjo_tooie_bizhawk.lua (included in the APworld)
+  - Setup Documentation changes
   - New Commands
     - /autostart
       - Allows configuring a program to automatically start with the client. This allows you to, for example, automatically start Bizhawk with the patched ROM and lua Or the Everdrive connector. If already configured, disables the configuration.
