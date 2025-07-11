@@ -1,3 +1,20 @@
+# 4.7
+  - Fix Rom Patching so it can be patched in any foldername (not "Archipelago\")
+  - Lua script name is now "connector_banjo_tooie_bizhawk.lua (included in the APworld)
+  - Setup Documentation changes
+  - New Commands
+    - /autostart
+      - Allows configuring a program to automatically start with the client. This allows you to, for example, automatically start Bizhawk with the patched ROM and lua Or the Everdrive connector. If already configured, disables the configuration.
+    - /path
+      - Reruns the ROM patcher
+    - /rom_path (path)
+      - Sets (or unsets) the file path of the vanilla ROM used for patching.
+    - /patch_path (path)
+      - Sets (or unsets) the folder path of where to save the patched ROM.
+    - /program_args (path)
+      - Sets (or unsets) the arguments to pass to the automatically run program. Defaults to passing the lua to Bizhawk.
+    
+
 # 4.6.2
   - Fix Loading Zone Entrance Randomizer
   - Logic fixes:
