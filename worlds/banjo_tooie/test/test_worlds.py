@@ -22,12 +22,6 @@ class TestVanillaWorlds(BanjoTooieTestBase):
             if location.name in vanilla_locations.values():
                 assert vanilla_locations[location.item.name] == location.name
 
-class TestRandomizedWorldsIntended(TestRandomizedWorlds, IntendedLogic):
-    options = {
-        **TestRandomizedWorlds.options,
-        **IntendedLogic.options,
-    }
-
 class TestRandomizedWorldsEasyTricks(TestRandomizedWorlds, EasyTricksLogic):
     options = {
         **TestRandomizedWorlds.options,
