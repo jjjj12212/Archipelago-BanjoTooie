@@ -153,7 +153,7 @@ misc_collectable_table = {
     itemName.GRRELIC:       ItemData(1230923, 25, "progress", ""),
     itemName.BEANS:         ItemData(1230924, 2, "progress", ""),
     # This item is used by Universal Tracker to simulate glitched logic
-    itemName.UT_GLITCHED:   ItemData(None, 1, "progression_skip_balancing", ""),
+    itemName.UT_GLITCHED:   ItemData(None, 0, "progression_skip_balancing", ""),
 }
 
 stop_n_swap_table = {
