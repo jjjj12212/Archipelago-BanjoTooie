@@ -693,9 +693,7 @@ class BanjoTooieWorld(World):
         if not self.options.cheato_rewards:
             self.banjo_pre_fills("Cheats", None, True)
 
-        if not self.worlds_randomized and self.options.skip_puzzles:
-            self.banjo_pre_fills("Access", None, True)
-        elif self.worlds_randomized:
+        if self.options.skip_puzzles:
             world_num = 1
             for world, amt in self.world_requirements.items():
                 if world == regionName.GIO:
@@ -704,12 +702,6 @@ class BanjoTooieWorld(World):
                     item = self.create_item(itemName.JRA)
                 else:
                     item = self.create_item(world)
-                self.get_location("World "+ str(world_num) +" Unlocked").place_locked_item(item)
-                world_num += 1
-        else:
-            world_num = 1
-            for world, amt in self.world_requirements.items():
-                item = self.create_item(itemName.NONE)
                 self.get_location("World "+ str(world_num) +" Unlocked").place_locked_item(item)
                 world_num += 1
 

@@ -1,5 +1,18 @@
+# 4.8
+  - Out-of-logic checks are now shown in Universal Tracker.
+  - If puzzles are not skipped, you no longer have unobtainable world unlock locations.
+  - Renamings
+    - Relic names all start with "MT: Targitzan's Temple" instead of "MT Targitzan's Temple:", to stay consistent with the nests.
+  - Logic fixes
+    - Targitzan Jiggy: you can't defeat Targitzan with only 25 grenades, so you need ice eggs or beak bayonet with it too.
+    - Seaweed Sanctum Bottom Egg Nest: can be reached with tall jump + beak buster, on hard tricks
+    - Stomping Plains Footprint Nests: on hard tricks, can be gotten with BK's tall jump
+    - Waste Disposal Pump Room collectibles: can reach the pipe in JRL with tall jump + (flutter or air rat-a-tat rap)
+    - GI Train Station Honeycomb: requires grip grab on easy tricks
+    - Volcano Jiggy and Signposts: can be done with just tall jump, if not on intended logic.
+
 # 4.7
-  - Fix Rom Patching so it can be patched in any foldername (not "Archipelago\")
+  - Fix Rom Patching so it can be patched in any folder name (not "Archipelago\")
   - Lua script name is now "connector_banjo_tooie_bizhawk.lua (included in the APworld)
   - Setup Documentation changes
   - New Commands
@@ -13,7 +26,7 @@
       - Sets (or unsets) the folder path of where to save the patched ROM.
     - /program_args (path)
       - Sets (or unsets) the arguments to pass to the automatically run program. Defaults to passing the lua to Bizhawk.
-    
+
 
 # 4.6.2
   - Fix Loading Zone Entrance Randomizer

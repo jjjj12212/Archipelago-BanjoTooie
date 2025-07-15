@@ -967,14 +967,17 @@ class BanjoTooieRules:
         if self.intended_logic(state):
           logic = self.blue_eggs_item(state) or self.fire_eggs_item(state) or self.grenade_eggs_item(state)
         elif self.easy_tricks_logic(state):
-          logic = (self.blue_eggs_item(state) or self.fire_eggs_item(state) or self.grenade_eggs_item(state))\
-                    or (self.ice_eggs_item(state) and self.beak_bayonet(state))
+          logic = (self.blue_eggs_item(state) or self.fire_eggs_item(state))\
+                    or (self.ice_eggs_item(state) and self.beak_bayonet(state))\
+                    or (self.grenade_eggs_item(state) and (self.ice_eggs_item(state) or self.beak_bayonet(state)))
         elif self.hard_tricks_logic(state):
-          logic = (self.blue_eggs_item(state) or self.fire_eggs_item(state) or self.grenade_eggs_item(state))\
-                    or (self.ice_eggs_item(state) and self.beak_bayonet(state))
+          logic = (self.blue_eggs_item(state) or self.fire_eggs_item(state))\
+                    or (self.ice_eggs_item(state) and self.beak_bayonet(state))\
+                    or (self.grenade_eggs_item(state) and (self.ice_eggs_item(state) or self.beak_bayonet(state)))
         elif self.glitches_logic(state):
-          logic = (self.blue_eggs_item(state) or self.fire_eggs_item(state) or self.grenade_eggs_item(state))\
-                    or (self.ice_eggs_item(state) and self.beak_bayonet(state))
+          logic = (self.blue_eggs_item(state) or self.fire_eggs_item(state))\
+                    or (self.ice_eggs_item(state) and self.beak_bayonet(state))\
+                    or (self.grenade_eggs_item(state) and (self.ice_eggs_item(state) or self.beak_bayonet(state)))
         return logic
 
     def jiggy_sschamber(self, state: CollectionState) -> bool:
@@ -2195,11 +2198,11 @@ class BanjoTooieRules:
         if self.intended_logic(state):
             logic = self.long_jump(state) and self.hfp_top(state)
         elif self.easy_tricks_logic(state):
-            logic = self.long_jump(state) and self.hfp_top(state) or self.split_up(state)
+            logic = (self.long_jump(state) or self.tall_jump(state)) and self.hfp_top(state) or self.split_up(state)
         elif self.hard_tricks_logic(state):
-            logic = self.long_jump(state) and self.hfp_top(state) or self.split_up(state)
+            logic = (self.long_jump(state) or self.tall_jump(state)) and self.hfp_top(state) or self.split_up(state)
         elif self.glitches_logic(state):
-            logic = self.long_jump(state) and self.hfp_top(state) or self.split_up(state)
+            logic = (self.long_jump(state) or self.tall_jump(state)) and self.hfp_top(state) or self.split_up(state)
         return logic
 
     def jiggy_sabreman(self, state: CollectionState) -> bool:
@@ -2753,7 +2756,7 @@ class BanjoTooieRules:
         if self.intended_logic(state):
             logic = self.grip_grab(state) and self.ground_attack(state) and self.spring_pad(state)
         elif self.easy_tricks_logic(state):
-            logic = self.ground_attack(state) and self.spring_pad(state)
+            logic = self.ground_attack(state) and self.spring_pad(state) and self.grip_grab(state)
         elif self.hard_tricks_logic(state):
             logic = (self.ground_attack(state) and self.spring_pad(state)) or self.clockwork_shot(state) or self.leg_spring(state)
         elif self.glitches_logic(state):
@@ -5432,10 +5435,12 @@ class BanjoTooieRules:
             logic = self.flap_flip(state)
         elif self.hard_tricks_logic(state):
             logic = self.flap_flip(state)\
-                    or self.clockwork_shot(state)
+                    or self.clockwork_shot(state)\
+                    or self.tall_jump(state) and self.beak_buster(state)
         elif self.glitches_logic(state):
             logic = self.flap_flip(state)\
-                    or self.clockwork_shot(state)
+                    or self.clockwork_shot(state)\
+                    or self.tall_jump(state) and self.beak_buster(state)
         return logic
 
     def nest_seaweed_others(self, state: CollectionState) -> bool:
@@ -6263,24 +6268,24 @@ class BanjoTooieRules:
         if self.intended_logic(state):
             logic = (self.has_explosives(state) or self.bill_drill(state))\
                         and (self.talon_trot(state)\
-                             or self.tall_jump(state) and self.roll(state) and self.flutter(state)
+                             or self.tall_jump(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state))
                         )
         elif self.easy_tricks_logic(state):
             logic = (self.has_explosives(state) or self.bill_drill(state))\
                     and (self.talon_trot(state)\
-                        or self.tall_jump(state) and self.roll(state) and self.flutter(state)\
+                        or self.tall_jump(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state))\
                         or state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state)
                     )
         elif self.hard_tricks_logic(state):
             logic = (self.has_explosives(state) or self.bill_drill(state))\
                     and (self.talon_trot(state)\
-                        or self.tall_jump(state) and self.roll(state) and self.flutter(state)\
+                        or self.tall_jump(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state))\
                         or state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state)
                     )
         elif self.glitches_logic(state):
             logic = (self.has_explosives(state) or self.bill_drill(state))\
                     and (self.talon_trot(state)\
-                        or self.tall_jump(state) and self.roll(state) and self.flutter(state)\
+                        or self.tall_jump(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state))\
                         or state.has(itemName.DOUBLOON, self.player, 28) and self.turbo_trainers(state)
                     )
         return logic
@@ -6576,11 +6581,11 @@ class BanjoTooieRules:
                     or self.snooze_pack(state)\
                     or self.talon_trot(state)
         elif self.hard_tricks_logic(state):
-            logic = self.tall_jump(state) and self.split_up(state)\
+            logic = self.tall_jump(state)\
                     or self.snooze_pack(state)\
                     or self.talon_trot(state)
         elif self.glitches_logic(state):
-            logic = self.tall_jump(state) and self.split_up(state)\
+            logic = self.tall_jump(state)\
                     or self.snooze_pack(state)\
                     or self.talon_trot(state)
         return logic
