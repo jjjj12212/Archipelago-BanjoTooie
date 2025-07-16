@@ -5433,7 +5433,8 @@ class BanjoTooieRules:
         if self.intended_logic(state):
             logic = self.flap_flip(state)
         elif self.easy_tricks_logic(state):
-            logic = self.flap_flip(state)
+            logic = self.flap_flip(state)\
+                    or self.tall_jump(state) and self.beak_buster(state)
         elif self.hard_tricks_logic(state):
             logic = self.flap_flip(state)\
                     or self.clockwork_shot(state)\
