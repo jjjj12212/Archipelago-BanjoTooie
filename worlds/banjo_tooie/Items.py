@@ -151,7 +151,9 @@ misc_collectable_table = {
     itemName.TITRAP:        ItemData(1230833,  0, "trap", ""),
     itemName.BTTICKET:      ItemData(1230922, 4, "progress", ""),
     itemName.GRRELIC:       ItemData(1230923, 25, "progress", ""),
-    itemName.BEANS:         ItemData(1230924, 2, "progress", "")
+    itemName.BEANS:         ItemData(1230924, 2, "progress", ""),
+    # This item is used by Universal Tracker to simulate glitched logic
+    itemName.UT_GLITCHED:   ItemData(None, 0, "progression_skip_balancing", ""),
 }
 
 stop_n_swap_table = {

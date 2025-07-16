@@ -217,3 +217,5 @@ WARPCC2 = "CCL: Central Cavern Warp Pad"
 
 WARPCK1 = "CK: Bottom of the Tower Warp Pad"
 WARPCK2 = "CK: Top of the Tower Warp Pad"
+
+UT_GLITCHED = "Universal Tracker Glitched Logic Item"
