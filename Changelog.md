@@ -1,5 +1,5 @@
 # 4.8
-  - Out-of-logic checks are now shown in Universal Tracker.
+  - Out-of-logic checks are now shown in Universal Tracker. (0.6.2)
   - If puzzles are not skipped, you no longer have unobtainable world unlock locations.
   - Renamings
     - Relic names all start with "MT: Targitzan's Temple" instead of "MT Targitzan's Temple:", to stay consistent with the nests.
