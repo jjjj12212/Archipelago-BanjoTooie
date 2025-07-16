@@ -2603,7 +2603,8 @@ class BanjoTooieRules:
         if self.intended_logic(state):
             logic = self.grip_grab(state) and self.climb(state) and self.flap_flip(state)
         elif self.easy_tricks_logic(state):
-            logic = self.grip_grab(state) and self.climb(state) and self.flap_flip(state)
+            logic = self.grip_grab(state) and self.climb(state) and self.flap_flip(state)\
+                    or self.leg_spring(state) and self.glide(state)
         elif self.hard_tricks_logic(state):
             logic = (self.grip_grab(state) or self.beak_buster(state)) and self.climb(state) and self.flap_flip(state)\
                     or self.leg_spring(state) and self.glide(state)\
