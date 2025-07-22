@@ -4754,27 +4754,15 @@ class BanjoTooieRules:
     def notes_ccl_silo(self, state: CollectionState) -> bool:
         logic = True
         if self.intended_logic(state):
-            logic = self.shack_pack(state) and (
-                        state.has(itemName.WARPCC1, self.player) and state.has(itemName.WARPCC2, self.player)\
-                        or self.can_use_floatus(state)
-                    )
+            logic = self.can_access_sack_pack_silo(state)
         elif self.easy_tricks_logic(state):
-            logic = self.shack_pack(state) and (
-                        state.has(itemName.WARPCC1, self.player) and state.has(itemName.WARPCC2, self.player)\
-                        or self.can_use_floatus(state)
-                    )\
+            logic = self.can_access_sack_pack_silo(state)\
                     or self.clockwork_eggs(state)
         elif self.hard_tricks_logic(state):
-            logic = self.shack_pack(state) and (
-                        state.has(itemName.WARPCC1, self.player) and state.has(itemName.WARPCC2, self.player)\
-                        or self.can_use_floatus(state)
-                    )\
+            logic = self.can_access_sack_pack_silo(state)\
                     or self.clockwork_eggs(state)
         elif self.glitches_logic(state):
-            logic = self.shack_pack(state) and (
-                        state.has(itemName.WARPCC1, self.player) and state.has(itemName.WARPCC2, self.player)\
-                        or self.can_use_floatus(state)
-                    )\
+            logic = self.can_access_sack_pack_silo(state)\
                     or self.clockwork_eggs(state)
         return logic
 
