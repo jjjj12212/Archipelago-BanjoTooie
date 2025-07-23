@@ -7564,7 +7564,8 @@ class BanjoTooieRules:
             logic = self.claw_clamber_boots(state) and self.has_explosives(state)\
                     and (
                         self.talon_trot(state)\
-                        or state.can_reach_region(regionName.WWI, self.player) and self.turbo_trainers(state)
+                        or state.can_reach_region(regionName.WWI, self.player) and self.turbo_trainers(state)\
+                        or state.can_reach_region(regionName.TL, self.player) and self.springy_step_shoes(state)
                     )
         elif self.hard_tricks_logic(state):
             logic = self.has_explosives(state) or self.spring_pad(state)
