@@ -3034,10 +3034,12 @@ class BanjoTooieRules:
         elif self.hard_tricks_logic(state):
             logic = self.talon_torpedo(state) and ((self.glide(state) and self.tall_jump(state)) or self.leg_spring(state) or
                     self.wing_whack(state) or
+                    self.clockwork_shot(state) or
                     (self.pack_whack(state) and self.grip_grab(state)))
         elif self.glitches_logic(state):
             logic = self.talon_torpedo(state) and ((self.glide(state) and self.tall_jump(state)) or self.leg_spring(state) or
                     self.wing_whack(state) or
+                    self.clockwork_shot(state) or
                     (self.check_solo_moves(state, itemName.WWING) and self.tall_jump(state)) or
                     (self.tall_jump(state) and self.pack_whack(state) and self.grip_grab(state)))
         return logic
