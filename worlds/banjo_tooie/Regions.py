@@ -1725,7 +1725,7 @@ def connect_regions(self):
     region_JR = self.get_region(regionName.JR)
     region_JR.add_exits({regionName.JRU, regionName.JRWARP}, {
                             regionName.JRU: lambda state: rules.can_dive_in_JRL(state),
-                            regionName.JRWARP: lambda state: state.has(itemName.WARPJR1, self.player),})
+                            regionName.JRWARP: lambda state: state.has(itemName.WARPJR1, player),})
 
     region_JRU = self.get_region(regionName.JRU)
     region_JRU.add_exits({regionName.JRAT},
@@ -1764,7 +1764,7 @@ def connect_regions(self):
 
     region_JRWARP = self.get_region(regionName.JRWARP)
     region_JRWARP.add_exits({regionName.JR, regionName.JRAT, regionName.JRSS, regionName.JRLC, regionName.JRBFC},
-                        {regionName.JR: lambda state: state.has(itemName.WARPJR1),
+                        {regionName.JR: lambda state: state.has(itemName.WARPJR1, player),
                          regionName.JRAT: lambda state: state.has(itemName.WARPJR2, player) and rules.air_pit_from_jrl_warp_pads(state),
                          regionName.JRSS: lambda state: state.has(itemName.WARPJR3, player) and rules.air_pit_from_jrl_warp_pads(state),
                          regionName.JRLC: lambda state: state.has(itemName.WARPJR5, player) and rules.air_pit_from_jrl_warp_pads(state),
