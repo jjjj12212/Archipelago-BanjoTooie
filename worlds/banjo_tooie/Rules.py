@@ -3034,10 +3034,12 @@ class BanjoTooieRules:
         elif self.hard_tricks_logic(state):
             logic = self.talon_torpedo(state) and ((self.glide(state) and self.tall_jump(state)) or self.leg_spring(state) or
                     self.wing_whack(state) or
+                    self.clockwork_shot(state) or
                     (self.pack_whack(state) and self.grip_grab(state)))
         elif self.glitches_logic(state):
             logic = self.talon_torpedo(state) and ((self.glide(state) and self.tall_jump(state)) or self.leg_spring(state) or
                     self.wing_whack(state) or
+                    self.clockwork_shot(state) or
                     (self.check_solo_moves(state, itemName.WWING) and self.tall_jump(state)) or
                     (self.tall_jump(state) and self.pack_whack(state) and self.grip_grab(state)))
         return logic
@@ -4754,27 +4756,15 @@ class BanjoTooieRules:
     def notes_ccl_silo(self, state: CollectionState) -> bool:
         logic = True
         if self.intended_logic(state):
-            logic = self.shack_pack(state) and (
-                        state.has(itemName.WARPCC1, self.player) and state.has(itemName.WARPCC2, self.player)\
-                        or self.can_use_floatus(state)
-                    )
+            logic = self.can_access_sack_pack_silo(state)
         elif self.easy_tricks_logic(state):
-            logic = self.shack_pack(state) and (
-                        state.has(itemName.WARPCC1, self.player) and state.has(itemName.WARPCC2, self.player)\
-                        or self.can_use_floatus(state)
-                    )\
+            logic = self.can_access_sack_pack_silo(state)\
                     or self.clockwork_eggs(state)
         elif self.hard_tricks_logic(state):
-            logic = self.shack_pack(state) and (
-                        state.has(itemName.WARPCC1, self.player) and state.has(itemName.WARPCC2, self.player)\
-                        or self.can_use_floatus(state)
-                    )\
+            logic = self.can_access_sack_pack_silo(state)\
                     or self.clockwork_eggs(state)
         elif self.glitches_logic(state):
-            logic = self.shack_pack(state) and (
-                        state.has(itemName.WARPCC1, self.player) and state.has(itemName.WARPCC2, self.player)\
-                        or self.can_use_floatus(state)
-                    )\
+            logic = self.can_access_sack_pack_silo(state)\
                     or self.clockwork_eggs(state)
         return logic
 
