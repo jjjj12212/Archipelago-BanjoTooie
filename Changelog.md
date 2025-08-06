@@ -1,5 +1,6 @@
 # 4.8.1
   - Fix missing player in lamda state for region_JR Warppad
+  - reword BK Move option Description
 
 # 4.8
   - Out-of-logic checks are now shown in Universal Tracker. (0.6.2)
