@@ -1788,7 +1788,7 @@ def connect_regions(self):
                         })
 
     region_TL = self.get_region(regionName.TL)
-    region_TL.add_exits({regionName.TL_HATCH, regionName.TLTOP, regionName.TLWARP, regionName.WW, regionName.CHUFFY, regionName.WWA51NESTS},
+    region_TL.add_exits({regionName.TL_HATCH, regionName.TLTOP, regionName.TLWARP, regionName.WW, regionName.CHUFFY, regionName.WWA51NESTS, regionName.TLIMTOP},
                         {regionName.WW: lambda state: rules.TDL_to_WW(state),
                          regionName.CHUFFY: lambda state: rules.tdl_to_chuffy(state),
                          regionName.TL_HATCH: lambda state: rules.tdl_to_hatch(state),

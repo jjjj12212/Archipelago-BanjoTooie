@@ -1,5 +1,9 @@
 # 4.8.1
-  - Fix missing player in lamda state for region_JR Warppad
+  - Logic fixes:
+    - Fix missing player in lamda state for region_JR Warp pad, which made generations fail.
+    - Fixed the fact that flying inside the mountain in TDL to the top was not in logic. This puts the signpost in logic, as well as going through Terry's nest backwards if solo Banjo can open the door, or if you can glitch past the door.
+    - Added more lenient ways of fighting Weldar for harder logics.
+    - Fixed post-Weldar checks to check for Climb.
 
 # 4.8
   - Out-of-logic checks are now shown in Universal Tracker. (0.6.2)
