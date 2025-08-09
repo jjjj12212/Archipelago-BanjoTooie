@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | 4.8
+# Archipelago Banjo-Tooie (US-Only) | 4.8.1
 Banjo Tooie for Archipelago 
 
 # Current Implementation
