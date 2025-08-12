@@ -1,3 +1,10 @@
+# 4.8.2
+  - Logic fixes
+    - JRL Waste Pipe Signposts: If not on intended logic, possible with explosives, Split Up and Leg Spring.
+    - Fixed a bug where sometimes, the AP generator would forget that pressing the GI flight pad switch as the washing machine is an option
+    - GI Floor 1 Warp Pad: now in logic if you choose to pre-open the GI front door.
+    - Dippy Pool stuff: going underwater with beak buster is removed from easy tricks.
+
 # 4.8.1
   - Logic fixes:
     - Fix missing player in lamda state for region_JR Warp pad, which made generations fail.
