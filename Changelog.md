@@ -1,4 +1,5 @@
 # 4.8.2
+  - Hints that show items in other worlds now get added to the AP hint list.
   - Logic fixes
     - JRL Waste Pipe Signposts: If not on intended logic, possible with explosives, Split Up and Leg Spring.
     - Fixed a bug where sometimes, the AP generator would forget that pressing the GI flight pad switch as the washing machine is an option
