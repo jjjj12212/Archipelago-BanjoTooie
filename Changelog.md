@@ -5,6 +5,7 @@
     - Fixed a bug where sometimes, the AP generator would forget that pressing the GI flight pad switch as the washing machine is an option
     - GI Floor 1 Warp Pad: now in logic if you choose to pre-open the GI front door.
     - Dippy Pool stuff: going underwater with beak buster is removed from easy tricks.
+  - Fix HAG-1 Jiggy requirements on the Everdrive Connector.
 
 # 4.8.1
   - Logic fixes:
