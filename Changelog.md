@@ -7,7 +7,8 @@
       - Empty Honeycombs
       - Cheato Pages
   - Doubloons are no longer balanced in the progression balancing
-  - Removed the extra space at the end of "GI Floor 1: Skivvy"
+  - Fix HAG-1 Jiggy requirements on the Everdrive Connector
+  - Removed the extra space at the end of "GI Floor 1: Skivvy "
   - Logic fixes
     - JRL Waste Pipe Signposts: If not on intended logic, possible with explosives, Split Up and Leg Spring
     - Fixed a bug where sometimes, the AP generator would forget that pressing the GI flight pad switch as the washing machine is an option
