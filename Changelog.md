@@ -10,6 +10,7 @@
   - Fix HAG-1 Jiggy requirements on the Everdrive Connector
   - Removed the extra space at the end of "GI Floor 1: Skivvy "
   - Logic fixes
+    - Entering Cauldron Keep: In glitches logic, if you warp to the bottom of the pipe, it now also expects to have beak buster and climb.
     - JRL Waste Pipe Signposts: If not on intended logic, possible with explosives, Split Up and Leg Spring
     - Fixed a bug where sometimes, the AP generator would forget that pressing the GI flight pad switch as the washing machine is an option
     - GI Floor 1 Warp Pad: now in logic if you choose to pre-open the GI front door
