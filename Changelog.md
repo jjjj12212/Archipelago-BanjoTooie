@@ -1,10 +1,18 @@
-# 4.8.2
-  - Hints that show items in other worlds now get added to the AP hint list.
+# 4.9
+  - New Archipelago 0.6.3 features
+    - Hints that show items in other worlds now get added to the AP hint list
+    - The following items can no longer show up on priority locations:
+      - 5 Notes, Bass Clefs, Treble Clefs
+      - Doubloons
+      - Empty Honeycombs
+      - Cheato Pages
+  - Doubloons are no longer balanced in the progression balancing
+  - Removed the extra space at the end of "GI Floor 1: Skivvy"
   - Logic fixes
-    - JRL Waste Pipe Signposts: If not on intended logic, possible with explosives, Split Up and Leg Spring.
+    - JRL Waste Pipe Signposts: If not on intended logic, possible with explosives, Split Up and Leg Spring
     - Fixed a bug where sometimes, the AP generator would forget that pressing the GI flight pad switch as the washing machine is an option
-    - GI Floor 1 Warp Pad: now in logic if you choose to pre-open the GI front door.
-    - Dippy Pool stuff: going underwater with beak buster is removed from easy tricks.
+    - GI Floor 1 Warp Pad: now in logic if you choose to pre-open the GI front door
+    - Dippy Pool stuff: going underwater with beak buster is removed from easy tricks
 
 # 4.8.1
   - Logic fixes:
