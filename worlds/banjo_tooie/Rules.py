@@ -7980,7 +7980,7 @@ class BanjoTooieRules:
         elif self.hard_tricks_logic(state):
             logic = self.claw_clamber_boots(state) and self.ck_jiggy(state)
         elif self.glitches_logic(state):
-            logic = (self.clockwork_warp(state) and self.talon_trot(state) or self.claw_clamber_boots(state))\
+            logic = (self.clockwork_warp(state) and self.talon_trot(state) and self.climb(state) and self.beak_buster(state) or self.claw_clamber_boots(state))\
                     and (self.ck_jiggy(state) or (self.climb(state) and self.tall_jump(state) and self.beak_buster(state) and (self.flutter(state) or self.air_rat_a_tat_rap(state))))
         return logic
 
