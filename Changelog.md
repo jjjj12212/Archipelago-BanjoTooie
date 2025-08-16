@@ -1,3 +1,21 @@
+# 4.9
+  - New Archipelago 0.6.3 features
+    - Hints that show items in other worlds now get added to the AP hint list
+    - The following items can no longer show up on priority locations:
+      - 5 Notes, Bass Clefs, Treble Clefs
+      - Doubloons
+      - Empty Honeycombs
+      - Cheato Pages
+  - Doubloons are no longer balanced in the progression balancing
+  - Fix HAG-1 Jiggy requirements on the Everdrive Connector
+  - Removed the extra space at the end of "GI Floor 1: Skivvy "
+  - Logic fixes
+    - Entering Cauldron Keep: In glitches logic, if you warp to the bottom of the pipe, it now also expects to have beak buster and climb.
+    - JRL Waste Pipe Signposts: If not on intended logic, possible with explosives, Split Up and Leg Spring
+    - Fixed a bug where sometimes, the AP generator would forget that pressing the GI flight pad switch as the washing machine is an option
+    - GI Floor 1 Warp Pad: now in logic if you choose to pre-open the GI front door
+    - Dippy Pool stuff: going underwater with beak buster is removed from easy tricks
+
 # 4.8.1
   - Logic fixes:
     - Fix missing player in lamda state for region_JR Warp pad, which made generations fail.

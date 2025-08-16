@@ -2097,7 +2097,8 @@ def connect_regions(self):
 
     static_indirect_transition_conditions: List[IndirectTransitionCondition] = [
         IndirectTransitionCondition(regionName.MT, regionName.MTKS, [regionName.MTJSG]),
-        IndirectTransitionCondition(regionName.GIO, regionName.GIF, [regionName.GI4]),
+        IndirectTransitionCondition(regionName.GIO, regionName.GIF, [regionName.GI2, regionName.GI4]),
+        IndirectTransitionCondition(regionName.GIOB, regionName.GIF, [regionName.GI2, regionName.GI4]),
         IndirectTransitionCondition(regionName.HP, regionName.JR, [regionName.CC]),
         IndirectTransitionCondition(regionName.JRSS, regionName.JRAT, [regionName.JRAT]),
         IndirectTransitionCondition(regionName.JRSS, regionName.JRLC, [regionName.JRAT]),

@@ -1,4 +1,5 @@
 import asyncio
+from dataclasses import dataclass
 import hashlib
 import io
 import json
@@ -9,7 +10,7 @@ import pathlib
 import subprocess
 import sys
 import time
-from typing import Union
+from typing import List, Tuple, Union
 import zipfile
 import bsdiff4
 import atexit
@@ -64,8 +65,8 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_to_id"]
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 script_version: int = 5
-version: str = "V4.8.1"
-patch_md5: str = "a739acb3e19d2d1be919ab6cd9aa372a"
+version: str = "V4.9"
+patch_md5: str = "641211b87e10ff64ed869a7b2479b9e4"
 bt_options = settings.get_settings().banjo_tooie_options
 program = None
 
@@ -756,9 +757,13 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
     if isinstance(beans, list):
         beans = {}
 
+    @dataclass
+    class CreateHintsParams:
+        location: int
+        player: int
     if demo == False and ctx.sync_ready == True:
         locs1 = []
-        scouts1 = []
+        create_hints_params: List[CreateHintsParams] = []
         if ctx.chuffy_table != chuffy:
             ctx.chuffy_table = chuffy
             for locationId, value in chuffy.items():
@@ -836,12 +841,14 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                         hint = actual_hints.get(str(locationId), None)
 
                         if not hint is None and hint.get('should_add_hint')\
-                          and not hint.get('location_id') is None\
-                          and not hint.get('location_player_id') is None\
-                          and ctx.slot_concerns_self(hint['location_player_id']):
-                            id = hint['location_id']
-                            if not id in ctx.handled_scouts:
-                                scouts1.append(id)
+                            and not hint.get('location_id') is None\
+                            and not hint.get('location_player_id') is None:
+
+                            player_id = hint['location_player_id']
+                            location_id = hint['location_id']
+                            params = CreateHintsParams(location_id, player_id)
+                            if not params in ctx.handled_scouts:
+                                create_hints_params.append(params)
         if ctx.warppads_table != warp_pads:
             ctx.warppads_table = warp_pads
             for locationId, value in warp_pads.items():
@@ -944,13 +951,13 @@ async def parse_payload(payload: dict, ctx: BanjoTooieContext, force: bool):
                 "locations": locs1
             }])
 
-        if len(scouts1) > 0:
+        for params in create_hints_params:
             await ctx.send_msgs([{
-                "cmd": "LocationScouts",
-                "locations": scouts1,
-                "create_as_hint": 2
+                "cmd": "CreateHints",
+                "locations": [params.location],
+                "player": params.player
             }])
-            ctx.handled_scouts.extend(scouts1)
+            ctx.handled_scouts.append(params)
 
         #GAME VICTORY
         #Beat Hag-1
