@@ -1,3 +1,4 @@
+import enum
 import re
 from typing import List, Union
 from dataclasses import dataclass
@@ -48,10 +49,17 @@ class Hint:
                     return False
         return count == 1
 
+    class UniqueItemRequirement(enum.Enum):
+        # These are listed by priority of desiredness
+        REQUIRED_BY_PLAYER = 0,
+        REQUIRED_BY_MULTIWORLD = 1,
+        NOT_REQUIRED = 2,
+        NOT_UNIQUE = 3,
+
     @property
-    def required_one_of_a_kind(self) -> bool:
+    def is_unique_required(self) -> UniqueItemRequirement:
         if not self.one_of_a_kind:
-            return False
+            return Hint.UniqueItemRequirement.NOT_UNIQUE
 
         # Inspired from how DK64 does woth hints. It excludes the location with the
         # unique progression item from the logic calculation,
@@ -59,14 +67,18 @@ class Hint:
         state = CollectionState(self.world.multiworld)
         state.locations_checked.add(self.location)
 
-        # This is basically the end of Multiworld.can_beat_game, except we only
-        # check if the Tooie player can win instead of everyone.
+        # This is basically the end of Multiworld.can_beat_game.
         for _ in state.sweep_for_advancements(None,
                                             yield_each_sweep=True,
                                             checked_locations=state.locations_checked):
-            if self.world.multiworld.has_beaten_game(state, self.world.player):
-                return False # Winning is possible without the item, so not required.
-        return True
+            # We can stop early if the entire multiworld is already beaten
+            if self.world.multiworld.has_beaten_game(state):
+                return Hint.UniqueItemRequirement.NOT_REQUIRED
+
+        # If we're here, not all seeds can be beaten, so it's required.
+        return Hint.UniqueItemRequirement.REQUIRED_BY_MULTIWORLD\
+            if self.world.multiworld.has_beaten_game(state, self.world.player)\
+            else Hint.UniqueItemRequirement.REQUIRED_BY_PLAYER
 
     def __format_location(self, capitalize: bool) -> str:
         if self.location.player == self.world.player:
@@ -87,14 +99,15 @@ class Hint:
     @property
     def __cryptic_hint_text(self) -> str:
         formatted_location = self.__format_location(capitalize=True)
-
-        if self.required_one_of_a_kind:
-            return f"{formatted_location} leads to the wahay of the duo."
-        if self.one_of_a_kind:
+        unique_requirement = self.is_unique_required
+        if unique_requirement == Hint.UniqueItemRequirement.REQUIRED_BY_PLAYER:
+            return f"{formatted_location} is on the Wahay of the Duo."
+        if unique_requirement == Hint.UniqueItemRequirement.REQUIRED_BY_MULTIWORLD:
+            return f"{formatted_location} is on the Wahay of the Archipelago."
+        if unique_requirement == Hint.UniqueItemRequirement.NOT_REQUIRED:
             return f"{formatted_location} has a legendary one-of-a-kind item."
         if self.location.item.classification == ItemClassification.progression:
             return f"{formatted_location} has a wonderful item."
-
         # Either skip balancing or deprioritised
         if self.location.item.classification & ItemClassification.progression_skip_balancing\
                 == ItemClassification.progression_skip_balancing\

@@ -136,7 +136,7 @@ class TestCrypticSignpostsHints(TestSignpostsHints):
 
             if hinted_location.item.advancement and all_item_table.get(hinted_location.item.name).qty == 1:
                 # There's no good way to test if a unique item is required to beat the seed, so either is fine.
-                keywords = ["legendary one-of-a-kind", "wahay of the duo"]
+                keywords = ["legendary one-of-a-kind", "Wahay of the Duo", "Wahay of the Archipelago"]
             else:
                 keywords = classification_keywords[hinted_location.item.classification]
 
