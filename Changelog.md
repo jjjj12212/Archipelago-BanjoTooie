@@ -1,3 +1,10 @@
+# 4.10
+  - New cryptic hints
+    - Wahay of the Duo: A unique item that's required to beat your seed.
+    - Wahay of the Archipelago: A unique item that's required for someone else to beat their seed.
+  - Logic fixes
+    - Fixed a bug where the logic thought you could go from Terry's nest to Targitzan's Temple or Chuffy when you actually couldn't.
+
 # 4.9
   - New Archipelago 0.6.3 features
     - Hints that show items in other worlds now get added to the AP hint list

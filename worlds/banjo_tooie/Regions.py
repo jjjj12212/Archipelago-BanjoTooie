@@ -2086,11 +2086,11 @@ def connect_regions(self):
 
                 if source == regionName.MTBOSS:
                     leave_terry_rule = lambda state: rules.breegull_blaster(state)
-                    terry_nest_region.add_exits({boss_entrance}, {source: leave_terry_rule})
+                    terry_nest_region.add_exits({boss_entrance}, {boss_entrance: leave_terry_rule})
 
                 elif source ==regionName.GMBOSS:
                     leave_terry_rule = lambda state: rules.train_raised(state)
-                    terry_nest_region.add_exits({boss_entrance}, {source: leave_terry_rule})
+                    terry_nest_region.add_exits({boss_entrance}, {boss_entrance: leave_terry_rule})
                     add_indirect_condition(IndirectTransitionCondition(boss_room, boss_entrance, [regionName.GM]))
                 else:
                     terry_nest_region.add_exits({boss_entrance}, {})
