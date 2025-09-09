@@ -137,7 +137,7 @@ class JamjarsSiloCosts(Choice):
 
 class RandomizeBKMoveList(Choice):
     """Banjo-Kazooie's Movelist are randomized.
-    Mcjiggy Special - Talon Trot and Tall Jump are removed from the pool."""
+    Mcjiggy Special - You start with Talon Trot and Tall Jump."""
     display_name = "Randomize Banjo-Kazooie Movelist"
     option_none = 0
     option_mcjiggy_special = 1
@@ -581,8 +581,6 @@ class SignpostMoveHints(Range):
     range_end = 61
     default = 20
 
-# Soon (tm), once this gets merged: https://github.com/ArchipelagoMW/Archipelago/pull/4317
-# we can add hints for other players locations as well
 class AddSignpostHintsToArchipelagoHints(Choice):
     """Choose if a signpost hint is added to the Archipelago hints upon reading the hint.
     Due to a limitation, only your own locations will be added as hints; your items in

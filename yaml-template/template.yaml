@@ -76,7 +76,7 @@ Banjo-Tooie:
   # Enter a list of jiggy requirements you want for each world unlock. Max values of each world are: 1,10,20,30,50,60,70,80,90
   custom_worlds: "1,4,8,14,20,28,36,45,55"
 
-  randomize_moves: 'true'       # Randomize Jamjar + Roysten + Amaze-O-Gaze Moves
+  randomize_bt_moves: 'true'       # Randomize Jamjar + Roysten + Amaze-O-Gaze Moves
 
   # Change how many notes it takes to use Jamjars' move silos. Requires Jamjars' movelist to be changed
   # 0 = Vanilla

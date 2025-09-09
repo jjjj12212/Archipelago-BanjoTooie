@@ -1,7 +1,8 @@
+import enum
 import re
 from typing import List, Union, TYPE_CHECKING
 from dataclasses import dataclass
-from BaseClasses import ItemClassification, Location, LocationProgressType
+from BaseClasses import ItemClassification, Location, LocationProgressType, CollectionState
 from .Options import HintClarity, AddSignpostHintsToArchipelagoHints
 from .Items import moves_table, bk_moves_table, progressive_ability_table
 from .Locations import (MumboTokenBoss_table, MumboTokenGames_table, MumboTokenJinjo_table, all_location_table,
@@ -52,6 +53,37 @@ class Hint:
                     return False
         return count == 1
 
+    class UniqueItemRequirement(enum.Enum):
+        # These are listed by priority of desiredness
+        REQUIRED_BY_PLAYER = 0,
+        REQUIRED_BY_MULTIWORLD = 1,
+        NOT_REQUIRED = 2,
+        NOT_UNIQUE = 3,
+
+    @property
+    def is_unique_required(self) -> UniqueItemRequirement:
+        if not self.one_of_a_kind:
+            return Hint.UniqueItemRequirement.NOT_UNIQUE
+
+        # Inspired from how DK64 does woth hints. It excludes the location with the
+        # unique progression item from the logic calculation,
+        # and checks to see if the seed of the Tooie player is still beatable without said item.
+        state = CollectionState(self.world.multiworld)
+        state.locations_checked.add(self.location)
+
+        # This is basically the end of Multiworld.can_beat_game.
+        for _ in state.sweep_for_advancements(None,
+                                            yield_each_sweep=True,
+                                            checked_locations=state.locations_checked):
+            # We can stop early if the entire multiworld is already beaten
+            if self.world.multiworld.has_beaten_game(state):
+                return Hint.UniqueItemRequirement.NOT_REQUIRED
+
+        # If we're here, not all seeds can be beaten, so it's required.
+        return Hint.UniqueItemRequirement.REQUIRED_BY_MULTIWORLD\
+            if self.world.multiworld.has_beaten_game(state, self.world.player)\
+            else Hint.UniqueItemRequirement.REQUIRED_BY_PLAYER
+
     def __format_location(self, capitalize: bool) -> str:
         if self.location.player == self.world.player:
             return f"{'Your' if capitalize else 'your'} {self.location.name}"
@@ -71,12 +103,20 @@ class Hint:
     @property
     def __cryptic_hint_text(self) -> str:
         formatted_location = self.__format_location(capitalize=True)
-
-        if self.one_of_a_kind:
+        unique_requirement = self.is_unique_required
+        if unique_requirement == Hint.UniqueItemRequirement.REQUIRED_BY_PLAYER:
+            return f"{formatted_location} is on the Wahay of the Duo."
+        if unique_requirement == Hint.UniqueItemRequirement.REQUIRED_BY_MULTIWORLD:
+            return f"{formatted_location} is on the Wahay of the Archipelago."
+        if unique_requirement == Hint.UniqueItemRequirement.NOT_REQUIRED:
             return f"{formatted_location} has a legendary one-of-a-kind item."
         if self.location.item.classification == ItemClassification.progression:
             return f"{formatted_location} has a wonderful item."
-        if self.location.item.classification == ItemClassification.progression_skip_balancing:
+        # Either skip balancing or deprioritised
+        if self.location.item.classification & ItemClassification.progression_skip_balancing\
+                == ItemClassification.progression_skip_balancing\
+            or self.location.item.classification & ItemClassification.progression_deprioritized\
+                == ItemClassification.progression_deprioritized:
             return f"{formatted_location} has a great item."
         if self.location.item.classification == ItemClassification.useful:
             return f"{formatted_location} has a good item."
@@ -85,7 +125,7 @@ class Hint:
         if self.location.item.classification == ItemClassification.trap:
             return f"{formatted_location} has a bad item."
 
-        # Not sure what actually fits in a multi-flag classification
+        # Not sure what actually fits in the remaining multi-flag classifications
         return f"{formatted_location} has a weiiiiiird item."
 
     @property
@@ -211,7 +251,10 @@ def generate_slow_locations_hints(world: "BanjoTooieWorld", hints: List[Hint]):
             return 20
         elif hint.location.item.classification == ItemClassification.progression:
             return 10
-        elif hint.location.item.classification == ItemClassification.progression_skip_balancing:
+        elif hint.location.item.classification & ItemClassification.progression_skip_balancing\
+                == ItemClassification.progression_skip_balancing\
+            or hint.location.item.classification & ItemClassification.progression_deprioritized\
+                == ItemClassification.progression_deprioritized:
             return 5
 
         return 1

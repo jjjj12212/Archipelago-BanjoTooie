@@ -128,21 +128,23 @@ class TestCrypticSignpostsHints(TestSignpostsHints):
             location = hinted_location.name
 
             classification_keywords = {
-                ItemClassification.progression: "wonderful",
-                ItemClassification.progression_skip_balancing: "great",
-                ItemClassification.useful: "good",
-                ItemClassification.filler: "useless",
+                ItemClassification.progression: ["wonderful"],
+                ItemClassification.progression_deprioritized_skip_balancing: ["great"],
+                ItemClassification.useful: ["good"],
+                ItemClassification.filler: ["useless"],
             }
 
             if hinted_location.item.advancement and all_item_table.get(hinted_location.item.name).qty == 1:
-                keyword = "legendary one-of-a-kind"
+                # There's no good way to test if a unique item is required to beat the seed, so either is fine.
+                keywords = ["legendary one-of-a-kind", "Wahay of the Duo", "Wahay of the Archipelago"]
             else:
-                keyword = classification_keywords[hinted_location.item.classification]
+                keywords = classification_keywords[hinted_location.item.classification]
 
 
             assert 'Your' in text
             assert location in text
-            assert keyword in text, f"Item {hinted_location.item.name} should be {keyword} but was hinted differently."
+            assert any([keyword in text for keyword in keywords]), f"Item {hinted_location.item.name}\
+                    should be one of these: {keywords} but was hinted differently."
             assert not hint_data.should_add_hint
 
 

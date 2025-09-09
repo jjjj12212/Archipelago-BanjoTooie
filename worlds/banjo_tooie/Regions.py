@@ -1724,7 +1724,7 @@ def connect_regions(self):
     region_JR = self.get_region(regionName.JR)
     region_JR.add_exits({regionName.JRU, regionName.JRWARP}, {
                             regionName.JRU: lambda state: rules.can_dive_in_JRL(state),
-                            regionName.JRWARP: lambda state: state.has(itemName.WARPJR1, self.player),})
+                            regionName.JRWARP: lambda state: state.has(itemName.WARPJR1, player),})
 
     region_JRU = self.get_region(regionName.JRU)
     region_JRU.add_exits({regionName.JRAT},
@@ -1763,7 +1763,7 @@ def connect_regions(self):
 
     region_JRWARP = self.get_region(regionName.JRWARP)
     region_JRWARP.add_exits({regionName.JR, regionName.JRAT, regionName.JRSS, regionName.JRLC, regionName.JRBFC},
-                        {regionName.JR: lambda state: state.has(itemName.WARPJR1),
+                        {regionName.JR: lambda state: state.has(itemName.WARPJR1, player),
                          regionName.JRAT: lambda state: state.has(itemName.WARPJR2, player) and rules.air_pit_from_jrl_warp_pads(state),
                          regionName.JRSS: lambda state: state.has(itemName.WARPJR3, player) and rules.air_pit_from_jrl_warp_pads(state),
                          regionName.JRLC: lambda state: state.has(itemName.WARPJR5, player) and rules.air_pit_from_jrl_warp_pads(state),
@@ -1787,7 +1787,7 @@ def connect_regions(self):
                         })
 
     region_TL = self.get_region(regionName.TL)
-    region_TL.add_exits({regionName.TL_HATCH, regionName.TLTOP, regionName.TLWARP, regionName.WW, regionName.CHUFFY, regionName.WWA51NESTS},
+    region_TL.add_exits({regionName.TL_HATCH, regionName.TLTOP, regionName.TLWARP, regionName.WW, regionName.CHUFFY, regionName.WWA51NESTS, regionName.TLIMTOP},
                         {regionName.WW: lambda state: rules.TDL_to_WW(state),
                          regionName.CHUFFY: lambda state: rules.tdl_to_chuffy(state),
                          regionName.TL_HATCH: lambda state: rules.tdl_to_hatch(state),
@@ -2085,18 +2085,19 @@ def connect_regions(self):
 
                 if source == regionName.MTBOSS:
                     leave_terry_rule = lambda state: rules.breegull_blaster(state)
-                    terry_nest_region.add_exits({boss_entrance}, {source: leave_terry_rule})
+                    terry_nest_region.add_exits({boss_entrance}, {boss_entrance: leave_terry_rule})
 
                 elif source ==regionName.GMBOSS:
                     leave_terry_rule = lambda state: rules.train_raised(state)
-                    terry_nest_region.add_exits({boss_entrance}, {source: leave_terry_rule})
+                    terry_nest_region.add_exits({boss_entrance}, {boss_entrance: leave_terry_rule})
                     add_indirect_condition(IndirectTransitionCondition(boss_room, boss_entrance, [regionName.GM]))
                 else:
                     terry_nest_region.add_exits({boss_entrance}, {})
 
     static_indirect_transition_conditions: List[IndirectTransitionCondition] = [
         IndirectTransitionCondition(regionName.MT, regionName.MTKS, [regionName.MTJSG]),
-        IndirectTransitionCondition(regionName.GIO, regionName.GIF, [regionName.GI4]),
+        IndirectTransitionCondition(regionName.GIO, regionName.GIF, [regionName.GI2, regionName.GI4]),
+        IndirectTransitionCondition(regionName.GIOB, regionName.GIF, [regionName.GI2, regionName.GI4]),
         IndirectTransitionCondition(regionName.HP, regionName.JR, [regionName.CC]),
         IndirectTransitionCondition(regionName.JRSS, regionName.JRAT, [regionName.JRAT]),
         IndirectTransitionCondition(regionName.JRSS, regionName.JRLC, [regionName.JRAT]),
