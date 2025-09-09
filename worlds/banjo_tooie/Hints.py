@@ -71,7 +71,7 @@ class Hint:
         state = CollectionState(self.world.multiworld)
         state.locations_checked.add(self.location)
 
-        # This is basically the end of Multiworld.can_beat_game.
+        # This is basically the end of Multiworld.can_beat_game, but more granular
         for _ in state.sweep_for_advancements(None,
                                             yield_each_sweep=True,
                                             checked_locations=state.locations_checked):
