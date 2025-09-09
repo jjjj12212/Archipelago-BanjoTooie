@@ -4,6 +4,11 @@
     - Wahay of the Archipelago: A unique item that's required for someone else to beat their seed.
   - Logic fixes
     - Fixed a bug where the logic thought you could go from Terry's nest to Targitzan's Temple or Chuffy when you actually couldn't.
+    - Styrac family checks, icy side train station checks: now check if you can raise the train.
+    - Fixed a bug where the code that looked to see if warping to Mumbo's warp pad or Wumba's warp pad in TDL said it was never in logic.
+    - Removed the solo Kazooie movement to get to the GGM water storage jinjo tank from easy tricks logic, because it's too hard.
+    - Removed flying as BK to the high jump event from easy tricks. Added flying to it as the bee in all logics except intended.
+  - Fixed (too?) many styling issues in the code.
 
 # 4.9
   - New Archipelago 0.6.3 features
