@@ -1,7 +1,7 @@
 # 4.10
   - New cryptic hints
     - Wahay of the Duo: A unique item that's required to beat your seed.
-    - Wahay of the Archipelago: A unique item that's required for someone else to beat their seed.
+    - Wahay of the Archipelago: A unique item that's required by someone else to beat their seed.
   - Logic fixes
     - Fixed a bug where the logic thought you could go from Terry's nest to Targitzan's Temple or Chuffy when you actually couldn't.
     - Styrac family checks, icy side train station checks: now check if you can raise the train.
