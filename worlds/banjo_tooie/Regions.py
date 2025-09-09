@@ -1145,10 +1145,10 @@ NEST_REGIONS: Dict[str, List[str]] = {
       locationName.NESTHP39,
       locationName.NESTHP40,
     ],
-    regionName.HPFBOSS:[
+    regionName.HPFBOSS: [
         locationName.NESTHP23,
     ],
-    regionName.HPIBOSS:[
+    regionName.HPIBOSS: [
       locationName.NESTHP24,
     ],
     regionName.CC:      [
@@ -1602,7 +1602,6 @@ def create_region(multiworld, player: int, active_locations, name: str, location
     return ret
 
 def connect_regions(self):
-    multiworld = self.multiworld
     player = self.player
     rules = BanjoTooieRules(self)
 
@@ -1610,7 +1609,7 @@ def connect_regions(self):
     region_menu.add_exits({regionName.SM})
 
     region_SM = self.get_region(regionName.SM)
-    region_SM.add_exits({regionName.IOHJV, regionName.SMGL},{
+    region_SM.add_exits({regionName.IOHJV, regionName.SMGL}, {
                           regionName.IOHJV: lambda state: rules.canGetPassedKlungo(state),
                           regionName.SMGL: lambda state: rules.SM_to_GL(state)
                         })
