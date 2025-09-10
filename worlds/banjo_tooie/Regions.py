@@ -1145,10 +1145,10 @@ NEST_REGIONS: Dict[str, List[str]] = {
       locationName.NESTHP39,
       locationName.NESTHP40,
     ],
-    regionName.HPFBOSS:[
+    regionName.HPFBOSS: [
         locationName.NESTHP23,
     ],
-    regionName.HPIBOSS:[
+    regionName.HPIBOSS: [
       locationName.NESTHP24,
     ],
     regionName.CC:      [
@@ -1528,15 +1528,15 @@ def create_regions(self):
         region_map[regionName.IOHPL].append(locationName.HONEYBR5)
 
     if self.options.skip_puzzles:
-        region_map[regionName.IOHWH].append(locationName.W1),
-        region_map[regionName.IOHWH].append(locationName.W2),
-        region_map[regionName.IOHWH].append(locationName.W3),
-        region_map[regionName.IOHWH].append(locationName.W4),
-        region_map[regionName.IOHWH].append(locationName.W5),
-        region_map[regionName.IOHWH].append(locationName.W6),
-        region_map[regionName.IOHWH].append(locationName.W7),
-        region_map[regionName.IOHWH].append(locationName.W8),
-        region_map[regionName.IOHWH].append(locationName.W9),
+        region_map[regionName.IOHWH].append(locationName.W1)
+        region_map[regionName.IOHWH].append(locationName.W2)
+        region_map[regionName.IOHWH].append(locationName.W3)
+        region_map[regionName.IOHWH].append(locationName.W4)
+        region_map[regionName.IOHWH].append(locationName.W5)
+        region_map[regionName.IOHWH].append(locationName.W6)
+        region_map[regionName.IOHWH].append(locationName.W7)
+        region_map[regionName.IOHWH].append(locationName.W8)
+        region_map[regionName.IOHWH].append(locationName.W9)
 
     if self.options.nestsanity:
         nest_map = copy.deepcopy(NEST_REGIONS)
@@ -1602,7 +1602,6 @@ def create_region(multiworld, player: int, active_locations, name: str, location
     return ret
 
 def connect_regions(self):
-    multiworld = self.multiworld
     player = self.player
     rules = BanjoTooieRules(self)
 
@@ -1610,7 +1609,7 @@ def connect_regions(self):
     region_menu.add_exits({regionName.SM})
 
     region_SM = self.get_region(regionName.SM)
-    region_SM.add_exits({regionName.IOHJV, regionName.SMGL},{
+    region_SM.add_exits({regionName.IOHJV, regionName.SMGL}, {
                           regionName.IOHJV: lambda state: rules.canGetPassedKlungo(state),
                           regionName.SMGL: lambda state: rules.SM_to_GL(state)
                         })
@@ -2086,11 +2085,11 @@ def connect_regions(self):
 
                 if source == regionName.MTBOSS:
                     leave_terry_rule = lambda state: rules.breegull_blaster(state)
-                    terry_nest_region.add_exits({boss_entrance}, {source: leave_terry_rule})
+                    terry_nest_region.add_exits({boss_entrance}, {boss_entrance: leave_terry_rule})
 
                 elif source ==regionName.GMBOSS:
                     leave_terry_rule = lambda state: rules.train_raised(state)
-                    terry_nest_region.add_exits({boss_entrance}, {source: leave_terry_rule})
+                    terry_nest_region.add_exits({boss_entrance}, {boss_entrance: leave_terry_rule})
                     add_indirect_condition(IndirectTransitionCondition(boss_room, boss_entrance, [regionName.GM]))
                 else:
                     terry_nest_region.add_exits({boss_entrance}, {})

@@ -65,8 +65,8 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_to_id"]
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 script_version: int = 5
-version: str = "V4.9"
-patch_md5: str = "641211b87e10ff64ed869a7b2479b9e4"
+version: str = "V4.10"
+patch_md5: str = "95febeba5703bff516eef70ec86ea002"
 bt_options = settings.get_settings().banjo_tooie_options
 program = None
 
