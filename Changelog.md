@@ -1,3 +1,7 @@
+# 4.10.1
+  - Fixed a bug where move hints would only select locations in your own world
+  - Added proper logic to fruities (WW slot machines)
+
 # 4.10
   - New cryptic hints
     - Wahay of the Duo: A unique item that's required to beat your seed.

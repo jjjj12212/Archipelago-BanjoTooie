@@ -461,7 +461,7 @@ def get_location_by_name(world: "BanjoTooieWorld", name: str) -> Location | None
 
 
 def get_all_hintable_locations(world: "BanjoTooieWorld") -> List[Location]:
-    return [location for location in world.get_locations() if should_consider_location(location)]
+    return [location for location in world.multiworld.get_locations() if should_consider_location(location)]
 
 
 def get_player_hintable_locations(world: "BanjoTooieWorld") -> List[Location]:
