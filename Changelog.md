@@ -1,6 +1,7 @@
 # 4.10.1
   - Fixed a bug where move hints would only select locations in your own world
-  - Progression items that are not unique can now be show as Wahay of the Duo/Archipelago if it's logcially hard-required.
+  - Progression items that are not unique can now be show as Wahay of the Duo/Archipelago if it's logcially hard-required
+  - Cryptic hint generation has been sped up
   - Added proper logic to fruities (WW slot machines)
 
 # 4.10
