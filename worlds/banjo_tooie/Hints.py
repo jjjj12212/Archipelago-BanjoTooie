@@ -1,6 +1,6 @@
 import enum
 import re
-from typing import List, Union, TYPE_CHECKING
+from typing import Dict, List, Union, TYPE_CHECKING
 from dataclasses import dataclass
 from BaseClasses import ItemClassification, Location, LocationProgressType, CollectionState
 from .Options import HintClarity, AddSignpostHintsToArchipelagoHints
@@ -23,8 +23,20 @@ class HintData:
 
 
 class Hint:
+    @dataclass(eq=True, frozen=True)
+    class ItemRequirementCacheKey:
+        item_name: str
+        player: int
+
+    class ItemRequirement(enum.Enum):
+        REQUIRED_BY_PLAYER = 0,
+        REQUIRED_BY_MULTIWORLD = 1,
+        NOT_REQUIRED = 2
+
     world: "BanjoTooieWorld"
-    location: Location
+
+    # Keeps track of if items are required to beat the seed, for the cryptic hints.
+    required_item_cache: Dict[ItemRequirementCacheKey, ItemRequirement] = dict()
 
     def __init__(self, world: "BanjoTooieWorld", location: Location):
         self.world = world
@@ -53,23 +65,24 @@ class Hint:
                     return False
         return count == 1
 
-    class UniqueItemRequirement(enum.Enum):
-        # These are listed by priority of desiredness
-        REQUIRED_BY_PLAYER = 0,
-        REQUIRED_BY_MULTIWORLD = 1,
-        NOT_REQUIRED = 2,
-        NOT_UNIQUE = 3,
 
     @property
-    def is_unique_required(self) -> UniqueItemRequirement:
-        if not self.one_of_a_kind:
-            return Hint.UniqueItemRequirement.NOT_UNIQUE
+    def is_required(self) -> ItemRequirement:
+        if not self.location.item.advancement:
+            return Hint.ItemRequirement.NOT_REQUIRED
+
+        entry = Hint.ItemRequirementCacheKey(self.location.item.name, self.location.item.player)
+
+        # The same item for the same player was already calculated, so no need to calculate it again.
+        if entry in Hint.required_item_cache.keys():
+            return Hint.required_item_cache[entry]
 
         # Inspired from how DK64 does woth hints. It excludes the location with the
         # unique progression item from the logic calculation,
         # and checks to see if the seed of the Tooie player is still beatable without said item.
         state = CollectionState(self.world.multiworld)
         state.locations_checked.add(self.location)
+        item_required: Hint.ItemRequirement|None = None
 
         # This is basically the end of Multiworld.can_beat_game, but more granular
         for _ in state.sweep_for_advancements(None,
@@ -77,12 +90,16 @@ class Hint:
                                             checked_locations=state.locations_checked):
             # We can stop early if the entire multiworld is already beaten
             if self.world.multiworld.has_beaten_game(state):
-                return Hint.UniqueItemRequirement.NOT_REQUIRED
+                item_required = Hint.ItemRequirement.NOT_REQUIRED
 
-        # If we're here, not all seeds can be beaten, so it's required.
-        return Hint.UniqueItemRequirement.REQUIRED_BY_MULTIWORLD\
-            if self.world.multiworld.has_beaten_game(state, self.world.player)\
-            else Hint.UniqueItemRequirement.REQUIRED_BY_PLAYER
+        if item_required is None:
+            # If we're here, not all seeds can be beaten, so it's required.
+            item_required = Hint.ItemRequirement.REQUIRED_BY_MULTIWORLD\
+                if self.world.multiworld.has_beaten_game(state, self.world.player)\
+                else Hint.ItemRequirement.REQUIRED_BY_PLAYER
+
+        Hint.required_item_cache[entry] = item_required
+        return item_required
 
     def __format_location(self, capitalize: bool) -> str:
         if self.location.player == self.world.player:
@@ -103,21 +120,22 @@ class Hint:
     @property
     def __cryptic_hint_text(self) -> str:
         formatted_location = self.__format_location(capitalize=True)
-        unique_requirement = self.is_unique_required
-        if unique_requirement == Hint.UniqueItemRequirement.REQUIRED_BY_PLAYER:
-            return f"{formatted_location} is on the Wahay of the Duo."
-        if unique_requirement == Hint.UniqueItemRequirement.REQUIRED_BY_MULTIWORLD:
-            return f"{formatted_location} is on the Wahay of the Archipelago."
-        if unique_requirement == Hint.UniqueItemRequirement.NOT_REQUIRED:
-            return f"{formatted_location} has a legendary one-of-a-kind item."
-        if self.location.item.classification == ItemClassification.progression:
-            return f"{formatted_location} has a wonderful item."
-        # Either skip balancing or deprioritised
-        if self.location.item.classification & ItemClassification.progression_skip_balancing\
-                == ItemClassification.progression_skip_balancing\
-            or self.location.item.classification & ItemClassification.progression_deprioritized\
-                == ItemClassification.progression_deprioritized:
-            return f"{formatted_location} has a great item."
+        if self.location.item.advancement:
+            requirement = self.is_required
+            if requirement == Hint.ItemRequirement.REQUIRED_BY_PLAYER:
+                return f"{formatted_location} is on the Wahay of the Duo."
+            if requirement == Hint.ItemRequirement.REQUIRED_BY_MULTIWORLD:
+                return f"{formatted_location} is on the Wahay of the Archipelago."
+            if self.one_of_a_kind:
+                return f"{formatted_location} has a legendary one-of-a-kind item."
+            if self.location.item.classification == ItemClassification.progression:
+                return f"{formatted_location} has a wonderful item."
+            # Either skip balancing or deprioritised
+            if self.location.item.classification & ItemClassification.progression_skip_balancing\
+                    == ItemClassification.progression_skip_balancing\
+                or self.location.item.classification & ItemClassification.progression_deprioritized\
+                    == ItemClassification.progression_deprioritized:
+                return f"{formatted_location} has a great item."
         if self.location.item.classification == ItemClassification.useful:
             return f"{formatted_location} has a good item."
         if self.location.item.classification == ItemClassification.filler:
@@ -461,7 +479,7 @@ def get_location_by_name(world: "BanjoTooieWorld", name: str) -> Location | None
 
 
 def get_all_hintable_locations(world: "BanjoTooieWorld") -> List[Location]:
-    return [location for location in world.get_locations() if should_consider_location(location)]
+    return [location for location in world.multiworld.get_locations() if should_consider_location(location)]
 
 
 def get_player_hintable_locations(world: "BanjoTooieWorld") -> List[Location]:

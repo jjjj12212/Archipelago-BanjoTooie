@@ -7556,18 +7556,14 @@ class BanjoTooieRules:
         return state.can_reach_region(regionName.WW, self.player) and (
                     self.has_explosives(state)\
                     or self.humbaWW(state)\
+                    or self.bill_drill(state)\
+                    or self.mumboWW(state) and self.escape_inferno_as_mumbo(state)\
                     or self.ice_eggs(state) and ( # Freezing these enemies severely weakens them.
-                        self.blue_eggs(state)\
-                        or self.fire_eggs(state)\
-                        or self.grenade_eggs(state)\
-                        or self.clockwork_eggs(state)\
-                        or self.beak_barge(state)\
-                        or self.roll(state)\
+                        self.beak_barge(state)\
                         or self.air_rat_a_tat_rap(state)\
                         or self.ground_rat_a_tat_rap(state)\
                         or self.beak_buster(state)\
-                        or self.breegull_bash(state)\
-                        or self.wonderwing(state)
+                        or self.wing_whack(state)
                     )
                )
 
