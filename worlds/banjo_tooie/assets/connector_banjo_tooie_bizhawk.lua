@@ -6223,7 +6223,13 @@ function BTHACK:getPCHintPointer()
 end
 
 function BTHACK:getPCDeath()
-    return mainmemory.readbyte(self:getPCPointer() + self.pc_death_us);
+    local pcptr = self:getPCPointer()
+    if pcptr ~= nil
+    then
+        return mainmemory.readbyte(self:getPCPointer() + self.pc_death_us);
+    else
+        return BTHACK:getNLocalDeath()
+    end
 end
 
 function BTHACK:getPCTag()
@@ -6264,7 +6270,12 @@ function BTHACK:getNPointer()
 end
 
 function BTHACK:getNLocalDeath()
-   return mainmemory.readbyte(BTHACK:getNPointer() + self.n64_death_us);
+    local ptptr = BTHACK:getNPointer()
+    if ptptr ~= nil then
+        return mainmemory.readbyte(BTHACK:getNPointer() + self.n64_death_us);
+    else
+        return
+    end
 end
 
 function BTHACK:getNLocalTag()
