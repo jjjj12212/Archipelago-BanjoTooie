@@ -2,6 +2,7 @@ from ..Names import itemName
 from ..Options import OpenHag1, VictoryCondition
 from . import BanjoTooieTestBase
 
+
 class TestProgressionJiggies(BanjoTooieTestBase):
     options = {
         "jingaling_jiggy": "false"
@@ -14,6 +15,7 @@ class TestProgressionJiggies(BanjoTooieTestBase):
             and item.advancement
         ])
 
+
 class TestOpenHag1WithHag1(TestProgressionJiggies):
     options = {
         **TestProgressionJiggies.options,
@@ -23,6 +25,7 @@ class TestOpenHag1WithHag1(TestProgressionJiggies):
 
     def test_progression_jiggies(self):
         self._test_progression_jiggies(55)
+
 
 class TestOpenHag1WithBossesHag1(TestProgressionJiggies):
     options = {
@@ -34,6 +37,7 @@ class TestOpenHag1WithBossesHag1(TestProgressionJiggies):
     def test_progression_jiggies(self):
         self._test_progression_jiggies(55)
 
+
 class TestOpenHag1WithBosses(TestProgressionJiggies):
     options = {
         **TestProgressionJiggies.options,
@@ -43,6 +47,7 @@ class TestOpenHag1WithBosses(TestProgressionJiggies):
 
     def test_progression_jiggies(self):
         self._test_progression_jiggies(55)
+
 
 class TestClosedHag1WithHag1(TestProgressionJiggies):
     options = {
@@ -54,6 +59,7 @@ class TestClosedHag1WithHag1(TestProgressionJiggies):
     def test_progression_jiggies(self):
         self._test_progression_jiggies(70)
 
+
 class TestClosedHag1WithBossesHag1(TestProgressionJiggies):
     options = {
         **TestProgressionJiggies.options,
@@ -63,6 +69,7 @@ class TestClosedHag1WithBossesHag1(TestProgressionJiggies):
 
     def test_progression_jiggies(self):
         self._test_progression_jiggies(55)
+
 
 class TestClosedHag1WithBosses(TestProgressionJiggies):
     options = {
