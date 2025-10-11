@@ -16,7 +16,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 5
-local BT_VERSION = "V4.10.1"
+local BT_VERSION = "V4.10.2"
 local PLAYER = ""
 local SEED = 0
 
@@ -6176,6 +6176,7 @@ function BTHACK:setWorldEntrance(currentWorldId, newWorldId, entranceId, current
     then
         return false
     end
+
     local world_index = self.world_index * self.exit_map_struct_size
     self.world_index = self.world_index + 1
     mainmemory.write_u16_be(exit_maps_ptr + world_index + self.exit_on_map, currentMap)
@@ -6183,15 +6184,25 @@ function BTHACK:setWorldEntrance(currentWorldId, newWorldId, entranceId, current
     mainmemory.write_u16_be(exit_maps_ptr + world_index + self.exit_to_map, newWorldId)
     mainmemory.writebyte(exit_maps_ptr + world_index + self.exit_to_exit, newEntanceId)
     mainmemory.writebyte(exit_maps_ptr + world_index + self.exit_og_exit, entranceId)
-
+    local new_value
+    print(access)
     for _, move_id in pairs(access)
     do
         local offset_byte = math.floor(move_id / 8)
         local bitbit = math.fmod(move_id, 8)
         local currentValue = mainmemory.readbyte(exit_maps_ptr + world_index + self.exit_access_rules + offset_byte);
-        local new_value = bit.set(currentValue, bitbit)
+        new_value = bit.set(currentValue, bitbit)
         mainmemory.writebyte(exit_maps_ptr + world_index + self.exit_access_rules + offset_byte, new_value)
     end
+    if new_value == nil
+    then
+        for offset_byte=0, self.exit_access_rules_size-1, 1
+        do
+            mainmemory.writebyte(exit_maps_ptr + world_index + self.exit_access_rules + offset_byte, 0)
+        end
+    end
+    print(exit_maps_ptr + world_index + self.exit_access_rules)
+    print("Access for " .. tostring(currentWorldId) .. " access is " ..tostring(new_value))
     return true
 end
 

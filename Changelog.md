@@ -1,3 +1,8 @@
+# 4.10.2
+  - fix loading zone requirements being set at the wrong locations randomly
+  - If Skip Puzzles is disabled, Throw option error only if the default world requirements has been modified
+  - include archipelago.json so our version # will appear in future ap generations.
+
 # 4.10.1
   - Fixed a bug where move hints would only select locations in your own world
   - Progression items that are not unique can now be show as Wahay of the Duo/Archipelago if it's logcially hard-required

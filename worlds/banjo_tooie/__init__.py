@@ -14,7 +14,7 @@ from .Locations import LocationData, all_location_table, MTLoc_Table, GMLoc_tabl
     CheatoRewardsLoc_table, JinjoRewardsLoc_table, HoneyBRewardsLoc_table
 from .Regions import create_regions, connect_regions
 from .Options import BanjoTooieOptions, EggsBehaviour, JamjarsSiloCosts, LogicType, ProgressiveEggAim, \
-    ProgressiveWaterTraining, RandomizeBKMoveList, VictoryCondition, bt_option_groups
+    ProgressiveWaterTraining, RandomizeBKMoveList, VictoryCondition, bt_option_groups, WorldRequirements
 from .Rules import BanjoTooieRules
 from .Names import itemName, locationName, regionName
 from .WorldOrder import WorldRandomize
@@ -87,7 +87,7 @@ class BanjoTooieWorld(World):
     """
 
     game = "Banjo-Tooie"
-    version = "V4.10.1"
+    version = "V4.10.2"
     options: BanjoTooieOptions
     settings: BanjoTooieSettings
     settings_key = "banjo_tooie_options"
@@ -640,6 +640,8 @@ class BanjoTooieWorld(World):
         if not self.options.open_hag1\
                 and self.options.victory_condition == VictoryCondition.option_wonderwing_challenge:
             self.options.open_hag1.value = True
+        if self.options.world_requirements != WorldRequirements.option_normal and not self.options.skip_puzzles:
+            raise OptionError("Your world requirements needs to be set to normal if you are not going to skip puzzles.")
 
     def choose_starter_egg(self) -> None:
         if self.options.egg_behaviour == EggsBehaviour.option_random_starting_egg or \
