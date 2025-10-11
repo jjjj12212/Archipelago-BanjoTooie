@@ -157,8 +157,8 @@ Banjo-Tooie:
 
   skip_puzzles: 'true'        # you won't be able to utilize randomizing worlds / loading zones if this is disabled
   randomize_worlds: 'false'   # Changes the order in which levels open
-  randomize_world_entrance_loading_zone: 'false' # World Entrances will warp you to a different world. This only affects main entrances.
-  randomize_boss_loading_zone: 'false' # Boss loading zones will warp you to a different boss.
+  randomize_world_entrance_loading_zones: 'false' # World Entrances will warp you to a different world. This only affects main entrances.
+  randomize_boss_loading_zones: 'false' # Boss loading zones will warp you to a different boss.
 
   # The following gates are preopened: MT>TDL, MT>HFP, GGM>WW, WW>TDL
   # For MT>TDL only the gate accessed from TDL's side is opened and for GGM>WW the boulders are still unexploded

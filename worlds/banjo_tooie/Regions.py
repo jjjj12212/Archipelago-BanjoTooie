@@ -1651,13 +1651,15 @@ def connect_regions(self):
             regionName.MTPC,
             regionName.MTKS,
             regionName.TL_HATCH,
-            regionName.MTTT
+            regionName.TL,
+            regionName.MTTT,
         }, {
             regionName.MTWARP: lambda state: state.has(itemName.WARPMT1, player) or state.has(itemName.WARPMT2, player),
             regionName.MTJSG: lambda state: rules.MT_to_JSG(state),
             regionName.MTPC: lambda state: rules.prison_compound_open(state),
             regionName.MTKS: lambda state: rules.MT_to_KS(state),
-            regionName.TL_HATCH: lambda state: rules.jiggy_treasure_chamber(state),
+            regionName.TL_HATCH: lambda state: rules.mt_to_hatch_region(state),
+            regionName.TL: lambda state: rules.mt_tdl_backdoor(state),
             regionName.MTTT: lambda state: rules.breegull_blaster(state)
     })
 
@@ -1788,13 +1790,13 @@ def connect_regions(self):
 
     region_JRLC = self.get_region(regionName.JRLC)
     region_JRLC.add_exits({regionName.JRSS, regionName.JRBFC}, {
-                            regionName.JRSS: lambda state: rules.can_escape_from_locker_cavern(state),
-                            regionName.JRBFC: lambda state: rules.can_escape_from_locker_cavern(state),
+                            regionName.JRSS: lambda state: rules.locker_cavern_to_sunken_ship(state),
+                            regionName.JRBFC: lambda state: rules.locker_cavern_to_big_fish_cavern(state),
                             regionName.JRWARP: lambda state: state.has(itemName.WARPJR5, player)})
 
     region_JRBFC = self.get_region(regionName.JRBFC)
     region_JRBFC.add_exits({regionName.JRLC, regionName.JRSS2}, {
-                            regionName.JRLC: lambda state: rules.can_escape_big_fish_cave_from_water(state),
+                            regionName.JRLC: lambda state: rules.big_fish_cave_to_locker_cavern(state),
                             regionName.JRWARP: lambda state: state.has(itemName.WARPJR4, player)})
 
     region_JRWARP = self.get_region(regionName.JRWARP)
@@ -1916,7 +1918,7 @@ def connect_regions(self):
                         regionName.GIO: lambda state: rules.split_up(state) or self.options.open_gi_frontdoor,
                         regionName.GI2: lambda state: rules.F1_to_F2(state),
                         regionName.CHUFFY: lambda state: rules.gi_to_chuffy(state),
-                        regionName.GIWARP: lambda state: rules.split_up(state) and state.has(itemName.WARPGI1, player),
+                        regionName.GIWARP: lambda state: (rules.split_up(state) or self.options.open_gi_frontdoor) and state.has(itemName.WARPGI1, player),
                         })
 
     region_GIWARP = self.get_region(regionName.GIWARP)

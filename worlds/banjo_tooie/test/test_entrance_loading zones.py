@@ -1,4 +1,4 @@
-from ..Options import RandomizeWorldZones
+from ..Options import RandomizeWorldLoadingZones
 from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 
@@ -7,13 +7,13 @@ from . import BanjoTooieTestBase
 
 class TestRandomizedLoadingZones(BanjoTooieTestBase):
     options = {
-        "randomize_world_entrance_loading_zone": RandomizeWorldZones.option_true
+        "randomize_world_entrance_loading_zones": RandomizeWorldLoadingZones.option_true
     }
 
 
 class TestVanillaLoadingZones(BanjoTooieTestBase):
     options = {
-        "randomize_world_entrance_loading_zone": RandomizeWorldZones.option_false
+        "randomize_world_entrance_loading_zones": RandomizeWorldLoadingZones.option_false
     }
 
 

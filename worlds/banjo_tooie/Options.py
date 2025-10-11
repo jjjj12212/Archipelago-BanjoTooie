@@ -501,12 +501,12 @@ class RandomizeWorldOrder(Toggle):
     display_name = "Randomize World Order"
 
 
-class RandomizeWorldZones(Toggle):
+class RandomizeWorldLoadingZones(Toggle):
     """The main entrance of each world will warp you to a random world."""
     display_name = "Randomize World Entrances"
 
 
-class RandomizeBossZones(Toggle):
+class RandomizeBossLoadingZones(Toggle):
     """The entrance of each boss will warp you to a random boss."""
     display_name = "Randomize Bosses"
 
@@ -667,12 +667,10 @@ class SignpostMoveHints(Range):
 
 class AddSignpostHintsToArchipelagoHints(Choice):
     """Choose if a signpost hint is added to the Archipelago hints upon reading the hint.
-    Due to a limitation, only your own locations will be added as hints; your items in
-    other people worlds won't be hinted.
     Never: signpost hints are never added
     Progression: hints are added only if the hinted location has a progression item.
     Always: hints are always added.
-    This option only has an effect if signpost hints are enabled."""
+    This option only has an effect if signpost hints are enabled and the hint clarity is set to "clear"."""
     display_name = "Add Signpost Hints to Archipelago Hints"
     option_never = 0
     option_progression = 1
@@ -683,7 +681,7 @@ class AddSignpostHintsToArchipelagoHints(Choice):
 class HintClarity(Choice):
     """Choose how clear hints are.
     Cryptic: hints will only tell you how good the item is.
-    Clear: hints will tell you what the item is."""
+    Clear: hints will tell you what the item is, and to who it belongs."""
     display_name = "Hint Clarity"
     option_cryptic = 0
     option_clear = 1
@@ -769,8 +767,8 @@ class BanjoTooieOptions(PerGameCommonOptions):
     open_silos: OpenSilos
     skip_puzzles: SkipPuzzles
     randomize_worlds: RandomizeWorldOrder
-    randomize_world_entrance_loading_zone: RandomizeWorldZones
-    randomize_boss_loading_zone: RandomizeBossZones
+    randomize_world_entrance_loading_zones: RandomizeWorldLoadingZones
+    randomize_boss_loading_zones: RandomizeBossLoadingZones
     backdoors: Backdoors
     open_gi_frontdoor: GIFrontDoor
 
@@ -866,8 +864,8 @@ bt_option_groups: List[OptionGroup] = [
         OpenSilos,
         SkipPuzzles,
         RandomizeWorldOrder,
-        RandomizeWorldZones,
-        RandomizeBossZones,
+        RandomizeWorldLoadingZones,
+        RandomizeBossLoadingZones,
         Backdoors,
         GIFrontDoor,
     ]),

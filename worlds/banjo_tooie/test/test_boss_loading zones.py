@@ -1,4 +1,4 @@
-from ..Options import RandomizeBossZones
+from ..Options import RandomizeBossLoadingZones
 from .test_logic import EasyTricksLogic, GlitchesLogic, HardTricksLogic, IntendedLogic
 from . import BanjoTooieTestBase
 
@@ -7,13 +7,13 @@ from . import BanjoTooieTestBase
 
 class TestRandomizedLoadingZones(BanjoTooieTestBase):
     options = {
-        "randomize_boss_loading_zone": RandomizeBossZones.option_true
+        "randomize_boss_loading_zones": RandomizeBossLoadingZones.option_true
     }
 
 
 class TestVanillaLoadingZones(BanjoTooieTestBase):
     options = {
-        "randomize_boss_loading_zone": RandomizeBossZones.option_false
+        "randomize_boss_loading_zones": RandomizeBossLoadingZones.option_false
     }
 
 

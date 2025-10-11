@@ -1,7 +1,20 @@
 # 4.10.2
+  - yaml changes:
+    - randomize_world_entrance_loading_zones, randomize_boss_loading_zones: now take an S at the end of "zones".
   - fix loading zone requirements being set at the wrong locations randomly
   - If Skip Puzzles is disabled, Throw option error only if the default world requirements has been modified
-  - include archipelago.json so our version # will appear in future ap generations.
+  - include archipelago.json so our version # will appear in future ap generations (AP 0.6.4). You can still use this apworld in 0.6.3.
+  - Reworded the description of hint options
+  - Removed a cache for cryptic hint location. This cache made it so that every copy of a progression item was considered equally important, which was wrong.
+  - Logic fixes:
+    - MT to TDL backdoor: Fixed a bug where the logic thought it was done through the door near the hatch silo
+    - Ancient Swimming Baths Cheato Page: Fixed some nonsense with hard tricks logic, and added sack pack + tall jump for glitched logic.
+    - JRL Pipe signpost: remade the solo Kazooie logic
+    - JRL Alcove Jinjo: if using Pack Whack to get it, easy tricks also needs tall jump
+    - Going from locker cavern to Big Fish Cave (and vice versa): Removed using the atlantis warp pad to gain air.
+    - GI Floor 1 Warp pad: the warp pad is now accessible is the front door is pre-opened.
+    - GI Floor 3 Honeycomb: Removed pack whack as a way to get to it, and added moves for Kazooie to break the box.
+    - HFP Colosseum Split Up jiggy: added tall jump if doing the slit clip glitch
 
 # 4.10.1
   - Fixed a bug where move hints would only select locations in your own world

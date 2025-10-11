@@ -23,10 +23,6 @@ class HintData:
 
 
 class Hint:
-    @dataclass(eq=True, frozen=True)
-    class ItemRequirementCacheKey:
-        item_name: str
-        player: int
 
     class ItemRequirement(enum.Enum):
         REQUIRED_BY_PLAYER = 0,
@@ -34,9 +30,6 @@ class Hint:
         NOT_REQUIRED = 2
 
     world: "BanjoTooieWorld"
-
-    # Keeps track of if items are required to beat the seed, for the cryptic hints.
-    required_item_cache: Dict[ItemRequirementCacheKey, ItemRequirement] = dict()
 
     def __init__(self, world: "BanjoTooieWorld", location: Location):
         self.world = world
@@ -70,12 +63,6 @@ class Hint:
         if not self.location.item.advancement:
             return Hint.ItemRequirement.NOT_REQUIRED
 
-        entry = Hint.ItemRequirementCacheKey(self.location.item.name, self.location.item.player)
-
-        # The same item for the same player was already calculated, so no need to calculate it again.
-        if entry in Hint.required_item_cache.keys():
-            return Hint.required_item_cache[entry]
-
         # Inspired from how DK64 does woth hints. It excludes the location with the
         # unique progression item from the logic calculation,
         # and checks to see if the seed of the Tooie player is still beatable without said item.
@@ -99,7 +86,6 @@ class Hint:
                 if self.world.multiworld.has_beaten_game(state, self.world.player)\
                 else Hint.ItemRequirement.REQUIRED_BY_PLAYER
 
-        Hint.required_item_cache[entry] = item_required
         return item_required
 
     def __format_location(self, capitalize: bool) -> str:
