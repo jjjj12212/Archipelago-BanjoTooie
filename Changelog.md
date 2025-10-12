@@ -6,6 +6,7 @@
   - include archipelago.json so our version # will appear in future ap generations (AP 0.6.4). You can still use this apworld in 0.6.3.
   - Reworded the description of hint options
   - Removed a cache for cryptic hint location. This cache made it so that every copy of a progression item was considered equally important, which was wrong.
+  - If Token Hunt Length is greater than what is available in the pool, Token hunt length will require ALL tokens instead of stopping generation.
   - Logic fixes:
     - MT to TDL backdoor: Fixed a bug where the logic thought it was done through the door near the hatch silo
     - Ancient Swimming Baths Cheato Page: Fixed some nonsense with hard tricks logic, and added sack pack + tall jump for glitched logic.

@@ -578,9 +578,7 @@ class BanjoTooieWorld(World):
                 raise OptionError("Randomize Notes, signposts or nestsanity is required for Randomize BK Moves.")
         if self.options.victory_condition == VictoryCondition.option_token_hunt:
             if self.options.token_hunt_length > self.options.tokens_in_pool:
-                raise OptionError(
-                    "You cannot set your Token Hunt Length greater that what you have allowed in the pool."
-                )
+                self.options.token_hunt_length = self.options.tokens_in_pool
             if self.options.tokens_in_pool > 15\
                     and not self.options.randomize_signposts\
                     and not self.options.nestsanity:
