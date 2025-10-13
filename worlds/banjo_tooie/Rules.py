@@ -1018,19 +1018,28 @@ class BanjoTooieRules:
                 (self.flap_flip(state) or self.slightly_elevated_ledge(state)) and\
                   ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.talon_trot(state)) or self.MT_flight_pad(state))
         elif self.easy_tricks_logic(state):
-            logic = (self.flap_flip(state) or self.slightly_elevated_ledge(state))\
+            logic = (self.flap_flip(state)
+                        or self.tall_jump(state) and (self.grip_grab(state) or self.beak_buster(state))
+                        or self.talon_trot(state) and self.flutter(state) and (self.grip_grab(state) or self.beak_buster(state))
+                    )\
                     and ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state) and self.talon_trot(state))\
                         or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state))\
                         or state.can_reach_region(regionName.TL_HATCH, self.player))\
                     and (self.MT_flight_pad(state) and self.can_shoot_any_egg(state) or self.egg_aim(state))
         elif self.hard_tricks_logic(state):
-            logic = (self.flap_flip(state) or self.slightly_elevated_ledge(state))\
+            logic = (self.flap_flip(state)
+                        or self.tall_jump(state) and (self.grip_grab(state) or self.beak_buster(state))
+                        or self.talon_trot(state) and self.flutter(state) and (self.grip_grab(state) or self.beak_buster(state))
+                    )\
                     and ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state) and self.talon_trot(state))\
                         or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state))\
                         or state.can_reach_region(regionName.TL_HATCH, self.player))\
                     and (self.MT_flight_pad(state) and self.can_shoot_any_egg(state) or self.egg_aim(state))
         elif self.glitches_logic(state):
-            logic = (self.flap_flip(state) or self.slightly_elevated_ledge(state))\
+            logic = (self.flap_flip(state)
+                        or self.tall_jump(state) and (self.grip_grab(state) or self.beak_buster(state))
+                        or self.talon_trot(state) and self.flutter(state) and (self.grip_grab(state) or self.beak_buster(state))
+                    )\
                     and ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state) and self.talon_trot(state))\
                         or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state))\
                         or state.can_reach_region(regionName.TL_HATCH, self.player))\

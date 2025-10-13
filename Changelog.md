@@ -9,6 +9,7 @@
   - If Token Hunt Length is greater than what is available in the pool, Token hunt length will require ALL tokens instead of stopping generation.
   - Logic fixes:
     - MT to TDL backdoor: Fixed a bug where the logic thought it was done through the door near the hatch silo
+    - Treasure Chamber Jiggy: Removed talon trot + air rat + beak buster as a way to reach the relic
     - Ancient Swimming Baths Cheato Page: Fixed some nonsense with hard tricks logic, and added sack pack + tall jump for glitched logic.
     - JRL Pipe signpost: remade the solo Kazooie logic
     - JRL Alcove Jinjo: if using Pack Whack to get it, easy tricks also needs tall jump
