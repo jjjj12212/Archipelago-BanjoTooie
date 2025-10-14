@@ -12,8 +12,8 @@ class WorldRequirementTest(BanjoTooieTestBase):
         assert list(self.world.world_requirements.values()) == self.expected_world_costs
 
     def test_jiggies(self) -> None:
-        expected_progression_jiggies = max(self.expected_world_costs)
-        expected_useful_jiggies = ceil((90 - expected_progression_jiggies) / 2)
+        expected_progression_jiggies = min(max(self.expected_world_costs) + 5, 90)
+        expected_useful_jiggies = max(0, ceil((90 - expected_progression_jiggies - 5) / 2))
 
         assert sum(
             1 for item in self.multiworld.itempool

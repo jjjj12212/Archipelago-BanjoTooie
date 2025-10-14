@@ -1,7 +1,7 @@
 from math import ceil
 from Options import OptionError
 import typing
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, List
 import warnings, settings
 from dataclasses import asdict
 
@@ -308,13 +308,21 @@ class BanjoTooieWorld(World):
             self.get_location(locationName.JIGGYIH10).place_locked_item(self.create_item(itemName.JIGGY))
             self.kingjingalingjiggy = True
 
-        progression_jiggies = max(self.world_requirements.values())
+        last_level_requirement = max(self.world_requirements.values())
         if not self.options.open_hag1 and self.options.victory_condition == VictoryCondition.option_hag1:
-            progression_jiggies = max(progression_jiggies, 70)
+            last_level_requirement = max(last_level_requirement, 70)
 
-        useful_jiggies, filler_jiggies = \
-            self.calculate_useful_filler(all_item_table[itemName.JIGGY].qty, progression_jiggies)
+        # Buffer of 5 progression so that cryptic hints do not consider every jiggy as required,
+        # and so that the spoiler log does not list the absolute worst jiggies as
+        # part of the playthrough.
+        progression_jiggies = min(last_level_requirement + 5, 90)
 
+        # Buffer that is not considered in logic to make the generation faster while making the seed easier.
+        useful_jiggies = ceil((90 - progression_jiggies - 5)/2)\
+            if self.options.replace_extra_jiggies\
+            else 90 - progression_jiggies
+
+        # Some progression jiggies can be placed as locked items, so we don't add them to the pool.
         if self.kingjingalingjiggy:
             progression_jiggies -= 1
         if not self.options.randomize_jinjos:
@@ -331,11 +339,6 @@ class BanjoTooieWorld(World):
         itempool += [
             self.create_item(itemName.JIGGY_AS_USEFUL) for i in range(useful_jiggies)
         ]
-        if not self.options.replace_extra_jiggies:
-            itempool += [
-                self.create_item(itemName.JIGGY_AS_FILLER) for i in range(filler_jiggies)
-            ]
-
         return itempool
 
     def get_notes_in_pool(self) -> List[Item]:

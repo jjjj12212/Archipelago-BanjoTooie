@@ -17,8 +17,8 @@ class TestVanillaJingalingJiggy(BanjoTooieTestBase):
         progression_jiggies = sum(1 for item in self.multiworld.itempool
                                   if item.advancement and item.name == itemName.JIGGY)
         useful_jiggies = sum(1 for item in self.multiworld.itempool if item.useful and item.name == itemName.JIGGY)
-        assert progression_jiggies == 60
-        assert useful_jiggies == 15
+        assert progression_jiggies == 65
+        assert useful_jiggies == 10
 
     def test_prefill(self) -> None:
         assert [location for location in self.world.get_locations()
@@ -37,5 +37,5 @@ class TestRandomizedJingalingJiggy(BanjoTooieTestBase):
         progression_jiggies = sum(1 for item in self.multiworld.itempool
                                   if item.advancement and item.name == itemName.JIGGY)
         useful_jiggies = sum(1 for item in self.multiworld.itempool if item.useful and item.name == itemName.JIGGY)
-        assert progression_jiggies == 61
-        assert useful_jiggies == 15
+        assert progression_jiggies == 66
+        assert useful_jiggies == 10

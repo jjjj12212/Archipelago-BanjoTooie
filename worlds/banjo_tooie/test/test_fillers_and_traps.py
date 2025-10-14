@@ -419,11 +419,11 @@ class TestNoReplaceExtraNotesAndJiggies(FillersTrapTestBase):
                + pool.filler_distribution[itemName.NOTE]\
                + 25 + BASE_FILLERS
 
-        assert pool.filler_distribution[itemName.JIGGY] == 20
-        # clefts account for 250 total.
+        assert pool.filler_distribution[itemName.JIGGY] == 0
+        # clefs account for 250 total.
         # leaving 650 by packs
         # 765 is progression (max cost for jamjars)
-        # all clefts are progression, so 515 is progression by packs
+        # all clefs are progression, so 515 is progression by packs
         # so 515 / 650 or 103 / 130
         # so leftover is 27
         assert pool.filler_distribution[itemName.NOTE] == 13

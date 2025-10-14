@@ -26,8 +26,8 @@ class JinjosEnabled(BanjoTooieTestBase):
         assert jinjo_count == jinjo_counter
 
     def test_item_pool_jiggies(self) -> None:
-        assert [item.name for item in self.multiworld.itempool if item.advancement].count(itemName.JIGGY) == 50
-        assert [item.name for item in self.multiworld.itempool if item.useful].count(itemName.JIGGY) == 20
+        assert [item.name for item in self.multiworld.itempool if item.advancement].count(itemName.JIGGY) == 55
+        assert [item.name for item in self.multiworld.itempool if item.useful].count(itemName.JIGGY) == 15
 
 
 class JinjosDisabled(BanjoTooieTestBase):
@@ -206,8 +206,8 @@ class JinjosDisabled(BanjoTooieTestBase):
         assert jinjos == placed_correctly
 
     def test_item_pool_jiggies(self) -> None:
-        assert [item.name for item in self.multiworld.itempool if item.advancement].count(itemName.JIGGY) == 41
-        assert [item.name for item in self.multiworld.itempool if item.useful].count(itemName.JIGGY) == 20
+        assert [item.name for item in self.multiworld.itempool if item.advancement].count(itemName.JIGGY) == 46
+        assert [item.name for item in self.multiworld.itempool if item.useful].count(itemName.JIGGY) == 15
 
 
 class TestJinjosEnabledIntended(JinjosEnabled, IntendedLogic):

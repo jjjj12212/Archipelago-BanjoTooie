@@ -7,6 +7,9 @@
   - Reworded the description of hint options
   - Removed a cache for cryptic hint location. This cache made it so that every copy of a progression item was considered equally important, which was wrong.
   - If Token Hunt Length is greater than what is available in the pool, Token hunt length will require ALL tokens instead of stopping generation.
+  - The way jiggies are generated changed.
+    - You get 5 additional progression jiggies to make the playthrough in a spoiler log and the wahay hints less misleading, especially for single player seeds.
+    - Jiggies added by not activating replace_extra_jiggies are now useful instead of fillers. Only jiggies added through filler weights are marked as filler.
   - Logic fixes:
     - MT to TDL backdoor: Fixed a bug where the logic thought it was done through the door near the hatch silo
     - Treasure Chamber Jiggy: Removed talon trot + air rat + beak buster as a way to reach the relic
