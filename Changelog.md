@@ -23,8 +23,6 @@
     - HFP Icy Side Train Station Jiggy: no longer requires climb if using clockwork shots
     - TDL Taxi Pack Silo: no longer requires tall jump if using pack whack + grip grab or sack pack
 
-
-
 # 4.10.1
   - Fixed a bug where move hints would only select locations in your own world
   - Progression items that are not unique can now be show as Wahay of the Duo/Archipelago if it's logcially hard-required
@@ -1570,4 +1568,5 @@
 - Implemented Victory Condition
 - Implemented Slot data in BTclient and Lua
 - Fixed issue for uploading the generated world on archipelago website
+
 
