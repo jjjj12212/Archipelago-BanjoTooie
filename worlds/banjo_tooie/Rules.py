@@ -2250,11 +2250,9 @@ class BanjoTooieRules:
         elif self.easy_tricks_logic(state):
             logic = self.access_icy_side_train_station(state) and self.climb(state)
         elif self.hard_tricks_logic(state):
-            logic = self.access_icy_side_train_station(state) and self.climb(state)\
-                        and (self.climb(state) or self.clockwork_shot(state))
+            logic = self.access_icy_side_train_station(state) and (self.climb(state) or self.clockwork_shot(state))
         elif self.glitches_logic(state):
-            logic = self.access_icy_side_train_station(state) and self.climb(state)\
-                        and (self.climb(state) or self.clockwork_shot(state))\
+            logic = self.access_icy_side_train_station(state) and (self.climb(state) or self.clockwork_shot(state))\
                     or (self.clockwork_shot(state) and self.small_elevation(state))
         return logic
 
@@ -2737,7 +2735,10 @@ class BanjoTooieRules:
                         self.tall_jump(state) and self.grip_grab(state)\
                         or self.talon_trot(state) and self.flutter(state) and self.grip_grab(state)
                     )\
-                    or self.floor_3_split_up(state) and self.leg_spring(state)
+                    or self.floor_3_split_up(state) and self.leg_spring(state) and (
+                        self.can_shoot_any_egg(state)
+                        or self.wing_whack(state)
+                    )
         elif self.easy_tricks_logic(state):
             logic = self.flap_flip(state) and (self.grip_grab(state) or self.beak_buster(state)) and self.spring_pad(state)\
                     or self.climb(state) and self.spring_pad(state) and (
@@ -8119,23 +8120,19 @@ class BanjoTooieRules:
         logic = True
         if self.intended_logic(state):
             logic = self.egg_aim(state) and\
-                (self.flap_flip(state) or self.slightly_elevated_ledge(state)) and\
-                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state)) or self.MT_flight_pad(state)) and\
+                (self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.talon_trot(state) or self.MT_flight_pad(state)) and\
                    self.backdoors_enabled(state)
         elif self.easy_tricks_logic(state):
-            logic = (self.flap_flip(state) or self.slightly_elevated_ledge(state)) and\
-                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state))\
-                    or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state))) and\
+            logic = (self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state) and self.talon_trot(state)\
+                    or self.MT_flight_pad(state) and self.can_shoot_any_egg(state)) and\
                    self.backdoors_enabled(state)
         elif self.hard_tricks_logic(state):
-            logic = (self.flap_flip(state) or self.slightly_elevated_ledge(state)) and\
-                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state))\
-                    or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state))) and\
+            logic = (self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state) and self.talon_trot(state)\
+                    or self.MT_flight_pad(state) and self.can_shoot_any_egg(state)) and\
                    self.backdoors_enabled(state)
         elif self.glitches_logic(state):
-            logic = (self.flap_flip(state) or self.slightly_elevated_ledge(state)) and\
-                  ((self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state))\
-                    or (self.MT_flight_pad(state) and self.can_shoot_any_egg(state))) and\
+            logic = (self.grip_grab(state) and self.spring_pad(state) and self.flap_flip(state) and self.egg_aim(state) and self.talon_trot(state)\
+                    or self.MT_flight_pad(state) and self.can_shoot_any_egg(state)) and\
                    self.backdoors_enabled(state)
         return logic
 
