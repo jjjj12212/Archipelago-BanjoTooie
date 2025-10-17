@@ -5025,22 +5025,22 @@ class BanjoTooieRules:
             logic = self.split_up(state) and (self.tall_jump(state) and (self.grip_grab(state) or self.sack_pack(state)))
         elif self.easy_tricks_logic(state):
             logic = self.split_up(state) and\
-                        (self.tall_jump(state) and (self.grip_grab(state) or
+                        (self.tall_jump(state) and self.grip_grab(state) or
                         self.pack_whack(state) and self.tall_jump(state)\
                         or self.pack_whack(state) and self.grip_grab(state)\
-                        or self.sack_pack(state)))
+                        or self.sack_pack(state))
         elif self.hard_tricks_logic(state):
             logic = self.split_up(state) and\
-                        (self.tall_jump(state) and (self.grip_grab(state)\
+                        (self.tall_jump(state) and self.grip_grab(state)\
                         or self.pack_whack(state) and self.tall_jump(state)\
                         or self.pack_whack(state) and self.grip_grab(state)\
-                        or self.sack_pack(state)))
+                        or self.sack_pack(state))
         elif self.glitches_logic(state):
             logic = self.split_up(state) and\
-                        (self.tall_jump(state) and (self.grip_grab(state) or
+                        (self.tall_jump(state) and self.grip_grab(state) or
                         self.pack_whack(state) and self.tall_jump(state)\
                         or self.pack_whack(state) and self.grip_grab(state)\
-                        or self.sack_pack(state)))
+                        or self.sack_pack(state))
         return logic
 
     def can_access_glide_silo(self, state:CollectionState) -> bool:
