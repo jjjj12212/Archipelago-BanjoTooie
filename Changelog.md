@@ -1,3 +1,7 @@
+# 4.10.3
+  - Fixed the spacing in hints.
+  - Fixed the spacing in option descriptions in the yaml.
+
 # 4.10.2
   - yaml changes:
     - randomize_world_entrance_loading_zones, randomize_boss_loading_zones: now take an S at the end of "zones".

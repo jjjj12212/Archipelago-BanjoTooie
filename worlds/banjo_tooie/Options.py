@@ -133,8 +133,8 @@ class DialogCharacters(Choice):
 
 
 class JamjarsSiloCosts(Choice):
-    """Change how many notes it takes to use Jamjars' move silos.\
-        Requires the Banjo-Tooie move list to be randomized."""
+    """Change how many notes it takes to use Jamjars' move silos. \
+Requires the Banjo-Tooie move list to be randomized."""
     display_name = "Jamjars' Silo Costs"
     option_vanilla = 0
     option_randomize = 1
@@ -162,8 +162,8 @@ class EggsBehaviour(Choice):
     Start with Blue Eggs: You start with Blue Eggs, and you must find the other 4.
     Random Starting Egg: You start with one type of egg, and you must find the other 4.
     Progressive Eggs: You start with blue eggs, and you find items to unlock the others in the vanilla order.
-    Simple Random Start Egg: You start with one type of egg that is not Clockwork Kazooie Eggs,\
-        and you must find the other 4."""
+    Simple Random Start Egg: You start with one type of egg that is not Clockwork Kazooie Eggs, \
+and you must find the other 4."""
     display_name = "Egg Behaviour"
     option_start_with_blue_eggs = 0
     option_random_starting_egg = 1
@@ -173,8 +173,8 @@ class EggsBehaviour(Choice):
 
 
 class ProgressiveShoes(Toggle):
-    """Stilt Stride to Turbo Trainers to Springy Step Shoes to Claw Clamber Boots. Randomize Moves\
-        and Randomize BK Moves are required."""
+    """Stilt Stride to Turbo Trainers to Springy Step Shoes to Claw Clamber Boots. Randomize Moves \
+and Randomize BK Moves are required."""
     display_name = "Progressive Shoes"
 
 
@@ -305,8 +305,8 @@ class TrebleclefNotes(Range):
 
 class MaxTraps(NamedRange):
     """The maximum possible amount of traps that replace fillers in the pool.
-    Notice that the real number of traps is limited by the number of fillers in the pool, which\
-        varies depending on your settings."""
+    Notice that the real number of traps is limited by the number of fillers in the pool, which \
+varies depending on your settings."""
     display_name = "Max Traps"
     range_start = 0
     range_end = 100
@@ -320,8 +320,8 @@ class RandomizeWorldDinoRoar(Toggle):
 
 
 class EnableNestsanity(Toggle):
-    """Eggs and feather nests give checks when you collect them for the first time. They behave as\
-        regular egg nests after they have been collected."""
+    """Eggs and feather nests give checks when you collect them for the first time. They behave as \
+regular egg nests after they have been collected."""
     display_name = "Nestsanity"
 
 
@@ -527,8 +527,8 @@ class TowerOfTragedy(Choice):
 
 class LogicType(Choice):
     """Choose your logic difficulty and difficulty of tricks you are expected to perform to reach certain areas.
-    Please be aware that if you plan on randomizing worlds with BK Moves in the pool, you cannot use\
-        "intended" logic."""
+    Please be aware that if you plan on randomizing worlds with BK Moves in the pool, you cannot use \
+"intended" logic."""
     display_name = "Logic Type"
     option_intended = 0
     option_easy_tricks = 1
@@ -540,15 +540,15 @@ class LogicType(Choice):
 class VictoryCondition(Choice):
     """Choose the victory condition.
         HAG1: Unlock the HAG1 fight and defeat Gruntilda.
-        Minigame Hunt: Clear the 14 minigames and the final Canary Mary race in Cloud Cuckcoo Land\
-            to collect Mumbo Tokens.
+        Minigame Hunt: Clear the 14 minigames and the final Canary Mary race in Cloud Cuckcoo Land \
+to collect Mumbo Tokens.
         Boss Hunt: Defeat the 8 world bosses and collect their Mumbo Tokens.
         Jinjo Family Rescue: Rescue Jinjo Families to collect their prized Mumbo Tokens.
-        Wonderwing Challenge: Collect all 32 Mumbo Tokens across all boss fights, mini games, and\
-            every Jinjo family to gain access to HAG1 and Defeat Grunty. The Ultimate Banjo Tooie experience!!
+        Wonderwing Challenge: Collect all 32 Mumbo Tokens across all boss fights, mini games, and \
+every Jinjo family to gain access to HAG1 and Defeat Grunty. The Ultimate Banjo Tooie experience!!
         Token Hunt: Mumbo's Tokens are scattered around the world. Help him find them!
-        Boss Hunt + Hag1: Combines Boss Hunt with HAG-1. HAG-1 won't open until the required amount\
-            of bosses are defeated."""
+        Boss Hunt + Hag1: Combines Boss Hunt with HAG-1. HAG-1 won't open until the required amount \
+of bosses are defeated."""
     display_name = "Victory Condition"
     option_hag1 = 0
     option_minigame_hunt = 1
@@ -625,8 +625,8 @@ class WorldRequirements(Choice):
 
 
 class CustomWorldCosts(FreeText):
-    """Enter a list of jiggy requirements you want for each world unlock. Max values of each world\
-        are: 1,10,20,30,50,60,70,80,90.
+    """Enter a list of jiggy requirements you want for each world unlock. Max values of each world \
+are: 1,10,20,30,50,60,70,80,90.
     This option only functions if the World Requirements option is set to custom."""
     display_name = "Custom World Cost List"
     default = "1,4,8,14,20,28,36,45,55"
@@ -699,13 +699,13 @@ class OpenSilos(Range):
 
 
 class RandomizeSilos(Toggle):
-    """Overworld silos give checks when tagging them. They can only be used once you receive the\
-        corresponding item to use a silo."""
+    """Overworld silos give checks when tagging them. They can only be used once you receive the \
+corresponding item to use a silo."""
     display_name = "Randomize Silos"
 
 
 class RandomizeWarpPads(Toggle):
-    """Warp Pads give checks when tagging them. They can only be used once you receive the\
+    """Warp Pads give checks when tagging them. They can only be used once you receive the \
         corresponding item to use a warp pad."""
     display_name = "Randomize Warp Pads"
 
