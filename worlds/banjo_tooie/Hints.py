@@ -23,10 +23,6 @@ class HintData:
 
 
 class Hint:
-    @dataclass(eq=True, frozen=True)
-    class ItemRequirementCacheKey:
-        item_name: str
-        player: int
 
     class ItemRequirement(enum.Enum):
         REQUIRED_BY_PLAYER = 0,
@@ -34,9 +30,6 @@ class Hint:
         NOT_REQUIRED = 2
 
     world: "BanjoTooieWorld"
-
-    # Keeps track of if items are required to beat the seed, for the cryptic hints.
-    required_item_cache: Dict[ItemRequirementCacheKey, ItemRequirement] = dict()
 
     def __init__(self, world: "BanjoTooieWorld", location: Location):
         self.world = world
@@ -65,29 +58,24 @@ class Hint:
                     return False
         return count == 1
 
-
     @property
     def is_required(self) -> ItemRequirement:
         if not self.location.item.advancement:
             return Hint.ItemRequirement.NOT_REQUIRED
-
-        entry = Hint.ItemRequirementCacheKey(self.location.item.name, self.location.item.player)
-
-        # The same item for the same player was already calculated, so no need to calculate it again.
-        if entry in Hint.required_item_cache.keys():
-            return Hint.required_item_cache[entry]
 
         # Inspired from how DK64 does woth hints. It excludes the location with the
         # unique progression item from the logic calculation,
         # and checks to see if the seed of the Tooie player is still beatable without said item.
         state = CollectionState(self.world.multiworld)
         state.locations_checked.add(self.location)
-        item_required: Hint.ItemRequirement|None = None
+        item_required: Hint.ItemRequirement | None = None
 
         # This is basically the end of Multiworld.can_beat_game, but more granular
-        for _ in state.sweep_for_advancements(None,
-                                            yield_each_sweep=True,
-                                            checked_locations=state.locations_checked):
+        for _ in state.sweep_for_advancements(
+            None,
+            yield_each_sweep=True,
+            checked_locations=state.locations_checked
+        ):
             # We can stop early if the entire multiworld is already beaten
             if self.world.multiworld.has_beaten_game(state):
                 item_required = Hint.ItemRequirement.NOT_REQUIRED
@@ -98,20 +86,21 @@ class Hint:
                 if self.world.multiworld.has_beaten_game(state, self.world.player)\
                 else Hint.ItemRequirement.REQUIRED_BY_PLAYER
 
-        Hint.required_item_cache[entry] = item_required
         return item_required
 
     def __format_location(self, capitalize: bool) -> str:
         if self.location.player == self.world.player:
             return f"{'Your' if capitalize else 'your'} {self.location.name}"
 
-        return f"{Hint.__player_id_to_name(self.world, self.location.player)}'s {Hint.__sanitize_text(self.location.name)}"
+        return f"{Hint.__player_id_to_name(self.world, self.location.player)}'s\
+                 {Hint.__sanitize_text(self.location.name)}"
 
     def __format_item(self, capitalize: bool) -> str:
         if self.location.item.player == self.world.player:
             return f"{'Your' if capitalize else 'your'} {Hint.__sanitize_text(self.location.item.name)}"
 
-        return f"{Hint.__player_id_to_name(self.world, self.location.item.player)}'s {Hint.__sanitize_text(self.location.item.name)}"
+        return f"{Hint.__player_id_to_name(self.world, self.location.item.player)}'s\
+                    {Hint.__sanitize_text(self.location.item.name)}"
 
     @property
     def __clear_hint_text(self) -> str:
@@ -247,10 +236,16 @@ def generate_generic_joke_hint(world: "BanjoTooieWorld", hint_datas: List[HintDa
 
 
 def generate_suggestion_hint(world: "BanjoTooieWorld", hint_datas: List[HintData]):
-    non_tooie_player_names = [world.player_name for world in world.multiworld.worlds.values() if world.game != "Banjo-Tooie"]
+    non_tooie_player_names = [
+        world.player_name
+        for world in world.multiworld.worlds.values()
+        if world.game != "Banjo-Tooie"
+    ]
     if not non_tooie_player_names:
         return
-    hint = "You should suggest {} to try the Banjo-Tooie Randomizer.".format(world.random.choice(non_tooie_player_names))
+    hint = "You should suggest {} to try the Banjo-Tooie Randomizer.".format(
+                world.random.choice(non_tooie_player_names)
+            )
     hint_datas.append(HintData(hint))
 
 
@@ -454,8 +449,10 @@ def generate_move_hints(world: "BanjoTooieWorld", hints: List[Hint]):
 
 def get_move_locations(world: "BanjoTooieWorld") -> List[Location]:
     all_moves_names = []
+
+    # We don't want BT moves to be hinted when they're in the vanilla location.
     if world.options.randomize_bt_moves:
-        all_moves_names.extend(moves_table.keys())  # We don't want BT moves to be hinted when they're in the vanilla location.
+        all_moves_names.extend(moves_table.keys())
     all_moves_names.extend(bk_moves_table.keys())
     all_moves_names.extend(progressive_ability_table.keys())
 
@@ -465,7 +462,10 @@ def get_move_locations(world: "BanjoTooieWorld") -> List[Location]:
     selected_move_locations = []
 
     for location in all_move_locations:
-        if len(selected_move_locations) >= min(world.options.signpost_move_hints.value, world.options.signpost_hints.value):
+        if len(selected_move_locations) >= min(
+            world.options.signpost_move_hints.value,
+            world.options.signpost_hints.value
+        ):
             return selected_move_locations
         selected_move_locations.append(location)
     return selected_move_locations

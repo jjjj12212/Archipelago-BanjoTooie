@@ -50,7 +50,7 @@ def randomize_level_order(world: BanjoTooieWorld) -> None:
             regionName.CK:  1230952
         }
     else:
-        if world.options.randomize_world_entrance_loading_zone:
+        if world.options.randomize_world_entrance_loading_zones:
             randomizable_levels = [regionName.MT,regionName.GM,regionName.WW,regionName.JR,regionName.TL,regionName.GIO,regionName.HP,regionName.CC,regionName.CK]
             world_order = generate_world_order(world, randomizable_levels)
 
@@ -75,7 +75,7 @@ def generate_world_order(world: BanjoTooieWorld, worlds: List[str]) -> List[str]
         and not world.options.nestsanity:
         bad_first_worlds.update([regionName.CC, regionName.TL])
 
-    if world.options.randomize_boss_loading_zone and not world.options.randomize_world_entrance_loading_zone and not world.options.open_gi_frontdoor:
+    if world.options.randomize_boss_loading_zones and not world.options.randomize_world_entrance_loading_zones and not world.options.open_gi_frontdoor:
         bad_first_worlds.update([regionName.GIO])
 
     world1 = world.random.choice([w for w in worlds if w not in bad_first_worlds])
@@ -148,7 +148,7 @@ def set_level_costs(world: BanjoTooieWorld) -> None:
 
 def randomize_entrance_loading_zones(world: BanjoTooieWorld) -> None:
     randomizable_levels = list(world.world_requirements.keys()) # Gives the levels in the order that they open.
-    if not world.options.randomize_world_entrance_loading_zone:
+    if not world.options.randomize_world_entrance_loading_zones:
         world.loading_zones = {level: level for level in randomizable_levels}
     else:
         good_levels = [l for l in randomizable_levels if l not in [regionName.CK, regionName.GIO]]
@@ -160,6 +160,7 @@ def randomize_entrance_loading_zones(world: BanjoTooieWorld) -> None:
         randomized_levels = [level1] + rest_levels
 
         world.loading_zones = {randomizable_levels[i]: randomized_levels[i] for i in range(len(randomizable_levels))}
+
 
 def randomize_boss_loading_zones(world: BanjoTooieWorld) -> None:
     boss_list = [
@@ -173,7 +174,7 @@ def randomize_boss_loading_zones(world: BanjoTooieWorld) -> None:
         regionName.HPIBOSS,
         regionName.CCBOSS
     ]
-    if world.options.randomize_boss_loading_zone:
+    if world.options.randomize_boss_loading_zones:
         randomized_boss_list = copy.deepcopy(boss_list)
         world.random.shuffle(boss_list)
 
@@ -208,7 +209,7 @@ def choose_unlocked_silos(world: BanjoTooieWorld) -> None:
         world_silo = ""
         if list(world.world_order.keys())[0] == regionName.GIO:
             # GI is special. If loading zones are not randomized, the only way to make progress in the level is by riding the train into the level from Cliff Top.
-            world_silo = itemName.SILOIOHQM if world.options.randomize_world_entrance_loading_zone or world.options.open_gi_frontdoor else itemName.SILOIOHCT
+            world_silo = itemName.SILOIOHQM if world.options.randomize_world_entrance_loading_zones or world.options.open_gi_frontdoor else itemName.SILOIOHCT
         else:
             overworld_lookup = {
                 regionName.MT: world.random.choice([itemName.SILOIOHPL, itemName.SILOIOHPG, itemName.SILOIOHCT, itemName.SILOIOHWL, itemName.SILOIOHQM]), # You can already get there, so we give a random silo.
@@ -267,7 +268,7 @@ def handle_early_moves(world: BanjoTooieWorld) -> None:
 
         # TDL Easy
 
-        if first_level == regionName.GIO and not world.options.randomize_world_entrance_loading_zone and not world.options.randomize_boss_loading_zone: # Moves to enter the train.
+        if first_level == regionName.GIO and not world.options.randomize_world_entrance_loading_zones and not world.options.randomize_boss_loading_zones: # Moves to enter the train.
             world.multiworld.early_items[world.player][itemName.CHUFFY] = 1
             world.multiworld.early_items[world.player][itemName.TRAINSWGI] = 1
             world.multiworld.early_items[world.player][itemName.CLIMB] = 1

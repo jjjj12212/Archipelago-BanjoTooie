@@ -6,24 +6,25 @@ from .Names import itemName, locationName
 class BanjoTooieItem(Item):
     # 1230924 (Beans) but beware of level access keys that are way higher!
     game: str = "Banjo-Tooie"
+
+
 class ItemData(NamedTuple):
-    btid: int = 0
+    btid: int | None = None
     qty: int = 0
     type: ItemClassification = ItemClassification.progression
     default_location: str = ""
 
 
-
 jinjo_table = {
-    itemName.WJINJO:        ItemData(1230501, 1, ItemClassification.progression, None),
-    itemName.OJINJO:        ItemData(1230502, 2, ItemClassification.progression, None),
-    itemName.YJINJO:        ItemData(1230503, 3, ItemClassification.progression, None),
-    itemName.BRJINJO:       ItemData(1230504, 4, ItemClassification.progression, None),
-    itemName.GJINJO:        ItemData(1230505, 5, ItemClassification.progression, None),
-    itemName.RJINJO:        ItemData(1230506, 6, ItemClassification.progression, None),
-    itemName.BLJINJO:       ItemData(1230507, 7, ItemClassification.progression, None),
-    itemName.PJINJO:        ItemData(1230508, 8, ItemClassification.progression, None),
-    itemName.BKJINJO:       ItemData(1230509, 9, ItemClassification.progression, None)
+    itemName.WJINJO:        ItemData(1230501, 1, ItemClassification.progression, ""),
+    itemName.OJINJO:        ItemData(1230502, 2, ItemClassification.progression, ""),
+    itemName.YJINJO:        ItemData(1230503, 3, ItemClassification.progression, ""),
+    itemName.BRJINJO:       ItemData(1230504, 4, ItemClassification.progression, ""),
+    itemName.GJINJO:        ItemData(1230505, 5, ItemClassification.progression, ""),
+    itemName.RJINJO:        ItemData(1230506, 6, ItemClassification.progression, ""),
+    itemName.BLJINJO:       ItemData(1230507, 7, ItemClassification.progression, ""),
+    itemName.PJINJO:        ItemData(1230508, 8, ItemClassification.progression, ""),
+    itemName.BKJINJO:       ItemData(1230509, 9, ItemClassification.progression, "")
 }
 
 jiggy_table = {
@@ -186,7 +187,7 @@ world_unlock_table = {
     itemName.CKA:           ItemData(1230952,   1, ItemClassification.progression, locationName.W9),
 }
 
-nest_table= {
+nest_table = {
     itemName.GNEST:           ItemData(1230805,   23, ItemClassification.trap, ""),
     itemName.ENEST:           ItemData(1230806,   315, ItemClassification.filler, ""),
     itemName.FNEST:           ItemData(1230807,   135, ItemClassification.filler, ""),

@@ -1,3 +1,28 @@
+# 4.10.2
+  - yaml changes:
+    - randomize_world_entrance_loading_zones, randomize_boss_loading_zones: now take an S at the end of "zones".
+  - fix loading zone requirements being set at the wrong locations randomly
+  - If Skip Puzzles is disabled, Throw option error only if the default world requirements has been modified
+  - include archipelago.json so our version # will appear in future ap generations (AP 0.6.4). You can still use this apworld in 0.6.3.
+  - Reworded the description of hint options
+  - Removed a cache for cryptic hint location. This cache made it so that every copy of a progression item was considered equally important, which was wrong.
+  - If Token Hunt Length is greater than what is available in the pool, Token hunt length will require ALL tokens instead of stopping generation.
+  - The way jiggies are generated changed.
+    - You get 5 additional progression jiggies to make the playthrough in a spoiler log and the wahay hints less misleading, especially for single player seeds.
+    - Jiggies added by not activating replace_extra_jiggies are now useful instead of fillers. Only jiggies added through filler weights are marked as filler.
+  - Logic fixes:
+    - MT to TDL backdoor: Fixed a bug where the logic thought it was done through the door near the hatch silo
+    - Treasure Chamber Jiggy: Removed talon trot + air rat + beak buster as a way to reach the relic
+    - Ancient Swimming Baths Cheato Page: Fixed some nonsense with hard tricks logic, and added sack pack + tall jump for glitched logic.
+    - JRL Pipe signpost: remade the solo Kazooie logic
+    - JRL Alcove Jinjo: if using Pack Whack to get it, easy tricks also needs tall jump
+    - Going from locker cavern to Big Fish Cave (and vice versa): Removed using the atlantis warp pad to gain air.
+    - GI Floor 1 Warp pad: the warp pad is now accessible is the front door is pre-opened.
+    - GI Floor 3 Honeycomb: Removed pack whack as a way to get to it, and added moves for Kazooie to break the box.
+    - HFP Colosseum Split Up Jiggy: added tall jump if doing the slit clip glitch
+    - HFP Icy Side Train Station Jiggy: no longer requires climb if using clockwork shots
+    - TDL Taxi Pack Silo: no longer requires tall jump if using pack whack + grip grab or sack pack
+
 # 4.10.1
   - Fixed a bug where move hints would only select locations in your own world
   - Progression items that are not unique can now be show as Wahay of the Duo/Archipelago if it's logcially hard-required
@@ -1543,3 +1568,5 @@
 - Implemented Victory Condition
 - Implemented Slot data in BTclient and Lua
 - Fixed issue for uploading the generated world on archipelago website
+
+
