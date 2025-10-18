@@ -19,7 +19,9 @@
     - Going from locker cavern to Big Fish Cave (and vice versa): Removed using the atlantis warp pad to gain air.
     - GI Floor 1 Warp pad: the warp pad is now accessible is the front door is pre-opened.
     - GI Floor 3 Honeycomb: Removed pack whack as a way to get to it, and added moves for Kazooie to break the box.
-    - HFP Colosseum Split Up jiggy: added tall jump if doing the slit clip glitch
+    - HFP Colosseum Split Up Jiggy: added tall jump if doing the slit clip glitch
+    - HFP Icy Side Train Station Jiggy: no longer requires climb if using clockwork shots
+    - TDL Taxi Pack Silo: no longer requires tall jump if using pack whack + grip grab or sack pack
 
 # 4.10.1
   - Fixed a bug where move hints would only select locations in your own world
@@ -1566,3 +1568,5 @@
 - Implemented Victory Condition
 - Implemented Slot data in BTclient and Lua
 - Fixed issue for uploading the generated world on archipelago website
+
+
