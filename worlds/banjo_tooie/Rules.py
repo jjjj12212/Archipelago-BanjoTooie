@@ -678,6 +678,8 @@ class BanjoTooieRules:
 
             locationName.NESTJR33:    lambda state: self.talon_torpedo(state),
 
+            locationName.NESTJR37:    lambda state: self.nest_big_fish_cavern(state),
+            locationName.NESTJR38:    lambda state: self.nest_big_fish_cavern(state),
             locationName.NESTJR39:    lambda state: self.talon_torpedo(state),
             locationName.NESTJR40:    lambda state: self.talon_torpedo(state),
 
@@ -5568,6 +5570,9 @@ class BanjoTooieRules:
                     )
         return logic
 
+    def nest_big_fish_cavern(self, state: CollectionState) -> bool:
+        return self.can_climb_seaweed(state) or state.can_reach_region(regionName.JRBFC, self.player)
+
     def nest_bacon(self, state: CollectionState) -> bool:
         logic = True
         if self.intended_logic(state):
@@ -7506,20 +7511,20 @@ class BanjoTooieRules:
     def seaweed_to_bfc(self, state: CollectionState) -> bool:
         logic = True
         if self.intended_logic(state):
-            logic = self.tall_jump(state) and self.grip_grab(state) and self.dive(state)
+            logic = self.tall_jump(state) and self.grip_grab(state) and self.flap_flip(state) and self.dive(state)
         elif self.easy_tricks_logic(state):
             logic = self.dive(state)\
-                    and (self.slightly_elevated_ledge(state) or self.flap_flip(state))\
+                    and self.flap_flip(state)\
                     and self.tall_jump(state)\
                     and (self.beak_buster(state) or self.grip_grab(state))
         elif self.hard_tricks_logic(state):
             logic = self.dive(state)\
-                    and (self.slightly_elevated_ledge(state) or self.flap_flip(state))\
+                    and self.flap_flip(state)\
                     and self.tall_jump(state)\
                     and (self.beak_buster(state) or self.grip_grab(state))
         elif self.glitches_logic(state):
             logic = self.dive(state)\
-                    and (self.slightly_elevated_ledge(state) or self.flap_flip(state))\
+                    and self.flap_flip(state)\
                     and self.tall_jump(state)\
                     and (self.beak_buster(state) or self.grip_grab(state))
         return logic
@@ -7527,20 +7532,17 @@ class BanjoTooieRules:
     def can_climb_seaweed(self, state: CollectionState) -> bool:
         logic = True
         if self.intended_logic(state):
-            logic = self.tall_jump(state) and self.grip_grab(state) and self.dive(state) and self.flap_flip(state)
+            logic = self.tall_jump(state) and self.grip_grab(state) and self.flap_flip(state)
         elif self.easy_tricks_logic(state):
-            logic = self.dive(state)\
-                    and self.flap_flip(state)\
+            logic = self.flap_flip(state)\
                     and self.tall_jump(state)\
                     and (self.beak_buster(state) or self.grip_grab(state))
         elif self.hard_tricks_logic(state):
-            logic = self.dive(state)\
-                    and self.flap_flip(state)\
+            logic = self.flap_flip(state)\
                     and self.tall_jump(state)\
                     and (self.beak_buster(state) or self.grip_grab(state))
         elif self.glitches_logic(state):
-            logic = self.dive(state)\
-                    and self.flap_flip(state)\
+            logic = self.flap_flip(state)\
                     and self.tall_jump(state)\
                     and (self.beak_buster(state) or self.grip_grab(state))
         return logic
@@ -7915,7 +7917,7 @@ class BanjoTooieRules:
 
 
     def mt_jiggy(self, state: CollectionState) -> bool: #1
-        if self.world.worlds_randomized:
+        if self.world.options.randomize_worlds:
             return state.has(itemName.MTA, self.player)
         else:
             amt = self.world.world_requirements[regionName.MT]
@@ -7995,7 +7997,7 @@ class BanjoTooieRules:
         return logic
 
     def gm_jiggy(self, state: CollectionState) -> bool: #4
-        if self.world.worlds_randomized:
+        if self.world.options.randomize_worlds:
             return state.has(itemName.GGA, self.player)
         else:
             amt = self.world.world_requirements[regionName.GM]
@@ -8068,21 +8070,21 @@ class BanjoTooieRules:
         return logic
 
     def ww_jiggy(self, state: CollectionState) -> bool: #8
-        if self.world.worlds_randomized:
+        if self.world.options.randomize_worlds:
             return state.has(itemName.WWA, self.player)
         else:
             amt = self.world.world_requirements[regionName.WW]
             return state.has(itemName.JIGGY, self.player, amt)
 
     def jrl_jiggy(self, state: CollectionState) -> bool: #14
-        if self.world.worlds_randomized:
+        if self.world.options.randomize_worlds:
             return state.has(itemName.JRA, self.player)
         else:
             amt = self.world.world_requirements[regionName.JR]
             return state.has(itemName.JIGGY, self.player, amt)
 
     def tdl_jiggy(self, state: CollectionState) -> bool: #20
-        if self.world.worlds_randomized:
+        if self.world.options.randomize_worlds:
             return state.has(itemName.TDA, self.player)
         else:
             amt = self.world.world_requirements[regionName.TL]
@@ -8090,14 +8092,14 @@ class BanjoTooieRules:
 
 
     def gi_jiggy(self, state: CollectionState) -> bool: #28
-        if self.world.worlds_randomized:
+        if self.world.options.randomize_worlds:
             return state.has(itemName.GIA, self.player)
         else:
             amt = self.world.world_requirements[regionName.GIO]
             return state.has(itemName.JIGGY, self.player, amt)
 
     def ck_jiggy(self, state: CollectionState) -> bool: #55
-        if self.world.worlds_randomized:
+        if self.world.options.randomize_worlds:
             return state.has(itemName.CKA, self.player)
         else:
             amt = self.world.world_requirements[regionName.CK]
@@ -9063,14 +9065,14 @@ class BanjoTooieRules:
         return logic
 
     def hfp_jiggy(self, state: CollectionState) -> bool: # 36
-        if self.world.worlds_randomized:
+        if self.world.options.randomize_worlds:
             return state.has(itemName.HFA, self.player)
         else:
             amt = self.world.world_requirements[regionName.HP]
             return state.has(itemName.JIGGY, self.player, amt)
 
     def ccl_jiggy(self, state: CollectionState) -> bool: # 45
-        if self.world.worlds_randomized:
+        if self.world.options.randomize_worlds:
             return state.has(itemName.CCA, self.player)
         else:
             amt = self.world.world_requirements[regionName.CC]

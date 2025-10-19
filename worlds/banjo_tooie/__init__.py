@@ -17,7 +17,7 @@ from .Options import BanjoTooieOptions, EggsBehaviour, JamjarsSiloCosts, LogicTy
     ProgressiveWaterTraining, RandomizeBKMoveList, VictoryCondition, bt_option_groups, WorldRequirements
 from .Rules import BanjoTooieRules
 from .Names import itemName, locationName, regionName
-from .WorldOrder import WorldRandomize
+from .WorldOrder import randomize_world_progression
 from BaseClasses import ItemClassification, Tutorial, Item
 from worlds.AutoWorld import World, WebWorld
 from worlds.LauncherComponents import Component, components, Type, launch_subprocess
@@ -102,6 +102,8 @@ class BanjoTooieWorld(World):
         item_name_to_id[name] = data.btid
 
     glitches_item_name = itemName.UT_GLITCHED
+    ut_can_gen_without_yaml = True
+
     location_name_to_id = {name: data.btid for name, data in all_location_table.items()}
     location_name_to_group = {name: data.group for name, data in all_location_table.items()}
 
@@ -190,7 +192,6 @@ class BanjoTooieWorld(World):
     options: BanjoTooieOptions
 
     def __init__(self, world, player):
-        self.kingjingalingjiggy = False
         self.starting_egg: int = 0
         self.starting_attack: int = 0
 
@@ -204,7 +205,6 @@ class BanjoTooieWorld(World):
         self.preopened_silos = []
         self.world_requirements = {}
         self.world_order = {}
-        self.worlds_randomized = False
         self.loading_zones = {}
         self.jamjars_siloname_costs = {}
         self.jamjars_silo_costs = {}
@@ -306,7 +306,6 @@ class BanjoTooieWorld(World):
         if self.options.jingaling_jiggy:
             # Below give the king a guarentee Jiggy if option is set
             self.get_location(locationName.JIGGYIH10).place_locked_item(self.create_item(itemName.JIGGY))
-            self.kingjingalingjiggy = True
 
         last_level_requirement = max(self.world_requirements.values())
         if not self.options.open_hag1 and self.options.victory_condition == VictoryCondition.option_hag1:
@@ -323,7 +322,7 @@ class BanjoTooieWorld(World):
             else 90 - progression_jiggies
 
         # Some progression jiggies can be placed as locked items, so we don't add them to the pool.
-        if self.kingjingalingjiggy:
+        if self.options.jingaling_jiggy:
             progression_jiggies -= 1
         if not self.options.randomize_jinjos:
             progression_jiggies -= 9
@@ -563,11 +562,29 @@ class BanjoTooieWorld(World):
         self.pre_fill_me()
 
     def generate_early(self) -> None:
-        self.validate_yaml_options()
-        self.choose_starter_egg()
-        self.choose_starter_attack()
-        WorldRandomize(self)
-        self.hand_preopened_silos()
+        re_gen_passthrough = getattr(self.multiworld, "re_gen_passthrough", {})
+        if re_gen_passthrough and self.game in re_gen_passthrough:
+            # Universal Tracker trickery
+            slot_data = self.multiworld.re_gen_passthrough[self.game]
+
+            slot_options: dict[str, Any] = slot_data.get("options", {})
+            for key, value in slot_options.items():
+                opt = getattr(self.options, key, None)
+                if opt is not None:
+                    setattr(self.options, key, opt.from_any(value))
+
+            generated_stuff = slot_data["generated_stuff"]
+            self.world_requirements = generated_stuff["world_requirements"]
+            self.world_order = generated_stuff["world_order"]
+            self.jamjars_siloname_costs = generated_stuff["jamjars_siloname_costs"]
+            self.loading_zones = generated_stuff["loading_zones"]
+        else:
+            # Normal generation
+            self.validate_yaml_options()
+            self.choose_starter_egg()
+            self.choose_starter_attack()
+            randomize_world_progression(self)
+            self.hand_preopened_silos()
 
     def validate_yaml_options(self) -> None:
         if self.options.randomize_worlds \
@@ -652,10 +669,10 @@ class BanjoTooieWorld(World):
                 eggs = list([itemName.BEGGS, itemName.FEGGS, itemName.GEGGS, itemName.IEGGS, itemName.CEGGS])
             else:
                 eggs = list([itemName.BEGGS, itemName.FEGGS, itemName.GEGGS, itemName.IEGGS])
-            self.random.shuffle(eggs)
-            starting_egg = self.create_item(eggs[0])
+            egg_name = self.random.choice(eggs)
+            starting_egg = self.create_item(egg_name)
             self.multiworld.push_precollected(starting_egg)
-            banjoItem = all_item_table.get(eggs[0])
+            banjoItem = all_item_table.get(egg_name)
             self.starting_egg = banjoItem.btid
         else:
             starting_egg = self.create_item(itemName.BEGGS)
@@ -982,87 +999,39 @@ class BanjoTooieWorld(World):
 
     def fill_slot_data(self) -> Dict[str, Any]:
         generate_hints(self)
-        btoptions = self.options.as_dict(
-            "death_link",
-            "tag_link",
-            "logic_type",
-            "victory_condition",
-            "minigame_hunt_length",
-            "boss_hunt_length",
-            "jinjo_family_rescue_length",
-            "token_hunt_length",
-            "randomize_bt_moves",
-            "randomize_bk_moves",
-            "egg_behaviour",
-            "progressive_beak_buster",
-            "progressive_shoes",
-            "progressive_water_training",
-            "progressive_flight",
-            "progressive_egg_aiming",
-            "progressive_bash_attack",
-            "randomize_notes",
-            "randomize_treble",
-            "randomize_jinjos",
-            "randomize_doubloons",
-            "randomize_cheato",
-            "cheato_rewards",
-            "randomize_honeycombs",
-            "honeyb_rewards",
-            "randomize_tickets",
-            "randomize_green_relics",
-            "randomize_beans",
-            "randomize_glowbos",
-            "randomize_stop_n_swap",
-            "randomize_dino_roar",
-            "nestsanity",
-            "randomize_stations",
-            "randomize_chuffy",
-            "skip_puzzles",
-            "open_hag1",
-            "backdoors",
-            "open_gi_frontdoor",
-            "open_silos",
-            "speed_up_minigames",
-            "tower_of_tragedy",
-            "skip_klungo",
-            "easy_canary",
-            "extra_cheats",
-            "auto_enable_cheats",
-            "randomize_signposts",
-            "signpost_hints",
-            "signpost_move_hints",
-            "randomize_warp_pads",
-            "randomize_silos",
-            "hint_clarity",
-            "randomize_world_entrance_loading_zones",
-            "randomize_boss_loading_zones",
-            "dialog_character"
-        )
+        btoptions = {option_name: option.value for option_name, option in self.options.__dict__.items()}
 
-        btoptions["player_name"] = self.multiworld.player_name[self.player]
-        btoptions["seed"] = self.random.randint(12212, 9090763)
+        # Elements that are randomised outside the yaml and affects gameplay
+        generated_stuff: Dict[str, Any] = {
+            "player_name": self.multiworld.player_name[self.player],
+            "seed": self.random.randint(12212, 9090763),
+            "world_order": self.world_order,
+            "world_requirements": self.world_requirements,
+            "loading_zones": self.loading_zones,
+            "starting_egg": self.starting_egg,
+            "starting_attack": self.starting_attack,
+            "preopened_silos_names": self.preopened_silos,
+            "preopened_silos_ids": [self.item_name_to_id[name] for name in self.preopened_silos],
+            "version": BanjoTooieWorld.version,
+            "jamjars_siloname_costs": self.jamjars_siloname_costs,
+            "jamjars_silo_costs": self.jamjars_silo_costs,
+            "hints": {location: asdict(hint_data) for location, hint_data in self.hints.items()}
+        }
+        print(f"bt option:\n")
+        for option, value in btoptions.items():
+            print(f"{option}: {value}")
 
-        btoptions["worlds"] = "true" if self.worlds_randomized else "false"
-        btoptions["world_order"] = self.world_requirements
-        btoptions["world_keys"] = self.world_order
-        btoptions["loading_zones"] = self.loading_zones
-
-        btoptions["starting_egg"] = int(self.starting_egg)
-        btoptions["starting_attack"] = int(self.starting_attack)
-        btoptions["preopened_silos"] = [self.item_name_to_id[name] for name in self.preopened_silos]
-
-        btoptions["version"] = BanjoTooieWorld.version
-
-        btoptions["jamjars_siloname_costs"] = self.jamjars_siloname_costs
-        btoptions["jamjars_silo_costs"] = self.jamjars_silo_costs
-        btoptions["jamjars_silo_option"] = int(self.options.jamjars_silo_costs)
-        btoptions["hints"] = {location: asdict(hint_data) for location, hint_data in self.hints.items()}
-        return btoptions
+        print(f"\n\n\ngenerated stuff:\n")
+        for option, value in generated_stuff.items():
+            print(f"{option}: {value}")
+        slot_data = {
+            "options": btoptions,
+            "generated_stuff": generated_stuff,
+        }
+        return slot_data
 
     # for the universal tracker, doesn't get called in standard gen
-    @staticmethod
-    def interpret_slot_data(slot_data: typing.Dict[str, typing.Any]) -> typing.Dict[str, typing.Any]:
-        # returning slot_data so it regens, giving it back in multiworld.re_gen_passthrough
+    def interpret_slot_data(self, slot_data: typing.Dict[str, typing.Any]) -> typing.Dict[str, typing.Any]:
         return slot_data
 
     def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]):
