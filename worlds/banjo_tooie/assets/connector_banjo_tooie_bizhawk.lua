@@ -16,7 +16,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 5
-local BT_VERSION = "V4.10.2"
+local BT_VERSION = "V4.11"
 local PLAYER = ""
 local SEED = 0
 
@@ -6185,7 +6185,6 @@ function BTHACK:setWorldEntrance(currentWorldId, newWorldId, entranceId, current
     mainmemory.writebyte(exit_maps_ptr + world_index + self.exit_to_exit, newEntanceId)
     mainmemory.writebyte(exit_maps_ptr + world_index + self.exit_og_exit, entranceId)
     local new_value
-    print(access)
     for _, move_id in pairs(access)
     do
         local offset_byte = math.floor(move_id / 8)
@@ -6201,8 +6200,6 @@ function BTHACK:setWorldEntrance(currentWorldId, newWorldId, entranceId, current
             mainmemory.writebyte(exit_maps_ptr + world_index + self.exit_access_rules + offset_byte, 0)
         end
     end
-    print(exit_maps_ptr + world_index + self.exit_access_rules)
-    print("Access for " .. tostring(currentWorldId) .. " access is " ..tostring(new_value))
     return true
 end
 
@@ -8725,14 +8722,6 @@ function process_slot(block)
     then
         TAG_LINK = true
     end
-    if block['slot_logic_type'] ~= nil and block['slot_logic_type'] ~= "false"
-    then
-        LOGIC = block['slot_logic_type']
-    end
-    if block['slot_activate_text'] ~= nil and block['slot_activate_text'] ~= "false"
-    then
-        ACTIVATE_TEXT_OVERLAY = true
-    end
     if block['slot_tower_of_tragedy'] ~= nil
     then
         SKIP_TOT = block['slot_tower_of_tragedy']
@@ -8805,7 +8794,7 @@ function process_slot(block)
     then
         BTH:setSettingKlungo(1)
     end
-    if block['slot_victory_condition'] ~= nil and block['slot_victory_condition'] ~= ""
+    if block['slot_victory_condition'] ~= nil
     then
         GOAL_TYPE = block['slot_victory_condition']
         BTH:setVictoryCondition(GOAL_TYPE)
@@ -8827,10 +8816,6 @@ function process_slot(block)
     then
         BTH:setEasyCanary(1)
     end
-    if block['slot_worlds'] ~= nil and block['slot_worlds'] ~= "false"
-    then
-        ENABLE_AP_WORLDS = true
-    end
     if block['slot_minigame_hunt_length'] ~= nil and block['slot_minigame_hunt_length'] ~= ""
     then
         MGH_LENGTH = block['slot_minigame_hunt_length']
@@ -8848,11 +8833,11 @@ function process_slot(block)
         TH_LENGTH = block['slot_token_hunt_length']
 
     end
-    if block['slot_world_order'] ~= nil
+    if block['slot_world_requirements'] ~= nil
     then
-        for level, jiggy_amt in pairs(block['slot_world_order'])
+        for level, jiggy_amt in pairs(block['slot_world_requirements'])
         do
-            local locationId = block['slot_keys'][level]
+            local locationId = block['slot_world_order'][level]
             if(level == "Mayahem Temple")
             then
                 BTH:setSettingJiggyRequirements(0, jiggy_amt)

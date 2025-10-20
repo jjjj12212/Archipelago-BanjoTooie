@@ -87,7 +87,7 @@ class BanjoTooieWorld(World):
     """
 
     game = "Banjo-Tooie"
-    version = "V4.10.2"
+    version = "V4.11"
     options: BanjoTooieOptions
     settings: BanjoTooieSettings
     settings_key = "banjo_tooie_options"
@@ -573,11 +573,11 @@ class BanjoTooieWorld(World):
                 if opt is not None:
                     setattr(self.options, key, opt.from_any(value))
 
-            generated_stuff = slot_data["generated_stuff"]
-            self.world_requirements = generated_stuff["world_requirements"]
-            self.world_order = generated_stuff["world_order"]
-            self.jamjars_siloname_costs = generated_stuff["jamjars_siloname_costs"]
-            self.loading_zones = generated_stuff["loading_zones"]
+            custom_bt_data = slot_data["custom_bt_data"]
+            self.world_requirements = custom_bt_data["world_requirements"]
+            self.world_order = custom_bt_data["world_order"]
+            self.jamjars_siloname_costs = custom_bt_data["jamjars_siloname_costs"]
+            self.loading_zones = custom_bt_data["loading_zones"]
         else:
             # Normal generation
             self.validate_yaml_options()
@@ -1002,14 +1002,14 @@ class BanjoTooieWorld(World):
         btoptions = {option_name: option.value for option_name, option in self.options.__dict__.items()}
 
         # Elements that are randomised outside the yaml and affects gameplay
-        generated_stuff: Dict[str, Any] = {
+        custom_bt_data: Dict[str, Any] = {
             "player_name": self.multiworld.player_name[self.player],
             "seed": self.random.randint(12212, 9090763),
             "world_order": self.world_order,
             "world_requirements": self.world_requirements,
             "loading_zones": self.loading_zones,
-            "starting_egg": self.starting_egg,
-            "starting_attack": self.starting_attack,
+            # "starting_egg": self.starting_egg,
+            # "starting_attack": self.starting_attack,
             "preopened_silos_names": self.preopened_silos,
             "preopened_silos_ids": [self.item_name_to_id[name] for name in self.preopened_silos],
             "version": BanjoTooieWorld.version,
@@ -1017,16 +1017,9 @@ class BanjoTooieWorld(World):
             "jamjars_silo_costs": self.jamjars_silo_costs,
             "hints": {location: asdict(hint_data) for location, hint_data in self.hints.items()}
         }
-        print(f"bt option:\n")
-        for option, value in btoptions.items():
-            print(f"{option}: {value}")
-
-        print(f"\n\n\ngenerated stuff:\n")
-        for option, value in generated_stuff.items():
-            print(f"{option}: {value}")
         slot_data = {
             "options": btoptions,
-            "generated_stuff": generated_stuff,
+            "custom_bt_data": custom_bt_data,
         }
         return slot_data
 
