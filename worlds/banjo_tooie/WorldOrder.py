@@ -75,7 +75,7 @@ def generate_world_order(world: BanjoTooieWorld, worlds: List[str]) -> List[str]
         # GI is not easy when you need 3 progressive shoes.
         regionName.TL: [regionName.MT, regionName.GM, regionName.WW, regionName.CC] if world.options.progressive_shoes else [regionName.MT, regionName.GM, regionName.WW, regionName.GIO, regionName.CC],
         # Reaching CK is not easy when you need 4 progressive shoes.
-        regionName.GIO: [regionName.MT, regionName.GM, regionName.GIO, regionName.TL, regionName.CC] if world.options.progressive_shoes else [regionName.MT, regionName.GM, regionName.GIO, regionName.TL, regionName.CC, regionName.CK],
+        regionName.GIO: [regionName.MT, regionName.GM, regionName.TL, regionName.CC] if world.options.progressive_shoes else [regionName.MT, regionName.GM, regionName.TL, regionName.CC, regionName.CK],
         regionName.HP:  [regionName.MT, regionName.GM, regionName.JR],
         # Same thing with GI here.
         regionName.CC: [regionName.MT, regionName.GM, regionName.WW, regionName.TL] if world.options.progressive_shoes else [regionName.MT, regionName.GM, regionName.WW, regionName.GIO, regionName.TL],

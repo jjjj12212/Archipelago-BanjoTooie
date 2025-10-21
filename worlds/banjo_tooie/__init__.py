@@ -997,8 +997,14 @@ class BanjoTooieWorld(World):
                     hint_data.text
                 ))
 
-    def fill_slot_data(self) -> Dict[str, Any]:
+    def generate_output(self, output_directory: str):
+        # This randomiser uses the same patch for every seed, so the patch is part of the apworld and doesn't
+        # need to be generated each time.
+        # However, the generation of signpost hints can take a very long time, and putting it in generate_output
+        # allows the generator to display the time that it took to do that step, as oppposed to in fill_slot_data.
         generate_hints(self)
+
+    def fill_slot_data(self) -> Dict[str, Any]:
         btoptions = {option_name: option.value for option_name, option in self.options.__dict__.items()}
 
         # Elements that are randomised outside the yaml and affects gameplay

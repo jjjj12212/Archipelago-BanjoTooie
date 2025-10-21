@@ -7911,7 +7911,10 @@ class BanjoTooieRules:
                 world = worldLoc
                 break
         if world == "":
-            return False
+            raise KeyError(
+                "Something got messed up when generating the world order.",
+                "Please report this to the Banjo-Tooie AP dev team."
+            )
         amt = self.world.world_requirements[world]
         return state.has(itemName.JIGGY, self.player, amt)
 
