@@ -47,7 +47,7 @@ Ceci causera des bugs d'affichage mineurs pendant le jeu, mais ne devrait pas av
 - Dans BizHawk, cliquez sur Tools, suivi de Lua Console. De là, vous pouvez glisser-déposer banjo_tooie_connector.lua (situé dans le dossier data/lua du dossier d'Archipelago) dans la fenêtre de la Lua console.
 
 ## Jouer sur Everdrive
-- Lancer l'Archipelago Launcher et sélectionnez le client de Banjo-Tooie, dans la colonne de droite.
+- Lancez l'Archipelago Launcher et sélectionnez le client de Banjo-Tooie, dans la colonne de droite.
 - Si c'est la première fois que vous ouvrez le client de Banjo-Tooie, ou si vous changez de version:
   - Le client de Banjo-Tooie va vous demander la ROM de Banjo-Tooie. La ROM sera ensuite patchée, et le client vous indiquera où trouver la ROM à utiliser.
   - Copiez la ROM patch sur la carte SD utilisée pour l'Everdrive
