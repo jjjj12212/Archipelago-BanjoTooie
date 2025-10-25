@@ -92,15 +92,15 @@ class Hint:
         if self.location.player == self.world.player:
             return f"{'Your' if capitalize else 'your'} {self.location.name}"
 
-        return f"{Hint.__player_id_to_name(self.world, self.location.player)}'s\
-                 {Hint.__sanitize_text(self.location.name)}"
+        return f"{Hint.__player_id_to_name(self.world, self.location.player)}'s \
+{Hint.__sanitize_text(self.location.name)}"
 
     def __format_item(self, capitalize: bool) -> str:
         if self.location.item.player == self.world.player:
             return f"{'Your' if capitalize else 'your'} {Hint.__sanitize_text(self.location.item.name)}"
 
-        return f"{Hint.__player_id_to_name(self.world, self.location.item.player)}'s\
-                    {Hint.__sanitize_text(self.location.item.name)}"
+        return f"{Hint.__player_id_to_name(self.world, self.location.item.player)}'s \
+{Hint.__sanitize_text(self.location.item.name)}"
 
     @property
     def __clear_hint_text(self) -> str:

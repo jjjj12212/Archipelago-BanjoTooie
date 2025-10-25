@@ -1,3 +1,11 @@
+# 4.11
+  - Yamlless generation for Universal Tracker.
+  - The generation of signpost hints was moved to generate_output so that the execution time of that step would be printed during the generation.
+  - Fixed the bug where the generation would fail because World 1 was marked as wrongfully inaccessible.
+  - Fixed the spacing in hints.
+  - Fixed the spacing in option descriptions in the yaml.
+  - The nests above water in the big fish cave how have proper logic.
+
 # 4.10.2
   - yaml changes:
     - randomize_world_entrance_loading_zones, randomize_boss_loading_zones: now take an S at the end of "zones".
