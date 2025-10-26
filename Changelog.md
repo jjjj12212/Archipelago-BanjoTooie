@@ -1,6 +1,7 @@
 # 4.11.2
   - the time to generate hints is only displayed when hints are cryptic
   - Fixed the "World 2 Unlocked Unreachable" bug.
+  - Fixed the bug where the generation would fail if someone plandoed an item.
 
 # 4.11.1
   - fix signpost hints where some generations will show no hints.

@@ -1008,6 +1008,9 @@ class BanjoTooieWorld(World):
             logging.info(f"Took {total:.4f} seconds in BanjoTooieWorld.generate_hints for player {self.player}, named {self.multiworld.player_name[self.player]}.")
         btoptions = {option_name: option.value for option_name, option in self.options.__dict__.items()}
 
+        # TODO: AP 0.6.3: plando not serialisable, so we don't include it in slot_data. Remove this line when 0.6.4 goes live.
+        btoptions.pop("plando_items")
+
         # Elements that are randomised outside the yaml and affects gameplay
         custom_bt_data: Dict[str, Any] = {
             "player_name": self.multiworld.player_name[self.player],
@@ -1015,8 +1018,6 @@ class BanjoTooieWorld(World):
             "world_order": self.world_order,
             "world_requirements": self.world_requirements,
             "loading_zones": self.loading_zones,
-            # "starting_egg": self.starting_egg,
-            # "starting_attack": self.starting_attack,
             "preopened_silos_names": self.preopened_silos,
             "preopened_silos_ids": [self.item_name_to_id[name] for name in self.preopened_silos],
             "version": BanjoTooieWorld.version,
