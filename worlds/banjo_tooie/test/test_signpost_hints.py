@@ -11,7 +11,7 @@ from Fill import distribute_items_restrictive
 class TestSignpostsHints(BanjoTooieTestBase):
     run_default_tests = False
 
-    # fill_slot_data needs to be run for these tests to properly run.
+    # generate_output needs to be run for these tests to properly run.
     def world_setup(self, seed: typing.Optional[int] = None) -> None:
         super(BanjoTooieTestBase, self).world_setup(seed)
         if not hasattr(self, "multiworld"):

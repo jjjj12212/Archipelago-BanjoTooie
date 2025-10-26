@@ -1,4 +1,6 @@
+import logging
 from math import ceil
+import time
 from Options import OptionError
 import typing
 from typing import Dict, Any, List
@@ -87,7 +89,7 @@ class BanjoTooieWorld(World):
     """
 
     game = "Banjo-Tooie"
-    version = "V4.11"
+    version = "V4.11.1"
     options: BanjoTooieOptions
     settings: BanjoTooieSettings
     settings_key = "banjo_tooie_options"
@@ -997,14 +999,15 @@ class BanjoTooieWorld(World):
                     hint_data.text
                 ))
 
-    def generate_output(self, output_directory: str):
-        # This randomiser uses the same patch for every seed, so the patch is part of the apworld and doesn't
-        # need to be generated each time.
-        # However, the generation of signpost hints can take a very long time, and putting it in generate_output
-        # allows the generator to display the time that it took to do that step, as oppposed to in fill_slot_data.
-        generate_hints(self)
+    # def generate_output(self, output_directory: str):
+
 
     def fill_slot_data(self) -> Dict[str, Any]:
+        t0 = time.time()
+        generate_hints(self)
+        t1 = time.time()
+        total = t1-t0
+        logging.info(f"Took {total:.4f} seconds in BanjoTooieWorld.generate_hints for player {self.player}, named {self.multiworld.player_name[self.player]}.")
         btoptions = {option_name: option.value for option_name, option in self.options.__dict__.items()}
 
         # Elements that are randomised outside the yaml and affects gameplay
