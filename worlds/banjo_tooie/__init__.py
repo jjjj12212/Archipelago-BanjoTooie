@@ -89,7 +89,7 @@ class BanjoTooieWorld(World):
     """
 
     game = "Banjo-Tooie"
-    version = "V4.11"
+    version = "V4.11.1"
     options: BanjoTooieOptions
     settings: BanjoTooieSettings
     settings_key = "banjo_tooie_options"

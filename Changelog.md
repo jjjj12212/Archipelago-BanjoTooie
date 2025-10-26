@@ -1,3 +1,6 @@
+# 4.11.1
+  - fix signpost hints where some generations will show no hints.
+
 # 4.11
   - Yamlless generation for Universal Tracker.
   - The generation of signpost hints was moved to generate_output so that the execution time of that step would be printed during the generation.
@@ -1576,5 +1579,3 @@
 - Implemented Victory Condition
 - Implemented Slot data in BTclient and Lua
 - Fixed issue for uploading the generated world on archipelago website
-
-
