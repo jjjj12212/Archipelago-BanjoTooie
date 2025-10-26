@@ -1,10 +1,14 @@
+# 4.11.2
+  - the time to generate hints is only displayed when hints are cryptic
+  - Fixed the "World 2 Unlocked Unreachable" bug.
+
 # 4.11.1
   - fix signpost hints where some generations will show no hints.
 
 # 4.11
   - Yamlless generation for Universal Tracker.
   - The generation of signpost hints was moved to generate_output so that the execution time of that step would be printed during the generation.
-  - Fixed the bug where the generation would fail because World 1 was marked as wrongfully inaccessible.
+  - Fixed the "World 1 Unlocked Unreachable" bug
   - Fixed the spacing in hints.
   - Fixed the spacing in option descriptions in the yaml.
   - The nests above water in the big fish cave how have proper logic.
