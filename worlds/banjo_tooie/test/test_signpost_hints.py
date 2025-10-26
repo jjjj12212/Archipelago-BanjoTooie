@@ -18,7 +18,7 @@ class TestSignpostsHints(BanjoTooieTestBase):
             return
         distribute_items_restrictive(self.multiworld)
         call_all(self.multiworld, "post_fill")
-        call_all(self.multiworld, "generate_output", "")
+        call_all(self.multiworld, "fill_slot_data")
 
     def test_hint_count(self) -> None:
         assert len(self.world.hints) == 61
