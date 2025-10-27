@@ -1004,7 +1004,7 @@ class BanjoTooieWorld(World):
         generate_hints(self)
         t1 = time.time()
         total = t1-t0
-        if self.options.hint_clarity == HintClarity.option_cryptic and total >= 1:
+        if total >= 1:
             logging.info(f"Took {total:.4f} seconds in BanjoTooieWorld.generate_hints for player {self.player}, named {self.multiworld.player_name[self.player]}.")
         btoptions = {option_name: option.value for option_name, option in self.options.__dict__.items()}
 

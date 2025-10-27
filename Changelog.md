@@ -1,5 +1,5 @@
 # 4.11.2
-  - The time to generate hints is only displayed when hints are cryptic and when it takes longer than a second.
+  - The time to generate hints is only displayed when it takes longer than a second.
   - Fixed the "World 2 Unlocked Unreachable" bug.
   - Fixed the bug where the generation would fail if someone plandoed an item.
 
