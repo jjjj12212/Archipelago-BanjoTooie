@@ -808,7 +808,7 @@ class BanjoTooieWorld(World):
             for location_name in MumboTokenJinjo_table.keys():
                 self.get_location(location_name).place_locked_item(item)
 
-        elif not self.options.randomize_jinjos:
+        if not self.options.randomize_jinjos:
             self.get_location(locationName.JIGGYIH1).place_locked_item(self.create_item(itemName.JIGGY))
             self.get_location(locationName.JIGGYIH2).place_locked_item(self.create_item(itemName.JIGGY))
             self.get_location(locationName.JIGGYIH3).place_locked_item(self.create_item(itemName.JIGGY))
@@ -819,7 +819,6 @@ class BanjoTooieWorld(World):
             self.get_location(locationName.JIGGYIH8).place_locked_item(self.create_item(itemName.JIGGY))
             self.get_location(locationName.JIGGYIH9).place_locked_item(self.create_item(itemName.JIGGY))
 
-        if not self.options.randomize_jinjos:
             item = self.create_item(itemName.WJINJO)
             self.get_location(locationName.JINJOJR5).place_locked_item(item)
 
