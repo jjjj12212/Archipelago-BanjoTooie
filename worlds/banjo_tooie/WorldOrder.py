@@ -26,7 +26,7 @@ def randomize_world_progression(world: BanjoTooieWorld) -> None:
 def randomize_level_order(world: BanjoTooieWorld) -> None:
     if not world.options.randomize_worlds:
         world.world_order = {
-            regionName.MT:  1230944, #These ids stay in the same order, but the keys may switch order when randomized.
+            regionName.MT:  1230944,  # These ids stay in the same order, but the keys may switch order when randomized.
             regionName.GM:  1230945,
             regionName.WW:  1230946,
             regionName.JR:  1230947,

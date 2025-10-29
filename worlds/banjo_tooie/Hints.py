@@ -250,11 +250,12 @@ def generate_hints(world: "BanjoTooieWorld"):
 
     generate_joke_hints(world, hint_data)
 
-    # Since these are static variables, we have to manually delete them.
+    # Since these are static variables, we have to manually empty them.
+    # Using del messes up with tests, so we're simply deleting the reference.
     if world.options.hint_clarity == HintClarity.option_cryptic:
         if Hint.is_last_cryptic_hint_world(world):
-            del Hint.item_requirement_cache
-            del Hint.state_per_sphere
+            Hint.item_requirement_cache = dict()
+            Hint.state_per_sphere = []
 
     world.random.shuffle(hint_data)
     world.hints = dict(zip(get_signpost_location_ids(), hint_data))
