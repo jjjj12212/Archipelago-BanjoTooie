@@ -1,8 +1,10 @@
 # 4.11.2
   - The time to generate hints is only displayed when it takes longer than a second
   - The time spent generating cryptic hints has been cut down in half, due to better optimisation
+  - For players with minimal accessibility: cryptic hints now have the word "lost" when they refer to an unreachable location.
+    - An example: "Your TDL: Scrotty Jiggy has a lost legendary one-of-a-kind item."
   - Fixed the "World 2 Unlocked Unreachable" bug
-  - Fixed the "World 9 Unlocked Unreachable" bug, if you played with vanilla jinjos and a goal involving jinjos.
+  - Fixed the "World 9 Unlocked Unreachable" bug, if you played with vanilla jinjos and a goal involving jinjos
   - Fixed the bug where the generation would fail if someone plandoed an item
 
 # 4.11.1

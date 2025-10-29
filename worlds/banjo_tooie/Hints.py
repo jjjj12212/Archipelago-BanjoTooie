@@ -29,7 +29,6 @@ class Hint:
         REQUIRED_BY_MULTIWORLD = 1,
         NOT_REQUIRED = 2
 
-    world: "BanjoTooieWorld"
     item_requirement_cache: dict[Location, "Hint.ItemRequirement"] = dict()
     state_per_sphere: List[CollectionState] = []
 
@@ -38,7 +37,7 @@ class Hint:
         self.location = location
 
     def fill_item_requirement_cache(world: "BanjoTooieWorld", hints: List["Hint"]) -> None:
-        # Phase 1: We determine in what sphere each hinted location is, and save a state for each sphere.
+        # Phase 1: We determine in what sphere each hinted location is.
         remaining_hinted_progression_locations = set([
             hint.location
             for hint in hints
@@ -147,6 +146,9 @@ class Hint:
     def is_required(self) -> ItemRequirement:
         return self.item_requirement_cache[self.location]
 
+    def __format_accessibility(self) -> str:
+        return "" if Hint.state_per_sphere[-1].can_reach(self.location) else "lost "
+
     def __format_location(self, capitalize: bool) -> str:
         if self.location.player == self.world.player:
             return f"{'Your' if capitalize else 'your'} {self.location.name}"
@@ -166,6 +168,7 @@ class Hint:
     @property
     def __cryptic_hint_text(self) -> str:
         formatted_location = self.__format_location(capitalize=True)
+        formatted_accessibility = self.__format_accessibility()
         if self.location.item.advancement:
             requirement = self.is_required
             if requirement == Hint.ItemRequirement.REQUIRED_BY_PLAYER:
@@ -173,21 +176,21 @@ class Hint:
             if requirement == Hint.ItemRequirement.REQUIRED_BY_MULTIWORLD:
                 return f"{formatted_location} is on the Wahay of the Archipelago."
             if self.one_of_a_kind:
-                return f"{formatted_location} has a legendary one-of-a-kind item."
+                return f"{formatted_location} has a {formatted_accessibility}legendary one-of-a-kind item."
             if self.location.item.classification == ItemClassification.progression:
-                return f"{formatted_location} has a wonderful item."
+                return f"{formatted_location} has a {formatted_accessibility}wonderful item."
             # Either skip balancing or deprioritised
             if self.location.item.classification & ItemClassification.progression_skip_balancing\
                     == ItemClassification.progression_skip_balancing\
                 or self.location.item.classification & ItemClassification.progression_deprioritized\
                     == ItemClassification.progression_deprioritized:
-                return f"{formatted_location} has a great item."
+                return f"{formatted_location} has a {formatted_accessibility}great item."
         if self.location.item.classification == ItemClassification.useful:
-            return f"{formatted_location} has a good item."
+            return f"{formatted_location} has a {formatted_accessibility}good item."
         if self.location.item.classification == ItemClassification.filler:
-            return f"{formatted_location} has a useless item."
+            return f"{formatted_location} has a {formatted_accessibility}useless item."
         if self.location.item.classification == ItemClassification.trap:
-            return f"{formatted_location} has a bad item."
+            return f"{formatted_location} has a {formatted_accessibility}bad item."
 
         # Not sure what actually fits in the remaining multi-flag classifications
         return f"{formatted_location} has a weiiiiiird item."
