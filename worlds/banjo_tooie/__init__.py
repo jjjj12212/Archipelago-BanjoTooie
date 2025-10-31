@@ -15,7 +15,7 @@ from .Locations import LocationData, all_location_table, MTLoc_Table, GMLoc_tabl
     IHPLLoc_table, IHPGLoc_table, IHCTLoc_table, IHWLLoc_table, IHQMLoc_table, \
     CheatoRewardsLoc_table, JinjoRewardsLoc_table, HoneyBRewardsLoc_table
 from .Regions import create_regions, connect_regions
-from .Options import BanjoTooieOptions, EggsBehaviour, JamjarsSiloCosts, LogicType, ProgressiveEggAim, \
+from .Options import BanjoTooieOptions, EggsBehaviour, HintClarity, JamjarsSiloCosts, LogicType, ProgressiveEggAim, \
     ProgressiveWaterTraining, RandomizeBKMoveList, VictoryCondition, bt_option_groups, WorldRequirements
 from .Rules import BanjoTooieRules
 from .Names import itemName, locationName, regionName
@@ -89,7 +89,7 @@ class BanjoTooieWorld(World):
     """
 
     game = "Banjo-Tooie"
-    version = "V4.11.1"
+    version = "V4.11.2"
     options: BanjoTooieOptions
     settings: BanjoTooieSettings
     settings_key = "banjo_tooie_options"
@@ -808,7 +808,7 @@ class BanjoTooieWorld(World):
             for location_name in MumboTokenJinjo_table.keys():
                 self.get_location(location_name).place_locked_item(item)
 
-        elif not self.options.randomize_jinjos:
+        if not self.options.randomize_jinjos:
             self.get_location(locationName.JIGGYIH1).place_locked_item(self.create_item(itemName.JIGGY))
             self.get_location(locationName.JIGGYIH2).place_locked_item(self.create_item(itemName.JIGGY))
             self.get_location(locationName.JIGGYIH3).place_locked_item(self.create_item(itemName.JIGGY))
@@ -819,7 +819,6 @@ class BanjoTooieWorld(World):
             self.get_location(locationName.JIGGYIH8).place_locked_item(self.create_item(itemName.JIGGY))
             self.get_location(locationName.JIGGYIH9).place_locked_item(self.create_item(itemName.JIGGY))
 
-        if not self.options.randomize_jinjos:
             item = self.create_item(itemName.WJINJO)
             self.get_location(locationName.JINJOJR5).place_locked_item(item)
 
@@ -999,16 +998,17 @@ class BanjoTooieWorld(World):
                     hint_data.text
                 ))
 
-    # def generate_output(self, output_directory: str):
-
-
     def fill_slot_data(self) -> Dict[str, Any]:
         t0 = time.time()
         generate_hints(self)
         t1 = time.time()
         total = t1-t0
-        logging.info(f"Took {total:.4f} seconds in BanjoTooieWorld.generate_hints for player {self.player}, named {self.multiworld.player_name[self.player]}.")
+        if total >= 1:
+            logging.info(f"Took {total:.4f} seconds in BanjoTooieWorld.generate_hints for player {self.player}, named {self.multiworld.player_name[self.player]}.")
         btoptions = {option_name: option.value for option_name, option in self.options.__dict__.items()}
+
+        # TODO: AP 0.6.3: plando not serialisable, so we can't include it in slot_data. Remove this line when 0.6.4 goes live.
+        btoptions.pop("plando_items")
 
         # Elements that are randomised outside the yaml and affects gameplay
         custom_bt_data: Dict[str, Any] = {
@@ -1017,8 +1017,6 @@ class BanjoTooieWorld(World):
             "world_order": self.world_order,
             "world_requirements": self.world_requirements,
             "loading_zones": self.loading_zones,
-            # "starting_egg": self.starting_egg,
-            # "starting_attack": self.starting_attack,
             "preopened_silos_names": self.preopened_silos,
             "preopened_silos_ids": [self.item_name_to_id[name] for name in self.preopened_silos],
             "version": BanjoTooieWorld.version,
