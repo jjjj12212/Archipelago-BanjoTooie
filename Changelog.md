@@ -1,3 +1,6 @@
+# 4.11.3
+  - Change flavor text when you received Humba: Dragon.
+
 # 4.11.2
   - The time to generate hints is only displayed when it takes longer than a second
   - The time spent generating cryptic hints has been cut down in half, due to better optimisation
