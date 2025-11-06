@@ -1,4 +1,5 @@
 # 4.11.3
+  - Fix Targitzan's Green Relics on Everdrive connector
   - Change flavor text when you received Humba: Dragon.
   - Logic fixes:
     - Entering Davie Jone's locker: Now takes breaking the door with either talon torpedo or the sub into consideration.
