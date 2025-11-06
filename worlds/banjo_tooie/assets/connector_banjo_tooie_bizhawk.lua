@@ -16,7 +16,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 5
-local BT_VERSION = "V4.11.2"
+local BT_VERSION = "V4.11.3"
 local PLAYER = ""
 local SEED = 0
 
@@ -8157,14 +8157,28 @@ function get_item_message_text(item_id, item, player)
         if DIALOG_CHARACTER == 110 or DIALOG_CHARACTER == 37
         then
             -- Humba flavor text
-            return own
-                and string.format("Wumba now make bear %s. Very %s!", transformation_names[item_id]["name"], transformation_names[item_id]["attribute"])
-                or string.format("%s told Wumba how to make bear %s. Very %s!", player, transformation_names[item_id]["name"], transformation_names[item_id]["attribute"])
+            if item_id == 1230182
+            then
+                    return own
+                        and string.format("Wumba now make bird %s. Very %s!", transformation_names[item_id]["name"], transformation_names[item_id]["attribute"])
+                        or string.format("%s told Wumba how to make bird %s. Very %s!", player, transformation_names[item_id]["name"], transformation_names[item_id]["attribute"])
+            else
+                return own
+                    and string.format("Wumba now make bear %s. Very %s!", transformation_names[item_id]["name"], transformation_names[item_id]["attribute"])
+                    or string.format("%s told Wumba how to make bear %s. Very %s!", player, transformation_names[item_id]["name"], transformation_names[item_id]["attribute"])
+            end
         else
             -- Basic text
-            return own
-                and string.format("Banjo can now be transformed into a %s.", transformation_names[item_id]["name"])
-                or string.format("%s has just unlocked the %s transformation.", player, transformation_names[item_id]["name"])
+            if item_id == 1230182
+            then
+                return own
+                    and string.format("Kazooie can now be transformed into a %s.", transformation_names[item_id]["name"])
+                    or string.format("%s has just unlocked the %s transformation.", player, transformation_names[item_id]["name"])
+            else
+                return own
+                    and string.format("Banjo can now be transformed into a %s.", transformation_names[item_id]["name"])
+                    or string.format("%s has just unlocked the %s transformation.", player, transformation_names[item_id]["name"])
+            end
         end
     elseif 1230870 <= item_id and item_id <= 1230876 -- Silos
     then

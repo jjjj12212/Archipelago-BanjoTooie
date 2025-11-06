@@ -1,3 +1,11 @@
+# 4.11.3
+  - Fix Targitzan's Green Relics on Everdrive connector
+  - Change flavor text when you received Humba: Dragon.
+  - Logic fixes:
+    - Entering Davie Jone's locker: Now takes breaking the door with either talon torpedo or the sub into consideration.
+    - Icicle Grotto jinjo, HFP treble clef, top of icicle grotto nests, Volcano honeycomb: Now take the jumps on the crystals in icicle grotto into consideration, on hard tricks and above.
+    - Accessing Prison Compound: Now in logic if you use airborne egg aiming to shoot explosives (easy tricks +)
+
 # 4.11.2
   - The time to generate hints is only displayed when it takes longer than a second
   - The time spent generating cryptic hints has been cut down in half, due to better optimisation
