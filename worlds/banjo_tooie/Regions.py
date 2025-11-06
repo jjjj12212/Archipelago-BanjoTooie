@@ -2161,9 +2161,10 @@ def connect_regions(self):
                 source_rule = lambda state: rules.has_green_relics(state, 20)
             elif source == regionName.JRBOSS:
                 source_rule = lambda state: ((rules.grenade_eggs_item(state) or rules.clockwork_eggs_item(state)) and rules.sub_aqua_egg_aiming(state)) \
-                    or rules.humbaJRL(state)
+                    or rules.humbaJRL(state)\
+                    or rules.talon_torpedo(state)
             elif source == regionName.GIBOSS:
-                source_rule = lambda state: rules.can_enter_gi_repairdepot(state)
+                source_rule = lambda state: rules.can_enter_gi_repair_depot(state)
             elif source == regionName.HPFBOSS:
                 source_rule = lambda state: rules.flight_pad(state)
             elif source == regionName.HPIBOSS:
@@ -2189,7 +2190,11 @@ def connect_regions(self):
             transition_rule = lambda state, sr = source_rule, brr = boss_room_rule: sr(state) and brr(state)
             source_region.add_exits({boss_room}, {boss_room: transition_rule})
 
-            # Entering Repair Depot has a very convoluted process.
+            # Davie Jones' locker can be opened with the submarine.
+            if source == regionName.JRBOSS:
+                add_indirect_condition(IndirectTransitionCondition(boss_entrance, boss_room, [regionName.JRAT]))
+
+            # Entering Repair Depot is a very convoluted process.
             if source == regionName.GIBOSS:
                 add_indirect_condition(IndirectTransitionCondition(boss_entrance, boss_room, [regionName.GI3]))
 
