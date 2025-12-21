@@ -1,3 +1,11 @@
+# 4.11.4
+  - PR fixes for Archipelago main repository submission.
+  - Thanks to ScipioWright, Mysteryem, and duckboycool for reviewing the code for the PR.
+  - Code cleanup and style improvements across all the files.
+  - Progressive Shoes no longer requires Nestsanity or Randomize Signposts to be enabled. (Thanks da-stealth!)
+  - If you're generating a seed with default options (or options with few filler items), the generation will be much quicker.
+  - The cryptic hint generation has been improved by a factor of 3-5.
+
 # 4.11.3
   - Fix Targitzan's Green Relics on Everdrive connector
   - Change flavor text when you received Humba: Dragon.
