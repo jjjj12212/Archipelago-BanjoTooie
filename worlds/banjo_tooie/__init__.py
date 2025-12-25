@@ -3,7 +3,6 @@ from collections import Counter
 from math import ceil
 import time
 
-import loguru
 from Options import OptionError
 import typing
 from typing import Dict, Any, List
@@ -34,7 +33,7 @@ def run_client():
 
 
 components.append(Component("Banjo-Tooie Client", func=run_client, component_type=Type.CLIENT,
-                            icon='Jinjo Icon', description="Banjo-Tooie AP. Gu-Huh"))
+                            icon='Jinjo Icon'))
 icon_paths['Jinjo Icon'] = "ap:worlds.banjo_tooie/assets/icon.png"
 
 class BanjoTooieSettings(settings.Group):
@@ -107,16 +106,16 @@ class BanjoTooieWorld(World):
 
     item_name_groups = {
         # "Jiggy": all_group_table["jiggy"],
-        "Jinjo": all_group_table["jinjo"],
-        "Moves": all_group_table["moves"],
-        "Magic": all_group_table["magic"],
-        "Stations": all_group_table["stations"],
-        "StopnSwap": all_group_table["stopnswap"],
-        "Access": all_group_table["levelaccess"],
-        "Dino": all_group_table["dino"],
-        "Silos": all_group_table["Silos"],
-        "Warp Pads": all_group_table["Warp Pads"],
-        "Cheats": all_group_table["cheats"]
+        "Jinjo": set(all_group_table["jinjo"].keys()),
+        "Moves": set(all_group_table["moves"].keys()),
+        "Magic": set(all_group_table["magic"].keys()),
+        "Stations": set(all_group_table["stations"].keys()),
+        "StopnSwap": set(all_group_table["stopnswap"].keys()),
+        "Access": set(all_group_table["levelaccess"].keys()),
+        "Dino": set(all_group_table["dino"].keys()),
+        "Silos": set(all_group_table["Silos"].keys()),
+        "Warp Pads": set(all_group_table["Warp Pads"].keys()),
+        "Cheats": set(all_group_table["cheats"].keys())
     }
 
     location_name_groups = {
@@ -363,7 +362,7 @@ class BanjoTooieWorld(World):
             filler_notes += useful_notes
             useful_notes = 0
         if filler_notes < 0:
-            loguru.logger.warning("Number of notes that need to be inserted is somehow negative.")
+            logging.warning("Number of notes that need to be inserted is somehow negative.")
 
         itempool += [
             self.create_item(itemName.NOTE) for i in range(progression_notes)
@@ -807,18 +806,18 @@ class BanjoTooieWorld(World):
             for location_name in MumboTokenJinjo_table.keys():
                 self.get_location(location_name).place_locked_item(item)
 
-        prefill_locations_with_item(itemName.JIGGY, [
-            locationName.JIGGYIH1,
-            locationName.JIGGYIH2,
-            locationName.JIGGYIH3,
-            locationName.JIGGYIH4,
-            locationName.JIGGYIH5,
-            locationName.JIGGYIH6,
-            locationName.JIGGYIH7,
-            locationName.JIGGYIH8,
-            locationName.JIGGYIH9
-        ])
         if not self.options.randomize_jinjos.value:
+            prefill_locations_with_item(itemName.JIGGY, [
+                locationName.JIGGYIH1,
+                locationName.JIGGYIH2,
+                locationName.JIGGYIH3,
+                locationName.JIGGYIH4,
+                locationName.JIGGYIH5,
+                locationName.JIGGYIH6,
+                locationName.JIGGYIH7,
+                locationName.JIGGYIH8,
+                locationName.JIGGYIH9
+            ])
             prefill_locations_with_item(itemName.WJINJO, [
                 locationName.JINJOJR5
             ])
