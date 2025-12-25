@@ -2,7 +2,7 @@ from collections import defaultdict
 from ..Names import itemName
 from . import BanjoTooieTestBase
 
-BASE_FILLERS = -5
+BASE_FILLERS = 4
 
 ALL_90_JIGGIES_AND_900_NOTES_PROGRESSION = {
     "world_requirements": "custom",
@@ -299,7 +299,7 @@ class TestJiggiesHardLimit(FillersTrapTestBase):
         pool = self.pool()
 
         assert sum(pool.distribution.values()) == 687 + BASE_FILLERS
-        assert pool.total_distribution[itemName.JIGGY] == 240
+        assert pool.total_distribution[itemName.JIGGY] == 249
 
 
 class TestDoubloonsHardLimit(FillersTrapTestBase):
