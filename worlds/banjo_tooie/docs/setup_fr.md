@@ -18,7 +18,7 @@ Le randomiseur supporte l'Everdrive 3.0 et X7.
         - Linux: https://ftdichip.com/wp-content/uploads/2022/07/libftd2xx-x86_64-1.4.27.tgz
     - Pour l'Everdrive 3.0, le système d'exploitation doit être 3.06 pour fonctionner.
     - Le Nintendo 64 Expansion Pak est requis.
-    -   Télécharger la version la plus récente du connecteur pour Everdrive: https://github.com/jjjj12212/AP_Banjo-Tooie/releases
+    -   Télécharger la version la plus récente du connecteur pour Everdrive: https://github.com/jjjj12212/AP_Banjo-Tooie/releases.
 -   Une ROM de la version Nord-Américaine de Banjo-Tooie.
 
 ## Jouer sur BizHawk
