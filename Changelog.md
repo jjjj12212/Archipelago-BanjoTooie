@@ -1,3 +1,17 @@
+# 4.11.4
+  - PR fixes for Archipelago main repository submission.
+  - Thanks to ScipioWright, Mysteryem, and duckboycool for reviewing the code for the PR.
+  - Code cleanup and style improvements across all the files.
+  - Progressive Shoes no longer requires Nestsanity or Randomize Signposts to be enabled. (Thanks da-stealth!)
+  - If you generate a seed with default options (or options with few filler items), the generation will be much quicker.
+  - The cryptic hint generation has been improved by a factor of 3-5.
+  - Logic fixes:
+    - HFP Volcano jiggy, Volcano honeycomb, Icicle Grotto cheato page, Icicle Grotto jinjo: Now check for that you can reach the top of HFP on all paths.
+    - GGM Mumbo's Skull: Now checks for shoes on easy tricks and above.
+    - Defeating Hag 1: Now verifies you have an egg type other than clockwork eggs on hard tricks and glitches.
+    - Trash Compactor back nests: Now in logic with talon trot on easy tricks and above.
+    - Cheese Wedge jinjo: Now in logic with flight pad + flap flip + beak buster on easy tricks and above.
+
 # 4.11.3
   - Fix Targitzan's Green Relics on Everdrive connector
   - Change flavor text when you received Humba: Dragon.
