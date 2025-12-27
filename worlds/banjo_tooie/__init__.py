@@ -636,8 +636,9 @@ class BanjoTooieWorld(World):
                     self.options.randomize_bk_moves.value == RandomizeBKMoveList.option_none
                     or not self.options.randomize_bt_moves.value
                 ):
-            raise OptionError("You cannot have progressive Water Training\
-                without randomizing moves and randomizing BK moves")
+            raise OptionError(
+                "You cannot have progressive Water Training without randomizing moves and randomizing BK moves"
+            )
         if self.options.progressive_flight.value\
                 and (not self.options.randomize_bk_moves.value or not self.options.randomize_bt_moves.value):
             raise OptionError("You cannot have progressive flight without randomizing moves and randomizing BK moves")
