@@ -8,10 +8,10 @@ regions: Regions = {
 				"id": 0x02,
 				"groups":{"World Exits"},
 			},
-			"Mayahem Temple: Main Map": {}
+			"MT: Main Map": {}
 		},
 	},
-	"Mayahem Temple: Main Map": {
+	"MT: Main Map": {
 		"locations": {
 			"MT: First Stairs Note 1": {
 				"item": "NoteNest",
@@ -78,7 +78,7 @@ regions: Regions = {
 			},
 			"MT: Bovina Jiggy": {
 				"item": "Jiggy",
-				"logic": "MayahemTempleKillFlies"
+				"logic": "MTKillFlies"
 			},
 			"MT: In Front of Jade Snake Grove Feather Nest 1": {
 				"item": "FeatherNest",
@@ -129,17 +129,17 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Mayahem Temple": {
+			"MT: Main Map": {
 				"logic": {
 					"Banjo-Kazooie": "true"
 				}
 			},
-			"Mayahem Temple: Top of Kickball Stadium": {
+			"MT: Top of Kickball Stadium": {
 				"logic": {
 					"Banjo-Kazooie": "FlapFlipSlideExtension and BeakBusterJump and Roll and FlapFlip and BeakBuster"
 				}
 			},
-			"Mayahem Temple: Kill Flies": {
+			"MT: Kill Flies": {
 				"logic": {
 					"Banjo-Kazooie": """
 						ShootLinearEggs
@@ -148,7 +148,7 @@ regions: Regions = {
 					"""
 				}
 			},
-			"Mayahem Temple: Bovina Honeycomb": {
+			"MT: Bovina Honeycomb": {
 				"logic": {
 					"Banjo-Kazooie": """
 						ClockworkShot
@@ -157,21 +157,21 @@ regions: Regions = {
 					"""
 				}
 			},
-			"Mayahem Temple: Top Platform Outside Treasure Chamber": {
+			"MT: Top Platform Outside Treasure Chamber": {
 				"logic": {
 					"Banjo-Kazooie": {
 						"Clockwork Kazooie": "ClockworkShot"
 					}
 				}
 			},
-			"Mayahem Temple: Top of Kickball Stadium": {
+			"MT: Top of Kickball Stadium": {
 				"logic": {
 					"Banjo-Kazooie": {
 						"Clockwork Kazooie": "ClockworkShot"
 					}
 				}
 			},
-			"Mayahem Temple: Top of the Temple": {
+			"MT: Top of the Temple": {
 				"logic": {
 					"Banjo-Kazooie": """
 						TalonTrot
@@ -180,59 +180,59 @@ regions: Regions = {
 					"Talon Trot": "true"
 				}
 			},
-			"Mayahem Temple: Targitzan's Temple Lobby": {
+			"MT: Targitzan's Temple Lobby": {
 				"id": -1
 			},
-			"Mayahem Temple: Jade Snake Grove": {
-				"logic": "MayahemTempleOpenJadeSnakeGrove",
+			"MT: Jade Snake Grove": {
+				"logic": "MTOpenJadeSnakeGrove",
 				"explicit_logic": {
-					"Golden Goliath": "MayahemTempleOpenJadeSnakeGrove"
+					"Golden Goliath": "MTOpenJadeSnakeGrove"
 				}
 			},
-			"Mayahem Temple": {
+			"MT: Main Map": {
 				"logic": {
 					"Mumbo": {
 						"Golden Goliath": "MumboGoldenGoliath"
 					}
 				}
 			},
-			"Mayahem Temple: Open Jade Snake Grove": {
+			"MT: Open Jade Snake Grove": {
 				"logic": {
 					"Golden Goliath": "true"
 				}
 			},
-			"Mayahem Temple: Open Prison Compound": {
+			"MT: Open Prison Compound": {
 				"logic": {
 					"Golden Goliath": "true",
 					"Banjo-Kazooie": "ShootExplosives"
 				}
 			},
-			"Mayahem Temple: Mumbo's Skull": {
+			"MT: Mumbo's Skull": {
 				"id": -1,
 			},
-			"Mayahem Temple: Treasure Chamber Bottom": {
-				"logic": "MayahemTempleOpenBottomTreasureChamberDoor",
+			"MT: Treasure Chamber Bottom": {
+				"logic": "MTOpenBottomTreasureChamberDoor",
 				"id": -1
 			},
-			"Mayahem Temple: Warp Pads": {
+			"MT: Warp Pads": {
 				"logic": "MTWorldEntryAndExitWarpPad or MTOutsideMumbosSkullWarpPad"
 			},
-			"Mayahem Temple: Kickball Stadium": {
+			"MT: Kickball Stadium": {
 				"logic": {
 					"Stony": "true"
 				}
 			},
-			"Mayahem Temple: Snake Heads": {
+			"MT: Snake Heads": {
 				"logic": {
 					"Banjo-Kazooie": "(LinearEggs or ExtraClockworkUsage) and EggAim"
 				}
 			},
-			"Mayahem Temple: Flight": {
+			"MT: Flight": {
 				"logic": {
-					"Banjo-Kazooie": "MayahemTempleBreakFlightPadBoulder"
+					"Banjo-Kazooie": "MTBreakFlightPadBoulder"
 				}
 			},
-			"Mayahem Temple: Break Flight Pad Boulder": {
+			"MT: Break Flight Pad Boulder": {
 				"logic": {
 					"Banjo-Kazooie": "BillDrill",
 					"Golden Goliath": "true"
@@ -240,27 +240,27 @@ regions: Regions = {
 			}
 		}
 	},
-	"Mayahem Temple: Top of the Temple": {
+	"MT: Top of the Temple": {
 		"locations": {
 			"MT: Top of Temple Jiggy": {
 				"item": "Jiggy",
 			}
 		}
 	},
-	"Mayahem Temple: Kill Flies": {"macro": {"event"}},
-	"Mayahem Temple: Open Prison Compound": {"macro": {"event"}},
-	"Mayahem Temple: Open Jade Snake Grove": {"macro": {"event"}},
-	"Mayahem Temple: Break Flight Pad Boulder": {"macro": {"event"}},
-	"Mayahem Temple: Bovina Honeycomb": {
+	"MT: Kill Flies": {"macro": {"event"}},
+	"MT: Open Prison Compound": {"macro": {"event"}},
+	"MT: Open Jade Snake Grove": {"macro": {"event"}},
+	"MT: Break Flight Pad Boulder": {"macro": {"event"}},
+	"MT: Bovina Honeycomb": {
 		"locations": {
 			"MT: Bovina Honeycomb": {
 				"item": "EmptyHoneycomb",
 			},
 		}
 	},
-	"Mayahem Temple: Flight": {
+	"MT: Flight": {
 		"exits": {
-			"Mayahem Temple: Kill Flies": {
+			"MT: Kill Flies": {
 				"logic": {
 					"Banjo-Kazooie":"""
 						AirborneEggAiming and LinearEggs
@@ -268,7 +268,7 @@ regions: Regions = {
 					"""
 				}
 			},
-			"Mayahem Temple: Snake Heads": {
+			"MT: Snake Heads": {
 				"logic": {
 					"Banjo-Kazooie": """
 						AirborneEggAiming and LinearEggs
@@ -276,22 +276,22 @@ regions: Regions = {
 					"""
 				}
 			},
-			"Mayahem Temple: Top Platform Outside Treasure Chamber": {},
-			"Mayahem Temple: Top of Kickball Stadium": {},
-			"Mayahem Temple: Kickball Stadium": {
+			"MT: Top Platform Outside Treasure Chamber": {},
+			"MT: Top of Kickball Stadium": {},
+			"MT: Kickball Stadium": {
 				"logic": {
 					"Banjo-Kazooie": "BeakBombClips"
 				}
 			},
-			"Mayahem Temple: Jade Snake Grove": {
+			"MT: Jade Snake Grove": {
 				"logic": {
 					"Banjo-Kazooie": "BeakBombClips"
 				}
 			},
-			"Mayahem Temple: Bovina Honeycomb": {}
+			"MT: Bovina Honeycomb": {}
 		}
 	},
-	"Mayahem Temple: Snake Heads": {
+	"MT: Snake Heads": {
 		"locations": {
 			"MT: Snake Head 1": {
 				"item": "MTSnakeHead"
@@ -313,28 +313,28 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Mayahem Temple: Open Bottom Treasure Chamber Door": {
+			"MT: Open Bottom Treasure Chamber Door": {
 				"logic": "(MTSnakeHead, 6)"
 			}
 		}
 	},
-	"Mayahem Temple: Open Bottom Treasure Chamber Door": {"macro": {"event"}},
-	"Mayahem Temple: Open Top Treasure Chamber Door": {"macro": {"event"}},
-	"Mayahem Temple: Top Platform Outside Treasure Chamber": {
+	"MT: Open Bottom Treasure Chamber Door": {"macro": {"event"}},
+	"MT: Open Top Treasure Chamber Door": {"macro": {"event"}},
+	"MT: Top Platform Outside Treasure Chamber": {
 		"locations": {
 			"MT: Treasure Chamber Cheato Page": {
 				"item": "CheatoPage",
 			},
 		},
 		"exits": {
-			"Mayahem Temple": {},
-			"Mayahem Temple: Treasure Chamber In Front of Unga Bunga Gate": {
+			"MT: Main Map": {},
+			"MT: Treasure Chamber In Front of Unga Bunga Gate": {
 				"id": -1,
-				"logic": "MayahemTempleOpenTopTreasureChamberDoor"
+				"logic": "MTOpenTopTreasureChamberDoor"
 			}
 		}
 	},
-	"Mayahem Temple: Treasure Chamber Bottom": {
+	"MT: Treasure Chamber Bottom": {
 		"locations": {
 			"MT: Treasure Chamber Jiggy": {
 				"logic": "TDLPricelessRelicThingy",
@@ -342,10 +342,10 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Mayahem Temple": {
+			"MT: Main Map": {
 				"id": -1
 			},
-			"Mayahem Temple: Treasure Chamber Honeycomb Pile": {
+			"MT: Treasure Chamber Honeycomb Pile": {
 				"logic": {
 					"Banjo-Kazooie": {
 						"Clockwork Kazooie": "ClockworkShot",
@@ -354,56 +354,56 @@ regions: Regions = {
 					}
 				}
 			},
-			"Mayahem Temple: Open Top Treasure Chamber Door": {
+			"MT: Open Top Treasure Chamber Door": {
 				"logic": {
 					"Banjo-Kazooie": "true"
 				}
 			}
 		}
 	},
-	"Mayahem Temple: Treasure Chamber Honeycomb Pile": {
+	"MT: Treasure Chamber Honeycomb Pile": {
 		"locations": {
 			"MT: Treasure Chamber Honeycomb": {
 				"item": "EmptyHoneycomb",
 			},
 		},
 		"exits": {
-			"Mayahem Temple: Treasure Chamber Bottom": {},
-			"Mayahem Temple: Treasure Chamber In Front of Unga Bunga Gate": {
+			"MT: Treasure Chamber Bottom": {},
+			"MT: Treasure Chamber In Front of Unga Bunga Gate": {
 				"logic": {
 					"Banjo-Kazooie": "FlapFlip and GripGrab and TallJump"
 				}
 			}
 		}
 	},
-	"Mayahem Temple: Treasure Chamber In Front of Unga Bunga Gate": {
+	"MT: Treasure Chamber In Front of Unga Bunga Gate": {
 		"exits": {
-			"Mayahem Temple: Treasure Chamber Honeycomb Pile": {
+			"MT: Treasure Chamber Honeycomb Pile": {
 				"logic": {
 					"Banjo-Kazooie": "GripGrab"
 				}
 			},
-			"Mayahem Temple: Top Platform Outside Treasure Chamber": {
+			"MT: Top Platform Outside Treasure Chamber": {
 				"logic": {
 					"Banjo-Kazooie": "TallJump"
 				}
 			},
-			"Mayahem Temple: Treasure Chamber Behind Unga Bunga Gate": {
-				"logic": "MayahemTempleTreasureChamberUngaBungaSwitchPressed"
+			"MT: Treasure Chamber Behind Unga Bunga Gate": {
+				"logic": "MTTreasureChamberUngaBungaSwitchPressed"
 			},
-			"Mayahem Temple: Treasure Chamber Unga Bunga Switch Pressed": {},
+			"MT: Treasure Chamber Unga Bunga Switch Pressed": {},
 		}
 	},
-	"Mayahem Temple: Treasure Chamber Behind Unga Bunga Gate": {
+	"MT: Treasure Chamber Behind Unga Bunga Gate": {
 		# TODO: TDL transition
 		"exits": {
-			"Mayahem Temple: Treasure Chamber In Front of Unga Bunga Gate": {
-				"logic": "MayahemTempleTreasureChamberUngaBungaSwitchPressed"
+			"MT: Treasure Chamber In Front of Unga Bunga Gate": {
+				"logic": "MTTreasureChamberUngaBungaSwitchPressed"
 			},
 		}
 	},
-	"Mayahem Temple: Treasure Chamber Unga Bunga Switch Pressed": {"macro": {"event"}},
-	"Mayahem Temple: Top of Kickball Stadium": {
+	"MT: Treasure Chamber Unga Bunga Switch Pressed": {"macro": {"event"}},
+	"MT: Top of Kickball Stadium": {
 		"locations": {
 			"MT: Stadium Jinjo": {
 				"item": "RedJinjo",
@@ -416,18 +416,18 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Mayahem Temple: Flight": {
+			"MT: Flight": {
 				"logic": {
 					"Banjo-Kazooie": "FlightPad"
 				}
 			}
 		}
 	},
-	"Mayahem Temple: Kickball Stadium": {
+	"MT: Kickball Stadium": {
 		"locations":{
 			"MT: Kickball Jiggy": {
 				"item": "Jiggy",
-				"logic": "MayahemTempleKickballRound1Won and MayahemTempleKickballRound2Won and MayahemTempleKickballRound3Won"
+				"logic": "MTKickballRound1Won and MTKickballRound2Won and MTKickballRound3Won"
 			},
 			"MT: Kickball Mumbo Token": {
 				"item": {"MumboToken":"'MT Kickball' in ChosenGoals", "Nothing":"true"},
@@ -439,67 +439,67 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Mayahem Temple": {
+			"MT: Main Map": {
 				"id": -1
 			},
-			"Mayahem Temple: Kickball Stadium Near Grate Switch": {
-				"logic": "MayahemTempleKickballStadiumSwitchPressed"
+			"MT: Kickball Stadium Near Grate Switch": {
+				"logic": "MTKickballStadiumSwitchPressed"
 			},
-			"Mayahem Temple: Warp Pads": {
+			"MT: Warp Pads": {
 				"logic": "MTKickballStadiumLobbyWarpPad"
 			},
-			"Mayahem Temple: Kickball Round 1": {
+			"MT: Kickball Round 1": {
 				"logic": {
 					"Stony": "true"
 				}
 			},
-			"Mayahem Temple: Kickball Round 2": {
+			"MT: Kickball Round 2": {
 				"logic": {
-					"Stony": "MayahemTempleKickballRound1Won"
+					"Stony": "MTKickballRound1Won"
 				}
 			},
-			"Mayahem Temple: Kickball Round 3": {
+			"MT: Kickball Round 3": {
 				"logic": {
-					"Stony": "MayahemTempleKickballRound2Won"
+					"Stony": "MTKickballRound2Won"
 				}
 			},
 		}
 	},
-	"Mayahem Temple: Kickball Round 1": {
+	"MT: Kickball Round 1": {
 		"locations": {
-			"Mayahem Temple Kickball Round 1 Won": {}
+			"MT Kickball Round 1 Won": {}
 		},
 		"exits": {
-			"Mayahem Temple: Kickball Stadium": {}
+			"MT: Kickball Stadium": {}
 		}
 	},
-	"Mayahem Temple: Kickball Round 2": {
+	"MT: Kickball Round 2": {
 		"locations": {
-			"Mayahem Temple Kickball Round 2 Won": {}
+			"MT Kickball Round 2 Won": {}
 		},
 		"exits": {
-			"Mayahem Temple: Kickball Stadium": {}
+			"MT: Kickball Stadium": {}
 		}
 	},
-	"Mayahem Temple: Kickball Round 3": {
+	"MT: Kickball Round 3": {
 		"locations": {
-			"Mayahem Temple Kickball Round 3 Won": {}
+			"MT Kickball Round 3 Won": {}
 		},
 		"exits": {
-			"Mayahem Temple: Kickball Stadium": {}
+			"MT: Kickball Stadium": {}
 		}
 	},
-	"Mayahem Temple: Kickball Stadium Near Grate Switch": {
+	"MT: Kickball Stadium Near Grate Switch": {
 		#TODO: Add HFP entrance
 		"exits": {
-			"Mayahem Temple: Kickball Stadium": {
-				"logic": "MayahemTempleKickballStadiumSwitchPressed"
+			"MT: Kickball Stadium": {
+				"logic": "MTKickballStadiumSwitchPressed"
 			},
-			"Mayahem Temple: Kickball Stadium Switch Pressed": {}
+			"MT: Kickball Stadium Switch Pressed": {}
 		}
 	},
-	"Mayahem Temple: Kickball Stadium Switch Pressed": {"macro": {"event"}},
-	"Mayahem Temple: Mumbo's Skull": {
+	"MT: Kickball Stadium Switch Pressed": {"macro": {"event"}},
+	"MT: Mumbo's Skull": {
 		"locations": {
 			"MT: Mumbo's Skull Egg Nest 1": {
 				"item": "EggNest",
@@ -517,31 +517,31 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Mayahem Temple: Mumbo's Skull": {
+			"MT: Mumbo's Skull": {
 				"logic": {
 					"Banjo-Kazooie": {"Mumbo": "MumboGoldenGoliath"}
 				}
 			},
-			"Mayahem Temple": {}
+			"MT: Main Map": {}
 		}
 	},
-	"Mayahem Temple: Warp Pads": {
+	"MT: Warp Pads": {
 		"exits": {
-			"Mayahem Temple": {
+			"MT: Main Map": {
 				"logic": "MTWorldEntryAndExitWarpPad or MTOutsideMumbosSkullWarpPad"
 			},
-			"Mayahem Temple: Jade Snake Grove": {
+			"MT: Jade Snake Grove": {
 				"logic": "MTNearWumbasWigwamWarpPad"
 			},
-			"Mayahem Temple: Prison Compound": {
+			"MT: Prison Compound": {
 				"logic": "MTPrisonCompoundWarpPad"
 			},
-			"Mayahem Temple: Kickball Stadium": {
+			"MT: Kickball Stadium": {
 				"logic": "MTKickballStadiumLobbyWarpPad"
 			}
 		}
 	},
-	"Mayahem Temple: Targitzan's Temple Lobby": {
+	"MT: Targitzan's Temple Lobby": {
 		"locations": {
 			"MT: Targitzan's Temple Lobby Left Egg Nest 1": {
 				"item": "EggNest",
@@ -563,15 +563,15 @@ regions: Regions = {
 			}
 		},
 		"exits": {
-			"Mayahem Temple": {},
-			"Mayahem Temple: Targitzan's Temple": {
+			"MT: Main Map": {},
+			"MT: Targitzan's Temple": {
 				"logic": {
 					"Banjo-Kazooie": "BreegullBlaster"
 				}
 			}
 		}
 	},
-	"Mayahem Temple: Targitzan's Temple": {
+	"MT: Targitzan's Temple": {
 		"locations": {
 			"MT: Targitzan's Temple Right Entrance Relic": {
 				"item": "GreenRelic",
@@ -696,26 +696,26 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Mayahem Temple: Targitzan's Temple Lobby": {},
-			"Mayahem Temple: Slighty Sacred Chamber": {
+			"MT: Targitzan's Temple Lobby": {},
+			"MT: Slighty Sacred Chamber": {
 				"logic": "(GreenRelic, 10)"
 			},
-			"Mayahem Temple: Really Sacred Chamber": {
+			"MT: Really Sacred Chamber": {
 				"logic": "(GreenRelic, 20)"
 			}
 		}
 	},
-	"Mayahem Temple: Slighty Sacred Chamber": {
+	"MT: Slighty Sacred Chamber": {
 		"locations": {
 			"MT: Slighty Sacred Chamber Jiggy": {
 				"item": "Jiggy",
 			},
 		},
 		"exits": {
-			"Mayahem Temple: Targitzan's Temple": {}
+			"MT: Targitzan's Temple": {}
 		}
 	},
-	"Mayahem Temple: Really Sacred Chamber": {
+	"MT: Really Sacred Chamber": {
 		"locations": {
 			"MT: Targitzan Jiggy": {
 				"item": "Jiggy",
@@ -727,10 +727,10 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Mayahem Temple: Targitzan's Temple": {}
+			"MT: Targitzan's Temple": {}
 		}
 	},
-	"Mayahem Temple: Jade Snake Grove": {
+	"MT: Jade Snake Grove": {
 		"locations": {
 			"MT: Grip Grab Silo": {
 				"item": "GripGrab",
@@ -765,18 +765,18 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Mayahem Temple": {},
-			"Mayahem Temple: Wumba's Wigwam": {},
-			"Mayahem Temple: Jade Snake Grove Top of Slope": {
+			"MT: Main Map": {},
+			"MT: Wumba's Wigwam": {},
+			"MT: Jade Snake Grove Top of Slope": {
 				"logic": {
 					"Banjo-Kazooie": "TalonTrot",
 					"Talon Trot": "true"
 				}
 			},
-			"Mayahem Temple: Warp Pads": {
+			"MT: Warp Pads": {
 				"logic": "MTNearWumbasWigwamWarpPad"
 			},
-			"Mayahem Temple: Jade Snake Grove Top of Code Chamber Entrance": {
+			"MT: Jade Snake Grove Top of Code Chamber Entrance": {
 				"logic": {
 					"Banjo-Kazooie": {
 						"Banjo-Kazooie": "TalonTrot or (TallJump or FlapFlip) and SlopeJump",
@@ -788,16 +788,16 @@ regions: Regions = {
 					"Talon Trot": "true",
 				}
 			},
-			"Mayahem Temple: Open Code Chamber": {
+			"MT: Open Code Chamber": {
 				"logic": {
 					"Golden Goliath": "true",
 					"Banjo-Kazooie": "ShootExplosives"
 				}
 			},
-			"Mayahem Temple: Code Chamber": {
-				"logic": "MayahemTempleOpenCodeChamber"
+			"MT: Code Chamber": {
+				"logic": "MTOpenCodeChamber"
 			},
-			"Mayahem Temple: Jade Snake Grove Cheato Page Platform": {
+			"MT: Jade Snake Grove Cheato Page Platform": {
 				"logic": {
 					"Banjo-Kazooie": {
 						"Clockwork Kazooie": "ClockworkShot"
@@ -806,41 +806,41 @@ regions: Regions = {
 			}
 		}
 	},
-	"Mayahem Temple: Jade Snake Grove Top of Code Chamber Entrance": {
+	"MT: Jade Snake Grove Top of Code Chamber Entrance": {
 		"locations": {
 			"MT: Jade Snake Grove Above Code Chamber Egg Nest": {
 				"item": "EggNest",
 			},
 		}
 	},
-	"Mayahem Temple: Jade Snake Grove Top of Slope": {
+	"MT: Jade Snake Grove Top of Slope": {
 		"exits": {
-			"Mayahem Temple: Jade Snake Grove Ssslumber Jiggy Platform": {
+			"MT: Jade Snake Grove Ssslumber Jiggy Platform": {
 				"logic": "FlapFlip and (GripGrab or BeakBusterJump)"
 			},
-			"Mayahem Temple: Jade Snake Grove Cheato Page Platform": {
+			"MT: Jade Snake Grove Cheato Page Platform": {
 				"logic": "FlapFlip and GripGrab"
 			},
-			"Mayahem Temple: Jade Snake Grove Left of Code Chamber Signpost Platform": {
+			"MT: Jade Snake Grove Left of Code Chamber Signpost Platform": {
 				"logic": "FlapFlip and GripGrab"
 			},
 		}
 	},
-	"Mayahem Temple: Jade Snake Grove Cheato Page Platform": {
+	"MT: Jade Snake Grove Cheato Page Platform": {
 		"locations": {
 			"MT: Jade Snake Grove Cheato Page": {
 				"item": "CheatoPage",
 			},
 		}
 	},
-	"Mayahem Temple: Jade Snake Grove Ssslumber Jiggy Platform": {
+	"MT: Jade Snake Grove Ssslumber Jiggy Platform": {
 		"locations": {
 			"MT: Ssslumber Jiggy": {
 				"item": "Jiggy",
 			},
 		}
 	},
-	"Mayahem Temple: Jade Snake Grove Left of Code Chamber Signpost Platform": {
+	"MT: Jade Snake Grove Left of Code Chamber Signpost Platform": {
 		"locations": {
 			"MT: Left of Code Chamber Signpost": {
 				"item": "Nothing",
@@ -849,13 +849,13 @@ regions: Regions = {
 			},
 		}
 	},
-	"Mayahem Temple: Code Chamber": {
+	"MT: Code Chamber": {
 		"exits": {
-			"Mayahem Temple: Jade Snake Grove": {}
+			"MT: Jade Snake Grove": {}
 		}
 	},
-	"Mayahem Temple: Open Code Chamber": {"macro": {"event"}},
-	"Mayahem Temple: Wumba's Wigwam": {
+	"MT: Open Code Chamber": {"macro": {"event"}},
+	"MT: Wumba's Wigwam": {
 		"locations": {
 			"MT: Wumba's Wigwam Feather Nest 1": {
 				"item": "FeatherNest",
@@ -865,10 +865,10 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Mayahem Temple: Jade Snake Grove": {
+			"MT: Jade Snake Grove": {
 				"id": -1
 			},
-			"Mayahem Temple: Wumba's Wigwam": {
+			"MT: Wumba's Wigwam": {
 				"logic": {
 					"Banjo-Kazooie": {
 						"Stony": "HumbaStony"
@@ -877,7 +877,7 @@ regions: Regions = {
 			}
 		}
 	},
-	"Mayahem Temple: Prison Compound": {
+	"MT: Prison Compound": {
 		"locations": {
 			"MT: Prison Compound Entrance Egg Nest 1": {
 				"item": "EggNest",
@@ -895,27 +895,27 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Mayahem Temple": {},
-			"Mayahem Temple: Warp Pads": {
+			"MT: Main Map": {},
+			"MT: Warp Pads": {
 				"logic": "MTPrisonCompoundWarpPad"
 			},
-			"Mayahem Temple: Prison Compound Underwater": {
+			"MT: Prison Compound Underwater": {
 				"logic": {
 					"Banjo-Kazooie": "Dive or DiveSkip and BeakBuster",
 					"Stony": "true"
 				}
 			},
-			"Mayahem Temple: Prison Compound Moon Switch Pressed": {},
-			"Mayahem Temple: Prison Compound Star Switch Pressed": {},
-			"Mayahem Temple: Prison Compound Sun Switch Pressed": {},
-			"Mayahem Temple: Prison Compound Cell Opened": {
+			"MT: Prison Compound Moon Switch Pressed": {},
+			"MT: Prison Compound Star Switch Pressed": {},
+			"MT: Prison Compound Sun Switch Pressed": {},
+			"MT: Prison Compound Cell Opened": {
 				"logic": """
-					MayahemTemplePrisonCompoundMoonSwitchPressed
-					and MayahemTemplePrisonCompoundStarSwitchPressed
-					and MayahemTemplePrisonCompoundSunSwitchPressed
+					MTPrisonCompoundMoonSwitchPressed
+					and MTPrisonCompoundStarSwitchPressed
+					and MTPrisonCompoundSunSwitchPressed
 				"""
 			},
-			"Mayahem Temple: Prison Compound Top of Jail Cell": {
+			"MT: Prison Compound Top of Jail Cell": {
 				"logic": {
 					"Banjo-Kazooie": {
 						"Banjo-Kazooie":"FlapFlip or TallJump and GripGrab or TalonTrot and Flutter and GripGrab",
@@ -923,19 +923,19 @@ regions: Regions = {
 					}
 				}
 			},
-			"Mayahem Temple: Prison Compound Cheato Page Platform": {
+			"MT: Prison Compound Cheato Page Platform": {
 				"logic": {
 					"Banjo-Kazooie": {
 						"Clockwork Kazooie": "ClockworkShot"
 					}
 				}
 			},
-			"Mayahem Temple: Prison Compound Inside Jail Cell": {
-				"logic": "MayahemTemplePrisonCompoundCellOpened"
+			"MT: Prison Compound Inside Jail Cell": {
+				"logic": "MTPrisonCompoundCellOpened"
 			}
 		}
 	},
-	"Mayahem Temple: Prison Compound Top of Jail Cell": {
+	"MT: Prison Compound Top of Jail Cell": {
 		"locations": {
 			"MT: Prison Compound Top of Prison Cell Feather Right Nest": {
 				"item": "FeatherNest",
@@ -949,45 +949,45 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Mayahem Temple: Prison Compound Swamp Jiggy Platform": {
+			"MT: Prison Compound Swamp Jiggy Platform": {
 				"logic": {
 					"Banjo-Kazooie": "StiltStride and GripGrab and (FlapFlip or TallJump or TalonTrot and Flutter)"
 				}
 			},
-			"Mayahem Temple: Prison Compound Cheato Page Platform": {
+			"MT: Prison Compound Cheato Page Platform": {
 				"logic": {
 					"Banjo-Kazooie": "GripGrab and (FlapFlip or TallJump or TalonTrot and Flutter)"
 				}
 			},
 		}
 	},
-	"Mayahem Temple: Prison Compound Underwater": {
+	"MT: Prison Compound Underwater": {
 		"exits": {
-			"Mayahem Temple: Prison Compound Pillar Area": {}
+			"MT: Prison Compound Pillar Area": {}
 		}
 	},
-	"Mayahem Temple: Prison Compound Cheato Page Platform": {
+	"MT: Prison Compound Cheato Page Platform": {
 		"locations": {
 			"MT: Prison Compound Cheato Page": {
 				"item": "CheatoPage",
 			},
 		},
 		"exits": {
-			"Mayahem Temple: Prison Compound Pillar Area": {}
+			"MT: Prison Compound Pillar Area": {}
 		}
 	},
-	"Mayahem Temple: Prison Compound Swamp Jiggy Platform": {
+	"MT: Prison Compound Swamp Jiggy Platform": {
 		"locations": {
 			"MT: Prison Compound Quicksand Jiggy": {
 				"item": "Jiggy",
 			},
 		}
 	},
-	"Mayahem Temple: Prison Compound Pillar Area": {
+	"MT: Prison Compound Pillar Area": {
 		"locations": {
 			"MT: Pillars Jiggy": {
 				"logic": """
-					MayahemTemplePillarJiggyLowered and (TallJump or TalonTrot or FlapFlip or WonderwingJump)
+					MTPillarJiggyLowered and (TallJump or TalonTrot or FlapFlip or WonderwingJump)
 					or HardJumps and TalonTrot and Flutter and BeakBuster
 					or ClockworkShot
 				""",
@@ -1009,40 +1009,40 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Mayahem Temple: Column Vaults": {
+			"MT: Column Vaults": {
 				"logic": {
 					"Banjo-Kazooie": "BillDrill"
 				}
 			}
 		}
 	},
-	"Mayahem Temple: Column Vaults": {
+	"MT: Column Vaults": {
 		"exits": {
-			"Mayahem Temple: Prison Compound": {},
-			"Mayahem Temple: Pillar Jiggy Lowered": {
+			"MT: Prison Compound": {},
+			"MT: Pillar Jiggy Lowered": {
 				"logic": "AnyAttack"
 			}
 		}
 	},
-	"Mayahem Temple: Pillar Jiggy Lowered": {"macro": {"event"}},
-	"Mayahem Temple: Prison Compound Sun Switch Pressed": {"macro": {"event"}},
-	"Mayahem Temple: Prison Compound Star Switch Pressed": {"macro": {"event"}},
-	"Mayahem Temple: Prison Compound Moon Switch Pressed": {"macro": {"event"}},
-	"Mayahem Temple: Prison Compound Cell Opened": {"macro": {"event"}},
-	"Mayahem Temple: Prison Compound Inside Jail Cell": {
+	"MT: Pillar Jiggy Lowered": {"macro": {"event"}},
+	"MT: Prison Compound Sun Switch Pressed": {"macro": {"event"}},
+	"MT: Prison Compound Star Switch Pressed": {"macro": {"event"}},
+	"MT: Prison Compound Moon Switch Pressed": {"macro": {"event"}},
+	"MT: Prison Compound Cell Opened": {"macro": {"event"}},
+	"MT: Prison Compound Inside Jail Cell": {
 		"exits": {
-			"Mayahem Temple: Prison Compound Behind Jail Cell Boulder": {
-				"logic": "MayahemTemplePrisonCompoundJailCellBoulderBroken"
+			"MT: Prison Compound Behind Jail Cell Boulder": {
+				"logic": "MTPrisonCompoundJailCellBoulderBroken"
 			},
-			"Mayahem Temple: Prison Compound Jail Cell Boulder Broken": {
+			"MT: Prison Compound Jail Cell Boulder Broken": {
 				"logic": {
 					"Banjo-Kazooie": "BillDrill"
 				}
 			}
 		}
 	},
-	"Mayahem Temple: Prison Compound Jail Cell Boulder Broken": {"macro": {"event"}},
-	"Mayahem Temple: Prison Compound Behind Jail Cell Boulder": {
+	"MT: Prison Compound Jail Cell Boulder Broken": {"macro": {"event"}},
+	"MT: Prison Compound Behind Jail Cell Boulder": {
 		# Transition to GGM
 	},
 }
