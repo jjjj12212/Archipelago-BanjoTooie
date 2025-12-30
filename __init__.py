@@ -746,9 +746,10 @@ class BanjoTooieWorld(World):
 			if item.player == self.player: self.collect(state, item)
 		for item in self.get_pre_fill_items(): self.collect(state, item)
 		state.sweep_for_advancements()
+		inaccessible_regions: list[str] = []
 		for region in list(self.get_regions()):
 			if not region.can_reach(state) or len(region.locations) == 0 and len(region.exits) == 0:
-				assert len(region.locations) == 0, self.log_format(f"Region {region.name} is inaccessible but has location(s).")
+				if len(region.locations): inaccessible_regions.append(region.name)
 				del self.multiworld.regions.region_cache[self.player][region.name]
 				for entrance in cast(list[BanjoTooieEntrance], list(self.multiworld.regions.entrance_cache[self.player].values())):
 					if entrance.parent_region is region or entrance.connected_region is region:
@@ -758,6 +759,10 @@ class BanjoTooieWorld(World):
 									del entrance.exit_links[form]
 									break
 						del self.multiworld.regions.entrance_cache[self.player][entrance.name]
+		assert len(inaccessible_regions) == 0, self.log_format(
+			"The following region(s) are inaccessible, but have location(s):\n" +
+			"\n".join(inaccessible_regions)
+		)
 
 	def connect_entrances(self) -> None:
 		ids: dict[str, int] = {group:i+1 for i, group in enumerate(self.entrance_groups)}

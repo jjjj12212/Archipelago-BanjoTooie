@@ -208,8 +208,9 @@ def reformat_logic_structure():
 	for region_name, region in _regions.copy().items():
 		parent_region = regions[region_name]
 		names: dict[Form, str] = {}
-		# assert "forms" in region and region["forms"], f"{region["file"]}, {region_name}: No forms can access this region."
-		if "forms" not in region: continue # replace with above once logic is done
+		if "forms" not in region or not region["forms"]:
+			print(f"Warning: No forms can access this region: {parent_region["file"]}, {region_name}")
+			continue
 		forms = region["forms"] - set(explicit_forms)
 		region_forms: set[Form] = set()
 		for exit_name, exit_ in region.get("exits", {}).items():
@@ -336,13 +337,16 @@ class BasicParser(ast.NodeTransformer):
 
 def post_processing():
 	parser = BasicParser()
+	locations_without_logic: list[str] = []
 	for region_name, region in regions.items():
 		region_file = f"{region['file']}: {region_name}"
 		for location_name, location in region.get("locations", {}).items():
+			parser_str = f"{region_file} -> {location_name}"
 			if "logic" in location:
-				parser_str = f"{region_file} -> {location_name}"
-				for form, logic in location["logic"].items():
-					location["logic"][form] = parser.parse(f"{parser_str} -> logic", logic)
+				form, logic = next(iter(location.get("logic", {}).items()), (None, None))
+				if form is None or logic is None: locations_without_logic.append(parser_str)
+				else: location["logic"][form] = parser.parse(f"{parser_str} -> logic", logic)
+			else: locations_without_logic.append(parser_str)
 		for exit_name, exit_ in region.get("exits", {}).items():
 			if "logic" in exit_:
 				exit_names = regions[exit_name]["names"]
@@ -360,4 +364,8 @@ def post_processing():
 					if "id" in to_exit:
 						exit_["rid"] = to_exit["id"]
 						if "rid" not in to_exit: to_exit["rid"] = exit_["id"]
+	if len(locations_without_logic):
+		print("Warning: The following location(s) don't have any form/logic info:")
+		print("\n".join(locations_without_logic))
+		print()
 post_processing()
