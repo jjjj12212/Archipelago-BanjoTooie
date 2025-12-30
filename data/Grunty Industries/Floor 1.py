@@ -472,12 +472,12 @@ regions: Regions = {
 		}
 	},
 	"GI Floor 1: Guarded Jiggy": {
-	  "locations": {
-	    "GI Floor 1: Guarded Jiggy": {"item": "Jiggy"},
+		"locations": {
+			"GI Floor 1: Guarded Jiggy": {"item": "Jiggy"},
 		}
 	},
 	"GI Floor 1: Tintop Arena": {
-	  "locations": {
+		"locations": {
 			"GI Floor 1: Top Pipe Egg Nest": {"item": "EggNest"},
 			"GI Floor 1: Defeated Tintops": {
 				"logic": {
@@ -490,7 +490,7 @@ regions: Regions = {
 					""",
 				}
 			}
-	  },
+		},
 		"exits": {
 			"GI Floor 1: Guarded Jiggy": {
 				"logic": {

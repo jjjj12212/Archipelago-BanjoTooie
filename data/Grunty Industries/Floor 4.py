@@ -193,8 +193,8 @@ regions: Regions = {
 		},
 		"exits": {
 			"GI Floor 4: Cable Room": {
-			  "id": 0x01,
-			  "logic": "GIFloor4OpenedCableRoomDoor",
+				"id": 0x01,
+				"logic": "GIFloor4OpenedCableRoomDoor",
 			},
 			"GI Floor 4: Opened Elevator Door": {
 				"logic": {
