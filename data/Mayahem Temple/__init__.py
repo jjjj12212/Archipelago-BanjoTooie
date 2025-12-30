@@ -65,9 +65,9 @@ regions: Regions = {
                 "logic": {
 					"Banjo-Kazooie": """
 						Dive
-						or EasyTediousJump
+						or EasyTediousJumps
 					""",
-					"Mumbo": "EasyTediousJump",
+					"Mumbo": "EasyTediousJumps",
 					"Stony": "true",
 					"Golden Goliath": "true",
 				}
