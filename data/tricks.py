@@ -24,6 +24,8 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"Shack Pack Fall": "ShackPack", # Shack Pack can fall a little farther before taking damage. You can also end the move in the air for increased distance.
 		"Snooze Pack Fall": "SnoozePack", # Using Snooze Pack off of a ledge prevents fall damage.
 		"Taxi Pack Fall": "TaxiPack", # Using Taxi Pack off of a ledge prevents fall damage during the animation. You can also end the move in the air for increased distance
+        "Slope Jump": "true", # Going Up slopes without talon trot.
+        "Dive Skip": "true" # Skipping Dive by either entering a loading zone or forcing your way into a tunnel.
 	},
 	"Easy Tedious Tricks": {
 		"Beak Bomb Tricks": "BeakBomb", # Beak Bomb can be used in unintended ways to reach new areas.
@@ -56,9 +58,11 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"Hard Jumps": "true", # Harder version of "Easy Jumps".
 		"Slide Jump": "true", # Turning around suddenly plays a sliding animation. Doing this off of a ledge allows you to jump in the air.
 		"Flap Flip Slide Extension": "FlapFlip", # Flap Flip off a ledge with neutral joystick. During ascent, hold a direction to gain a little extra distance.
+        "Beak Bomb Clips": "BeakBomb" # Beak bomb lets you go through gaps in doors.
 	},
 	"Hard Tedious Tricks": {
 		"Hard Tedious Jumps": "true", # Tedious version of "Hard Jumps".
+        "Bovina With Flap Flip": "FlapFlip and BeakBuster"
 	},
 	"Hard Glitches": {
 

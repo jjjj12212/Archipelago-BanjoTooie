@@ -33,6 +33,7 @@ items: dict[Option, dict[Name, Class]] = {
 	# Event items must be "progression".
 
 		"GI Cleaned Skivvy": "progression",
+        "MT: Snake Head": "progression"
 	},
 	"true": {
 	# For items that either don't have a dedicated location, or are always shuffled.
