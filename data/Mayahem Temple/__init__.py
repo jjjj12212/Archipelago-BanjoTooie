@@ -226,6 +226,12 @@ regions: Regions = {
                 "logic": {
                     "Banjo-Kazooie": "MayahemTempleBreakFlightPadBoulder"
 				}
+			},
+            "Mayahem Temple: Break Flight Pad Boulder": {
+                "logic": {
+                    "Banjo-Kazooie": "BillDrill",
+                    "Golden Goliath": "true"
+				}
 			}
 		}
 	},
