@@ -348,8 +348,12 @@ regions: Regions = {
                         "Talon Trot": "true"
                     }
 				}
+			},
+            "Mayahem Temple: Open Top Treasure Chamber Door": {
+                "logic": {
+                    "Banjo-Kazooie": "true"
+				}
 			}
-            
 		}
 	},
     "Mayahem Temple: Treasure Chamber Honeycomb Pile": {
