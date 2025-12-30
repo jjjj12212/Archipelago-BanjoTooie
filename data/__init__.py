@@ -306,8 +306,15 @@ def reformat_logic_structure():
 					"logic": {form:{form:logic} for form, logic in location_logic.items()}
 				}
 			region_forms |= set(location_logic)
-		if "locations" in region and len(region["locations"]) == 0:
-			del region["locations"]
+		if "locations" in region:
+			location_count = len(region["locations"])
+			if location_count == 0: del region["locations"]
+			elif location_count == 1 and "exits" not in region:
+				location_name, location = next(iter(region["locations"].items()), (None, None))
+				if location and region_name == location_name:
+					location_logic = cast(dict[Form, str], location.get("logic", {}))
+					for form in region["forms"]:
+						if form not in location_logic: location_logic[form] = ""
 		for form in region["forms"] | region_forms:
 			name = form_name(form, region_name)
 			names[form] = name
