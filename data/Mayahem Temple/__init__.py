@@ -733,7 +733,7 @@ regions: Regions = {
 				"item": "GripGrab",
 			},
 			"MT: Jade Snake Grove Glowbo": {
-				"item": "WumbaStony",
+				"item": "HumbaStony",
 			},
 			"MT: Jade Snake Grove Near Warp Pad Egg Nest 1": {
 				"item": "EggNest",
