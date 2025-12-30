@@ -308,17 +308,37 @@ regions: Regions = {
 			}
 		}
 	},
+    "MT: Top Platform Outside Treasure Chamber": {
+		"locations": {
+			"MT: Treasure Chamber Cheato Page": {
+				"item": "CheatoPage",
+                "explicit_logic": {
+                    "Clockwork Kazooie": "true"
+				}
+			},
+		},
+		"exits": {
+			"MT: Main Map": {},
+			"MT: Treasure Chamber In Front of Unga Bunga Gate": {
+				"id": -1,
+				"logic": "MTOpenTopTreasureChamberDoor"
+			}
+		}
+	},
 	"MT: Open Bottom Treasure Chamber Door": {"macro": {"event"}},
 	"MT: Top of Kickball Stadium": {
 		"locations": {
 			"MT: Stadium Jinjo": {
 				"item": "RedJinjo",
+                "explicit_logic": {"Clockwork Kazooie": "true"}
 			},
 			"MT: Kickball Stadium Feather Nest 1": {
 				"item": "FeatherNest",
+                "explicit_logic": {"Clockwork Kazooie": "true"}
 			},
 			"MT: Kickball Stadium Feather Nest 2": {
 				"item": "FeatherNest",
+                "explicit_logic": {"Clockwork Kazooie": "true"}
 			},
 		},
 		"exits": {

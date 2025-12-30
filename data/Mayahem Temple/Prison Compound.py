@@ -63,6 +63,9 @@ regions: Regions = {
 		"locations": {
 			"MT: Prison Compound Top of Prison Cell Feather Right Nest": {
 				"item": "FeatherNest",
+                "explicit_logic": {
+                    "Clockwork Kazooie": "true"
+				}
 			},
 			"MT: Prison Compound Top of Prison Cell Feather Left Nest": {
 				"item": "FeatherNest",
@@ -94,6 +97,7 @@ regions: Regions = {
 		"locations": {
 			"MT: Prison Compound Cheato Page": {
 				"item": "CheatoPage",
+                "explicit_logic": {"Clockwork Kazooie": "true"}
 			},
 		},
 		"exits": {

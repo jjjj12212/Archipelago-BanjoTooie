@@ -81,6 +81,9 @@ regions: Regions = {
 		"locations": {
 			"MT: Jade Snake Grove Above Code Chamber Egg Nest": {
 				"item": "EggNest",
+                "explicit_logic": {
+                    "Clockwork Kazooie": "true"
+				}
 			},
 		}
 	},
@@ -101,6 +104,9 @@ regions: Regions = {
 		"locations": {
 			"MT: Jade Snake Grove Cheato Page": {
 				"item": "CheatoPage",
+                "explicit_logic": {
+                    "Clockwork Kazooie": "true"
+				}
 			},
 		}
 	},

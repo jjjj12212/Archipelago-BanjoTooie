@@ -2,20 +2,6 @@ from .. import Regions
 instant_transform = {"Mumbo", "Stony"}
 regions: Regions = {
 	"MT: Open Top Treasure Chamber Door": {"macro": {"event"}},
-	"MT: Top Platform Outside Treasure Chamber": {
-		"locations": {
-			"MT: Treasure Chamber Cheato Page": {
-				"item": "CheatoPage",
-			},
-		},
-		"exits": {
-			"MT: Main Map": {},
-			"MT: Treasure Chamber In Front of Unga Bunga Gate": {
-				"id": -1,
-				"logic": "MTOpenTopTreasureChamberDoor"
-			}
-		}
-	},
 	"MT: Treasure Chamber Bottom": {
 		"locations": {
 			"MT: Treasure Chamber Jiggy": {
@@ -47,6 +33,9 @@ regions: Regions = {
 		"locations": {
 			"MT: Treasure Chamber Honeycomb": {
 				"item": "EmptyHoneycomb",
+                "explicit_logic": {
+                    "Clockwork Kazooie": "true"
+				}
 			},
 		},
 		"exits": {
