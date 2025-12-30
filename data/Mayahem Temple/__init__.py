@@ -203,7 +203,7 @@ regions: Regions = {
                 "id": -1,
 			},
             "Mayahem Temple: Treasure Chamber Bottom": {
-                "logic": "MayahemTempleOpenTreasureChamber",
+                "logic": "MayahemTempleOpenBottomTreasureChamberDoor",
                 "id": -1
 			},
             "Mayahem Temple: Warp Pads": {
