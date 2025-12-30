@@ -1,6 +1,6 @@
 from .. import Regions
 regions: Regions = {
-	"Wooded Hollow": {
+	"IoH: Wooded Hollow": {
 		"id": 0x014F,
 		"locations": {
 			"IoH: Wooded Hollow Jinjo": {
@@ -114,15 +114,15 @@ regions: Regions = {
 		},
 		"exits": {
 			"Jiggywiggy Challenges": {"logic": {"Banjo-Kazooie"}},
-			"Plateau": {},
-			"Jinjo Village": {},
-			"Bottles' House": {},
+			"IoH: Plateau": {},
+			"IoH: Jinjo Village": {},
+			"IoH: Bottles' House": {},
 			"Mayahem Temple": {
 				"id": 0x0A,
 				"logic": "MayahemTemple",
 				"groups": {"World Entrances"},
 			},
-			"Warp Silos": {},
+			"IoH: Warp Silos": {},
 		},
 	},
 	"Jiggywiggy Challenges": {

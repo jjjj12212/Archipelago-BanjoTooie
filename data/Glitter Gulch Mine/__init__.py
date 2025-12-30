@@ -3,7 +3,7 @@ regions: Regions = {
 	"Glitter Gulch Mine": {
 		"id": 0x00C7,
 		"exits": {
-			"Plateau": {
+			"IoH: Plateau": {
 				"id": 0x02,
 				"groups":{"World Exits"},
 			},

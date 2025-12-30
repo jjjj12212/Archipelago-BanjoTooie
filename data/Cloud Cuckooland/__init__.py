@@ -3,7 +3,7 @@ regions: Regions = {
 	"Cloud Cuckooland": {
 		"id": 0x0136,
 		"exits": {
-			"Wasteland": {
+			"IoH: Wasteland": {
 				"id": 0x05,
 				"groups":{"World Exits"},
 			},

@@ -1,6 +1,6 @@
 from .. import Regions
 regions: Regions = {
-	"Jinjo Village": {
+	"IoH: Jinjo Village": {
 		"locations": {
 			"IoH: White Jinjo Family Jiggy": {
 				"item": "Jiggy",
@@ -147,10 +147,16 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Inside the Digger Tunnel": {},
-			"Bottles' House": {},
-			"Wooded Hollow": {},
-			"Warp Silos": {},
+			"IoH: Inside the Digger Tunnel": {},
+			"IoH: Bottles' House": {},
+			"IoH: Wooded Hollow": {},
+			"IoH: Warp Silos": {},
+            "IoH: King Jingaling's Throne Room": {}
 		},
 	},
+    "IoH: King Jingaling's Throne Room": {
+        "exits": {
+            "IoH: Bottles' House: Gate Opened": {}
+		}
+	}
 }

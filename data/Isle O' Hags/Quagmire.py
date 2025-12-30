@@ -1,6 +1,6 @@
 from .. import Regions
 regions: Regions = {
-	"Quagmire": {
+	"IoH: Quagmire": {
 		"id": 0x015C,
 		"locations": {
 			"IoH: Quagmire Left Feather Nest": {
@@ -26,7 +26,7 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Wasteland": {},
+			"IoH: Wasteland": {},
 			"Grunty Industries": {
 				"id": 0x09,
 				"logic": "GruntyIndustries",
@@ -37,7 +37,7 @@ regions: Regions = {
 				"logic": "CauldronKeep",
 				"groups": {"World Entrances"},
 			},
-			"Warp Silos": {},
+			"IoH: Warp Silos": {},
 		},
 	},
 }

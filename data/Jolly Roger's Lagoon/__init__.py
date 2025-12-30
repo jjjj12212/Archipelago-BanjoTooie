@@ -3,7 +3,7 @@ regions: Regions = {
 	"Jolly Roger's Lagoon": {
 		"id": 0x01A7,
 		"exits": {
-			"Cliff Top": {
+			"IoH: Cliff Top": {
 				"id": 0x05,
 				"groups":{"World Exits"},
 			},

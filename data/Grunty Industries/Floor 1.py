@@ -666,7 +666,7 @@ regions: Regions = {
 		},
 		"exits": {
 			"GI Floor 1": {"id": 0x04},
-			"Train At GI": {"logic": "Chuffy"},
+			"Train At GI": {"logic": "Chuffy and GITrainStation"},
 			"Chuffy's Cab": {"logic": {"Banjo-Kazooie": "TrainAtGI"}},
 			"Inside Chuffy's Wagon": {"logic": "TrainAtGI"},
 		}

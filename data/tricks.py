@@ -58,14 +58,14 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"Hard Jumps": "true", # Harder version of "Easy Jumps".
 		"Slide Jump": "true", # Turning around suddenly plays a sliding animation. Doing this off of a ledge allows you to jump in the air.
 		"Flap Flip Slide Extension": "FlapFlip", # Flap Flip off a ledge with neutral joystick. During ascent, hold a direction to gain a little extra distance.
-		"Beak Bomb Clips": "BeakBomb" # Beak bomb lets you go through gaps in doors.
+        "Extra Attacks": "true" # Using worse attacks on enemies becomes in logic.
 	},
 	"Hard Tedious Tricks": {
 		"Hard Tedious Jumps": "true", # Tedious version of "Hard Jumps".
 		"Bovina With Flap Flip": "FlapFlip and BeakBuster"
 	},
 	"Hard Glitches": {
-
+		"Beak Bomb Clips": "BeakBomb" # Beak bomb lets you go through gaps in doors.
 	},
 	"Frame Perfect": {
 		"Talon Trot Slide Jump": "true", # Landing in Talon Trot plays a sliding animation. Doing this off of a ledge allows a frame perfect jump in the air.

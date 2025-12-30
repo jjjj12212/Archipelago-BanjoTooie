@@ -3,7 +3,7 @@ regions: Regions = {
 	"Witchyworld": {
 		"id": 0x00D6,
 		"exits": {
-			"Pine Grove": {
+			"IoH: Pine Grove": {
 				"id": 0x02,
 				"groups":{"World Exits"},
 			},

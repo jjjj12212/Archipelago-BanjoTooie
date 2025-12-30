@@ -43,4 +43,10 @@ regions: Regions = {
 		}
 	},
 	"Train At GI": {"macro": {"event"}},
+    "Train at GGM": {},
+    "Train at WW": {},
+    "Train at IoH": {},
+    "Train at TDL": {},
+    "Train at HFP Fire Side": {},
+    "Train at HFP Icy Side": {},
 }

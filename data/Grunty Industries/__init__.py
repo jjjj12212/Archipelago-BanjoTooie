@@ -3,7 +3,7 @@ regions: Regions = {
 	"Grunty Industries": {
 		"id": 0x0100,
 		"exits": {
-			"Quagmire": {
+			"IoH: Quagmire": {
 				"id": 0x02,
 				"groups": {"World Exits"},
 				"logic": {

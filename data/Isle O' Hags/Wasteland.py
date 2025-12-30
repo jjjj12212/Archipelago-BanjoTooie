@@ -1,6 +1,6 @@
 from .. import Regions
 regions: Regions = {
-	"Wasteland": {
+	"IoH: Wasteland": {
 		"id": 0x015A,
 		"locations": {
 			"IoH: Wasteland Jinjo": {
@@ -55,8 +55,8 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Quagmire": {},
-			"Another Digger Tunnel": {},
+			"IoH: Quagmire": {},
+			"IoH: Another Digger Tunnel": {},
 			"Terrydactyland": {
 				"id": 0x17,
 				"logic": "Terrydactyland",
@@ -67,7 +67,7 @@ regions: Regions = {
 				"logic": "CloudCuckooland",
 				"groups": {"World Entrances"},
 			},
-			"Warp Silos": {},
+			"IoH: Warp Silos": {},
 		},
 	},
 }

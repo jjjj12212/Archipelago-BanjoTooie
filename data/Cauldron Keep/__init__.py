@@ -10,7 +10,7 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Quagmire": {
+			"IoH: Quagmire": {
 				"id": 0x03,
 				"groups":{"World Exits"},
 			},

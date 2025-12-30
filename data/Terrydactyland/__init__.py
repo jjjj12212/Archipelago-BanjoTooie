@@ -3,7 +3,7 @@ regions: Regions = {
 	"Terrydactyland": {
 		"id": 0x0112,
 		"exits": {
-			"Wasteland": {
+			"IoH: Wasteland": {
 				"id": 0x02,
 				"groups":{"World Exits"},
 			},

@@ -4,7 +4,7 @@ regions: Regions = {
 	"Mayahem Temple": {
 		"id": 0x00B8,
 		"exits": {
-			"Wooded Hollow": {
+			"IoH: Wooded Hollow": {
 				"id": 0x02,
 				"groups":{"World Exits"},
 			},

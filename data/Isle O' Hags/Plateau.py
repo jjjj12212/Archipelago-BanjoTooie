@@ -1,6 +1,6 @@
 from .. import Regions
 regions: Regions = {
-	"Plateau": {
+	"IoH: Plateau": {
 		"id": 0x0152,
 		"locations": {
 			"IoH: Plateau Jinjo": {
@@ -65,15 +65,15 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Wooded Hollow": {},
-			"Cliff Top": {},
-			"Pine Grove": {},
+			"IoH: Wooded Hollow": {},
+			"IoH: Cliff Top": {},
+			"IoH: Pine Grove": {},
 			"Glitter Gulch Mine": {
 				"id": 0x11,
 				"logic": "GlitterGulchMine",
 				"groups": {"World Entrances"},
 			},
-			"Warp Silos": {},
+			"IoH: Warp Silos": {},
 		},
 	},
 }

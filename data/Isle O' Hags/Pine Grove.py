@@ -1,6 +1,6 @@
 from .. import Regions
 regions: Regions = {
-	"Pine Grove": {
+	"IoH: Pine Grove": {
 		"id": 0x0154,
 		"locations": {
 			"IoH: Pine Grove Note 1": {
@@ -63,14 +63,15 @@ regions: Regions = {
 			"IoH Dragon Transform": {"logic": "HumbaDragon"},
 		},
 		"exits": {
-			"Another Digger Tunnel": {},
-			"Plateau": {},
+			"IoH: Another Digger Tunnel": {},
+			"IoH: Plateau": {},
 			"Witchyworld": {
 				"id": 0x12,
 				"logic": "Witchyworld",
 				"groups": {"World Entrances"},
 			},
-			"Warp Silos": {},
+			"IoH: Warp Silos": {},
 		},
 	},
+    "IoH: Pine Grove Underwater Behind Boulder": {}
 }

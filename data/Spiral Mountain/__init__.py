@@ -112,7 +112,7 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Inside the Digger Tunnel": {},
+			"IoH: Inside the Digger Tunnel": {},
 		},
 	},
 }

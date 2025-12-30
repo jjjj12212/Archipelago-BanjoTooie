@@ -1,6 +1,6 @@
 from .. import Regions
 regions: Regions = {
-	"Cliff Top": {
+	"IoH: Cliff Top": {
 		"id": 0x0155,
 		"locations": {
 			"IoH: Cliff Top Jinjo": {
@@ -8,9 +8,6 @@ regions: Regions = {
 			},
 			"IoH: Cliff Top Glowbo": {
 				"item": "MumboHeal",
-			},
-			"IoH: Train Switch": {
-				"item": "IoHTrainStation",
 			},
 			"IoH: Outside HFP Note 1": {
 				"item": "NoteNest",
@@ -58,19 +55,79 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"Plateau": {},
-			"Chuffy's Cab": {},
+			"IoH: Plateau": {},
+			"Train at IoH": {"logic": "Chuffy and IoHTrainStation"},
+			"Chuffy's Cab": {"logic": {"Banjo-Kazooie": """ 
+										TrainAtIoH and (
+										Climb and (
+											TallJump
+											or TalonTrot 
+											or FlapFlip
+											or BeakBusterJump
+										)
+										or Climb and EasyJumps
+										or (TallJump or TalonTrot or FlapFlip) and EasyJumps
+										or BeakBusterJump
+									)"""}},
+			"Inside Chuffy's Wagon": {"logic": "TrainAtIoH"},
 			"Jolly Roger's Lagoon": {
 				"id": 0x03,
 				"logic": "JollyRogersLagoon",
 				"groups": {"World Entrances"},
 			},
+			"IoH: Warp Silos": {
+                "logic": {
+                    "Banjo-Kazooie": "CliffTopWarpSilo"
+				}
+			},
+            "IoH: Cliff Top Bridge Switch Pressed": {},
+            "IoH: Cliff Top Around HFP": {
+                "logic": "IoHCliffTopBridgeSwitchPressed"
+			},
+            "IoH: Cliff Top Train Switch Platform": {
+                "logic": {
+                    "Banjo-Kazooie": "FlapFlip and GripGrab"
+				}
+			}
+		},
+	},
+    "IoH: Cliff Top Train Switch Platform": {
+        "locations": {
+			"IoH: Train Switch": {
+				"item": "IoHTrainStation",
+			},
+		}
+	},
+    "IoH: Cliff Top Bridge Switch Pressed": {"macro": {"event"}},
+    "IoH: Cliff Top Around HFP": {
+        "exits": {
 			"Hailfire Peaks": {
 				"id": 0x15,
 				"logic": "HailfirePeaks",
 				"groups": {"World Entrances"},
 			},
-			"Warp Silos": {},
-		},
+            "IoH: Cliff Top On Top of HFP": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "Banjo-Kazooie": "Climb",
+                        "Clockwork Kazooie": "ClockworkShot"
+					}
+				}
+			},
+            "IoH: Cliff Top Around HFP": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "BK Claw Clamber Boots": "ClawClamberBoots"
+                    }
+				}
+			},
+            "IoH: Cliff Top": {
+                "logic": {
+                    "BK Claw Clamber Boots": "IoHCliffTopBridgeSwitchPressed",
+                    "Banjo-Kazooie": "IoHCliffTopBridgeSwitchPressed"
+				}
+			}
+		}
 	},
+    "IoH: Cliff Top On Top of HFP": {},
 }
