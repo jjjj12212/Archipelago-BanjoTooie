@@ -1030,6 +1030,9 @@ regions: Regions = {
     "Mayahem Temple: Prison Compound Inside Jail Cell": {
         "exits": {
             "Mayahem Temple: Prison Compound Behind Jail Cell Boulder": {
+                "logic": "MayahemTemplePrisonCompoundJailCellBoulderBroken"
+			},
+            "Mayahem Temple: Prison Compound Jail Cell Boulder Broken": {
                 "logic": {
                     "Banjo-Kazooie": "BillDrill"
 				}
