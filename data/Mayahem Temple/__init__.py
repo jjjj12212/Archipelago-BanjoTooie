@@ -179,7 +179,10 @@ regions: Regions = {
                 "id": -1
 			},
             "Mayahem Temple: Jade Snake Grove": {
-                "logic": "MayahemTempleOpenJadeSnakeGrove"
+                "logic": "MayahemTempleOpenJadeSnakeGrove",
+                "explicit_logic": {
+                    "Golden Goliath": "MayahemTempleOpenJadeSnakeGrove"
+				}
 			},
             "Mayahem Temple": {
                 "logic": {
