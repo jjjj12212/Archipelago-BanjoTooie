@@ -221,6 +221,11 @@ regions: Regions = {
                 "logic": {
 					"Banjo-Kazooie": "(LinearEggs or ExtraClockworkUsage) and EggAim"
                 }
+			},
+            "Mayahem Temple: Flight": {
+                "logic": {
+                    "Banjo-Kazooie": "MayahemTempleBreakFlightPadBoulder"
+				}
 			}
 		}
 	},
