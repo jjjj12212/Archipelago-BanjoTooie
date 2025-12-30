@@ -308,8 +308,7 @@ def reformat_logic_structure():
 			region_forms |= set(location_logic)
 		if "locations" in region and len(region["locations"]) == 0:
 			del region["locations"]
-		forms |= region_forms
-		for form in forms:
+		for form in region["forms"] | region_forms:
 			name = form_name(form, region_name)
 			names[form] = name
 			form_to_region_name[name] = region_name
