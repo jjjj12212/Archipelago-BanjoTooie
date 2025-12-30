@@ -8,6 +8,7 @@ regions: Regions = {
 				"id": 0x02,
 				"groups":{"World Exits"},
 			},
+			"Mayahem Temple: Main Map": {}
 		},
 	},
 	"Mayahem Temple: Main Map": {
@@ -128,6 +129,11 @@ regions: Regions = {
 			},
 		},
 		"exits": {
+			"Mayahem Temple": {
+				"logic": {
+					"Banjo-Kazooie": "true"
+				}
+			},
 			"Mayahem Temple: Top of Kickball Stadium": {
 				"logic": {
 					"Banjo-Kazooie": "FlapFlipSlideExtension and BeakBusterJump and Roll and FlapFlip and BeakBuster"

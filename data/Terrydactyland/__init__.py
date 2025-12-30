@@ -366,7 +366,7 @@ regions: Regions = {
 			"TDL: Top of the Mountain Warp Pad Tagged": {
 				"item": "TDLTopOfTheMountainWarpPad",
 			},
-            
+			
 			"TDL: Priceless Relic Thingy": {},
 		},
 	},
