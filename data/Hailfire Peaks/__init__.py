@@ -332,5 +332,8 @@ regions: Regions = {
 				"item": "HFPIceSideInsideIcicleGrottoWarpPad",
 			},
 		},
+        "exits": {
+            "Mayahem Temple: Kickball Stadium Near Grate Switch": {}
+		}
 	},
 }
