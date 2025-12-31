@@ -9,6 +9,7 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"Beak Buster Jump": "BeakBuster", # Beak Buster gives a little extra height.
 		"Bill Drill Jump": "BillDrill", # Bill Drill's hop at the end gives a little extra height. It can also protect from certain hazards like Dragunda.
 		"Breegull Bash Fall": "BreegullBash", # You won't take fall damage during the entire animation of Breegull Bash.
+		"Air Rat-A-Tat Grab": "AirRatatatRap", # Air Rat a Rat Rap can grab things just out of reach.
 		"Breegull Bash Grab": "BreegullBash", # Breegull Bash can grab things just out of reach.
 		"Dragunda Sidle": "true", # With some Dragunda pools, you can run against the wall to avoid damage.
 		"Easy Jumps": "true", # Using various combinations of moves, you can reach new areas without intended moves.
@@ -17,6 +18,7 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"Ground Rat-a-tat Rap Jump": "GroundRatatatRap", # Using Ground Rat-a-tat Rap off of a ledge can give extra distance.
 		"Pack Whack Fall": "PackWhack", # Pack Whack can slightly delay fall damage.
 		"Pack Whack Jump": "PackWhack", # You can always jump while using Pack Whack. Using Pack Whack off of a ledge allows a second use.
+        "Pack Whack Slope Jump": "PackWhack", # You Can repeatedly jump out of Pack Whack on a slope to 
 		"Roll Jump": "Roll", # Rolling off a ledge lets you jump in the air during the animation.
 		"Sack Pack Air Jump": "SackPack", # You can jump while hopping around. Ending Sack Pack also gives a little distance.
 		"Sack Pack Fall": "SackPack", # Using Sack Pack off of a ledge allows you to prevent fall damage during the animation.
@@ -43,6 +45,7 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"Wonderwing Damage Boost": "Wonderwing", # Dragunda looks like he hurts you in Wonderwing, but you don't take damage.
 		"Wonderwing Fall": "Wonderwing", # Wonderwing prevents fall damage.
 		"Wonderwing Jump": "Wonderwing", # Jumping while using Wonderwing has a normal height even without Tall Jump.
+        "Bovina With Beak Bomb": "BeakBomb" # Beak Bomb the flies to kill them.
 	},
 	"Easy Glitches": {
 		"Air Rat-a-tat Rap Clip": "AirRatatatRap", # Air Rat-a-tat Rap can interact with things just beyond geometry.
@@ -53,19 +56,22 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		""", # After shooting a non-Clockwork egg forward, immediately Beak Barge to grab things just beyond geometry.
 		"Breegull Bash Clip": "BreegullBash", # Breegull Bash can interact with things just beyond geometry.
 		"Free Shock Spring Pad": "Wonderwing", # Shock Spring Pads near ledges can be used without Tall Jump by faking of a jump off the ledge.
+        "Taxi Pack Clip": "TaxiPack", # Taxi Pack can interact with things just beyond geometry.
 	},
 	"Hard Tricks": {
 		"Hard Jumps": "true", # Harder version of "Easy Jumps".
 		"Slide Jump": "true", # Turning around suddenly plays a sliding animation. Doing this off of a ledge allows you to jump in the air.
 		"Flap Flip Slide Extension": "FlapFlip", # Flap Flip off a ledge with neutral joystick. During ascent, hold a direction to gain a little extra distance.
-        "Extra Attacks": "true" # Using worse attacks on enemies becomes in logic.
+        "Extra Attacks": "true", # Using worse attacks on enemies becomes in logic.
 	},
 	"Hard Tedious Tricks": {
 		"Hard Tedious Jumps": "true", # Tedious version of "Hard Jumps".
 		"Bovina With Flap Flip": "FlapFlip and BeakBuster"
 	},
 	"Hard Glitches": {
-		"Beak Bomb Clips": "BeakBomb" # Beak bomb lets you go through gaps in doors.
+		"Beak Bomb Clips": "BeakBomb", # Beak bomb lets you go through gaps in doors.
+        "Clip Past Pine Grove Boulder": "true", # You can swim in the top-right corner of the boulder to clip through it backwards.
+        "Clockwork Warp": "ClockworkKazooieEggs and EggAim",
 	},
 	"Frame Perfect": {
 		"Talon Trot Slide Jump": "true", # Landing in Talon Trot plays a sliding animation. Doing this off of a ledge allows a frame perfect jump in the air.

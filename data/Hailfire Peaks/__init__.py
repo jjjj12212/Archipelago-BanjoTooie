@@ -334,6 +334,11 @@ regions: Regions = {
 		},
 		"exits": {
 			"MT: Kickball Stadium Near Grate Switch": {},
+            
+			
+            "Train At HFP Lava Side": {},
+            
+            "Train At HFP Icy Side": {},
 		}
 	},
 }

@@ -87,7 +87,7 @@ regions: Regions = {
                     )"""
 				}
 			},
-            "IoH: Pine Grove Underwater Behind Boulder": {
+            "IoH: Pine Grove Underwater Behind the Boulder": {
                 "logic": """
                 		BeakBuster and (SkipKlungo or (
 							EggUse or BeakBarge or Roll or AirRatatatRap or Wonderwing
@@ -108,7 +108,7 @@ regions: Regions = {
 		},
         "exits": {
             "IoH: Another Digger Tunnel": {},
-            "IoH: Pine Grove Underwater Behind Boulder": {}
+            "IoH: Pine Grove Underwater Behind the Boulder": {}
 		}
 	},
 	"IoH: Warp Silos": {

@@ -193,6 +193,7 @@ Banjo-Tooie:
     # - Beak Buster Jump
     # - Bill Drill Jump
     # - Breegull Bash Fall
+    # - Air Rat-A-Tat Grab
     # - Breegull Bash Grab
     # - Dragunda Sidle
     # - Easy Jumps
@@ -201,6 +202,7 @@ Banjo-Tooie:
     # - Ground Rat-a-tat Rap Jump
     # - Pack Whack Fall
     # - Pack Whack Jump
+    # - Pack Whack Slope Jump
     # - Roll Jump
     # - Sack Pack Air Jump
     # - Sack Pack Fall
@@ -225,10 +227,12 @@ Banjo-Tooie:
     # - Wonderwing Damage Boost
     # - Wonderwing Fall
     # - Wonderwing Jump
+    # - Bovina With Beak Bomb
     # - Air Rat-a-tat Rap Clip
     # - Beak Barge Clip
     # - Breegull Bash Clip
     # - Free Shock Spring Pad
+    # - Taxi Pack Clip
     # - Hard Jumps
     # - Slide Jump
     # - Flap Flip Slide Extension
@@ -236,6 +240,8 @@ Banjo-Tooie:
     # - Hard Tedious Jumps
     # - Bovina With Flap Flip
     # - Beak Bomb Clips
+    # - Clip Past Pine Grove Boulder
+    # - Clockwork Warp
     # - Talon Trot Slide Jump
     # - Sack Pack Ending Jump
 

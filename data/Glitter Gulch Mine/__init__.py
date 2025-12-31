@@ -3,7 +3,7 @@ regions: Regions = {
 	"Glitter Gulch Mine": {
 		"id": 0x00C7,
 		"exits": {
-			"IoH: Plateau": {
+			"IoH: Plateau: Leaving GGM": {
 				"id": 0x02,
 				"groups":{"World Exits"},
 			},
@@ -299,7 +299,43 @@ regions: Regions = {
 		},
 		"exits": {
 			"GGM: Levitate Chuffy The Train": {},
+            "Train At GGM": {},
+            "Chuffy's Cab": {},
 		},
 	},
 	"GGM: Levitate Chuffy The Train": {"macro": {"event"}},
+    "GGM: Outside Wumba's Wigwam": {},
+    "GGM: Wumba's Wigwam": {},
+    "GGM: Warp Pads": {},
+    "GGM: Fuel Depot Entrance": {},
+    "GGM: Fuel Depot In Front of Rocks": {},
+    "GGM: Fuel Depot Behind Rocks": {},
+    "GGM: Ordnance Storage Lobby": {},
+    "GGM: Ordnance Storage": {},
+    "GGM: Toxic Gas Cave": {},
+    "GGM: Crushing Shed": {},
+    "GGM: Crushed Shed Button Pressed": {"macro": {"event"}},
+	"GGM: Levitate The Crushing Shed Boulder": {"macro": {"event"}},
+    "GGM: Water Storage": {},
+    "GGM: Water Storage Jinjo Tank": {},
+    "GGM: Water Storage Jinjo Tank": {},
+    "GGM: Gloomy Caverns Near Jail Cells": {},
+    "GGM: Gloomy Caverns Outside Power Hut Area": {},
+    "GGM: Gloomy Caverns 3 Tunnel Area": {},
+    "GGM: Power Hut Ground Floor": {},
+    "GGM: Power Hut Top Floor": {},
+    "GGM: Power Hut": {},
+    "GGM: Generator Cavern": {},
+    "GGM: Train Station": {},
+    "GGM: Waterfall Cavern Top Entrance": {},
+    "GGM: Waterfall Cavern Top Pool": {},
+    "GGM: Waterfall Cavern Jiggy Ramp": {},
+    "GGM: Waterfall Cavern Side Entrance": {},
+    "GGM: Waterfall Cavern Bottom Entrance": {},
+    "GGM: Waterfall Cavern Bottom Pool": {},
+    "GGM: Waterfall Cavern Behind Boulder": {},
+    
+	#prospector, bill drill, mumbo
+    "GGM: Outside Mumbo's Skull": {},
+    "GGM: Mumbo's Skull": {},
 }

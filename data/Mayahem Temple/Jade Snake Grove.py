@@ -5,6 +5,7 @@ regions: Regions = {
 		"locations": {
 			"MT: Grip Grab Silo": {
 				"item": "GripGrab",
+				"logic": {"Banjo-Kazooie": "Notes >= ChosenMoveSiloCosts['Grip Grab']"},
 			},
 			"MT: Jade Snake Grove Glowbo": {
 				"item": "HumbaStony",

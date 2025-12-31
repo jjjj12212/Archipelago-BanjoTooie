@@ -468,14 +468,14 @@ class BanjoTooieWorld(World):
 		for item in self.item_name_groups["Warp Silos"]:
 			state.add_item(item, self.player)
 		state.update_reachable_regions(self.player)
-		if not state.can_reach_region("Warp Silos", self.player):
+		if not state.can_reach_region("IoH: Warp Silos", self.player):
 			# Cycle progression items in an attempt to gain access to Warp Silos.
 			current_checks = placeable_locations_count()
 			item = None
 			for item in self.item_pools[ItemClassification.progression]:
 				state.add_item(item.name, self.player)
 				state.update_reachable_regions(self.player)
-				if state.can_reach_region("Warp Silos", self.player):
+				if state.can_reach_region("IoH: Warp Silos", self.player):
 					break
 				state.remove(item)
 				item = None
@@ -848,6 +848,7 @@ class BanjoTooieWorld(World):
 
 	def fill_slot_data(self) -> dict[str, Any]:
 		options: dict[int, int] = {option:0 for option in ids.option_name_to_id.values()}
+		print(len(self.multiworld.get_regions()))
 		def add_option(name: str, value: int) -> None:
 			name = data.option_name(name)
 			options[ids.option_name_to_id[name]] = value
@@ -879,21 +880,26 @@ class BanjoTooieWorld(World):
 		filleritempool: list[Item],
 		fill_locations: list[Location]
 	):
-		players: dict[int, Counter[str]] = {world.player:Counter() for world in multiworld.get_game_worlds(cls.game)}
-		for player, items in players.items():
-			world = cast("BanjoTooieWorld", multiworld.worlds[player])
-			for i, world_name in enumerate(reversed(world.world_order)):
-				items[world_name] += 1000 + i
-			items["Jiggy"] += world.options.jiggywiggys_challenge_costs["Challenge 8"]
-			items["Mumbo Token"] -= world.options.extra_mumbo_tokens.value
+		# If there are a lot of items to fit in few locations, help out the generator by sorting the items into a more
+		# easy to fill order. This reduces the chance of the fill algorithm getting stuck and having to swap items.
+		# 0.75 is a heuristic threshold; default BT settings is about 82% of the pool being progression.
+		if len(progitempool) / len(fill_locations) < 0.75:
+			return
 
-		def sort_pool(item: Item):
-			if item.player in players:
-				counter = players[item.player]
-				ret = counter[item.name]
-				if ret > 0: counter[item.name] -= 1
-				elif ret < 0: counter[item.name] += 1
-				return ret
-			else: return 0
+		bt_players = {world.player for world in multiworld.get_game_worlds(cls.game)}
+
+		# Count how many copies of each item exist for each BT player.
+		# Items with more copies are placed first, which helps AP's fill algorithm.
+		item_counts: dict[int, Counter[str]] = {player: Counter() for player in bt_players}
+		for item in progitempool:
+			if item.player in bt_players:
+				item_counts[item.player][item.name] += 1
+
+		def sort_pool(item: Item) -> int:
+			if item.player in item_counts:
+				return item_counts[item.player][item.name]
+			else:
+				# If it's not an item belonging to a Banjo-Tooie player, keep its order the same.
+				return 0
 
 		progitempool.sort(key=sort_pool)

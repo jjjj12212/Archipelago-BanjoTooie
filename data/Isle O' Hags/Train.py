@@ -15,7 +15,14 @@ regions: Regions = {
 	},
 	"Inside Chuffy's Boiler": {
 		"locations": {
-			"GGM: Defeated Chuffy": {},
+			"GGM: Defeated Chuffy": {
+                "logic": {
+                    "Banjo-Kazooie": """
+						EggUse and (BlueEggs or GrenadeEggs or IceEggs)
+                        or ExtraAttacks and (Roll or Beak Barge or GroundRatatatRap)
+					"""
+				}
+			},
 			"GGM: Chuffy": {
 				"item": "Chuffy",
 				"logic": "GGMDefeatedChuffy",
@@ -26,6 +33,9 @@ regions: Regions = {
 				"locked": "true",
 				"logic": "GGMDefeatedChuffy",
 			},
+		},
+        "exits": {
+            "Chuffy's Cab": {}
 		}
 	},
 	"Inside Chuffy's Wagon": {
@@ -39,14 +49,20 @@ regions: Regions = {
 	},
 	"Train Stations": {
 		"exits": {
+			"Train At GGM": {},
+			"Train At WW": {"logic": "WWTrainStation"},
+			"Train At IoH": {"logic": "IoHTrainStation"},
+			"Train At TDL": {"logic": "TDLTrainStation"},
 			"Train At GI": {"logic": "GITrainStation"},
+			"Train At HFP Lava Side": {"logic": "HFPLavaSideTrainStation"},
+			"Train At HFP Icy Side": {"logic": "GITrainStation"},
 		}
 	},
 	"Train At GI": {"macro": {"event"}},
-    "Train at GGM": {},
-    "Train at WW": {},
-    "Train at IoH": {},
-    "Train at TDL": {},
-    "Train at HFP Fire Side": {},
-    "Train at HFP Icy Side": {},
+    "Train At GGM": {"macro": {"event"}},
+    "Train At WW": {"macro": {"event"}},
+    "Train At IoH": {"macro": {"event"}},
+    "Train At TDL": {"macro": {"event"}},
+    "Train At HFP Lava Side": {"macro": {"event"}},
+    "Train At HFP Icy Side": {"macro": {"event"}},
 }

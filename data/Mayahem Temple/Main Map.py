@@ -84,9 +84,11 @@ regions: Regions = {
 			},
 			"MT: Breegull Blaster Silo": {
 				"item": "BreegullBlaster",
+				"logic": {"Banjo-Kazooie": "Notes >= ChosenMoveSiloCosts['Breegull Blaster']"},
 			},
 			"MT: Egg Aim Silo": {
 				"item": "EggAim",
+				"logic": {"Banjo-Kazooie": "Notes >= ChosenMoveSiloCosts['Egg Aim']"},
 			},
 			"MT: In Front of Prison Compound Egg Nest 1": {
 				"item": "EggNest",
@@ -119,9 +121,10 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"MT: Main Map": {
+			"Mayahem Temple": {
 				"logic": {
-					"Banjo-Kazooie": "true"
+					"Banjo-Kazooie": "true",
+                    "Talon Trot": "TalonTrotSmuggleCrossWorld"
 				}
 			},
 			"MT: Top of Kickball Stadium": {
@@ -227,7 +230,10 @@ regions: Regions = {
 					"Banjo-Kazooie": "BillDrill",
 					"Golden Goliath": "true"
 				}
-			}
+			},
+            "MT: Prison Compound": {
+                "logic": "MTOpenPrisonCompound"
+			},
 		}
 	},
 	"MT: Top of the Temple": {
@@ -255,6 +261,7 @@ regions: Regions = {
 					"Banjo-Kazooie":"""
 						AirborneEggAiming and LinearEggs
 						or ExtraClockworkUsage and AirborneEggAiming
+                        or BovinaWithBeakBomb
 					"""
 				}
 			},

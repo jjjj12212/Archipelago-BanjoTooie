@@ -372,5 +372,8 @@ regions: Regions = {
 				"item": "BigTopTicket",
 			},
 		},
+        "exits": {
+            "Train At WW": {},
+		}
 	},
 }

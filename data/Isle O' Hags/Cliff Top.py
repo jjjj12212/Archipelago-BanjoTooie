@@ -3,26 +3,9 @@ regions: Regions = {
 	"IoH: Cliff Top": {
 		"id": 0x0155,
 		"locations": {
-			"IoH: Cliff Top Jinjo": {
-				"item": "PurpleJinjo",
-			},
-			"IoH: Cliff Top Glowbo": {
-				"item": "MumboHeal",
-			},
-			"IoH: Outside HFP Note 1": {
-				"item": "NoteNest",
-			},
-			"IoH: Outside HFP Note 2": {
-				"item": "NoteNest",
-			},
-			"IoH: Outside HFP Note 3": {
-				"item": "NoteNest",
-			},
-			"IoH: Outside HFP Note 4": {
-				"item": "NoteNest",
-			},
 			"IoH: Ice Eggs Silo": {
 				"item": "IceEggs",
+				"logic": {"Banjo-Kazooie": "Notes >= ChosenMoveSiloCosts['Ice Eggs']"},
 			},
 			"IoH: Cliff Top Near Path to Plateau Egg Nest 1": {
 				"item": "EggNest",
@@ -35,6 +18,18 @@ regions: Regions = {
 			},
 			"IoH: Cliff Top Feather Nest 3": {
 				"item": "FeatherNest",
+                "logic": {
+                    "Banjo-Kazooie": """
+						TallJump
+                        or TalonTrot
+                        or FlapFlip
+                        or GripGrab
+                        or BeakBusterJump
+                        or EasyJumps and (Flutter or AirRatatatRap)
+                        or ClockworkShot
+					""",
+                    "Mumbo": "TallJump"
+				}
 			},
 			"IoH: Cliff Top Feather Nest 4": {
 				"item": "FeatherNest",
@@ -53,10 +48,19 @@ regions: Regions = {
 			"IoH: Cliff Top Silo Tagged": {
 				"item": "CliffTopWarpSilo",
 			},
+			"IoH: Cliff Top Jinjo": {
+				"item": "PurpleJinjo",
+                "logic": {"Banjo-Kazooie": "ClockworkShot"},
+                "explicit_logic": {"BK Claw Clamber Boots": "true"}
+			},
 		},
 		"exits": {
-			"IoH: Plateau": {},
-			"Train at IoH": {"logic": "Chuffy and IoHTrainStation"},
+			"IoH: Plateau": {
+                "logic": {
+                    "Banjo-Kazooie": "true"
+				}
+			},
+			"Train At IoH": {"logic": "Chuffy and IoHTrainStation"},
 			"Chuffy's Cab": {"logic": {"Banjo-Kazooie": """ 
 										TrainAtIoH and (
 										Climb and (
@@ -72,7 +76,10 @@ regions: Regions = {
 			"Inside Chuffy's Wagon": {"logic": "TrainAtIoH"},
 			"Jolly Roger's Lagoon": {
 				"id": 0x03,
-				"logic": "JollyRogersLagoon",
+				"logic": {
+                    "Banjo-Kazooie": "JollyRogersLagoon",
+                    "Talon Trot": "TalonTrotSmuggleCrossWorld and JollyRogersLagoon"
+                },
 				"groups": {"World Entrances"},
 			},
 			"IoH: Warp Silos": {
@@ -88,7 +95,13 @@ regions: Regions = {
                 "logic": {
                     "Banjo-Kazooie": "FlapFlip and GripGrab"
 				}
-			}
+			},
+            "Scrat Healed": {
+                "logic": {
+                    "Mumbo": "TrainAtIoH"
+				}
+			},
+            "IoH: Mumbo's Skull": {},
 		},
 	},
     "IoH: Cliff Top Train Switch Platform": {
@@ -100,10 +113,27 @@ regions: Regions = {
 	},
     "IoH: Cliff Top Bridge Switch Pressed": {"macro": {"event"}},
     "IoH: Cliff Top Around HFP": {
+        "locations": {
+			"IoH: Outside HFP Note 1": {
+				"item": "NoteNest",
+			},
+			"IoH: Outside HFP Note 2": {
+				"item": "NoteNest",
+			},
+			"IoH: Outside HFP Note 3": {
+				"item": "NoteNest",
+			},
+			"IoH: Outside HFP Note 4": {
+				"item": "NoteNest",
+			},
+		},
         "exits": {
 			"Hailfire Peaks": {
 				"id": 0x15,
-				"logic": "HailfirePeaks",
+				"logic": {
+                    "Banjo-Kazooie": "HailfirePeaks",
+                    "Talon Trot": "TalonTrotSmuggleCrossWorld and HailfirePeaks"
+                },
 				"groups": {"World Entrances"},
 			},
             "IoH: Cliff Top On Top of HFP": {
@@ -129,5 +159,27 @@ regions: Regions = {
 			}
 		}
 	},
-    "IoH: Cliff Top On Top of HFP": {},
+    "IoH: Cliff Top On Top of HFP": {
+        "locations": {
+			"IoH: Cliff Top Glowbo": {
+				"item": "MumboHeal",
+                "explicit_logic": {
+                    "Clockwork Kazooie": "true"
+				}
+			},
+		}
+	},
+    "IoH: Mumbo's Skull": {
+        "exits": {
+            "IoH: Mumbo's Skull": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "Mumbo": "MumboHeal"
+					}
+				}
+			},
+            "IoH: Cliff Top": {}
+		}
+	},
+    "Scrat Healed": {"macro": {"event"}},
 }

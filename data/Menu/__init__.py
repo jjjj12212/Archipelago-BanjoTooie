@@ -11,15 +11,17 @@ regions: Regions = {
 
 				"logic": """
 					'HAG-1' in ChosenGoals and CKDefeatedHAG1
-					or 'HAG-1' not in ChosenGoals and PartyAtBottles
+					or 'HAG-1' not in ChosenGoals and IoHPartyAtBottles
 				""",
 			},
 		},
 		"exits": {
 			"Events": {},
 			"Spiral Mountain": {"id": 0x04},
+            "Jinjo Family Jiggies": {}
 		},
 	},
+    
 
 	"Starting Inventory": {
 		# Locations in this region will have their item added to the player's starting inventory if:

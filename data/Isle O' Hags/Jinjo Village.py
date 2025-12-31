@@ -2,7 +2,97 @@ from .. import Regions
 regions: Regions = {
 	"IoH: Jinjo Village": {
 		"locations": {
-			"IoH: White Jinjo Family Jiggy": {
+			"IoH: Treble Clef": {
+				"item": "TrebleClef",
+                "logic": {
+                    "Banjo-Kazooie": "FlapFlip and GripGrab or FlapFlip and BeakBusterJump or ClockworkShot"
+				}
+			},
+			"IoH: Ice Key": {
+				"item": "IceKey",
+                "logic": {
+                    "Banjo-Kazooie": "FlapFlip and GripGrab and (AnyAttack or ShootAnyEgg) or ClockworkShot"
+				}
+			},
+			"IoH: Jinjo Village By Silo Feather Nest 1": {
+				"item": "FeatherNest",
+			},
+			"IoH: Jinjo Village By Silo Egg Nest 1": {
+				"item": "EggNest",
+			},
+			"IoH: Jinjo Village By Silo Feather Nest 2": {
+				"item": "FeatherNest",
+			},
+			"IoH: Jinjo Village By Silo Egg Nest 2": {
+				"item": "EggNest",
+			},
+			"IoH: Jinjo Village Top Row of Houses Egg Nest 1": {
+				"item": "EggNest",
+			},
+			"IoH: Jinjo Village Top Row of Houses Feather Nest 1": {
+				"item": "FeatherNest",
+			},
+			"IoH: Jinjo Village Outside Bottle's House Feather Nest 1": {
+				"item": "FeatherNest",
+			},
+			"IoH: Jinjo Village Outside Bottle's House Feather Nest 2": {
+				"item": "FeatherNest",
+			},
+			"IoH: Jinjo Village Near Shortcut Egg Nest 1": {
+				"item": "EggNest",
+			},
+			"IoH: Jinjo Village Near Shortcut Egg Nest 2": {
+				"item": "EggNest",
+			},
+			"IoH: Jinjo Village Top Row of Houses Feather Nest 2": {
+				"item": "FeatherNest",
+			},
+			"IoH: Jinjo Village Top Row of Houses Egg Nest 2": {
+				"item": "EggNest",
+			},
+			"IoH: Grey Jinjo Family House Signpost": {
+				"item": "Nothing",
+				"groups": {"HintSigns"},
+				"enabled": "not ShuffleSigns",
+			},
+			"IoH: Jinjo Village Silo Tagged": {
+				"item": "JinjoVillageWarpSilo",
+			},
+		},
+		"exits": {
+			"IoH: Inside the Digger Tunnel": {},
+			"IoH: Bottles' House": {},
+			"IoH: Warp Silos": {
+                "logic": {
+                    "Banjo-Kazooie": "JinjoVillageWarpSilo"
+				}
+			},
+            "IoH: King Jingaling's Throne Room": {},
+            "White Jinjo Family House": {},
+            "Orange Jinjo Family House": {},
+            "Yellow Jinjo Family House": {},
+            "Brown Jinjo Family House": {},
+            "Green Jinjo Family House": {},
+            "Red Jinjo Family House": {},
+            "Blue Jinjo Family House": {},
+            "Purple Jinjo Family House": {},
+            "Black Jinjo Family House": {},
+            # "Grey Jinjo Family House": {},
+            "IoH: Jinjo Village On Top of the Ledge": {
+                "logic": {
+                    "Banjo-Kazooie": """
+						FlapFlip and GripGrab
+                        or HardJumps and TallJump and Flutter and BeakBusterJump
+                        or EasyJumps and TalonTrot and Flutter and BeakBusterJump
+                        or EasyJumps and TalonTrot and AirRatatatRap
+					"""
+				}
+			}
+		},
+	},
+    "Jinjo Family Jiggies": {
+        "locations": {
+            "IoH: White Jinjo Family Jiggy": {
 				"item": "Jiggy",
 				"logic": "(WhiteJinjo, 1)",
 			},
@@ -38,12 +128,7 @@ regions: Regions = {
 				"item": "Jiggy",
 				"logic": "(BlackJinjo, 9)",
 			},
-			"IoH: King Jingaling Jiggy": {
-				"item": "Jiggy",
-			},
-			"IoH: Treble Clef": {
-				"item": "TrebleClef",
-			},
+            
 			"IoH: White Jinjo Family Mumbo Token": {
 				"item": {"MumboToken":"'White Jinjo Family' in ChosenGoals", "Nothing":"true"},
 				"enabled": "'White Jinjo Family' in VictoryGoals",
@@ -98,65 +183,72 @@ regions: Regions = {
 				"locked": "true",
 				"logic": "(BlackJinjo, 9)",
 			},
-			"IoH: Ice Key": {
-				"item": "IceKey",
-			},
-			"IoH: Jinjo Village By Silo Feather Nest 1": {
-				"item": "FeatherNest",
-			},
-			"IoH: Jinjo Village By Silo Egg Nest 1": {
-				"item": "EggNest",
-			},
-			"IoH: Jinjo Village By Silo Feather Nest 2": {
-				"item": "FeatherNest",
-			},
-			"IoH: Jinjo Village By Silo Egg Nest 2": {
-				"item": "EggNest",
-			},
-			"IoH: Jinjo Village Top Row of Houses Egg Nest 1": {
-				"item": "EggNest",
-			},
-			"IoH: Jinjo Village Top Row of Houses Feather Nest 1": {
-				"item": "FeatherNest",
-			},
-			"IoH: Jinjo Village Outside Bottle's House Feather Nest 1": {
-				"item": "FeatherNest",
-			},
-			"IoH: Jinjo Village Outside Bottle's House Feather Nest 2": {
-				"item": "FeatherNest",
-			},
-			"IoH: Jinjo Village Near Shortcut Egg Nest 1": {
-				"item": "EggNest",
-			},
-			"IoH: Jinjo Village Near Shortcut Egg Nest 2": {
-				"item": "EggNest",
-			},
-			"IoH: Jinjo Village Top Row of Houses Feather Nest 2": {
-				"item": "FeatherNest",
-			},
-			"IoH: Jinjo Village Top Row of Houses Egg Nest 2": {
-				"item": "EggNest",
-			},
-			"IoH: Grey Jinjo Family House Signpost": {
-				"item": "Nothing",
-				"groups": {"HintSigns"},
-				"enabled": "not ShuffleSigns",
-			},
-			"IoH: Jinjo Village Silo Tagged": {
-				"item": "JinjoVillageWarpSilo",
-			},
-		},
-		"exits": {
-			"IoH: Inside the Digger Tunnel": {},
-			"IoH: Bottles' House": {},
-			"IoH: Wooded Hollow": {},
-			"IoH: Warp Silos": {},
-            "IoH: King Jingaling's Throne Room": {}
-		},
+		}
+	},
+    "IoH: Jinjo Village On Top of the Ledge": {
+        "exits": {
+            "IoH: Jinjo Village": {},
+            "IoH: Wooded Hollow": {}
+		}
 	},
     "IoH: King Jingaling's Throne Room": {
+        "locations": {
+			"IoH: King Jingaling Jiggy": {
+				"item": "Jiggy",
+			},
+        },
         "exits": {
             "IoH: Bottles' House: Gate Opened": {}
 		}
+	},
+    "White Jinjo Family House": {
+        "exits": {
+            "IoH: Jinjo Village": {}
+		}
+	},
+    "Orange Jinjo Family House": {
+        "exits": {
+            "IoH: Jinjo Village": {}
+		}
+	},
+    "Yellow Jinjo Family House": {
+        "exits": {
+            "IoH: Jinjo Village": {}
+		}
+	},
+    "Brown Jinjo Family House": {
+        "exits": {
+            "IoH: Jinjo Village": {}
+		}
+	},
+    "Green Jinjo Family House": {
+        "exits": {
+            "IoH: Jinjo Village": {}
+		}
+	},
+    "Red Jinjo Family House": {
+        "exits": {
+            "IoH: Jinjo Village": {}
+		}
+	},
+    "Blue Jinjo Family House": {
+        "exits": {
+            "IoH: Jinjo Village": {}
+		}
+	},
+    "Purple Jinjo Family House": {
+        "exits": {
+            "IoH: Jinjo Village": {}
+		}
+	},
+    "Black Jinjo Family House": {
+        "exits": {
+            "IoH: Jinjo Village": {}
+		}
 	}
+    # "Grey Jinjo Family House": {
+    #     "exits": {
+    #         "IoH: Jinjo Village": {}
+	# 	  }
+	# }
 }

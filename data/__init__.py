@@ -343,6 +343,7 @@ def post_processing():
 		for location_name, location in region.get("locations", {}).items():
 			parser_str = f"{region_file} -> {location_name}"
 			if "logic" in location:
+				# print(region_name, location_name)
 				form, logic = next(iter(location.get("logic", {}).items()), (None, None))
 				if form is None or logic is None: locations_without_logic.append(parser_str)
 				else: location["logic"][form] = parser.parse(f"{parser_str} -> logic", logic)
@@ -353,6 +354,7 @@ def post_processing():
 				location_exit = "" in exit_names
 				for from_form, to_forms in exit_["logic"].items():
 					for to_form, logic in to_forms.items():
+						# print(region_name, exit_name)
 						if location_exit: form_exit_name = exit_name
 						else: form_exit_name = exit_names[to_form]
 						parser_str = f"{region_file} -> {form_exit_name}"

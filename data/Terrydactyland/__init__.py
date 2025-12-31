@@ -369,5 +369,8 @@ regions: Regions = {
 			
 			"TDL: Priceless Relic Thingy": {},
 		},
+        "exits": {
+            "Train At TDL": {},
+		}
 	},
 }
