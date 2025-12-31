@@ -340,18 +340,22 @@ def post_processing():
 	locations_without_logic: list[str] = []
 	for region_name, region in regions.items():
 		region_file = f"{region['file']}: {region_name}"
+		unused_explicit_forms = set(region["names"]) & set(explicit_forms)
 		for location_name, location in region.get("locations", {}).items():
 			parser_str = f"{region_file} -> {location_name}"
 			if "logic" in location:
 				form, logic = next(iter(location.get("logic", {}).items()), (None, None))
 				if form is None or logic is None: locations_without_logic.append(parser_str)
-				else: location["logic"][form] = parser.parse(f"{parser_str} -> logic", logic)
+				else:
+					unused_explicit_forms.discard(form)
+					location["logic"][form] = parser.parse(f"{parser_str} -> logic", logic)
 			else: locations_without_logic.append(parser_str)
 		for exit_name, exit_ in region.get("exits", {}).items():
 			if "logic" in exit_:
 				exit_names = regions[exit_name]["names"]
 				location_exit = "" in exit_names
 				for from_form, to_forms in exit_["logic"].items():
+					unused_explicit_forms.discard(from_form)
 					for to_form, logic in to_forms.items():
 						if location_exit: form_exit_name = exit_name
 						else: form_exit_name = exit_names[to_form]
@@ -364,6 +368,10 @@ def post_processing():
 					if "id" in to_exit:
 						exit_["rid"] = to_exit["id"]
 						if "rid" not in to_exit: to_exit["rid"] = exit_["id"]
+		if len(unused_explicit_forms):
+			print(f"Warning: The following explicit forms have a dead end in {region_file}")
+			print("\n".join(unused_explicit_forms))
+			print()
 	if len(locations_without_logic):
 		print("Warning: The following location(s) don't have any form/logic info:")
 		print("\n".join(locations_without_logic))
