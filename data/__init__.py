@@ -277,44 +277,46 @@ def reformat_logic_structure():
 			if not region["exits"][region_name]:
 				del region["exits"][region_name]
 				if not region["exits"]: del region["exits"]
-		for location_name, location in region.get("locations", {}).copy().items():
-			if "logic" in location:
-				location_logic = location["logic"]
-				if isinstance(location_logic, set):
-					location["logic"] = {form:"" for form in location_logic}
-				elif isinstance(location_logic, str):
-					location["logic"] = {form:location_logic for form in forms}
-			else:
-				location["logic"] = {form:"" for form in forms}
-			location_logic = cast(dict[Form, str], location["logic"])
-			location_logic_explicit = location.get("explicit_logic", {})
-			if isinstance(location_logic_explicit, set):
-				location_logic_explicit = cast(dict[ExplicitForm, str], {form:"" for form in location_logic_explicit})
-			for explicit_form, explicit_logic in location_logic_explicit.items():
-				location_logic[explicit_form] = explicit_logic
-			if len(location_logic) > 1:
-				location["logic"] = {"":""}
-				if "locations" in region: del region["locations"][location_name]
-				name = location_region_name(location_name)
-				regions[name] = {
-					"major_region": parent_region["major_region"],
-					"file": parent_region["file"],
-					"names": {"":name},
-					"locations": {location_name:cast(FinalLocation, location)},
-				}
-				region.setdefault("exits", {})[name] = {
-					"logic": {form:{form:logic} for form, logic in location_logic.items()}
-				}
-			region_forms |= set(location_logic)
 		if "locations" in region:
 			location_count = len(region["locations"])
+			location_name, location = next(iter(region["locations"].items()), (None, None))
 			if location_count == 0: del region["locations"]
-			elif location_count == 1 and "exits" not in region:
-				location_name, location = next(iter(region["locations"].items()), (None, None))
-				if location and region_name == location_name:
-					location_logic = cast(dict[Form, str], location.get("logic", {}))
-					for form in region["forms"]:
-						if form not in location_logic: location_logic[form] = ""
+			elif location_count == 1 and "exits" not in region and location and region_name == location_name: # macro event
+				location["logic"] = {"":""}
+				names = {"":region_name}
+				region["forms"].clear()
+				region_forms.clear()
+				if "instant_transform" in region: del region["instant_transform"]
+			else:
+				for location_name, location in region["locations"].copy().items():
+					if "logic" in location:
+						location_logic = location["logic"]
+						if isinstance(location_logic, set):
+							location["logic"] = {form:"" for form in location_logic}
+						elif isinstance(location_logic, str):
+							location["logic"] = {form:location_logic for form in forms}
+					else:
+						location["logic"] = {form:"" for form in forms}
+					location_logic = cast(dict[Form, str], location["logic"])
+					location_logic_explicit = location.get("explicit_logic", {})
+					if isinstance(location_logic_explicit, set):
+						location_logic_explicit = cast(dict[ExplicitForm, str], {form:"" for form in location_logic_explicit})
+					for explicit_form, explicit_logic in location_logic_explicit.items():
+						location_logic[explicit_form] = explicit_logic
+					if len(location_logic) > 1:
+						location["logic"] = {"":""}
+						if "locations" in region: del region["locations"][location_name]
+						name = location_region_name(location_name)
+						regions[name] = {
+							"major_region": parent_region["major_region"],
+							"file": parent_region["file"],
+							"names": {"":name},
+							"locations": {location_name:cast(FinalLocation, location)},
+						}
+						region.setdefault("exits", {})[name] = {
+							"logic": {form:{form:logic} for form, logic in location_logic.items()}
+						}
+					region_forms |= set(location_logic)
 		for form in region["forms"] | region_forms:
 			name = form_name(form, region_name)
 			names[form] = name
