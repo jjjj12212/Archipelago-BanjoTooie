@@ -19,7 +19,7 @@ regions: Regions = {
                 "logic": {
                     "Banjo-Kazooie": """
 						EggUse and (BlueEggs or GrenadeEggs or IceEggs)
-                        or ExtraAttacks and (Roll or Beak Barge or GroundRatatatRap)
+                        or ExtraAttacks and (Roll or BeakBarge or GroundRatatatRap)
 					"""
 				}
 			},

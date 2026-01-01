@@ -402,4 +402,5 @@ regions: Regions = {
 			"GI Basement: Waste Disposal Plant Top Of Pump": {},
 		}
 	},
+    "JRL: Water Supply (Glitter Gulch Mine) GGM Side": {},
 }

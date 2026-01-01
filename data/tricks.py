@@ -27,7 +27,9 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"Snooze Pack Fall": "SnoozePack", # Using Snooze Pack off of a ledge prevents fall damage.
 		"Taxi Pack Fall": "TaxiPack", # Using Taxi Pack off of a ledge prevents fall damage during the animation. You can also end the move in the air for increased distance
 		"Slope Jump": "true", # Going Up slopes without talon trot.
-		"Dive Skip": "true" # Skipping Dive by either entering a loading zone or forcing your way into a tunnel.
+		"Dive Skip": "true", # Skipping Dive by either entering a loading zone or forcing your way into a tunnel.
+        "Glide Extension": "true", # Alternating between Glide and either Flutter or Wing Whack makes Kazooie lose height slower.
+        "Rooms With Limited Lighting": "true" # Do dark rooms with unintended, limited forms of lighting.
 	},
 	"Easy Tedious Tricks": {
 		"Beak Bomb Tricks": "BeakBomb", # Beak Bomb can be used in unintended ways to reach new areas.
@@ -45,7 +47,8 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"Wonderwing Damage Boost": "Wonderwing", # Dragunda looks like he hurts you in Wonderwing, but you don't take damage.
 		"Wonderwing Fall": "Wonderwing", # Wonderwing prevents fall damage.
 		"Wonderwing Jump": "Wonderwing", # Jumping while using Wonderwing has a normal height even without Tall Jump.
-        "Bovina With Beak Bomb": "BeakBomb" # Beak Bomb the flies to kill them.
+        "Bovina With Beak Bomb": "BeakBomb", # Beak Bomb the flies to kill them.
+        "Tight Timers": "true" # Beating timers (minigames, timed switches) in sub-optimal conditions. 
 	},
 	"Easy Glitches": {
 		"Air Rat-a-tat Rap Clip": "AirRatatatRap", # Air Rat-a-tat Rap can interact with things just beyond geometry.
@@ -66,7 +69,8 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 	},
 	"Hard Tedious Tricks": {
 		"Hard Tedious Jumps": "true", # Tedious version of "Hard Jumps".
-		"Bovina With Flap Flip": "FlapFlip and BeakBuster"
+		"Bovina With Flap Flip": "FlapFlip and BeakBuster",
+        "Rooms In The Dark": "true" # Do dark rooms with no lighting.
 	},
 	"Hard Glitches": {
 		"Beak Bomb Clips": "BeakBomb", # Beak bomb lets you go through gaps in doors.

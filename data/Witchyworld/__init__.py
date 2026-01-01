@@ -376,4 +376,5 @@ regions: Regions = {
             "Train At WW": {},
 		}
 	},
+    "WW: Saucer of Peril Platform Behind Gate": {},
 }

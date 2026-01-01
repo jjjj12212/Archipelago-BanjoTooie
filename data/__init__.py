@@ -359,7 +359,7 @@ def post_processing():
 				for from_form, to_forms in exit_["logic"].items():
 					unused_explicit_forms.discard(from_form)
 					for to_form, logic in to_forms.items():
-						# print(region_name, exit_name)
+						print(region_name, exit_name)
 						if location_exit: form_exit_name = exit_name
 						else: form_exit_name = exit_names[to_form]
 						parser_str = f"{region_file} -> {form_exit_name}"

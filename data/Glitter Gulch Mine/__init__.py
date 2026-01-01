@@ -8,6 +8,7 @@ regions: Regions = {
 				"groups":{"World Exits"},
 			},
 			"Glitter Gulch Mine - Temp": {},
+            "GGM: Main Map": {}
 		},
 	},
 	"Glitter Gulch Mine - Temp": {
@@ -194,7 +195,7 @@ regions: Regions = {
 			"GGM: Flooded Caves Egg Nest 2": {
 				"item": "EggNest",
 			},
-			"GGM: Water Storage Jinjo Tank Egg Nest": {
+			"GGM: Water Storage On Top Of Jinjo Tank Egg Nest": {
 				"item": "EggNest",
 			},
 			"GGM: Gloomy Caverns Near Power Hut Egg Nest 1": {
@@ -303,39 +304,535 @@ regions: Regions = {
             "Chuffy's Cab": {},
 		},
 	},
-	"GGM: Levitate Chuffy The Train": {"macro": {"event"}},
-    "GGM: Outside Wumba's Wigwam": {},
-    "GGM: Wumba's Wigwam": {},
-    "GGM: Warp Pads": {},
-    "GGM: Fuel Depot Entrance": {},
-    "GGM: Fuel Depot In Front of Rocks": {},
-    "GGM: Fuel Depot Behind Rocks": {},
-    "GGM: Ordnance Storage Lobby": {},
-    "GGM: Ordnance Storage": {},
-    "GGM: Toxic Gas Cave": {},
-    "GGM: Crushing Shed": {},
-    "GGM: Crushed Shed Button Pressed": {"macro": {"event"}},
-	"GGM: Levitate The Crushing Shed Boulder": {"macro": {"event"}},
-    "GGM: Water Storage": {},
-    "GGM: Water Storage Jinjo Tank": {},
-    "GGM: Water Storage Jinjo Tank": {},
-    "GGM: Gloomy Caverns Near Jail Cells": {},
-    "GGM: Gloomy Caverns Outside Power Hut Area": {},
-    "GGM: Gloomy Caverns 3 Tunnel Area": {},
-    "GGM: Power Hut Ground Floor": {},
-    "GGM: Power Hut Top Floor": {},
-    "GGM: Power Hut": {},
-    "GGM: Generator Cavern": {},
-    "GGM: Train Station": {},
-    "GGM: Waterfall Cavern Top Entrance": {},
-    "GGM: Waterfall Cavern Top Pool": {},
-    "GGM: Waterfall Cavern Jiggy Ramp": {},
-    "GGM: Waterfall Cavern Side Entrance": {},
-    "GGM: Waterfall Cavern Bottom Entrance": {},
-    "GGM: Waterfall Cavern Bottom Pool": {},
-    "GGM: Waterfall Cavern Behind Boulder": {},
+    "GGM: Main Map": {
+        "exits": {
+            "GGM: Outside Wumba's Wigwam": {
+                "logic": {
+                    "Banjo-Kazooie": "TalonTrot",
+                    "Talon Trot": "true",
+                    "Detonator": "true",
+                    "Kazooie": "true",
+                    "Banjo": "PackWhackSlopeJump"
+				}
+			},
+            "GGM: Fuel Depot Entrance": {},
+            "GGM: Ordnance Storage Boulder Broken": {
+                "logic": {
+                    "Banjo-Kazooie": "BillDrill",
+                    "Detonator": "true"
+				}
+			},
+            "GGM: Ordnance Storage": {
+                "logic": "GGMOrdanceStorageBoulderBroken"
+			},
+            "GGM: Toxic Gas Cave": {},
+            "GGM: Crushing Shed": {},
+            "GGM: Water Storage": {},
+            "GGM: Canary Cave Rocks Broken": {
+                "logic": {
+                    "Detonator": "true"
+				}
+			},
+            "GGM: Behind Rocks to Canary Cave": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "Banjo-Kazooie": "GGMCanaryCaveBoulderBroken",
+                        "Clockwork Kazooie": "ClockworkShot"
+					},
+                    "Detonator": "GGMCanaryCaveBoulderBroken",
+                    "Banjo": "GGMCanaryCaveBoulderBroken",
+                    "Kazooie": "GGMCanaryCaveBoulderBroken",
+                    "Mumbo": "GGMCanaryCaveBoulderBroken"
+				}
+			},
+            "GGM: Canary Cave": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "Clockwork Kazooie": "ClockworkShot"
+					}
+				}
+			},
+            "GGM: Mine Entrance 2 Boulder Broken": {
+                "logic": {
+                    "Banjo-Kazooie": "BillDrill",
+                    "Detonator": "true"
+				}
+			},
+            "GGM: Gloomy Caverns Jail Cell Area": {
+                "logic": "GGMMineEntrance2BoulderBroken"
+			},
+            "GGM: Gloomy Caverns 3 Tunnel Area": {},
+            "GGM: Train Station": {},
+            "GGM: Waterfall Cavern Entrance Opened": {
+                "logic": {
+                    "BK Turbo Trainers": "true",
+                    "Banjo-Kazooie": "TightTimers and TalonTrot or GGMWorldEntryAndExitWarpPad and GGMNearTheTrainStationWarpPad",
+                    "Talon Trot": "TightTimers"
+				}
+			},
+            "GGM: Waterfall Cavern Top Entrance": {
+                "logic": "GGMWaterfallCavernEntranceOpened"
+			},
+            "GGM: Warp Pads": {
+                "logic": "GGMWorldEntryAndExitWarpPad or GGMOutsideTheCrushingShedWarpPad"
+			},
+            "GGM: Main Map": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "BK Turbo Trainers": "TurboTrainers",
+                        "BK Springy Step Shoes": "SpringyStepShoes"
+					},
+                    "Kazooie": {
+                        "SK Turbo Trainers": "TurboTrainers",
+                        "SK Springy Step Shoes": "SpringyStepShoes"
+					}
+				}
+			},
+            "GGM: Rocks Near Crushing Shed Broken": {
+                "logic": {
+                    "Detonator": "true"
+                }
+			},
+            # TODO: prospector, bill drill, mumbo
+		},
+        "macro": {"rejoin"}
+	},
+    "GGM: Behind Rocks to Flooded Caves": {
+        "exits": {
+            "GGM: Main Map": {
+                "logic": "GGMRocksNearCrushingShedBroken"
+			},
+            "GGM: Flooded Caves Above Water Near Crushing Shed Exit": {},
+		}
+	},
+    "GGM: Outside Wumba's Wigwam": {
+        "exits": {
+            "GGM: Main Map": {},
+            "GGM: Wumba's Wigwam": {},
+		}
+	},
+    "GGM: Wumba's Wigwam": {
+        "exits": {
+            "GGM: Wumba's Wigwam": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "Detonator": "HumbaDetonator"
+					}
+				}
+			},
+            "GGM: Warp Pads": {
+                "logic": "GGMInsideWumbasWigwamWarpPad"
+			},
+            "GGM: Main Map": {}
+		}
+	},
+    "GGM: Warp Pads": {
+        "exits": {
+            "GGM: Main Map": {
+                "logic": "GGMWorldEntryAndExitWarpPad or GGMOutsideTheCrushingShedWarpPad or GGMNearTheTrainStationWarpPad"
+			},
+            "GGM: Wumba's Wigwam": {
+                "logic": "GGMInsideWumbasWigwamWarpPad"
+			},
+            "GGM: Mumbo Skull Warp Pad Platform": {
+                "logic": "GGMOutsideMumbosSkullWarpPad"
+			}
+		}
+	},
+    "GGM: Fuel Depot Entrance": {
+        "exits": {
+            "GGM: Main Map": {},
+            "GGM: Fuel Depot In Front of Rocks": {
+                "logic": {
+                    "Banjo-Kazooie": "TallJump or FlapFlip or TalonTrot or HardJumps",
+                    "Talon Trot": "true",
+                    "Banjo": "true",
+                    "Kazooie": "TallJump or LegSpring",
+                    "Mumbo": "TallJump",
+                    "Detonator": "true"
+				}
+			},
+            "GGM: Fuel Depot Back-Left Note Barrel": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "Banjo-Kazooie": "TallJump or FlapFlip or TalonTrot or HardJumps",
+                        "Clockwork Kazooie": "ClockworkShot"
+					},
+                    "Talon Trot": "true",
+                    "Banjo": "true",
+                    "Kazooie": "TallJump or LegSpring",
+                    "Mumbo": "TallJump",
+                    "Detonator": "true"
+				}
+			},
+		}
+	},
+    "GGM: Fuel Depot Back-Left Note Barrel": {
+        "exits": {
+            "GGM: Fuel Depot In Front of Rocks": {
+				"logic": {
+					"Banjo-Kazooie": "GripGrab"
+				}
+			}
+		}
+	},
+    "GGM: Fuel Depot In Front of Rocks": {
+        "exits": {
+            "GGM: Fuel Depot Back-Left Note Barrel": {},
+            "GGM: Fuel Depot Entrance": {},
+            "GGM: Fuel Depot Rocks Broken": {
+                "logic": {
+                    "Detonator": "true"
+				}
+			},
+            "GGM: Fuel Depot Behind Rocks": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "Banjo-Kazooie": "GGMFuelDepotRocksBroken",
+                        "Clockwork Kazooie": "ClockworkShot"
+					},
+                    "Talon Trot": "GGMFuelDepotRocksBroken",
+                    "Detonator": "GGMFuelDepotRocksBroken",
+                    "Mumbo": "GGMFuelDepotRocksBroken",
+                    "Banjo": "GGMFuelDepotRocksBroken",
+                    "Kazooie": "GGMFuelDepotRocksBroken"
+				},
+			},
+		}
+	},
+    "GGM: Fuel Depot Behind Rocks": {
+        "exits": {
+            "GGM: Fuel Depot In Front of Rocks": {
+                "logic": "GGMFuelDepotRocksBroken"
+			},
+            "WW: Saucer of Peril Platform Behind Gate": {
+                "logic": {
+                    "Banjo-Kazooie": "true",
+                    "Talon Trot": "true"
+				}
+			},
+		}
+	},
+    "GGM: Ordnance Storage Lobby": {
+        "exits": {
+            "GGM: Ordnance Storage": {
+                "logic": {
+                    "Banjo-Kazooie": "BeakBayonet and BreegullBlaster"
+				}
+			},
+            "GGM: Main Map": {},
+		}
+	},
+    "GGM: Ordnance Storage": {
+        "exits": {
+            "GGM: Ordnance Storage Won": {},
+		}
+	},
+    "GGM: Toxic Gas Cave": {
+        "exits": {
+            "GGM: Main Map": {},
+		}
+	},
+    "GGM: Crushing Shed": {
+        "exits": {
+            "GGM: Main Map": {},
+            "GGM: Crushing Shed Button Pressed": {
+                "logic": {
+                    "Banjo-Kazooie": "BeakBarge"
+				}
+			},
+		}
+	},
+    "GGM: Water Storage": {
+        "exits": {
+            "GGM: Main Map": {},
+            "GGM: Waterfall Cavern Bottom Entrance": {},
+            "GGM: Water Storage On Top Of Jinjo Tank": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "Clockwork Kazooie": "ClockworkShot"
+					}
+				}
+			},
+            "GGM: Water Storage On Top Of Cheato Page Tank": {
+                "logic": {
+                    "Banjo-Kazooie": "FlapFlip and (GripGrab or BeakBusterJump) and Climb",
+                    "Banjo": "HardJumps and TallJump and PackWhackJump and GripGrab and Climb",
+                    "Kazooie": "HardJumps and LegSpring and WingWhack and GlideExtension"
+				}
+			},
+		}
+	},
+    "GGM: Water Storage On Top Of Jinjo Tank": {
+        "exits": {
+            "GGM: Water Storage": {},
+            "JRL: Water Supply (Glitter Gulch Mine) GGM Side": {
+                "logic": {
+                    "Banjo-Kazooie": "Climb"
+				}
+			}
+		}
+	},
+    "GGM: Water Storage On Top Of Cheato Page Tank": {
+        "exits": {
+            "GGM: Water Storage On Top Of Jinjo Tank": {
+                "logic": {
+                    "Kazooie": "GlideExtension"
+				}
+			}
+		}
+	},
+    "GGM: Behind Rocks to Canary Cave": {
+        "exits": {
+            "GGM: Main Map": {
+                "logic": "GGMCanaryCaveRocksBroken"
+			},
+            "GGM: Canary Cave": {}
+		}
+	},
+    "GGM: Canary Cave": {
+        "exits": {
+            "GGM: Behind Rocks to Canary Cave": {},
+            "GGM: Canary Mary Freed": {
+                "logic": {
+                    "Banjo-Kazooie": "GripGrab or BeakBarge or ShootExplosives or AirRatatatRap or GroundRatatatRap",
+                    "Banjo": "PackWhack",
+                    "Kazooie": "true",
+                    "Detonator": "true",
+                    "Mumbo": "true"
+				}
+			},
+		}
+	},
+    "GGM: Gloomy Caverns Jail Cell Area": {
+        "exits": {
+            "GGM: Main Map": {},
+            "GGM: Gloomy Caverns Outside Power Hut Area": {
+                "logic": "GGMGloomyCavernNearJailCellRocksBroken"
+			},
+            "GGM: Gloomy Cavern Near Jail Cell Rocks Broken": {
+                "logic": {
+                    "Detonator": "true"
+				}
+			},
+		}
+	},
+    "GGM: Gloomy Caverns Outside Power Hut Area": {
+        "exits": {
+            "GGM: Power Hut Ground Floor": {},
+            "GGM: Gloomy Cavern Near Power Hut Rocks Broken": {
+                "logic": {
+                    "Detonator": "true"
+				}
+			},
+            "GGM: Gloomy Caverns 3 Tunnel Area": {
+                "logic": "GGMGloomyCavernNearPowerHutRocksBroken"
+			},
+		}
+	},
+    "GGM: Gloomy Caverns 3 Tunnel Area": {
+        "exits": {
+            "GGM: Main Map": {},
+            "GGM: Generator Cavern": {},
+            "GGM: Gloomy Caverns Outside Power Hut Area": {
+                "logic": "GGMGloomyCavernNearPowerHutRocksBroken"
+			},
+		}
+	},
+    "GGM: Power Hut Ground Floor": {
+        "exits": {
+            "GGM: Power Hut Top Floor": {
+                "logic": {
+                    "Banjo-Kazooie": "Climb",
+                    "Banjo": "Climb"
+				}
+			},
+            "GGM: Power Hut": {},
+            "GGM: Gloomy Caverns Outside Power Hut Area": {},
+		},
+	},
+    "GGM: Power Hut Top Floor": {
+        "exits": {
+            "GGM: Power Hut Ground Floor": {},
+		}
+	},
+    "GGM: Power Hut": {
+        "exits": {
+            "GGM: Power Hut Ground Floor": {}
+		}
+	},
+    "GGM: Generator Cavern": {
+        "exits": {
+            "GGM: Gloomy Caverns 3 Tunnel Area": {},
+		}
+	},
+    "GGM: Train Station": {
+        "exits": {
+			"GGM: Levitate Chuffy The Train": {},
+            "GGM: Main Map": {},
+			"Train At GGM": {"logic": "Chuffy or GGMLevitateChuffyTheTrain"},
+			"Chuffy's Cab": {
+                "logic": {
+					"Banjo-Kazooie": """ 
+							TrainAtGGM and (
+							Climb and (
+								TallJump
+								or TalonTrot 
+								or FlapFlip
+								or BeakBusterJump
+							)
+							or Climb and EasyJumps
+							or (TallJump or TalonTrot or FlapFlip) and EasyJumps
+							or BeakBusterJump
+						)"""
+				}
+			},
+			"Inside Chuffy's Wagon": {
+                "logic": {
+					"Banjo-Kazooie": """ 
+							TrainAtGGM and (
+							Climb and (
+								TallJump
+								or TalonTrot 
+								or FlapFlip
+								or BeakBusterJump
+							)
+							or Climb and EasyJumps
+							or (TallJump or TalonTrot or FlapFlip) and EasyJumps
+							or BeakBusterJump
+						)""",
+                    "Detonator": "true",
+                    "Banjo": "GripGrab or EasyJumps and TallJump or PackWhackJump",
+                    "Kazooie": "EasyJumps and TallJump or LegSpring",
+                    "Mumbo": "EasyJumps and TallJump"
+				},
+			},
+		}
+	},
+    "GGM: Waterfall Cavern Top Entrance": {
+        "exits": {
+            "GGM: Main Map": {},
+            "GGM: Waterfall Cavern Top Pool": {},
+            "GGM: Waterfall Cavern Jiggy Ramp": {
+                "logic": {
+                    "Banjo-Kazooie": "HardTediousJumps and DamageBoost or EasyTediousJumps and (Flutter or AirRatatatRap)",
+                    "Kazooie": "EasyTediousJumps",
+                    "Banjo": "HardTediousJumps",
+                    "Mumbo": "HardTediousJumps",
+				}
+			},
+            "GGM: Waterfall Cavern Side Entrance": {
+                "logic": {
+                    "BK Turbo Trainers": {
+                        "Banjo-Kazooie": "EasyTediousJumps and DamageBoost"
+					}
+				}
+			},
+		}
+	},
+    "GGM: Waterfall Cavern Top Pool": {
+        "exits": {
+            "GGM: Waterfall Cavern Bottom Entrance": {},
+            "GGM: Waterfall Cavern Jiggy Ramp": {
+                "logic": {
+                    "Banjo": "TallJump or PackWhackJump or SackPackAirJump",
+                    "Kazooie": "TallJump or LegSpring",
+                    "Mumbo": "TallJump",
+                    "Detonator": "true"
+				}
+			}
+		},
+	},
+    "GGM: Waterfall Cavern Jiggy Ramp": {
+        "exits": {
+            "GGM: Waterfall Cavern Side Entrance": {
+                "logic": {
+                    "Banjo-Kazooie": "EasyTediousJumps and RollJump and TallJump and (Flutter or AirRatatatRap) or EasyJumps and TalonTrot and Flutter",
+                    "Kazooie": "EasyTediousJumps and (TallJump or WingWhack or Glide or LegSpring)",
+                    "Banjo": "EasyTediousJumps and (TallJump and PackWhackJump)"
+				}
+			}
+		}
+	},
+    "GGM: Waterfall Cavern Side Entrance": {
+        "exits": {
+            "GGM: Waterfall Cavern Bottom Entrance": {},
+            "GGM: Flooded Caves Above Water Near Waterfall Cavern Exit": {},
+            "GGM: Waterfall Cavern Jiggy Ramp": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "Clockwork Kazooie": "ClockworkShot"
+					}
+				}
+			},
+		}
+	},
+    "GGM: Waterfall Cavern Bottom Entrance": {
+        "exits": {
+            "GGM: Water Storage": {},
+            "GGM: Flooded Caves Underwater": {
+                "logic": {
+                    "Banjo-Kazooie": "Dive",
+                    "Banjo": "Dive"
+				}
+			},
+		}
+	},
+    "GGM: Waterfall Cavern Bottom Pool Underwater": {
+        "exits": {
+            "GGM: Waterfall Cavern Bottom Entrance": {},
+            "GGM: Waterfall Cavern Boulder Broken": {
+                "logic": {
+                    "Banjo-Kazooie": "TalonTorpedo"
+				}
+			},
+            "GGM: Waterfall Cavern Behind Boulder": {
+                "logic": "GGMWaterfallCavernBoulderBroken"
+			},
+		}
+	},
+    "GGM: Waterfall Cavern Behind Boulder": {
+		"exits": {
+            "GGM: Waterfall Cavern Bottom Entrance": {
+                "logic": "GGMWaterfallCavernBoulderBroken"
+			},
+            "HFP: Mega Glowbo Room Underwater": {},
+		}
+	},
+    "GGM: Flooded Caves Above Water Near Waterfall Cavern Exit": {
+        "exits": {
+            "GGM: Flooded Caves Underwater": {
+                "logic": {
+                    "Banjo-Kazooie": "Dive",
+                    "Banjo": "Dive"
+				}
+			},
+            "GGM: Waterfall Cavern Side Entrance": {},
+		},
+	},
+    "GGM: Flooded Caves Above Water Near Crushing Shed Exit": {
+	},
+    "GGM: Flooded Caves Underwater": {},
+    "GGM: Flooded Caves Jiggy Platform": {},
     
-	#prospector, bill drill, mumbo
+
+	"GGM: Mumbo Skull Warp Pad Platform": {},
     "GGM: Outside Mumbo's Skull": {},
     "GGM: Mumbo's Skull": {},
+    
+	
+	"GGM: Levitate Chuffy The Train": {"macro": {"event"}},
+    "GGM: Crushing Shed Button Pressed": {"macro": {"event"}},
+	"GGM: Levitate The Crushing Shed Boulder": {"macro": {"event"}},
+    "GGM: Rocks Near Crushing Shed Broken": {"macro": {"event"}}, # We need a better name for this. It's the rocks that block the way to flooded caves
+	"GGM: Ordnance Storage Boulder Broken": {"macro": {"event"}},
+	"GGM: Mine Entrance 2 Boulder Broken": {"macro": {"event"}},
+	"GGM: Gloomy Cavern Near Jail Cell Rocks Broken": {"macro": {"event"}},
+	"GGM: Gloomy Cavern Near Power Hut Rocks Broken": {"macro": {"event"}},
+	"GGM: Waterfall Cavern Entrance Opened": {"macro": {"event"}},
+	"GGM: Waterfall Cavern Boulder Broken": {"macro": {"event"}},
+	"GGM: Canary Cave Rocks Broken": {"macro": {"event"}},
+	"GGM: Canary Mary Freed": {"macro": {"event"}},
+    "GGM: Fuel Depot Rocks Broken": {"macro": {"event"}},
+    "GGM: Ordnance Storage Won": {"macro": {"event"}},
 }

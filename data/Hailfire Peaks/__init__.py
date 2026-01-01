@@ -341,4 +341,5 @@ regions: Regions = {
             "Train At HFP Icy Side": {},
 		}
 	},
+    "HFP: Mega Glowbo Room Underwater": {}
 }
