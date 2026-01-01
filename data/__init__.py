@@ -200,6 +200,8 @@ def reformat_logic_structure():
 						else: forms.add(form)
 				elif isinstance(exit_logic, set):
 					forms |= exit_logic
+			exit_logic_explicit = exit_.get("explicit_logic")
+			if exit_logic_explicit: forms |= set(exit_logic_explicit)
 			to_forms = _regions[exit_name].setdefault("forms", set())
 			if forms - to_forms:
 				to_forms |= forms
@@ -357,7 +359,6 @@ def post_processing():
 			if "logic" in exit_:
 				exit_names = regions[exit_name]["names"]
 				location_exit = "" in exit_names
-				#print(region_name, exit_name)
 				for from_form, to_forms in exit_["logic"].items():
 					unused_explicit_forms.discard(from_form)
 					for to_form, logic in to_forms.items():
