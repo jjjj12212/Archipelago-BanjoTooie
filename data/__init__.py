@@ -190,9 +190,8 @@ def reformat_logic_structure():
 				from_forms |= set(to_forms)
 		for exit_name, exit_ in region.get("exits", {}).items():
 			exit_logic = exit_.get("logic")
-			if not exit_logic or isinstance(exit_logic, str): forms = from_forms.copy()
-			else: forms = set(exit_logic)
-			forms -= set(explicit_forms)
+			if not exit_logic or isinstance(exit_logic, str): forms = from_forms.copy() - set(explicit_forms)
+			else: forms: set[Form] = set()
 			if exit_logic:
 				if isinstance(exit_logic, dict):
 					for form, value in exit_logic.items():
