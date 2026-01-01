@@ -28,9 +28,12 @@ regions: Regions = {
 			},
 			"MT: Jade Snake Grove Jinjo": {
 				"item": "PurpleJinjo",
-			},
-			"MT: Golden Goliath Jiggy": {
-				"item": "Jiggy",
+                "logic": {
+                    "Banjo-Kazooie": "FlapFlip and GripGrab or FlapFlip and BeakBusterJump or ClockworkShot"
+				},
+                "explicit_logic": {
+                    "Golden Goliath": "GoldenGoliathClips"
+				}
 			},
 			"MT: Near Wumba's Wigwam Warp Pad Tagged": {
 				"item": "MTNearWumbasWigwamWarpPad",
@@ -75,6 +78,16 @@ regions: Regions = {
 						"Clockwork Kazooie": "ClockworkShot"
 					}
 				}
+			},
+            "MT: Jade Snake Grove Golden Goliath Jiggy Island": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "Clockwork Kazooie": "DamageBoost and GlitchedInvincibility and ClockworkShot and TalonTrot"
+					}
+				},
+                "explicit_logic": {
+                    "Golden Goliath": "true"
+				}
 			}
 		}
 	},
@@ -83,6 +96,17 @@ regions: Regions = {
 			"MT: Jade Snake Grove Above Code Chamber Egg Nest": {
 				"item": "EggNest",
                 "explicit_logic": {
+                    "Clockwork Kazooie": "true"
+				}
+			},
+		}
+	},
+	"MT: Jade Snake Grove Golden Goliath Jiggy Island": {
+		"locations": {
+			"MT: Golden Goliath Jiggy": {
+				"item": "Jiggy",
+                "explicit_logic": {
+                    "Golden Goliath": "true",
                     "Clockwork Kazooie": "true"
 				}
 			},

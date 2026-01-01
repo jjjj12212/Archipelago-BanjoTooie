@@ -60,6 +60,8 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"Breegull Bash Clip": "BreegullBash", # Breegull Bash can interact with things just beyond geometry.
 		"Free Shock Spring Pad": "Wonderwing", # Shock Spring Pads near ledges can be used without Tall Jump by faking of a jump off the ledge.
         "Taxi Pack Clip": "TaxiPack", # Taxi Pack can interact with things just beyond geometry.
+        "Golden Goliath Clip": "true", # Golden Goliath can interact with things just beyond geometry.
+        "Glitched Invincibility": "true", # Being invincible through glitched means.
 	},
 	"Hard Tricks": {
 		"Hard Jumps": "true", # Harder version of "Easy Jumps".

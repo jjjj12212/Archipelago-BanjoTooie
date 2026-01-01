@@ -356,6 +356,7 @@ def post_processing():
 			if "logic" in exit_:
 				exit_names = regions[exit_name]["names"]
 				location_exit = "" in exit_names
+				#print(region_name, exit_name)
 				for from_form, to_forms in exit_["logic"].items():
 					unused_explicit_forms.discard(from_form)
 					for to_form, logic in to_forms.items():
