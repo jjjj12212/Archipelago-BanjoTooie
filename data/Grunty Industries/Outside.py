@@ -695,7 +695,7 @@ regions: Regions = {
 			"GI Outside: Jinjo": {
 				"item": "BlackJinjo",
 				"logic": {
-					"Banjo-Kazooie": "BeakBargeClip",
+					"Banjo-Kazooie": "EggBarge",
 					"Banjo": """
 						forms_reach_regions({
 							"Banjo": "GI Outside: Jinjo Platform",

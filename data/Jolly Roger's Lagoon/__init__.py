@@ -400,7 +400,12 @@ regions: Regions = {
 		"exits": {
 			"GI Basement: Waste Disposal Plant Jinjo Tank": {},
 			"GI Basement: Waste Disposal Plant Top Of Pump": {},
+            "JRL: Water Supply (Glitter Gulch Mine) GGM Side": {}
 		}
 	},
-    "JRL: Water Supply (Glitter Gulch Mine) GGM Side": {},
+    "JRL: Water Supply (Glitter Gulch Mine) GGM Side": {
+        "exits": {
+            "GGM: Water Storage On Top Of Jinjo Tank": {}
+		}
+	},
 }

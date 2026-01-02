@@ -33,6 +33,12 @@ regions: Regions = {
 				"locked": "true",
 				"logic": "GGMDefeatedChuffy",
 			},
+            
+			
+			"GGM: Old King Coal Jiggy": {
+				"item": "Jiggy",
+				"logic": "GGMDefeatedChuffy",
+			},
 		},
         "exits": {
             "Chuffy's Cab": {}

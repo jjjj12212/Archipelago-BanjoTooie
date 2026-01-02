@@ -118,6 +118,7 @@ regions: Regions = {
 					MTPillarJiggyLowered and (TallJump or TalonTrot or FlapFlip or WonderwingJump)
 					or HardJumps and TalonTrot and Flutter and BeakBuster
 					or ClockworkShot
+                    or SlideJump and Flutter and BeakBusterJump and HardJumps
 				""",
 				"item": "Jiggy",
 			},

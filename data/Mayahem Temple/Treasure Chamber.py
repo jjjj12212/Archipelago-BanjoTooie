@@ -17,9 +17,9 @@ regions: Regions = {
 				"logic": {
 					"Banjo-Kazooie": {
 						"Clockwork Kazooie": "ClockworkShot",
-						"Banjo-Kazooie": "TalonTrot",
-						"Talon Trot": "true"
-					}
+						"Banjo-Kazooie": "TalonTrot or SlopeJump and FlapFlip and TallJump and BeakBusterJump",
+					},
+                    "Talon Trot": "true"
 				}
 			},
 			"MT: Open Top Treasure Chamber Door": {

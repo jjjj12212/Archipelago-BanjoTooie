@@ -9,12 +9,21 @@ regions: Regions = {
 			},
 			"MT: Jade Snake Grove Glowbo": {
 				"item": "HumbaStony",
+                "explicit_logic": {
+                    "Golden Goliath": "true"
+				}
 			},
 			"MT: Jade Snake Grove Near Warp Pad Egg Nest 1": {
 				"item": "EggNest",
+                "explicit_logic": {
+                    "Golden Goliath": "true"
+				}
 			},
 			"MT: Jade Snake Grove Near Warp Pad Egg Nest 2": {
 				"item": "EggNest",
+                "explicit_logic": {
+                    "Golden Goliath": "true"
+				}
 			},
 			"MT: Jade Snake Grove Quicksand Signpost 1": {
 				"item": "Nothing",
@@ -32,11 +41,14 @@ regions: Regions = {
                     "Banjo-Kazooie": "FlapFlip and GripGrab or FlapFlip and BeakBusterJump or ClockworkShot"
 				},
                 "explicit_logic": {
-                    "Golden Goliath": "GoldenGoliathClips"
+                    "Golden Goliath": "GoldenGoliathClip"
 				}
 			},
 			"MT: Near Wumba's Wigwam Warp Pad Tagged": {
 				"item": "MTNearWumbasWigwamWarpPad",
+                "explicit_logic": {
+                    "Golden Goliath": "true"
+				}
 			},
 		},
 		"exits": {
@@ -96,7 +108,15 @@ regions: Regions = {
 			"MT: Jade Snake Grove Above Code Chamber Egg Nest": {
 				"item": "EggNest",
                 "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+                    "Clockwork Kazooie": "true",
+                    "Golden Goliath": "true"
+				}
+			},
+		},
+        "exits": {
+            "MT: Jade Snake Grove Top of Slope": {
+                "logic": {
+                    "Banjo-Kazooie": "FlapFlip and TallJump and BeakBusterJump and SlopeJump"
 				}
 			},
 		}

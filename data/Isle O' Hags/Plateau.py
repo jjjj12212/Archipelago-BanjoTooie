@@ -8,7 +8,7 @@ regions: Regions = {
                 "logic": {
                     "Banjo-Kazooie": """
 						BeakBuster
-                        or BeakBargeClip
+                        or EggBarge
 					""",
                     "Banjo": "TaxiPackClip"
 				}
@@ -17,7 +17,7 @@ regions: Regions = {
 				"item": "NoteNest",
                 "logic": {
                     "Banjo-Kazooie": "FlapFlip and GripGrab or FlapFlip and BeakBusterJump or ClockworkShot",
-                    "Banjo": "HardJumps and (FlapFlip and GripGrab)",
+                    "Banjo": "HardJumps and (FlapFlip and GripGrab) or PackWhackJump and TallJump and GripGrab or HardJumps and PackWhackJump and TallJump",
                     "Kazooie": "EasyJumps and (TallJump or Glide)"
 				}
 			},
@@ -25,7 +25,7 @@ regions: Regions = {
 				"item": "NoteNest",
                 "logic": {
                     "Banjo-Kazooie": "FlapFlip and GripGrab or FlapFlip and BeakBusterJump or ClockworkShot",
-                    "Banjo": "HardJumps and (FlapFlip and GripGrab)",
+                    "Banjo": "HardJumps and (FlapFlip and GripGrab) or PackWhackJump and TallJump and GripGrab or HardJumps and PackWhackJump and TallJump",
                     "Kazooie": "EasyJumps and (TallJump or Glide)"
 				}
 			},

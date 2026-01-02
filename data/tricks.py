@@ -52,16 +52,20 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 	},
 	"Easy Glitches": {
 		"Air Rat-a-tat Rap Clip": "AirRatatatRap", # Air Rat-a-tat Rap can interact with things just beyond geometry.
-		"Beak Barge Clip": """
+		"EggBarge": """
 			BeakBarge
 			and ThirdPersonEggShooting
 			and exclude(AnyEggs, ClockworkKazooieEggs)
 		""", # After shooting a non-Clockwork egg forward, immediately Beak Barge to grab things just beyond geometry.
+        "Beak Barge Clip": "BeakBarge", # Getting stuff through geometry with Beak Barge.
+        "Ground Rat-A-Tat Clip": "GroundRatatatRap", # Getting stuff through geometry with Ground Rat-A-Tat.
 		"Breegull Bash Clip": "BreegullBash", # Breegull Bash can interact with things just beyond geometry.
 		"Free Shock Spring Pad": "Wonderwing", # Shock Spring Pads near ledges can be used without Tall Jump by faking of a jump off the ledge.
         "Taxi Pack Clip": "TaxiPack", # Taxi Pack can interact with things just beyond geometry.
+        "Pack Whack Clip": "TaxiPack", # Pack Whack can interact with things just beyond geometry.
         "Golden Goliath Clip": "true", # Golden Goliath can interact with things just beyond geometry.
         "Glitched Invincibility": "true", # Being invincible through glitched means.
+        "Leg Spring Dive": "LegSpring", # Holding A while doing a Leg Spring lets you sink underwater.
 	},
 	"Hard Tricks": {
 		"Hard Jumps": "true", # Harder version of "Easy Jumps".
@@ -78,6 +82,7 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"Beak Bomb Clips": "BeakBomb", # Beak bomb lets you go through gaps in doors.
         "Clip Past Pine Grove Boulder": "true", # You can swim in the top-right corner of the boulder to clip through it backwards.
         "Clockwork Warp": "ClockworkKazooieEggs and EggAim",
+        "Clockwork Shot Through Geometry": "ClockworkKazooieEggs",
 	},
 	"Frame Perfect": {
 		"Talon Trot Slide Jump": "true", # Landing in Talon Trot plays a sliding animation. Doing this off of a ledge allows a frame perfect jump in the air.

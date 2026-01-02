@@ -14,5 +14,6 @@ alias: dict[Alias, Logic] = {
 	"BillDrill": "BeakBuster and BillDrill",
 	"BreegullBash": "GroundRatatatRap and BreegullBash",
 	"BeakBayonet": "BreegullBlaster and BeakBayonet",
-	"DragonBreath": "GroundRatatatRap and (IoHDragonTransform or HumbaDragon and InstantTransform == 'no_logic')"
+	"DragonBreath": "GroundRatatatRap and (IoHDragonTransform or HumbaDragon and InstantTransform == 'no_logic')",
+	"DragonBreathSoloKazooie": "WingWhack and (IoHDragonTransform or HumbaDragon and InstantTransform == 'no_logic')"
 }
