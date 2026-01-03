@@ -56,7 +56,7 @@ items: dict[Option, dict[Name, Class]] = {
 		"Cheato Page": {"progression_skip_balancing": "ShuffleCheatoRewards"},
 	},
 	"ShuffleHoneycombs": {
-		"Empty Honeycomb": {"progression_skip_balancing": "ShuffleHoneyBRewards", "useful":"true"},
+		"Empty Honeycomb": "progression_skip_balancing",
 	},
 	"ShuffleJinjos": {
 		"White Jinjo": "progression_skip_balancing",
