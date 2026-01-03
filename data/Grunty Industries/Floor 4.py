@@ -392,6 +392,7 @@ regions: Regions = {
 				"id": 0x01,
 				"logic": {"Banjo-Kazooie": "BreegullBlaster"},
 			},
+			"GI Floor 4: After Crushers Upper Catwalk": {"id": 0x02}
 		}
 	},
 	"GI Floor 4: Clinkers Cavern": {

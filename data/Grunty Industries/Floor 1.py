@@ -676,8 +676,8 @@ regions: Regions = {
 		},
 		"exits": {
 			"GI Floor 1: Opened Back Door": {},
-			"GI Floor 2: Near Tintops": {"id": 0x05},
-			"GI Outside: Back Area": {"id": 0x04}
+			"GI Floor 2: Floor 1 Stairway": {"id": 0x05},
+			"GI Outside: Behind Back Door": {"id": 0x04}
 		}
 	},
 	"GI Floor 1: Opened Main Door": {"macro": {"event"}},

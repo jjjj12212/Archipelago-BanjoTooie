@@ -119,6 +119,7 @@ regions: Regions = {
 	},
 	"IoH: Quagmire Spring Pad Switch Pressed": {"macro": {"event"}},
 	"IoH: Quagmire Behind Cauldron Keep Gate": {
+		"id": 0x015C,
 		"exits": {
 			"Cauldron Keep": {
 				"id": 0x01,

@@ -10,7 +10,7 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"IoH: Quagmire": {
+			"IoH: Quagmire Behind Cauldron Keep Gate": {
 				"id": 0x03,
 				"groups":{"World Exits"},
 			},

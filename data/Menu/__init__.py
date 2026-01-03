@@ -2,6 +2,7 @@
 from .. import Regions
 regions: Regions = {
 	"Menu": {
+		"id": 0x014E, # File Select
 		# Logic entry point. Logic will always start here.
 		# Locations in this Region will never be sent to Archipelago.
 

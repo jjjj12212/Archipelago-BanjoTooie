@@ -98,14 +98,7 @@ regions: Regions = {
 					"Banjo-Kazooie": "IoHPlateauFireSwitch"
 				}
 			},
-			"Glitter Gulch Mine": {
-				"id": 0x11,
-				"logic": "GlitterGulchMine",
-				"explicit_logic": {
-					"Talon Trot": "TalonTrotSmuggleCrossWorld"
-				},
-				"groups": {"World Entrances"},
-			},
+			"IoH: Plateau: Leaving GGM": {},
 			"IoH: Warp Silos": {
 				"logic": {
 					"Banjo-Kazooie": "PlateauWarpSilo"
@@ -161,6 +154,14 @@ regions: Regions = {
 		"exits": {
 			"IoH: Plateau": {
 				"logic": "Flutter or AirRatatatRap or Climb or BeakBuster"
+			},
+			"Glitter Gulch Mine": {
+				"id": 0x11,
+				"logic": "GlitterGulchMine",
+				"explicit_logic": {
+					"Talon Trot": "TalonTrotSmuggleCrossWorld"
+				},
+				"groups": {"World Entrances"},
 			}
 		}
 	},

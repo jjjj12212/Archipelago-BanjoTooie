@@ -3,7 +3,7 @@ regions: Regions = {
 	"Hailfire Peaks": {
 		"id": 0x0127,
 		"exits": {
-			"IoH: Cliff Top": {
+			"IoH: Cliff Top Around HFP": {
 				"id": 0x06,
 				"groups":{"World Exits"},
 			},
