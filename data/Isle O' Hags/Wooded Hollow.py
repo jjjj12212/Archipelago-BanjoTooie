@@ -119,8 +119,11 @@ regions: Regions = {
 			"IoH: Bottles' House": {},
 			"Mayahem Temple": {
 				"id": 0x0A,
-				"logic": "MayahemTemple",
 				"groups": {"World Entrances"},
+				"logic": {
+					"Banjo-Kazooie": "MayahemTemple",
+					"Talon Trot": "MayahemTemple and TalonTrotSmuggleCrossWorld",
+				}
 			},
 			"IoH: Warp Silos": {},
 		},

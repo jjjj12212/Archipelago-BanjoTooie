@@ -6,6 +6,9 @@ regions: Regions = {
 			"IoH: Plateau: Leaving GGM": {
 				"id": 0x02,
 				"groups":{"World Exits"},
+				"logic": {
+					"Banjo-Kazooie": "Climb",
+				}
 			},
 			"GGM: Falling When Entering": {}
 		},

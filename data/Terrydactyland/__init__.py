@@ -6,6 +6,10 @@ regions: Regions = {
 			"IoH: Wasteland": {
 				"id": 0x02,
 				"groups":{"World Exits"},
+				"logic": {
+					"Banjo-Kazooie": "",
+					"Talon Trot": "TalonTrotSmuggleCrossWorld",
+				}
 			},
 			"Terrydactyland - Temp": {},
 		},

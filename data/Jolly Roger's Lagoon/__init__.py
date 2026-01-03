@@ -6,6 +6,10 @@ regions: Regions = {
 			"IoH: Cliff Top": {
 				"id": 0x05,
 				"groups":{"World Exits"},
+				"logic": {
+					"Banjo-Kazooie": "",
+					"Talon Trot": "TalonTrotSmuggleCrossWorld",
+				}
 			},
 			"Jolly Roger's Lagoon - Temp": {},
 		},

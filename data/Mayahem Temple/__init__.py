@@ -7,6 +7,10 @@ regions: Regions = {
 			"IoH: Wooded Hollow": {
 				"id": 0x02,
 				"groups":{"World Exits"},
+				"logic": {
+					"Banjo-Kazooie": "",
+					"Talon Trot": "TalonTrotSmuggleCrossWorld",
+				}
 			},
 			"MT: Main Map": {}
 		},

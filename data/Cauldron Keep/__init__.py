@@ -13,6 +13,10 @@ regions: Regions = {
 			"IoH: Quagmire Behind Cauldron Keep Gate": {
 				"id": 0x03,
 				"groups":{"World Exits"},
+				"logic": {
+					"Banjo-Kazooie": "",
+					"Talon Trot": "TalonTrotSmuggleCrossWorld",
+				}
 			},
 			"Cauldron Keep - Temp": {},
 		},

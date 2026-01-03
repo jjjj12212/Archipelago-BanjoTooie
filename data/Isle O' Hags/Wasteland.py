@@ -59,13 +59,19 @@ regions: Regions = {
 			"IoH: Another Digger Tunnel": {},
 			"Terrydactyland": {
 				"id": 0x17,
-				"logic": "Terrydactyland",
 				"groups": {"World Entrances"},
+				"logic": {
+					"Banjo-Kazooie": "Terrydactyland",
+					"Talon Trot": "Terrydactyland and TalonTrotSmuggleCrossWorld",
+				}
 			},
 			"Cloud Cuckooland": {
 				"id": 0x14,
-				"logic": "CloudCuckooland",
 				"groups": {"World Entrances"},
+				"logic": {
+					"Banjo-Kazooie": "CloudCuckooland",
+					"Talon Trot": "CloudCuckooland and TalonTrotSmuggleCrossWorld",
+				}
 			},
 			"IoH: Warp Silos": {},
 		},

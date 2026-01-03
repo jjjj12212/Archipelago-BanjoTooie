@@ -157,11 +157,11 @@ regions: Regions = {
 			},
 			"Glitter Gulch Mine": {
 				"id": 0x11,
-				"logic": "GlitterGulchMine",
-				"explicit_logic": {
-					"Talon Trot": "TalonTrotSmuggleCrossWorld"
-				},
 				"groups": {"World Entrances"},
+				"logic": {
+					"Banjo-Kazooie": "GlitterGulchMine",
+					"Talon Trot": "GlitterGulchMine and TalonTrotSmuggleCrossWorld",
+				}
 			}
 		}
 	},

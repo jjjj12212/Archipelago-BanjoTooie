@@ -6,6 +6,10 @@ regions: Regions = {
 			"IoH: Cliff Top Around HFP": {
 				"id": 0x06,
 				"groups":{"World Exits"},
+				"logic": {
+					"Banjo-Kazooie": "",
+					"Talon Trot": "TalonTrotSmuggleCrossWorld",
+				}
 			},
 			"Hailfire Peaks - Temp": {},
 		},

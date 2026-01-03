@@ -6,6 +6,10 @@ regions: Regions = {
 			"IoH: Pine Grove Behind Witchyworld Gate": {
 				"id": 0x02,
 				"groups":{"World Exits"},
+				"logic": {
+					"Banjo-Kazooie": "",
+					"Talon Trot": "TalonTrotSmuggleCrossWorld",
+				}
 			},
 			"Witchyworld - Temp": {},
 		},
