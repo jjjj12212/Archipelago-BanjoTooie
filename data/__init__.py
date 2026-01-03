@@ -366,13 +366,13 @@ def post_processing():
 						else: form_exit_name = exit_names[to_form]
 						parser_str = f"{region_file} -> {form_exit_name}"
 						exit_["logic"][from_form][to_form] = parser.parse(f"{parser_str} -> logic", logic)
-			if "id" in exit_ and "rid" not in exit_:
+			if "id" in exit_ and ("two_way" not in exit_ or not exit_["two_way"]):
 				to_region = regions[exit_name]
 				if "exits" in to_region and region_name in to_region["exits"]:
 					to_exit = to_region["exits"][region_name]
 					if "id" in to_exit:
-						exit_["rid"] = to_exit["id"]
-						if "rid" not in to_exit: to_exit["rid"] = exit_["id"]
+						exit_["two_way"] = True
+						to_exit["two_way"] = True
 		if len(unused_explicit_forms):
 			print(f"Warning: The following explicit forms have a dead end in {region_file}")
 			print("\n".join(unused_explicit_forms))

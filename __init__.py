@@ -1,17 +1,17 @@
-from collections import Counter
-import dataclasses, settings, math, entrance_rando
+import math, Options, entrance_rando, settings
 import worlds.LauncherComponents as LauncherComponents
-from typing import Any, TextIO, cast
+from collections import Counter
+from typing import Any, Iterable, TextIO, cast, get_type_hints
 from worlds.AutoWorld import World, WebWorld
-from BaseClasses import CollectionState, EntranceType, MultiWorld, Tutorial, ItemClassification, Item, Location
+from BaseClasses import CollectionState, EntranceType, MultiWorld, Tutorial, ItemClassification, Item, Location, Region
 
 from . import options, regions, locations, items, data
-from .options import BanjoTooieOptions
-from .regions import BanjoTooieEntrance, BanjoTooieExitData, BanjoTooieExitMap, BanjoTooieRegions
+from .options import BanjoTooieOptions, BanjoTooieOptionsList
+from .regions import BanjoTooieEntrance, BanjoTooieRegions
 from .locations import BanjoTooieLocation
 from .items import BanjoTooieItem, BanjoTooieItemInfo
 from .rules import BanjoTooieRules
-from .ids import slot_data_names
+from .ids import slot_data_names, option_name_to_id, exit_name_to_id
 
 def launch_client():
 	from . import client
@@ -104,12 +104,28 @@ class BanjoTooieWorld(World):
 	item_pools: dict[str|int, list[BanjoTooieItem]]
 	starting_worlds: list[str]
 	entrance_groups: dict[str, list[BanjoTooieEntrance]]
-	exit_map: list[BanjoTooieExitMap]
+	exit_map: dict[int, int]
 	spoiler_info: dict[str, list[str]]
+	slot_data: dict[str, Any]
+	is_fake_gen: bool
+	ut_can_gen_without_yaml = True
+	found_entrances_datastorage_key = "UsedEntrances"
 
 	@classmethod
 	def version_as_u32(cls) -> int:
 		return (cls.world_version.major << 16) | (cls.world_version.minor << 8) | cls.world_version.build
+
+	@classmethod
+	def verify_version(cls, version: int | None):
+		assert cls.version_as_u32() == version, (
+			"Version Mismatch",
+			"The client version does not match the generated version."
+		)
+
+	@staticmethod
+	def fix_slot_data(slot_data: dict[str, Any]):
+		slot_data["options"] = {int(key):value for key, value in slot_data["options"].items()}
+		slot_data["exit_map"] = {int(key):value for key, value in slot_data["exit_map"].items()}
 
 	def __init__(self, multiworld: "MultiWorld", player: int):
 		super().__init__(multiworld, player)
@@ -127,7 +143,7 @@ class BanjoTooieWorld(World):
 			"Starting Inventory From Pool": [],
 		}
 		self.entrance_groups = {}
-		self.exit_map = []
+		self.exit_map = {}
 		self.spoiler_info = {}
 
 	def log_format(self, msg: str) -> str:
@@ -279,8 +295,39 @@ class BanjoTooieWorld(World):
 		else: classification = ItemClassification.progression
 		return BanjoTooieItem(name, classification, items.name_to_id.get(name, None), self.player)
 
+	def interpret_slot_data(self, slot_data: dict[str, Any]):
+		return slot_data
+
+	def set_options(self):
+		self.verify_version(self.slot_data.get("version"))
+		self.fix_slot_data(self.slot_data)
+		slot_options = self.slot_data["options"]
+		for key, cls in get_type_hints(BanjoTooieOptionsList).items():
+			value: Any
+			if issubclass(cls, Options.OptionSet):
+				value = cast(set[Any], set())
+				for sub_key in cast(Iterable[str], cls.valid_keys): # pyright: ignore[reportUnknownMemberType]
+					if slot_options[option_name_to_id[data.option_name(f"{key} {sub_key}")]]:
+						value.add(sub_key)
+			elif issubclass(cls, Options.OptionCounter):
+				value = {}
+				for sub_key in cast(Iterable[str], cls.valid_keys): # pyright: ignore[reportUnknownMemberType]
+					value[sub_key] = slot_options[option_name_to_id[data.option_name(f"{key} {sub_key}")]]
+			else:
+				assert key in option_name_to_id, ("Unrecognized Option Type", f"Report this to the devs: {key}")
+				value = slot_options[option_name_to_id[key]]
+			getattr(self.options, key).value = value
+		for key, value in self.slot_data["extra_options"].items():
+			opt = getattr(self.options, key, None)
+			if opt is not None: setattr(self.options, key, opt.from_any(value))
+
 	def generate_early(self) -> None:
-		self.check_options()
+		self.is_fake_gen = getattr(self.multiworld, "generation_is_fake", False)
+		re_gen_passthrough = getattr(self.multiworld, "re_gen_passthrough", {})
+		if re_gen_passthrough and self.game in re_gen_passthrough:
+			self.slot_data = re_gen_passthrough[self.game]
+			self.set_options()
+		else: self.check_options()
 		self.parser = BanjoTooieRules(self)
 		for logic, items in data.items.items():
 			shuffled = self.parser.parse(logic, f"{data.items_file}: {logic}")(None)
@@ -394,14 +441,8 @@ class BanjoTooieWorld(World):
 						if logic != rules.true: entrance.access_rule = logic
 						if "id" not in exit_: continue
 						links[to_form] = entrance
-						if "rid" in exit_: entrance.randomization_type = EntranceType.TWO_WAY
+						if "two_way" in exit_ and exit_["two_way"]: entrance.randomization_type = EntranceType.TWO_WAY
 						else: entrance.randomization_type = EntranceType.ONE_WAY
-						entrance.exit_data = BanjoTooieExitData(
-							region.get("id", 0),
-							data.regions[exit_name].get("id", 0),
-							exit_["id"],
-							exit_.get("rid", 0)
-						)
 						entrance.exit_links = links
 						if from_form == to_form and to_form == data.normal_forms[0] and "groups" in exit_:
 							for group in exit_["groups"]:
@@ -409,59 +450,7 @@ class BanjoTooieWorld(World):
 			for ap_region in ap_regions.values():
 				self.multiworld.regions.append(ap_region)
 
-	def create_items(self) -> None:
-		filler = ("Nothing", ItemClassification.filler)
-		replaceable = filler + (ItemClassification.useful, )
-		pools = replaceable + (
-			ItemClassification.trap,
-			ItemClassification.progression_skip_balancing,
-			ItemClassification.progression
-		)
-		for pool in pools: self.random.shuffle(self.item_pools[pool])
-		pools += ("Jiggy", "Note Nest")
-		extra_nothing = 0
-
-		starting_inventory = self.item_pools["Starting Inventory From Pool"]
-		def starting_inventory_from_pool():
-			nonlocal extra_nothing
-			if not starting_inventory: return
-			self.random.shuffle(starting_inventory)
-			for item in starting_inventory:
-				self.push_precollected(item)
-				replaced = False
-				for pool in ("Extra Items",) + pools:
-					if item in self.item_pools[pool]:
-						replaced = True
-						self.item_pools[pool].remove(item)
-						break
-				if replaced: extra_nothing += 1
-			starting_inventory.clear()
-
-		### Starting items ###
-
-		starting_inventory_from_pool()
-		self.random.shuffle(self.item_pools["Extra Items"])
-		for item in self.item_pools["Extra Items"]:
-			replaced = False
-			for cls in replaceable:
-				if len(self.item_pools[cls]):
-					replaced = True
-					self.multiworld.itempool.append(item)
-					self.item_pools[cls].pop()
-					break
-			if not replaced: self.push_precollected(item)
-		for _i in range(self.options.extra_mumbo_tokens.value):
-			item = self.create_item("Mumbo Token")
-			replaced = False
-			for cls in replaceable:
-				if len(self.item_pools[cls]):
-					replaced = True
-					self.multiworld.itempool.append(item)
-					self.item_pools[cls].pop()
-					break
-			if not replaced: self.push_precollected(item)
-
-		### Early items ###
+	def plan_early_game(self, starting_inventory: list[BanjoTooieItem]):
 
 		state = CollectionState(self.multiworld, True)
 		def placeable_locations_count():
@@ -666,6 +655,60 @@ class BanjoTooieWorld(World):
 						self.options.chosen_move_silo_costs.value[silo] = move_costs.pop()
 			case _: pass # "vanilla"
 
+	def create_items(self) -> None:
+		filler = ("Nothing", ItemClassification.filler)
+		replaceable = filler + (ItemClassification.useful, )
+		pools = replaceable + (
+			ItemClassification.trap,
+			ItemClassification.progression_skip_balancing,
+			ItemClassification.progression
+		)
+		for pool in pools: self.random.shuffle(self.item_pools[pool])
+		pools += ("Jiggy", "Note Nest")
+		extra_nothing = 0
+
+		starting_inventory = self.item_pools["Starting Inventory From Pool"]
+		def starting_inventory_from_pool():
+			nonlocal extra_nothing
+			if not starting_inventory: return
+			self.random.shuffle(starting_inventory)
+			for item in starting_inventory:
+				self.push_precollected(item)
+				replaced = False
+				for pool in ("Extra Items",) + pools:
+					if item in self.item_pools[pool]:
+						replaced = True
+						self.item_pools[pool].remove(item)
+						break
+				if replaced: extra_nothing += 1
+			starting_inventory.clear()
+
+		### Starting items ###
+
+		starting_inventory_from_pool()
+		self.random.shuffle(self.item_pools["Extra Items"])
+		for item in self.item_pools["Extra Items"]:
+			replaced = False
+			for cls in replaceable:
+				if len(self.item_pools[cls]):
+					replaced = True
+					self.multiworld.itempool.append(item)
+					self.item_pools[cls].pop()
+					break
+			if not replaced: self.push_precollected(item)
+		for _i in range(self.options.extra_mumbo_tokens.value):
+			item = self.create_item("Mumbo Token")
+			replaced = False
+			for cls in replaceable:
+				if len(self.item_pools[cls]):
+					replaced = True
+					self.multiworld.itempool.append(item)
+					self.item_pools[cls].pop()
+					break
+			if not replaced: self.push_precollected(item)
+
+		if not self.is_fake_gen: self.plan_early_game(starting_inventory)
+
 		### Item pool manipulation ###
 
 		starting_inventory_from_pool()
@@ -767,7 +810,7 @@ class BanjoTooieWorld(World):
 			"\n".join(inaccessible_regions)
 		)
 
-	def connect_entrances(self) -> None:
+	def ap_connect_entrances(self) -> None:
 		ids: dict[str, int] = {group:i+1 for i, group in enumerate(self.entrance_groups)}
 		lookup: dict[int, list[int]] = {-2:[-1], -1:[-2], 0:[0]}
 		shuffled_entrances: list[str] = []
@@ -803,33 +846,59 @@ class BanjoTooieWorld(World):
 						or entrance.connected_region and entrance.connected_region.name in starting_worlds[i]
 					):
 						entrance.randomization_group = -(i+1)
-						entrance_rando.disconnect_entrance_for_randomization(entrance, one_way_target_name=entrance.name)
+						entrance_rando.disconnect_entrance_for_randomization(entrance)
 		if self.options.shuffle_boss_entrances.value:
 			add_parent_child("Boss Entrances", "Boss Exits", True)
 		for group in shuffled_entrances:
 			for entrance in self.entrance_groups[group]:
-				if not entrance.connected_region: continue
+				if not entrance.parent_region or not entrance.connected_region: continue
 				entrance.randomization_group = ids[group]
-				entrance_rando.disconnect_entrance_for_randomization(entrance, one_way_target_name=entrance.name)
+				entrance_rando.disconnect_entrance_for_randomization(
+					entrance,
+					one_way_target_name=f"{entrance.connected_region.name} -> {entrance.parent_region.name}"
+				)
 		er_state = entrance_rando.randomize_entrances(self, True, lookup)
-		entrance_lookup: dict[str, BanjoTooieEntrance] = {
-			entrance.name:cast(BanjoTooieEntrance, entrance)
-			for entrance in er_state.placements
-		}
 		spoiler_info: list[str] = []
 		for entrance_name, exit_name in er_state.pairings:
-			entrance = entrance_lookup[entrance_name]
-			exit_ = entrance_lookup[exit_name]
-			if entrance.parent_region and entrance.connected_region and exit_.parent_region and exit_.connected_region:
-				spoiler_info.append(f"{entrance.name:50} = {exit_.name.replace(" -> ", " <- ")}")
-				self.exit_map.append(BanjoTooieExitMap(
-					entrance.exit_data.on_map,
-					entrance.exit_data.og_map,
-					entrance.exit_data.og_exit,
-					exit_.exit_data.on_map,
-					exit_.exit_data.from_exit
-				))
+			spoiler_info.append(f"{entrance_name:50} = {exit_name.replace(" -> ", " <- ")}")
+			to_region, from_region = exit_name.split(" -> ")
+			exit_name = f"{from_region} -> {to_region}"
+			self.exit_map[exit_name_to_id[entrance_name]] = exit_name_to_id[exit_name]
 		self.spoiler_info["Entrances"] = spoiler_info
+
+	def ut_connect_entrances(self):
+		self.seen_entrances: set[int] = set()
+		exit_map = self.slot_data["exit_map"]
+		deferred_enabled = getattr(self.multiworld, "enforce_deferred_connections", "off") != "off"
+		self.id_to_vanilla: dict[int, tuple[BanjoTooieEntrance, Region]] = {}
+		for name, value in exit_name_to_id.items():
+			entrance = cast(BanjoTooieEntrance, self.get_entrance(name))
+			assert entrance.connected_region is not None
+			self.id_to_vanilla[value] = (entrance, entrance.connected_region)
+		for from_id, to_id in exit_map.items():
+			exit_ = self.id_to_vanilla[from_id][0]
+			entrance, entrance_connected = self.id_to_vanilla[to_id]
+			if deferred_enabled:
+				for linked_entrance in exit_.exit_links.values():
+					if linked_entrance.connected_region:
+						linked_entrance.connected_region.entrances.remove(linked_entrance)
+						linked_entrance.connected_region = None
+			else:
+				exit_.connect(entrance_connected)
+
+	def connect_entrances(self):
+		if self.is_fake_gen: self.ut_connect_entrances()
+		else: self.ap_connect_entrances()
+
+	def reconnect_found_entrances(self, found_key: str, value: Any):
+		if found_key != "UsedEntrances" or not isinstance(value, list): return
+		exit_map = self.slot_data["exit_map"]
+		new_entrances = set(cast(list[int], value)) - self.seen_entrances
+		self.seen_entrances |= new_entrances
+		for entrance_id in new_entrances:
+			exit_ = self.id_to_vanilla[entrance_id][0]
+			entrance_connected = self.id_to_vanilla[exit_map[entrance_id]][1]
+			exit_.connect(entrance_connected)
 
 	def get_filler_item_name(self) -> str:
 		return "Big-O Pants"
@@ -851,7 +920,6 @@ class BanjoTooieWorld(World):
 
 	def fill_slot_data(self) -> dict[str, Any]:
 		options: dict[int, int] = {option:0 for option in ids.option_name_to_id.values()}
-		print(len(self.multiworld.get_regions()))
 		def add_option(name: str, value: int) -> None:
 			name = data.option_name(name)
 			options[ids.option_name_to_id[name]] = value
@@ -869,7 +937,8 @@ class BanjoTooieWorld(World):
 			add_option(name, value)
 		return {
 			"options": options,
-			"exit_map": [dataclasses.astuple(elt) for elt in self.exit_map],
+			"extra_options": self.options.as_dict("exclude_locations", "priority_locations"),
+			"exit_map": self.exit_map,
 			"hints": {},
 			"version": self.version_as_u32(),
 		}

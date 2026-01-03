@@ -129,13 +129,12 @@ class BaseExit(TypedDict):
 			This exit won't be considered a real in-game exit.
 	"""
 
-	rid: NotRequired[int]
+	two_way: NotRequired[bool]
 	"""
-		Automatically populated if left blank.
+		Automatically set.
 
-		int:
-			Specifies the in game entrance id that leads to this exit, making it a two way exit.
-			Should be formatted in hexidecimal with 2 digits.
+		True:
+			Exit is considered a two way exit.
 
 		Not specified:
 			if `id` is specified, this exit is considered a one way exit.

@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from BaseClasses import CollectionState, Entrance, Region
 from typing import TYPE_CHECKING, Callable, Optional
 from . import data
@@ -6,24 +5,8 @@ from . import data
 if TYPE_CHECKING:
 	from . import BanjoTooieWorld
 
-@dataclass
-class BanjoTooieBaseExitData:
-	on_map: int
-	og_map: int
-	og_exit: int
-
-@dataclass
-class BanjoTooieExitData(BanjoTooieBaseExitData):
-	from_exit: int
-
-@dataclass
-class BanjoTooieExitMap(BanjoTooieBaseExitData):
-	to_map: int
-	to_exit: int
-
 class BanjoTooieEntrance(Entrance):
 	exit_links: dict[data.Form, "BanjoTooieEntrance"]
-	exit_data: BanjoTooieExitData
 
 	def super_connect(self, region: Region) -> None:
 		super().connect(region)
