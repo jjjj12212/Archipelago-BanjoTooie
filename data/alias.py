@@ -10,7 +10,7 @@ alias: dict[Alias, Logic] = {
 	"ShootExplosives": "EggUse and (GrenadeEggs or ExtraClockworkUsage)",
 	"AnyAttack": "GroundRatatatRap or AirRatatatRap or Roll or BeakBarge or BeakBuster or Wonderwing",
 	"EggUse": "EggAim or ThirdPersonEggShooting",
-    "ShootAnyEgg": "EggUse and AnyEggs",
+	"ShootAnyEgg": "EggUse and AnyEggs",
 	"BillDrill": "BeakBuster and BillDrill",
 	"BreegullBash": "GroundRatatatRap and BreegullBash",
 	"BeakBayonet": "BreegullBlaster and BeakBayonet",

@@ -8,19 +8,19 @@ regions: Regions = {
 		},
 		"exits": {
 			"Spiral Mountain": {
-              "logic": """
+				"logic": """
 					SkipKlungo or (
 						EggUse or BeakBarge or Roll or AirRatatatRap or Wonderwing
-						or ExtraAttacks and (BeakBuster or GroundRatatatRap or BreegullBash) 
-                    )
+						or ExtraAttacks and (BeakBuster or GroundRatatatRap or BreegullBash)
+					)
 				"""
 			},
 			"IoH: Jinjo Village": {
-                "logic": """
+				"logic": """
 					SkipKlungo or (
 						EggUse or BeakBarge or Roll or AirRatatatRap or Wonderwing
-						or ExtraAttacks and (BeakBuster or GroundRatatatRap or BreegullBash) 
-                    )
+						or ExtraAttacks and (BeakBuster or GroundRatatatRap or BreegullBash)
+					)
 				"""
 			},
 		},
@@ -39,65 +39,65 @@ regions: Regions = {
 			},
 			"IoH: Bottles' House Feather Nest 1": {
 				"item": "FeatherNest",
-                "logic": {
-                    	"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or WonderwingJump or GripGrab or BeakBusterJump",
+				"logic": {
+						"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or WonderwingJump or GripGrab or BeakBusterJump",
 						"Talon Trot": "true"
-                    }
+					}
 			},
 			"IoH: Bottles' House Feather Nest 2": {
 				"item": "FeatherNest",
-                "logic": {
-                    	"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or WonderwingJump or GripGrab or BeakBusterJump",
+				"logic": {
+						"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or WonderwingJump or GripGrab or BeakBusterJump",
 						"Talon Trot": "true"
-                    }
+					}
 			},
 		},
 		"exits": {
 			"IoH: Jinjo Village": {},
 			"IoH: Bottles' House: Behind the Gate": {
-                "logic": "IoHBottlesHouseGateOpened"
+				"logic": "IoHBottlesHouseGateOpened"
 			}
 		},
 	},
-    "IoH: Bottles' House: Behind the Gate": {
-        "exits": {
-            "IoH: Bottles' House": {
-                "logic": "IoHBottlesHouseGateOpened"
+	"IoH: Bottles' House: Behind the Gate": {
+		"exits": {
+			"IoH: Bottles' House": {
+				"logic": "IoHBottlesHouseGateOpened"
 			},
-            "IoH: Wooded Hollow": {}
+			"IoH: Wooded Hollow": {}
 		}
 	},
-    "IoH: Bottles' House: Gate Opened": {"macro": {"event"}},
+	"IoH: Bottles' House: Gate Opened": {"macro": {"event"}},
 	"IoH: Another Digger Tunnel": {
 		"exits": {
 			"IoH: Wasteland": {
-                "logic": """
+				"logic": """
 							SkipKlungo or (
 								EggUse or BeakBarge or Roll or AirRatatatRap or Wonderwing
 								or ExtraAttacks and (BeakBuster or GroundRatatatRap or BreegullBash)
 							)"""
 			},
-            "IoH: Another Digger Tunnel: Underwater": {
-                "logic": {
-                    "Banjo-Kazooie": """
-                		Dive and (SkipKlungo or (
+			"IoH: Another Digger Tunnel: Underwater": {
+				"logic": {
+					"Banjo-Kazooie": """
+						Dive and (SkipKlungo or (
 							EggUse or BeakBarge or Roll or AirRatatatRap or Wonderwing
 							or ExtraAttacks and (BeakBuster or GroundRatatatRap or BreegullBash)
-                        )
-                    )"""
+						)
+					)"""
 				}
 			},
-            "IoH: Pine Grove Underwater Behind the Boulder": {
-                "logic": """
-                		BeakBuster and (SkipKlungo or (
+			"IoH: Pine Grove Underwater Behind the Boulder": {
+				"logic": """
+						BeakBuster and (SkipKlungo or (
 							EggUse or BeakBarge or Roll or AirRatatatRap or Wonderwing
 							or ExtraAttacks and (BeakBuster or GroundRatatatRap or BreegullBash)
-                        ) 
-                    )"""
+						)
+					)"""
 			}
 		},
 	},
-    "IoH: Another Digger Tunnel: Underwater": {
+	"IoH: Another Digger Tunnel: Underwater": {
 		"locations": {
 			"IoH: Another Digger Tunnel Egg Nest 1": {
 				"item": "EggNest",
@@ -106,33 +106,33 @@ regions: Regions = {
 				"item": "EggNest",
 			},
 		},
-        "exits": {
-            "IoH: Another Digger Tunnel": {},
-            "IoH: Pine Grove Underwater Behind the Boulder": {}
+		"exits": {
+			"IoH: Another Digger Tunnel": {},
+			"IoH: Pine Grove Underwater Behind the Boulder": {}
 		}
 	},
 	"IoH: Warp Silos": {
 		"exits": {
 			"IoH: Jinjo Village": {
-                "logic": "JinjoVillageWarpSilo"
+				"logic": "JinjoVillageWarpSilo"
 			},
 			"IoH: Wooded Hollow": {
-                "logic": "WoodedHollowWarpSilo"
+				"logic": "WoodedHollowWarpSilo"
 			},
 			"IoH: Plateau": {
-                "logic": "PlateauWarpSilo"
+				"logic": "PlateauWarpSilo"
 			},
 			"IoH: Pine Grove": {
-                "logic": "PineGroveWarpSilo"
+				"logic": "PineGroveWarpSilo"
 			},
 			"IoH: Cliff Top": {
-                "logic": "CliffTopWarpSilo"
+				"logic": "CliffTopWarpSilo"
 			},
 			"IoH: Wasteland": {
-                "logic": "WastelandWarpSilo"
+				"logic": "WastelandWarpSilo"
 			},
 			"IoH: Quagmire": {
-                "logic": "QuagmireWarpSilo"
+				"logic": "QuagmireWarpSilo"
 			},
 		},
 	},

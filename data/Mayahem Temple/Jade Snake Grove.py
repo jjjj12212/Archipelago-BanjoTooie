@@ -9,20 +9,20 @@ regions: Regions = {
 			},
 			"MT: Jade Snake Grove Glowbo": {
 				"item": "HumbaStony",
-                "explicit_logic": {
-                    "Golden Goliath": "true"
+				"explicit_logic": {
+					"Golden Goliath": "true"
 				}
 			},
 			"MT: Jade Snake Grove Near Warp Pad Egg Nest 1": {
 				"item": "EggNest",
-                "explicit_logic": {
-                    "Golden Goliath": "true"
+				"explicit_logic": {
+					"Golden Goliath": "true"
 				}
 			},
 			"MT: Jade Snake Grove Near Warp Pad Egg Nest 2": {
 				"item": "EggNest",
-                "explicit_logic": {
-                    "Golden Goliath": "true"
+				"explicit_logic": {
+					"Golden Goliath": "true"
 				}
 			},
 			"MT: Jade Snake Grove Quicksand Signpost 1": {
@@ -37,17 +37,17 @@ regions: Regions = {
 			},
 			"MT: Jade Snake Grove Jinjo": {
 				"item": "PurpleJinjo",
-                "logic": {
-                    "Banjo-Kazooie": "FlapFlip and GripGrab or FlapFlip and BeakBusterJump or ClockworkShot"
+				"logic": {
+					"Banjo-Kazooie": "FlapFlip and GripGrab or FlapFlip and BeakBusterJump or ClockworkShot"
 				},
-                "explicit_logic": {
-                    "Golden Goliath": "GoldenGoliathClip"
+				"explicit_logic": {
+					"Golden Goliath": "GoldenGoliathClip"
 				}
 			},
 			"MT: Near Wumba's Wigwam Warp Pad Tagged": {
 				"item": "MTNearWumbasWigwamWarpPad",
-                "explicit_logic": {
-                    "Golden Goliath": "true"
+				"explicit_logic": {
+					"Golden Goliath": "true"
 				}
 			},
 		},
@@ -91,14 +91,14 @@ regions: Regions = {
 					}
 				}
 			},
-            "MT: Jade Snake Grove Golden Goliath Jiggy Island": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Clockwork Kazooie": "DamageBoost and GlitchedInvincibility and ClockworkShot and TalonTrot"
+			"MT: Jade Snake Grove Golden Goliath Jiggy Island": {
+				"logic": {
+					"Banjo-Kazooie": {
+						"Clockwork Kazooie": "DamageBoost and GlitchedInvincibility and ClockworkShot and TalonTrot"
 					}
 				},
-                "explicit_logic": {
-                    "Golden Goliath": "true"
+				"explicit_logic": {
+					"Golden Goliath": "true"
 				}
 			}
 		}
@@ -107,16 +107,16 @@ regions: Regions = {
 		"locations": {
 			"MT: Jade Snake Grove Above Code Chamber Egg Nest": {
 				"item": "EggNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true",
-                    "Golden Goliath": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true",
+					"Golden Goliath": "true"
 				}
 			},
 		},
-        "exits": {
-            "MT: Jade Snake Grove Top of Slope": {
-                "logic": {
-                    "Banjo-Kazooie": "FlapFlip and TallJump and BeakBusterJump and SlopeJump"
+		"exits": {
+			"MT: Jade Snake Grove Top of Slope": {
+				"logic": {
+					"Banjo-Kazooie": "FlapFlip and TallJump and BeakBusterJump and SlopeJump"
 				}
 			},
 		}
@@ -125,9 +125,9 @@ regions: Regions = {
 		"locations": {
 			"MT: Golden Goliath Jiggy": {
 				"item": "Jiggy",
-                "explicit_logic": {
-                    "Golden Goliath": "true",
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Golden Goliath": "true",
+					"Clockwork Kazooie": "true"
 				}
 			},
 		}
@@ -149,8 +149,8 @@ regions: Regions = {
 		"locations": {
 			"MT: Jade Snake Grove Cheato Page": {
 				"item": "CheatoPage",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		}

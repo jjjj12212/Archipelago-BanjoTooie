@@ -18,17 +18,17 @@ regions: Regions = {
 			},
 			"IoH: Cliff Top Feather Nest 3": {
 				"item": "FeatherNest",
-                "logic": {
-                    "Banjo-Kazooie": """
+				"logic": {
+					"Banjo-Kazooie": """
 						TallJump
-                        or TalonTrot
-                        or FlapFlip
-                        or GripGrab
-                        or BeakBusterJump
-                        or EasyJumps and (Flutter or AirRatatatRap)
-                        or ClockworkShot
+						or TalonTrot
+						or FlapFlip
+						or GripGrab
+						or BeakBusterJump
+						or EasyJumps and (Flutter or AirRatatatRap)
+						or ClockworkShot
 					""",
-                    "Mumbo": "TallJump"
+					"Mumbo": "TallJump"
 				}
 			},
 			"IoH: Cliff Top Feather Nest 4": {
@@ -50,22 +50,22 @@ regions: Regions = {
 			},
 			"IoH: Cliff Top Jinjo": {
 				"item": "PurpleJinjo",
-                "logic": {"Banjo-Kazooie": "ClockworkShot"},
-                "explicit_logic": {"BK Claw Clamber Boots": "true"}
+				"logic": {"Banjo-Kazooie": "ClockworkShot"},
+				"explicit_logic": {"BK Claw Clamber Boots": "true"}
 			},
 		},
 		"exits": {
 			"IoH: Plateau": {
-                "logic": {
-                    "Banjo-Kazooie": "true"
+				"logic": {
+					"Banjo-Kazooie": "true"
 				}
 			},
 			"Train At IoH": {"logic": "Chuffy and IoHTrainStation"},
-			"Chuffy's Cab": {"logic": {"Banjo-Kazooie": """ 
+			"Chuffy's Cab": {"logic": {"Banjo-Kazooie": """
 										TrainAtIoH and (
 										Climb and (
 											TallJump
-											or TalonTrot 
+											or TalonTrot
 											or FlapFlip
 											or BeakBusterJump
 										)
@@ -77,43 +77,43 @@ regions: Regions = {
 			"Jolly Roger's Lagoon": {
 				"id": 0x03,
 				"logic": {
-                    "Banjo-Kazooie": "JollyRogersLagoon",
-                    "Talon Trot": "TalonTrotSmuggleCrossWorld and JollyRogersLagoon"
-                },
+					"Banjo-Kazooie": "JollyRogersLagoon",
+					"Talon Trot": "TalonTrotSmuggleCrossWorld and JollyRogersLagoon"
+				},
 				"groups": {"World Entrances"},
 			},
 			"IoH: Warp Silos": {
-                "logic": {
-                    "Banjo-Kazooie": "CliffTopWarpSilo"
+				"logic": {
+					"Banjo-Kazooie": "CliffTopWarpSilo"
 				}
 			},
-            "IoH: Cliff Top Bridge Switch Pressed": {},
-            "IoH: Cliff Top Around HFP": {
-                "logic": "IoHCliffTopBridgeSwitchPressed"
+			"IoH: Cliff Top Bridge Switch Pressed": {},
+			"IoH: Cliff Top Around HFP": {
+				"logic": "IoHCliffTopBridgeSwitchPressed"
 			},
-            "IoH: Cliff Top Train Switch Platform": {
-                "logic": {
-                    "Banjo-Kazooie": "FlapFlip and GripGrab"
+			"IoH: Cliff Top Train Switch Platform": {
+				"logic": {
+					"Banjo-Kazooie": "FlapFlip and GripGrab"
 				}
 			},
-            "Scrat Healed": {
-                "logic": {
-                    "Mumbo": "TrainAtIoH"
+			"Scrat Healed": {
+				"logic": {
+					"Mumbo": "TrainAtIoH"
 				}
 			},
-            "IoH: Mumbo's Skull": {},
+			"IoH: Mumbo's Skull": {},
 		},
 	},
-    "IoH: Cliff Top Train Switch Platform": {
-        "locations": {
+	"IoH: Cliff Top Train Switch Platform": {
+		"locations": {
 			"IoH: Train Switch": {
 				"item": "IoHTrainStation",
 			},
 		}
 	},
-    "IoH: Cliff Top Bridge Switch Pressed": {"macro": {"event"}},
-    "IoH: Cliff Top Around HFP": {
-        "locations": {
+	"IoH: Cliff Top Bridge Switch Pressed": {"macro": {"event"}},
+	"IoH: Cliff Top Around HFP": {
+		"locations": {
 			"IoH: Outside HFP Note 1": {
 				"item": "NoteNest",
 			},
@@ -127,59 +127,59 @@ regions: Regions = {
 				"item": "NoteNest",
 			},
 		},
-        "exits": {
+		"exits": {
 			"Hailfire Peaks": {
 				"id": 0x15,
 				"logic": {
-                    "Banjo-Kazooie": "HailfirePeaks",
-                    "Talon Trot": "TalonTrotSmuggleCrossWorld and HailfirePeaks"
-                },
+					"Banjo-Kazooie": "HailfirePeaks",
+					"Talon Trot": "TalonTrotSmuggleCrossWorld and HailfirePeaks"
+				},
 				"groups": {"World Entrances"},
 			},
-            "IoH: Cliff Top On Top of HFP": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Banjo-Kazooie": "Climb",
-                        "Clockwork Kazooie": "ClockworkShot"
+			"IoH: Cliff Top On Top of HFP": {
+				"logic": {
+					"Banjo-Kazooie": {
+						"Banjo-Kazooie": "Climb",
+						"Clockwork Kazooie": "ClockworkShot"
 					}
 				}
 			},
-            "IoH: Cliff Top Around HFP": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "BK Claw Clamber Boots": "ClawClamberBoots"
-                    }
+			"IoH: Cliff Top Around HFP": {
+				"logic": {
+					"Banjo-Kazooie": {
+						"BK Claw Clamber Boots": "ClawClamberBoots"
+					}
 				}
 			},
-            "IoH: Cliff Top": {
-                "logic": {
-                    "BK Claw Clamber Boots": "IoHCliffTopBridgeSwitchPressed",
-                    "Banjo-Kazooie": "IoHCliffTopBridgeSwitchPressed"
+			"IoH: Cliff Top": {
+				"logic": {
+					"BK Claw Clamber Boots": "IoHCliffTopBridgeSwitchPressed",
+					"Banjo-Kazooie": "IoHCliffTopBridgeSwitchPressed"
 				}
 			}
 		}
 	},
-    "IoH: Cliff Top On Top of HFP": {
-        "locations": {
+	"IoH: Cliff Top On Top of HFP": {
+		"locations": {
 			"IoH: Cliff Top Glowbo": {
 				"item": "MumboHeal",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		}
 	},
-    "IoH: Mumbo's Skull": {
-        "exits": {
-            "IoH: Mumbo's Skull": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Mumbo": "MumboHeal"
+	"IoH: Mumbo's Skull": {
+		"exits": {
+			"IoH: Mumbo's Skull": {
+				"logic": {
+					"Banjo-Kazooie": {
+						"Mumbo": "MumboHeal"
 					}
 				}
 			},
-            "IoH: Cliff Top": {}
+			"IoH: Cliff Top": {}
 		}
 	},
-    "Scrat Healed": {"macro": {"event"}},
+	"Scrat Healed": {"macro": {"event"}},
 }

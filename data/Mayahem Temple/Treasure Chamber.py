@@ -19,7 +19,7 @@ regions: Regions = {
 						"Clockwork Kazooie": "ClockworkShot",
 						"Banjo-Kazooie": "TalonTrot or SlopeJump and FlapFlip and TallJump and BeakBusterJump",
 					},
-                    "Talon Trot": "true"
+					"Talon Trot": "true"
 				}
 			},
 			"MT: Open Top Treasure Chamber Door": {
@@ -33,8 +33,8 @@ regions: Regions = {
 		"locations": {
 			"MT: Treasure Chamber Honeycomb": {
 				"item": "EmptyHoneycomb",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		},

@@ -63,8 +63,8 @@ regions: Regions = {
 		"locations": {
 			"MT: Prison Compound Top of Prison Cell Feather Right Nest": {
 				"item": "FeatherNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 			"MT: Prison Compound Top of Prison Cell Feather Left Nest": {
@@ -97,7 +97,7 @@ regions: Regions = {
 		"locations": {
 			"MT: Prison Compound Cheato Page": {
 				"item": "CheatoPage",
-                "explicit_logic": {"Clockwork Kazooie": "true"}
+				"explicit_logic": {"Clockwork Kazooie": "true"}
 			},
 		},
 		"exits": {
@@ -118,7 +118,7 @@ regions: Regions = {
 					MTPillarJiggyLowered and (TallJump or TalonTrot or FlapFlip or WonderwingJump)
 					or HardJumps and TalonTrot and Flutter and BeakBuster
 					or ClockworkShot
-                    or SlideJump and Flutter and BeakBusterJump and HardJumps
+					or SlideJump and Flutter and BeakBusterJump and HardJumps
 				""",
 				"item": "Jiggy",
 			},
