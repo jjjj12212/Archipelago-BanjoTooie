@@ -144,15 +144,6 @@ regions: Regions = {
 			"WW: Pack Whack Silo": {
 				"item": "PackWhack",
 			},
-			"WW: Soggy": {
-				"item": "Nothing",
-			},
-			"WW: Moggy": {
-				"item": "Nothing",
-			},
-			"WW: Groggy": {
-				"item": "Nothing",
-			},
 			"WW: Mr. Patch Mumbo Token": {
 				"item": {"MumboToken":"'Mr. Patch' in ChosenGoals", "Nothing":"true"},
 				"enabled": "'Mr. Patch' in VictoryGoals",
@@ -377,4 +368,63 @@ regions: Regions = {
 		}
 	},
     "WW: Saucer of Peril Platform Behind Gate": {},
+    "WW: Main Map": {},
+    "WW: Area 51": {},
+    "WW: Area 51 Fence Right Note Post": {},
+    "WW: Area 51 Fence Left Note Post": {},
+    "WW: Inside The Big Top": {},
+    "WW: Inside The Big Top Past Conga": {},
+    "WW: Outside Wumba's Wigwam": {},
+    "WW: Above The Ladder On The Gondola Platform": {},
+    "WW: Top Of The Gondola Platform": {},
+    "WW: Space Zone Empty Honeycomb Platform": {},
+    "WW: Crazy Castle Stockade": {},
+    "WW: Crazy Castle Stockage Behind The Gate": {},
+    "WW: Oogle Boogle Tunnel Entrance": {},
+    "WW: Pump Room": {},
+    "WW: Wumba's Wigwam": {},
+    "WW: Train Station": {},
+    "WW: Inferno Entrance": {},
+    "WW: Inferno Near Mumbo's Skull": {},
+    "WW: Haunted Caverns": {},
+    "WW: Cave of Horrors": {},
+    "WW: Star Spinner": {},
+	
+    "WW: Warp Pads": {},
+    
+    "WW: Crazy Castle Stockade Grate Blown Up": {"macro": {"event"}},
+    "WW: Area 51 Grate Blown Up": {"macro": {"event"}},
+    "WW: Fries Stand Switch Pressed": {"macro": {"event"}},
+    "WW: Burgers Stand Switch Pressed": {"macro": {"event"}},
+    "WW: Gobi Freed": {"macro": {"event"}},
+    "WW: Scrut Freed": {"macro": {"event"}},
+    "WW: Saucer of Peril Powered": {"macro": {"event"}},
+    "WW: Dodgem Domes Powered": {"macro": {"event"}},
+    "WW: Star Spinner Powered": {"macro": {"event"}},
+    
+
+    "WW: Groggy Quest Completed": {
+		"locations": {
+			"WW: Groggy": {
+				"item": "Nothing",
+			},
+            "WW: Groggy Quest Completed": {}
+		}
+	},
+    "WW: Moggy Quest Done": {
+        "locations": {
+			"WW: Moggy": {
+				"item": "Nothing",
+			},
+            "WW: Moggy Quest Completed": {}
+		}
+	},
+    "WW: Soggy Quest Completed": {
+        "locations": {
+			"WW: Soggy": {
+				"item": "Nothing",
+			},
+            "WW: Soggy Quest Completed": {}
+		}
+	}
 }

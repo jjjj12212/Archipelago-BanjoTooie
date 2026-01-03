@@ -7,7 +7,7 @@ regions: Regions = {
 				"id": 0x02,
 				"groups":{"World Exits"},
 			},
-			"GGM: Main Map": {}
+			"GGM: Falling When Entering": {}
 		},
 	},
 	"GGM: Main Map": {
