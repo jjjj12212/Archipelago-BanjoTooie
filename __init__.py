@@ -270,6 +270,9 @@ class BanjoTooieWorld(World):
 		self.options.chosen_move_silo_costs.value = options.ChosenMoveSiloCosts.default.copy()
 		if "ALL" in self.options.dialog_character.value:
 			self.options.dialog_character.value = set(options.DialogCharacter.valid_keys)
+		self.options.chosen_groggy_location.value = self.random.choice(list(options.ChosenGroggyLocation.options.values()))
+		self.options.chosen_soggy_location.value = self.random.choice(list(options.ChosenSoggyLocation.options.values()))
+		self.options.chosen_moggy_location.value = self.random.choice(list(options.ChosenMoggyLocation.options.values()))
 
 	def create_item(self, name: str) -> BanjoTooieItem:
 		if name in self.item_info: classification = self.item_info[name].classification

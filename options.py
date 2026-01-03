@@ -1196,6 +1196,42 @@ class ChosenMoveSiloCosts(OptionCounter):
 		"Sack Pack": 765,
 	}
 
+class ChosenGroggyLocation(Choice):
+	"""
+		Hidden option. Used internally.
+		Holds where Groggy will be located.
+	"""
+	display_name = "Chosen Groggy Location"
+	visibility = Visibility.none
+	option_train_station = 0
+	option_inferno = 1
+	option_near_dodgem = 2
+	default = 0
+
+class ChosenSoggyLocation(Choice):
+	"""
+		Hidden option. Used internally.
+		Holds where Soggy will be located.
+	"""
+	display_name = "Chosen Soggy Location"
+	visibility = Visibility.none
+	option_star_spinner = 0
+	option_inferno = 1
+	option_crazy_castle = 2
+	default = 0
+
+class ChosenMoggyLocation(Choice):
+	"""
+		Hidden option. Used internally.
+		Holds where Moggy will be located.
+	"""
+	display_name = "Chosen Moggy Location"
+	visibility = Visibility.none
+	option_area_51 = 0
+	option_cave_of_horrors = 1
+	option_inside_dodgem = 2
+	default = 0
+
 groups: list[OptionGroup] = [
 	OptionGroup("Game Options", [
 		ProgressionBalancing,
@@ -1421,6 +1457,9 @@ class BanjoTooieOptionsList:
 	chosen_goals: ChosenGoals
 	chosen_eggs: ChosenEggs
 	chosen_move_silo_costs: ChosenMoveSiloCosts
+	chosen_groggy_location: ChosenGroggyLocation
+	chosen_soggy_location: ChosenSoggyLocation
+	chosen_moggy_location: ChosenMoggyLocation
 
 @dataclass
 class BanjoTooieOptions(BanjoTooieOptionsList, PerGameCommonOptions):
