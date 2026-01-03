@@ -16,10 +16,10 @@ regions: Regions = {
 	"Inside Chuffy's Boiler": {
 		"locations": {
 			"GGM: Defeated Chuffy": {
-                "logic": {
-                    "Banjo-Kazooie": """
+				"logic": {
+					"Banjo-Kazooie": """
 						EggUse and (BlueEggs or GrenadeEggs or IceEggs)
-                        or ExtraAttacks and (Roll or BeakBarge or GroundRatatatRap)
+						or ExtraAttacks and (Roll or BeakBarge or GroundRatatatRap)
 					"""
 				}
 			},
@@ -33,15 +33,15 @@ regions: Regions = {
 				"locked": "true",
 				"logic": "GGMDefeatedChuffy",
 			},
-            
-			
+
+
 			"GGM: Old King Coal Jiggy": {
 				"item": "Jiggy",
 				"logic": "GGMDefeatedChuffy",
 			},
 		},
-        "exits": {
-            "Chuffy's Cab": {}
+		"exits": {
+			"Chuffy's Cab": {}
 		}
 	},
 	"Inside Chuffy's Wagon": {
@@ -65,10 +65,10 @@ regions: Regions = {
 		}
 	},
 	"Train At GI": {"macro": {"event"}},
-    "Train At GGM": {"macro": {"event"}},
-    "Train At WW": {"macro": {"event"}},
-    "Train At IoH": {"macro": {"event"}},
-    "Train At TDL": {"macro": {"event"}},
-    "Train At HFP Lava Side": {"macro": {"event"}},
-    "Train At HFP Icy Side": {"macro": {"event"}},
+	"Train At GGM": {"macro": {"event"}},
+	"Train At WW": {"macro": {"event"}},
+	"Train At IoH": {"macro": {"event"}},
+	"Train At TDL": {"macro": {"event"}},
+	"Train At HFP Lava Side": {"macro": {"event"}},
+	"Train At HFP Icy Side": {"macro": {"event"}},
 }

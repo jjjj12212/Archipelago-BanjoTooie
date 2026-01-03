@@ -70,5 +70,5 @@ regions: Regions = {
 			"IoH: Warp Silos": {},
 		},
 	},
-    "IoH: Wasteland Ledge to Quagmire": {}
+	"IoH: Wasteland Ledge to Quagmire": {}
 }

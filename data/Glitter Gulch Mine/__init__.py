@@ -11,14 +11,14 @@ regions: Regions = {
 		},
 	},
 	"GGM: Main Map": {
-        "locations": {
+		"locations": {
 			"GGM: Boulder Jinjo": {
 				"item": "BlackJinjo",
-                "logic": {
-                    "Banjo-Kazooie": "TalonTrot and (BillDrill or EggBarge)",
-                    "Talon Trot": "BillDrill or EggBarge",
-                    "Banjo": "PackWhackSlopeJump and TaxiPackClip",
-                    "Detonator": "true"
+				"logic": {
+					"Banjo-Kazooie": "TalonTrot and (BillDrill or EggBarge)",
+					"Talon Trot": "BillDrill or EggBarge",
+					"Banjo": "PackWhackSlopeJump and TaxiPackClip",
+					"Detonator": "true"
 				}
 			},
 			"GGM: Mine Tracks Jinjo": {
@@ -26,38 +26,38 @@ regions: Regions = {
 			},
 			"GGM: Canary Mary Jiggy": {
 				"item": "Jiggy",
-                "logic": {
-                    "Banjo-Kazooie": "GGMCanaryMaryFreed"
+				"logic": {
+					"Banjo-Kazooie": "GGMCanaryMaryFreed"
 				},
 			},
 			"GGM: Canary Mary Cheato Page": {
-                "logic": {
-                    "Banjo-Kazooie": "GGMCanaryMaryFreed"
+				"logic": {
+					"Banjo-Kazooie": "GGMCanaryMaryFreed"
 				},
 			},
 			"GGM: Crushing Shed Jiggy": {
 				"item": "Jiggy",
-                "logic": "GGMLevitateTheCrushingShedBoulder and GGMCrushingShedButtonPressed"
+				"logic": "GGMLevitateTheCrushingShedBoulder and GGMCrushingShedButtonPressed"
 			},
 			"GGM: Crushing Shed Jiggy Chunk 1": {
 				"item": "Nothing",
-                "logic": "GGMLevitateTheCrushingShedBoulder and GGMCrushingShedButtonPressed"
+				"logic": "GGMLevitateTheCrushingShedBoulder and GGMCrushingShedButtonPressed"
 			},
 			"GGM: Crushing Shed Jiggy Chunk 2": {
 				"item": "Nothing",
-                "logic": "GGMLevitateTheCrushingShedBoulder and GGMCrushingShedButtonPressed"
+				"logic": "GGMLevitateTheCrushingShedBoulder and GGMCrushingShedButtonPressed"
 			},
 			"GGM: Crushing Shed Jiggy Chunk 3": {
 				"item": "Nothing",
-                "logic": "GGMLevitateTheCrushingShedBoulder and GGMCrushingShedButtonPressed"
+				"logic": "GGMLevitateTheCrushingShedBoulder and GGMCrushingShedButtonPressed"
 			},
 			"GGM: Waterfall Jiggy": {
 				"item": "Jiggy",
-                "logic": {
-                    "Banjo-Kazooie": "ClockworkShot",
-                    "BK Springy Step Shoes": "true",
-                    "Kazooie": "ClockworkShot or EasyJumps and (Glide or (TallJump or LegSpring) and WingWhack)",
-                    "SK Claw Clamber Boots": "true"
+				"logic": {
+					"Banjo-Kazooie": "ClockworkShot",
+					"BK Springy Step Shoes": "true",
+					"Kazooie": "ClockworkShot or EasyJumps and (Glide or (TallJump or LegSpring) and WingWhack)",
+					"SK Claw Clamber Boots": "true"
 				}
 			},
 			"GGM: Near Entrance Glowbo": {
@@ -68,42 +68,42 @@ regions: Regions = {
 			},
 			"GGM: Hill by Crushing Shed Note 1": {
 				"item": "NoteNest",
-                "logic": {
-                    "Banjo-Kazooie": "TalonTrot or ClockworkShot",
-                    "Talon Trot": "true",
-                    "Banjo": "PackWhackJump",
-                    "Kazooie": "true",
-                    "Detonator": "true",
+				"logic": {
+					"Banjo-Kazooie": "TalonTrot or ClockworkShot",
+					"Talon Trot": "true",
+					"Banjo": "PackWhackJump",
+					"Kazooie": "true",
+					"Detonator": "true",
 				}
 			},
 			"GGM: Hill by Crushing Shed Note 2": {
 				"item": "NoteNest",
-                "logic": {
-                    "Banjo-Kazooie": "TalonTrot or ClockworkShot",
-                    "Talon Trot": "true",
-                    "Banjo": "PackWhackJump",
-                    "Kazooie": "true",
-                    "Detonator": "true",
+				"logic": {
+					"Banjo-Kazooie": "TalonTrot or ClockworkShot",
+					"Talon Trot": "true",
+					"Banjo": "PackWhackJump",
+					"Kazooie": "true",
+					"Detonator": "true",
 				}
 			},
 			"GGM: Hill by Crushing Shed Note 3": {
 				"item": "NoteNest",
-                "logic": {
-                    "Banjo-Kazooie": "TalonTrot or ClockworkShot",
-                    "Talon Trot": "true",
-                    "Banjo": "PackWhackJump",
-                    "Kazooie": "true",
-                    "Detonator": "true",
+				"logic": {
+					"Banjo-Kazooie": "TalonTrot or ClockworkShot",
+					"Talon Trot": "true",
+					"Banjo": "PackWhackJump",
+					"Kazooie": "true",
+					"Detonator": "true",
 				}
 			},
 			"GGM: Hill by Crushing Shed Note 4": {
 				"item": "NoteNest",
-                "logic": {
-                    "Banjo-Kazooie": "TalonTrot or ClockworkShot",
-                    "Talon Trot": "true",
-                    "Banjo": "PackWhackJump",
-                    "Kazooie": "true",
-                    "Detonator": "true",
+				"logic": {
+					"Banjo-Kazooie": "TalonTrot or ClockworkShot",
+					"Talon Trot": "true",
+					"Banjo": "PackWhackJump",
+					"Kazooie": "true",
+					"Detonator": "true",
 				}
 			},
 			"GGM: Outside Ordnance Storage Egg Nest 1": {
@@ -160,14 +160,14 @@ regions: Regions = {
 					"Banjo": "GGMCanaryCaveRocksBroken",
 					"Kazooie": {
 						"Kazooie": "GGMCanaryCaveRocksBroken",
-                       	"Clockwork Kazooie": "ClockworkShot",  
+						"Clockwork Kazooie": "ClockworkShot",
 					},
 					"Mumbo": "GGMCanaryCaveRocksBroken"
 				}
 			},
-            "GGM: Both Canary Mary Races Won": {
-                "logic": {
-                    "Banjo-Kazooie": "GGMCanaryMaryFreed"
+			"GGM: Both Canary Mary Races Won": {
+				"logic": {
+					"Banjo-Kazooie": "GGMCanaryMaryFreed"
 				}
 			},
 			"GGM: Mine Entrance 2 Boulder Broken": {
@@ -185,7 +185,7 @@ regions: Regions = {
 				"logic": {
 					"Banjo-Kazooie": "TightTimers and TalonTrot or GGMWorldEntryAndExitWarpPad and GGMNearTheTrainStationWarpPad",
 					"Talon Trot": "TightTimers",
-                    "BK Turbo Trainers": "true"
+					"BK Turbo Trainers": "true"
 				}
 			},
 			"GGM: Waterfall Cavern Top Entrance": {
@@ -220,13 +220,13 @@ regions: Regions = {
 						"Banjo-Kazooie": "GripGrab or TallJump or TalonTrot or FlapFlip or WonderwingJump",
 						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Talon Trot": "true",
+					"Talon Trot": "true",
 					"Mumbo": "TallJump",
 					"Detonator": "true",
 					"Banjo": "true",
 					"Kazooie": {
-                        "Kazooie": "TallJump or LegSpring",
-                        "Clockwork Kazooie": "ClockworkShot"
+						"Kazooie": "TallJump or LegSpring",
+						"Clockwork Kazooie": "ClockworkShot"
 					}
 				},
 			},
@@ -236,173 +236,173 @@ regions: Regions = {
 						"Banjo-Kazooie": "GripGrab or TallJump or TalonTrot or FlapFlip or SlopeJump and (Flutter or AirRatatatRap) or WonderwingJump",
 						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Talon Trot": "true",
+					"Talon Trot": "true",
 					"Mumbo": "TallJump",
 					"Detonator": "true",
 					"Banjo": "true",
 					"Kazooie": {
-                        "Kazooie": "TallJump or LegSpring",
-                        "Clockwork Kazooie": "ClockworkShot"
+						"Kazooie": "TallJump or LegSpring",
+						"Clockwork Kazooie": "ClockworkShot"
 					}
 				},
 			},
-            "GGM: Near Prospector Top-Right Note Platform": {
-                "logic": {
-                    "Banjo-Kazooie": "TalonTrot or SlopeJump",
-                    "Talon Trot": "true",
-                    "Kazooie": "true",
-                    "Detonator": "true",
-                    "Banjo": "PackWhackSlopeJump",
-                    "Mumbo": "SlopeJump",
-                    "BK Turbo Trainers": "true"
+			"GGM: Near Prospector Top-Right Note Platform": {
+				"logic": {
+					"Banjo-Kazooie": "TalonTrot or SlopeJump",
+					"Talon Trot": "true",
+					"Kazooie": "true",
+					"Detonator": "true",
+					"Banjo": "PackWhackSlopeJump",
+					"Mumbo": "SlopeJump",
+					"BK Turbo Trainers": "true"
 				}
 			},
 			"GGM: Bill Drill Silo Nest Platforms": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Banjo-Kazooie": "(TallJump or TalonTrot and Flutter or WonderwingJump) and GripGrab or (TallJump or TalonTrot and Flutter) and BeakBusterJump or FlapFlip",
-                        "Clockwork Kazooie": "ClockworkShot"
+				"logic": {
+					"Banjo-Kazooie": {
+						"Banjo-Kazooie": "(TallJump or TalonTrot and Flutter or WonderwingJump) and GripGrab or (TallJump or TalonTrot and Flutter) and BeakBusterJump or FlapFlip",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Talon Trot": {
-                        "Banjo-Kazooie": "Flutter and GripGrab or Flutter and BeakBusterJump"
+					"Talon Trot": {
+						"Banjo-Kazooie": "Flutter and GripGrab or Flutter and BeakBusterJump"
 					},
-                    "Banjo": "GripGrab or PackWhackJump",
-                    "Kazooie": {
-                        "Kazooie": "LegSpring",
-                        "Clockwork Kazooie": "ClockworkShot"
+					"Banjo": "GripGrab or PackWhackJump",
+					"Kazooie": {
+						"Kazooie": "LegSpring",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Detonator": "true"
+					"Detonator": "true"
 				}
 			},
 			"GGM: Outside Mumbo's Skull Left Note Platform": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or GripGrab and HardJumps or BeakBusterJump or WonderwingJump",
-                        "Clockwork Kazooie": "ClockworkShot"
+				"logic": {
+					"Banjo-Kazooie": {
+						"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or GripGrab and HardJumps or BeakBusterJump or WonderwingJump",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Banjo": "true",
-                    "Kazooie": {
-                        "Kazooie": "TallJump or LegSpring or Glide and EasyJumps",
-                        "Clockwork Kazooie": "ClockworkShot"
+					"Banjo": "true",
+					"Kazooie": {
+						"Kazooie": "TallJump or LegSpring or Glide and EasyJumps",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Mumbo": "TallJump",
-                    "Detonator": "true",
-                    "Talon Trot": "true"
+					"Mumbo": "TallJump",
+					"Detonator": "true",
+					"Talon Trot": "true"
 				}
 			},
-            "GGM: Outside Mumbo's Skull Warp Pad Platform": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or GripGrab and HardJumps or BillDrillJump or WonderwingJump",
-                        "Clockwork Kazooie": "ClockworkShot"
+			"GGM: Outside Mumbo's Skull Warp Pad Platform": {
+				"logic": {
+					"Banjo-Kazooie": {
+						"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or GripGrab and HardJumps or BillDrillJump or WonderwingJump",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Banjo": "true",
-                    "Kazooie": {
-                        "Kazooie": "TallJump or LegSpring or Glide and EasyJumps",
-                        "Clockwork Kazooie": "ClockworkShot"
+					"Banjo": "true",
+					"Kazooie": {
+						"Kazooie": "TallJump or LegSpring or Glide and EasyJumps",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Mumbo": "TallJump",
-                    "Detonator": "true",
-                    "Talon Trot": "true"
+					"Mumbo": "TallJump",
+					"Detonator": "true",
+					"Talon Trot": "true"
 				}
 			},
-            
+
 			"GGM: Outside Mumbo's Skull Bottom-Right Note Platform": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Banjo-Kazooie": "TalonTrot or FlapFlip or GripGrab and HardJumps or TallJump and BeakBusterJump or WonderwingJump",
-                        "Clockwork Kazooie": "ClockworkShot"
+				"logic": {
+					"Banjo-Kazooie": {
+						"Banjo-Kazooie": "TalonTrot or FlapFlip or GripGrab and HardJumps or TallJump and BeakBusterJump or WonderwingJump",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Banjo": "true",
-                    "Kazooie": {
-                        "Kazooie": "TallJump or LegSpring or Glide and EasyJumps",
-                        "Clockwork Kazooie": "ClockworkShot"
+					"Banjo": "true",
+					"Kazooie": {
+						"Kazooie": "TallJump or LegSpring or Glide and EasyJumps",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Mumbo": "TallJump",
-                    "Detonator": "true",
-                    "Talon Trot": "true"
+					"Mumbo": "TallJump",
+					"Detonator": "true",
+					"Talon Trot": "true"
 				}
 			},
-            "GGM: Near Prospector Top-Right Note Platform": {
-                "logic": {
-                    "Kazooie": "Glide and EasyJumps"
+			"GGM: Near Prospector Top-Right Note Platform": {
+				"logic": {
+					"Kazooie": "Glide and EasyJumps"
 				}
 			},
-            "GGM: Outside Mumbo's Skull": {
-                "logic": {
-                    "Kazooie": "Glide and EasyJumps"
+			"GGM: Outside Mumbo's Skull": {
+				"logic": {
+					"Kazooie": "Glide and EasyJumps"
 				}
 			},
-            "GGM: On Entrance Cheato Page Portal": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Banjo-Kazooie": "TalonTrot and TallJump and BeakBusterJump and (Flutter or AirRatatatRap) and HardTediousJumps",
-                        "Clockwork Kazooie": "ClockworkShot"
+			"GGM: On Entrance Cheato Page Portal": {
+				"logic": {
+					"Banjo-Kazooie": {
+						"Banjo-Kazooie": "TalonTrot and TallJump and BeakBusterJump and (Flutter or AirRatatatRap) and HardTediousJumps",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Detonator": "HardTediousJumps",
-                    "SK Turbo Trainers": "HardTediousJumps and TallJump and WingWhack",
-                    "BK Springy Step Shoes": {},
-                    "SK Springy Step Shoes": {},
-                    "Banjo": "HardTediousJumps and TallJump and PackWhackJump",
-                    "Kazooie": {
-                        "Kazooie": "Glide and EasyJumps or GlideExtension",
-                        "Clockwork Kazooie": "ClockworkShot"
+					"Detonator": "HardTediousJumps",
+					"SK Turbo Trainers": "HardTediousJumps and TallJump and WingWhack",
+					"BK Springy Step Shoes": {},
+					"SK Springy Step Shoes": {},
+					"Banjo": "HardTediousJumps and TallJump and PackWhackJump",
+					"Kazooie": {
+						"Kazooie": "Glide and EasyJumps or GlideExtension",
+						"Clockwork Kazooie": "ClockworkShot"
 					}
 				}
 			},
-            "GGM: Levitate The Crushing Shed Boulder": {
-                "logic": {
-                    "Mumbo": "true"
+			"GGM: Levitate The Crushing Shed Boulder": {
+				"logic": {
+					"Mumbo": "true"
 				}
 			}
 		},
 		"macro": {"rejoin"}
 	},
 	"GGM: Falling When Entering": {
-        "exits": {
-            "GGM: Main Map": {},
-            "GGM: On Entrance Rope": {
-                "logic": {
-                    "Banjo-Kazooie": "Climb",
-                    "Banjo": "Climb"
+		"exits": {
+			"GGM: Main Map": {},
+			"GGM: On Entrance Rope": {
+				"logic": {
+					"Banjo-Kazooie": "Climb",
+					"Banjo": "Climb"
 				}
 			},
-            "GGM: On Entrance Cheato Page Portal": {
-                "logic": {
-                    "Banjo-Kazooie": "EasyTediousJumps and (Flutter and BeakBusterJump)",
-                    "Kazooie": "true",
-                    "Banjo": "PackWhackJump and TallJump"
+			"GGM: On Entrance Cheato Page Portal": {
+				"logic": {
+					"Banjo-Kazooie": "EasyTediousJumps and (Flutter and BeakBusterJump)",
+					"Kazooie": "true",
+					"Banjo": "PackWhackJump and TallJump"
 				}
 			},
 		}
 	},
 	"GGM: On Entrance Rope": {
-        "exits": {
-            "IoH: Plateau": {
-                "logic": {
-                    "Banjo-Kazooie": "true"
+		"exits": {
+			"IoH: Plateau": {
+				"logic": {
+					"Banjo-Kazooie": "true"
 				}
 			},
-            "GGM: Main Map": {},
-            "GGM: On Entrance Cheato Page Portal": {
-                "logic": {
-                    "Banjo-Kazooie": "TallJump and (Flutter or AirRatatatRap)",
-                    "Banjo": "TallJump and PackWhack"
+			"GGM: Main Map": {},
+			"GGM: On Entrance Cheato Page Portal": {
+				"logic": {
+					"Banjo-Kazooie": "TallJump and (Flutter or AirRatatatRap)",
+					"Banjo": "TallJump and PackWhack"
 				}
 			},
 		},
 	},
 	"GGM: On Entrance Cheato Page Portal": {
-        "locations": {
+		"locations": {
 			"GGM: Entrance Cheato Page": {
 				"item": "CheatoPage",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		},
-        "exits": {
-            "GGM: Main Map": {},
+		"exits": {
+			"GGM: Main Map": {},
 		}
 	},
 	"GGM: Behind Rocks to Flooded Caves": {
@@ -420,11 +420,11 @@ regions: Regions = {
 		}
 	},
 	"GGM: Wumba's Wigwam": {
-        "locations": {
+		"locations": {
 			"GGM: Inside Wumba's Wigwam Warp Pad Tagged": {
 				"item": "GGMInsideWumbasWigwamWarpPad",
 			},
-        },
+		},
 		"exits": {
 			"GGM: Wumba's Wigwam": {
 				"logic": {
@@ -453,16 +453,16 @@ regions: Regions = {
 		}
 	},
 	"GGM: Fuel Depot Entrance": {
-        "locations": {
+		"locations": {
 			"GGM: Fuel Depot Front-Left Note": {
 				"item": "NoteNest",
-                "logic": {
-                    "Banjo-Kazooie": "EasyJumps or TallJump or TalonTrot or FlapFlip or ClockworkShot or AirRatATatGrab or BreegullBashGrab or WonderwingJump",
-                    "Kazooie": "EasyJumps or TallJump or LegSpring or ClockworkShot",
-                    "Banjo": "true",
-                    "Talon Trot": "true",
-                    "Mumbo": "true",
-                    "Detonator": "true"
+				"logic": {
+					"Banjo-Kazooie": "EasyJumps or TallJump or TalonTrot or FlapFlip or ClockworkShot or AirRatATatGrab or BreegullBashGrab or WonderwingJump",
+					"Kazooie": "EasyJumps or TallJump or LegSpring or ClockworkShot",
+					"Banjo": "true",
+					"Talon Trot": "true",
+					"Mumbo": "true",
+					"Detonator": "true"
 				}
 			},
 			"GGM: Fuel Depot Back-Right Note": {
@@ -470,15 +470,15 @@ regions: Regions = {
 			},
 			"GGM: Fuel Depot Front-Right Note": {
 				"item": "NoteNest",
-                "logic": {
-                    "Banjo-Kazooie": "EasyJumps or TallJump or TalonTrot or FlapFlip or ClockworkShot or AirRatATatGrab or BreegullBashGrab or WonderwingJump",
-                    "Kazooie": "EasyJumps or TallJump or LegSpring or ClockworkShot",
-                    "Banjo": "true",
-                    "Talon Trot": "true",
-                    "Mumbo": "true",
-                    "Detonator": "true"
+				"logic": {
+					"Banjo-Kazooie": "EasyJumps or TallJump or TalonTrot or FlapFlip or ClockworkShot or AirRatATatGrab or BreegullBashGrab or WonderwingJump",
+					"Kazooie": "EasyJumps or TallJump or LegSpring or ClockworkShot",
+					"Banjo": "true",
+					"Talon Trot": "true",
+					"Mumbo": "true",
+					"Detonator": "true"
 				}
-			},  
+			},
 		},
 		"exits": {
 			"GGM: Main Map": {},
@@ -501,7 +501,7 @@ regions: Regions = {
 					"Talon Trot": "true",
 					"Banjo": "true",
 					"Kazooie": {
-                        "Kazooie": "TallJump or LegSpring",
+						"Kazooie": "TallJump or LegSpring",
 						"Clockwork Kazooie": "ClockworkShot"
 					},
 					"Mumbo": "TallJump",
@@ -511,11 +511,11 @@ regions: Regions = {
 		}
 	},
 	"GGM: Fuel Depot Back-Left Note Barrel": {
-        "locations": {
+		"locations": {
 			"GGM: Fuel Depot Back-Left Note": {
 				"item": "NoteNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		},
@@ -547,52 +547,52 @@ regions: Regions = {
 					"Mumbo": "GGMFuelDepotRocksBroken",
 					"Banjo": "GGMFuelDepotRocksBroken",
 					"Kazooie": {
-                        "Kazooie": "GGMFuelDepotRocksBroken",
-                        "Clockwork Kazooie": "ClockworkShotThroughGeometry and EggAim"
+						"Kazooie": "GGMFuelDepotRocksBroken",
+						"Clockwork Kazooie": "ClockworkShotThroughGeometry and EggAim"
 					}
 				},
 			},
 		}
 	},
 	"GGM: Fuel Depot Behind Rocks": {
-        "locations": {
+		"locations": {
 			"GGM: Fuel Depot Egg Nest 1": {
 				"item": "EggNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 			"GGM: Fuel Depot Egg Nest 2": {
 				"item": "EggNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 			"GGM: Fuel Depot Egg Nest 3": {
 				"item": "EggNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 			"GGM: Fuel Depot Feather Nest 1": {
 				"item": "FeatherNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 			"GGM: Fuel Depot Feather Nest 2": {
 				"item": "FeatherNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 			"GGM: Fuel Depot Feather Nest 3": {
 				"item": "FeatherNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
-        },
+		},
 		"exits": {
 			"GGM: Fuel Depot In Front of Rocks": {
 				"logic": "GGMFuelDepotRocksBroken"
@@ -606,14 +606,14 @@ regions: Regions = {
 		}
 	},
 	"GGM: Ordnance Storage Lobby": {
-        "locations": {
+		"locations": {
 			"GGM: Ordnance Storage Jiggy": {
 				"item": "Jiggy",
-                "logic": "GGMOrdnanceStorageWon"
+				"logic": "GGMOrdnanceStorageWon"
 			},
 			"GGM: Beak Bayonet Silo": {
 				"item": "BeakBayonet",
-                "logic": {"Banjo-Kazooie": "Notes >= ChosenMoveSiloCosts['Beak Bayonet']"},
+				"logic": {"Banjo-Kazooie": "Notes >= ChosenMoveSiloCosts['Beak Bayonet']"},
 			},
 			"GGM: Ordnance Storage Mumbo Token": {
 				"item": {"MumboToken":"'Ordnance Storage' in ChosenGoals", "Nothing":"true"},
@@ -645,31 +645,31 @@ regions: Regions = {
 		}
 	},
 	"GGM: Toxic Gas Cave": {
-        "locations": {
+		"locations": {
 			"GGM: Toxic Gas Cave Jinjo": {
 				"item": "BlueJinjo",
 			},
 			"GGM: Toxic Gas Cave Honeycomb": {
 				"item": "EmptyHoneycomb",
-                "logic": {
-                    "Banjo-Kazooie": "BillDrill",
-                    "Detonator": "true"
+				"logic": {
+					"Banjo-Kazooie": "BillDrill",
+					"Detonator": "true"
 				}
 			},
 			"GGM: Toxic Gas Cave Egg Nest": {
 				"item": "EggNest",
-                "logic": {
-                    "Banjo-Kazooie": "BillDrill or GroundRatATatClip or BeakBargeClip",
-                    "Banjo": "TaxiPackClip or PackWhackClip",
-                    "Detonator": "true"
+				"logic": {
+					"Banjo-Kazooie": "BillDrill or GroundRatATatClip or BeakBargeClip",
+					"Banjo": "TaxiPackClip or PackWhackClip",
+					"Detonator": "true"
 				}
 			},
 			"GGM: Toxic Gas Cave Feather Nest": {
 				"item": "FeatherNest",
-                "logic": {
-                    "Banjo-Kazooie": "BillDrill or GroundRatATatClip or BeakBargeClip",
-                    "Banjo": "TaxiPackClip or PackWhackClip",
-                    "Detonator": "true"
+				"logic": {
+					"Banjo-Kazooie": "BillDrill or GroundRatATatClip or BeakBargeClip",
+					"Banjo": "TaxiPackClip or PackWhackClip",
+					"Detonator": "true"
 				}
 			},
 			"GGM: Toxic Gas Cave Signpost": {
@@ -683,14 +683,14 @@ regions: Regions = {
 		}
 	},
 	"GGM: Crushing Shed": {
-        "locations": {
+		"locations": {
 			"GGM: Crushing Shed Egg Nest 1": {
 				"item": "EggNest",
 			},
 			"GGM: Crushing Shed Egg Nest 2": {
 				"item": "EggNest",
 			},
-        },
+		},
 		"exits": {
 			"GGM: Main Map": {},
 			"GGM: Crushing Shed Button Pressed": {
@@ -701,15 +701,15 @@ regions: Regions = {
 		}
 	},
 	"GGM: Water Storage": {
-        "locations": {
+		"locations": {
 			"GGM: Treble Clef": {
 				"item": "TrebleClef",
-                "logic": {
-                    "Banjo-Kazooie": "Dive",
-                    "Banjo": "Dive",
-                    "Kazooie": "LegSpringDive"
+				"logic": {
+					"Banjo-Kazooie": "Dive",
+					"Banjo": "Dive",
+					"Kazooie": "LegSpringDive"
 				}
-			},  
+			},
 		},
 		"exits": {
 			"GGM: Main Map": {},
@@ -719,8 +719,8 @@ regions: Regions = {
 					"Banjo-Kazooie": {
 						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Kazooie": {
-                        "Clockwork Kazooie": "ClockworkShot"
+					"Kazooie": {
+						"Clockwork Kazooie": "ClockworkShot"
 					}
 				}
 			},
@@ -734,17 +734,17 @@ regions: Regions = {
 		}
 	},
 	"GGM: Water Storage On Top Of Jinjo Tank": {
-        "locations": {
+		"locations": {
 			"GGM: Water Storage Jinjo": {
 				"item": "BrownJinjo",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 			"GGM: Water Storage On Top Of Jinjo Tank Egg Nest": {
 				"item": "EggNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		},
@@ -758,20 +758,20 @@ regions: Regions = {
 		}
 	},
 	"GGM: Water Storage On Top Of Cheato Page Tank": {
-        "locations": {
+		"locations": {
 			"GGM: Water Storage Cheato Page": {
 				"item": "CheatoPage",
-                "logic": {
-                    "Banjo-Kazooie": "Dive",
-                    "Banjo": "ShackPack or Dive",
-                    "Kazooie": "LegSpringDive"
+				"logic": {
+					"Banjo-Kazooie": "Dive",
+					"Banjo": "ShackPack or Dive",
+					"Kazooie": "LegSpringDive"
 				}
 			},
 		},
 		"exits": {
 			"GGM: Water Storage On Top Of Jinjo Tank": {
 				"logic": {
-                    "Banjo": "TallJump and PackWhackJump and SackPackAirJump and SackPackEndingJump",
+					"Banjo": "TallJump and PackWhackJump and SackPackAirJump and SackPackEndingJump",
 					"Kazooie": "GlideExtension"
 				}
 			}
@@ -783,49 +783,49 @@ regions: Regions = {
 				"logic": "GGMCanaryCaveRocksBroken"
 			},
 			"GGM: Canary Cave": {
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			}
 		}
 	},
 	"GGM: Canary Cave": {
-        "locations": {
+		"locations": {
 			"GGM: Canary Cave Back-Left Egg Nest": {
 				"item": "EggNest",
 			},
 			"GGM: Canary Cave Front-Right Egg Nest": {
 				"item": "EggNest",
-                "logic": {
-                    "Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or BeakBusterJump or GripGrab or ClockworkShot or WonderwingJump",
+				"logic": {
+					"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or BeakBusterJump or GripGrab or ClockworkShot or WonderwingJump",
 					"Banjo": "true",
-                    "Kazooie": "TallJump or LegSpring or EasyJumps or ClockworkShot",
-                    "Mumbo": "TallJump",
+					"Kazooie": "TallJump or LegSpring or EasyJumps or ClockworkShot",
+					"Mumbo": "TallJump",
 					"Detonator": "true",
-                    "Talon Trot": "true"
+					"Talon Trot": "true"
 				}
 			},
 			"GGM: Canary Cave Front-Left Feather Nest": {
 				"item": "FeatherNest",
-                "logic": {
-                    "Banjo-Kazooie": "GripGrab or AnyAttack or ShootAnyEgg",
-                    "Banjo": "PackWhack",
-                    "Kazooie": "WingWhack or ShootAnyEgg",
-                    "Mumbo": "true",
-                    "Detonator": "true"
+				"logic": {
+					"Banjo-Kazooie": "GripGrab or AnyAttack or ShootAnyEgg",
+					"Banjo": "PackWhack",
+					"Kazooie": "WingWhack or ShootAnyEgg",
+					"Mumbo": "true",
+					"Detonator": "true"
 				}
 			},
 			"GGM: Canary Cave Back-Right Feather Nest": {
 				"item": "FeatherNest",
-                "logic": {
-                    "Banjo-Kazooie": "GripGrab or AnyAttack or ShootAnyEgg",
-                    "Banjo": "PackWhack",
-                    "Kazooie": "WingWhack or ShootAnyEgg",
-                    "Mumbo": "true",
-                    "Detonator": "true"
+				"logic": {
+					"Banjo-Kazooie": "GripGrab or AnyAttack or ShootAnyEgg",
+					"Banjo": "PackWhack",
+					"Kazooie": "WingWhack or ShootAnyEgg",
+					"Mumbo": "true",
+					"Detonator": "true"
 				}
 			},
-        },
+		},
 		"exits": {
 			"GGM: Behind Rocks to Canary Cave": {},
 			"GGM: Canary Mary Freed": {
@@ -836,22 +836,22 @@ regions: Regions = {
 					"Detonator": "true",
 					"Mumbo": "true"
 				},
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		}
 	},
 	"GGM: Gloomy Caverns Jail Cell Area": {
-        "locations": {
+		"locations": {
 			"GGM: Jail Jinjo": {
 				"item": "BlackJinjo",
-                "logic": {
-                    "Banjo-Kazooie": "ClockworkShot",
-                    "Kazooie": "ClockworkShot",
-                    "Detonator": "true"
+				"logic": {
+					"Banjo-Kazooie": "ClockworkShot",
+					"Kazooie": "ClockworkShot",
+					"Detonator": "true"
 				}
-			}, 
+			},
 			"GGM: Gloomy Caverns Jail Cell Feather Nest": {
 				"item": "FeatherNest",
 			},
@@ -869,27 +869,27 @@ regions: Regions = {
 		}
 	},
 	"GGM: Gloomy Caverns Outside Power Hut Area": {
-        "locations": {
+		"locations": {
 			"GGM: Gloomy Caverns Near Power Hut Egg Nest 1": {
 				"item": "EggNest",
-                "logic": {
-                    "Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or BeakBusterJump or ClockworkShot or WonderwingJump",
-                    "Talon Trot": "true",
-                    "Banjo": "true",
-                    "Kazooie": "TallJump or LegSpring or EasyJumps and Glide or ClockworkShot",
-                    "Mumbo": "TallJump",
-                    "Detonator": "true"
+				"logic": {
+					"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or BeakBusterJump or ClockworkShot or WonderwingJump",
+					"Talon Trot": "true",
+					"Banjo": "true",
+					"Kazooie": "TallJump or LegSpring or EasyJumps and Glide or ClockworkShot",
+					"Mumbo": "TallJump",
+					"Detonator": "true"
 				}
 			},
 			"GGM: Gloomy Caverns Near Power Hut Egg Nest 2": {
 				"item": "EggNest",
-                "logic": {
-                    "Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or BeakBusterJump or ClockworkShot or WonderwingJump",
-                    "Talon Trot": "true",
-                    "Banjo": "true",
-                    "Kazooie": "TallJump or LegSpring or EasyJumps and Glide or ClockworkShot",
-                    "Mumbo": "TallJump",
-                    "Detonator": "true"
+				"logic": {
+					"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or BeakBusterJump or ClockworkShot or WonderwingJump",
+					"Talon Trot": "true",
+					"Banjo": "true",
+					"Kazooie": "TallJump or LegSpring or EasyJumps and Glide or ClockworkShot",
+					"Mumbo": "TallJump",
+					"Detonator": "true"
 				}
 			},
 			"GGM: Gloomy Caverns Near Second Boulder Egg Nest": {
@@ -899,13 +899,13 @@ regions: Regions = {
 				"item": "Nothing",
 				"groups": {"HintSigns"},
 				"enabled": "not ShuffleSigns",
-                "logic": {
-                    "Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or BeakBusterJump or ClockworkShot or WonderwingJump",
-                    "Talon Trot": "true",
-                    "Banjo": "true",
-                    "Kazooie": "TallJump or LegSpring or ClockworkShot",
-                    "Mumbo": "TallJump",
-                    "Detonator": "true"
+				"logic": {
+					"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or BeakBusterJump or ClockworkShot or WonderwingJump",
+					"Talon Trot": "true",
+					"Banjo": "true",
+					"Kazooie": "TallJump or LegSpring or ClockworkShot",
+					"Mumbo": "TallJump",
+					"Detonator": "true"
 				}
 			},
 		},
@@ -931,11 +931,11 @@ regions: Regions = {
 		}
 	},
 	"GGM: Power Hut Ground Floor": {
-        "locations": {
+		"locations": {
 			"GGM: Power Hut Feather Nest": {
 				"item": "FeatherNest",
 			},
-        },
+		},
 		"exits": {
 			"GGM: Power Hut Top Floor": {
 				"logic": {
@@ -953,14 +953,14 @@ regions: Regions = {
 		}
 	},
 	"GGM: Power Hut Basement": {
-        "locations": {
+		"locations": {
 			"GGM: Power Hut Basement Jiggy": {
 				"item": "Jiggy",
-                "logic": {
+				"logic": {
 					"Banjo-Kazooie": "RoomsInTheDark",
 					"Banjo": "RoomsInTheDark",
-                    "Mumbo": "RoomsInTheDark",
-                    "Detonator": "RoomsInTheDark",
+					"Mumbo": "RoomsInTheDark",
+					"Detonator": "RoomsInTheDark",
 					"Kazooie": """
 						RoomsInTheDark
 						or forms_reach_regions({
@@ -976,11 +976,11 @@ regions: Regions = {
 		}
 	},
 	"GGM: Generator Cavern": {
-        "locations": {
+		"locations": {
 			"GGM: Generator Cavern Jiggy": {
 				"item": "Jiggy",
-                "logic": {
-                    "Banjo-Kazooie": """
+				"logic": {
+					"Banjo-Kazooie": """
 							(
 								FireEggs and EggAim
 								or RoomsWithLimitedLighting and (BillDrill or ShootExplosives or DragonBreath or EggUse and (FireEggs or GrenadeEggs))
@@ -989,34 +989,34 @@ regions: Regions = {
 							and
 							(
 								TallJump
-                                or TalonTrot
+								or TalonTrot
 								or HardJumps and BeakBusterJump
 								or FlapFlipSlideExtension
 							)
 						or
 							FlapFlip and BeakBusterJump and Climb
-                        or
+						or
 							ClockworkShot
-                        or
-                        	RoomsInTheDark and WonderwingJump
-                    """, # or EasyTediousJumps and WonderwingJump and FeathersCheat and RoomsWithLimitedLighting
-                    "Banjo": """
+						or
+							RoomsInTheDark and WonderwingJump
+					""", # or EasyTediousJumps and WonderwingJump and FeathersCheat and RoomsWithLimitedLighting
+					"Banjo": """
 						RoomsInTheDark and (PackWhackJump or SackPackAirJump or TallJump)
-                        or EasyJumps and TallJump and PackWhackJump and Climb
+						or EasyJumps and TallJump and PackWhackJump and Climb
 					""",
-                    "Kazooie": """
+					"Kazooie": """
 							(
 								FireEggs and EggAim
 								or RoomsWithLimitedLighting and (ShootExplosives or DragonBreathSoloKazooie or EggUse and (FireEggs or GrenadeEggs))
 								or RoomsInTheDark
 							)
-                        	and (TallJump or LegSpring)
-                        or 
+							and (TallJump or LegSpring)
+						or
 							ClockworkShot
 					""",
-                    "Mumbo": "RoomsInTheDark and TallJump",
-                    "Detonator": "RoomsInTheDark",
-                    "Talon Trot": "RoomsInTheDark"
+					"Mumbo": "RoomsInTheDark and TallJump",
+					"Detonator": "RoomsInTheDark",
+					"Talon Trot": "RoomsInTheDark"
 				},
 			},
 			"GGM: Generator Cavern Egg Nest": {
@@ -1033,15 +1033,15 @@ regions: Regions = {
 		}
 	},
 	"GGM: Train Station": {
-        "locations": {
+		"locations": {
 			"GGM: Train Station Honeycomb": {
 				"item": "EmptyHoneycomb",
-                "logic": {
-                    "Banjo-Kazooie": "ShootAnyEgg or AnyAttack",
-                    "Banjo": "PackWhack",
-                    "Kazooie": "WingWhack",
-                    "Mumbo": "true",
-                    "Detonator": "true"
+				"logic": {
+					"Banjo-Kazooie": "ShootAnyEgg or AnyAttack",
+					"Banjo": "PackWhack",
+					"Kazooie": "WingWhack",
+					"Mumbo": "true",
+					"Detonator": "true"
 				}
 			},
 			"GGM: Train Station Egg Nest 1": {
@@ -1063,35 +1063,35 @@ regions: Regions = {
 			"Train At GGM": {"logic": "Chuffy or GGMLevitateChuffyTheTrain"},
 			"Chuffy's Cab": {
 				"logic": {
-					"Banjo-Kazooie": """ 
+					"Banjo-Kazooie": """
 							TrainAtGGM and (
 							Climb and (
 								TallJump
-								or TalonTrot 
+								or TalonTrot
 								or FlapFlip
 								or BeakBusterJump
 							)
 							or Climb and EasyJumps
 							or (TallJump or TalonTrot or FlapFlip) and EasyJumps
 							or BeakBusterJump
-                            or WonderwingJump
+							or WonderwingJump
 						)"""
 				}
 			},
 			"Inside Chuffy's Wagon": {
 				"logic": {
-					"Banjo-Kazooie": """ 
+					"Banjo-Kazooie": """
 							TrainAtGGM and (
 							Climb and (
 								TallJump
-								or TalonTrot 
+								or TalonTrot
 								or FlapFlip
 								or BeakBusterJump
 							)
 							or Climb and EasyJumps
 							or (TallJump or TalonTrot or FlapFlip) and EasyJumps
 							or BeakBusterJump
-                            or WonderwingJump
+							or WonderwingJump
 						)""",
 					"Detonator": "true",
 					"Banjo": "GripGrab or EasyJumps and TallJump or PackWhackJump",
@@ -1136,11 +1136,11 @@ regions: Regions = {
 		},
 	},
 	"GGM: Waterfall Cavern Jiggy Ramp": {
-        "locations": {
+		"locations": {
 			"GGM: Waterfall Cavern Jiggy": {
 				"item": "Jiggy",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		},
@@ -1164,8 +1164,8 @@ regions: Regions = {
 						"Clockwork Kazooie": "ClockworkShot"
 					},
 					"Banjo": "TallJump and PackWhackJump and SackPackAirJump and GripGrab or TallJump and PackWhackJump and SackPackAirJump and SackPackEndingJump",
-                    "Kazooie": {
-                        "Clockwork Kazooie": "ClockworkShot"
+					"Kazooie": {
+						"Clockwork Kazooie": "ClockworkShot"
 					}
 				}
 			},
@@ -1226,14 +1226,14 @@ regions: Regions = {
 		},
 	},
 	"GGM: Flooded Caves Underwater": {
-        "locations": {
+		"locations": {
 			"GGM: Flooded Caves Egg Nest 1": {
 				"item": "EggNest",
 			},
 			"GGM: Flooded Caves Egg Nest 2": {
 				"item": "EggNest",
 			},
-        },
+		},
 		"exits": {
 			"GGM: Flooded Caves Above Water Near Crushing Shed Exit": {},
 			"GGM: Flooded Caves Above Water Near Waterfall Cavern Exit": {
@@ -1251,397 +1251,397 @@ regions: Regions = {
 		}
 	},
 	"GGM: Flooded Caves Jiggy Platform": {
-        "locations": {
+		"locations": {
 			"GGM: Flooded Caves Jiggy": {
 				"item": "Jiggy",
 			},
 		}
 	},
-	
-	
+
+
 	"GGM: Near Prospector Bottom-Right Note Platform": {
-        "locations": {
+		"locations": {
 			"GGM: Near Prospector's Hut Bottom-Right Note": {
 				"item": "NoteNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		},
-        "exits": {
-            "GGM: Main Map": {},
-            "GGM: Near Prospector Middle-Right Note Platform": {
-                "logic": {
+		"exits": {
+			"GGM: Main Map": {},
+			"GGM: Near Prospector Middle-Right Note Platform": {
+				"logic": {
 					"Banjo-Kazooie": {
 						"Banjo-Kazooie": "GripGrab or TallJump or TalonTrot or FlapFlip or WonderwingJump",
 						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Talon Trot": "true",
+					"Talon Trot": "true",
 					"Mumbo": "TallJump",
 					"Detonator": "true",
 					"Banjo": "true",
 					"Kazooie": {
-                        "Kazooie": "TallJump or LegSpring",
-                        "Clockwork Kazooie": "ClockworkShot"
+						"Kazooie": "TallJump or LegSpring",
+						"Clockwork Kazooie": "ClockworkShot"
 					}
 				},
 			},
-            "GGM: Near Prospector Empty Honeycomb Platform": {
-                "logic": {
-                    "Banjo-Kazooie": "FlapFlip",
-                    "Kazooie": "LegSpring",
-                    "Detonator": "true",
-                    "Banjo": "PackWhackJump and TallJump"
+			"GGM: Near Prospector Empty Honeycomb Platform": {
+				"logic": {
+					"Banjo-Kazooie": "FlapFlip",
+					"Kazooie": "LegSpring",
+					"Detonator": "true",
+					"Banjo": "PackWhackJump and TallJump"
 				}
 			}
 		}
 	},
 	"GGM: Near Prospector Bottom-Left Note Platform": {
-        "locations": {
+		"locations": {
 			"GGM: Near Prospector's Hut Bottom-Left Note": {
 				"item": "NoteNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		},
-        "exits": {
-            "GGM: Main Map": {},
-            "GGM: Near Prospector Empty Honeycomb Platform": {
-                "logic": {
-                    "Banjo-Kazooie": "(TallJump or TalonTrot and Flutter or WonderwingJump) and GripGrab or TalonTrot and Flutter and BeakBusterJump or FlapFlip or WonderwingJump",
-                    "Talon Trot": {
-                        "Banjo-Kazooie": "Flutter and GripGrab or Flutter and BeakBusterJump"
+		"exits": {
+			"GGM: Main Map": {},
+			"GGM: Near Prospector Empty Honeycomb Platform": {
+				"logic": {
+					"Banjo-Kazooie": "(TallJump or TalonTrot and Flutter or WonderwingJump) and GripGrab or TalonTrot and Flutter and BeakBusterJump or FlapFlip or WonderwingJump",
+					"Talon Trot": {
+						"Banjo-Kazooie": "Flutter and GripGrab or Flutter and BeakBusterJump"
 					},
-                    "Banjo": "GripGrab or PackWhackJump and TallJump",
-                    "Kazooie": "LegSpring",
-                    "Detonator": "true"
+					"Banjo": "GripGrab or PackWhackJump and TallJump",
+					"Kazooie": "LegSpring",
+					"Detonator": "true"
 				},
 			},
 		}
 	},
 	"GGM: Near Prospector Middle-Right Note Platform": {
-        "locations": {
+		"locations": {
 			"GGM: Near Prospector's Hut Middle-Right Note": {
 				"item": "NoteNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		},
-        "exits": {
-            "GGM: Near Prospector Empty Honeycomb Platform": {
-                "logic": {
-                    "Banjo-Kazooie": "GripGrab and EasyJumps or BeakBusterJump or TalonTrot",
-                    "Talon Trot": "true",
-                    "Mumbo": "TallJump",
-                    "Banjo": "PackWhack",
-                    "Kazooie": "TallJump or LegSpring",
-                    "Detonator": "true"
+		"exits": {
+			"GGM: Near Prospector Empty Honeycomb Platform": {
+				"logic": {
+					"Banjo-Kazooie": "GripGrab and EasyJumps or BeakBusterJump or TalonTrot",
+					"Talon Trot": "true",
+					"Mumbo": "TallJump",
+					"Banjo": "PackWhack",
+					"Kazooie": "TallJump or LegSpring",
+					"Detonator": "true"
 				}
 			},
-            "GGM: Near Prospector Bottom-Right Note Platform": {},
+			"GGM: Near Prospector Bottom-Right Note Platform": {},
 		}
 	},
 	"GGM: Near Prospector Empty Honeycomb Platform": {
-        "locations": {
+		"locations": {
 			"GGM: Prospector Boulder Honeycomb": {
 				"item": "EmptyHoneycomb",
-                "logic": {
-                    "Banjo-Kazooie": "BillDrill or BeakBargeClip or EggBarge",
-                    "Banjo": "TaxiPackClip or PackWhackClip",
-                    "Detonator": "true"
+				"logic": {
+					"Banjo-Kazooie": "BillDrill or BeakBargeClip or EggBarge",
+					"Banjo": "TaxiPackClip or PackWhackClip",
+					"Detonator": "true"
 				}
-			},  
+			},
 		},
-        "exits": {
-            "GGM: Near Prospector Top-Left Note Platform": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Banjo-Kazooie": "(TallJump or TalonTrot and Flutter or WonderwingJump) and GripGrab or (TallJump or TalonTrot and Flutter) and BeakBusterJump or FlapFlip",
-                        "Clockwork Kazooie": "ClockworkShot"
+		"exits": {
+			"GGM: Near Prospector Top-Left Note Platform": {
+				"logic": {
+					"Banjo-Kazooie": {
+						"Banjo-Kazooie": "(TallJump or TalonTrot and Flutter or WonderwingJump) and GripGrab or (TallJump or TalonTrot and Flutter) and BeakBusterJump or FlapFlip",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Talon Trot": "Flutter and GripGrab or Flutter and BeakBusterJump",
-                    "Banjo": "GripGrab or TallJump and PackWhackJump",
-                    "Kazooie": {
-                        "Kazooie": "LegSpring",
-                        "Clockwork Kazooie": "ClockworkShot"
+					"Talon Trot": "Flutter and GripGrab or Flutter and BeakBusterJump",
+					"Banjo": "GripGrab or TallJump and PackWhackJump",
+					"Kazooie": {
+						"Kazooie": "LegSpring",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Detonator": "true"
+					"Detonator": "true"
 				}
 			},
-            "GGM: Near Prospector Bottom-Left Note Platform": {},
-            "GGM: Near Prospector Middle-Right Note Platform": {
-                "logic": "EasyTediousJumps"
+			"GGM: Near Prospector Bottom-Left Note Platform": {},
+			"GGM: Near Prospector Middle-Right Note Platform": {
+				"logic": "EasyTediousJumps"
 			},
-            "GGM: Near Prospector Bottom-Right Note Platform": {},
+			"GGM: Near Prospector Bottom-Right Note Platform": {},
 		}
 	},
 	"GGM: Near Prospector Top-Left Note Platform": {
-        "locations": {
+		"locations": {
 			"GGM: Near Prospector's Hut Top-Left Note": {
 				"item": "NoteNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
-        },
-        "exits": {
-            "GGM: Near Prospector Empty Honeycomb Platform": {},
-            "GGM: Near Prospector Bottom-Left Note Platform": {},
+		},
+		"exits": {
+			"GGM: Near Prospector Empty Honeycomb Platform": {},
+			"GGM: Near Prospector Bottom-Left Note Platform": {},
 			"GGM: Outside Prospector's Hut": {
-                "logic": {
-                    "Banjo-Kazooie": "FlapFlip and GripGrab",
-                    "Kazooie": "LegSpring"
+				"logic": {
+					"Banjo-Kazooie": "FlapFlip and GripGrab",
+					"Kazooie": "LegSpring"
 				}
 			},
 		}
 	},
 	"GGM: Near Prospector Top-Right Note Platform": {
-        "locations": {
+		"locations": {
 			"GGM: Near Prospector's Hut Top-Right Note": {
 				"item": "NoteNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		},
-        "exits": {
-            "GGM: Outside Prospector's Hut": {
-                "logic": {
+		"exits": {
+			"GGM: Outside Prospector's Hut": {
+				"logic": {
 					"BK Turbo Trainers": "true"
 				}
 			},
-            "GGM: Bill Drill Silo Nest Platforms": {
-                "logic": {
+			"GGM: Bill Drill Silo Nest Platforms": {
+				"logic": {
 					"BK Turbo Trainers": "EasyTediousJumps"
 				}
 			},
-            "GGM: Near Prospector Empty Honeycomb Platform": {},
-            "GGM: Near Prospector Middle-Right Note Platform": {},
+			"GGM: Near Prospector Empty Honeycomb Platform": {},
+			"GGM: Near Prospector Middle-Right Note Platform": {},
 		}
 	},
 	"GGM: Outside Prospector's Hut": {
-        "exits": {
-            "GGM: Prospector's Hut": {},
-            "GGM: Near Prospector Top-Left Note Platform": {},
-            "GGM: Near Prospector Top-Right Note Platform": {},
-            "GGM: Bill Drill Silo Platform": {
-                "logic": {
+		"exits": {
+			"GGM: Prospector's Hut": {},
+			"GGM: Near Prospector Top-Left Note Platform": {},
+			"GGM: Near Prospector Top-Right Note Platform": {},
+			"GGM: Bill Drill Silo Platform": {
+				"logic": {
 					"BK Turbo Trainers": "HardTediousJumps"
 				}
 			},
-            "GGM: Bill Drill Silo Nest Platforms": {
-                "logic": {
-                    "Kazooie": "true"
+			"GGM: Bill Drill Silo Nest Platforms": {
+				"logic": {
+					"Kazooie": "true"
 				}
 			}
 		}
 	},
 	"GGM: Prospector's Hut": {
-        "locations": {
+		"locations": {
 			"GGM: Dilberta Jiggy": {
 				"item": "Jiggy",
-                "logic": "MTPrisonCompoundJailCellBoulderBroken"
+				"logic": "MTPrisonCompoundJailCellBoulderBroken"
 			},
 			"GGM: Prospector's Hut Egg Nest": {
 				"item": "EggNest",
 			},
 		},
-        "exits": {
-            "MT: Prison Compound Behind Jail Cell Boulder": {
-                "logic": {
-                    "Banjo-Kazooie": "true",
-                    "Talon Trot": "true"
+		"exits": {
+			"MT: Prison Compound Behind Jail Cell Boulder": {
+				"logic": {
+					"Banjo-Kazooie": "true",
+					"Talon Trot": "true"
 				}
 			},
-            "GGM: Outside Prospector's Hut": {}
+			"GGM: Outside Prospector's Hut": {}
 		}
 	},
-    
-    "GGM: Bill Drill Silo Nest Platforms": {
-        "locations": {
+
+	"GGM: Bill Drill Silo Nest Platforms": {
+		"locations": {
 			"GGM: Near Bill Drill Silo Egg Nest 1": {
 				"item": "EggNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 			"GGM: Near Bill Drill Silo Egg Nest 2": {
 				"item": "EggNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		},
-        "exits": {
-            "GGM: Bill Drill Silo Platform": {
-                "logic": {
-                    "Banjo-Kazooie": "(TallJump or TalonTrot and Flutter or WonderwingJump) and GripGrab or (TallJump or TalonTrot and Flutter) and BeakBusterJump or FlapFlip"
+		"exits": {
+			"GGM: Bill Drill Silo Platform": {
+				"logic": {
+					"Banjo-Kazooie": "(TallJump or TalonTrot and Flutter or WonderwingJump) and GripGrab or (TallJump or TalonTrot and Flutter) and BeakBusterJump or FlapFlip"
 				}
 			}
 		}
 	},
 	"GGM: Bill Drill Silo Platform": {
-        "locations": {
+		"locations": {
 			"GGM: Bill Drill Silo": {
 				"item": "BillDrill",
-                "logic": {"Banjo-Kazooie": "Notes >= ChosenMoveSiloCosts['Bill Drill']"},
+				"logic": {"Banjo-Kazooie": "Notes >= ChosenMoveSiloCosts['Bill Drill']"},
 			},
 		}
 	},
 
 	"GGM: Outside Mumbo's Skull Left Note Platform": {
-        "locations": {
+		"locations": {
 			"GGM: Outside Mumbo's Skull Left Note": {
 				"item": "NoteNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		},
-        "exits": {
-            "GGM: Main Map": {},
-            "GGM: Outside Mumbo's Skull Warp Pad Platform": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or GripGrab and HardJumps or BeakBusterJump or WonderwingJump",
-                        "Clockwork Kazooie": "ClockworkShot"
+		"exits": {
+			"GGM: Main Map": {},
+			"GGM: Outside Mumbo's Skull Warp Pad Platform": {
+				"logic": {
+					"Banjo-Kazooie": {
+						"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or GripGrab and HardJumps or BeakBusterJump or WonderwingJump",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Banjo": "true",
-                    "Kazooie": {
-                        "Kazooie": "TallJump or LegSpring or Glide and EasyJumps",
-                        "Clockwork Kazooie": "ClockworkShot"
+					"Banjo": "true",
+					"Kazooie": {
+						"Kazooie": "TallJump or LegSpring or Glide and EasyJumps",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Mumbo": "TallJump",
-                    "Detonator": "true",
-                    "Talon Trot": "true"
+					"Mumbo": "TallJump",
+					"Detonator": "true",
+					"Talon Trot": "true"
 				}
 			},
 		}
 	},
 	"GGM: Outside Mumbo's Skull Warp Pad Platform": {
-        "locations": {
+		"locations": {
 			"GGM: Outside Mumbo's Skull Warp Pad Tagged": {
 				"item": "GGMOutsideMumbosSkullWarpPad",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		},
-        "exits": {
-            "GGM: Outside Mumbo's Skull Left Note Platform": {
-                "logic": "EasyTediousJumps"
+		"exits": {
+			"GGM: Outside Mumbo's Skull Left Note Platform": {
+				"logic": "EasyTediousJumps"
 			},
-            "GGM: Main Map": {},
-            "GGM: Outside Mumbo's Skull Bottom-Right Note Platform": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or GripGrab and HardJumps or BeakBusterJump or Flutter or AirRatatatRap or WonderwingJump",
-                        "Clockwork Kazooie": "ClockworkShot"
+			"GGM: Main Map": {},
+			"GGM: Outside Mumbo's Skull Bottom-Right Note Platform": {
+				"logic": {
+					"Banjo-Kazooie": {
+						"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or GripGrab and HardJumps or BeakBusterJump or Flutter or AirRatatatRap or WonderwingJump",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Banjo": "true",
-                    "Kazooie": "true",
-                    "Mumbo": "TallJump",
-                    "Detonator": "true",
-                    "Talon Trot": "true"
+					"Banjo": "true",
+					"Kazooie": "true",
+					"Mumbo": "TallJump",
+					"Detonator": "true",
+					"Talon Trot": "true"
 				}
 			},
-            "GGM: Outside Mumbo's Skull Top-Right Note Platform": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or GripGrab and HardJumps or BeakBusterJump or WonderwingJump",
-                        "Clockwork Kazooie": "ClockworkShot"
+			"GGM: Outside Mumbo's Skull Top-Right Note Platform": {
+				"logic": {
+					"Banjo-Kazooie": {
+						"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or GripGrab and HardJumps or BeakBusterJump or WonderwingJump",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Banjo": "true",
-                    "Kazooie": {
+					"Banjo": "true",
+					"Kazooie": {
 						"Kazooie": "TallJump or LegSpring or Glide and EasyJumps",
-                        "Clockwork Kazooie": "ClockworkShot"
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Mumbo": "TallJump",
-                    "Detonator": "true",
-                    "Talon Trot": "true"
+					"Mumbo": "TallJump",
+					"Detonator": "true",
+					"Talon Trot": "true"
 				}
 			}
 		}
 	},
 	"GGM: Outside Mumbo's Skull Bottom-Right Note Platform": {
-        "locations": {
+		"locations": {
 			"GGM: Outside Mumbo's Skull Bottom-Right Note": {
 				"item": "NoteNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		},
-        "exits": {
-            "GGM: Main Map": {},
-            "GGM: Outside Mumbo's Skull Warp Pad Platform": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or GripGrab and HardJumps or BeakBusterJump or Flutter or AirRatatatRap or WonderwingJump",
-                        "Clockwork Kazooie": "ClockworkShot"
+		"exits": {
+			"GGM: Main Map": {},
+			"GGM: Outside Mumbo's Skull Warp Pad Platform": {
+				"logic": {
+					"Banjo-Kazooie": {
+						"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or GripGrab and HardJumps or BeakBusterJump or Flutter or AirRatatatRap or WonderwingJump",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Banjo": "true",
-                    "Kazooie": "true",
-                    "Mumbo": "TallJump",
-                    "Detonator": "true",
-                    "Talon Trot": "true"
+					"Banjo": "true",
+					"Kazooie": "true",
+					"Mumbo": "TallJump",
+					"Detonator": "true",
+					"Talon Trot": "true"
 				}
 			},
-            "GGM: Outside Mumbo's Skull Top-Right Note Platform": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or GripGrab and HardJumps or BeakBusterJump or WonderwingJump",
-                        "Clockwork Kazooie": "ClockworkShot"
+			"GGM: Outside Mumbo's Skull Top-Right Note Platform": {
+				"logic": {
+					"Banjo-Kazooie": {
+						"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or GripGrab and HardJumps or BeakBusterJump or WonderwingJump",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Banjo": "true",
-                    "Kazooie": {
-                        "Kazooie": "TallJump or LegSpring or Glide and EasyJumps",
-                        "Clockwork Kazooie": "ClockworkShot"
+					"Banjo": "true",
+					"Kazooie": {
+						"Kazooie": "TallJump or LegSpring or Glide and EasyJumps",
+						"Clockwork Kazooie": "ClockworkShot"
 					},
-                    "Mumbo": "TallJump",
-                    "Detonator": "true",
-                    "Talon Trot": "true"
+					"Mumbo": "TallJump",
+					"Detonator": "true",
+					"Talon Trot": "true"
 				}
 			}
 		}
 	},
 	"GGM: Outside Mumbo's Skull Top-Right Note Platform": {
-        "locations": {
+		"locations": {
 			"GGM: Outside Mumbo's Skull Top-Right Note": {
 				"item": "NoteNest",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		},
-        "exits": {
-            "GGM: Outside Mumbo's Skull Warp Pad Platform": {},
-            "GGM: Outside Mumbo's Skull Bottom-Right Note Platform": {},
-            "GGM: Outside Mumbo's Skull": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or HardJumps or BeakBusterJump or WonderwingJump",
+		"exits": {
+			"GGM: Outside Mumbo's Skull Warp Pad Platform": {},
+			"GGM: Outside Mumbo's Skull Bottom-Right Note Platform": {},
+			"GGM: Outside Mumbo's Skull": {
+				"logic": {
+					"Banjo-Kazooie": {
+						"Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or HardJumps or BeakBusterJump or WonderwingJump",
 					},
-                    "Banjo": "true",
-                    "Kazooie": "TallJump or LegSpring",
-                    "Mumbo": "TallJump",
-                    "Detonator": "true",
-                    "Talon Trot": "true"
+					"Banjo": "true",
+					"Kazooie": "TallJump or LegSpring",
+					"Mumbo": "TallJump",
+					"Detonator": "true",
+					"Talon Trot": "true"
 				}
 			}
 		}
 	},
 	"GGM: Outside Mumbo's Skull": {
-        "exits": {
-            "GGM: Near Prospector Top-Right Note Platform": {},
-            "GGM: Outside Mumbo's Skull Warp Pad Platform": {},
-            "GGM: Mumbo's Skull": {}
+		"exits": {
+			"GGM: Near Prospector Top-Right Note Platform": {},
+			"GGM: Outside Mumbo's Skull Warp Pad Platform": {},
+			"GGM: Mumbo's Skull": {}
 		}
 	},
 	"GGM: Mumbo's Skull": {
-        "locations": {
+		"locations": {
 			"GGM: Mumbo's Skull Feather Nest 1": {
 				"item": "FeatherNest",
 			},
@@ -1651,20 +1651,20 @@ regions: Regions = {
 			"GGM: Mumbo's Skull Feather Nest 3": {
 				"item": "FeatherNest",
 			},
-        },
-        "exits": {
+		},
+		"exits": {
 			"GGM: Mumbo's Skull": {
-                "logic": {
-                    "Banjo-Kazooie": {
-                        "Mumbo": "MumboLevitate"
+				"logic": {
+					"Banjo-Kazooie": {
+						"Mumbo": "MumboLevitate"
 					}
 				}
 			},
-            "GGM: Outside Mumbo's Skull": {}
+			"GGM: Outside Mumbo's Skull": {}
 		}
 	},
-	
-	
+
+
 	"GGM: Levitate Chuffy The Train": {"macro": {"event"}},
 	"GGM: Crushing Shed Button Pressed": {"macro": {"event"}},
 	"GGM: Levitate The Crushing Shed Boulder": {"macro": {"event"}},

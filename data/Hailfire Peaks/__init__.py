@@ -334,12 +334,12 @@ regions: Regions = {
 		},
 		"exits": {
 			"MT: Kickball Stadium Near Grate Switch": {},
-            
-			
-            "Train At HFP Lava Side": {},
-            
-            "Train At HFP Icy Side": {},
+
+
+			"Train At HFP Lava Side": {},
+
+			"Train At HFP Icy Side": {},
 		}
 	},
-    "HFP: Mega Glowbo Room Underwater": {}
+	"HFP: Mega Glowbo Room Underwater": {}
 }

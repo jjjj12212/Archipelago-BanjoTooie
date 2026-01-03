@@ -52,39 +52,39 @@ regions: Regions = {
 		},
 		"exits": {
 			"IoH: Plateau": {},
-            "IoH: Pine Grove Behind Witchyworld Gate": {
-                "logic": "Witchyworld"
+			"IoH: Pine Grove Behind Witchyworld Gate": {
+				"logic": "Witchyworld"
 			},
 			"IoH: Warp Silos": {
-                "logic": {
-                    "Banjo-Kazooie": "PineGroveWarpSilo"
+				"logic": {
+					"Banjo-Kazooie": "PineGroveWarpSilo"
 				}
 			},
-            "IoH: Pine Grove Underwater": {
-                "logic": {
-                    "Banjo-Kazooie": "Dive"
+			"IoH: Pine Grove Underwater": {
+				"logic": {
+					"Banjo-Kazooie": "Dive"
 				}
 			},
-            "IoH: Wumba's Wigwam": {}
+			"IoH: Wumba's Wigwam": {}
 		},
 	},
-    "IoH: Pine Grove Behind Witchyworld Gate": {
-        "exits": {
+	"IoH: Pine Grove Behind Witchyworld Gate": {
+		"exits": {
 			"Witchyworld": {
 				"id": 0x12,
 				"groups": {"World Entrances"},
-                "logic": {
-                    "Banjo-Kazooie": "true",
-                    "Talon Trot": "TalonTrotSmuggleCrossWorld"
+				"logic": {
+					"Banjo-Kazooie": "true",
+					"Talon Trot": "TalonTrotSmuggleCrossWorld"
 				},
 			},
-            "IoH: Pine Grove": {
-                "logic": "Witchyworld"
-            }
+			"IoH: Pine Grove": {
+				"logic": "Witchyworld"
+			}
 		}
 	},
-    "IoH: Pine Grove Underwater": {
-        "locations": {
+	"IoH: Pine Grove Underwater": {
+		"locations": {
 			"IoH: Pine Grove Underwater Note 1": {
 				"item": "NoteNest",
 			},
@@ -92,37 +92,37 @@ regions: Regions = {
 				"item": "NoteNest",
 			},
 		},
-        "exits": {
-            "IoH: Pine Grove": {
-                "logic": "TallJump or GripGrab or HardJumps and BeakBusterJump"
+		"exits": {
+			"IoH: Pine Grove": {
+				"logic": "TallJump or GripGrab or HardJumps and BeakBusterJump"
 			},
-            "IoH: Pine Grove Underwater Behind the Boulder": {
-                "logic": {
-                    "Banjo-Kazooie": "TalonTorpedo"
+			"IoH: Pine Grove Underwater Behind the Boulder": {
+				"logic": {
+					"Banjo-Kazooie": "TalonTorpedo"
 				}
 			}
 		}
 	},
-    "IoH: Pine Grove Underwater Behind the Boulder": {
-        "exits": {
-            "IoH: Pine Grove Underwater": {
-                "logic": {
-                    "Banjo-Kazooie": "ClipPastPineGroveBoulder or TalonTorpedo"
+	"IoH: Pine Grove Underwater Behind the Boulder": {
+		"exits": {
+			"IoH: Pine Grove Underwater": {
+				"logic": {
+					"Banjo-Kazooie": "ClipPastPineGroveBoulder or TalonTorpedo"
 				}
 			},
-            "IoH: Another Digger Tunnel: Underwater": {},
+			"IoH: Another Digger Tunnel: Underwater": {},
 		}
 	},
-    "IoH: Wumba's Wigwam": {
-        "locations": {
-            "IoH Dragon Transform": {"logic": "HumbaDragon"},
+	"IoH: Wumba's Wigwam": {
+		"locations": {
+			"IoH Dragon Transform": {"logic": "HumbaDragon"},
 			"IoH: Wumba's Wigwam Egg Nest 1": {
 				"item": "EggNest",
 			},
 			"IoH: Wumba's Wigwam Egg Nest 2": {
 				"item": "EggNest",
 			},
-        }
+		}
 	},
-    
+
 }

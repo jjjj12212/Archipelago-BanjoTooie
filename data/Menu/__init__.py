@@ -18,10 +18,9 @@ regions: Regions = {
 		"exits": {
 			"Events": {},
 			"Spiral Mountain": {"id": 0x04},
-            "Jinjo Family Jiggies": {}
+			"Jinjo Family Jiggies": {}
 		},
 	},
-    
 
 	"Starting Inventory": {
 		# Locations in this region will have their item added to the player's starting inventory if:

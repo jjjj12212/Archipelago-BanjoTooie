@@ -372,9 +372,9 @@ regions: Regions = {
 				"item": "BigTopTicket",
 			},
 		},
-        "exits": {
-            "Train At WW": {},
+		"exits": {
+			"Train At WW": {},
 		}
 	},
-    "WW: Saucer of Peril Platform Behind Gate": {},
+	"WW: Saucer of Peril Platform Behind Gate": {},
 }

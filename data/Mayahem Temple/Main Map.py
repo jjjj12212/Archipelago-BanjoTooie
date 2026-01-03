@@ -124,7 +124,7 @@ regions: Regions = {
 			"Mayahem Temple": {
 				"logic": {
 					"Banjo-Kazooie": "true",
-                    "Talon Trot": "TalonTrotSmuggleCrossWorld"
+					"Talon Trot": "TalonTrotSmuggleCrossWorld"
 				}
 			},
 			"MT: Top of Kickball Stadium": {
@@ -231,8 +231,8 @@ regions: Regions = {
 					"Golden Goliath": "true"
 				}
 			},
-            "MT: Prison Compound": {
-                "logic": "MTOpenPrisonCompound"
+			"MT: Prison Compound": {
+				"logic": "MTOpenPrisonCompound"
 			},
 		}
 	},
@@ -261,7 +261,7 @@ regions: Regions = {
 					"Banjo-Kazooie":"""
 						AirborneEggAiming and LinearEggs
 						or ExtraClockworkUsage and AirborneEggAiming
-                        or BovinaWithBeakBomb
+						or BovinaWithBeakBomb
 					"""
 				}
 			},
@@ -315,12 +315,12 @@ regions: Regions = {
 			}
 		}
 	},
-    "MT: Top Platform Outside Treasure Chamber": {
+	"MT: Top Platform Outside Treasure Chamber": {
 		"locations": {
 			"MT: Treasure Chamber Cheato Page": {
 				"item": "CheatoPage",
-                "explicit_logic": {
-                    "Clockwork Kazooie": "true"
+				"explicit_logic": {
+					"Clockwork Kazooie": "true"
 				}
 			},
 		},
@@ -337,15 +337,15 @@ regions: Regions = {
 		"locations": {
 			"MT: Stadium Jinjo": {
 				"item": "RedJinjo",
-                "explicit_logic": {"Clockwork Kazooie": "true"}
+				"explicit_logic": {"Clockwork Kazooie": "true"}
 			},
 			"MT: Kickball Stadium Feather Nest 1": {
 				"item": "FeatherNest",
-                "explicit_logic": {"Clockwork Kazooie": "true"}
+				"explicit_logic": {"Clockwork Kazooie": "true"}
 			},
 			"MT: Kickball Stadium Feather Nest 2": {
 				"item": "FeatherNest",
-                "explicit_logic": {"Clockwork Kazooie": "true"}
+				"explicit_logic": {"Clockwork Kazooie": "true"}
 			},
 		},
 		"exits": {
