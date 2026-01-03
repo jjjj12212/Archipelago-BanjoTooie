@@ -247,8 +247,8 @@ regions: Regions = {
 		}
 	}
 	# "Grey Jinjo Family House": {
-	#     "exits": {
-	#         "IoH: Jinjo Village": {}
+	#	 "exits": {
+	#		 "IoH: Jinjo Village": {}
 	# 	  }
 	# }
 }

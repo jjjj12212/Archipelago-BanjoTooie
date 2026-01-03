@@ -173,9 +173,9 @@ regions: Regions = {
 	"MT: Prison Compound Jail Cell Boulder Broken": {"macro": {"event"}},
 	"MT: Prison Compound Behind Jail Cell Boulder": {
 		"exits": {
-            "GGM: Prospector's Hut": {
-                "logic": {
-                    "Banjo-Kazooie": "true"
+			"GGM: Prospector's Hut": {
+				"logic": {
+					"Banjo-Kazooie": "true"
 				}
 			}
 		}
