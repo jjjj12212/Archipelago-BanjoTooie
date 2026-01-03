@@ -367,8 +367,49 @@ regions: Regions = {
 			"Train At WW": {},
 		}
 	},
-	"WW: Saucer of Peril Platform Behind Gate": {},
-	"WW: Main Map": {},
+	"WW: Main Map": {
+        "exits": {
+            "WW: Area 51 Grate Blown Up": {
+                "logic": {
+                    "Banjo-Kazooie": "ShootExplosives",
+                    "Kazooie": "ShootExplosives"
+				}
+			},
+            "WW: Area 51": {
+                "logic": "WWArea51GrateBlownUp"
+			},
+            "WW: Area 51 Fence Left Note Post": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "Clockwork Kazooie": "ClockworkShot"
+					},
+                    "Kazooie": {
+                        "Clockwork Kazooie": "ClockworkShot",
+                        "Kazooie": "LegSpring or TallJump and HardJumps"
+					}
+				}
+			},
+            "WW: Area 51 Fence Right Note Post": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "Clockwork Kazooie": "ClockworkShot"
+					},
+                    "Kazooie": {
+                        "Clockwork Kazooie": "ClockworkShot",
+                        "Kazooie": "LegSpring or TallJump and HardJumps"
+					}
+				}
+			},
+            "WW: Inside The Big Top": {},
+            "WW: Crazy Castle Stockade": {},
+            "WW: Above The Ladder On The Gondola Platform": {
+                "logic": {
+                    "Banjo-Kazooie": "Climb",
+                    "Banjo": "Climb"
+				}
+			},
+		}
+	},
 	"WW: Area 51": {},
 	"WW: Area 51 Fence Right Note Post": {},
 	"WW: Area 51 Fence Left Note Post": {},
@@ -377,11 +418,12 @@ regions: Regions = {
 	"WW: Outside Wumba's Wigwam": {},
 	"WW: Above The Ladder On The Gondola Platform": {},
 	"WW: Top Of The Gondola Platform": {},
-	"WW: Space Zone Empty Honeycomb Platform": {},
 	"WW: Crazy Castle Stockade": {},
 	"WW: Crazy Castle Stockage Behind The Gate": {},
 	"WW: Oogle Boogle Tunnel Entrance": {},
 	"WW: Pump Room": {},
+	"WW: Behind Bottom Van Door Near Humba": {},
+	"WW: Behind Top Van Door Near Humba": {},
 	"WW: Wumba's Wigwam": {},
 	"WW: Train Station": {},
 	"WW: Inferno Entrance": {},
@@ -389,6 +431,9 @@ regions: Regions = {
 	"WW: Haunted Caverns": {},
 	"WW: Cave of Horrors": {},
 	"WW: Star Spinner": {},
+	"WW: Saucer of Peril Platform": {},
+	"WW: Saucer of Peril Platform Behind Gate": {},
+	"WW: Space Zone Empty Honeycomb Platform": {},
 	
 	"WW: Warp Pads": {},
 	
