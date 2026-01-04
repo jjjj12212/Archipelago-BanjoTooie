@@ -30,6 +30,7 @@ ExplicitForm = Literal[
 	"SK Claw Clamber Boots",
 	"Clockwork Kazooie",
 	"Golden Goliath",
+	"Egg", # Shooting eggs accross logical regions.
 ]
 Form = NormalForm | ExplicitForm | Literal[""]
 """

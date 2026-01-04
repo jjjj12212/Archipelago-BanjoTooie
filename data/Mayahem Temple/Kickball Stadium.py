@@ -26,6 +26,11 @@ regions: Regions = {
 			"MT: Warp Pads": {
 				"logic": "MTKickballStadiumLobbyWarpPad"
 			},
+			"MT: Kickball Round 1 Opened": {
+				"logic": {
+					"Stony": "true"
+				}
+			},
 			"MT: Kickball Round 1": {
 				"logic": {
 					"Stony": "true"
@@ -76,5 +81,6 @@ regions: Regions = {
 			"MT: Kickball Stadium Switch Pressed": {}
 		}
 	},
+	"MT: Kickball Round 1 Opened": {"macro": {"event"}},
 	"MT: Kickball Stadium Switch Pressed": {"macro": {"event"}},
 }

@@ -29,7 +29,8 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"Slope Jump": "true", # Going Up slopes without talon trot.
 		"Dive Skip": "true", # Skipping Dive by either entering a loading zone or forcing your way into a tunnel.
 		"Glide Extension": "true", # Alternating between Glide and either Flutter or Wing Whack makes Kazooie lose height slower.
-		"Rooms With Limited Lighting": "true" # Do dark rooms with unintended, limited forms of lighting.
+		"Rooms With Limited Lighting": "true", # Do dark rooms with unintended, limited forms of lighting.
+		"Extra Third Person Egg Shooting": "ThirdPersonEggShooting" # Use Third Person Egg Shooting in places where Egg Aim would be intended to be used.
 	},
 	"Easy Tedious Tricks": {
 		"Beak Bomb Tricks": "BeakBomb", # Beak Bomb can be used in unintended ways to reach new areas.
@@ -72,6 +73,7 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"Slide Jump": "true", # Turning around suddenly plays a sliding animation. Doing this off of a ledge allows you to jump in the air.
 		"Flap Flip Slide Extension": "FlapFlip", # Flap Flip off a ledge with neutral joystick. During ascent, hold a direction to gain a little extra distance.
 		"Extra Attacks": "true", # Using worse attacks on enemies becomes in logic.
+		"Tightrope Walk": "true", # Walking accross narrow platforms, such as the Witchyworld Gondola Wire.
 	},
 	"Hard Tedious Tricks": {
 		"Hard Tedious Jumps": "true", # Tedious version of "Hard Jumps".
@@ -81,8 +83,8 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 	"Hard Glitches": {
 		"Beak Bomb Clips": "BeakBomb", # Beak bomb lets you go through gaps in doors.
 		"Clip Past Pine Grove Boulder": "true", # You can swim in the top-right corner of the boulder to clip through it backwards.
-		"Clockwork Warp": "ClockworkKazooieEggs and EggAim",
-		"Clockwork Shot Through Geometry": "ClockworkKazooieEggs",
+		"Clockwork Warp": "ClockworkKazooieEggs and EggAim", 
+		"Clockwork Shot Through Geometry": "ClockworkKazooieEggs and EggUse",
 	},
 	"Frame Perfect": {
 		"Talon Trot Slide Jump": "true", # Landing in Talon Trot plays a sliding animation. Doing this off of a ledge allows a frame perfect jump in the air.

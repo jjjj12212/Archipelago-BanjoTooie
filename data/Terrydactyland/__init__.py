@@ -377,4 +377,5 @@ regions: Regions = {
 			"Train At TDL": {},
 		}
 	},
+    "TDL: Oogle Boogle Cave Behind The Gate": {},
 }
