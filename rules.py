@@ -5,7 +5,7 @@ from typing import Callable, Any, Iterator, cast, TYPE_CHECKING, get_type_hints
 from Options import Choice
 from BaseClasses import CollectionState, Region, Entrance, MultiWorld
 from worlds.AutoWorld import LogicMixin
-from .regions import BanjoTooieEntrance
+from .regions import BanjoTooieEntrance, BanjoTooieRegion
 from . import locations, items, data
 
 if TYPE_CHECKING:
@@ -102,17 +102,25 @@ class BanjoTooiePathFinders(dict[Region, BanjoTooiePathFinder]):
 
 class BanjoTooieMixin(LogicMixin):
 	banjo_tooie_path_finders: dict[int, BanjoTooiePathFinders]
+	banjo_tooie_air: dict[int, dict[BanjoTooieRegion, float]]
 
 	def init_mixin(self, multiworld: MultiWorld) -> None:
-		self.banjo_tooie_path_finders = {
-			player: BanjoTooiePathFinders() for player in multiworld.get_game_players("Banjo-Tooie")
-		}
+		players = multiworld.get_game_players("Banjo-Tooie")
+		self.banjo_tooie_path_finders = {}
+		self.banjo_tooie_air = {}
+		for player in players:
+			self.banjo_tooie_path_finders[player] = BanjoTooiePathFinders()
+			self.banjo_tooie_air[player] = {}
 
 	def copy_mixin(self, new_state: "BanjoTooieMixin"):
 		new_state.banjo_tooie_path_finders = {
 			player: path_finder.copy() for player, path_finder in self.banjo_tooie_path_finders.items()
 		}
+		new_state.banjo_tooie_air = self.banjo_tooie_air.copy()
 		return new_state
+
+if TYPE_CHECKING:
+	class BanjoTooieState(CollectionState, BanjoTooieMixin): pass
 
 class BanjoTooieRules(ast.NodeTransformer):
 	debug = False
@@ -203,6 +211,56 @@ class BanjoTooieRules(ast.NodeTransformer):
 				pairs.append(pair)
 		return self.check_region_pairs(pairs, state.copy(), player)
 
+	def air(self, region_name: str, form: data.Form, exit_name: str | None, state: "BanjoTooieState", player: int):
+		region: BanjoTooieRegion = state.multiworld.get_region(data.regions[region_name]["names"][form], player) # pyright: ignore[reportAssignmentType]
+		if not state.allow_partial_entrances and region in state.banjo_tooie_air[player]:
+			return state.banjo_tooie_air[player][region]
+		air = 0
+		max_air = 10.0 if state.has("Double Air", player) else 6.0
+		if state.has("Fast Swimming", player): air_index = 1
+		elif form == "Banjo-Kazooie" and self.cache[self.tricks["RhythmicSwimming"]](state): air_index = 2
+		else: air_index = 0
+		if (
+			region.region_data is not None
+			and region.form is not None
+			and exit_name is not None
+			and "exits" in region.region_data
+		):
+			exit_data = region.region_data["exits"][exit_name]
+			if "air" in exit_data:
+				max_air -= exit_data["air"][region.form][air_index]
+		checked_regions: set[BanjoTooieRegion] = set()
+		queue: deque[tuple[BanjoTooieEntrance, float]] = deque([(entrance, max_air) for entrance in region.entrances]) # pyright: ignore[reportAssignmentType]
+		while queue:
+			entrance, region_air = queue.popleft()
+			parent_region: BanjoTooieRegion | None = entrance.parent_region # pyright: ignore[reportAssignmentType]
+			if (
+				entrance.exit_data is not None
+				and parent_region is not None
+				and parent_region not in checked_regions
+				and parent_region.form is not None
+				and parent_region.region_data is not None
+				and parent_region.can_reach(state)
+				and entrance.access_rule(state)
+			):
+				if parent_region.form == "Sub":
+					air = max_air
+					break
+				checked_regions.add(parent_region)
+				air_cost = 0
+				if "air" in entrance.exit_data and parent_region.form in entrance.exit_data["air"]:
+					air_cost = entrance.exit_data["air"][parent_region.form][air_index]
+					region_air -= air_cost
+				if parent_region in state.banjo_tooie_air[player]:
+					region_air = state.banjo_tooie_air[player][parent_region] - air_cost
+					if region_air > air: air = region_air
+				elif region_air > air:
+					if parent_region.region_data.get("underwater", False):
+						queue.extend([(new_entrance, region_air) for new_entrance in parent_region.entrances]) # pyright: ignore[reportArgumentType]
+					else: air = region_air
+		if not state.allow_partial_entrances: state.banjo_tooie_air[player][region] = air
+		return air
+
 	@staticmethod
 	def option_value(value: Any) -> ast.AST:
 		if isinstance(value, set):
@@ -256,12 +314,14 @@ class BanjoTooieRules(ast.NodeTransformer):
 				if name in world.options.logic_tricks.value:
 					self.tricks[item_name] = f"({logic})"
 				else: self.tricks[item_name] = "False"
+		self.parse(self.tricks["RhythmicSwimming"], "data/tricks.py")
 		self.ctx: dict[str, Any] = {
 			"ItemGroups": self.item_groups,
 			"options": self.world.options,
 			"forms_reach": self.forms_reach,
 			"forms_reach_regions": self.forms_reach_regions,
 			"can_form_from_region_reach": self.can_form_from_region_reach,
+			"air": self.air,
 		}
 
 	def parse(self, logic: str, file: str, arg: str="state", indirect_regions: set[str] | None = None) -> Callable[[Any], bool]:
@@ -621,6 +681,21 @@ class BanjoTooieRules(ast.NodeTransformer):
 								region = data.regions[region_name]
 								self.indirect_regions.add(start["names"][form])
 								self.indirect_regions.add(region["names"][form])
+					node.args += [ast.Name(id="state", ctx=ast.Load()), self.player]
+					return node
+				case "air":
+					node.keywords = []
+					assert len(node.args) == 3, f"{self.file}: air requires exactly 3 arguments."
+					args = node.args
+					for i, arg in enumerate(args[:2]):
+						assert (
+							isinstance(arg, ast.Constant)
+							and isinstance(arg.value, str)
+						), f"{self.file}: air requires arg {i+1} to be a str."
+					assert (
+						isinstance(args[2], ast.Constant)
+						and (args[2].value is None or isinstance(args[2].value, str))
+					), f"{self.file}: air requires arg 3 to be a str or None."
 					node.args += [ast.Name(id="state", ctx=ast.Load()), self.player]
 					return node
 				case _: pass

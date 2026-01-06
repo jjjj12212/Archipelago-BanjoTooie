@@ -149,6 +149,24 @@ class BaseExit(TypedDict):
 			This exit won't be part of any custom groups.
 	"""
 
+	air: NotRequired[dict[Form, tuple[float, ...]]]
+	"""
+		Specifies the amount of air used to go through this exit.
+
+		DictKey:
+			The form going through this exit.
+
+		DictValue:
+			Tuple[0]:
+				The amount of air used to go through this exit without Fast Swimming.
+
+			Tuple[1]
+				The amount of air used to go through this exit with Fast Swimming.
+
+			Tuple[2]
+				The amount of air used to go through this exit with Rhythmic Swimming.
+	"""
+
 FinalExitLogic = dict[Form, dict[Form, str]]
 ExitLogic = dict[Form, str | dict[Form, str] | set[Form]] | set[Form] | str
 
@@ -252,6 +270,11 @@ class BaseRegion(TypedDict):
 	"""
 		Specifies which forms can freely swap with the main form.
 		Transformation exits will be automatically added.
+	"""
+
+	underwater: NotRequired[bool]
+	"""
+		Specifies that this region is underwater.
 	"""
 
 class Region(BaseRegion):

@@ -335,15 +335,45 @@ del _regions
 
 class BasicParser(ast.NodeTransformer):
 
+	def __init__(self):
+		super().__init__()
+		self.region_name = ""
+		self.exit_name = ""
+		self.form: Form = ""
+		self.is_exit = False
+		self.create_exit_event = False
+
 	def parse(self, file: str, logic: str):
 		if not logic: return logic
+		self.create_exit_event = False
 		ret = ast.unparse(self.visit(ast.parse(f"({logic})", file)))
+		if self.create_exit_event:
+			name = f"{self.region_name} To {self.exit_name} As {self.form}"
+			locations = regions[self.region_name].setdefault("locations", {})
+			locations[name] = {"logic": {self.form: sys.intern(ret)}}
+			ret = item_name(name)
 		return sys.intern(ret)
+
+	def visit_Name(self, node: ast.Name):
+		match node.id:
+			case "Air":
+				if self.is_exit: self.create_exit_event = True
+				return ast.Call(
+					ast.Name("air"),
+					[
+						ast.Constant(self.region_name),
+						ast.Constant(self.form),
+						ast.Constant(self.exit_name if self.is_exit else None),
+					]
+				)
+			case _: pass
+		return node
 
 def post_processing():
 	parser = BasicParser()
 	locations_without_logic: list[str] = []
 	for region_name, region in regions.items():
+		parser.region_name = region_name
 		region_file = f"{region['file']}: {region_name}"
 		unused_explicit_forms = set(region["names"]) & set(explicit_forms)
 		for location_name, location in region.get("locations", {}).items():
@@ -353,13 +383,17 @@ def post_processing():
 				if form is None or logic is None: locations_without_logic.append(parser_str)
 				else:
 					unused_explicit_forms.discard(form)
+					parser.form = form
 					location["logic"][form] = parser.parse(f"{parser_str} -> logic", logic)
 			else: locations_without_logic.append(parser_str)
+		parser.is_exit = True
 		for exit_name, exit_ in region.get("exits", {}).items():
 			if "logic" in exit_:
+				parser.exit_name = exit_name
 				exit_names = regions[exit_name]["names"]
 				location_exit = "" in exit_names
 				for from_form, to_forms in exit_["logic"].items():
+					parser.form = from_form
 					unused_explicit_forms.discard(from_form)
 					for to_form, logic in to_forms.items():
 						if location_exit: form_exit_name = exit_name

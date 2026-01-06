@@ -1,4 +1,4 @@
-from BaseClasses import CollectionState, Entrance, Region
+from BaseClasses import CollectionState, Entrance, EntranceType, MultiWorld, Region
 from typing import TYPE_CHECKING, Callable, Optional
 from . import data
 
@@ -6,24 +6,55 @@ if TYPE_CHECKING:
 	from . import BanjoTooieWorld
 
 class BanjoTooieEntrance(Entrance):
-	exit_links: dict[data.Form, "BanjoTooieEntrance"]
+	exit_links: Optional[dict[data.Form, "BanjoTooieEntrance"]]
+	exit_data: Optional[data.types.FinalExit]
+
+	def __init__(
+		self,
+		player: int,
+		name: str = "",
+		parent: Region | None = None,
+		randomization_group: int = 0,
+		randomization_type: EntranceType = EntranceType.ONE_WAY,
+	) -> None:
+		super().__init__(player, name, parent, randomization_group, randomization_type)
+		self.exit_links = None
+		self.exit_data = None
 
 	def super_connect(self, region: Region) -> None:
 		super().connect(region)
 
 	def connect(self, region: Region) -> None:
-		if region.multiworld and hasattr(self, "exit_links"):
-			to_region = data.regions[data.form_to_region_name[region.name]]
+		if (
+			region.multiworld is not None
+			and self.exit_links is not None
+			and isinstance(region, BanjoTooieRegion)
+			and region.region_links is not None
+		):
 			for form, entrance in self.exit_links.items():
 				if self is entrance: continue
 				if entrance.connected_region:
 					entrance.connected_region.entrances.remove(entrance)
 					entrance.connected_region = None
-				entrance.super_connect(region.multiworld.get_region(to_region["names"][form], region.player))
+				entrance.super_connect(region.region_links[form])
 		self.super_connect(region)
 
 class BanjoTooieRegion(Region):
 	entrance_type = BanjoTooieEntrance
+	region_links: Optional[dict[data.Form, "BanjoTooieRegion"]]
+	form: Optional[data.Form]
+	region_data: Optional[data.ParentRegion]
+
+	def __init__(
+			self,
+			name: str,
+			player: int,
+			multiworld: MultiWorld,
+			hint: str | None = None,
+		):
+		super().__init__(name, player, multiworld, hint)
+		self.form = None
+		self.region_data = None
 
 	def connect(
 		self,

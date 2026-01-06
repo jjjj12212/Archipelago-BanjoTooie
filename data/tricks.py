@@ -74,6 +74,7 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"Flap Flip Slide Extension": "FlapFlip", # Flap Flip off a ledge with neutral joystick. During ascent, hold a direction to gain a little extra distance.
 		"Extra Attacks": "true", # Using worse attacks on enemies becomes in logic.
 		"Tightrope Walk": "true", # Walking accross narrow platforms, such as the Witchyworld Gondola Wire.
+		"Rhythmic Swimming": "true", # As BK underwater, hold A+B and quickly release and repress B after each stroke to swim slightly faster.
 	},
 	"Hard Tedious Tricks": {
 		"Hard Tedious Jumps": "true", # Tedious version of "Hard Jumps".
@@ -83,7 +84,7 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 	"Hard Glitches": {
 		"Beak Bomb Clips": "BeakBomb", # Beak bomb lets you go through gaps in doors.
 		"Clip Past Pine Grove Boulder": "true", # You can swim in the top-right corner of the boulder to clip through it backwards.
-		"Clockwork Warp": "ClockworkKazooieEggs and EggAim", 
+		"Clockwork Warp": "ClockworkKazooieEggs and EggAim",
 		"Clockwork Shot Through Geometry": "ClockworkKazooieEggs and EggUse",
 	},
 	"Frame Perfect": {

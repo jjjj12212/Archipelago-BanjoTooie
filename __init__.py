@@ -1,17 +1,21 @@
 import math, Options, entrance_rando, settings
 import worlds.LauncherComponents as LauncherComponents
+from itertools import chain
 from collections import Counter
-from typing import Any, Iterable, TextIO, cast, get_type_hints
+from typing import TYPE_CHECKING, Any, Iterable, TextIO, cast, get_type_hints
 from worlds.AutoWorld import World, WebWorld
 from BaseClasses import CollectionState, EntranceType, MultiWorld, Tutorial, ItemClassification, Item, Location, Region
 
-from . import options, regions, locations, items, data
+from . import options, locations, items, data
 from .options import BanjoTooieOptions, BanjoTooieOptionsList
-from .regions import BanjoTooieEntrance, BanjoTooieRegions
+from .regions import BanjoTooieEntrance, BanjoTooieRegion, BanjoTooieRegions
 from .locations import BanjoTooieLocation
 from .items import BanjoTooieItem, BanjoTooieItemInfo
 from .rules import BanjoTooieRules
 from .ids import slot_data_names, option_name_to_id, exit_name_to_id
+
+if TYPE_CHECKING:
+	from .rules import BanjoTooieState
 
 def launch_client():
 	from . import client
@@ -361,10 +365,13 @@ class BanjoTooieWorld(World):
 		for region_name, region in data.regions.items():
 			major_region = region["major_region"]
 			region_file = f"{region['file']}: {region_name}"
-			ap_regions: dict[str, regions.BanjoTooieRegion] = {
-				form: region_cache[form_region_name]
-				for form, form_region_name in region["names"].items()
-			}
+			ap_regions: dict[data.Form, BanjoTooieRegion] = {}
+			for form, form_region_name in region["names"].items():
+				ap_region = region_cache[form_region_name]
+				ap_region.region_links = ap_regions
+				ap_region.form = form
+				ap_region.region_data = region
+				ap_regions[form] = ap_region
 			for location_name, location in region.get("locations", {}).items():
 				parser_str = f"{region_file} -> {location_name}"
 				if not self.parser.parse(location.get("enabled", "true"), f"{parser_str} -> enabled")(None):
@@ -434,16 +441,17 @@ class BanjoTooieWorld(World):
 						parser_str = f"{region_file} -> {form_exit_name}"
 						ap_exit = region_cache[form_exit_name]
 						entrance = ap_regions[from_form].connect(ap_exit)
+						links[to_form] = entrance
+						entrance.exit_links = links
+						entrance.exit_data = exit_
 						indirect_regions: set[str] = set()
 						logic = self.parser.parse(logic_str, f"{parser_str} -> logic", indirect_regions=indirect_regions)
 						for indirect_region in indirect_regions:
 							self.multiworld.register_indirect_condition(region_cache[indirect_region], entrance)
 						if logic != rules.true: entrance.access_rule = logic
 						if "id" not in exit_: continue
-						links[to_form] = entrance
 						if "two_way" in exit_ and exit_["two_way"]: entrance.randomization_type = EntranceType.TWO_WAY
 						else: entrance.randomization_type = EntranceType.ONE_WAY
-						entrance.exit_links = links
 						if from_form == to_form and to_form == data.normal_forms[0] and "groups" in exit_:
 							for group in exit_["groups"]:
 								self.entrance_groups.setdefault(group, []).append(entrance)
@@ -793,22 +801,29 @@ class BanjoTooieWorld(World):
 		for item in self.get_pre_fill_items(): self.collect(state, item)
 		state.sweep_for_advancements()
 		inaccessible_regions: list[str] = []
-		for region in list(self.get_regions()):
+		remove_regions: set[Region] = set()
+		remove_entrances: set[BanjoTooieEntrance] = set()
+		for region in self.get_regions():
 			if not region.can_reach(state) or len(region.locations) == 0 and len(region.exits) == 0:
 				if len(region.locations): inaccessible_regions.append(region.name)
-				del self.multiworld.regions.region_cache[self.player][region.name]
-				for entrance in cast(list[BanjoTooieEntrance], list(self.multiworld.regions.entrance_cache[self.player].values())):
-					if entrance.parent_region is region or entrance.connected_region is region:
-						if hasattr(entrance, "exit_links"):
-							for form, other_entrance in entrance.exit_links.items():
-								if entrance is other_entrance:
-									del entrance.exit_links[form]
-									break
-						del self.multiworld.regions.entrance_cache[self.player][entrance.name]
+				for entrance in cast(Iterable[BanjoTooieEntrance], chain(region.entrances, region.exits)):
+					remove_entrances.add(entrance)
+				remove_regions.add(region)
 		assert len(inaccessible_regions) == 0, self.log_format(
 			"The following region(s) are inaccessible, but have location(s):\n" +
 			"\n".join(inaccessible_regions)
 		)
+		ap_regions = self.multiworld.regions.region_cache[self.player]
+		ap_entrances = self.multiworld.regions.entrance_cache[self.player]
+		for entrance in remove_entrances:
+			if entrance.exit_links is not None:
+				for form, other_entrance in entrance.exit_links.items():
+					if entrance is other_entrance:
+						del entrance.exit_links[form]
+						break
+			del ap_entrances[entrance.name]
+		for region in remove_regions:
+			del ap_regions[region.name]
 
 	def ap_connect_entrances(self) -> None:
 		ids: dict[str, int] = {group:i+1 for i, group in enumerate(self.entrance_groups)}
@@ -878,7 +893,7 @@ class BanjoTooieWorld(World):
 		for from_id, to_id in exit_map.items():
 			exit_ = self.id_to_vanilla[from_id][0]
 			entrance, entrance_connected = self.id_to_vanilla[to_id]
-			if deferred_enabled:
+			if deferred_enabled and exit_.exit_links is not None:
 				for linked_entrance in exit_.exit_links.values():
 					if linked_entrance.connected_region:
 						linked_entrance.connected_region.entrances.remove(linked_entrance)
@@ -903,8 +918,15 @@ class BanjoTooieWorld(World):
 	def get_filler_item_name(self) -> str:
 		return "Big-O Pants"
 
-	def remove(self, state: Any, item: Item):
-		state.banjo_tooie_path_finders[self.player].clear()
+	def collect(self, state: CollectionState, item: Item) -> bool:
+		mixin: "BanjoTooieState" = state # pyright: ignore[reportAssignmentType]
+		mixin.banjo_tooie_air[self.player].clear()
+		return super().collect(state, item)
+
+	def remove(self, state: CollectionState, item: Item):
+		mixin: "BanjoTooieState" = state # pyright: ignore[reportAssignmentType]
+		mixin.banjo_tooie_path_finders[self.player].clear()
+		mixin.banjo_tooie_air[self.player].clear()
 		return super().remove(state, item)
 
 	def write_spoiler_header(self, spoiler_handle: TextIO) -> None:
