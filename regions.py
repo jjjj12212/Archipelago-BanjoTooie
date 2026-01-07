@@ -1,13 +1,13 @@
 from BaseClasses import CollectionState, Entrance, EntranceType, Region
-from typing import TYPE_CHECKING, Callable, Optional
+from typing import TYPE_CHECKING, Callable
 from . import data
 
 if TYPE_CHECKING:
 	from . import BanjoTooieWorld
 
 class BanjoTooieEntrance(Entrance):
-	exit_links: Optional[dict[data.Form, "BanjoTooieEntrance"]]
-	exit_data: Optional[data.types.FinalExit]
+	exit_links: dict[data.Form, "BanjoTooieEntrance"] | None
+	exit_data: data.types.FinalExit | None
 
 	def __init__(
 		self,
@@ -48,8 +48,8 @@ class BanjoTooieRegion(Region):
 	def connect(
 		self,
 		connecting_region: Region,
-		name: Optional[str] = None,
-		rule: Optional[Callable[[CollectionState], bool]] = None
+		name: str | None = None,
+		rule: Callable[[CollectionState], bool] | None = None
 	) -> BanjoTooieEntrance:
 		exit_ = self.create_exit(name if name else f"{self.name} -> {connecting_region.name}")
 		if rule:
