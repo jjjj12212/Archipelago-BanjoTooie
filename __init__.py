@@ -107,6 +107,7 @@ class BanjoTooieWorld(World):
 	item_info: dict[str, BanjoTooieItemInfo]
 	item_pools: dict[str|int, list[BanjoTooieItem]]
 	starting_worlds: list[str]
+	region_links: dict[str, dict[data.Form, BanjoTooieRegion]]
 	entrance_groups: dict[str, list[BanjoTooieEntrance]]
 	exit_map: dict[int, int]
 	spoiler_info: dict[str, list[str]]
@@ -146,6 +147,7 @@ class BanjoTooieWorld(World):
 			"Extra Items": [],
 			"Starting Inventory From Pool": [],
 		}
+		self.region_links = {}
 		self.entrance_groups = {}
 		self.exit_map = {}
 		self.spoiler_info = {}
@@ -371,7 +373,9 @@ class BanjoTooieWorld(World):
 				ap_region.region_links = ap_regions
 				ap_region.form = form
 				ap_region.region_data = region
+				ap_region.formless_name = region_name
 				ap_regions[form] = ap_region
+			self.region_links[region_name] = ap_regions
 			for location_name, location in region.get("locations", {}).items():
 				parser_str = f"{region_file} -> {location_name}"
 				if not self.parser.parse(location.get("enabled", "true"), f"{parser_str} -> enabled")(None):
@@ -926,6 +930,8 @@ class BanjoTooieWorld(World):
 	def remove(self, state: CollectionState, item: Item):
 		mixin: "BanjoTooieState" = state # pyright: ignore[reportAssignmentType]
 		mixin.banjo_tooie_path_finders[self.player].clear()
+		mixin.banjo_tooie_forms_reach[self.player].clear()
+		mixin.banjo_tooie_forms_reach_regions[self.player].clear()
 		mixin.banjo_tooie_air[self.player].clear()
 		return super().remove(state, item)
 

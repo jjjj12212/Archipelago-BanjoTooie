@@ -1,7 +1,6 @@
 import ast
-from collections import defaultdict, deque
-from itertools import zip_longest
-from typing import Callable, Any, Iterator, cast, TYPE_CHECKING, get_type_hints
+from collections import deque
+from typing import Callable, Any, Counter, Generator, cast, TYPE_CHECKING, get_type_hints
 from Options import Choice
 from BaseClasses import CollectionState, Region, Entrance, MultiWorld
 from worlds.AutoWorld import LogicMixin
@@ -10,9 +9,6 @@ from . import locations, items, data
 
 if TYPE_CHECKING:
 	from . import BanjoTooieWorld
-
-PathValue = tuple[str, "PathValue | None"]
-RegionPairs = dict[Region, set[Region]]
 
 true: Callable[[CollectionState], bool] = lambda _state: True
 false: Callable[[CollectionState], bool] = lambda _state: False
@@ -23,98 +19,136 @@ dynamic_options = (
 
 class BanjoTooiePathFinder:
 
-	def __init__(self, start: Region):
+	def __init__(self, state: "BanjoTooieState", dest: Region):
 		self.locked = False
-		self.start = start
-		self.path: dict[Region | Entrance, PathValue] = {}
-		self.reachable_regions: set[Region] = set()
-		self.blocked_connections: set[Entrance] = set()
+		self.state = state
+		self.dest = dest
+		self.reachable_regions: set[Region] = {dest}
+		self.blocked_entrances: set[Entrance] = set(dest.entrances)
 
-	def copy(self):
-		ret = BanjoTooiePathFinder(self.start)
-		ret.path = self.path.copy()
+	def copy(self, state: "BanjoTooieState"):
+		ret = BanjoTooiePathFinder(state, self.dest)
 		ret.reachable_regions = self.reachable_regions.copy()
-		ret.blocked_connections = self.blocked_connections.copy()
+		ret.blocked_entrances = self.blocked_entrances.copy()
 		return ret
 
-	@staticmethod
-	def flist_to_iter(path_value: PathValue | None) -> Iterator[str]:
-		while path_value:
-			region_or_entrance, path_value = path_value
-			yield region_or_entrance
+	def process_queue(self):
+		while self.queue:
+			entrance = self.queue.popleft()
+			if not entrance.access_rule(self.state): continue
+			self.blocked_entrances.remove(entrance)
+			parent_region = entrance.parent_region
+			if (
+				parent_region is not None
+				and parent_region not in self.reachable_regions
+			):
+				self.reachable_regions.add(parent_region)
+				self.blocked_entrances.update(parent_region.entrances)
+				self.queue.extend(parent_region.entrances)
+				for new_entrance in self.state.multiworld.indirect_connections.get(parent_region, set()):
+					if new_entrance in self.blocked_entrances and new_entrance not in self.queue:
+						self.queue.append(new_entrance)
+				yield parent_region
 
-	def get_path(self, region: Region) -> list[tuple[str, str] | tuple[str, None]]:
-		reversed_path_as_flist: PathValue = self.path.get(region, (str(region), None))
-		string_path_flat = reversed(list(map(str, BanjoTooiePathFinder.flist_to_iter(reversed_path_as_flist))))
-		pathsiter = iter(string_path_flat)
-		pathpairs = zip_longest(pathsiter, pathsiter)
-		return list(pathpairs)
+	def refresh_queue(self):
+		self.queue = deque(self.blocked_entrances)
 
-	def can_reach_entrance(self, exit_: Entrance, state: CollectionState) -> bool:
-		assert exit_.parent_region, f"called can_reach on a BanjoTooieEntrance '{self}' with no parent_region"
-		if exit_.parent_region in self.reachable_regions and exit_.access_rule(state):
-			if not exit_.hide_path and exit_ not in self.path:
-				self.path[exit_] = (exit_.name, self.path.get(exit_.parent_region, (exit_.parent_region.name, None)))
-			return True
-		return False
-
-	def can_reach_region(self, dest: Region) -> bool:
-		return dest in self.reachable_regions
-
-	def can_reach(self, dest: Region, state: CollectionState) -> bool:
-		if dest in self.reachable_regions: return True
-		if self.locked: return False
-		self.locked = True
+	def find_all(self, regions: set[Region]):
+		for region in regions:
+			if region in self.reachable_regions: yield region
+		if self.locked: return
+		regions -= self.reachable_regions
+		if not regions: return
 		try:
-			if self.start not in self.reachable_regions:
-				self.reachable_regions.add(self.start)
-				self.blocked_connections.update(self.start.exits)
-			queue = deque(self.blocked_connections)
-			while queue:
-				connection = queue.popleft()
-				new_region = connection.connected_region
-				if new_region in self.reachable_regions:
-					self.blocked_connections.remove(connection)
-				elif self.can_reach_entrance(connection, state):
-					if not new_region: continue
-					self.reachable_regions.add(new_region)
-					self.blocked_connections.remove(connection)
-					self.blocked_connections.update(new_region.exits)
-					queue.extend(new_region.exits)
-					self.path[new_region] = (new_region.name, self.path.get(connection, None))
-					for new_entrance in state.multiworld.indirect_connections.get(new_region, set()):
-						if new_entrance in self.blocked_connections and new_entrance not in queue:
-							queue.append(new_entrance)
-					if dest is new_region: return True
+			self.locked = True
+			self.refresh_queue()
+			for region in self.process_queue():
+				if region in regions:
+					yield region
+					regions.remove(region)
+					if not regions: return
+		finally:
+			self.locked = False
+
+	def can_reach_all(self, starts: set[Region]) -> bool:
+		starts -= self.reachable_regions
+		if not starts: return True
+		if self.locked: return False
+		try:
+			self.locked = True
+			self.refresh_queue()
+			for region in self.process_queue():
+				starts.discard(region)
+				if not starts: return True
+			return False
+		finally:
+			self.locked = False
+
+	def can_reach_any(self, starts: set[Region]) -> bool:
+		if starts & self.reachable_regions: return True
+		if self.locked: return False
+		try:
+			self.locked = True
+			self.refresh_queue()
+			for region in self.process_queue():
+				if region in starts: return True
 			return False
 		finally:
 			self.locked = False
 
 class BanjoTooiePathFinders(dict[Region, BanjoTooiePathFinder]):
 
+	def __init__(self, state: "BanjoTooieState", *args: Any, **kwargs: Any):
+		super().__init__(*args, **kwargs)
+		self.state = state
+
 	def __missing__(self, start: Region):
-		path_finder = BanjoTooiePathFinder(start)
+		path_finder = BanjoTooiePathFinder(self.state, start)
 		self[start] = path_finder
 		return path_finder
 
-	def copy(self):
-		return BanjoTooiePathFinders(super().copy())
+	def super_copy(self, state: "BanjoTooieState"):
+		return BanjoTooiePathFinders(
+			state,
+			{region: path_finder.copy(state) for region, path_finder in self.items()}
+		)
+
+	def copy(self) -> dict[Region, BanjoTooiePathFinder]:
+		return self.super_copy(self.state)
 
 class BanjoTooieMixin(LogicMixin):
 	banjo_tooie_path_finders: dict[int, BanjoTooiePathFinders]
+	banjo_tooie_transform_block: Counter[int]
+	banjo_tooie_forms_reach: dict[int, set[tuple[frozenset[data.Form], str]]] = {}
+	banjo_tooie_forms_reach_regions: dict[int, set[frozenset[tuple[data.Form, str]]]] = {}
 	banjo_tooie_air: dict[int, dict[BanjoTooieRegion, float]]
 
 	def init_mixin(self, multiworld: MultiWorld) -> None:
 		players = multiworld.get_game_players("Banjo-Tooie")
 		self.banjo_tooie_path_finders = {}
+		self.banjo_tooie_transform_block = Counter()
+		self.banjo_tooie_forms_reach = {}
+		self.banjo_tooie_forms_reach_regions = {}
 		self.banjo_tooie_air = {}
 		for player in players:
-			self.banjo_tooie_path_finders[player] = BanjoTooiePathFinders()
+			self.banjo_tooie_path_finders[player] = BanjoTooiePathFinders(self) # pyright: ignore[reportArgumentType]
+			self.banjo_tooie_forms_reach[player] = set()
+			self.banjo_tooie_forms_reach_regions[player] = set()
 			self.banjo_tooie_air[player] = {}
 
 	def copy_mixin(self, new_state: "BanjoTooieMixin"):
+		new_state.banjo_tooie_transform_block = self.banjo_tooie_transform_block.copy()
 		new_state.banjo_tooie_path_finders = {
-			player: path_finder.copy() for player, path_finder in self.banjo_tooie_path_finders.items()
+			key: value.super_copy(self) # pyright: ignore[reportArgumentType]
+			for key, value in self.banjo_tooie_path_finders.items()
+		}
+		new_state.banjo_tooie_forms_reach = {
+			key: value.copy()
+			for key, value in self.banjo_tooie_forms_reach.items()
+		}
+		new_state.banjo_tooie_forms_reach_regions = {
+			key: value.copy()
+			for key, value in self.banjo_tooie_forms_reach_regions.items()
 		}
 		new_state.banjo_tooie_air = self.banjo_tooie_air.copy()
 		return new_state
@@ -125,91 +159,96 @@ if TYPE_CHECKING:
 class BanjoTooieRules(ast.NodeTransformer):
 	debug = False
 
-	def check_region_pairs(self, pairs: list[RegionPairs], state: Any, player: int) -> bool:
-		state.add_item("TransformBlock", player)
-		for pair in pairs:
-			can_reach = True
-			for start_region, end_regions in pair.items():
-				path_finder = state.banjo_tooie_path_finders[player][start_region]
-				for end_region in end_regions:
-					if not path_finder.can_reach(end_region, state):
-						can_reach = False
-						break
-				if not can_reach: break
-			if can_reach: return True
-		return False
-
 	def can_form_from_region_reach(
 		self,
 		form: data.Form,
 		from_name: str,
 		to_names: str | list[str],
-		state: Any,
+		state: "BanjoTooieState",
 		player: int
 	) -> bool:
-		world = cast("BanjoTooieWorld", state.multiworld.worlds[player])
-		start = world.get_region(data.regions[from_name]["names"][form])
+		world: "BanjoTooieWorld" = state.multiworld.worlds[player] # pyright: ignore[reportAssignmentType]
+		start = world.region_links[from_name][form]
 		if not start.can_reach(state): return False
-		path_finder = state.banjo_tooie_path_finders[player][start]
 		if isinstance(to_names, str): to_names = [to_names]
-		regions: set[Region] = set()
-		for to_name in to_names:
-			region = world.get_region(data.regions[to_name]["names"][form])
-			if region.can_reach(state): regions.add(region)
-		can_reach = True
-		for region in regions:
-			if not path_finder.can_reach_region(region):
-				can_reach = False
-				break
-		if can_reach: return True
-		return self.check_region_pairs([{start:regions}], state.copy(), player)
+		regions = {world.region_links[to_name][form] for to_name in to_names}
+		try:
+			state.banjo_tooie_transform_block[player] += 1
+			for region in regions:
+				if not state.banjo_tooie_path_finders[player][region].can_reach_any({start}): return False
+			return True
+		finally:
+			state.banjo_tooie_transform_block[player] -= 1
 
-	def forms_reach(self, forms: set[data.Form], region_name: str, state: Any, player: int) -> bool:
-		world = cast("BanjoTooieWorld", state.multiworld.worlds[player])
-		region = data.regions[region_name]
-		pairs: list[RegionPairs] = []
-		for start_name in data.form_start_regions:
-			start = data.regions[start_name]
-			if forms - set(start["names"]): continue
-			pair: RegionPairs = defaultdict(set)
-			can_reach = True
+	def start_links(self, world: "BanjoTooieWorld", state: CollectionState, forms: set[data.Form] | frozenset[data.Form]):
+		start_links: list[dict[data.Form, BanjoTooieRegion]] = []
+		for start in data.form_start_regions:
+			links = world.region_links[start]
+			if forms - set(links): continue
 			for form in forms:
-				start_region = world.get_region(start["names"][form])
-				end_region = world.get_region(region["names"][form])
-				if not start_region.can_reach(state) or not end_region.can_reach(state):
-					pair.clear()
-					break
-				if can_reach and not state.banjo_tooie_path_finders[player][start_region].can_reach_region(end_region):
-					can_reach = False
-				pair[start_region].add(end_region)
-			if pair:
-				if can_reach: return True
-				pairs.append(pair)
-		return self.check_region_pairs(pairs, state.copy(), player)
+				if not links[form].can_reach(state): break
+			else: start_links.append(links)
+		return start_links
 
-	def forms_reach_regions(self, region_names: dict[data.Form, str], state: Any, player: int) -> bool:
-		world = cast("BanjoTooieWorld", state.multiworld.worlds[player])
-		pairs: list[RegionPairs] = []
-		forms = set(region_names)
-		for start_name in data.form_start_regions:
-			start = data.regions[start_name]
-			if forms - set(start["names"]): continue
-			pair: RegionPairs = defaultdict(set)
-			can_reach = True
-			for form, region_name in region_names.items():
-				region = data.regions[region_name]
-				start_region = world.get_region(start["names"][form])
-				end_region = world.get_region(region["names"][form])
-				if not start_region.can_reach(state) or not end_region.can_reach(state):
-					pair.clear()
-					break
-				if can_reach and not state.banjo_tooie_path_finders[player][start_region].can_reach_region(end_region):
-					can_reach = False
-				pair[start_region].add(end_region)
-			if pair:
-				if can_reach: return True
-				pairs.append(pair)
-		return self.check_region_pairs(pairs, state.copy(), player)
+	def forms_reach(self, forms: frozenset[data.Form], region_name: str, state: "BanjoTooieState", player: int) -> bool:
+		hashed = (forms, region_name)
+		if hashed in state.banjo_tooie_forms_reach[player]: return True
+		world: "BanjoTooieWorld" = state.multiworld.worlds[player] # pyright: ignore[reportAssignmentType]
+		start_links = self.start_links(world, state, forms)
+		if not start_links: return False
+		queues: list[Generator[BanjoTooieRegion, Any, None]] = []
+		dest_links = world.region_links[region_name]
+		for form in forms:
+			path_finder = state.banjo_tooie_path_finders[player][dest_links[form]]
+			queues.append(path_finder.find_all({start[form] for start in start_links})) # pyright: ignore[reportArgumentType]
+		can_access: Counter[str] = Counter()
+		target = len(forms)
+		last = ""
+		try:
+			state.banjo_tooie_transform_block[player] += 1
+			while True:
+				for queue in queues:
+					try:
+						region = next(queue)
+						last = region.formless_name
+						can_access[last] += 1
+					except StopIteration:
+						return False
+				if can_access[last] == target:
+					state.banjo_tooie_forms_reach[player].add(hashed)
+					return True
+		finally:
+			state.banjo_tooie_transform_block[player] -= 1
+
+	def forms_reach_regions(self, region_names: dict[data.Form, str], state: "BanjoTooieState", player: int) -> bool:
+		hashed = frozenset(region_names.items())
+		if hashed in state.banjo_tooie_forms_reach_regions[player]: return True
+		world: "BanjoTooieWorld" = state.multiworld.worlds[player] # pyright: ignore[reportAssignmentType]
+		start_links = self.start_links(world, state, set(region_names))
+		if not start_links: return False
+		queues: list[Generator[BanjoTooieRegion, Any, None]] = []
+		for form, region_name in region_names.items():
+			region = world.region_links[region_name][form]
+			path_finder = state.banjo_tooie_path_finders[player][region]
+			queues.append(path_finder.find_all({start[form] for start in start_links})) # pyright: ignore[reportArgumentType]
+		can_access: Counter[str] = Counter()
+		target = len(region_names)
+		last = ""
+		try:
+			state.banjo_tooie_transform_block[player] += 1
+			while True:
+				for queue in queues:
+					try:
+						region = next(queue)
+						last = region.formless_name
+						can_access[last] += 1
+					except StopIteration:
+						return False
+				if can_access[last] == target:
+					state.banjo_tooie_forms_reach_regions[player].add(hashed)
+					return True
+		finally:
+			state.banjo_tooie_transform_block[player] -= 1
 
 	def air(self, region_name: str, form: data.Form, exit_name: str | None, state: "BanjoTooieState", player: int):
 		region: BanjoTooieRegion = state.multiworld.get_region(data.regions[region_name]["names"][form], player) # pyright: ignore[reportAssignmentType]
@@ -221,9 +260,7 @@ class BanjoTooieRules(ast.NodeTransformer):
 		elif form == "Banjo-Kazooie" and self.cache[self.tricks["RhythmicSwimming"]](state): air_index = 2
 		else: air_index = 0
 		if (
-			region.region_data is not None
-			and region.form is not None
-			and exit_name is not None
+			exit_name is not None
 			and "exits" in region.region_data
 		):
 			exit_data = region.region_data["exits"][exit_name]
@@ -238,8 +275,6 @@ class BanjoTooieRules(ast.NodeTransformer):
 				entrance.exit_data is not None
 				and parent_region is not None
 				and parent_region not in checked_regions
-				and parent_region.form is not None
-				and parent_region.region_data is not None
 				and parent_region.can_reach(state)
 				and entrance.access_rule(state)
 			):
@@ -427,7 +462,7 @@ class BanjoTooieRules(ast.NodeTransformer):
 			case "true": return ast.Constant(value=True)
 			case "false": return ast.Constant(value=False)
 			case "Player": return self.player
-			case "TransformBlock": return self.make_call("has", [ast.Constant(value=node.id)])
+			case "TransformBlock": return ast.Subscript(self.make_attr("state", "banjo_tooie_transform_block"), self.player)
 			case _: pass
 		if node.id in data.alias and node.id not in self.alias:
 			self.alias.add(node.id)
@@ -616,6 +651,7 @@ class BanjoTooieRules(ast.NodeTransformer):
 							and isinstance(arg.value, str)
 						), f"{self.file}: forms_reach requires set to contain only str."
 						forms.add(cast(data.Form, arg.value))
+					node.args[0] = ast.Call(ast.Name("frozenset"), [node.args[0]])
 					assert (
 						isinstance(node.args[1], ast.Constant)
 						and isinstance(node.args[1].value, str)

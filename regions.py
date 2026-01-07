@@ -1,4 +1,4 @@
-from BaseClasses import CollectionState, Entrance, EntranceType, MultiWorld, Region
+from BaseClasses import CollectionState, Entrance, EntranceType, Region
 from typing import TYPE_CHECKING, Callable, Optional
 from . import data
 
@@ -29,7 +29,6 @@ class BanjoTooieEntrance(Entrance):
 			region.multiworld is not None
 			and self.exit_links is not None
 			and isinstance(region, BanjoTooieRegion)
-			and region.region_links is not None
 		):
 			for form, entrance in self.exit_links.items():
 				if self is entrance: continue
@@ -41,20 +40,10 @@ class BanjoTooieEntrance(Entrance):
 
 class BanjoTooieRegion(Region):
 	entrance_type = BanjoTooieEntrance
-	region_links: Optional[dict[data.Form, "BanjoTooieRegion"]]
-	form: Optional[data.Form]
-	region_data: Optional[data.ParentRegion]
-
-	def __init__(
-			self,
-			name: str,
-			player: int,
-			multiworld: MultiWorld,
-			hint: str | None = None,
-		):
-		super().__init__(name, player, multiworld, hint)
-		self.form = None
-		self.region_data = None
+	region_links: dict[data.Form, "BanjoTooieRegion"]
+	form: data.Form
+	region_data: data.ParentRegion
+	formless_name: str
 
 	def connect(
 		self,
