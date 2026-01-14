@@ -1,8 +1,9 @@
 from typing import TypedDict, NotRequired, Literal
+from dataclasses import dataclass, field
 from .region_names import RegionName
 from .forms import *
 
-class BaseLocation(TypedDict):
+class Location(TypedDict):
 	"""
 		A location.
 	"""
@@ -28,16 +29,6 @@ class BaseLocation(TypedDict):
 
 		Not specified:
 			This location is an event. An event item with the same name as the location will be placed here.
-	"""
-
-	item_rule: NotRequired[str]
-	"""
-		str:
-			Specifies the logic for items allowed at this location.
-			Logic parsing only has the context of slot options and the item to check against.
-
-		Not specified:
-			This location will always accept any item.
 	"""
 
 	enabled: NotRequired[str]
@@ -72,8 +63,6 @@ class BaseLocation(TypedDict):
 			This location will be an event if its item is not shuffled.
 	"""
 
-class Location(BaseLocation):
-
 	logic: NotRequired[dict[Form, str] | set[Form] | str]
 	"""
 		dict[Form, str]
@@ -102,19 +91,9 @@ class Location(BaseLocation):
 			Specifies which forms can freely access this location.
 	"""
 
-class FinalLocation(BaseLocation):
 
-	logic: NotRequired[dict[Form, str]]
-	"""
-		dict[Form, str]
-			Only forms specified by DictKey can access this location.
-			DictValue is the logic for this location for the form.
 
-		Not specified:
-			This logic will evaluate to True for all normal forms that this region exists as.
-	"""
-
-class BaseExit(TypedDict):
+class Exit(TypedDict):
 	"""
 		An exit to another region.
 	"""
@@ -167,12 +146,7 @@ class BaseExit(TypedDict):
 				The amount of air used to go through this exit with Rhythmic Swimming.
 	"""
 
-FinalExitLogic = dict[Form, dict[Form, str]]
-ExitLogic = dict[Form, str | dict[Form, str] | set[Form]] | set[Form] | str
-
-class Exit(BaseExit):
-
-	logic: NotRequired[ExitLogic]
+	logic: NotRequired[dict[Form, str | dict[Form, str] | set[Form]] | set[Form] | str]
 	"""
 		dict[Form, str | dict[Form, str] | set[Form]]:
 			DictKey:
@@ -210,24 +184,11 @@ class Exit(BaseExit):
 			Specifies which forms can freely access this exit.
 	"""
 
-class FinalExit(BaseExit):
+Macros = set[Literal["event", "splitup", "rejoin"]]
 
-	logic: NotRequired[FinalExitLogic]
+class Region(TypedDict):
 	"""
-		dict[Form, dict[Form, str]]:
-			DictKey:
-				Only forms specified can access this exit.
-
-			DictValue:
-				Specifies transformation exit(s). DictValue is the logic for the transformation to DictKey.
-
-		Not specified:
-			This logic will evaluate to True for all normal forms that this region exists as.
-	"""
-
-class BaseRegion(TypedDict):
-	"""
-		Base region class. Used to separate typing requirements.
+		A region. Must be unique within all logic files.
 	"""
 
 	id: NotRequired[int]
@@ -241,15 +202,7 @@ class BaseRegion(TypedDict):
 			All regions should have an id specified in some way.
 	"""
 
-	forms: NotRequired[set[Form]]
-	"""
-		Specifies which form(s) this region exists as.
-		Automatically populated with forms:
-			* from any location/exit in this region
-			* that can access this region from other regions
-	"""
-
-	macro: NotRequired[set[Literal["event", "splitup", "rejoin"]]]
+	macro: NotRequired[Macros]
 	"""
 		Allows adding macros for easier logic building.
 
@@ -277,11 +230,6 @@ class BaseRegion(TypedDict):
 		Specifies that this region is underwater.
 	"""
 
-class Region(BaseRegion):
-	"""
-		A region. Must be unique within all logic files.
-	"""
-
 	locations: NotRequired[dict[str, Location]]
 	"""
 		A dictionary containing locations in this region.
@@ -295,26 +243,115 @@ class Region(BaseRegion):
 		If the Exit contains an id, this will be considered a real in-game exit.
 	"""
 
-class FinalRegion(BaseRegion):
+Regions = dict[str, Region]
+
+@dataclass
+class FinalLocation():
+
+	groups: set[str] = field(default_factory=set[str])
 	"""
-		A region. Must be unique within all logic files.
+		Specifies the custom groups this location is part of.
 	"""
 
-	locations: NotRequired[dict[str, FinalLocation]]
+	item: dict[str, str] = field(default_factory=dict[str, str])
 	"""
-		A dictionary containing locations in this region.
-		The key is the name of a location.
-	"""
-
-	exits: NotRequired[dict[str, FinalExit]]
-	"""
-		A dictionary containing exits in this region.
-		DictKey is the name of a region that this region can exit to.
-		If the Exit contains an id, this will be considered a real in-game exit.
+		DictKey specifies the vanilla item for this location, if DictValue evaluates to True using logic parsing.
+		The first DictValue that returns True is used, the rest are ignored.
+		Logic parsing only has the context of slot options.
 	"""
 
+	enabled: str = ""
+	"""
+		Specifies the logic for whether this location will exist at all.
+		Logic parsing only has the context of slot options.
+	"""
 
-class ParentRegion(FinalRegion):
+	locked: str = "false"
+	"""
+		Specifies the logic for whether the location's vanilla item will be placed at this location.
+		Has no affect if the location ends up as an event.
+		Logic parsing only has the context of slot options.
+	"""
+
+	force_event: str = "false"
+	"""
+		Specifies the logic for whether the location will be forced as an event.
+		The location can still end up as an event if this evaluates to false.
+		Logic parsing only has the context of slot options.
+	"""
+
+	logic: dict[Form, str] = field(default_factory=dict[Form, str])
+	"""
+		Only forms specified by DictKey can access this location.
+		DictValue is the logic for this location for the form.
+	"""
+
+	file = ""
+
+@dataclass
+class FinalExit():
+
+	id: int | None = None
+	"""
+		int:
+			Specifies the in game entrance id that this exit leads to.
+			Should be formatted in hexidecimal with 2 digits.
+
+		None:
+			This exit won't be considered a real in-game exit.
+	"""
+
+	two_way: bool = False
+	"""
+		Automatically set.
+
+		True:
+			Exit is considered a two way exit.
+
+		False:
+			Exit is considered a one way exit.
+	"""
+
+	groups: set[str] = field(default_factory=set[str])
+	"""
+		Specifies the custom groups this exit is part of.
+	"""
+
+	air: dict[Form, tuple[float, ...]] = field(default_factory=dict[Form, tuple[float, ...]])
+	"""
+		Specifies the amount of air used to go through this exit.
+
+		DictKey:
+			The form going through this exit.
+
+		DictValue:
+			Tuple[0]:
+				The amount of air used to go through this exit without Fast Swimming.
+
+			Tuple[1]
+				The amount of air used to go through this exit with Fast Swimming.
+
+			Tuple[2]
+				The amount of air used to go through this exit with Rhythmic Swimming.
+	"""
+
+	logic: dict[Form, dict[Form, str]] = field(default_factory=dict[Form, dict[Form, str]])
+	"""
+		DictKey:
+			Only forms specified can access this exit.
+
+		DictValue:
+			Specifies transformation exit(s). DictValue is the logic for the transformation to DictKey.
+	"""
+
+	file = "Exit"
+
+	indirect_starts: set[Form] = field(default_factory=set[Form])
+
+	indirect_extras: set[tuple[Form, str]] = field(default_factory=set[tuple[Form, str]])
+
+@dataclass
+class FinalRegion():
 	"""
 		A parent region holding extra data.
 	"""
@@ -329,9 +366,39 @@ class ParentRegion(FinalRegion):
 		Automatically set to the file path where this region is defined.
 	"""
 
-	names: dict[Form, str]
+	id: int
 	"""
-		Automatically populated with form specific names of this region.
+		Specifies the in game map id for this region.
+		Should be formatted in hexidecimal with 4 digits.
 	"""
 
-Regions = dict[str, Region]
+	names: dict[Form, str] = field(default_factory=dict[Form, str])
+
+	event: bool = False
+	"""
+		Specifies that this region contains only location(s) with free access.
+	"""
+
+	locations: dict[str, FinalLocation] = field(default_factory=dict[str, FinalLocation])
+	"""
+		A dictionary containing locations in this region.
+		The key is the name of a location.
+	"""
+
+	exits: dict[str, FinalExit] = field(default_factory=dict[str, FinalExit])
+	"""
+		A dictionary containing exits in this region.
+		DictKey is the name of a region that this region can exit to.
+		If the Exit contains an id, this will be considered a real in-game exit.
+	"""
+
+	instant_transform: set[Form] = field(default_factory=set[Form])
+	"""
+		Specifies which forms can freely swap with the main form.
+		Transformation exits will be automatically added.
+	"""
+
+	underwater: bool = False
+	"""
+		Specifies that this region is underwater.
+	"""

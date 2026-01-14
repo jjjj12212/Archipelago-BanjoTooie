@@ -42,7 +42,7 @@ class BanjoTooieRegion(Region):
 	entrance_type = BanjoTooieEntrance
 	region_links: dict[data.Form, "BanjoTooieRegion"]
 	form: data.Form
-	region_data: data.ParentRegion
+	region_data: data.FinalRegion
 	formless_name: str
 
 	def connect(

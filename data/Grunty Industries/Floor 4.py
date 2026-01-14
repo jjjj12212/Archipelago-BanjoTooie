@@ -398,7 +398,7 @@ regions: Regions = {
 	"GI Floor 4: Clinkers Cavern": {
 		"id": 0x0162,
 		"locations": {
-			"GI Floor 4: Cleared Clinker's Cavern": {"logic": "exclude(AnyEggs, ClockworkKazooieEggs)"},
+			"GI Floor 4: Cleared Clinker's Cavern": {"logic": "LinearEggs"},
 			"GI Floor 4: Clinker's Cavern Mumbo Token": {
 				"item": {"MumboToken":"'Clinker\\'s Cavern' in ChosenGoals", "Nothing":"true"},
 				"enabled": "'Clinker\\'s Cavern' in VictoryGoals",

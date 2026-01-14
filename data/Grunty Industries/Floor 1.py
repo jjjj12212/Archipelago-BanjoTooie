@@ -484,8 +484,9 @@ regions: Regions = {
 					"Banjo": "PackWhack and SnoozePack",
 					"Kazooie": """
 						EggUse and (
-							exclude(AnyEggs, IceEggs)
+							BlueEggs or FireEggs or GrenadeEggs
 							or IceEggs and WingWhack
+							or ClockworkKazooieEggs
 						)
 					""",
 				}

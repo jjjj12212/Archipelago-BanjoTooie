@@ -16,129 +16,172 @@
 	All locations within logic files will automatically be part of a group with the same name as "Major Region".
 """
 
-import sys, re, os, pkgutil, importlib, zipimport, inspect, pathlib, ast
+import re, os, pkgutil, importlib, zipimport, inspect, pathlib
+from collections import deque
 from importlib.machinery import FileFinder
 from typing import cast, get_args
 
-
-from . import groups, items
-items_file = inspect.getsourcefile(items)
-from .types import ExitLogic, ExplicitForm, FinalLocation, Form, NormalForm, ParentRegion, Location, Region
+from . import groups, item_info, tricks, progressives, alias, parser
+items_file = inspect.getsourcefile(item_info)
+from .types import ExplicitForm, FinalExit, FinalLocation, FinalRegion, Form, Macros, NormalForm, Region
 from .region_names import RegionName
-from .items import items
 from .forms import FormsReachBlocked, FormsReachTrack, FreeStateChange, InstantTransform
-from .types import Regions # pyright: ignore[reportUnusedImport]
-from .tricks import tricks # pyright: ignore[reportUnusedImport]
-from .progressives import progressives # pyright: ignore[reportUnusedImport]
-from .alias import alias # pyright: ignore[reportUnusedImport]
 
-_regions: dict[RegionName, Region] = {}
-regions: dict[str, ParentRegion] = {}
-locations: dict[str, Location] = {}
-item_groups: dict[str, set[str]] = groups.items
+Regions = types.Regions
+tricks = tricks.tricks
+progressives = progressives.progressives
+alias = alias.alias
+item_name = parser.item_name
+
+regions: dict[str, FinalRegion] = {}
+locations: set[str] = set()
+item_groups = groups.items
 location_groups: dict[str, set[str]] = {}
 world_path = pathlib.Path(__file__).parents[2]
 normal_forms: tuple[NormalForm, ...] = get_args(NormalForm)
 explicit_forms: tuple[ExplicitForm, ...] = get_args(ExplicitForm)
 all_forms = normal_forms + explicit_forms
-form_to_region_name: dict[str, str] = {}
 form_start_regions: set[str] = set()
 if items_file: items_file = pathlib.Path(items_file).relative_to(world_path)
 else: items_file = "items.py"
-
-def item_name(value: str) -> str:
-	return re.sub("[^a-zA-Z0-9]+", "", value)
 
 def option_name(value: str) -> str:
 	value = re.sub("['\"]+", "", value)
 	return re.sub("[^a-zA-Z0-9_]+", "_", value).lower()
 
 def form_name(form: Form, name: str) -> str:
-	if normal_forms[0] == form: return name
+	if form == "Any" or form == normal_forms[0]: return name
 	return f"{name} - {form}"
-
-def location_region_name(name: str) -> RegionName:
-	return f"Location | {name}" # pyright: ignore[reportReturnType]
 
 def add_region(major_region: str, module_name: str) -> None:
 	module = importlib.import_module(module_name, __name__)
-	if not hasattr(module, "regions"): return
 	file = inspect.getsourcefile(module)
 	if file: file = str(pathlib.Path(file).relative_to(world_path))
 	else: file = major_region
-	default_id = 0
-	instant_transform: set[Form] = set()
-	if hasattr(module, "default_id"): default_id = module.default_id
-	if hasattr(module, "instant_transform"): instant_transform = module.instant_transform
+	default_id: int = getattr(module, "default_id", 0)
+	instant_transform: set[Form] = getattr(module, "instant_transform", set())
+
 	for region_name, region in cast(dict[RegionName, Region], module.regions).items():
 		assert region_name, f"{file}: Region names cannot be blank."
-		assert region_name not in _regions, f"{file}, {region_name}: Region names must be unique."
-		if major_region == "Menu": region.setdefault("forms", set()).add(normal_forms[0])
-		_regions[region_name] = region
-		regions[region_name] = {
-			"major_region": major_region,
-			"file": file,
-			"names": {}
-		}
-		if default_id and ("id" not in region or not region["id"]):
-			region["id"] = default_id
-		if instant_transform and "instant_transform" not in region:
-			region["instant_transform"] = instant_transform
-		macro = region.pop("macro", None)
-		if macro:
-			if "event" in macro:
-				region.setdefault("locations", {})[region_name] = {}
-			if "splitup" in macro:
-				logic: ExitLogic = region.setdefault("exits", {}).setdefault(region_name, {}).setdefault("logic", {})
-				assert isinstance(logic, dict), f"{file}, {region_name}, splitup: Existing logic must be type dict."
-				for form in ("Banjo-Kazooie", "Banjo", "Kazooie"):
-					if form not in logic:
-						logic[form] = {}
-				assert (
-					isinstance(logic["Banjo-Kazooie"], dict)
-					and isinstance(logic["Banjo"], dict)
-					and isinstance(logic["Kazooie"], dict)
-				), f"{file}, {region_name}, splitup: Existing logic for Banjo-Kazooie, Banjo and Kazooie must be type dict."
-				logic["Banjo-Kazooie"]["Banjo"] = "SplitUp"
-				logic["Banjo-Kazooie"]["Kazooie"] = "SplitUp"
-				logic["Banjo"]["Banjo-Kazooie"] = f"forms_reach({{'Banjo', 'Kazooie'}}, '{region_name}')"
-				logic["Kazooie"]["Banjo-Kazooie"] = f"forms_reach({{'Banjo', 'Kazooie'}}, '{region_name}')"
-			elif "rejoin" in macro:
-				logic: ExitLogic = region.setdefault("exits", {}).setdefault(region_name, {}).setdefault("logic", {})
-				assert isinstance(logic, dict), f"{file}, {region_name}, splitup: Existing logic must be type dict."
-				for form in ("Banjo", "Kazooie"):
-					if form not in logic:
-						logic[form] = {}
-				assert (
-					isinstance(logic["Banjo"], dict)
-					and isinstance(logic["Kazooie"], dict)
-				), f"{file}, {region_name}, splitup: Existing logic for Banjo and Kazooie must be type dict."
-				logic["Banjo"]["Banjo-Kazooie"] = f"forms_reach({{'Banjo', 'Kazooie'}}, '{region_name}')"
-				logic["Kazooie"]["Banjo-Kazooie"] = f"forms_reach({{'Banjo', 'Kazooie'}}, '{region_name}')"
+		assert region_name not in regions, f"{file}, {region_name}: Region names must be unique."
+		final_region = regions.setdefault(region_name, FinalRegion(
+			major_region=major_region,
+			file=file,
+			id=region.get("id", default_id),
+			instant_transform=region.get("instant_transform", instant_transform),
+			underwater=region.get("underwater", False)
+		))
+
 		for location_name, location in region.get("locations", {}).items():
 			assert location_name, f"{file}, {region_name}: Location names cannot be blank."
 			assert location_name not in locations, f"{file}, {region_name}, {location_name}: Location names must be unique."
-			locations[location_name] = location
-			if "groups" not in location: location["groups"] = set()
-			location["groups"].add(major_region)
-			item_name = location.get("item")
-			if item_name:
+			locations.add(location_name)
+			parser.locations[item_name(location_name)] = location_name
+			final_location = final_region.locations.setdefault(location_name, FinalLocation(
+				groups=location.get("groups", set[str]()),
+				enabled=location.get("enabled", ""),
+				locked=location.get("locked", "false"),
+				force_event=location.get("force_event", "false")
+			))
+			final_location.groups.add(major_region)
+
+			location_item = location.get("item")
+			if type(location_item) is str: final_location.item = {location_item:""}
+			elif type(location_item) is dict: final_location.item = location_item
+
+			if final_location.item:
 				item_groups: set[str] = set()
-				item_names: set[str]
-				if isinstance(item_name, dict): item_names = set(item_name)
-				else: item_names = {item_name}
+				item_names = set(final_location.item)
 				for item in item_names:
 					for group_name, items in groups.items.items():
 						if item in items: item_groups.add(group_name)
 				for item in item_names:
 					for group_name, name in groups.locations.items():
-						if name in item_groups or name == item: location["groups"].add(group_name)
+						if name in item_groups or name == item: final_location.groups.add(group_name)
 			if major_region != "Menu":
-				for group_name in location["groups"]:
+				for group_name in final_location.groups:
 					location_groups.setdefault(group_name, set()).add(location_name)
-		for exit_ in region.get("exits", {}).values():
+
+			logic = location.get("logic", "")
+			if isinstance(logic, str): final_location.logic = {"Any":logic}
+			elif isinstance(logic, set): final_location.logic = {form:"" for form in logic}
+			else: final_location.logic = logic
+
+			explicit_logic = location.get("explicit_logic")
+			if explicit_logic:
+				assert "Any" not in explicit_logic, f"{file}, {region_name}, {location_name}: You can't use `Any` with explicit_logic"
+				if isinstance(explicit_logic, set):
+					for form in explicit_logic:
+						final_location.logic[form] = ""
+				else:
+					for form, logic in explicit_logic.items():
+						final_location.logic[form] = logic
+
+		for exit_name, exit_ in region.get("exits", {}).items():
+			final_exit = final_region.exits.setdefault(exit_name, FinalExit(
+				id=exit_.get("id"),
+				groups=exit_.get("groups", set[str]()),
+				air=exit_.get("air", {})
+			))
+
 			if "id" in exit_ and "groups" not in exit_:
-				exit_["groups"] = {f"{major_region} Exits"}
+				final_exit.groups.add(f"{major_region} Exits")
+
+			logic = exit_.get("logic", "")
+			if isinstance(logic, str): final_exit.logic = {"Any":{"Any":logic}}
+			elif isinstance(logic, set): final_exit.logic = {form:{form:""} for form in logic}
+			else:
+				for key, value in logic.items():
+					if isinstance(value, str): final_exit.logic[key] = {key:value}
+					else:
+						assert "Any" != key, f"{file}: {region_name} -> {exit_name} -> {key}: You can't transform from `Any`"
+						assert "Any" not in value, f"{file}: {region_name} -> {exit_name} -> {key}: You can't transform into `Any`"
+						if isinstance(value, set): final_exit.logic[key] = {form:"" for form in value}
+						else: final_exit.logic[key] = value
+
+			explicit_logic = exit_.get("explicit_logic")
+			if explicit_logic:
+				assert "Any" not in explicit_logic, f"{file}, {region_name}, {exit_name}: You can't use `Any` with explicit_logic"
+				if isinstance(explicit_logic, set):
+					for form in explicit_logic:
+						final_exit.logic.setdefault(form, {})[form] = ""
+				else:
+					for form, logic in explicit_logic.items():
+						final_exit.logic.setdefault(form, {})[form] = logic
+
+		for macro in region.get("macro", cast(Macros, set())):
+			match macro:
+				case "event":
+					final_region.locations = {
+						region_name: FinalLocation(logic={"Any":""})
+					}
+					final_region.exits = {}
+					final_region.event = True
+					parser.locations[item_name(region_name)] = region_name
+				case "splitup" | "rejoin":
+					final_exit = final_region.exits.setdefault(region_name, FinalExit())
+					if macro == "splitup":
+						logic = final_exit.logic.setdefault("Banjo-Kazooie", {})
+						logic["Banjo"] = "SplitUp"
+						logic["Kazooie"] = "SplitUp"
+					for form in ("Banjo", "Kazooie"):
+						logic = final_exit.logic.setdefault(form, {})
+						logic["Banjo-Kazooie"] = f"forms_reach({{'Banjo', 'Kazooie'}}, '{region_name.replace("'", "\\'")}')"
+
+		for exit_name, exit_ in final_region.exits.items():
+			for from_form, to_forms in FormsReachBlocked.items():
+				if from_form not in exit_.logic: continue
+				for to_form in to_forms:
+					if to_form in exit_.logic[from_form]:
+						logic = exit_.logic[from_form][to_form]
+						if logic: logic = f" and ({logic})"
+						exit_.logic[from_form][to_form] = f"not TransformBlock{logic}"
+
+			for from_form, to_forms in FormsReachTrack.items():
+				if from_form not in exit_.logic: continue
+				for to_form in to_forms:
+					if to_form in exit_.logic[from_form]:
+						form_start_regions.add(exit_name)
 
 def build_regions():
 	def scan_module(major_region: str, module_path: str, module: pkgutil.ModuleInfo):
@@ -160,259 +203,225 @@ def build_regions():
 			scan_module(module.name, "", module)
 build_regions()
 
-def reformat_logic_structure():
-	_regions["Menu"].setdefault("forms", set()).add(normal_forms[0])
-	check: set[RegionName] = set()
-	for region_name, region in _regions.items():
-		parent_region = regions[region_name]
-		for exit_name, exit_ in region.get("exits", {}).items():
-			assert exit_name in _regions, f"{parent_region["file"]}, {region_name}, {exit_name}: Exit doesn't exist."
-		if "forms" not in region: region["forms"] = set()
-		forms = region["forms"]
-		for location in region.get("locations", {}).values():
-			if "logic" not in location or isinstance(location["logic"], str): continue
-			if "explicit_logic" in location: forms |= set(location["explicit_logic"])
-			for form in location["logic"]:
-				forms.add(form)
-		for exit_ in region.get("exits", {}).values():
-			if "logic" not in exit_ or isinstance(exit_["logic"], str): continue
-			if "explicit_logic" in exit_: forms |= set(exit_["explicit_logic"])
-			for form in exit_["logic"]:
-				forms.add(form)
-		if forms: check.add(region_name)
-		else: del region["forms"]
-	while len(check):
-		region_name = check.pop()
-		region = _regions[region_name]
-		from_forms = region.get("forms", cast(set[Form], set()))
+def propagate_forms():
+	any_form: set[Form] = {"Any"}
+	explicits = set(explicit_forms)
+	forms: dict[str, set[Form]] = {"Menu": {normal_forms[0]}}
+	queue = deque(["Menu"])
+	inaccessible_regions = set(regions) - {"Extra Items", "Starting Inventory", "Starting Inventory From Pool"}
+	unused_explicit_forms: dict[str, set[Form]] = {}
+
+	while queue:
+		region_name = queue.popleft()
+		inaccessible_regions.discard(region_name)
+		region = regions[region_name]
+		if region.event: continue
+		all_region_forms = forms[region_name]
+		region_forms = all_region_forms - explicits
+		region_unused_explicit_forms = all_region_forms - region_forms
+		changed = False
+
+		for location in region.locations.values():
+			location_forms = set(location.logic) - explicits - any_form
+			location_explicit_forms = set(location.logic) - any_form
+			all_region_forms |= location_explicit_forms
+			region_unused_explicit_forms -= location_explicit_forms
+
+			if "Any" in location.logic:
+				for form in region_forms - location_forms:
+					location.logic[form] = location.logic["Any"]
+
+			if location_forms - region_forms:
+				changed = True
+				region_forms |= location_forms
+
+		for exit_ in region.exits.values():
+			exit_forms = set(exit_.logic) - explicits - any_form
+			exit_explicit_forms = set(exit_.logic) - any_form
+			all_region_forms |= exit_explicit_forms
+			region_unused_explicit_forms -= exit_explicit_forms
+
+			if "Any" in exit_.logic:
+				for form in region_forms:
+					exit_.logic.setdefault(form, {})
+					if form not in exit_.logic[form]:
+						exit_.logic[form][form] = exit_.logic["Any"]["Any"]
+
+			if exit_forms - region_forms:
+				changed = True
+				region_forms |= exit_forms
+
+		exit_ = region.exits.get(region_name, FinalExit())
+		added = False
 		for from_form, to_forms in FreeStateChange.items():
-			if from_form in from_forms:
-				from_forms |= set(to_forms)
-		for exit_name, exit_ in region.get("exits", {}).items():
-			exit_logic = exit_.get("logic")
-			if not exit_logic or isinstance(exit_logic, str): forms = from_forms.copy() - set(explicit_forms)
-			else: forms: set[Form] = set()
-			if exit_logic:
-				if isinstance(exit_logic, dict):
-					for form, value in exit_logic.items():
-						if isinstance(value, dict) or isinstance(value, set):
-							forms |= set(value)
-						else: forms.add(form)
-				elif isinstance(exit_logic, set):
-					forms |= exit_logic
-			exit_logic_explicit = exit_.get("explicit_logic")
-			if exit_logic_explicit: forms |= set(exit_logic_explicit)
-			to_forms = _regions[exit_name].setdefault("forms", set())
-			if forms - to_forms:
-				to_forms |= forms
-				check.add(exit_name)
-	for region_name, region in _regions.copy().items():
-		parent_region = regions[region_name]
-		names: dict[Form, str] = {}
-		if "forms" not in region or not region["forms"]:
-			print(f"Warning: No forms can access this region: {parent_region["file"]}, {region_name}")
-			if "locations" in region: del region["locations"]
-			if "exits" in region: del region["exits"]
-			continue
-		forms = region["forms"] - set(explicit_forms)
-		region_forms: set[Form] = set()
-		for exit_name, exit_ in region.get("exits", {}).items():
-			if "logic" in exit_:
-				exit_logic = exit_["logic"]
-				if isinstance(exit_logic, set):
-					exit_["logic"] = {form:{form:""} for form in exit_logic}
-				elif isinstance(exit_logic, str):
-					exit_["logic"] = {form:{form:exit_logic} for form in forms}
-				else:
-					for form, value in exit_logic.items():
-						if isinstance(value, str):
-							exit_logic[form] = {form:value}
-						elif isinstance(value, set):
-							exit_logic[form] = {to_form:"" for to_form in value}
-			else:
-				exit_["logic"] = {form:{form:""} for form in forms}
-			exit_logic = cast(dict[Form, dict[Form, str]], exit_["logic"])
-			region_forms |= set(exit_logic)
-			exit_logic_explicit = exit_.get("explicit_logic", {})
-			if isinstance(exit_logic_explicit, set):
-				exit_logic_explicit = cast(dict[ExplicitForm, str], {form:"" for form in exit_logic_explicit})
-			for explicit_form, explicit_logic in exit_logic_explicit.items():
-				if explicit_form not in exit_logic: exit_logic[explicit_form] = {}
-				exit_logic[explicit_form][explicit_form] = explicit_logic
-			for from_form, to_forms in FormsReachBlocked.items():
-				if from_form not in exit_logic: continue
-				for to_form in to_forms:
-					if to_form in exit_logic[from_form]:
-						logic = f" and ({exit_logic[from_form][to_form]})"
-						exit_logic[from_form][to_form] = f"not TransformBlock{logic}"
-			for from_form, to_forms in FormsReachTrack.items():
-				if from_form not in exit_logic: continue
-				for to_form in to_forms:
-					if to_form in exit_logic[from_form]:
-						form_start_regions.add(exit_name)
-		exit_logic = cast(
-			dict[Form, dict[Form, str]],
-			region.setdefault("exits", {}).setdefault(region_name, {}).setdefault("logic", {})
-		)
-		for from_form, to_forms in FreeStateChange.items():
-			if from_form not in region["forms"]: continue
-			if from_form not in exit_logic: exit_logic[from_form] = {}
+			if from_form not in all_region_forms: continue
+			region_unused_explicit_forms.discard(from_form)
+			exit_.logic.setdefault(from_form, {})
 			for to_form, logic in to_forms.items():
-				if to_form not in exit_logic[from_form]:
-					exit_logic[from_form][to_form] = logic
-					region_forms.add(to_form)
+				if to_form not in exit_.logic[from_form]:
+					added = True
+					exit_.logic[from_form][to_form] = logic
+
 		base_form = normal_forms[0]
-		transform_items = InstantTransform.get(parent_region["major_region"], {})
-		for form in region.get("instant_transform", cast(set[Form], set())):
-			if base_form not in region["forms"] and form not in region["forms"] or form not in transform_items: continue
-			if base_form not in exit_logic: exit_logic[base_form] = {}
-			if form not in exit_logic: exit_logic[form] = {}
-			if base_form not in exit_logic[form]: exit_logic[form][base_form] = "InstantTransformTrick"
-			if form not in exit_logic[base_form]:
-				exit_logic[base_form][form] = f"""
+		transform_items = InstantTransform.get(region.major_region, {})
+		for form in region.instant_transform:
+			if base_form not in region_forms and form not in region_forms or form not in transform_items: continue
+			region_unused_explicit_forms -= {base_form, form}
+			exit_.logic.setdefault(base_form, {})
+			exit_.logic.setdefault(form, {})
+
+			if base_form not in exit_.logic[form]:
+				added = True
+				exit_.logic[form][base_form] = "InstantTransformTrick"
+
+			if form not in exit_.logic[base_form]:
+				added = True
+				exit_.logic[base_form][form] = f"""
 					InstantTransformTrick and (
 						InstantTransform == "logic" and {transform_items[form]}
 						or InstantTransform == "no_logic"
 					)
 				"""
-		if exit_logic: region_forms |= set(exit_logic)
-		elif "exits" in region:
-			del region["exits"][region_name]["logic"]
-			if not region["exits"][region_name]:
-				del region["exits"][region_name]
-				if not region["exits"]: del region["exits"]
-		if "locations" in region:
-			location_count = len(region["locations"])
-			location_name, location = next(iter(region["locations"].items()), (None, None))
-			if location_count == 0: del region["locations"]
-			elif location_count == 1 and "exits" not in region and location and region_name == location_name: # macro event
-				location["logic"] = {"":""}
-				names = {"":region_name}
-				region["forms"].clear()
-				region_forms.clear()
-				if "instant_transform" in region: del region["instant_transform"]
-			else:
-				for location_name, location in region["locations"].copy().items():
-					if "logic" in location:
-						location_logic = location["logic"]
-						if isinstance(location_logic, set):
-							location["logic"] = {form:"" for form in location_logic}
-						elif isinstance(location_logic, str):
-							location["logic"] = {form:location_logic for form in forms}
-					else:
-						location["logic"] = {form:"" for form in forms}
-					location_logic = cast(dict[Form, str], location["logic"])
-					location_logic_explicit = location.get("explicit_logic", {})
-					if isinstance(location_logic_explicit, set):
-						location_logic_explicit = cast(dict[ExplicitForm, str], {form:"" for form in location_logic_explicit})
-					for explicit_form, explicit_logic in location_logic_explicit.items():
-						location_logic[explicit_form] = explicit_logic
-					if len(location_logic) > 1:
-						location["logic"] = {"":""}
-						if "locations" in region: del region["locations"][location_name]
-						name = location_region_name(location_name)
-						regions[name] = {
-							"major_region": parent_region["major_region"],
-							"file": parent_region["file"],
-							"names": {"":name},
-							"locations": {location_name:cast(FinalLocation, location)},
-						}
-						region.setdefault("exits", {})[name] = {
-							"logic": {form:{form:logic} for form, logic in location_logic.items()}
-						}
-					region_forms |= set(location_logic)
-		for form in region["forms"] | region_forms:
-			name = form_name(form, region_name)
-			names[form] = name
-			form_to_region_name[name] = region_name
-		del region["forms"]
-		parent_region["names"] = names
-reformat_logic_structure()
-for region_name, region in _regions.items():
-	for key, value in region.items():
-		regions[region_name][key] = value
-del _regions
 
-class BasicParser(ast.NodeTransformer):
+		if region_unused_explicit_forms: unused_explicit_forms[region_name] = region_unused_explicit_forms
 
-	def __init__(self):
-		super().__init__()
-		self.region_name = ""
-		self.exit_name = ""
-		self.form: Form = ""
-		self.is_exit = False
-		self.create_exit_event = False
+		if added:
+			changed = True
+			region.exits[region_name] = exit_
+			region_forms |= set(exit_.logic) - explicits - any_form
 
-	def parse(self, file: str, logic: str):
-		if not logic: return logic
-		self.create_exit_event = False
-		ret = ast.unparse(self.visit(ast.parse(f"({logic})", file)))
-		if self.create_exit_event:
-			name = f"{self.region_name} To {self.exit_name} As {self.form}"
-			locations = regions[self.region_name].setdefault("locations", {})
-			locations[name] = {"logic": {self.form: sys.intern(ret)}}
-			ret = item_name(name)
-		return sys.intern(ret)
+		if changed:
+			all_region_forms |= region_forms
+			queue.append(region_name)
 
-	def visit_Name(self, node: ast.Name):
-		match node.id:
-			case "Air":
-				if self.is_exit: self.create_exit_event = True
-				return ast.Call(
-					ast.Name("air"),
-					[
-						ast.Constant(self.region_name),
-						ast.Constant(self.form),
-						ast.Constant(self.exit_name if self.is_exit else None),
-					]
-				)
-			case _: pass
-		return node
+		for exit_name, exit_ in region.exits.items():
+			assert exit_name in regions, f"{region.file}: {region_name} -> {exit_name}: Exit doesn't exist"
+			exit_forms = set[Form]()
+			for to_forms in exit_.logic.values():
+				exit_forms |= set(to_forms) - any_form
+			forms.setdefault(exit_name, set())
+			if changed or exit_name in inaccessible_regions or exit_forms - forms[exit_name]:
+				forms[exit_name] |= exit_forms
+				if exit_name not in queue:
+					queue.append(exit_name)
+
+	for region_name, region_forms in forms.items():
+		region = regions[region_name]
+		if region.event:
+			region.names["Any"] = region_name
+		else:
+			for form in region_forms:
+				region.names[form] = form_name(form, region_name)
+
+	if inaccessible_regions:
+		print("Warning: The following region(s) seem to be inaccessible:")
+		print("\n".join(sorted(inaccessible_regions)))
+
+	for region_name, region_explicit_forms in unused_explicit_forms.items():
+		print(f"Warning: The following explicit forms have a dead end in {region_name} ({regions[region_name].file})")
+		print("\n".join(sorted(region_explicit_forms)))
+		print()
+propagate_forms()
 
 def post_processing():
-	parser = BasicParser()
-	locations_without_logic: list[str] = []
-	for region_name, region in regions.items():
-		parser.region_name = region_name
-		region_file = f"{region['file']}: {region_name}"
-		unused_explicit_forms = set(region["names"]) & set(explicit_forms)
-		for location_name, location in region.get("locations", {}).items():
-			parser_str = f"{region_file} -> {location_name}"
-			if "logic" in location:
-				form, logic = next(iter(location.get("logic", {}).items()), (None, None))
-				if form is None or logic is None: locations_without_logic.append(parser_str)
+	locations_without_logic = set[str]()
+	logic_parser = parser.Parser()
+	item_info.items = {logic_parser.parse(logic, "items.py"):item_list for logic, item_list in item_info.items.items()}
+	for items in item_info.items.values():
+		for item, cls in items.items():
+			if type(cls) is dict:
+				for new_cls, logic in cls.items():
+					cls[new_cls] = logic_parser.parse(logic, "items.py")
+	for region_name, region in regions.copy().items():
+		escaped_region_name = region_name.replace("'", "\\'")
+		region.file = f"{region.file}: {region_name}"
+		region_forms = set(region.names)
+		logic_parser.file = region.file
+		logic_parser.region_name = region_name
+
+		logic_parser.is_exit = False
+		for location_name, location in region.locations.items():
+			location.file = f"{region.file} -> {location_name}"
+			location.enabled = logic_parser.parse(location.enabled, location.file)
+			location.force_event = logic_parser.parse(location.force_event, location.file)
+			location.locked = logic_parser.parse(location.locked, location.file)
+			for item, logic in location.item.items():
+				location.item[item] = logic_parser.parse(logic, location.file)
+
+		logic_parser.is_exit = True
+		for exit_name, exit_ in region.exits.items():
+			exit_.file = f"{region.file} -> {exit_name}"
+
+		if region.event: continue
+
+		if region.locations:
+			locations_name = f"Locations | {region_name}"
+			region_locations = FinalRegion(
+				major_region=region.major_region,
+				file=region.file,
+				id=region.id,
+				event=True,
+				names={"Any":locations_name}
+			)
+
+			logic_parser.is_exit = False
+			for location_name, location in region.locations.copy().items():
+				if "Any" in location.logic:
+					del location.logic["Any"]
+
+				if len(location.logic) > 1:
+					del region.locations[location_name]
+					location_forms = set[Form]()
+					combined_logic: list[str] = []
+					if location.logic:
+						for form, logic in location.logic.items():
+							if logic: logic = f" and ({logic})"
+							else: location_forms.add(form)
+							combined_logic.append(f"can_form_reach('{form}', '{escaped_region_name}'){logic}")
+					elif region.major_region != "Menu":
+						locations_without_logic.add(location_name)
+					if location_forms == region_forms:
+						location.logic = {"Any":""}
+					else:
+						logic_parser.form = "Any"
+						location.logic = {"Any": logic_parser.parse(" or ".join(combined_logic), location.file)}
+					region_locations.locations[location_name] = location
 				else:
-					unused_explicit_forms.discard(form)
-					parser.form = form
-					location["logic"][form] = parser.parse(f"{parser_str} -> logic", logic)
-			else: locations_without_logic.append(parser_str)
-		parser.is_exit = True
-		for exit_name, exit_ in region.get("exits", {}).items():
-			if "logic" in exit_:
-				parser.exit_name = exit_name
-				exit_names = regions[exit_name]["names"]
-				location_exit = "" in exit_names
-				for from_form, to_forms in exit_["logic"].items():
-					parser.form = from_form
-					unused_explicit_forms.discard(from_form)
-					for to_form, logic in to_forms.items():
-						if location_exit: form_exit_name = exit_name
-						else: form_exit_name = exit_names[to_form]
-						parser_str = f"{region_file} -> {form_exit_name}"
-						exit_["logic"][from_form][to_form] = parser.parse(f"{parser_str} -> logic", logic)
-			if "id" in exit_ and ("two_way" not in exit_ or not exit_["two_way"]):
+					for form, logic in location.logic.items():
+						logic_parser.form = form
+						location.logic[form] = logic_parser.parse(logic, location.file)
+
+			if region_locations.locations:
+				regions[locations_name] = region_locations
+				region.exits[locations_name] = FinalExit(logic={form:{form:""} for form in region.names})
+
+		logic_parser.is_exit = True
+		for exit_name, exit_ in region.exits.items():
+			logic_parser.exit = exit_
+			logic_parser.exit_name = exit_name
+			if "Any" in exit_.logic: del exit_.logic["Any"]
+			for from_form, to_forms in exit_.logic.items():
+				logic_parser.form = from_form
+				if "Any" in to_forms: del to_forms["Any"]
+				for to_form, logic in to_forms.items():
+					logic = logic_parser.parse(logic, exit_.file)
+					if logic_parser.create_exit_event:
+						name = f"{region_name} To {exit_name} As {from_form}"
+						region.locations[name] = FinalLocation(logic={from_form:logic})
+						logic = logic_parser.parse(item_name(name), exit_.file)
+					to_forms[to_form] = logic
+
+			if exit_.id is not None and not exit_.two_way:
 				to_region = regions[exit_name]
-				if "exits" in to_region and region_name in to_region["exits"]:
-					to_exit = to_region["exits"][region_name]
-					if "id" in to_exit:
-						exit_["two_way"] = True
-						to_exit["two_way"] = True
-		if len(unused_explicit_forms):
-			print(f"Warning: The following explicit forms have a dead end in {region_file}")
-			print("\n".join(unused_explicit_forms))
-			print()
+				if region_name in to_region.exits:
+					to_exit = to_region.exits[region_name]
+					if to_exit.id is not None:
+						exit_.two_way = True
+						to_exit.two_way = True
+
 	if len(locations_without_logic):
 		print("Warning: The following location(s) don't have any form/logic info:")
-		print("\n".join(locations_without_logic))
+		print("\n".join(sorted(locations_without_logic)))
 		print()
 post_processing()
+items = item_info.items

@@ -32,9 +32,9 @@ ExplicitForm = Literal[
 	"Golden Goliath",
 	"Egg", # Shooting eggs accross logical regions.
 ]
-Form = NormalForm | ExplicitForm | Literal[""]
+Form = NormalForm | ExplicitForm | Literal["Any"]
 """
-	A list of possible forms in-game. A blank string is has special meaning and shouldn't be used in logic.
+	A list of possible forms in-game. `Any` represents all NormalForms.
 	This can be actual transformations, or even just different states the player can be in.
 
 	Unless explicitly added, ExplicitForms will not be able to:
@@ -47,13 +47,10 @@ Form = NormalForm | ExplicitForm | Literal[""]
 """
 
 FormsReachBlocked: dict[Form, set[Form]] = {
-	"Banjo": {"Banjo-Kazooie"},
-	"Kazooie": {"Banjo-Kazooie"},
+	"Banjo-Kazooie": {"Banjo", "Kazooie"}
 }
 """
-	The logic parsing exposes this function: `forms_reach(forms: list[Form], region_name: str)`
-	This checks if all provided forms can reach the provided region.
-	Sometimes it is undesirable for certain transformations to occur during this check.
+	When checking if a form can access a region, it is sometimes it is undesirable for certain transformations to occur.
 	You can block specific transformations by adding the following to the logic: `not TransformBlock`
 
 	FormsReachBlocked allows specifying transformations to always add this logic for.

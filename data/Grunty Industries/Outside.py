@@ -21,7 +21,7 @@ regions: Regions = {
 				"logic": {
 					"Banjo-Kazooie": """
 						EggAim and (
-							exclude(AnyEggs, ClockworkKazooieEggs)
+							LinearEggs
 							or ExtraClockworkUsage and (
 								DamageBoost
 								or WonderwingDamageBoost
@@ -31,7 +31,7 @@ regions: Regions = {
 					""",
 					"Kazooie": """
 						EggAim and (
-							exclude(AnyEggs, ClockworkKazooieEggs)
+							LinearEggs
 							or ExtraClockworkUsage and (
 								DamageBoost
 								or DragundaSidle
@@ -657,7 +657,10 @@ regions: Regions = {
 			},
 		}
 	},
-	"GI Outside: Back Area Button": {"macro": {"rejoin"}},
+	"GI Outside: Back Area Button": {
+		"macro": {"rejoin"},
+		"exits": {"GI Outside: Back Area": {}}
+	},
 	"GI Outside: Behind Back Door": {
 		"exits": {
 			"GI Floor 1: Back Door Room": {"id": 0x0C},

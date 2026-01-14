@@ -56,7 +56,7 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"EggBarge": """
 			BeakBarge
 			and ThirdPersonEggShooting
-			and exclude(AnyEggs, ClockworkKazooieEggs)
+			and LinearEggs
 		""", # After shooting a non-Clockwork egg forward, immediately Beak Barge to grab things just beyond geometry.
 		"Beak Barge Clip": "BeakBarge", # Getting stuff through geometry with Beak Barge.
 		"Ground Rat-A-Tat Clip": "GroundRatatatRap", # Getting stuff through geometry with Ground Rat-A-Tat.
