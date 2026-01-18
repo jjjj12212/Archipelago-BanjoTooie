@@ -19,6 +19,7 @@
 import re, os, pkgutil, importlib, zipimport, inspect, pathlib
 from collections import deque
 from importlib.machinery import FileFinder
+from types import CodeType
 from typing import cast, get_args
 
 from . import groups, item_info, tricks, progressives, alias, parser
@@ -34,9 +35,10 @@ alias = alias.alias
 item_name = parser.item_name
 
 regions: dict[str, FinalRegion] = {}
-locations: set[str] = set()
-item_groups = groups.items
 location_groups: dict[str, set[str]] = {}
+item_groups = groups.items
+ast_items: dict[str, tuple[CodeType, dict[item_info.Classifiction, CodeType]]] = {}
+ast_tricks: dict[str, CodeType] = {}
 world_path = pathlib.Path(__file__).parents[2]
 normal_forms: tuple[NormalForm, ...] = get_args(NormalForm)
 explicit_forms: tuple[ExplicitForm, ...] = get_args(ExplicitForm)
@@ -44,6 +46,9 @@ all_forms = normal_forms + explicit_forms
 form_start_regions: set[str] = set()
 if items_file: items_file = pathlib.Path(items_file).relative_to(world_path)
 else: items_file = "items.py"
+class names:
+	regions = set[str]()
+	locations = set[str]()
 
 def option_name(value: str) -> str:
 	value = re.sub("['\"]+", "", value)
@@ -63,7 +68,8 @@ def add_region(major_region: str, module_name: str) -> None:
 
 	for region_name, region in cast(dict[RegionName, Region], module.regions).items():
 		assert region_name, f"{file}: Region names cannot be blank."
-		assert region_name not in regions, f"{file}, {region_name}: Region names must be unique."
+		assert region_name not in names.regions, f"{file}, {region_name}: Region names must be unique."
+		names.regions.add(region_name)
 		final_region = regions.setdefault(region_name, FinalRegion(
 			major_region=major_region,
 			file=file,
@@ -74,9 +80,8 @@ def add_region(major_region: str, module_name: str) -> None:
 
 		for location_name, location in region.get("locations", {}).items():
 			assert location_name, f"{file}, {region_name}: Location names cannot be blank."
-			assert location_name not in locations, f"{file}, {region_name}, {location_name}: Location names must be unique."
-			locations.add(location_name)
-			parser.locations[item_name(location_name)] = location_name
+			assert location_name not in names.locations, f"{file}, {region_name}, {location_name}: Location names must be unique."
+			names.locations.add(location_name)
 			final_location = final_region.locations.setdefault(location_name, FinalLocation(
 				groups=location.get("groups", set[str]()),
 				enabled=location.get("enabled", ""),
@@ -86,8 +91,11 @@ def add_region(major_region: str, module_name: str) -> None:
 			final_location.groups.add(major_region)
 
 			location_item = location.get("item")
-			if type(location_item) is str: final_location.item = {location_item:""}
-			elif type(location_item) is dict: final_location.item = location_item
+			if location_item is None:
+				parser.events[item_name(location_name)] = location_name
+			else:
+				if type(location_item) is str: final_location.item = {location_item:""}
+				elif type(location_item) is dict: final_location.item = location_item
 
 			if final_location.item:
 				item_groups: set[str] = set()
@@ -157,7 +165,7 @@ def add_region(major_region: str, module_name: str) -> None:
 					}
 					final_region.exits = {}
 					final_region.event = True
-					parser.locations[item_name(region_name)] = region_name
+					parser.events[item_name(region_name)] = region_name
 				case "splitup" | "rejoin":
 					final_exit = final_region.exits.setdefault(region_name, FinalExit())
 					if macro == "splitup":
@@ -326,12 +334,20 @@ propagate_forms()
 def post_processing():
 	locations_without_logic = set[str]()
 	logic_parser = parser.Parser()
-	item_info.items = {logic_parser.parse(logic, "items.py"):item_list for logic, item_list in item_info.items.items()}
-	for items in item_info.items.values():
+	for enabled, items in item_info.items.items():
 		for item, cls in items.items():
-			if type(cls) is dict:
+			ast_cls: dict[item_info.Classifiction, CodeType] = {}
+			if isinstance(cls, dict):
 				for new_cls, logic in cls.items():
-					cls[new_cls] = logic_parser.parse(logic, "items.py")
+					ast_cls[new_cls] = logic_parser.parse(logic, "items.py")
+			else: ast_cls[cls] = parser.true
+			ast_items[item] = (logic_parser.parse(enabled, "items.py"), ast_cls)
+
+	if isinstance(tricks, dict):
+		for preset_tricks in tricks.values():
+			for trick in preset_tricks:
+				ast_tricks[trick] = logic_parser.parse(item_name(trick), "tricks.py")
+
 	for region_name, region in regions.copy().items():
 		escaped_region_name = region_name.replace("'", "\\'")
 		region.file = f"{region.file}: {region_name}"
@@ -342,11 +358,11 @@ def post_processing():
 		logic_parser.is_exit = False
 		for location_name, location in region.locations.items():
 			location.file = f"{region.file} -> {location_name}"
-			location.enabled = logic_parser.parse(location.enabled, location.file)
-			location.force_event = logic_parser.parse(location.force_event, location.file)
-			location.locked = logic_parser.parse(location.locked, location.file)
+			location.ast_enabled = logic_parser.parse(location.enabled, location.file)
+			location.ast_force_event = logic_parser.parse(location.force_event, location.file)
+			location.ast_locked = logic_parser.parse(location.locked, location.file)
 			for item, logic in location.item.items():
-				location.item[item] = logic_parser.parse(logic, location.file)
+				location.ast_item[item] = logic_parser.parse(logic, location.file)
 
 		logic_parser.is_exit = True
 		for exit_name, exit_ in region.exits.items():
@@ -384,16 +400,16 @@ def post_processing():
 						location.logic = {"Any":""}
 					else:
 						logic_parser.form = "Any"
-						location.logic = {"Any": logic_parser.parse(" or ".join(combined_logic), location.file)}
+						location.ast_logic = {"Any": logic_parser.parse(" or ".join(combined_logic), location.file)}
 					region_locations.locations[location_name] = location
 				else:
 					for form, logic in location.logic.items():
 						logic_parser.form = form
-						location.logic[form] = logic_parser.parse(logic, location.file)
+						location.ast_logic[form] = logic_parser.parse(logic, location.file)
 
 			if region_locations.locations:
 				regions[locations_name] = region_locations
-				region.exits[locations_name] = FinalExit(logic={form:{form:""} for form in region.names})
+				region.exits[locations_name] = FinalExit(logic={form:{form:""} for form in region.names}, file=region.file)
 
 		logic_parser.is_exit = True
 		for exit_name, exit_ in region.exits.items():
@@ -407,9 +423,11 @@ def post_processing():
 					logic = logic_parser.parse(logic, exit_.file)
 					if logic_parser.create_exit_event:
 						name = f"{region_name} To {exit_name} As {from_form}"
-						region.locations[name] = FinalLocation(logic={from_form:logic})
+						item = item_name(name)
+						parser.events[item] = name
+						region.locations[name] = FinalLocation(ast_logic={from_form:logic}, file=region.file)
 						logic = logic_parser.parse(item_name(name), exit_.file)
-					to_forms[to_form] = logic
+					exit_.ast_logic.setdefault(from_form, {})[to_form] = logic
 
 			if exit_.id is not None and not exit_.two_way:
 				to_region = regions[exit_name]
@@ -423,5 +441,7 @@ def post_processing():
 		print("Warning: The following location(s) don't have any form/logic info:")
 		print("\n".join(sorted(locations_without_logic)))
 		print()
+
+	parser.item_names.update(parser.events)
+	parser.item_names.update(parser.items)
 post_processing()
-items = item_info.items

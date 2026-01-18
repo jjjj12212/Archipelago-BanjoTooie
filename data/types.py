@@ -1,7 +1,9 @@
+from types import CodeType
 from typing import TypedDict, NotRequired, Literal
 from dataclasses import dataclass, field
 from .region_names import RegionName
 from .forms import *
+from . import parser
 
 class Location(TypedDict):
 	"""
@@ -253,6 +255,7 @@ class FinalLocation():
 		Specifies the custom groups this location is part of.
 	"""
 
+	ast_item: dict[str, CodeType] = field(default_factory=dict[str, CodeType])
 	item: dict[str, str] = field(default_factory=dict[str, str])
 	"""
 		DictKey specifies the vanilla item for this location, if DictValue evaluates to True using logic parsing.
@@ -260,12 +263,14 @@ class FinalLocation():
 		Logic parsing only has the context of slot options.
 	"""
 
+	ast_enabled: CodeType = parser.true
 	enabled: str = ""
 	"""
 		Specifies the logic for whether this location will exist at all.
 		Logic parsing only has the context of slot options.
 	"""
 
+	ast_locked: CodeType = parser.false
 	locked: str = "false"
 	"""
 		Specifies the logic for whether the location's vanilla item will be placed at this location.
@@ -273,6 +278,7 @@ class FinalLocation():
 		Logic parsing only has the context of slot options.
 	"""
 
+	ast_force_event: CodeType = parser.false
 	force_event: str = "false"
 	"""
 		Specifies the logic for whether the location will be forced as an event.
@@ -280,13 +286,14 @@ class FinalLocation():
 		Logic parsing only has the context of slot options.
 	"""
 
+	ast_logic: dict[Form, CodeType] = field(default_factory=dict[Form, CodeType])
 	logic: dict[Form, str] = field(default_factory=dict[Form, str])
 	"""
 		Only forms specified by DictKey can access this location.
 		DictValue is the logic for this location for the form.
 	"""
 
-	file = ""
+	file: str = "Location"
 
 @dataclass
 class FinalExit():
@@ -335,6 +342,7 @@ class FinalExit():
 				The amount of air used to go through this exit with Rhythmic Swimming.
 	"""
 
+	ast_logic: dict[Form, dict[Form, CodeType]] = field(default_factory=dict[Form, dict[Form, CodeType]])
 	logic: dict[Form, dict[Form, str]] = field(default_factory=dict[Form, dict[Form, str]])
 	"""
 		DictKey:
@@ -344,7 +352,7 @@ class FinalExit():
 			Specifies transformation exit(s). DictValue is the logic for the transformation to DictKey.
 	"""
 
-	file = "Exit"
+	file: str = "Exit"
 
 	indirect_starts: set[Form] = field(default_factory=set[Form])
 

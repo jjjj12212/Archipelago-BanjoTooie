@@ -1,13 +1,14 @@
 import ast
 from collections import deque
+from types import CodeType
 from typing import Callable, Any, Counter, Generator, cast, TYPE_CHECKING, get_type_hints
 
 from Options import Choice, OptionDict
 from BaseClasses import CollectionState, Region, Entrance, MultiWorld
 from worlds.AutoWorld import LogicMixin
 from .regions import BanjoTooieEntrance, BanjoTooieRegion
+from .options import BanjoTooieOptionsList
 from . import data
-from .data.parser import Parser
 
 if TYPE_CHECKING:
 	from . import BanjoTooieWorld
@@ -295,49 +296,44 @@ def air(region_name: str, form: data.Form, exit_name: str | None, state: "BanjoT
 	return air
 
 class BanjoTooieRules(ast.NodeTransformer):
-	player = Parser.player
 
 	def __init__(self, world: "BanjoTooieWorld"):
 		super().__init__()
 		self.world = world
-		self.item_name_only = 0
 		self.cache: dict[str, Rule] = {}
+
+		self.options: dict[str, Any] = {}
 		option_names: dict[str, str] = {}
-		self.options: dict[str, str] = {}
-		self.options_choice: dict[str, str] = {}
-		self.options_dict: dict[str, tuple[str, str]] = {}
-		for option_name, option_class in get_type_hints(type(world.options)).items():
-			option_names[option_class.display_name] = option_name
-			name = option_class.__name__
-			if issubclass(option_class, OptionDict):
-				for key in cast(dict[str, int], option_class.valid_keys): # pyright: ignore[reportUnknownMemberType]
-					self.options_dict[data.item_name(f"{name} {key}")] = (option_name, key)
-			if issubclass(option_class, Choice):
-				self.options_choice[name] = option_name
-			else: self.options[name] = option_name
-		self.tricks = {data.item_name(trick):trick for tricks in data.tricks.values() for trick in tricks}
-		self.progressives: dict[str, tuple[str, int]] = {}
+		for name, cls in get_type_hints(BanjoTooieOptionsList).items():
+			option_names[cls.display_name] = name
+			self.options[cls.__name__] = getattr(world.options, name)
+			if issubclass(cls, OptionDict):
+				for key in cast(dict[str, int], cls.valid_keys): # pyright: ignore[reportUnknownMemberType]
+					self.options[data.item_name(f"{cls.__name__} {key}")] = (getattr(world.options, name), key)
+
+		self.items: dict[str, tuple[str, int, int]] = {}
 		for progressive, item_list in data.progressives.items():
 			option_name = option_names[progressive]
 			if getattr(world.options, option_name).value:
 				i = 1
 				for item_name in item_list:
+					item_name = data.parser.items[item_name]
 					if hasattr(world.options, f"{option_name}_list"):
-						if item_name not in {data.item_name(value) for value in getattr(world.options, f"{option_name}_list").value}:
+						if item_name not in getattr(world.options, f"{option_name}_list").value:
+							self.items[item_name] = (item_name, world.player, 1)
 							continue
-					if item_name not in self.progressives:
-						self.progressives[item_name] = (progressive, i)
-					else:
-						raise Exception(
-							f"{world.game}: Item '{item_name}' part of multiple Progressive items. This should never happen."
-						)
+					self.items[item_name] = (progressive, world.player, i)
 					i += 1
+			else:
+				for item_name in item_list:
+					item_name = data.parser.items[item_name]
+					self.items[item_name] = (item_name, world.player, 1)
+
 		self.ctx: dict[str, Any] = {
 			"Player": world.player,
 			"option": self.option,
-			"option_dict": self.option_dict,
-			"option_choice": self.option_choice,
 			"trick": self.trick,
+			"items": self.items,
 			"can_form_from_region_reach": can_form_from_region_reach,
 			"forms_reach": forms_reach,
 			"forms_reach_regions": forms_reach_regions,
@@ -345,230 +341,19 @@ class BanjoTooieRules(ast.NodeTransformer):
 			"air": air,
 		}
 
-	def option(self, option: str):
-		return getattr(self.world.options, self.options[option]).value
-
-	def option_dict(self, option: str):
-		value = self.options_dict[option]
-		return getattr(self.world.options, value[0])[value[1]]
-
-	def option_choice(self, option: str):
-		return getattr(self.world.options, self.options_choice[option]).current_key
+	def option(self, option: str) -> Any:
+		opt = self.options[option]
+		cls = type(opt) # pyright: ignore[reportUnknownVariableType]
+		if cls is tuple:
+			return opt[0].value[opt[1]] # pyright: ignore[reportUnknownVariableType, reportUnknownMemberType]
+		if issubclass(cls, Choice):
+			return opt.current_key
+		return opt.value
 
 	def trick(self, trick: str):
 		return trick in self.world.options.logic_tricks.value
 
-	def state_has(self, args: list[ast.expr]):
-		return ast.Call(Parser.expr("state.has"), args)
-
-	def item_event(self, node: ast.Attribute, count: ast.expr = ast.Constant(1)):
-		assert type(node.value) is ast.Name, f"{self.file}: Invalid attribute access `{ast.unparse(node)}`"
-		if node.attr == "item":
-			if node.value.id in self.progressives:
-				progressive = self.progressives[node.value.id]
-				name = progressive[0]
-				count = ast.Constant(progressive[1])
-			else: name = data.parser.items[node.value.id]
-		else: name = data.parser.locations[node.value.id]
-		item = ast.Constant(name)
-		if self.item_name_only: return item
-		args: list[ast.expr] = [item, self.player, count]
-		return self.state_has(args)
-
-	def parse(self, logic: str, file: str):
-		self.regen_later = False
-		match logic:
-			case "": return true
-			case "False": return false
-			case _: pass
-		if logic in self.cache: return self.cache[logic]
-		self.file = file
-		node = self.visit(ast.parse(f"lambda state: ({logic})", self.file, mode="eval"))
-		node = ast.fix_missing_locations(node)
-		if type(node.body.body) is ast.Constant:
-			self.cache[logic] = true if node.body.body.value else false
-			return self.cache[logic]
-		if self.regen_later:
-			self.logic = ast.unparse(node)
-		func: Rule = eval(compile(node, self.file, "eval"), self.ctx)
-		self.cache[logic] = func
-		return func
-
-	def visit_Name(self, node: ast.Name):
-		if node.id in (
-			"frozenset",
-			"state",
-			"forms_reach",
-			"forms_reach_regions",
-			"can_form_from_region_reach",
-			"can_form_reach",
-			"air",
-		): return node
-		match node.id:
-			case "Player": return self.player
-			case "TransformBlock": return Parser.expr("state.banjo_tooie_transform_block")
-			case _: raise Exception(f"{self.file}: Not defined `{ast.unparse(node)}`")
-
-	def visit_Attribute(self, node: ast.Attribute):
-		assert type(node.value) is ast.Name, f"{self.file}: Invalid attribute access `{ast.unparse(node)}`"
-		if node.value.id == "state": return self.generic_visit(node)
-		match node.attr:
-			case "option":
-				self.regen_later = True
-				if node.value.id in self.options_dict: func = "option_dict"
-				elif node.value.id in self.options_choice: func = "option_choice"
-				else: func = "option"
-				return ast.Call(ast.Name(func), [ast.Constant(node.value.id)])
-			case "trick":
-				self.regen_later = True
-				return ast.Call(ast.Name("trick"), [ast.Constant(self.tricks[node.value.id])])
-			case "item" | "event": return self.item_event(node)
-			case _: pass
-		raise Exception(f"{self.file}: Unknown attribute access `{ast.unparse(node)}`")
-
-	def visit_Tuple(self, node: ast.Tuple):
-		item, count = node.elts
-		assert (
-			type(item) is ast.Attribute
-			and type(item.value) is ast.Name
-		), f"{self.file}: Invalid tuple `{ast.unparse(node)}`"
-		return self.item_event(item, self.visit(count))
-
-	def visit_BoolOp(self, node: ast.BoolOp):
-		self.generic_visit(node)
-		is_and = type(node.op) is ast.And
-		items: dict[str, tuple[ast.Call, int]] = {}
-		values: list[ast.expr] = []
-		for child in node.values:
-			if type(child) is ast.Call and ast.unparse(child.func) == "state.has":
-				item = child.args[0]
-				count = child.args[2]
-				if (
-					type(item) is ast.Constant and type(item.value) is str
-					and type(count) is ast.Constant and type(count.value) is int
-				):
-					name: str = item.value
-					amount: int = count.value
-					update = False
-					if name not in items: items[name] = (child, amount)
-					else:
-						if is_and:
-							if amount > items[name][1]: update = True
-						elif amount < items[name][1]: update = True
-						if update:
-							child = items[name][0]
-							child.args[2] = count
-							items[name] = (child, amount)
-						continue
-			values.append(child)
-		node.values = values
-		match len(values):
-			case 0: return None
-			case 1: return values[0]
-			case _: return node
-
-	def visit_Call(self, node: ast.Call):
-		match ast.unparse(node.func):
-			case "state.count":
-				self.item_name_only += 1
-				self.generic_visit(node)
-				self.item_name_only -= 1
-			case _: self.generic_visit(node)
-		return node
-
-class BanjoTooieFinalRules(ast.NodeTransformer):
-
-	def __init__(self, world: "BanjoTooieWorld"):
-		super().__init__()
-		self.world = world
-		self.player = ast.Constant(world.player)
-		self.cache: dict[str, Rule] = {}
-		self.ctx: dict[str, Any] = {
-			"can_form_from_region_reach": can_form_from_region_reach,
-			"forms_reach": forms_reach,
-			"forms_reach_regions": forms_reach_regions,
-			"can_form_reach": can_form_reach,
-			"air": air,
-		}
-
-	def option(self, option: str):
-		return getattr(self.world.options, self.world.parser.options[option]).value
-
-	def option_dict(self, option: str):
-		value = self.world.parser.options_dict[option]
-		return getattr(self.world.options, value[0])[value[1]]
-
-	def option_choice(self, option: str):
-		return getattr(self.world.options, self.world.parser.options_choice[option]).current_key
-
-	def func_value(self, node: ast.Call):
-		if not node.args: return None
-		arg = node.args[0]
-		if type(arg) is ast.Constant and type(arg.value) is str:
-			match ast.unparse(node.func):
-				case "trick": return arg.value in self.world.options.logic_tricks.value
-				case "option": return self.option(arg.value)
-				case "option_dict": return self.option_dict(arg.value)
-				case "option_choice": return self.option_choice(arg.value)
-				case _: pass
-		return None
-
-	def parse(self, logic: str, file: str):
-		if logic in self.cache: return self.cache[logic]
-		self.file = file
-		self.start = True
-		node = self.visit(ast.parse(logic, self.file, mode="eval"))
-		node = ast.fix_missing_locations(node)
-		if type(node.body.body) is ast.Constant:
-			self.cache[logic] = true if node.body.body.value else false
-			return self.cache[logic]
-		func: Rule = eval(compile(node, self.file, "eval"), self.ctx)
-		self.cache[logic] = func
-		return func
-
-	def visit_UnaryOp(self, node: ast.UnaryOp):
-		self.generic_visit(node)
-		return Parser.simplify_UnaryOp(node)
-
-	def visit_Name(self, node: ast.Name):
-		match node.id:
-			case "Player": return self.player
-			case _: return self.generic_visit(node)
-
-	def visit_BoolOp(self, node: ast.BoolOp):
-		start = self.start
-		self.start = False
-		self.generic_visit(node)
-		ret = Parser.simplify_BoolOp(node)
-		if start and ret is None:
-			return ast.Constant(type(node.op) is ast.And)
-		return ret
-
-	def visit_Subscript(self, node: ast.Subscript):
-		if type(node.value) is ast.Call and type(node.slice) is ast.Constant:
-			value = self.func_value(node.value)
-			assert type(value) is dict, f"{self.file}: Invalid subscript `{ast.unparse(node)}`"
-			return Parser.expr(value[node.slice.value]) # pyright: ignore[reportUnknownArgumentType]
-		return self.generic_visit(node)
-
-	def visit_Compare(self, node: ast.Compare):
-		if type(node.left) is ast.Call:
-			value = self.func_value(node.left)
-			if value is not None:
-				node.left = ast.Constant(value) if type(value) is str else Parser.expr(str(value))
-		comps: list[ast.expr] = []
-		for comp in node.comparators:
-			if type(comp) is ast.Call:
-				value = self.func_value(comp)
-				if value is not None:
-					comps.append(ast.Constant(value) if type(value) is str else Parser.expr(str(value)))
-					continue
-			comps.append(comp)
-		node.comparators = comps
-		self.generic_visit(node)
-		return Parser.simplify_Compare(node)
-
-	def visit_Call(self, node: ast.Call):
-		value = self.func_value(node)
-		if value is not None: return ast.Constant(value)
-		return self.generic_visit(node)
+	def parse(self, logic: CodeType) -> Rule:
+		if logic is data.parser.true: return true
+		if logic is data.parser.false: return false
+		return eval(logic, self.ctx)

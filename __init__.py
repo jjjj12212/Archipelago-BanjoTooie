@@ -4,14 +4,14 @@ from itertools import chain
 from collections import Counter
 from typing import TYPE_CHECKING, Any, Iterable, TextIO, cast, get_type_hints
 from worlds.AutoWorld import World, WebWorld
-from BaseClasses import CollectionState, Entrance, EntranceType, MultiWorld, Tutorial, ItemClassification, Item, Location, Region
+from BaseClasses import CollectionState, EntranceType, MultiWorld, Tutorial, ItemClassification, Item, Location, Region
 
 from . import options, locations, items, data
 from .options import BanjoTooieOptions, BanjoTooieOptionsList
 from .regions import BanjoTooieEntrance, BanjoTooieRegion, BanjoTooieRegions
 from .locations import BanjoTooieLocation
 from .items import BanjoTooieItem, BanjoTooieItemInfo
-from .rules import BanjoTooieFinalRules, BanjoTooieRules
+from .rules import BanjoTooieRules
 from .ids import slot_data_names, option_name_to_id, exit_name_to_id
 
 if TYPE_CHECKING:
@@ -108,7 +108,6 @@ class BanjoTooieWorld(World):
 	item_pools: dict[str|int, list[BanjoTooieItem]]
 	starting_worlds: list[str]
 	region_links: dict[str, dict[data.Form, BanjoTooieRegion]]
-	regen_rules: dict[Location | Entrance, str]
 	entrance_groups: dict[str, list[BanjoTooieEntrance]]
 	exit_map: dict[int, int]
 	spoiler_info: dict[str, list[str]]
@@ -149,7 +148,6 @@ class BanjoTooieWorld(World):
 			"Starting Inventory From Pool": [],
 		}
 		self.region_links = {}
-		self.regen_rules = {}
 		self.entrance_groups = {}
 		self.exit_map = {}
 		self.spoiler_info = {}
@@ -337,32 +335,28 @@ class BanjoTooieWorld(World):
 			self.set_options()
 		else: self.check_options()
 		self.parser = BanjoTooieRules(self)
-		self.rhythmic_swimming = self.parser.parse("RhythmicSwimming.trick", "<string>")
-		for logic, items in data.items.items():
-			shuffled = self.parser.parse(logic, f"{data.items_file}: {logic}")(None)
-			for item_name, cls in items.items():
-				if isinstance(cls, dict):
-					for new_class, logic in cls.items():
-						if self.parser.parse(logic, f"{data.items_file}: {item_name}")(None):
-							cls = new_class
-							break
-					if isinstance(cls, dict): cls = "filler"
-				match cls:
-					case "progression":
-						classification = ItemClassification.progression
-					case "progression_skip_balancing":
-						classification = ItemClassification.progression_skip_balancing
-					case "progression_deprioritized_skip_balancing":
-						classification = ItemClassification.progression_deprioritized_skip_balancing
-					case "progression_deprioritized":
-						classification = ItemClassification.progression_deprioritized
-					case "useful":
-						classification = ItemClassification.useful
-					case "trap":
-						classification = ItemClassification.trap
-					case "filler":
-						classification = ItemClassification.filler
-				self.item_info[item_name] = BanjoTooieItemInfo(shuffled, classification)
+		self.rhythmic_swimming = self.parser.parse(data.ast_tricks["Rhythmic Swimming"])
+		for item_name, (logic, classes) in data.ast_items.items():
+			shuffled = self.parser.parse(logic)(None)
+			for cls, logic in classes.items():
+				if self.parser.parse(logic)(None): break
+			else: cls = "filler"
+			match cls:
+				case "progression":
+					classification = ItemClassification.progression
+				case "progression_skip_balancing":
+					classification = ItemClassification.progression_skip_balancing
+				case "progression_deprioritized_skip_balancing":
+					classification = ItemClassification.progression_deprioritized_skip_balancing
+				case "progression_deprioritized":
+					classification = ItemClassification.progression_deprioritized
+				case "useful":
+					classification = ItemClassification.useful
+				case "trap":
+					classification = ItemClassification.trap
+				case "filler":
+					classification = ItemClassification.filler
+			self.item_info[item_name] = BanjoTooieItemInfo(shuffled, classification)
 
 	def create_regions(self) -> None:
 		region_cache = BanjoTooieRegions(self)
@@ -378,30 +372,30 @@ class BanjoTooieWorld(World):
 				ap_regions[form] = ap_region
 			self.region_links[region_name] = ap_regions
 			for location_name, location in region.locations.items():
-				if not self.parser.parse(location.enabled, f"{location.file} -> enabled")(None):
+				if not self.parser.parse(location.ast_enabled)(None):
 					continue
-				item_name = location.item
+				item_name = location.ast_item
 				if item_name:
 					for new_item_name, item_logic in item_name.items():
-						if self.parser.parse(item_logic, f"{location.file} -> item -> {new_item_name}")(None):
+						if self.parser.parse(item_logic)(None):
 							item_name = new_item_name
 							break
 				else: item_name = None
 				assert not isinstance(item_name, dict), self.log_format(f"Unable to choose valid item: {location.file}")
 				if item_name:
-					if item_name in self.parser.progressives: item_name = self.parser.progressives[item_name][0]
-					else: item_name = data.parser.items[item_name]
+					item_name = data.parser.item_names[item_name]
+					if item_name in self.parser.items: item_name = self.parser.items[item_name][0]
 				else: item_name = location_name
 				item = self.create_item(item_name)
 				if item_name in self.item_info:
 					if item.code and not self.item_info[item_name].shuffled: item.code = None
 				else: item.classification = ItemClassification.progression
-				if item.code and self.parser.parse(location.force_event, f"{location.file} -> force_event")(None):
+				if item.code and self.parser.parse(location.ast_force_event)(None):
 					item.code = None
 				if not item.code and ItemClassification.progression not in item.classification:
 					continue
-				form, logic_str = next(iter(location.logic.items()), ("Any", ""))
-				logic = self.parser.parse(logic_str, f"{location.file} -> logic")
+				form, logic_ast = next(iter(location.ast_logic.items()), ("Any", data.parser.true))
+				logic = self.parser.parse(logic_ast)
 				if region.major_region == "Menu":
 					skip = True
 					match region_name:
@@ -418,12 +412,10 @@ class BanjoTooieWorld(World):
 						case _: skip = False
 					if skip: continue
 				ap_location = BanjoTooieLocation(self.player, location_name, None, ap_regions[form])
-				if self.parser.regen_later:
-					self.regen_rules[ap_location] = self.parser.logic
 				if logic != rules.true: ap_location.access_rule = logic
 				if item.code:
 					ap_location.address = locations.name_to_id[location_name]
-					if self.parser.parse(location.locked, f"{location.file} -> locked")(None):
+					if self.parser.parse(location.ast_locked)(None):
 						ap_location.place_locked_item(item)
 					else:
 						if item_name in ("Nothing", "Jiggy", "Note Nest"): self.item_pools[item_name].append(item)
@@ -437,8 +429,8 @@ class BanjoTooieWorld(World):
 			for exit_name, exit_ in region.exits.items():
 				exit_region = data.regions[exit_name]
 				links: dict[data.Form, BanjoTooieEntrance] = {}
-				for from_form, to_forms in exit_.logic.items():
-					for to_form, logic_str in to_forms.items():
+				for from_form, to_forms in exit_.ast_logic.items():
+					for to_form, logic_ast in to_forms.items():
 						if exit_region.event: form_exit_name = exit_name
 						else: form_exit_name = exit_region.names[to_form]
 						ap_exit = region_cache[form_exit_name]
@@ -457,9 +449,7 @@ class BanjoTooieWorld(World):
 						links[to_form] = entrance
 						entrance.exit_links = links
 						entrance.exit_data = exit_
-						logic = self.parser.parse(logic_str, f"{exit_.file} -> {from_form} -> {to_form} -> logic")
-						if self.parser.regen_later:
-							self.regen_rules[entrance] = self.parser.logic
+						logic = self.parser.parse(logic_ast)
 						if logic != rules.true: entrance.access_rule = logic
 						if exit_.id is None: continue
 						if exit_.two_way: entrance.randomization_type = EntranceType.TWO_WAY
@@ -836,14 +826,6 @@ class BanjoTooieWorld(World):
 			del ap_entrances[entrance.name]
 		for region in remove_regions:
 			del ap_regions[region.name]
-
-	def set_rules(self):
-		parser = BanjoTooieFinalRules(self)
-		self.rhythmic_swimming = parser.parse("lambda state: trick('Rhythmic Swimming')", "<string>")
-		for loc_ent, logic in self.regen_rules.items():
-			loc_ent.access_rule = parser.parse(logic, "set_rules")
-		del self.parser
-		del self.regen_rules
 
 	def ap_connect_entrances(self) -> None:
 		ids: dict[str, int] = {group:i+1 for i, group in enumerate(self.entrance_groups)}

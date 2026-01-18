@@ -1,18 +1,24 @@
-import ast, re, sys
+import ast, re
+from types import CodeType
 
+true = compile(ast.parse("lambda _state: True", "<string>", "eval"), "<string>", "eval")
+false = compile(ast.parse("lambda _state: False", "<string>", "eval"), "<string>", "eval")
 
 from .forms import Form
 from .types import FinalExit
 from .alias import alias
+from .progressives import progressives as real_progressives
 from .tricks import tricks as real_tricks
 from .item_info import items as real_items
 
 def item_name(value: str) -> str:
 	return re.sub("[^a-zA-Z0-9]+", "", value)
 
-tricks = {item_name(trick):logic for tricks in real_tricks.values() for trick, logic in tricks.items()}
+progressives = {name for items in real_progressives.values() for name in items}
+tricks = {item_name(trick):(trick, logic) for tricks in real_tricks.values() for trick, logic in tricks.items()}
 items = {item_name(name):name for items in real_items.values() for name in items}
-locations: dict[str, str] = {}
+events: dict[str, str] = {}
+item_names: dict[str, str] = {}
 
 class Parser(ast.NodeTransformer):
 	player = ast.Name("Player")
@@ -24,16 +30,22 @@ class Parser(ast.NodeTransformer):
 	form: Form
 	exit_name: str
 	exit: FinalExit
+	item_name_only: int
 
-	def parse(self, logic: str, file: str):
+	def parse(self, logic: str, file: str) -> CodeType:
 		match logic:
-			case "" | "true" | "True": return ""
-			case "false" | "False": return "False"
+			case "" | "true" | "True": return true
+			case "false" | "False": return false
 			case _: pass
 		self.file = file
 		self.alias = set()
 		self.create_exit_event = False
-		return sys.intern(ast.unparse(self.visit(ast.parse(f"({logic})", file))))
+		self.item_name_only = 0
+		node = self.visit(ast.parse(f"lambda state: ({logic})", file, "eval"))
+		node = ast.fix_missing_locations(node)
+		if type(node.body.body) is ast.Constant:
+			return true if node.body.body.value else false
+		return compile(node, file, "eval")
 
 	@staticmethod
 	def expr(expr: str):
@@ -73,12 +85,9 @@ class Parser(ast.NodeTransformer):
 			return ast.Constant(value=not node.operand.value)
 		return node
 
-	@classmethod
-	def make_call(cls, name: str, args: list[ast.expr]):
-		return ast.Call(
-			cls.expr(name),
-			args
-		)
+	@staticmethod
+	def state(attr: str):
+		return ast.Attribute(ast.Name("state"), attr)
 
 	def visit_List(self, node: ast.List):
 		assert type(node.ctx) is ast.Load, f"Logic is read only\nFile: {self.file}"
@@ -107,17 +116,45 @@ class Parser(ast.NodeTransformer):
 	def visit_Tuple(self, node: ast.Tuple):
 		assert type(node.ctx) is ast.Load, f"Logic is read only\nFile: {self.file}"
 		assert len(node.elts) == 2, f"{self.file}: Tuples must have exactly 2 elements."
+		self.item_name_only += 1
 		self.generic_visit(node)
-		item = node.elts[0]
-		assert (
-			type(item) is ast.Attribute
-			and item.attr == "item"
-		), f"{self.file}: The first element of a Tuple must be an item."
-		return node
+		self.item_name_only -= 1
+		return ast.Call(self.state("has"), [node.elts[0], self.player, node.elts[1]])
 
 	def visit_BoolOp(self, node: ast.BoolOp):
 		self.generic_visit(node)
-		return self.simplify_BoolOp(node)
+		simplified = self.simplify_BoolOp(node)
+		if type(simplified) is not ast.BoolOp: return simplified
+		is_and = type(node.op) is ast.And
+		items: dict[str, tuple[ast.Call, int]] = {}
+		values: list[ast.expr] = []
+		for child in node.values:
+			if type(child) is ast.Call and type(child.args[0]) is not ast.Starred and ast.unparse(child.func) == "state.has":
+				item = child.args[0]
+				count = child.args[2]
+				if (
+					type(item) is ast.Constant and type(item.value) is str
+					and type(count) is ast.Constant and type(count.value) is int
+				):
+					name: str = item.value
+					amount: int = count.value
+					update = False
+					if name not in items: items[name] = (child, amount)
+					else:
+						if is_and:
+							if amount > items[name][1]: update = True
+						elif amount < items[name][1]: update = True
+						if update:
+							child = items[name][0]
+							child.args[2] = count
+							items[name] = (child, amount)
+						continue
+			values.append(child)
+		node.values = values
+		match len(values):
+			case 0: return None
+			case 1: return values[0]
+			case _: return node
 
 	def visit_Name(self, node: ast.Name):
 		assert type(node.ctx) is ast.Load, f"Logic is read only\nFile: {self.file}"
@@ -125,7 +162,7 @@ class Parser(ast.NodeTransformer):
 			case "true": return ast.Constant(value=True)
 			case "false": return ast.Constant(value=False)
 			case "Player": return node
-			case "TransformBlock": return ast.Subscript(node, self.player)
+			case "TransformBlock": return ast.Subscript(self.state("banjo_tooie_transform_block"), self.player)
 			case "Air":
 				if self.is_exit: self.create_exit_event = True
 				return self.visit(ast.Call(
@@ -143,23 +180,32 @@ class Parser(ast.NodeTransformer):
 			self.alias.remove(node.id)
 			return new_node
 		if node.id in tricks:
+			trick = tricks[node.id]
 			return self.simplify_BoolOp(ast.BoolOp(
 				ast.And(),
 				[
-					ast.Attribute(node, "trick"),
-					self.visit(self.expr(tricks[node.id]))
+					ast.Call(ast.Name("trick"), [ast.Constant(trick[0])]),
+					self.visit(self.expr(trick[1]))
 				]
 			))
-		if node.id in items: return ast.Attribute(node, "item")
-		if node.id in locations: return ast.Attribute(node, "event")
-		return ast.Attribute(node, "option")
+		if node.id in items:
+			if self.item_name_only: return ast.Constant(items[node.id])
+			if node.id in progressives:
+				return ast.Call(self.state("has"), [
+					ast.Starred(ast.Subscript(ast.Name("items"), ast.Constant(items[node.id])))
+				])
+			return ast.Call(self.state("has"), [ast.Constant(items[node.id]), self.player, ast.Constant(1)])
+		if node.id in events:
+			return ast.Call(self.state("has"), [ast.Constant(events[node.id]), self.player, ast.Constant(1)])
+		return ast.Call(ast.Name("option"), [ast.Constant(node.id)])
 
 	def validate_count(self, node: ast.Call):
 		node.keywords = []
 		assert len(node.args) == 1, f"{self.file}: count requires exactly 1 argument."
+		self.item_name_only += 1
 		item = self.visit(node.args[0])
-		assert isinstance(item, ast.Attribute), f"{self.file}: count invalid arg."
-		node.func = self.expr("state.count")
+		self.item_name_only -= 1
+		node.func = self.state("count")
 		node.args = [item, self.player]
 		return node
 
