@@ -931,7 +931,8 @@ regions: Regions = {
 			"GGM: Gloomy Caverns Outside Power Hut Area": {
 				"logic": "GGMGloomyCavernNearPowerHutRocksBroken"
 			},
-		}
+		},
+        "macro": {"splitup"}
 	},
 	"GGM: Power Hut Ground Floor": {
 		"locations": {
