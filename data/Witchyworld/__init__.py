@@ -1172,6 +1172,9 @@ regions: Regions = {
                     "Kazooie": "GrenadeEggs and (EggAim or ExtraThirdPersonEggShooting)",
 				}
 			},
+            "WW: Scrut In Train": {
+                "logic": "WWScrutFreed and TrainAtWW"
+			},
             "WW: Haunted Caverns": {},
 		},
 	},
@@ -1471,6 +1474,7 @@ regions: Regions = {
 	"WW: Burgers Stand Switch Pressed": {"macro": {"event"}},
 	"WW: Gobi Freed": {"macro": {"event"}},
 	"WW: Scrut Freed": {"macro": {"event"}},
+	"WW: Scrut In Train": {"macro": {"event"}},
 	"WW: Saucer of Peril Powered": {"macro": {"event"}},
 	"WW: Saucer of Peril Button Pressed": {"macro": {"event"}},
 	"WW: Star Spinner Powered": {"macro": {"event"}},

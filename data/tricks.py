@@ -30,7 +30,9 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"Dive Skip": "true", # Skipping Dive by either entering a loading zone or forcing your way into a tunnel.
 		"Glide Extension": "true", # Alternating between Glide and either Flutter or Wing Whack makes Kazooie lose height slower.
 		"Rooms With Limited Lighting": "true", # Do dark rooms with unintended, limited forms of lighting.
-		"Extra Third Person Egg Shooting": "ThirdPersonEggShooting" # Use Third Person Egg Shooting in places where Egg Aim would be intended to be used.
+		"Extra Third Person Egg Shooting": "ThirdPersonEggShooting", # Use Third Person Egg Shooting in places where Egg Aim would be intended to be used.
+        "Mumbo Wand Fall": "true", # Using Mumbo's Wand to fall without taking damage.
+        "Glide In CCL": "Glide" # With how open Cloud Cuckooland is, glide can allow you to reach distant places without flight.
 	},
 	"Easy Tedious Tricks": {
 		"Beak Bomb Tricks": "BeakBomb", # Beak Bomb can be used in unintended ways to reach new areas.
@@ -75,11 +77,15 @@ tricks: dict[Preset, dict[Trick, Logic]] = {
 		"Extra Attacks": "true", # Using worse attacks on enemies becomes in logic.
 		"Tightrope Walk": "true", # Walking accross narrow platforms, such as the Witchyworld Gondola Wire.
 		"Rhythmic Swimming": "true", # As BK underwater, hold A+B and quickly release and repress B after each stroke to swim slightly faster.
+        "Terry Without Egg Aim": "true", # Going on the rim of Terry's neat and use third person egg shooting to damage Terry.
+        "Glide Wall Climb": "Glide" #Gliding against certain slanted walls can allow you to gain height.
 	},
 	"Hard Tedious Tricks": {
 		"Hard Tedious Jumps": "true", # Tedious version of "Hard Jumps".
 		"Bovina With Flap Flip": "FlapFlip and BeakBuster",
-		"Rooms In The Dark": "true" # Do dark rooms with no lighting.
+		"Rooms In The Dark": "true", # Do dark rooms with no lighting.
+        "Bonfire Cavern Flame Sidle": "true", # The side of torches is safe in the bonfire cavern, so you can just go around them.
+        "Dodging Stompadon": "true" # Doing an abrupt direction change as Stompadon tries to crush you makes you able to dodge the foot.
 	},
 	"Hard Glitches": {
 		"Beak Bomb Clips": "BeakBomb", # Beak bomb lets you go through gaps in doors.

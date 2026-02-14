@@ -6,16 +6,6 @@ regions: Regions = {
 			"IoH: Wooded Hollow Jinjo": {
 				"item": "BlueJinjo",
 			},
-			"IoH: Pink Mystery Egg Hatched": {
-				"item": "BreegullBash",
-			},
-			"IoH: Blue Mystery Egg Hatched": {
-				"item": "HomingEggs",
-			},
-			"IoH: Yellow Mystery Egg Hatched": {
-				"item": "Nothing",
-				"enabled": "not ShuffleStopNSwop",
-			},
 			"IoH: Wooded Hollow Outside Heggy's Egg Shed Egg Nest 1": {
 				"item": "EggNest",
 			},
@@ -43,80 +33,28 @@ regions: Regions = {
 			"IoH: Wooded Hollow Outside Bottles' House Feather Nest 2": {
 				"item": "FeatherNest",
 			},
-			"IoH: Outside Heggy's Egg Shed Signpost": {
-				"item": "Nothing",
-				"groups": {"HintSigns"},
-				"enabled": "not ShuffleSigns",
-			},
-			"IoH: Behind Jiggywiggy's Temple Signpost 1": {
-				"item": "Nothing",
-				"groups": {"HintSigns"},
-				"enabled": "not ShuffleSigns",
-			},
-			"IoH: Behind Jiggywiggy's Temple Signpost 2": {
-				"item": "Nothing",
-				"groups": {"HintSigns"},
-				"enabled": "not ShuffleSigns",
-			},
-			"IoH: Behind Jiggywiggy's Temple Signpost 3": {
-				"item": "Nothing",
-				"groups": {"HintSigns"},
-				"enabled": "not ShuffleSigns",
-			},
-			"IoH: Wooded Hollow Path to Plateau Signpost": {
-				"item": "Nothing",
-				"groups": {"HintSigns"},
-				"enabled": "not ShuffleSigns",
-			},
-			"IoH: Jiggywiggy's Temple Signpost 1": {
-				"item": "Nothing",
-				"groups": {"HintSigns"},
-				"enabled": "not ShuffleSigns",
-			},
-			"IoH: Jiggywiggy's Temple Signpost 2": {
-				"item": "Nothing",
-				"groups": {"HintSigns"},
-				"enabled": "not ShuffleSigns",
-			},
-			"IoH: Jiggywiggy's Temple Signpost 3": {
-				"item": "Nothing",
-				"groups": {"HintSigns"},
-				"enabled": "not ShuffleSigns",
-			},
-			"IoH: Jiggywiggy's Temple Signpost 4": {
-				"item": "Nothing",
-				"groups": {"HintSigns"},
-				"enabled": "not ShuffleSigns",
-			},
-			"IoH: Jiggywiggy's Temple Signpost 5": {
-				"item": "Nothing",
-				"groups": {"HintSigns"},
-				"enabled": "not ShuffleSigns",
-			},
-			"IoH: Jiggywiggy's Temple Signpost 6": {
-				"item": "Nothing",
-				"groups": {"HintSigns"},
-				"enabled": "not ShuffleSigns",
-			},
-			"IoH: Jiggywiggy's Temple Signpost 7": {
-				"item": "Nothing",
-				"groups": {"HintSigns"},
-				"enabled": "not ShuffleSigns",
-			},
-			"IoH: Jiggywiggy's Temple Signpost 8": {
+			"IoH: Wooded Hollow Behind Heggy's Egg Shed Signpost": {
 				"item": "Nothing",
 				"groups": {"HintSigns"},
 				"enabled": "not ShuffleSigns",
 			},
 			"IoH: Wooded Hollow Silo Tagged": {
 				"item": "WoodedHollowWarpSilo",
+                "logic": {
+                    "Banjo-Kazooie": "true"
+				}
 			},
 		},
 		"exits": {
-			"Jiggywiggy Challenges": {"logic": {"Banjo-Kazooie"}},
-			"IoH: Plateau": {},
-			"IoH: Jinjo Village": {},
-			"IoH: Bottles' House": {},
+            "IoH: Jiggywiggy's Temple": {},
+			"IoH: Wooded Hollow Path to Plateau": {
+                "logic": {
+                    "Banjo-Kazooie": "GripGrab and (TallJump or TalonTrot and Flutter or TalonTrot and AirRatatatRap and HardTediousJumps or FlapFlip) or FlapFlip and BeakBusterJump and HardJumps"
+				}
+			},
+			"IoH: Jinjo Village On Top of the Ledge": {},
+			"IoH: Bottles\' House: Behind the Gate": {},
+            "IoH: Heggy's Egg Shed": {},
 			"Mayahem Temple": {
 				"id": 0x0A,
 				"groups": {"World Entrances"},
@@ -125,7 +63,11 @@ regions: Regions = {
 					"Talon Trot": "MayahemTemple and TalonTrotSmuggleCrossWorld",
 				}
 			},
-			"IoH: Warp Silos": {},
+			"IoH: Warp Silos": {
+                "logic": {
+                    "Banjo-Kazooie": "WoodedHollowWarpSilo"
+				}
+			},
 		},
 	},
 	"Jiggywiggy Challenges": {
@@ -178,5 +120,130 @@ regions: Regions = {
 				"logic": "(Jiggy, JiggywiggysChallengeCostsChallenge11)",
 			},
 		}
-	}
+	},
+    "IoH: Heggy's Egg Shed": {
+        "locations": {
+			"IoH: Pink Mystery Egg Hatched": {
+				"item": "BreegullBash",
+                "logic": {
+                    "Banjo-Kazooie": "PinkMysteryEgg",
+                    "Banjo": "PinkMysteryEgg"
+				}
+			},
+			"IoH: Blue Mystery Egg Hatched": {
+				"item": "HomingEggs",
+                "logic": {
+                    "Banjo-Kazooie": "BlueMysteryEgg",
+                    "Banjo": "BlueMysteryEgg"
+				}
+			},
+			"IoH: Yellow Mystery Egg Hatched": {
+				"item": "Nothing",
+				"enabled": "not ShuffleStopNSwop",
+                "logic": {
+                    "Kazooie": "Hatch"
+				}
+			},
+        },
+        "exits": {
+            "IoH: Wooded Hollow": {
+                "logic": {
+                    "Banjo-Kazooie": "true"
+				}
+			}
+		},
+        "macro": {"splitup"}
+	},
+    "IoH: Jiggywiggy's Temple": {
+        "locations": {
+			"IoH: Jiggywiggy's Temple Signpost 1": {
+				"item": "Nothing",
+				"groups": {"HintSigns"},
+				"enabled": "not ShuffleSigns",
+			},
+			"IoH: Jiggywiggy's Temple Signpost 2": {
+				"item": "Nothing",
+				"groups": {"HintSigns"},
+				"enabled": "not ShuffleSigns",
+			},
+			"IoH: Jiggywiggy's Temple Signpost 3": {
+				"item": "Nothing",
+				"groups": {"HintSigns"},
+				"enabled": "not ShuffleSigns",
+			},
+			"IoH: Jiggywiggy's Temple Signpost 4": {
+				"item": "Nothing",
+				"groups": {"HintSigns"},
+				"enabled": "not ShuffleSigns",
+			},
+			"IoH: Jiggywiggy's Temple Signpost 5": {
+				"item": "Nothing",
+				"groups": {"HintSigns"},
+				"enabled": "not ShuffleSigns",
+			},
+			"IoH: Jiggywiggy's Temple Signpost 6": {
+				"item": "Nothing",
+				"groups": {"HintSigns"},
+				"enabled": "not ShuffleSigns",
+			},
+			"IoH: Jiggywiggy's Temple Signpost 7": {
+				"item": "Nothing",
+				"groups": {"HintSigns"},
+				"enabled": "not ShuffleSigns",
+			},
+			"IoH: Jiggywiggy's Temple Signpost 8": {
+				"item": "Nothing",
+				"groups": {"HintSigns"},
+				"enabled": "not ShuffleSigns",
+			},
+        },
+        "exits": {
+			"Jiggywiggy Challenges": {"logic": {"Banjo-Kazooie"}},
+		}
+	},
+    "IoH: Jiggywiggy's Temple On Jiggywiggy Pedestal": {
+        "exits": {
+			"IoH: Jiggywiggy's Temple": {},
+			"IoH: Behind Jiggywiggy's Temple": {},
+		}
+	},
+    "IoH: Behind Jiggywiggy's Temple": {
+        "locations": {
+			"IoH: Behind Jiggywiggy's Temple Signpost 1": {
+				"item": "Nothing",
+				"groups": {"HintSigns"},
+				"enabled": "not ShuffleSigns",
+			},
+			"IoH: Behind Jiggywiggy's Temple Signpost 2": {
+				"item": "Nothing",
+				"groups": {"HintSigns"},
+				"enabled": "not ShuffleSigns",
+			},
+			"IoH: Behind Jiggywiggy's Temple Signpost 3": {
+				"item": "Nothing",
+				"groups": {"HintSigns"},
+				"enabled": "not ShuffleSigns",
+			},
+		},
+        "exits": {
+            "IoH: Jiggywiggy's Temple On Jiggywiggy Pedestal": {
+                "logic": {
+                    "Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or WonderwingJump or BeakBusterJump or Flutter or AirRatatatRap"
+				}
+			},
+		},
+	},
+    "IoH: Wooded Hollow Path to Plateau": {
+        "locations": {
+			"IoH: Wooded Hollow Path to Plateau Signpost": {
+				"item": "Nothing",
+				"groups": {"HintSigns"},
+				"enabled": "not ShuffleSigns",
+			},
+        },
+        "exits": {
+            "IoH: Wooded Hollow": {},
+            "IoH: Plateau": {},
+		}
+	},
 }

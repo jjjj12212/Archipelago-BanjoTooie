@@ -3,15 +3,6 @@ regions: Regions = {
 	"IoH: Wasteland": {
 		"id": 0x015A,
 		"locations": {
-			"IoH: Wasteland Jinjo": {
-				"item": "PurpleJinjo",
-			},
-			"IoH: Clockwork Silo Bottom Note": {
-				"item": "NoteNest",
-			},
-			"IoH: Clockwork Silo Top Note": {
-				"item": "NoteNest",
-			},
 			"IoH: Wasteland CCL Area Note 1": {
 				"item": "NoteNest",
 			},
@@ -55,15 +46,9 @@ regions: Regions = {
 			},
 		},
 		"exits": {
-			"IoH: Quagmire": {},
 			"IoH: Another Digger Tunnel": {},
-			"Terrydactyland": {
-				"id": 0x17,
-				"groups": {"World Entrances"},
-				"logic": {
-					"Banjo-Kazooie": "Terrydactyland",
-					"Talon Trot": "Terrydactyland and TalonTrotSmuggleCrossWorld",
-				}
+            "IoH: Wasteland Behind TDL Teeth": {
+                "logic": "Terrydactyland"
 			},
 			"Cloud Cuckooland": {
 				"id": 0x14,
@@ -73,8 +58,91 @@ regions: Regions = {
 					"Talon Trot": "CloudCuckooland and TalonTrotSmuggleCrossWorld",
 				}
 			},
-			"IoH: Warp Silos": {},
+			"IoH: Warp Silos": {
+                "logic": {
+                    "Banjo-Kazooie": "WastelandWarpSilo"
+				}
+			},
+            "IoH: Wasteland Clockwork Bottom Note Platform": {
+				"logic": {
+                    "Banjo-Kazooie": {
+                        "Banjo-Kazooie": "EasyJumps or TallJump or TalonTrot or FlapFlip or WonderwingJump or BeakBusterJump",
+                        "Talon Trot": "true",
+                        "Clockwork Kazooie": "ClockworkShot"
+					}
+				}
+			},
+            "IoH: Wasteland Clockwork Top Note Platform": {
+				"logic": {
+                    "Banjo-Kazooie": {
+                        "Clockwork Kazooie": "ClockworkShot"
+					}
+				}
+			},
+            "IoH: Wasteland Jinjo Platform": {
+				"logic": {
+                    "Banjo-Kazooie": {
+                        "Clockwork Kazooie": "ClockworkShot"
+					}
+				}
+			},
 		},
 	},
-	"IoH: Wasteland Ledge to Quagmire": {}
+	"IoH: Wasteland Ledge to Quagmire": {
+        "exits": {
+            "IoH: Wasteland": {},
+            "IoH: Quagmire": {},
+		}
+	},
+    "IoH: Wasteland Behind TDL Teeth": {
+        "exits": {
+            "IoH: Wasteland": {},
+			"Terrydactyland": {
+				"id": 0x17,
+				"groups": {"World Entrances"},
+				"logic": {
+					"Banjo-Kazooie": "Terrydactyland",
+					"Talon Trot": "Terrydactyland and TalonTrotSmuggleCrossWorld",
+				}
+			},
+		}
+	},
+    "IoH: Wasteland Clockwork Bottom Note Platform": {
+        "locations": {
+			"IoH: Clockwork Silo Bottom Note": {
+				"item": "NoteNest",
+			},
+		},
+        "exits": {
+            "IoH: Wasteland Clockwork Top Note Platform": {
+                "logic": {
+                    "Banjo-Kazooie": "FlapFlip or TalonTrot and Flutter and (GripGrab or BeakBusterJump) or TallJump and GripGrab",
+                    "Talon Trot": {
+                        "Banjo-Kazooie": "Flutter and (GripGrab or BeakBusterJump)"
+					}
+				}
+			}
+		}
+	},
+    "IoH: Wasteland Clockwork Top Note Platform": {
+        "locations": {
+			"IoH: Clockwork Silo Top Note": {
+				"item": "NoteNest",
+			},
+		},
+        "exits": {
+            "IoH: Wasteland Jinjo Platform": {
+                "logic": {
+                    "Banjo-Kazooie": "FlapFlip and (GripGrab or BeakBusterJump)"
+				}
+			}
+		}
+	},
+    "IoH: Wasteland Jinjo Platform": {
+        "locations": {
+			"IoH: Wasteland Jinjo": {
+				"item": "PurpleJinjo",
+			},
+        }
+	},
 }

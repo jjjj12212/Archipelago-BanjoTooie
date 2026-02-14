@@ -1232,6 +1232,17 @@ class ChosenMoggyLocation(Choice):
 	option_inside_dodgem = 2
 	default = 0
 
+class ChosenCCLMumboLocation(Choice):
+	"""
+		Hidden option. Used internally.
+		Holds where CCL Mumbo will be located.
+	"""
+	display_name = "Chosen CCL Mumbo Location"
+	visibility = Visibility.none
+	option_blue_skull = 0
+	option_red_skull = 1
+	default = 0
+
 groups: list[OptionGroup] = [
 	OptionGroup("Game Options", [
 		ProgressionBalancing,
@@ -1460,6 +1471,7 @@ class BanjoTooieOptionsList:
 	chosen_groggy_location: ChosenGroggyLocation
 	chosen_soggy_location: ChosenSoggyLocation
 	chosen_moggy_location: ChosenMoggyLocation
+	chosen_ccl_mumbo_location: ChosenCCLMumboLocation
 
 @dataclass
 class BanjoTooieOptions(BanjoTooieOptionsList, PerGameCommonOptions):

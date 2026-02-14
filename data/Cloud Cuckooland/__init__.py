@@ -16,6 +16,9 @@ regions: Regions = {
 	},
 	"Cloud Cuckooland - Temp": {
 		"locations": {
+			"TDL: Dippy Jiggy": {
+				"item": "Jiggy",
+			},
 			"CCL: Trash Can Jinjo": {
 				"item": "PurpleJinjo",
 			},
@@ -354,4 +357,682 @@ regions: Regions = {
 			},
 		},
 	},
+    "CCL: Entrance Platform": {
+        "exits": {
+            "CCL: Mr Fit High Jump Bar": {
+                "logic": {
+                    "BK Springy Step Shoes": "true",
+                    "SK Springy Step Shoes": "true"
+				}
+			},
+            "CCL: Dirt Patch Platform": {},
+            "CCL: Warp Pads": {
+                "logic": "CCLWorldEntryAndExitWarpPad"
+			},
+            "CCL: Flight": {
+                "logic": {
+                    "Bee": "true"
+				}
+			}
+		}
+	},
+    "CCL: Mr Fit High Jump Bar": {},
+    "CCL: Dirt Patch Platform": {
+        "exits": {
+            "CCL: Central Cavern Main Entrance Top": {},
+            "CCL: Outside Wumba's Wigwam": {},
+            "CCL: Superstash Switch Platform Near George": {
+                "logic": {
+                    "Kazooie": "true",
+                    "Banjo-Kazooie": "FallDamage or BeakBusterFall or WonderwingFall or Flutter or AirRatatatRap",
+				}
+			},
+            "CCL: George Platform": {
+                "logic": {
+                    "Banjo": "FallDamage or PackWhackFall or SnoozePackFall or ShackPackFall or SackPackFall",
+                    "Kazooie": "true",
+                    "Banjo-Kazooie": "FallDamage or BeakBusterFall or WonderwingFall or Flutter or AirRatatatRap",
+                    "Mumbo": "FallDamage or MumboWandFall",
+                    "Bee": "true"
+				}
+			},
+            "CCL: Outside Blue Skull": {
+                "logic": {
+                    "Banjo": "PackWhackSlopeJump",
+                    "Kazooie": "SlopeJump and HardTediousJumps and LegSpring and (WingWhack or GlideInCCL)"
+				}
+			},
+            "CCL: Trash Can Platform": {
+                "logic": {
+                    "Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Mr Fit Footrace Track": {
+                "logic": {
+                    "Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Dippy Pool On Rim": {
+                "logic": {
+                    "Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Dippy Pool Water Surface": {
+                "logic": {
+                    "Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Pot o' Gold Exit Platform": {
+                "logic": {
+                    "Kazooie": "GlideInCCL and LegSpring"
+				}
+			},
+            "CCL: Around Pot o' Gold": {
+                "logic": {
+                    "Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: On Jelly Castle": {
+                "logic": {
+                    "Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Flight": {
+                "logic": {
+                    "Bee": "true"
+				}
+			},
+            "CCL: Central Cavern Outdoors Glowbo Pool Underwater": {
+                "logic": {
+                    "Any": "DiveSkip",
+                    "Bee": "false"
+				}
+			},
+		},
+	},
+    "CCL: Superstash Switch Platform Near George": {},
+    "CCL: George Platform": {
+        "exits": {
+            "CCL: Flight": {
+                "logic": {
+                    "Banjo-Kazooie": "CCLGeorgeBooped and FlightPad",
+                    "Kazooie": "CCLGeorgeBooped and FlightPad",
+                    "Bee": "true"
+				},
+			},
+            "CCL: Outdoors Glowbo Pool Surface": {
+                "logic": {
+                    "Any": "true",
+                    "Bee": "false"
+				}
+			},
+            "CCL: George Booped": {
+                "logic": {
+                    "Banjo": "PackWhack",
+                    "Kazooie": "WingWhack",
+                    "Banjo-Kazooie": "Roll or BeakBarge or GroundRatatatRap or AirRatatatRap"
+				}
+			},
+            "CCL: Superstash Switch Platform Near George": {
+                "logic": {
+                    "Kazooie": "true",
+                    "Banjo-Kazooie": "TalonTrot or TallJump and (BeakBusterJump or Flutter or AirRatatatRap)"
+				}
+			},
+            "CCL: Outside Wumba's Wigwam": {
+                "logic": {
+                    "Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Mr Fit Footrace Track": {
+                "logic": {
+                    "Kazooie": "GlideInCCL and LegSpring"
+				}
+			},
+            "CCL: Dippy Pool On Rim": {
+                "logic": {
+                    "Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Dippy Pool Water Surface": {
+                "logic": {
+                    "Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: On Jelly Castle": {
+                "logic": {
+                    "Kazooie": "GlideInCCL"
+				}
+			},
+		}
+	},
+    "CCL: Outdoors Glowbo Pool Surface": {
+        "exits": {
+            "CCL: George Platform": {
+                "logic": {
+					"Banjo": "TallJump or PackWhackJump or GripGrab",
+                    "Kazooie": {
+                        "Kazooie": "TallJump",
+                        "Clockwork Kazooie": "ClockworkShot"
+					},
+                    "Banjo-Kazooie": "TallJump or GripGrab or BeakBusterJump",
+                    "Mumbo": "TallJump"
+				},
+			},
+            "CCL: Outdoors Glowbo Pool Underwater": {
+                "logic": {
+                    "Banjo": "Dive",
+                    "Banjo-Kazooie": "Dive"
+				}
+			},
+		},
+	},
+    "CCL: Outdoors Glowbo Pool Underwater": {
+        "exits": {
+            "CCL: Central Cavern Outdoors Glowbo Pool Underwater": {},
+            "CCL: Outdoors Glowbo Pool Surface": {
+                "logic": {
+					"Any": "true",
+                    "Bee": "false"
+				}
+			},
+            "CCL: Flight": {
+                "logic": {
+                    "Bee": "true"
+				}
+			},
+		},
+	},
+    "CCL: Outside Wumba's Wigwam": {
+        "exits": {
+            "CCL: Wumba's Wigwam": {},
+            "CCL: Flight": {
+                "logic": {
+                    "Bee": "true"
+				}
+			},
+            "CCL: Dirt Patch Platform": {},
+            "CCL: Around Jelly Castle": {
+                "logic": {
+                    "Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: George Platform": {
+                "logic": {
+                    "Kazooie": "GlideInCCL and LegSpring"
+				}
+			},
+            "CCL: On Jelly Castle": {
+                "logic": {
+                    "Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Trash Can Platform": {
+                "logic": {
+                    "Kazooie": "GlideInCCL and (LegSpring or GlideExtension)"
+				}
+			},
+            "CCL: Dippy Pool On Rim": {
+                "logic": {
+                    "Kazooie": "GlideInCCL and GlideExtension"
+				}
+			},
+		},
+	},
+    "CCL: Outside Red Mumbo's Skull": {
+        "exits": {
+            "CCL: Central Cavern Ground Near Superstash/Red Exit": {},
+            "CCL: Mumbo's Skull": {
+                "logic": "ChosenCCLMumboLocation == 'red_skull'"
+			},
+            "CCL: Mingy Jongo's Skull": {
+                "logic": "ChosenCCLMumboLocation == 'blue_skull'"
+			},
+            "CCL: Up The Vine Near Red Skull": {
+                "logic": {
+                    "Kazooie": "HardJumps and LegSpring and (WingWhack or GlideInCCL)",
+                    "Banjo": "Climb and (SlopeJump and GripGrab or PackWhackJump or TallJump)",
+					"Banjo-Kazooie": "Climb and (TallJump or TalonTrot or GripGrab and (FlapFlip or SlopeJump))",
+                    "Talon Trot": {
+                        "Banjo-Kazooie": "Climb"
+					}
+				}
+			},
+            "CCL: Mr Fit Footrace Track": {
+                "logic": {
+                    "Any": "SlopeJump and FallDamage",
+					"Kazooie": "EasyJumps",
+				}
+			},
+            "CCL: Trash Can Platform": {
+                "logic": {
+                    "Kazooie": "GlideInCCL or LegSpring and WingWhack and HardTediousJumps"
+				}
+			},
+            "CCL: Flight": {
+				"logic": {
+					"Banjo-Kazooie": "FlightPad",
+                    "Kazooie": "FlightPad",
+                    "Bee": "true"
+				}
+			},
+            "CCL: Outside Wumba's Wigwam": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: On Top of the Trash Can": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: George Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Entrance Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Outside Blue Skull": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: On Jelly Castle": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Around Jelly Castle": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: George Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Pot o' Gold Exit Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: On Pot o' Gold Switch": {
+                "logic": {
+					"Kazooie": "GlideInCCL and EasyTediousJumps"
+				}
+			},
+            "CCL: Dippy Pool On Rim": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Dippy Pool Water Surface": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+		},
+	},
+    "CCL: Up The Vine Near Red Skull": {
+        "exits": {
+			"CCL: Trash Can Platform": {},
+            "CCL: Sack Race Exit Platform": {
+                "logic": {
+                    "Banjo": "true",
+                    "Kazooie": "true",
+                    "Banjo-Kazooie": "HardJumps or TallJump or TalonTrot or FlapFlip or Flutter or AirRatatatRap or BeakBusterJump or WonderwingJump",
+                    "Mumbo": "HardJumps or TallJump",
+				}
+			},
+            "CCL: Outside Red Mumbo's Skull": {
+				"logic": {
+                    "Banjo": "PackWhackFall or FallDamage and (SackPackAirJump) or Climb and (SlopeJump and GripGrab or PackWhackJump or TallJump)",
+                    "Kazooie": "true",
+                    "Mumbo": "(FallDamage or MumboWandFall) and TallJump",
+                    "Banjo-Kazooie": {
+						"Banjo-Kazooie": "WonderwingJump and WonderwingFall or (TalonTrot or TallJump) and FallDamage or Flutter or AirRatatatRap or (Climb or BeakBusterFall or WonderwingFall) and (TallJump or TalonTrot or GripGrab and (FlapFlip or SlopeJump)) or BeakBusterFall and SlopeJump",
+                        "Clockwork Kazooie": "ClockworkShot"
+					},
+                    "Talon Trot": {
+						"Banjo-Kazooie": "FallDamage"
+					}
+				}
+			},
+            "CCL: On Top of the Trash Can": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Trash Can Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Outside Wumba's Wigwam": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: George Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Dirt Patch Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Entrance Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+			"CCL: Mr Fit High Jump Bar": {
+                "logic": {
+					"Kazooie": "GlideInCCL and HardTediousJumps"
+				}
+			},
+            "CCL: Dippy Pool Water Surface": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+			"CCL: Dippy Pool On Rim": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+			"CCL: Pot o' Gold Exit Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+			"CCL: On Pot o' Gold Switch": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Pot o' Gold Exit Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Around Pot o' Gold": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Cheese Wedge Exit Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Up the Vine Near Blue Skull": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Outside Blue Skull": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: On Jelly Castle": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Around Jelly Castle": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+		}
+	},
+    "CCL: Sack Race Exit Platform": {
+        "exits": {
+			"CCL: Central Cavern Sack Race Exit": {},
+            "CCL: Up The Vine Near Red Skull": {
+                "logic": {
+                    "Banjo": "true",
+                    "Kazooie": "true",
+                    "Banjo-Kazooie": "HardJumps or TallJump or TalonTrot or FlapFlip or Flutter or AirRatatatRap or BeakBusterJump or WonderwingJump",
+                    "Mumbo": "HardJumps or TallJump",
+				}
+			},
+            "CCL: Sack Race Egg Hatched": {
+				"logic": {
+					"Kazooie": "Hatch"
+				}
+			},
+            "CCL: Sack Race Bean Platform": {
+                "logic": {
+					"Banjo": "CCLSackRaceEggHatched and TaxiPack or SackPackAirJump and PackWhackJump and TallJump"
+				}
+			},
+            "CCL: Flight": {
+                "logic": {
+                    "Bee": "true"
+				}
+			},
+            "CCL: Outside Red Mumbo's Skull": {
+				"logic": {
+                    "Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: On Top of the Trash Can": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Trash Can Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Outside Wumba's Wigwam": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: George Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Dirt Patch Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Entrance Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+			"CCL: Mr Fit High Jump Bar": {
+                "logic": {
+					"Kazooie": "GlideInCCL and HardTediousJumps"
+				}
+			},
+            "CCL: Dippy Pool Water Surface": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+			"CCL: Dippy Pool On Rim": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+			"CCL: Pot o' Gold Exit Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+			"CCL: On Pot o' Gold Switch": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Pot o' Gold Exit Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Around Pot o' Gold": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Cheese Wedge Exit Platform": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Up the Vine Near Blue Skull": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Outside Blue Skull": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: On Jelly Castle": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+            "CCL: Around Jelly Castle": {
+                "logic": {
+					"Kazooie": "GlideInCCL"
+				}
+			},
+		}
+	},
+    "CCL: Sack Race Bean Platform": {
+        "exits": {
+            "CCL: Sack Race Bean Planted": {
+                "logic": {
+                    "Banjo": "(Bean, 2)",
+                    "Banjo-Kazooie": "(Bean, 2)"
+				}
+			},
+            "CCL: Sack Race Platform": {
+				"logic": {
+					"Banjo": "Climb and CCLSackRaceBeanGrown"
+				}
+			},
+			"CCL: Sack Race Exit Platform": {}
+		}
+	},
+    "CCL: Sack Race Platform": {},
+    "CCL: Top Entrance Platform": {
+        "exits": {
+            "CCL: Central Cavern Top Path": {},
+			"CCL: Flight": {
+                "logic": {
+                    "Banjo-Kazooie": "FlightPad",
+                    "Kazooie": "FlightPad",
+                    "Bee": "true"
+				}
+			},
+            # TODO: Continue here
+		}
+	},
+    "CCL: On Top of the Trash Can": {},
+    "CCL: Trash Can Platform": {},
+    "CCL: Mr Fit Footrace Track": {},
+    "CCL: Dippy Pool Water Surface": {},
+    "CCL: Dippy Pool On Rim": {},
+    "CCL: Dippy Pool Underwater": {},
+    "CCL: Pot o' Gold Exit Platform": {},
+    "CCL: On Pot o' Gold Switch": {},
+    "CCL: Around Pot o' Gold": {},
+    "CCL: On Pot o' Gold": {},
+    "CCL: Top Superstash Switch Area": {},
+    "CCL: Platform Near Top Superstash Switch Area": {},
+    "CCL: Outside Blue Skull": {},
+    "CCL: Up the Vine Near Blue Skull": {},
+    "CCL: Cheese Wedge Exit Platform": {},
+    "CCL: Cheese Wedge Bean Platform": {},
+    "CCL: Outside Cheese Wedge": {},
+    "CCL: Outside Cheese Wedge Clockwork Tunnel": {},
+    "CCL: On Jelly Castle": {},
+    "CCL: Around Jelly Castle": {},
+    "CCL: Inside Jelly Castle": {},
+    "CCL: Flight": {},
+
+	"CCL: Wumba's Wigwam": {},
+    "CCL: Inside the Trash Can": {},
+    "CCL: Inside the Trash Can Inside Jolly's Juice Bottle": {},
+    "CCL: Inside the Trash Can On Snacky Fatty Chocs Box": {},
+    "CCL: Inside the Trash Can Inside Salted Snack Treats Box": {},
+    "CCL: Mingy Jongo's Skull": {},
+    "CCL: Mumbo's Skull": {},
+    "CCL: Zubbas' Hive": {},
+    "CCL: Pot o' Gold": {},
+    "CCL: Cheese Wedge Lower Area": {},
+    "CCL: Cheese Wedge Top Ledge": {},
+    "CCL: Cheese Wedge Jiggy Area": {},
+    
+	"CCL: Central Cavern Main Entrance Top": {},
+    "CCL: Central Cavern Main Entrance Bottom": {},
+    "CCL: Central Cavern Sack Pack Silo Area": {},
+    "CCL: Central Cavern Bottommost Ground": {},
+    "CCL: Central Cavern Ground Near Superstash/Red Exit": {},
+    "CCL: Central Cavern Ground": {},
+    "CCL: Central Cavern Near Entrance Stairs Nest Platform": {},
+    "CCL: Central Cavern Ground": {},
+    "CCL: Central Cavern Jinjo Alcove": {},
+    "CCL: Central Cavern Blue Skull Exit Ledge": {},
+    "CCL: Central Cavern Cheese Wedge Exit Ledge": {},
+    "CCL: Central Cavern Dippy Pool Surface": {},
+    "CCL: Central Cavern Dippy Pool Underwater": {},
+    "CCL: Central Cavern Outdoors Glowbo Pool Surface": {},
+    "CCL: Central Cavern Outdoors Glowbo Pool Underwater": {},
+    "CCL: Central Cavern Sack Race Exit": {},
+    "CCL: Central Cavern Platform Near Closest Superstash Switch": {},
+    "CCL: Central Cavern Near Mr Fit Footrace Exit": {},
+    "CCL: Central Cavern Indoors Glowbo Pool Surface": {},
+    "CCL: Central Cavern Indoors Glowbo Pool Underwater": {},
+    "CCL: Central Cavern Top Path": {},
+	
+    "CCL: Warp Pads": {
+        "exits": {
+            "CCL: Entrance Platform": {
+                "logic": "CCLWorldEntryAndExitWarpPad"
+			},
+            "CCL: Central Cavern Ground": {
+                "logic": "CCLCentralCavernWarpPad"
+			},
+		}
+	},
+
+	"CCL: George Booped": {"macro": {"event"}},
+    "CCL: Sack Race Egg Hatched": {"macro": {"event"}},
+    "CCL: Cheese Wedge Egg Hatched": {"macro": {"event"}},
+    "CCL: Dippy Pool Filled": {"macro": {"event"}},
+    "CCL: Pot o' Gold Activated": {"macro": {"event"}},
+    "CCL: Central Cavern Egg Hatched": {"macro": {"event"}},
+    
+	"CCL: Sack Race Bean Planted": {"macro": {"event"}},
+	"CCL: Cheese Wedge Bean Planted": {"macro": {"event"}},
+	"CCL: Sack Race Bean Grown": {"macro": {"event"}},
+	"CCL: Cheese Wedge Bean Grown": {"macro": {"event"}},
+    
+    "CCL: Superstash Switch By George Pressed": {"macro": {"event"}},
+    "CCL: Superstash Switch In Trashcan Pressed": {"macro": {"event"}},
+    "CCL: Superstash Switch By Superstash Pressed": {"macro": {"event"}},
+    "CCL: Top Central Cavern Path Superstash Switch Pressed": {"macro": {"event"}},
+    "CCL: Superstash Opened": {"macro": {"event"}},
+    
 }

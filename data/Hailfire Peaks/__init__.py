@@ -345,5 +345,6 @@ regions: Regions = {
 			"Train At HFP Icy Side": {},
 		}
 	},
-	"HFP: Mega Glowbo Room Underwater": {}
+	"HFP: Mega Glowbo Room Underwater": {},
+    "HFP: Stomping Plains Jiggy Area": {},
 }

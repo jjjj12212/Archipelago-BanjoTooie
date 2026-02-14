@@ -17,33 +17,6 @@ regions: Regions = {
 	},
 	"Terrydactyland - Temp": {
 		"locations": {
-			"TDL: Talon Torpedo Jinjo": {
-				"item": "BlueJinjo",
-			},
-			"TDL: Entrance Jinjo": {
-				"item": "BrownJinjo",
-			},
-			"TDL: Beside Rocknut Jinjo": {
-				"item": "BlackJinjo",
-			},
-			"TDL: Big T. Rex Jinjo": {
-				"item": "GreenJinjo",
-			},
-			"TDL: Stomping Plains Jinjo": {
-				"item": "BrownJinjo",
-			},
-			"TDL: Under Terry's Nest Jiggy": {
-				"item": "Jiggy",
-			},
-			"TDL: Dippy Jiggy": {
-				"item": "Jiggy",
-			},
-			"TDL: Scrotty Jiggy": {
-				"item": "Jiggy",
-			},
-			"TDL: Terry Jiggy": {
-				"item": "Jiggy",
-			},
 			"TDL: Oogle Boogle Tribe Jiggy": {
 				"item": "Jiggy",
 			},
@@ -379,6 +352,20 @@ regions: Regions = {
 		}
 	},
     "TDL: Ground Floor": {
+        "locations": {
+			"TDL: Underwater Jinjo": {
+				"item": "BlueJinjo",
+                "logic": {
+					"Banjo-Kazooie": "Dive and TalonTorpedo"
+				}
+			},
+			"TDL: Big T. Rex Jinjo": {
+				"item": "GreenJinjo",
+				"logic": { # TODO: Make sure that the timer can be beaten.
+                    "Daddy T-Rex": "true"
+				}
+			},
+		},
         "exits": {
             "TDL: Outside Flight Pad Platform": {
                 "logic": {
@@ -450,13 +437,23 @@ regions: Regions = {
 				}
 			},
             "TDL: Upper Path Past Oogle Boogle Cave": {},
-			"TDL: Upper Platform in Front of Wall With Holes": { # Clockwork walking through the loading zone in TDL: Wall With Holes Funny Clockwork Region
+			"TDL: Upper Platform in Front of Wall With Holes": {
                 "logic": {
                     "Banjo-Kazooie": {
                         "Clockwork Kazooie": "ClockworkShot"
 					},
                     "Kazooie": {
                         "Clockwork Kazooie": "ClockworkShot"
+					},
+				}
+			},
+			"TDL: Wall With Holes Funny Clockwork Region": { # Walking the clockwork through the loading zone
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "Clockwork Kazooie": "ClockworkKazooieEggs and EggUse"
+					},
+                    "Kazooie": {
+                        "Clockwork Kazooie": "ClockworkKazooieEggs and EggUse"
 					},
 				}
 			},
@@ -482,6 +479,13 @@ regions: Regions = {
                     "Baby T-Rex": "true"
 				}
 			},
+            "TDL: Inside the Mountain Cheato Page Area": {
+                "logic": {
+                    "Baby T-Rex": "BabyTRexRoar",
+                    "Banjo-Kazooie": "ClockworkWarp and GrenadeEggs and ClockworkShotThroughGeometry and EggAim and ThirdPersonEggShooting",
+                    "Kazooie": "ClockworkWarp and GrenadeEggs and ClockworkShotThroughGeometry and EggAim and ThirdPersonEggShooting"
+				}
+			},
             "TDL: Outside Wumba's Wigwam": {
                 "logic": {
                     "Banjo-Kazooie": {
@@ -497,6 +501,12 @@ regions: Regions = {
                     "Mumbo": "true",
                     "Baby T-Rex": "true",
                     "Daddy T-Rex": "true"
+				}
+			},
+            "TDL: River Passage": {
+                "logic": {
+                    "Banjo": "Climb",
+                    "Banjo-Kazooie": "Climb"
 				}
 			},
             "TDL: Outside Mumbo's Skull": {
@@ -545,11 +555,22 @@ regions: Regions = {
             "TDL: Dippy Pool": {
                 "logic": {
                     "BK Springy Step Shoes": {
-                        "Banjo-Kazooie": "Dive"
+                        "Banjo-Kazooie": "TDLDippyPoolFilled and Dive"
 					}
 				}
 			},
-            "TDL: Inside the Mountain": {},
+            "TDL: Inside the Mountain On Lower Platforms": {},
+            "TDL: Inside the Mountain On Water Surface": {
+                "logic": {
+                    "Any": "true",
+                    "Baby T-Rex": "false" # The T-rex sinks underwater once arrived inside the mountain
+				}
+			},
+            "TDL: Inside the Mountain Underwater": {
+                "logic": {
+                    "Baby T-Rex": "true"
+				},
+			},
             "TDL: Warp Pads": {
 				"logic": "TDLWorldEntryAndExitWarpPad"
 			},
@@ -565,6 +586,13 @@ regions: Regions = {
                     "Kazooie": {
                         "Kazooie": "TallJump or LegSpring",
                         "Clockwork Kazooie": "ClockworkShot"
+					},
+				}
+			},
+            "TDL: Top of Lakeside Terry Egg Platform": {
+            	"logic": {
+                    "Kazooie": {
+                        "Kazooie": "TallJump and LegSpring"
 					},
 				}
 			},
@@ -608,7 +636,13 @@ regions: Regions = {
 			},
 		},
 	},
-    "TDL: Entrance Jinjo Platform": {},
+    "TDL: Entrance Jinjo Platform": {
+        "locations": {
+			"TDL: Beside Rocknut Jinjo": {
+				"item": "BlackJinjo",
+			},
+		}
+	},
     "TDL: Inside the Mountain Ramp Tunnel": {
         "exits": {
             "TDL: Ground Floor": {},
@@ -736,14 +770,28 @@ regions: Regions = {
         "exits": {
             "TDL: Ground Floor": {},
             "TDL: Unga Bunga Cave Near Springy Step Shoes": {},
-            "TDL: River Passage": {},
+            "TDL: River Passage Entrance Lake": {},
             "TDL: Outside Wumba's Wigwam": {},
+            "TDL: Outside Styracosaurus Family Cave": {
+                "logic": {
+                    "Banjo": "SnoozePackFall",
+                    "Kazooie": "true",
+                    "Banjo-Kazooie": "BeakBusterFall or WonderwingFall or DamageBoost or EasyJumps and (Flutter or AirRatatatRap)",
+                    "Mumbo": "true",
+                    "Baby T-Rex": "true"
+				}
+			},
             "TDL: Upper Platform in Front of Wall With Holes": {
                 "logic": {
                 	"Kazooie": "Glide and EasyJumps"
 				}
 			},
             "TDL: Lakeside Honeycomb Platform": {
+                "logic": {
+                    "Kazooie": "EasyTediousJumps"
+				}
+			},
+            "TDL: Top of Lakeside Terry Egg Platform": {
                 "logic": {
                     "Kazooie": "EasyTediousJumps"
 				}
@@ -792,8 +840,32 @@ regions: Regions = {
                     "Any": "TDLOogleBoogleCaveGateOpened"
 				}
 			},
+            "TDL: Oogle Boogle Cave Terry Egg Platform": {
+                "logic": {
+                    "Banjo": "Climb",
+                    "Kazooie": "TallJump"
+				}
+			},
 		},
         "macro": {"splitup"}
+	},
+    "TDL: Oogle Boogle Cave Behind The Gate": {
+        "exits": {
+            "WW: Oogle Boogle Tunnel Entrance": {
+                "logic": {
+                    "Banjo-Kazooie": "true"
+				}
+			},
+		},
+	},
+    "TDL: Oogle Boogle Cave Terry Egg Platform": {
+        "exits": {
+            "TDL: Oogle Boogle Cave Terry Egg Hatched": {
+                "logic": {
+                    "Kazooie": "Hatch"
+				}
+			},
+		},
 	},
 	"TDL: Near Oogle Boogle Cave Split Up Platform": {
         "exits": {
@@ -826,63 +898,1139 @@ regions: Regions = {
                     "Clockwork Kazooie": "true"
 				}
 			},
+            "TDL: Wall With Holes Funny Clockwork Region": {
+                "logic": {
+                    "Clockwork Kazooie": "true"
+				}
+			},
 		},
 	},
-	"TDL: Wall With Holes Jinjo Cell": {},
-	"TDL: Wall With Holes Rocknut Cell": {},
-    "TDL: Wall With Holes Funny Clockwork Region": {},
-	"TDL: Outside Styracosaurus Family Cave": {},
-	"TDL: Styracosaurus Family Cave": {},
-	"TDL: Ledge to the Right of Styracosaurus Cave": {},
-	"TDL: Outside Flight Pad Platform": {},
-	"TDL: Flight": {},
+	"TDL: Wall With Holes Jinjo Cell": {
+        "exits": {
+			"TDL: Ground Floor": {
+                "logic": {
+                    "Clockwork Kazooie": "true"
+				}
+			}
+		},
+	},
+	"TDL: Wall With Holes Rocknut Cell": {
+        "exits": {
+			"TDL: Ground Floor": {
+                "logic": {
+                    "Clockwork Kazooie": "true"
+				}
+			}
+		},
+    },
+    "TDL: Wall With Holes Funny Clockwork Region": {
+        "exits": {
+            "TDL: Upper Platform in Front of Wall With Holes": {
+                "logic": {
+                    "Clockwork Kazooie": "true"
+				}
+			},
+            "TDL: Ground Floor": {
+                "logic": {
+                    "Clockwork Kazooie": "true"
+				}
+            }
+		}
+	},
+	"TDL: Outside Styracosaurus Family Cave": {
+        "exits": {
+            "TDL: Styracosaurus Family Cave": {},
+            "TDL: Ground Floor": {},
+		},
+	},
+	"TDL: Styracosaurus Family Cave": {
+        "locations": {
+			"TDL: Scrotty Jiggy": {
+				"item": "Jiggy",
+				"logic": "TDLScratBackToScrotty and TDLScrutBackToScrotty and TDLScritEnlarged"
+			},
+		},
+        "exits": {
+            "TDL: Outside Styracosaurus Family Cave": {},
+            "TDL: Styracosaurus Family Cave Empty Honeycomb Boulder Broken": {
+                "logic": {
+                    "Banjo-Kazooie": "BillDrill"
+				}
+            },
+            "TDL: Scrit Boulder Broken": {
+                "logic": {
+                    "Banjo-Kazooie": "BillDrill"
+				}
+			},
+            "TDL: Scrit Enlarged": {
+                "logic": {
+                    "Mumbo": "MumboEnlarge and TDLScritBoulderBroken"
+				}
+			},
+            "TDL: Scrat In Train": {
+                "logic": {
+                    "Banjo": """
+						TaxiPack and can_form_from_region_reach(
+							"Banjo",
+							"TDL: Styracosaurus Family Cave",
+							[
+								"GGM: Chuffy's Wagon",
+							]
+						)
+					""",
+				}
+			},
+			"TDL: Scrat Back To Scrotty": {
+                "logic": "TDLScratHealed and TrainAtTDL"
+			},
+		}
+	},
+	"TDL: Ledge to the Right of Styracosaurus Cave": {
+        "exits": {
+            "TDL: Outside Styracosaurus Family Cave": {},
+            "TDL: Ground Floor": {},
+		},
+	},
+	"TDL: Outside Flight Pad Platform": {
+        "exits": {
+            "TDL: Flight": {
+                "logic": {
+                    "Banjo-Kazooie": "FlightPad and TDLTerryDefeated",
+                    "Kazooie": "FlightPad and TDLTerryDefeated"
+				},
+			},
+		},
+	},
+	"TDL: Flight": {
+        "exits": {
+            "TDL: Ground Floor": {},
+            "TDL: Near Roar Cage": {},
+            "TDL: Roar Cage Note Platforms": {},
+            "TDL: Outside Mumbo's Skull": {},
+            "TDL: Cheato Page Platform Near Mumbo's Skull": {},
+            "TDL: On Entrance Pillar": {},
+            "TDL: Entrance Jinjo Platform": {
+                "logic": "TDLEntrancePillarButtonPressed"
+			},
+            "TDL: Entrance Pillar Button Pressed": {
+                "logic": "BeakBomb"
+			},
+            "TDL: Near Oogle Boogle Cave Split Up Platform": {},
+            "TDL: In Front of Oogle Boogle Cave Behind the Unga Bunga": {
+                "logic": "BeakBombClips"
+			},
+            "TDL: Upper Platform in Front of Wall With Holes": {},
+            "TDL: Top Of The Mountain": {},
+            "TDL: Path to Terry Start": {},
+            "TDL: Path to Terry Second Segment": {},
+            "TDL: Unga Bunga Glowbo Platform": {},
+            "TDL: Dippy Pool": {
+                "logic": {
+					"Banjo-Kazooie": "TDLDippyPoolFilled and Dive"
+				}
+			},
+            "TDL: Lakeside Honeycomb Platform": {},
+            "TDL: Top of Lakeside Terry Egg Platform": {
+                "logic": {
+                    "Kazooie": "true"
+				}
+			},
+		},
+	},
     "TDL: Lakeside Honeycomb Platform": {},
-	"TDL: Outside Wumba's Wigwam": {},
-    "TDL: Wumba's Wigwam": {},
-    "TDL: Oogle Boogle Cave Behind The Gate": {},
+    "TDL: Top of Lakeside Terry Egg Platform": {
+        "exits": {
+            "TDL: Lakeside Terry Egg Hatched": {
+                "logic": {
+                    "Kazooie": "Hatch",
+				},
+			},
+		}
+	},
+	"TDL: Outside Wumba's Wigwam": {
+        "exits": {
+            "TDL: Ground Floor": {},
+            "TDL: Wumba's Wigwam": {},
+            "TDL: Warp Pads": {
+                "logic": "TDLOutsideWumbasWigwamWarpPad"
+			},
+            "TDL: Wumba's Wigwam Enlarged": {
+                "logic": {
+                    "Mumbo": "MumboEnlarge"
+				}
+			},
+            "TDL: Inside the Mountain Cheato Page Area": {
+                "logic": {
+                    "Baby T-Rex": "BabyTRexRoar",
+                    "Banjo-Kazooie": "ClockworkWarp and GrenadeEggs and ClockworkShotThroughGeometry and EggAim and ThirdPersonEggShooting",
+                    "Kazooie": "ClockworkWarp and GrenadeEggs and ClockworkShotThroughGeometry and EggAim and ThirdPersonEggShooting"
+				}
+			},
+            "TDL: Near Hatch Cave Entrance": {
+                "logic": {
+					"Banjo-Kazooie": "SpringyStepShoes",
+					"Kazooie": "SpringyStepShoes"
+				}
+			},
+			"TDL: Baby T-Rex Loading Zone To Near Hatch Cave Entrance": {
+				"logic": {
+                    "Baby T-Rex": "BabyTRexRoar"
+				}
+			}
+		},
+	},
+    "TDL: Baby T-Rex Loading Zone To Near Hatch Cave Entrance": {
+        "exits": {
+			"TDL: Outside Wumba's Wigwam": {},
+            "TDL: Near Hatch Cave Entrance": {}
+		}
+	},
+    "TDL: Wumba's Wigwam": {
+        "exits": {
+            "TDL: Wumba's Wigwam": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "Baby T-Rex": "HumbaTRex",
+                        "Daddy T-Rex": "HumbaTRex and TDLWumbasWigwamEnlarged"
+					}
+				}
+			},
+            "TDL: Outside Wumba's Wigwam": {
+                "explicit_logic": {
+                    "Daddy T-Rex": "true"
+				}
+			},
+		},
+	},
     "TDL: Unga Bunga Glowbo Platform": {},
-	"TDL: River Passage": {},
+    "TDL: River Passage Entrance Lake": {
+        "exits": {
+            "TDL: Ground Floor": {
+                "logic": {
+                    "Banjo": "FallDamage or SnoozePackFall or PackWhackFall",
+                    "Kazooie": "true",
+                    "Banjo-Kazooie": "Flutter or AirRatatatRap or FallDamage or BeakBusterFall or WonderwingFall",
+                    "Mumbo": "MumboWandFall"
+				}
+			},
+            "TDL: River Passage": {},
+            "TDL: Upper Path Past Oogle Boogle Cave": {
+                "logic": {
+                    "Banjo": "TallJump or GripGrab or PackWhackJump or SackPack",
+                    "Kazooie": "TallJump",
+                    "Mumbo": "TallJump",
+				}
+			},
+            "TDL: River Passage Entrance Lake": {
+				"logic": {
+                    "Banjo-Kazooie": {
+                        "Clockwork Kazooie": "ClockworkKazooieEggs and EggUse"
+					}
+				}
+			},
+            "TDL: River Passage Entrance Rocknut Cell": {
+                "logic": {
+                    "Clockwork Kazooie": "true"
+				}
+			},
+            "TDL: River Passage Entrance Nest Platform": {
+                "logic": {
+					"Banjo": "TallJump or PackWhackJump or GripGrab",
+                    "Kazooie": "TallJump or WingWhack or Glide",
+                    "Banjo-Kazooie": "TallJump or BeakBusterJump or GripGrab",
+                    "Mumbo": "TallJump"
+				}
+			}
+		}
+	},
+    "TDL: River Passage Entrance Rocknut Cell": {
+        "exits": {
+            "TDL: Waterfall Cell Rocknut Defeated": {
+                "logic": {
+                    "Clockwork Kazooie": "true"
+				}
+			}
+		}
+	},
+    "TDL: River Passage Entrance Nest Platform": {},
+	"TDL: River Passage": {
+        "exits": {
+            "TDL: River Passage Underwater": {
+                "logic": {
+                    "Baby T-Rex": "true",
+                    "Banjo": "Dive",
+                    "Kazooie": "Dive"
+				}
+			},
+            "TDL: River Passage Split Up Platform": {
+                "logic": {
+                    "Banjo": "GripGrab and (TallJump or PackWhackJump) or SackPackAirJump and HardJumps",
+                    "Kazooie": "LegSpring and Glide and EasyJumps",
+                    "Banjo-Kazooie": "TallJump and GripGrab"
+				}
+			},
+            "TDL: River Passage Taxi Pack Silo Platform": {
+                "logic": {
+                    "Banjo": "SackPackAirJump or TallJump and PackWhackJump",
+                    "Kazooie": "TallJump or LegSpring and Glide",
+                    "Banjo-Kazooie": {
+                        "Clockwork Kazooie": "ClockworkShot"
+					}
+				}
+			},
+            "TDL: River Passage Empty Honeycomb Slope": {
+                "logic": {
+                    "Banjo": "PackWhackSlopeJump",
+                    "Kazooie": "true",
+                    "Banjo-Kazooie": {
+                        "Banjo-Kazooie": "TalonTrot",
+                        "Clockwork Kazooie": "ClockworkShot"
+					},
+				}
+			},
+			"TDL: River Passage Entrance Lake": {},
+            "TDL: Ground Floor": {},
+		},
+	},
     "TDL: River Passage Underwater": {},
     "TDL: River Passage Empty Honeycomb Slope": {},
-    "TDL: River Passage Split Up Platform": {},
-    "TDL: River Passage Slit": {},
-    "TDL: Outside Mumbo's Skull": {},
-    "TDL: Mumbo's Skull": {},
+    "TDL: River Passage Split Up Platform": {
+        "exits": {
+            "TDL: River Passage Slit": {
+                "logic": {
+                    "Banjo": "GripGrab",
+                    "Banjo-Kazooie": "FlapFlip and GripGrab"
+				}
+			},
+		},
+        "macro": {"splitup"}
+	},
+    "TDL: River Passage Slit": {
+        "exits": {
+            "TDL: River Passage Taxi Pack Silo Platform": {}
+		}
+	},
+    "TDL: River Passage Taxi Pack Silo Platform": {},
+    "TDL: Outside Mumbo's Skull": {
+        "exits": {
+            "TDL: Mumbo's Skull": {},
+            "TDL: Cheato Page Platform Near Mumbo's Skull": {
+                "logic": {
+                    "Banjo-Kazooie": "GripGrab and (FlapFlip or TalonTrot and Flutter and EasyJumps)",
+				}
+			},
+            "TDL: Ground Floor": {
+                "logic": {
+                    "Banjo": "TDLOutsideMumboPlatformsEnlarged or DragundaSidle or DamageBoost",
+                    "Kazooie": "DamageBoost and DragundaSidle and (TallJump or LegSpring) or TallJump and TDLOutsideMumboPlatformsEnlarged or LegSpring and Glide",
+                    "Banjo-Kazooie": "DamageBoost or (DragundaSidle or TDLOutsideMumboPlatformsEnlarged) and (TallJump or TalonTrot or FlapFlip)",
+					"Mumbo": "TallJump and TDLOutsideMumboPlatformsEnlarged",
+                    "Baby T-Rex": "true",
+				}
+			},
+            "TDL: Warp Pads": {
+				"logic": "TDLOutsideMumbosSkullWarpPad"
+			}
+		}
+	},
+    "TDL: Mumbo's Skull": {
+        "exits": {
+            "TDL: Mumbo's Skull": {
+                "logic": {
+                    "Banjo-Kazooie": {
+                        "Mumbo": "MumboEnlarge"
+					}
+				}
+			},
+            "TDL: Outside Mumbo's Skull": {}
+		}
+	},
+    "TDL: Cheato Page Platform Near Mumbo's Skull": {},
     "TDL: Train Switch Platform": {},
     "TDL: Dippy Pool": {},
-    "TDL: Near Roar Cage": {},
-    "TDL: Roar Cage Note Platforms": {},
-    "TDL: Near Hatch Cave Entrance": {},
-    "TDL: Unga Bunga Cave Near Hatch Silo": {},
-    "TDL: Unga Bunga Cave Near Terry Egg": {},
-    "TDL: Unga Bunga Cave Relic Room": {},
-    "TDL: Unga Bunga Cave Near Springy Step Shoes": {},
-    "TDL: Relic Ledge": {},
-	"TDL: Inside the Mountain": {},
-	"TDL: Inside the Mountain Chompa Platform Top": {},
-	"TDL: Inside the Mountain Chompa Platform Bottom": {},
-	"TDL: Inside the Mountain Underwater": {},
-	"TDL: Inside the Mountain Flight Pad Platform": {},
-	"TDL: Inside the Mountain Cheato Page Area": {},
-	"TDL: Inside the Mountain Terry Egg Platform": {},
-	"TDL: Inside the Mountain Split Up Pad Platform": {},
-	"TDL: Inside the Mountain Near Gate Switch": {},
-	"TDL: Path to Terry Start": {},
-	"TDL: Path to Terry Second Segment": {},
-	"TDL: Top of the Mountain": {},
-	"TDL: Terry's Nest": {},
-	"TDL: Terry's Nest Inside the Nest": {},
-	"TDL: Terry's Nest": {},
-	"TDL: Bonfire Cavern Entrance": {},
-	"TDL: Bonfire Cavern Middle Platform": {},
-	"TDL: Bonfire Cavern Exit": {},
-	"TDL: Stomping Plains Start": {},
-	"TDL: Stomping Plains Footprints": {},
-	"TDL: Stomping Plains End": {},
-	"TDL: Stomping Plains End on Shortcut Ledge": {},
+    "TDL: Near Roar Cage": {
+        "exits": {
+            "TDL: Ground Floor": {},
+            "TDL: Roar Cage Rocknut Defeated": {
+                "logic": {
+                    "Banjo-Kazooie": "ClockworkKazooieEggs and EggUse and (SlopeJump or TallJump)",
+                    "Kazooie": "ClockworkKazooieEggs and EggUse and (SlopeJump or TallJump)"
+				}
+			},
+            "TDL: Roar Cage Note Platforms": {
+                "logic": {
+                    "Banjo": "true",
+                    "Kazooie": "true",
+                    "Banjo-Kazooie": "SlopeJump or TallJump or TalonTrot or FlapFlip",
+                    "Talon Trot": "true",
+				}
+			},
+            "TDL: On Rocknut Bridge": {
+                "logic": {
+                    "Banjo": "EasyTediousJumps and (SnoozePackFall or PackWhackJump or FallDamage)",
+                    "Kazooie": {
+						"Kazooie": "EasyTediousJumps",
+                        "Clockwork Kazooie": "EasyTediousJumps and ClockworkKazooieEggs and EggUse",
+					},
+                    "Banjo-Kazooie": {
+                        "Banjo-Kazooie": "FallDamage or Flutter or AirRatatatRap or BeakBusterFall or WonderwingFall",
+                        "Clockwork Kazooie": "EasyTediousJumps and ClockworkKazooieEggs and EggUse",
+					},
+                    "Mumbo": "EasyTediousJumps and (FallDamage or MumboWandFall)",
+                    "Baby T-Rex": "EasyTediousJumps"
+				}
+			},
+            "TDL: Near Hatch Cave Entrance": {
+				"logic": "TDLRoarCageRocknutDefeated"
+			}
+		}
+	},
+    "TDL: Roar Cage Note Platforms": {
+        "exits": {
+			"TDL: Near Roar Cage": {
+                "logic": {
+                    "Banjo": "true",
+                    "Kazooie": "true",
+                    "Banjo-Kazooie": "SlopeJump or TallJump or TalonTrot or FlapFlip",
+                    "Talon Trot": "true",
+				}
+			},
+			"TDL: Near Hatch Cave Entrance": {
+                "logic": {
+                    "Banjo": "true",
+                    "Kazooie": "true",
+                    "Banjo-Kazooie": "SlopeJump or TallJump or TalonTrot or FlapFlip",
+                    "Talon Trot": "true",
+				}
+			},
+		}
+	},
+    "TDL: Near Hatch Cave Entrance": {
+        "exits": {
+            "TDL: Ground Floor": {},
+            "TDL: Unga Bunga Cave Near Hatch Silo": {},
+            "TDL: Roar Cage Rocknut Defeated": {
+                "logic": {
+                    "Banjo-Kazooie": "ClockworkKazooieEggs and EggUse and (SlopeJump or TallJump)",
+                    "Kazooie": "ClockworkKazooieEggs and EggUse and (SlopeJump or TallJump)"
+				}
+			},
+            "TDL: Roar Cage Note Platforms": {
+                "logic": {
+                    "Banjo": "true",
+                    "Kazooie": "true",
+                    "Banjo-Kazooie": "SlopeJump or TallJump or TalonTrot or FlapFlip",
+                    "Talon Trot": "true",
+				}
+			},
+            "TDL: Near Roar Cage": {
+                "logic": "TDLRoarCageRocknutDefeated"
+			},
+            "TDL: Baby T-Rex Loading Zone To Near Hatch Cave Entrance": {
+                "logic": {
+					"Baby T-Rex": "BabyTRexRoar",
+					"Banjo-Kazooie": "ClockworkWarp and ClockworkShotThroughGeometry and GrenadeEggs and EggAim and ThirdPersonEggShooting"
+				}
+			}
+		}
+	},
+    "TDL: Unga Bunga Cave Near Hatch Silo In Front of Gate": {
+		"exits": {
+            "TDL: Near Hatch Cave Entrance": {},
+            "TDL: Unga Bunga Cave Gate Near Hatch Silo Opened": {},
+            "TDL: Unga Bunga Cave Near Hatch Silo": {
+                "logic": "TDLUngaBunchCaveGateNearHAtchSiloOpened"
+			},
+		}
+	},
+    "TDL: Unga Bunga Cave Near Hatch Silo": {
+        "exits": {
+            "TDL: Unga Bunga Cave Near Split Up Pad": {
+                "logic": {
+                    "Banjo": "true",
+                    "Kazooie": {
+                        "Kazooie": "TallJump or LegSpring",
+                        "Clockwork Kazooie": "ClockworkShot"
+					},
+                    "Banjo-Kazooie": {
+                        "Banjo-Kazooie": "TallJump or GripGrab or BeakBusterJump or WonderwingJump or TalonTrot or FlapFlip",
+                        "Clockwork Kazooie": "ClockworkShot"
+					},
+                    "Talon Trot": "true",
+                    "Baby T-Rex": "true"
+				},
+			},
+            "TDL: Near Hatch Cave Entrance": {
+                "logic": {
+                    "Banjo-Kazooie": "ClockworkWarp and GrenadeEggs and EggAim and ClockworkKazooieEggs"
+				}
+			}
+		}
+	},
+    "TDL: Unga Bunga Cave Near Split Up Pad": {
+        "exits": {
+            "TDL: Unga Bunga Cave Near Hatch Silo": {
+                "explicit_logic": {
+                    "Clockwork Kazooie": "true"
+				}
+			},
+            "TDL: Unga Bunga Cave Relic Room": {
+                "logic": {
+                    "Banjo": "GripGrab or TallJump and PackWhackJump",
+                    "Kazooie": "LegSpring",
+                    "Banjo-Kazooie": "GripGrab and (TallJump or TalonTrot and Flutter) or FlapFlip"
+				},
+			},
+            "TDL: Unga Bunga Cave Terry Egg Hatched": {
+                "logic": {
+                    "Kazooie": "Hatch"
+				}
+			}
+		},
+        "macro": {"splitup"}
+	},
+    "TDL: Unga Bunga Cave Near Springy Step Shoes": {
+        "exits": {
+            "TDL: Unga Bunga Cave Gate Near Springy Step Shoes Opened": {
+                "logic": {
+                    "Banjo": "true",
+                    "Kazooie": "true",
+                    "Mumbo": "true",
+                    "Baby T-Rex": "true",
+                    "Banjo-Kazooie": "true",
+                    "Talon Trot": "true"
+				}
+			},
+            "TDL: Upper Path Past Oogle Boogle Cave": {
+                "explicit_logic": {
+                    "BK Springy Step Shoes": "true",
+                    "SK Springy Step Shoes": "true"
+				}
+			},
+            "TDL: Unga Bunga Cave Relic Room": {
+                "logic": {
+                    "Banjo": "TDLUngaBunchCaveGateNearSpringyStepShoesOpened",
+                    "Kazooie": "TDLUngaBunchCaveGateNearSpringyStepShoesOpened",
+                    "Mumbo": "TDLUngaBunchCaveGateNearSpringyStepShoesOpened",
+                    "Baby T-Rex": "TDLUngaBunchCaveGateNearSpringyStepShoesOpened",
+                    "Banjo-Kazooie": "TDLUngaBunchCaveGateNearSpringyStepShoesOpened",
+                    "Talon Trot": "TDLUngaBunchCaveGateNearSpringyStepShoesOpened"
+				}
+			},
+            "TDL: Unga Bunga Cave Near Springy Step Shoes": {
+				"logic": {
+                    "Banjo-Kazooie": {
+                        "BK Springy Step Shoes": "SpringyStepShoes",
+					},
+					"Kazooie": {
+                        "SK Springy Step Shoes": "SpringyStepShoes"
+					}
+				}
+			},
+            "TDL: Path to Terry Start": {
+                "logic": {
+                    "BK Springy Step Shoes": {
+						"Banjo-Kazooie": "true"
+					},
+                    "SK Springy Step Shoes": {
+						"Kazooie": "true"
+					},
+                    "Kazooie": "LegSpring and GlideWallClimb"
+				}
+			}
+		}
+	},
+    "TDL: Unga Bunga Cave Relic Room": {
+        "exits": {
+            "MT: Treasure Chamber Behind Unga Bunga Gate": {
+                "logic": {
+                    "Banjo-Kazooie": "true",
+                    "Talon Trot": "TalonTrotSmuggleCrossWorld"
+				}
+			},
+            "TDL: Unga Bunga Cave Near Springy Step Shoes": {
+                "logic": {
+                    "Banjo": "TDLUngaBunchCaveGateNearSpringyStepShoesOpened",
+                    "Kazooie": "TDLUngaBunchCaveGateNearSpringyStepShoesOpened",
+                    "Mumbo": "TDLUngaBunchCaveGateNearSpringyStepShoesOpened",
+                    "Baby T-Rex": "TDLUngaBunchCaveGateNearSpringyStepShoesOpened",
+                    "Banjo-Kazooie": "TDLUngaBunchCaveGateNearSpringyStepShoesOpened",
+                    "Talon Trot": "TDLUngaBunchCaveGateNearSpringyStepShoesOpened"
+				}
+			},
+            "TDL: Unga Bunga Cave Near Split Up Pad": {
+                "logic": {
+                    "Banjo": "GripGrab or TallJump and PackWhackJump",
+                    "Kazooie": {
+                        "Kazooie": "LegSpring",
+                        "Clockwork Kazooie": "ClockworkShot"
+					},
+                    "Banjo-Kazooie": {
+                        "Banjo-Kazooie": "GripGrab and (TallJump or TalonTrot and Flutter) or FlapFlip",
+                        "Clockwork Kazooie": "ClockworkShot"
+					}
+				},
+			},
+            "TDL: Relic Ledge": {
+                "logic": {
+                    "Banjo-Kazooie": "FlapFlip or (TallJump or TalonTrot and Flutter) and (GripGrab or BeakBusterJump)",
+					"Baby T-Rex": "DamageBoost"
+				}
+			}
+		}
+	},
+    "TDL: Relic Ledge": {}, # TODO: Logic of bringing the relic back.
+	"TDL: Inside the Mountain On Lower Platforms": {
+        "exits": {
+            "TDL: Inside the Mountain On Water Surface": {
+                "logic": {
+                    "Any": "true",
+                    "Baby T-Rex": "false" # Directly to underwater
+				}
+			},
+            "TDL: Inside the Mountain Underwater": {
+                "logic": {
+                    "Baby T-Rex": "true"
+				}
+			},
+            "TDL: Ground Floor": {},
+            "TDL: Inside the Mountain Chompa Platform Bottom": {
+                "logic": "TDLInsidetheMountainPathRaised"
+			},
+            "TDL: Inside the Mountain Flight Pad Platform": {
+                "logic": {
+                    "Banjo": "SackPack" # Also possible from the water loading zone if the loading zone allows solo Banjo in Sack Pack to go through, but good luck coding that part of the logic!
+				}
+			}
+		},
+        "macro": {"splitup"}
+	},
+    "TDL: Inside the Mountain On Water Surface": {
+        "exits": {
+            "TDL: Ground Floor": {},
+            "TDL: Inside the Mountain Underwater": {
+                "logic": {
+                    "Banjo": "Dive",
+                    "Banjo-Kazooie": "Dive"
+				}
+			},
+            "TDL: Inside the Mountain Path Raised": {
+				"logic": {
+                    "Banjo-Kazooie": "EggAim and ShootExplosives",
+                    "Kazooie": "EggAim and ShootExplosives"
+				}
+			},
+            "TDL: Inside the Mountain Flight Pad Platform": {
+                "logic": {
+                    "Banjo": "GripGrab or TallJump or PackWhackJump",
+                    "Kazooie": {
+                        "Kazooie": "TallJump",
+                        "Clockwork Kazooie": "ClockworkShot"
+					},
+                    "Banjo-Kazooie": {
+                        "Banjo-Kazooie": "GripGrab or TallJump or BeakBusterJump",
+                        "Clockwork Kazooie": "ClockworkShot"
+					},
+                    "Mumbo": "TallJump"
+				}
+			},
+            "TDL: Inside the Mountain Cheato Page Grab": {
+				"logic": {
+                    "Banjo-Kazooie": "EggBarge"
+				}
+			},
+            "TDL: Inside the Mountain Cheato Page Area": {
+				"logic": {
+                    "Banjo-Kazooie": {
+                        "Clockwork Kazooie": "ClockworkShotThroughGeometry and EggAim"
+					},
+                    "Kazooie": {
+                        "Clockwork Kazooie": "ClockworkShotThroughGeometry"
+					},
+				}
+			}
+		},
+	},
+	"TDL: Inside the Mountain Chompa Platform Bottom": {
+        "exits": {
+            "TDL: Inside the Mountain Path Raised": {
+                "logic": {
+                    "Banjo-Kazooie": "ShootExplosives or BeakBarge or DragonBreath",
+					"Kazooie": "ShootExplosives or DragonBreathSoloKazooie"
+				}
+			},
+            "TDL: Inside the Mountain On Water Surface": {
+                "logic": {
+                    "Any": "true",
+					"Baby T-Rex": "false"
+				}
+			},
+            "TDL: Inside the Mountain Underwater": {
+                "logic": {
+                    "Baby T-Rex": "true"
+				}
+			},
+            "TDL: Inside the Mountain Chompa Platform Top": {
+                "logic": {
+                    "Banjo-Kazooie": "SpringyStepShoes",
+					"Kazooie": "SpringyStepShoes"
+				}
+			}
+		}
+	},
+	"TDL: Inside the Mountain Chompa Platform Top": {
+        "exits": {
+            "TDL: Inside the Mountain Chompa Platform Bottom": {},
+            "TDL: Chompa Minigame": {
+                "logic": {
+					"Banjo-Kazooie": "BreegullBlaster"
+				}
+			}
+		}
+	},
+	"TDL: Chompa Minigame": {
+        "exits": {
+			"TDL: Inside the Mountain Chompa Platform Top": {}
+		}
+	},
+	"TDL: Inside the Mountain Underwater": {
+        "exits": {
+            "TDL: Ground Floor": {}
+		}
+	},
+	"TDL: Inside the Mountain Flight Pad Platform": {
+        "exits": {
+            "TDL: Inside the Mountain Flight": {
+                "logic": {
+                    "Banjo-Kazooie": "FlightPad",
+                    "Kazooie": "FlightPad"
+				}
+			},
+            "TDL: Inside the Mountain On Water Surface": {}
+		}
+	},
+	"TDL: Inside the Mountain Flight": {
+        "exits": {
+            "TDL: Inside the Mountain Chompa Platform Bottom": {},
+            "TDL: Inside the Mountain Chompa Platform Top": {},
+            "TDL: Inside the Mountain Terry Egg Platform": {},
+            "TDL: Inside the Mountain Split Up Pad Platform": {},
+            "TDL: Inside the Mountain Near Gate Switch": {
+                "logic": "BeakBombClips"
+			},
+		}
+	},
+	"TDL: Inside the Mountain Cheato Page Area": {
+        "exits": {
+            "TDL: Ground Floor": {},
+            "TDL: Outside Wumba's Wigwam": {},
+            "TDL: Inside the Mountain Cheato Page Grab": {},
+		}
+	},
+    "TDL: Inside the Mountain Cheato Page Grab": {},
+	"TDL: Inside the Mountain Terry Egg Platform": {
+        "exits": {
+			"TDL: Inside The Mountain Terry Egg Hatched": {
+                "logic": {
+					"Kazooie": "Hatch"
+				}
+			},
+            "TDL: Inside the Mountain Split Up Pad Platform": {}
+		}
+	},
+	"TDL: Inside the Mountain Split Up Pad Platform": {
+        "exits": {
+            "TDL: Inside the Mountain Near Gate Switch": {
+                "logic": "TDLInsidetheMountainGateSwitchPressed"
+			},
+            "TDL: Inside the Mountain Terry Egg Platform": {
+                "logic": {
+                    "Banjo": "Climb"
+				}
+			},
+            "TDL: Inside the Mountain On Water Surface": {
+                "logic": {
+                    "Any": "true",
+                    "Baby T-Rex": "false"
+				}
+			},
+            "TDL: Inside the Mountain Underwater": {
+                "logic": {
+                    "Baby T-Rex": "true"
+				}
+			},
+            "TDL: Inside the Mountain On Lower Platforms": {
+                "logic": {
+                    "Kazooie": "EasyTediousJumps"
+				}
+			},
+            "TDL: Inside the Mountain Flight Pad Platform": {
+                "logic": {
+                    "Kazooie": "EasyTediousJumps"
+				}
+			},
+            "TDL: Inside the Mountain Chompa Platform Top": {
+                "logic": {
+                    "Banjo-Kazooie": "HardTediousJumps and TalonTrot and (Flutter or AirRatatatRap)",
+                    "Kazooie": "EasyTediousJumps"
+				}
+			},
+            "TDL: Inside the Mountain Chompa Platform Bottom": {
+                "logic": {
+                    "Banjo-Kazooie": "HardTediousJumps and FallDamage and TalonTrot and (Flutter or AirRatatatRap)",
+                    "Kazooie": "EasyTediousJumps"
+				}
+			},
+		},
+        "macro": {"splitup"}
+	},
+	"TDL: Inside the Mountain Near Gate Switch": {
+        "exits": {
+            "TDL: Inside the Mountain Gate Switch Pressed": {},
+            "TDL: Inside the Mountain Split Up Pad Platform": {
+                "logic": "TDLInsidetheMountainGateSwitchPressed"
+			},
+            "TDL: Terry's Nest": {
+                "logic": {
+					"Any": "true",
+                    "Banjo": "false"
+				}
+			},
+            "TDL: Top Of The Mountain Vanilla Solo Banjo Loading Zone": {
+                "logic": {
+                    "Banjo": "true"
+				},
+			},
+		}
+	},
+	"TDL: Terry's Nest": {
+        "exits": {
+            "TDL: Inside the Mountain Near Gate Switch": {
+                "logic": {
+					"Any": "true",
+                    "Banjo": "false"
+				}
+			},
+            "TDL: Inside The Mountain Vanilla Solo Banjo Loading Zone": {
+                "logic": {
+					"Banjo": "true"
+				}
+			},
+            "TDL: Top Of The Mountain": {
+                "logic": {
+					"Any": "true",
+                    "Banjo": "false"
+				}
+			},
+            "TDL: Top Of The Mountain Vanilla Solo Banjo Loading Zone": {
+                "logic": {
+					"Banjo": "true"
+				}
+			},
+            "TDL: Terry's Nest Inside the Nest": {
+                "logic": {
+					"Any": "true",
+                    # Either fight Terry, or accept the fact that you'll die if you can't do it.
+					"Banjo-Kazooie": "DeathWarp or (LinearEggs and EggAim or TerryWithoutEggAim and (LinearEggs and ThirdPersonEggShooting))"
+				}
+			},
+		}
+	},
+	"TDL: Terry's Nest Inside the Nest": {
+        "locations": {
+			"TDL: Terry Jiggy": {
+				"item": "Jiggy",
+                "logic": "TDLTerryDefeated"
+			},
+		},
+        "exits": {
+            "TDL: Terry Defeated": {
+                "logic": {
+                    "Banjo-Kazooie": "LinearEggs and EggAim or TerryWithoutEggAim and (LinearEggs and ThirdPersonEggShooting)"
+				}
+			},
+            "TDL: Terry's Nest Hole Open": {
+                "logic": {
+                    "Banjo-Kazooie": "TDLTerryDefeated and (ShootExplosives or BillDrill)",
+                    "Kazooie": "TDLTerryDefeated and (ShootExplosives or BillDrill)"
+				}
+			},
+            "TDL: Under Terry's Nest": {
+				"logic": "TDLTerrysNestHoleOpen"
+			},
+            "TDL: Terry's Nest": {
+                "logic": {
+                    "Any": "true",
+                    "Banjo-Kazooie": "TDLTerryDefeated"
+				}
+			},
+		}
+	},
+    "TDL: Under Terry's Nest": {
+		"locations": {
+			"TDL: Under Terry's Nest Jiggy": {
+				"item": "Jiggy",
+			},
+		},
+        "exits": {
+			"TDL: Terry's Nest Inside the Nest": {
+                "logic": {
+                    "Banjo": "true",
+                    "Kazooie": "TallJump or LegSpring",
+                    "Banjo-Kazooie": "TallJump or TalonTrot or FlapFlip or WonderwingJump",
+                    "Baby T-Rex": "true"
+				}
+			}
+		}
+	},
+	"TDL: Path to Terry Start": {
+        "exits": {
+            "TDL: Path to Terry Second Segment": {
+				"logic": {
+                    "Banjo-Kazooie": "TallJump or TalonTrot or Flutter or AirRatatatRap or WonderwingJump or EasyTediousJumps and BeakBusterJump or HardTediousJumps and SlopeJump",
+                    "Kazooie": "true"
+				}
+			}
+		}
+	},
+	"TDL: Path to Terry Second Segment": {
+        "exits": {
+			"TDL: Path to Terry Start": {
+				"logic": {
+                    "Banjo": "TallJump or PackWhackJump or SackPackAirJump or HardTediousJumps",
+                    "Banjo-Kazooie": "TallJump or TalonTrot or Flutter or AirRatatatRap or WonderwingJump or EasyTediousJumps and (SlopeJump or BeakBusterJump)",
+                    "Kazooie": "true",
+					"Mumbo": "HardTediousJumps and SlopeJump or TallJump",
+                    "Baby T-Rex": "true"
+				}
+			},
+            "TDL: Top Of The Mountain": {
+				"logic": {
+                    "Banjo-Kazooie": "TallJump or TalonTrot or Flutter or AirRatatatRap or WonderwingJump or EasyTediousJumps and (SlopeJump or BeakBusterJump)",
+                    "Kazooie": "true"
+				}
+			}
+		}
+	},
+	"TDL: Top Of The Mountain": {
+        "exits": {
+			"TDL: Path to Terry Second Segment": {
+				"logic": {
+                    "Banjo": "TallJump or PackWhackJump or SackPackAirJump or HardTediousJumps",
+                    "Banjo-Kazooie": "TallJump or TalonTrot or Flutter or AirRatatatRap or WonderwingJump or EasyTediousJumps and (SlopeJump or BeakBusterJump)",
+                    "Kazooie": "true",
+					"Mumbo": "HardTediousJumps and SlopeJump or TallJump",
+                    "Baby T-Rex": "true"
+				}
+			},
+            "TDL: Terry's Nest": {
+				"logic": {
+					"Any": "true",
+                    "Banjo": "false"
+				}
+			},
+            "TDL: Top Of The Mountain Vanilla Solo Banjo Loading Zone": {
+                "logic": {
+                    "Banjo": "true"
+				}
+			},
+            "TDL: Ground Floor": {},
+            "TDL: Top Of The Mountain Spring Pad Platform": {},
+            "TDL: Bonfire Cavern Entrance": {},
+            "TDL: Warp Pads": {
+				"logic": "TDLTopOfTheMountainWarpPad"
+			}
+		}
+	},
+	"TDL: Top Of The Mountain Vanilla Solo Banjo Loading Zone": {
+        "exits": {
+			"TDL: Terry's Nest": {},
+            "TDL: Top Of The Mountain": {}
+		}
+	},
+	"TDL: Inside The Mountain Vanilla Solo Banjo Loading Zone": {
+        "exits": {
+			"TDL: Terry's Nest": {},
+            "TDL: Inside the Mountain Near Gate Switch": {}
+		}
+	},
+    "TDL: Top Of The Mountain Spring Pad Platform": {
+        "exits": {
+            "TDL: Top Of The Mountain": {
+				"logic": {
+					"Kazooie": "TallJump"
+				}
+			},
+			"TDL: Top Of The Mountain Honeycomb Platform": {}
+		}
+	},
+    "TDL: Top Of The Mountain Honeycomb Platform": {
+        "exits": {
+			"TDL: Near Roar Cage": {}
+		}
+	},
+	"TDL: Bonfire Cavern Entrance": {
+        "exits": {
+            "TDL: Top Of The Mountain": {},
+            "TDL: Bonfire Cavern Middle Platform": {
+                "logic": {
+                    "Banjo": "BonfireCavernFlameSidle and (PackWhackJump or SackPackAirJump)",
+					"Kazooie": "BonfireCavernFlameSidle or EggUse and IceEggs",
+                    "Banjo-Kazooie": "(BonfireCavernFlameSidle or EggUse and IceEggs) and (TalonTrot or TallJump and (Flutter or AirRatatatRap))",
+					"Talon Trot": "BonfireCavernFlameSidle and HardTediousJumps",
+				}
+			}
+		}
+	},
+	"TDL: Bonfire Cavern Middle Platform": {
+        "exits": {
+			"TDL: Bonfire Cavern Entrance": {
+                "logic": {
+                    "Banjo": "BonfireCavernFlameSidle and (PackWhackJump or SackPackAirJump)",
+					"Kazooie": "BonfireCavernFlameSidle or EggUse and IceEggs",
+                    "Banjo-Kazooie": "(BonfireCavernFlameSidle or EggUse and IceEggs) and (TalonTrot or TallJump and (Flutter or AirRatatatRap))",
+					"Talon Trot": "BonfireCavernFlameSidle and HardTediousJumps",
+				}
+			},
+			"TDL: Bonfire Cavern Exit": {
+                "logic": {
+                    "Banjo": "BonfireCavernFlameSidle and (PackWhackJump or SackPackAirJump)",
+					"Kazooie": "BonfireCavernFlameSidle or EggUse and IceEggs",
+                    "Banjo-Kazooie": "(BonfireCavernFlameSidle or EggUse and IceEggs) and (TalonTrot or TallJump and (Flutter or AirRatatatRap))",
+					"Talon Trot": "BonfireCavernFlameSidle and HardTediousJumps",
+				}
+			}
+		}
+	},
+	"TDL: Bonfire Cavern Exit": {
+		"exits": {
+			"TDL: Bonfire Cavern Middle Platform": {
+                "logic": {
+                    "Banjo": "BonfireCavernFlameSidle and (PackWhackJump or SackPackAirJump)",
+					"Kazooie": "BonfireCavernFlameSidle or EggUse and IceEggs",
+                    "Banjo-Kazooie": "(BonfireCavernFlameSidle or EggUse and IceEggs) and (TalonTrot or TallJump and (Flutter or AirRatatatRap))",
+					"Talon Trot": "BonfireCavernFlameSidle and HardTediousJumps",
+				}
+			},
+            "TDL: Stomping Plains Start": {}
+		}
+	},
+	"TDL: Stomping Plains Start": {
+        "exits": {
+			"TDL: Bonfire Cavern Exit": {},
+            "TDL: Stomping Plains First 4 Footprints": {
+				"logic": {
+                    "Banjo": "TallJump or PackWhackJump or EasyJumps or SnoozePack",
+					"Kazooie": "TallJump or EasyJumps",
+                    "Banjo-Kazooie": "EasyJumps or TallJump or TalonTrot",
+					"Talon Trot": "true"
+				}
+			},
+			"TDL: Warp Pads": {
+                "logic": "TDLStompingPlainsWarpPad"
+			}
+		}
+	},
+	"TDL: Stomping Plains First 4 Footprints": {
+        "exits": {
+			"TDL: Stomping Plains Start": {
+                "logic": {
+					"Banjo": "SnoozePack",
+					"Talon Trot": "true",
+                    "Banjo-Kazooie": "TalonTrot",
+                    "Kazooie": "TallJump or EasyJumps",
+				}
+			},
+            "TDL: Stomping Plains The Other Footprints": {
+                "logic": {
+					"Banjo": "SnoozePack",
+					"Talon Trot": "true",
+                    "Banjo-Kazooie": "TalonTrot",
+                    "Kazooie": "TallJump or EasyJumps",
+				}
+			},
+            "TDL: Stomping Plains End": {
+				"logic": {
+					"Kazooie": "LegSpring and SlopeJump"
+				}
+			}
+		}
+	},
+	"TDL: Stomping Plains The Other Footprints": {
+        "exits": {
+			"TDL: Stomping Plains End": {
+                "logic": {
+					"Banjo": "SnoozePack",
+					"Talon Trot": "true",
+                    "Banjo-Kazooie": "TalonTrot",
+                    "Kazooie": "TallJump or EasyJumps",
+				}
+			},
+            "TDL: Stomping Plains First 4 Footprints": {
+                "logic": {
+					"Banjo": "SnoozePack",
+					"Talon Trot": "true",
+                    "Banjo-Kazooie": "TalonTrot",
+                    "Kazooie": "TallJump or EasyJumps",
+				}
+			}
+		}
+	},
+	"TDL: Stomping Plains End": {
+        "locations": {
+			"TDL: Stomping Plains Jinjo": {
+				"item": "BrownJinjo",
+				"logic": {
+                    "Banjo": "PackWhackClip or TaxiPackClip",
+                    "Kazooie": "true",
+                    "Banjo-Kazooie": "EggBarge"
+				}
+			},
+		},
+        "exits": {
+			"TDL: Stomping Plains The Other Footprints": {
+                "logic": {
+					"Banjo": "SnoozePack",
+					"Talon Trot": "true",
+                    "Banjo-Kazooie": "TalonTrot",
+                    "Kazooie": "TallJump or EasyJumps",
+				}
+			},
+            "TDL: Stomping Plains Solo Banjo Gate Opened": {
+                "logic": {
+					"Banjo": "true"
+				}
+			}
+		},
+		"macro": {"rejoin"}
+	},
+	"TDL: Stomping Plains End on Shortcut Ledge": {
+        "exits": {
+			"TDL: Stomping Plains Start": {},
+            "TDL: Stomping Plains End": {},
+		}
+	},
 
 
-	"TDL: Warp Pads": {},
+	"TDL: Warp Pads": {
+        "exits": {
+			"TDL: Ground Floor": {
+				"logic": "TDLWorldEntryAndExitWarpPad"
+			},
+            "TDL: Outside Mumbo's Skull": {
+				"logic": "TDLOutsideMumbosSkullWarpPad"
+			},
+            "WW: Outside Wumba's Wigwam": {
+                "logic": "TDLOutsideWumbasWigwamWarpPad"
+			},
+            "TDL: Top Of The Mountain": {
+				"logic": "TDLTopOfTheMountainWarpPad"
+			},
+			"TDL: Stomping Plains Start": {
+                "logic": "TDLStompingPlainsWarpPad"
+			}
+		}
+	},
 
 	"TDL: Train Station Rocknut Defeated": {"macro": {"event"}},
 	"TDL: Bridge Rocknut Defeated": {"macro": {"event"}},
@@ -891,16 +2039,28 @@ regions: Regions = {
 	"TDL: Roar Cage Rocknut Defeated": {"macro": {"event"}},
 
     "TDL: Entrance Pillar Button Pressed": {"macro": {"event"}},
+    "TDL: Underwater Jinjo Switch Pressed": {"macro": {"event"}},
 	"TDL: Scrit Boulder Broken": {"macro": {"event"}},
+	"TDL: Scrit Enlarged": {"macro": {"event"}},
+	"TDL: Scrat In Train": {"macro": {"event"}},
+	"TDL: Scrat Back To Scrotty": {"macro": {"event"}},
+	"TDL: Scrut Back To Scrotty": {"macro": {"event"}},
 	"TDL: Styracosaurus Family Cave Empty Honeycomb Boulder Broken": {"macro": {"event"}},
     "TDL: Unga Bunga Spooked": {"macro": {"event"}},
     "TDL: Oogle Boogle Cave Gate Opened": {"macro": {"event"}},
 	"TDL: Outside Mumbo Platforms Enlarged": {"macro": {"event"}},
+    "TDL: Wumba's Wigwam Enlarged": {"macro": {"event"}},
     "TDL: Dippy Pool Filled": {"macro": {"event"}},
     "TDL: Unga Bunga Cave Gate Near Hatch Silo Opened": {"macro": {"event"}},
     "TDL: Unga Bunga Cave Gate Near Springy Step Shoes Opened": {"macro": {"event"}},
 	"TDL: Inside the Mountain Path Raised": {"macro": {"event"}},
 	"TDL: Inside the Mountain Gate Switch Pressed": {"macro": {"event"}},
 	"TDL: Terry Defeated": {"macro": {"event"}},
+	"TDL: Terry's Nest Hole Open": {"macro": {"event"}},
+    "TDL: Inside The Mountain Terry Egg Hatched": {"macro": {"event"}},
+    "TDL: Unga Bunga Cave Terry Egg Hatched": {"macro": {"event"}},
+    "TDL: Lakeside Terry Egg Hatched": {"macro": {"event"}},
+    "TDL: Oogle Boogle Cave Terry Egg Hatched": {"macro": {"event"}},
+    "TDL: Last Terry Baby Brought to Nest": {"macro": {"event"}},
 	"TDL: Stomping Plains Solo Banjo Gate Opened": {"macro": {"event"}},
 }
