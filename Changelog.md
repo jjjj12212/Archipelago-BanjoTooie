@@ -1,3 +1,16 @@
+# 4.11.5
+  - Warning: requires AP 0.6.7+ to use it.
+  - Cryptic Hint optimisation: Cryptic hint generation time has been cut in half.
+  - Fixed a bug where the yaml validation checked for BT moves instead of BK moves for Progressive Bash.
+  - Logic fixes:
+    - Goliath Jiggy: Glitched clockwork shot requires talon trot and egg aim.
+    - Power Hut and Generator Cavern Jiggies: Removed Bill Drill as light source for easy tricks.
+    - Cave of Horrors Jinjo: Clockwork Shot in Glitched logic.
+    - Chompa Jiggy: Now verifies that you can reach the top of the inside of the mountain to jump from it. Removed from easy tricks.
+    - TDL to Chuffy: easy tricks+, talon trot is enough.
+    - River Passage Stuff, easy tricks +, you can grip grab the crack without tall jump.
+    - Coloseum Stuff: On easy tricks, can be reached with just tall jump, talon trot or flap flip.
+
 # 4.11.4
   - PR fixes for Archipelago main repository submission.
   - Thanks to ScipioWright, Mysteryem, and duckboycool for reviewing the code for the PR.
