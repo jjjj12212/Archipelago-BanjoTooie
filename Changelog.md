@@ -1,5 +1,7 @@
 # 4.11.6
   - All copies of Jiggies, 5 Notes and doubloons are now progression and fully tracked during progression balancing, hint generation, and playthrough calculation.
+  - Fixed a bug where "Number of notes that need to be inserted is somehow negative." would get printed if you had too many clefs in the pool.
+  - Fixed a bug where playing with vanilla trebles + randomised notes genned with more fillers than necessary.
   - Logic fixes:
     - MT Pool Jinjo: Jumping from the cliff has been removed from easy tricks.
     - MT Treasure Chamber Jiggy: Removed Save and Quit strat for easy tricks.

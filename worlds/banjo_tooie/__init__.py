@@ -338,9 +338,15 @@ class BanjoTooieWorld(World):
             + 2 * self.options.bass_clef_amount.value
 
         progression_notes -= taken_by_clefs
+        # Random Jamjars costs can make max silo very low (even 0); treble deduction still applies to the
+        # 900-note budget but cannot require negative progression bundles — clamp here (no bug).
+        if progression_notes < 0:
+            progression_notes = 0
 
-        treble_items = (all_item_table[itemName.TREBLE].qty if self.options.randomize_treble.value else 0)\
-            + self.options.extra_trebleclefs_count.value
+        # Treble clef locations always remove 20 notes each from the 900-note budget, whether clefs are
+        # randomized (in the item pool) or vanilla (prefilled). Using 0 here when trebles are off made
+        # note_item_slots too large (180 bundles vs 144 note nests), overflowing the item pool.
+        treble_items = all_item_table[itemName.TREBLE].qty + self.options.extra_trebleclefs_count.value
         bass_items = self.options.bass_clef_amount.value
         raw_notes_from_clefs = 20 * treble_items + 10 * bass_items
         note_item_slots = (900 - raw_notes_from_clefs) // 5
@@ -348,9 +354,6 @@ class BanjoTooieWorld(World):
             logging.warning("Clefs exceed 900 notes worth; no 5-note bundles will be added.")
             note_item_slots = 0
 
-        if progression_notes < 0:
-            logging.warning("Number of notes that need to be inserted is somehow negative.")
-            progression_notes = 0
         progression_notes = min(progression_notes, note_item_slots)
         remainder = note_item_slots - progression_notes
 
