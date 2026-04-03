@@ -16,7 +16,7 @@ local math = require('math')
 require('common')
 
 local SCRIPT_VERSION = 5
-local BT_VERSION = "4.11.4"
+local BT_VERSION = "4.11.5"
 local PLAYER = ""
 local SEED = 0
 
@@ -5836,7 +5836,7 @@ local MAP_ENTRANCES = {
 
     },
     [0x12C] = {
-        ['name'] = "Chilli Willy Crater",
+        ['name'] = "Chilly Willy Crater",
         ['entranceId'] = 1,
         ['exitId'] = 0x0C,
         ['exitMap'] = 0x128,

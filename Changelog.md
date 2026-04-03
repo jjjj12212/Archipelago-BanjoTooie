@@ -1,3 +1,25 @@
+# 4.11.5
+  - Warning: requires AP 0.6.7+ to use it.
+  - Cryptic Hint optimisation: Cryptic hint generation time has been cut in half.
+  - Fixed a bug where the yaml validation checked for BT moves instead of BK moves for Progressive Bash.
+  - All copies of Jiggies, 5 Notes and doubloons are now progression and fully tracked during progression balancing, hint generation, and playthrough calculation.
+  - Fixed a bug where "Number of notes that need to be inserted is somehow negative." would get printed if you had too many clefs in the pool.
+  - Fixed a bug where playing with vanilla trebles + randomised notes genned with more fillers than necessary.
+  - Logic fixes:
+    - MT Pool Jinjo: Jumping from the cliff has been removed from easy tricks.
+    - MT Treasure Chamber Jiggy: Removed Save and Quit strat for easy tricks.
+    - TDL Mumbo Access: easy tricks requires some move to get out of the swamp.
+    - River Passage Stuff: reverted the changes from the jump without tall jump. As it turns out, this strat is dependanct on your emulator settings.
+    - Springy Step Shoes Silo: Easy tricks logic now expects moves to not take fall damage when jumping off the cliff.
+    - Crossing The Cauldron Keep Moat: If using Pack Whack, it now expects that you also have Tall Jump.
+    - Goliath Jiggy: Glitched clockwork shot requires talon trot and egg aim.
+    - Power Hut and Generator Cavern Jiggies: Removed Bill Drill as light source for easy tricks.
+    - Cave of Horrors Jinjo: Clockwork Shot in Glitched logic.
+    - Chompa Jiggy: Now verifies that you can reach the top of the inside of the mountain to jump from it. Removed from easy tricks.
+    - TDL to Chuffy: easy tricks+, talon trot is enough.
+    - River Passage Stuff, easy tricks +, you can grip grab the crack without tall jump.
+    - Coloseum Stuff: On easy tricks, can be reached with just tall jump, talon trot or flap flip.
+
 # 4.11.4
   - PR fixes for Archipelago main repository submission.
   - Thanks to ScipioWright, Mysteryem, and duckboycool for reviewing the code for the PR.
