@@ -1,4 +1,7 @@
-# 4.11.6
+# 4.11.5
+  - Warning: requires AP 0.6.7+ to use it.
+  - Cryptic Hint optimisation: Cryptic hint generation time has been cut in half.
+  - Fixed a bug where the yaml validation checked for BT moves instead of BK moves for Progressive Bash.
   - All copies of Jiggies, 5 Notes and doubloons are now progression and fully tracked during progression balancing, hint generation, and playthrough calculation.
   - Fixed a bug where "Number of notes that need to be inserted is somehow negative." would get printed if you had too many clefs in the pool.
   - Fixed a bug where playing with vanilla trebles + randomised notes genned with more fillers than necessary.
@@ -9,12 +12,6 @@
     - River Passage Stuff: reverted the changes from the jump without tall jump. As it turns out, this strat is dependanct on your emulator settings.
     - Springy Step Shoes Silo: Easy tricks logic now expects moves to not take fall damage when jumping off the cliff.
     - Crossing The Cauldron Keep Moat: If using Pack Whack, it now expects that you also have Tall Jump.
-
-# 4.11.5
-  - Warning: requires AP 0.6.7+ to use it.
-  - Cryptic Hint optimisation: Cryptic hint generation time has been cut in half.
-  - Fixed a bug where the yaml validation checked for BT moves instead of BK moves for Progressive Bash.
-  - Logic fixes:
     - Goliath Jiggy: Glitched clockwork shot requires talon trot and egg aim.
     - Power Hut and Generator Cavern Jiggies: Removed Bill Drill as light source for easy tricks.
     - Cave of Horrors Jinjo: Clockwork Shot in Glitched logic.
