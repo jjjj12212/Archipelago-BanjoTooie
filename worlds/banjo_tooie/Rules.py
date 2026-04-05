@@ -6296,11 +6296,13 @@ class BanjoTooieRules:
         if self.intended_logic(state):
             return self.stilt_stride(state) and state.has(itemName.MUMBOTD, self.player)
         elif self.easy_tricks_logic(state):
-            return self.small_elevation(state)\
-                or self.beak_buster(state)\
-                or self.stilt_stride(state)\
-                or self.turbo_trainers(state)\
-                or self.springy_step_shoes(state)
+            return (
+                    self.small_elevation(state)\
+                    or self.beak_buster(state)\
+                    or self.stilt_stride(state)\
+                    or self.turbo_trainers(state)\
+                    or self.springy_step_shoes(state)
+                ) and state.has(itemName.MUMBOTD, self.player)
         else:
             return state.has(itemName.MUMBOTD, self.player)
 
