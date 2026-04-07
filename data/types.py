@@ -93,8 +93,6 @@ class Location(TypedDict):
 			Specifies which forms can freely access this location.
 	"""
 
-
-
 class Exit(TypedDict):
 	"""
 		An exit to another region.
@@ -138,14 +136,19 @@ class Exit(TypedDict):
 			The form going through this exit.
 
 		DictValue:
-			Tuple[0]:
-				The amount of air used to go through this exit without Fast Swimming.
+			When DictKey is `Talon Torpedo`:
+				Tuple[0]
+					The amount of time used to go through this exit.
 
-			Tuple[1]
-				The amount of air used to go through this exit with Fast Swimming.
+			Other forms:
+				Tuple[0]:
+					The amount of air used to go through this exit without Fast Swimming.
 
-			Tuple[2]
-				The amount of air used to go through this exit with Rhythmic Swimming.
+				Tuple[1]
+					The amount of air used to go through this exit with Fast Swimming.
+
+				Tuple[2]
+					The amount of air used to go through this exit with Rhythmic Swimming.
 	"""
 
 	logic: NotRequired[dict[Form, str | dict[Form, str] | set[Form]] | set[Form] | str]
@@ -332,14 +335,19 @@ class FinalExit():
 			The form going through this exit.
 
 		DictValue:
-			Tuple[0]:
-				The amount of air used to go through this exit without Fast Swimming.
+			When DictKey is `Talon Torpedo`:
+				Tuple[0]
+					The amount of time used to go through this exit.
 
-			Tuple[1]
-				The amount of air used to go through this exit with Fast Swimming.
+			Other forms:
+				Tuple[0]:
+					The amount of air used to go through this exit without Fast Swimming.
 
-			Tuple[2]
-				The amount of air used to go through this exit with Rhythmic Swimming.
+				Tuple[1]
+					The amount of air used to go through this exit with Fast Swimming.
+
+				Tuple[2]
+					The amount of air used to go through this exit with Rhythmic Swimming.
 	"""
 
 	ast_logic: dict[Form, dict[Form, CodeType]] = field(default_factory=dict[Form, dict[Form, CodeType]])

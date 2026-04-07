@@ -253,11 +253,14 @@ def can_form_reach(form: data.Form, region_name: str, state: CollectionState, pl
 	world: "BanjoTooieWorld" = state.multiworld.worlds[player] # pyright: ignore[reportAssignmentType]
 	return world.region_links[region_name][form].can_reach(state)
 
-def air(region_name: str, form: data.Form, exit_name: str | None, state: "BanjoTooieState", player: int):
-	world: "BanjoTooieWorld" = state.multiworld.worlds[player] # pyright: ignore[reportAssignmentType]
-	region = world.region_links[region_name][form]
-	if not state.allow_partial_entrances and region in state.banjo_tooie_air[player]:
-		return state.banjo_tooie_air[player][region]
+def calc_air(
+		region: BanjoTooieRegion,
+		form: data.Form,
+		exit_name: str | None,
+		world: "BanjoTooieWorld",
+		state: "BanjoTooieState",
+		player: int
+	):
 	air = 0
 	max_air = 10.0 if state.has("Double Air", player) else 6.0
 	if state.has("Fast Swimming", player): air_index = 1
@@ -294,6 +297,54 @@ def air(region_name: str, form: data.Form, exit_name: str | None, state: "BanjoT
 				else: air = region_air
 	if not state.allow_partial_entrances: state.banjo_tooie_air[player][region] = air
 	return air
+
+def calc_time(
+		region: BanjoTooieRegion,
+		exit_name: str | None,
+		state: "BanjoTooieState",
+		player: int
+	):
+	air = 0
+	max_air = 20
+	air_index = 0
+	if exit_name is not None:
+		max_air -= region.region_data.exits[exit_name].air[region.form][air_index]
+	checked_regions: set[BanjoTooieRegion] = set()
+	queue: deque[tuple[BanjoTooieEntrance, float]] = deque([(entrance, max_air) for entrance in region.entrances]) # pyright: ignore[reportAssignmentType]
+	while queue:
+		entrance, region_air = queue.popleft()
+		parent_region: BanjoTooieRegion | None = entrance.parent_region # pyright: ignore[reportAssignmentType]
+		if (
+			entrance.exit_data is not None
+			and parent_region is not None
+			and parent_region.region_data.underwater
+			and parent_region not in checked_regions
+			and parent_region.can_reach(state)
+			and entrance.access_rule(state)
+		):
+			checked_regions.add(parent_region)
+			air_cost = 0
+			if parent_region.form in entrance.exit_data.air:
+				air_cost = entrance.exit_data.air[parent_region.form][air_index]
+				region_air -= air_cost
+			if parent_region in state.banjo_tooie_air[player]:
+				region_air = state.banjo_tooie_air[player][parent_region] - air_cost
+				if region_air > air: air = region_air
+			elif region_air > air:
+				if parent_region.form == "Banjo-Kazooie": air = region_air
+				else:
+					queue.extend([(new_entrance, region_air) for new_entrance in parent_region.entrances]) # pyright: ignore[reportArgumentType]
+	if not state.allow_partial_entrances: state.banjo_tooie_air[player][region] = air
+	print(region.name, air)
+	return air
+
+def air(region_name: str, form: data.Form, exit_name: str | None, state: "BanjoTooieState", player: int):
+	world: "BanjoTooieWorld" = state.multiworld.worlds[player] # pyright: ignore[reportAssignmentType]
+	region = world.region_links[region_name][form]
+	if not state.allow_partial_entrances and region in state.banjo_tooie_air[player]:
+		return state.banjo_tooie_air[player][region]
+	if form == "Talon Torpedo": return calc_time(region, exit_name, state, player)
+	else: return calc_air(region, form, exit_name, world, state, player)
 
 class BanjoTooieRules(ast.NodeTransformer):
 
