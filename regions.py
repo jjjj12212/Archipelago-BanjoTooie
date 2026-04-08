@@ -1,5 +1,7 @@
 from BaseClasses import CollectionState, Entrance, EntranceType, Region
-from typing import TYPE_CHECKING, Callable
+from rule_builder.rules import Rule
+from typing import TYPE_CHECKING, Any, Callable
+
 from . import data
 
 if TYPE_CHECKING:
@@ -49,8 +51,9 @@ class BanjoTooieRegion(Region):
 		self,
 		connecting_region: Region,
 		name: str | None = None,
-		rule: Callable[[CollectionState], bool] | None = None
+		rule: Callable[[CollectionState], bool] | Rule[Any] | None = None
 	) -> BanjoTooieEntrance:
+		assert not isinstance(rule, Rule)
 		exit_ = self.create_exit(name if name else f"{self.name} -> {connecting_region.name}")
 		if rule:
 			exit_.access_rule = rule
