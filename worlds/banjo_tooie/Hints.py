@@ -61,7 +61,8 @@ class Hint:
         # At the very end, we have the base state has done sweep_for_advancements with no excluded locations. We save that state, so that we can determine
         #   which of the hinted locations are not reachable, so that we can say "lost" in the cryptic hint.
 
-        BATCH_SIZE = 25
+        MAIN_BATCH_SIZE = 200
+        SPHERE_BATCH_SIZE = 25
 
         # In case of when everybody with cryptic hints has signpost_hints = 0
         if not Hint.submitted_cryptic_hinted_locations:
@@ -74,46 +75,59 @@ class Hint:
         for location in {loc for loc in Hint.submitted_cryptic_hinted_locations if not loc.advancement}:
             Hint.item_requirement_cache[location] = []
 
-        worthwhile_locations = {loc for loc in Hint.submitted_cryptic_hinted_locations if loc.advancement and loc not in Hint.item_requirement_cache}
+        remaining_locations = {loc for loc in Hint.submitted_cryptic_hinted_locations if loc.advancement and loc not in Hint.item_requirement_cache}
 
         base_state = CollectionState(world.multiworld)
+        base_state.sweep_for_advancements(checked_locations=base_state.locations_checked | remaining_locations)
 
-        while worthwhile_locations:
-            base_state.sweep_for_advancements(checked_locations=base_state.locations_checked | worthwhile_locations)
-            current_sphere_locations = {loc for loc in worthwhile_locations if base_state.can_reach(loc)}
+        while remaining_locations:
+            main_batch = {remaining_locations.pop() for _ in range(min(len(remaining_locations), MAIN_BATCH_SIZE))}
+
+            main_batch_state = base_state.copy()
             
-            if not current_sphere_locations:
-                # Remaining locations are unreachable, so not required.
-                for location in worthwhile_locations:
-                    Hint.item_requirement_cache[location] = []
-                break
-            for location in current_sphere_locations:
-                worthwhile_locations.remove(location)
-            while current_sphere_locations:
-                # Doing things in batches saves a lot of time, since some locations can slow things down significantly.
-                location_batch = [current_sphere_locations.pop() for _ in range(min(len(current_sphere_locations), BATCH_SIZE))]
+            while main_batch:
+                main_batch_state.sweep_for_advancements(checked_locations=main_batch_state.locations_checked | main_batch)
 
-                batch_state = base_state.copy()
-                batch_state.sweep_for_advancements(checked_locations=base_state.locations_checked | set(location_batch))
-                while location_batch:
-                    # Useful print to see the progress!
-                    # print(len(worthwhile_locations), len(current_sphere_locations), len(location_batch))
-                    loc = world.random.choice(location_batch)
-                    location_batch.remove(loc)
+                current_sphere_locations = {loc for loc in main_batch if main_batch_state.can_reach(loc)}
+                
+                if not current_sphere_locations:
+                    # Remaining locations are unreachable, so not required.
+                    for location in main_batch:
+                        Hint.item_requirement_cache[location] = []
+                    break
+                for location in current_sphere_locations:
+                    main_batch.remove(location)
+                while current_sphere_locations:
+                    sphere_batch = [current_sphere_locations.pop() for _ in range(min(len(current_sphere_locations), SPHERE_BATCH_SIZE))]
 
-                    test_state = batch_state.copy()
-                    test_state.sweep_for_advancements(checked_locations=test_state.locations_checked | {loc})
+                    sphere_batch_state = main_batch_state.copy()
+                    sphere_batch_state.sweep_for_advancements(checked_locations=main_batch_state.locations_checked | set(sphere_batch))
+                    while sphere_batch:
+                        # Useful print to see the progress!
+                        # print(len(remaining_locations), len(main_batch), len(current_sphere_locations), len(sphere_batch))
+                        loc = world.random.choice(sphere_batch)
+                        sphere_batch.remove(loc)
 
-                    Hint.item_requirement_cache[loc] = [player for player in world.multiworld.player_ids if not world.multiworld.has_beaten_game(test_state, player)]
+                        test_state = sphere_batch_state.copy()
+                        test_state.sweep_for_advancements(checked_locations=test_state.locations_checked | {loc})
 
-                    # If collecting one location is not required, then everything that remains unreachable without collecting that location is also not required.
-                    if not Hint.item_requirement_cache[loc]:
-                        for unreachable in {location for location in worthwhile_locations if not test_state.can_reach(location)}:
-                            worthwhile_locations.remove(unreachable)
-                            Hint.item_requirement_cache[unreachable] = []
+                        Hint.item_requirement_cache[loc] = [player for player in world.multiworld.player_ids if not world.multiworld.has_beaten_game(test_state, player)]
 
-                # We finished a batch, so we update the base state by collecting the batch so that we no longer have compute what gets unlocked by anything in that batch.
-                base_state.sweep_for_advancements(checked_locations=base_state.locations_checked | worthwhile_locations | current_sphere_locations)
+                        # If collecting one location is not required, then everything that remains unreachable without collecting that location is also not required.
+                        if not Hint.item_requirement_cache[loc]:
+                            for unreachable in {location for location in remaining_locations if not test_state.can_reach(location)}:
+                                remaining_locations.remove(unreachable)
+                                Hint.item_requirement_cache[unreachable] = []
+                            
+                            for unreachable in {location for location in main_batch if not test_state.can_reach(location)}:
+                                main_batch.remove(unreachable)
+                                Hint.item_requirement_cache[unreachable] = []
+
+                    # We finished a sphere batch, so we update the main batch state by collecting the sphere batch.
+                    main_batch_state.sweep_for_advancements(checked_locations=main_batch_state.locations_checked | remaining_locations | main_batch | current_sphere_locations)
+            
+            # We finished a main batch, so we update the base state for the next main batch.
+            base_state.sweep_for_advancements(checked_locations=base_state.locations_checked | remaining_locations)
         # Save final state for lost hints
         Hint.final_state = base_state
     @staticmethod
