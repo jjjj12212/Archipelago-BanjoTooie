@@ -1,3 +1,11 @@
+# 4.11.6
+  - This is update featuring changes based on Mysteryem's comments on the PR into core. Thanks Mysteryem!
+  - Generations are now 2-5% faster, since rules no longer check for the Universal Tracker Glitched Logic Item during a normal generation.
+  - There is now an actual check to require to skip puzzles if you play with randomize_worlds.
+  - Fixed a bug with the yaml validation where it let you have bass clefs or extra treble clefs without randomizing notes.
+  - Added some missing indirect conditions, which should patch some strange bugs with the logic evaluation.
+  - There is now a check to make a generation fail early, if you end up with an unbeatable seed.
+
 # 4.11.5
   - Warning: requires AP 0.6.7+ to use it.
   - Cryptic Hint optimisation: Cryptic hint generation time has been cut in half.
