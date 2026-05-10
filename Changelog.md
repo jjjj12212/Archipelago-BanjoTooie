@@ -5,6 +5,7 @@
   - Fixed a bug with the yaml validation where it let you have bass clefs or extra treble clefs without randomizing notes.
   - Added some missing indirect conditions, which should patch some strange bugs with the logic evaluation.
   - There is now a check to make a generation fail early, if you end up with an unbeatable seed.
+  - Cryptic hint generation has been optimised for large multiworlds with a lot of cryptic hints, by a factor of 2.
 
 # 4.11.5
   - Warning: requires AP 0.6.7+ to use it.
