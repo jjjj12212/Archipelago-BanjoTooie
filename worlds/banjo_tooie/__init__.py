@@ -19,7 +19,7 @@ from .Locations import LocationData, all_location_table, MTLoc_Table, GMLoc_tabl
 from .Regions import create_regions, connect_regions
 from .Options import BanjoTooieOptions, EggsBehaviour, JamjarsSiloCosts, LogicType, ProgressiveEggAim, \
     ProgressiveWaterTraining, RandomizeBKMoveList, VictoryCondition, bt_option_groups, WorldRequirements
-from .Rules import BanjoTooieRules
+from .Rules import BanjoTooieRules, BanjoTooieUniversalTrackerRules
 from .Names import itemName, locationName, regionName
 from .WorldOrder import randomize_world_progression
 from BaseClasses import CollectionState, ItemClassification, Location, MultiWorld, Tutorial, Item
@@ -732,7 +732,10 @@ class BanjoTooieWorld(World):
             self.multiworld.push_precollected(self.create_item(silo))
 
     def set_rules(self) -> None:
-        rules = BanjoTooieRules(self)
+        if hasattr(self.multiworld, "generation_is_fake"):
+            rules = BanjoTooieUniversalTrackerRules(self)
+        else:
+            rules = BanjoTooieRules(self)
         return rules.set_rules()
 
     def pre_fill_me(self) -> None:

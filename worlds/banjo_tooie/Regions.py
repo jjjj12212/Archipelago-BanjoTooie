@@ -6,7 +6,7 @@ from .Options import VictoryCondition
 
 from .Names import regionName, locationName, itemName
 from .Locations import BanjoTooieLocation
-from .Rules import BanjoTooieRules
+from .Rules import BanjoTooieRules, BanjoTooieUniversalTrackerRules
 
 # This dict contains all the regions, as well as all the locations that are always tracked by Archipelago.
 BANJO_TOOIE_REGIONS: Dict[str, List[str]] = {
@@ -1615,7 +1615,11 @@ def create_region(world, active_locations, name: str, locations=None):
 
 def connect_regions(self):
     player = self.player
-    rules = BanjoTooieRules(self)
+
+    if hasattr(self.multiworld, "generation_is_fake"):
+        rules = BanjoTooieUniversalTrackerRules(self)
+    else:
+        rules = BanjoTooieRules(self)
 
     region_menu = self.get_region(regionName.MENU)
     region_menu.add_exits({regionName.SM})
