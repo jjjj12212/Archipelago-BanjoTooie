@@ -6218,16 +6218,16 @@ class BanjoTooieRules:
         return self.has_BK_move(state, itemName.TTRAIN) or state.has(itemName.PSHOES, self.player, 2)
 
     def intended_logic(self, state: CollectionState) -> bool:
-        return self.world.options.logic_type.value == LogicType.option_intended and not state.has(itemName.UT_GLITCHED, self.player)
+        return self.world.options.logic_type.value == LogicType.option_intended
 
     def easy_tricks_logic(self, state: CollectionState) -> bool:
-        return self.world.options.logic_type.value == LogicType.option_easy_tricks and not state.has(itemName.UT_GLITCHED, self.player)
+        return self.world.options.logic_type.value == LogicType.option_easy_tricks
 
     def hard_tricks_logic(self, state: CollectionState) -> bool:
-        return self.world.options.logic_type.value == LogicType.option_hard_tricks and not state.has(itemName.UT_GLITCHED, self.player)
+        return self.world.options.logic_type.value == LogicType.option_hard_tricks
 
     def glitches_logic(self, state: CollectionState) -> bool:
-        return self.world.options.logic_type.value == LogicType.option_glitches or state.has(itemName.UT_GLITCHED, self.player)
+        return self.world.options.logic_type.value == LogicType.option_glitches
 
 
     def long_jump(self, state: CollectionState) -> bool:
@@ -6296,11 +6296,13 @@ class BanjoTooieRules:
         if self.intended_logic(state):
             return self.stilt_stride(state) and state.has(itemName.MUMBOTD, self.player)
         elif self.easy_tricks_logic(state):
-            return self.small_elevation(state)\
-                or self.beak_buster(state)\
-                or self.stilt_stride(state)\
-                or self.turbo_trainers(state)\
-                or self.springy_step_shoes(state)
+            return (
+                    self.small_elevation(state)\
+                    or self.beak_buster(state)\
+                    or self.stilt_stride(state)\
+                    or self.turbo_trainers(state)\
+                    or self.springy_step_shoes(state)
+                ) and state.has(itemName.MUMBOTD, self.player)
         else:
             return state.has(itemName.MUMBOTD, self.player)
 
@@ -6811,3 +6813,17 @@ class BanjoTooieRules:
             self.world.multiworld.completion_condition[self.player] = self.victory_hag1
         else:
             self.world.multiworld.completion_condition[self.player] = self.victory_hag1
+
+
+class BanjoTooieUniversalTrackerRules(BanjoTooieRules):
+    def intended_logic(self, state: CollectionState) -> bool:
+        return super().intended_logic(state) and not state.has(itemName.UT_GLITCHED, self.player)
+
+    def easy_tricks_logic(self, state: CollectionState) -> bool:
+        return super().easy_tricks_logic(state) and not state.has(itemName.UT_GLITCHED, self.player)
+
+    def hard_tricks_logic(self, state: CollectionState) -> bool:
+        return super().hard_tricks_logic(state) and not state.has(itemName.UT_GLITCHED, self.player)
+
+    def glitches_logic(self, state: CollectionState) -> bool:
+        return super().glitches_logic(state) or state.has(itemName.UT_GLITCHED, self.player)
