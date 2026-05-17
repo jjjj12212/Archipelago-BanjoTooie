@@ -11,20 +11,21 @@ from CommonClient import CommonContext, server_loop, gui_enabled, \
 import Utils
 from Utils import async_start
 from . import BanjoTooieWorld
+from .client import emu_loader, state as emu_state, game as emu_game
 
 if TYPE_CHECKING:
     from kvui import UILog
 
 SYSTEM_MESSAGE_ID = 0
 
-CONNECTION_TIMING_OUT_STATUS = "Connection timing out. Please restart your emulator, then restart banjoTooie_connector.lua"
-CONNECTION_REFUSED_STATUS = "Connection refused. Please start your emulator and make sure banjoTooie_connector.lua is running"
-CONNECTION_RESET_STATUS = "Connection was reset. Please restart your emulator, then restart banjoTooie_connector.lua"
+CONNECTION_TIMING_OUT_STATUS = "Connection timing out. Please restart your emulator (or banjo_tooie_connector if you're on real hardware)."
+CONNECTION_REFUSED_STATUS = "Connection refused. Start your emulator (or banjo_tooie_connector for real hardware) and try again."
+CONNECTION_RESET_STATUS = "Connection was reset. Please restart your emulator (or banjo_tooie_connector if you're on real hardware)."
 CONNECTION_TENTATIVE_STATUS = "Initial Connection Made"
 CONNECTION_CONNECTED_STATUS = "Connected"
 CONNECTION_INITIAL_STATUS = "Connection has not been initiated"
 
-# Payload: lua -> client
+# Payload: bridge -> client
 # {
 #     playerName: string,
 #     locations: dict,
@@ -35,7 +36,7 @@ CONNECTION_INITIAL_STATUS = "Connection has not been initiated"
 #     gameComplete: bool
 # }
 #
-# Payload: client -> lua
+# Payload: client -> bridge
 # {
 #     items: list,
 #     playerNames: list,
@@ -141,12 +142,6 @@ async def patch_and_run(show_path: bool):
       args = [*shlex.split(program_path)]
       program_args = bt_options.program_args
       if program_args:
-        if program_args == "--lua=":
-          lua = Utils.local_path("data", "lua", "connector_banjo_tooie_bizhawk.lua")
-          program_args = f'--lua={lua}'
-          if os.access(os.path.split(lua)[0], os.W_OK):
-            with open(lua, "w") as to:
-              to.write(open_world_file("assets/connector_banjo_tooie_bizhawk.lua").decode())
         args.append(program_args)
       args.append(patch_path)
       program = subprocess.Popen(
@@ -187,8 +182,8 @@ class BanjoTooieCommandProcessor(ClientCommandProcessor):
         return True
 
     def _cmd_autostart(self):
-        """Allows configuring a program to automatically start with the client.
-            This allows you to, for example, automatically start Bizhawk with the patched ROM and lua.
+        """Configure a program to automatically start with the client (e.g.
+            launch your emulator with the patched ROM).
             If already configured, disables the configuration."""
         program_path = bt_options.get("program_path", "")
         if program_path == "" or not os.path.isfile(program_path):
@@ -229,7 +224,7 @@ class BanjoTooieCommandProcessor(ClientCommandProcessor):
         return True
 
     def _cmd_program_args(self, path: str = ""):
-        """Sets (or unsets) the arguments to pass to the automatically run program. Defaults to passing the lua to Bizhawk."""
+        """Sets (or unsets) the arguments to pass to the automatically run program."""
         bt_options.program_args = path
         bt_options._changed = True
         if path:
@@ -262,6 +257,18 @@ class BanjoTooieCommandProcessor(ClientCommandProcessor):
     #     if isinstance(self.ctx, BanjoTooieContext):
     #         async_start(self.ctx.send_tag_link(), name="Send Taglink")
 
+    def _cmd_writesettings(self):
+        """Manually push slot settings into BTHACK memory via emu_loader (the ROM refuses to boot until settings are populated)."""
+        if not isinstance(self.ctx, BanjoTooieContext):
+            return
+        ctx = self.ctx
+        if ctx.emu_loader is None or not ctx.emu_loader.is_connected():
+            return
+        if not ctx.slot_data:
+            return
+        if emu_game.write_slot_settings(ctx.emu_loader, ctx.slot_data):
+            ctx.emu_settings_written = True
+
 @dataclass
 class CreateHintsParams:
     location: int
@@ -278,6 +285,12 @@ class BanjoTooieContext(CommonContext):
         self.n64_streams: tuple[asyncio.StreamReader, asyncio.StreamWriter] | None = None
         self.n64_sync_task = None
         self.n64_status = CONNECTION_INITIAL_STATUS
+        self.emu_loader: emu_loader.BTEmuLoaderClient | None = None
+        self.emu_monitor_task: asyncio.Task | None = None
+        self.emu_settings_written: bool = False
+        self.emu_last_items_count: int = -1
+        self.emu_sent_world_entrances: set[int] = set()
+        self.emu_goal_printed: bool = False
         self.awaiting_rom = False
         self.location_table = {}
         self.movelist_table: dict[str, bool] = {}
@@ -702,7 +715,7 @@ async def parse_payload(payload: Payload, ctx: BanjoTooieContext, force: bool):
     beans = payload["beans"]
 
 
-    # The Lua JSON library serializes an empty table into a list instead of a dict. Verify types for safety:
+    # Some JSON encoders serialize an empty dict as a list; coerce back for safety:
     # if isinstance(locations, list):
     #     locations = {}
     if isinstance(chuffy, list):
@@ -1165,7 +1178,7 @@ async def n64_sync_task(ctx: BanjoTooieContext):
                                 await ctx.server_auth(False)
                     else:
                         if not ctx.version_warning:
-                            logger.warning(f"Your Lua script is version {reported_version}, expected {script_version}. "
+                            logger.warning(f"Your N64 bridge is version {reported_version}, expected {script_version}. "
                                 "Please update to the latest version. "
                                 "Your connection to the Archipelago server will not be accepted.")
                             ctx.version_warning = True
@@ -1220,6 +1233,127 @@ async def n64_sync_task(ctx: BanjoTooieContext):
                 ctx.n64_status = CONNECTION_REFUSED_STATUS
                 break
 
+async def emu_loader_monitor_task(ctx: BanjoTooieContext):
+    """Direct-emulator-memory bridge. Runs alongside the TCP/socket path
+    (kept alive for EverDrive 64 hardware users) without interfering with
+    it: attaches to a supported emulator process, pushes slot settings +
+    received items into BTHACK memory, reads location flags, and sends
+    LocationChecks to the AP server."""
+    poll_interval = 0.2
+    reconnect_backoff = 5.0
+
+    while not ctx.exit_event.is_set():
+        try:
+            if ctx.emu_loader is None or not ctx.emu_loader.is_connected():
+                ctx.emu_loader = emu_loader.BTEmuLoaderClient()
+                if not ctx.emu_loader.connect():
+                    ctx.emu_loader = None
+                    ctx.emu_settings_written = False
+                    ctx.emu_last_items_count = -1
+                    ctx.emu_sent_world_entrances.clear()
+                    ctx.emu_goal_printed = False
+                    try:
+                        await asyncio.wait_for(ctx.exit_event.wait(), timeout=reconnect_backoff)
+                        return
+                    except asyncio.TimeoutError:
+                        continue
+
+            bth = emu_state.BTHReader(ctx.emu_loader)
+
+            # Compare ROM-side seed to expected
+            expected_seed = None
+            if ctx.slot_data:
+                s = ctx.slot_data.get("custom_bt_data", {}).get("seed")
+                if isinstance(s, int) and s:
+                    expected_seed = s & 0xFFFFFFFF
+
+            settings_ptr = bth.settings_ptr()
+            if expected_seed is not None and settings_ptr is not None:
+                current_seed = ctx.emu_loader.read_u32(settings_ptr + emu_game.SETTING_SEED)
+                if current_seed != expected_seed:
+                    emu_game.write_slot_settings(ctx.emu_loader, ctx.slot_data)
+                    ctx.emu_last_items_count = -1
+                    ctx.emu_sent_world_entrances.clear()
+                    ctx.emu_goal_printed = False
+                ctx.emu_settings_written = True
+
+            current_items_count = len(ctx.items_received) if ctx.items_received else 0
+            if (ctx.emu_settings_written
+                    and current_items_count != ctx.emu_last_items_count
+                    and bth.items_ptr() is not None
+                    and bth.traps_ptr() is not None):
+                emu_game.write_received_items(ctx.emu_loader, ctx.items_received)
+                ctx.emu_last_items_count = current_items_count
+
+            if ctx.emu_settings_written and ctx.slot_data:
+                eligible = emu_game.check_world_entrances_open(ctx.emu_loader, ctx.slot_data)
+                new_entrances = [loc for loc in eligible if loc not in ctx.emu_sent_world_entrances]
+                if new_entrances and ctx.server is not None:
+                    missing = ctx.missing_locations or set()
+                    to_send = [b for b in new_entrances if b in missing] if missing else list(new_entrances)
+                    if to_send:
+                        await ctx.send_msgs([{
+                            "cmd": "LocationChecks",
+                            "locations": to_send,
+                        }])
+                    ctx.emu_sent_world_entrances.update(new_entrances)
+
+                emu_game.apply_hag1_open(ctx.emu_loader, ctx.slot_data)
+
+                if not ctx.finished_game and ctx.server is not None:
+                    if emu_game.check_victory(ctx.emu_loader, ctx.slot_data):
+                        await ctx.send_msgs([{"cmd": "StatusUpdate", "status": 30}])
+                        ctx.finished_game = True
+
+                # Goal-info dialog: only on map 0x158, once per session, and
+                # only after the ROM has caught up to any pending dialog.
+                if not ctx.emu_goal_printed and bth.current_map() == 0x158:
+                    pc_q = emu_game.read_pc_text_queue(ctx.emu_loader)
+                    n64_q = emu_game.read_n64_text_queue(ctx.emu_loader)
+                    if pc_q == n64_q:
+                        goal_msg = emu_game.build_goal_info_message(ctx.slot_data)
+                        if goal_msg is not None:
+                            text, icon = goal_msg
+                            if emu_game.send_pc_dialog(ctx.emu_loader, text, icon):
+                                ctx.emu_goal_printed = True
+
+            collected = emu_state.poll_all_locations(bth)
+            prev = getattr(emu_loader_monitor_task, "_prev", None)
+            if prev is None:
+                new_btids = [b for b, v in collected.items() if v]
+            else:
+                new_btids = [b for b, v in collected.items() if v and not prev.get(b, False)]
+
+            if new_btids and ctx.server is not None:
+                missing = ctx.missing_locations or set()
+                to_send = [b for b in new_btids if b in missing] if missing else list(new_btids)
+                if to_send:
+                    await ctx.send_msgs([{
+                        "cmd": "LocationChecks",
+                        "locations": to_send,
+                    }])
+
+            setattr(emu_loader_monitor_task, "_prev", collected)
+        except Exception:
+            # Memory I/O against an emulator that just exited (or any other
+            # unexpected failure) lands here. Drop the connection so the
+            # next tick reconnects fresh; close errors are themselves
+            # ignored so a botched cleanup can't trap us in a loop.
+            loader = ctx.emu_loader
+            ctx.emu_loader = None
+            if loader is not None:
+                try:
+                    loader.disconnect()
+                except Exception:
+                    pass
+
+        try:
+            await asyncio.wait_for(ctx.exit_event.wait(), timeout=poll_interval)
+            return
+        except asyncio.TimeoutError:
+            pass
+
+
 @atexit.register
 def close_program():
   global program
@@ -1240,6 +1374,7 @@ def main():
 
         ctx = BanjoTooieContext(args.connect, args.password)
         ctx.server_task = asyncio.create_task(server_loop(ctx), name="Server Loop")
+        ctx.emu_monitor_task = asyncio.create_task(emu_loader_monitor_task(ctx), name="EmuLoader Monitor")
         if gui_enabled:
             ctx.run_gui()
         ctx.run_cli()
@@ -1251,6 +1386,17 @@ def main():
 
         if ctx.n64_sync_task:
             await ctx.n64_sync_task
+
+        if ctx.emu_monitor_task:
+            try:
+                await asyncio.wait_for(ctx.emu_monitor_task, timeout=3.0)
+            except (asyncio.TimeoutError, asyncio.CancelledError):
+                pass
+            if ctx.emu_loader is not None:
+                try:
+                    ctx.emu_loader.disconnect()
+                except Exception:
+                    pass
 
     import colorama
 
