@@ -307,7 +307,7 @@ class ProcessMemory:
 
     # ----- writable regions (for signature-scan emulators) -----
 
-    def list_writable_regions(self, min_size: int = 0x800000) -> List[Tuple[int, int]]:
+    def list_writable_regions(self, min_size: int = 0x1000000) -> List[Tuple[int, int]]:
         if IS_WINDOWS:
             return self.writable_regions_windows(min_size)
         if IS_LINUX:
@@ -463,6 +463,8 @@ RDRAM_BASE = 0x80000000  # KSEG0 start; RDRAM mirror
 RDRAM_SIZE = 0x800000  # 8 MB with expansion pak (required by BT)
 BTHACK_ANCHOR_OFFSET = 0x400000  # physical RDRAM offset of the anchor u32
 BTHACK_VERSION_OFFSET = 0x0  # within the dereferenced struct
+BT_ROM_SIGNATURE = 0x08100001
+BT_ROM_SIGNATURE_OFFSET = 0x480
 
 
 def is_rdram_pointer(value: int) -> bool:
@@ -587,14 +589,19 @@ class EmulatorInfo:
         logger.debug(f"[{self.readable_name}] {msg}")
 
     def scan_writable_for_signature(self, pm: ProcessMemory) -> Optional[int]:
-        """Walk heap regions looking for an RDRAM base whose anchor passes
-        signature validation. Used by emulators without a fixed offset table."""
         for region_start, region_size in pm.list_writable_regions():
-            max_base = region_size - BTHACK_ANCHOR_OFFSET - 4
+            max_base = region_size - BT_ROM_SIGNATURE_OFFSET - 4
             if max_base < 0:
                 continue
             for base in range(0, max_base + 1, self.signature_alignment):
-                if validate_bt_signature(pm, region_start + base):
+                try:
+                    val = int.from_bytes(
+                        pm.read_bytes(region_start + base + BT_ROM_SIGNATURE_OFFSET, 4),
+                        "little",
+                    )
+                except Exception:
+                    continue
+                if val == BT_ROM_SIGNATURE:
                     return region_start + base
         return None
 
@@ -756,16 +763,16 @@ EMULATOR_CONFIGS: Dict[Emulators, EmulatorInfo] = {
         upper_offset_range=0xFE1FFFFF,
     ),
     Emulators.BizHawk: EmulatorInfo(
-        Emulators.BizHawk,
-        "BizHawk",
-        "emuhawk",
-        find_dll=False,
-        dll_name=None,
-        additional_lookup=False,
-        lower_offset_range=0,
-        upper_offset_range=0,
-        scan_memory_for_signature=True,
-        signature_alignment=0x10000,
+    Emulators.BizHawk,
+    "BizHawk",
+    "emuhawk",
+    find_dll=False,
+    dll_name=None,
+    additional_lookup=False,
+    lower_offset_range=0,
+    upper_offset_range=0,
+    scan_memory_for_signature=True,
+    signature_alignment=0x1000,
     ),
     Emulators.RMG: EmulatorInfo(
         Emulators.RMG,
