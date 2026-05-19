@@ -1373,7 +1373,6 @@ def main():
         multiprocessing.freeze_support()
 
         ctx = BanjoTooieContext(args.connect, args.password)
-        ctx.server_task = asyncio.create_task(server_loop(ctx), name="Server Loop")
         ctx.emu_monitor_task = asyncio.create_task(emu_loader_monitor_task(ctx), name="EmuLoader Monitor")
         if gui_enabled:
             ctx.run_gui()
