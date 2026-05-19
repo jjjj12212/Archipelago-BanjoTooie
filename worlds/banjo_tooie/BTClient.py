@@ -1317,12 +1317,30 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
                             if emu_game.send_pc_dialog(ctx.emu_loader, text, icon):
                                 ctx.emu_goal_printed = True
 
+                # Ozone & Mia's Banjo-Tooie Tracker
+                if ctx.current_map != bth.current_map():
+                    ctx.current_map = bth.current_map()
+                    await ctx.send_msgs([{
+                    "cmd": "Set",
+                    "key": f"Banjo_Tooie_{ctx.team}_{ctx.slot}_map",
+                    "default": hex(0),
+                    "want_reply": False,
+                    "operations": [{"operation": "replace",
+                        "value": hex(bth.current_map())}]
+                    }])
+
             collected = emu_state.poll_all_locations(bth)
             prev = getattr(emu_loader_monitor_task, "_prev", None)
             if prev is None:
                 new_btids = [b for b, v in collected.items() if v]
             else:
                 new_btids = [b for b, v in collected.items() if v and not prev.get(b, False)]
+
+            #Mumbo Tokens
+            if ctx.slot_data["options"]["victory_condition"] == 1 or ctx.slot_data["options"]["victory_condition"] == 2 or \
+                ctx.slot_data["options"]["victory_condition"] == 3 or ctx.slot_data["options"]["victory_condition"] == 4 or \
+                ctx.slot_data["options"]["victory_condition"] == 6:
+                    new_btids = mumbo_tokens_loc(new_btids, ctx.slot_data["options"]["victory_condition"])
 
             if new_btids and ctx.server is not None:
                 missing = ctx.missing_locations or set()

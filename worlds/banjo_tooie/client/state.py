@@ -166,11 +166,12 @@ def poll_all_locations(bth: BTHReader) -> Dict[int, bool]:
     honeyb_bits = (
         (bth.check_fake_flag(0x98, 2), 1230997),
         (bth.check_fake_flag(0x98, 3), 1230998),
-        (bth.check_fake_flag(0x98, 4), 1230999),
+        ((bth.check_fake_flag(0x98, 2) and bth.check_fake_flag(0x98, 3)), 1230999),
+        (bth.check_fake_flag(0x98, 4), 1231000),
+        ((bth.check_fake_flag(0x98, 4) and bth.check_fake_flag(0x98, 2)), 1231001),
     )
     for set_, btid in honeyb_bits:
-        if btid in addresses.BY_CATEGORY.get("HONEYB", {}) or set_:
-            out[btid] = bool(set_)
+        out[btid] = bool(set_)
 
     skiv_complete = bth.check_real_flag(0x81, 3)
     for btid, spec in addresses.BY_CATEGORY.get("SKIVVIES", {}).items():
