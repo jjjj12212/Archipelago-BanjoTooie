@@ -307,7 +307,7 @@ class ProcessMemory:
 
     # ----- writable regions (for signature-scan emulators) -----
 
-    def list_writable_regions(self, min_size: int = 0x1000000) -> List[Tuple[int, int]]:
+    def list_writable_regions(self, min_size: int = 0x800000) -> List[Tuple[int, int]]:
         if IS_WINDOWS:
             return self.writable_regions_windows(min_size)
         if IS_LINUX:
@@ -461,10 +461,22 @@ class ProcessMemory:
 # BTHACK signature validation
 RDRAM_BASE = 0x80000000  # KSEG0 start; RDRAM mirror
 RDRAM_SIZE = 0x800000  # 8 MB with expansion pak (required by BT)
-BTHACK_ANCHOR_OFFSET = 0x400000  # physical RDRAM offset of the anchor u32
-BTHACK_VERSION_OFFSET = 0x0  # within the dereferenced struct
-BT_ROM_SIGNATURE = 0x08100001
-BT_ROM_SIGNATURE_OFFSET = 0x480
+BTHACK_ANCHOR_OFFSET = 0x400000  # physical RDRAM offset of AP_MEMORY_PTR
+BTHACK_STRUCT_SIZE = 52
+BTHACK_SUB_POINTER_OFFSETS = (
+    0x04,  # pc
+    0x08,  # pc_message
+    0x0C,  # signpost_messages
+    0x10,  # pc_settings
+    0x14,  # pc_items
+    0x18,  # pc_traps
+    0x1C,  # pc_exit_map
+    0x20,  # n64
+    0x24,  # n64_saves_real
+    0x28,  # n64_saves_fake
+    0x2C,  # n64_saves_nests
+    0x30,  # n64_saves_signposts
+)
 
 
 def is_rdram_pointer(value: int) -> bool:
@@ -472,12 +484,13 @@ def is_rdram_pointer(value: int) -> bool:
 
 
 def validate_bt_signature(pm: ProcessMemory, rdram_base: int) -> bool:
-    """Return True iff ``rdram_base`` looks like a BT-patched ROM's RDRAM.
+    """Return True if ``rdram_base`` looks like AP-Banjo-Tooie RDRAM.
 
-    Two-step check:
-      1. The u32 at ``rdram_base + 0x00400000`` must be a valid 0x80xxxxxx
-         RDRAM pointer.
-      2. Following that pointer, the version field's major must be non-zero.
+    - u32 at ``rdram_base + 0x400000`` must be a valid 0x80xxxxxx pointer
+      (BTHACK's ``AP_MEMORY_PTR``).
+    - At the dereferenced ``ap_memory_ptr_t`` struct, all 12 sub-pointers
+      at offsets 0x04..0x30 must themselves be valid RDRAM pointers. The
+      patch's ``inject_hooks()`` populates every one of them at game boot.
     """
     try:
         anchor = int.from_bytes(
@@ -488,21 +501,16 @@ def validate_bt_signature(pm: ProcessMemory, rdram_base: int) -> bool:
     if not is_rdram_pointer(anchor):
         return False
     physical = anchor & 0x7FFFFFFF
-    if physical + 4 > RDRAM_SIZE:
+    if physical + BTHACK_STRUCT_SIZE > RDRAM_SIZE:
         return False
     try:
-        version_word = int.from_bytes(
-            pm.read_bytes(rdram_base + physical + BTHACK_VERSION_OFFSET, 4), "little"
-        )
+        struct_bytes = pm.read_bytes(rdram_base + physical, BTHACK_STRUCT_SIZE)
     except Exception:
         return False
-    # Mupen64Plus-family emulators byte-swap each 32-bit word in their
-    # host-side RDRAM, so a Python LE read returns
-    #     (major_high << 24) | (major_low << 16) | (minor << 8) | patch
-    # The actual u16 BE major therefore lives in the top 16 bits.
-    major = (version_word >> 16) & 0xFFFF
-    if major == 0 or major > 0xFF:
-        return False
+    for offset in BTHACK_SUB_POINTER_OFFSETS:
+        sub_ptr = int.from_bytes(struct_bytes[offset : offset + 4], "little")
+        if not is_rdram_pointer(sub_ptr):
+            return False
     return True
 
 
@@ -590,19 +598,13 @@ class EmulatorInfo:
 
     def scan_writable_for_signature(self, pm: ProcessMemory) -> Optional[int]:
         for region_start, region_size in pm.list_writable_regions():
-            max_base = region_size - BT_ROM_SIGNATURE_OFFSET - 4
+            max_base = region_size - BTHACK_ANCHOR_OFFSET - BTHACK_STRUCT_SIZE
             if max_base < 0:
                 continue
             for base in range(0, max_base + 1, self.signature_alignment):
-                try:
-                    val = int.from_bytes(
-                        pm.read_bytes(region_start + base + BT_ROM_SIGNATURE_OFFSET, 4),
-                        "little",
-                    )
-                except Exception:
-                    continue
-                if val == BT_ROM_SIGNATURE:
-                    return region_start + base
+                candidate = region_start + base
+                if validate_bt_signature(pm, candidate):
+                    return candidate
         return None
 
     def attach(self) -> bool:
@@ -763,16 +765,15 @@ EMULATOR_CONFIGS: Dict[Emulators, EmulatorInfo] = {
         upper_offset_range=0xFE1FFFFF,
     ),
     Emulators.BizHawk: EmulatorInfo(
-    Emulators.BizHawk,
-    "BizHawk",
-    "emuhawk",
-    find_dll=False,
-    dll_name=None,
-    additional_lookup=False,
-    lower_offset_range=0,
-    upper_offset_range=0,
-    scan_memory_for_signature=True,
-    signature_alignment=0x1000,
+        Emulators.BizHawk,
+        "BizHawk",
+        "emuhawk",
+        find_dll=True,
+        dll_name="mupen64plus.dll",
+        additional_lookup=False,
+        lower_offset_range=0x5A000,
+        upper_offset_range=0x5658DF,
+        linux_dll_name="libmupen64plus.so",
     ),
     Emulators.RMG: EmulatorInfo(
         Emulators.RMG,
