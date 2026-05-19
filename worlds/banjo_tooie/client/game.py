@@ -671,11 +671,11 @@ AP_ITEM_INDEX: Dict[int, int] = {
 
 # Traps go to pc.traps[]
 AP_TRAP_INDEX: Dict[int, int] = {
-    1230788: 0,  # TRTRAP -> AP_TRAP_TRIP
-    1230787: 1,  # STRAP  -> AP_TRAP_SLIP
-    1230786: 2,  # TTRAP  -> AP_TRAP_TRANSFORM
-    1230789: 3,  # SQTRAP -> AP_TRAP_SQUISH
-    1230833: 4,  # TIPTRAP -> AP_TRAP_TIP
+    1230786: 0,  # TTRAP  ("Trip Trap")      -> AP_TRAP_TRIP
+    1230787: 1,  # STRAP  ("Slip Trap")      -> AP_TRAP_SLIP
+    1230788: 2,  # TRTRAP ("Transform Trap") -> AP_TRAP_TRANSFORM
+    1230789: 3,  # SQTRAP ("Squish Trap")    -> AP_TRAP_SQUISH
+    1230833: 4,  # TIPTRAP ("Tip Trap")      -> AP_TRAP_TIP
 }
 
 
