@@ -11,8 +11,7 @@ from CommonClient import CommonContext, server_loop, gui_enabled, \
 import Utils
 from Utils import async_start
 from . import BanjoTooieWorld
-from .client import emu_loader, state as emu_state, game as emu_game
-from .client import addresses as emu_addresses
+from .client import emu_loader, state as emu_state, game as emu_game, addresses as emu_addresses
 
 if TYPE_CHECKING:
     from kvui import UILog
