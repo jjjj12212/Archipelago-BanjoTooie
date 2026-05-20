@@ -11,7 +11,7 @@ from CommonClient import CommonContext, server_loop, gui_enabled, \
 import Utils
 from Utils import async_start
 from . import BanjoTooieWorld
-from .client import emu_loader, state as emu_state, game as emu_game
+from .client import emu_loader, state as emu_state, game as emu_game, addresses as emu_addresses
 
 if TYPE_CHECKING:
     from kvui import UILog
@@ -1351,6 +1351,29 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
                         "locations": to_send,
                     }])
 
+                # Walking up to a signpost should also fire CreateHints
+                signpost_btids = emu_addresses.BY_CATEGORY.get("SIGNPOSTS", {})
+                if signpost_btids and ctx.slot_data:
+                    actual_hints = ctx.slot_data.get("custom_bt_data", {}).get("hints") or {}
+                    for btid in new_btids:
+                        if btid not in signpost_btids:
+                            continue
+                        hint = actual_hints.get(str(btid))
+                        if (hint is None
+                                or not hint.get("should_add_hint")
+                                or hint.get("location_id") is None
+                                or hint.get("location_player_id") is None):
+                            continue
+                        params = CreateHintsParams(hint["location_id"], hint["location_player_id"])
+                        if params in ctx.handled_scouts:
+                            continue
+                        await ctx.send_msgs([{
+                            "cmd": "CreateHints",
+                            "locations": [params.location],
+                            "player": params.player,
+                        }])
+                        ctx.handled_scouts.append(params)
+
             setattr(emu_loader_monitor_task, "_prev", collected)
         except Exception:
             # Memory I/O against an emulator that just exited (or any other
@@ -1391,7 +1414,6 @@ def main():
         multiprocessing.freeze_support()
 
         ctx = BanjoTooieContext(args.connect, args.password)
-        ctx.server_task = asyncio.create_task(server_loop(ctx), name="Server Loop")
         ctx.emu_monitor_task = asyncio.create_task(emu_loader_monitor_task(ctx), name="EmuLoader Monitor")
         if gui_enabled:
             ctx.run_gui()
