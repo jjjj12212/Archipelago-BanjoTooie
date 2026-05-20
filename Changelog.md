@@ -1,3 +1,13 @@
+# 4.12.0
+  - Thanks to Umed and the DK64 Randomizer Team, we now support a handful of emulators.
+  - Tested Emulators includes:
+    - Project64 3.0.1 and 4.0
+    - Luna64
+    - Bizhawk 2.10 (companion lua script available to recover from Bizhawk Crashes)
+    - RMG
+  - Dpad-Up Banjo TipToe Feature is now a ROM feature
+
+
 # 4.11.6
   - This is update featuring changes based on Mysteryem's comments on the PR into core. Thanks Mysteryem!
   - Generations are now 2-5% faster, since rules no longer check for the Universal Tracker Glitched Logic Item during a normal generation.

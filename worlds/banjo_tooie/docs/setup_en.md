@@ -3,7 +3,7 @@
 
 ## Important
 
-As we are using BizHawk, this guide is only applicable to Windows and Linux systems.
+This guide is only applicable to Windows and Linux systems.
 Our implementation also supports the Everdrive 3.0 and X7. (USB Support).
 
 ## Required Software and Hardware
@@ -13,6 +13,22 @@ Our implementation also supports the Everdrive 3.0 and X7. (USB Support).
         -   Version **2.10** and later are supported
         -   Detailed installation instructions for BizHawk can be found at the above link
         -   Windows users must run the prereq installer first, which can also be found at the above link
+    -   Project64 3.0: [Public Releases](https://www.pj64-emu.com/public-releases)
+        -   Version **3.0.1** supported
+        -   Default settings should work. 
+        -   enable Input Plugin N-Rage if you are having issues setting up your controller.
+    -   Project64 4.0: [Development Builds](https://www.pj64-emu.com/nightly-builds)
+        -   Version **4.0.6701** tested
+        -   Interpreter Core needs to be enabled:
+            - Options > configurations > Uncheck Hide Advanced Settings
+            - Options > configurations > Advanced > Always Enable Interpreter Core
+    -   Luna64: [Latest Releases](https://github.com/Luna-Project64/Luna-Project64/releases)
+        -   Version **3.6.5** tested
+        -   Emulate Frame Buffer need to be enabled:
+            - Options > Graphic Settings > Frame Buffer > Emulate Frame Buffer
+    -   RMG: [Latest Releases](https://github.com/Rosalie241/RMG/releases)
+        -   Version **0.8.9** tested
+        -   Default settings should work.
 - Everdrive:
     - The USB driver on the PC that will be connecting to the everdrive
         - Windows: https://ftdichip.com/wp-content/uploads/2021/08/CDM212364_Setup.zip
@@ -39,7 +55,7 @@ If you are experiencing performance issues with Banjo-Tooie, you can try the fol
 - Under N64 -> Plugins, Set Active Video Plugin to Rice.
 This will create some visual artifacts however, it should not affect gameplay.
 
-### Setup - BizHawk
+### Setup - Emulator
 - Run Launcher.exe and select Banjo-Tooie Client
 - If this is your first time running this version, it will prompt for your Banjo-Tooie (US) ROM
 - The patched rom is located in your Archipelago root folder by default
@@ -49,7 +65,7 @@ This will create some visual artifacts however, it should not affect gameplay.
 - Connect the Archipelago Client with the server.
     - To connect the client to the multiserver simply put  `<address>:<port>`  on the textfield on top and press `connect` (if the server uses password, then it will prompt after connection)
 - If you rather not use **/autostart**:
-    - Open Bizhawk and open your patched Banjo-Tooie (US) game
+    - Open your preferred emulator that is supported and open your patched Banjo-Tooie (US) game
     - Once you are in the game title menu or game select screen, drag and drop the connector_bt_bizhawk.lua script (which can be found in the data/lua folder of Archipelago) onto the Lua console window
 
 ## Playing on Everdrive
