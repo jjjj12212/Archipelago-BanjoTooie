@@ -534,7 +534,7 @@ class Emulators(IntEnum):
     Project64 = auto()
     BizHawk = auto()
     RMG = auto()
-    RMG_Flatpak
+    RMG_Flatpak = auto()
     Simple64 = auto()
     ParallelLauncher903 = auto()
     ParallelLauncher = auto()
