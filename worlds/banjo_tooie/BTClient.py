@@ -89,6 +89,10 @@ def patch_rom(rom_path: str, dst_path: str, patch_path: str):
   patch = open_world_file(patch_path)
   patched_rom = cast(bytes, bsdiff4.patch(rom, patch)) # pyright: ignore[reportUnknownMemberType]
   write_file(dst_path, patched_rom)
+  lua = Utils.local_path("data", "lua", "BT_companion.lua")
+  if os.access(os.path.split(lua)[0], os.W_OK):
+      with open(lua, "w") as to:
+          to.write(open_world_file("assets/BT_companion.lua").decode())
   return True
 
 async def patch_and_run(show_path: bool):
