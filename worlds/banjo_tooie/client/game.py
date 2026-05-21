@@ -797,13 +797,14 @@ def apply_preopened_silos(
 
 # Hint signposts
 SIGNPOST_TEXT_SLOT_SIZE = 150
+SKIP_HINT_SUFFIX = b"\nPRESS \x86 TO SKIP"
 
 
 def apply_signpost_hints(
     loader: BTEmuLoaderClient, slot_data: Mapping[str, Any]
 ) -> int:
-    """Write hint text into pc.signposts. Text is uppercased ASCII, truncated
-    to 149 chars + null terminator."""
+    """Write hint text into pc.signposts. Text is uppercased ASCII plus the
+    B-button skip footer, truncated to 149 chars + null terminator."""
     bt_data = slot_data.get("custom_bt_data", {}) or {}
     hints = bt_data.get("hints") or {}
     if not hints:
@@ -830,7 +831,11 @@ def apply_signpost_hints(
             text = hint_payload.get("text", "")
         else:
             text = str(hint_payload)
-        encoded = str(text).upper().encode("ascii", errors="ignore")
+        body = str(text).upper().encode("ascii", errors="ignore")
+        max_body = SIGNPOST_TEXT_SLOT_SIZE - 1 - len(SKIP_HINT_SUFFIX)
+        if max_body < 0:
+            max_body = 0
+        encoded = body[:max_body] + SKIP_HINT_SUFFIX
         encoded = encoded[: SIGNPOST_TEXT_SLOT_SIZE - 1]
         base = hint_ptr + sign_id * SIGNPOST_TEXT_SLOT_SIZE
         for i, b in enumerate(encoded):
