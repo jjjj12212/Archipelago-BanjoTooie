@@ -1,5 +1,19 @@
 """Direct-emulator-memory loader for Banjo-Tooie.
-Heavily based on JXJacob's GST autotracking code."""
+Heavily based on JXJacob's GST autotracking code.
+
+Per-emulator attach strategies, RDRAM endian handling, the Linux ptrace
+helper, and the cross-platform ProcessMemory abstraction were ported with
+permission from the DK64 Randomizer (https://github.com/2dos/DK64-Randomizer)
+emu_loader, Copyright (c) DK64 Randomizer Dev Team, MIT-licensed. Many
+thanks to the DK64 team.
+
+Authors:
+- Killklli
+- Ballaam
+- Green Bean
+- Umed
+- JXJacob
+"""
 
 from __future__ import annotations
 

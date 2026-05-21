@@ -1,4 +1,7 @@
-"""Write-side BTHACK helpers."""
+"""Write-side BTHACK helpers.
+
+Author: Umed (UmedMuzl).
+"""
 
 from __future__ import annotations
 
