@@ -138,8 +138,9 @@ def poll_all_locations(bth: BTHReader) -> Dict[int, bool]:
 
       - NESTS / SIGNPOSTS use bytebit indices into the nest/signpost bitmaps.
       - STOPNSWAP is mixed: three btids use real_flags, the rest use fake_flags.
-      - HONEYB rewards are three independent bits at fake_flags(0x98, 2..4);
-        each bit maps to its own reward location.
+      - HONEYB rewards are a 3-bit *cumulative count*: fake_flags(0x98) bits
+        2|3|4 carry weights 1|2|4, summed to give "rewards collected so far"
+        (1..5). The first N HONEYB btids are then marked collected together.
       - SKIVVIES use real_flags per location plus a completion override at
         real_flags(0x81, 3) which marks all of them collected at once.
     """
@@ -163,15 +164,14 @@ def poll_all_locations(bth: BTHReader) -> Dict[int, bool]:
         else:
             out[btid] = bth.check_fake_flag(spec.addr, spec.bit)
 
-    honeyb_bits = (
-        (bth.check_fake_flag(0x98, 2), 1230997),
-        (bth.check_fake_flag(0x98, 3), 1230998),
-        ((bth.check_fake_flag(0x98, 2) and bth.check_fake_flag(0x98, 3)), 1230999),
-        (bth.check_fake_flag(0x98, 4), 1231000),
-        ((bth.check_fake_flag(0x98, 4) and bth.check_fake_flag(0x98, 2)), 1231001),
+    honeyb_count = (
+        (1 if bth.check_fake_flag(0x98, 2) else 0)
+        + (2 if bth.check_fake_flag(0x98, 3) else 0)
+        + (4 if bth.check_fake_flag(0x98, 4) else 0)
     )
-    for set_, btid in honeyb_bits:
-        out[btid] = bool(set_)
+    honeyb_btids = (1230997, 1230998, 1230999, 1231000, 1231001)
+    for i, btid in enumerate(honeyb_btids):
+        out[btid] = i < honeyb_count
 
     skiv_complete = bth.check_real_flag(0x81, 3)
     for btid, spec in addresses.BY_CATEGORY.get("SKIVVIES", {}).items():

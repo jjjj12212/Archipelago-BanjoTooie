@@ -697,9 +697,10 @@ AP_PROGRESSIVE_SEQUENCE: Dict[int, List[int]] = {
 # AP item IDs we recognise but don't act on.
 AP_DEFERRED_ITEMS: Set[int] = {
     1230834,  # NONE / filler
-    1230781,  # BASS clef
 }
 
+NOTE_BTID = 1230797
+BASS_BTID = 1230781
 
 def write_received_items(
     loader: BTEmuLoaderClient, items_received: Iterable[Any]
@@ -722,6 +723,10 @@ def write_received_items(
     written_traps = 0
     written_progressive = 0
     unknown: List[int] = []
+
+    bass_cnt = counts.pop(BASS_BTID, 0)
+    if bass_cnt:
+        counts[NOTE_BTID] = counts.get(NOTE_BTID, 0) + 2 * bass_cnt
 
     for ap_id, cnt in counts.items():
         if ap_id in AP_ITEM_INDEX:
@@ -792,13 +797,14 @@ def apply_preopened_silos(
 
 # Hint signposts
 SIGNPOST_TEXT_SLOT_SIZE = 150
+SKIP_HINT_SUFFIX = b"\nPRESS \x86 TO SKIP"
 
 
 def apply_signpost_hints(
     loader: BTEmuLoaderClient, slot_data: Mapping[str, Any]
 ) -> int:
-    """Write hint text into pc.signposts. Text is uppercased ASCII, truncated
-    to 149 chars + null terminator."""
+    """Write hint text into pc.signposts. Text is uppercased ASCII plus the
+    B-button skip footer, truncated to 149 chars + null terminator."""
     bt_data = slot_data.get("custom_bt_data", {}) or {}
     hints = bt_data.get("hints") or {}
     if not hints:
@@ -825,7 +831,11 @@ def apply_signpost_hints(
             text = hint_payload.get("text", "")
         else:
             text = str(hint_payload)
-        encoded = str(text).upper().encode("ascii", errors="ignore")
+        body = str(text).upper().encode("ascii", errors="ignore")
+        max_body = SIGNPOST_TEXT_SLOT_SIZE - 1 - len(SKIP_HINT_SUFFIX)
+        if max_body < 0:
+            max_body = 0
+        encoded = body[:max_body] + SKIP_HINT_SUFFIX
         encoded = encoded[: SIGNPOST_TEXT_SLOT_SIZE - 1]
         base = hint_ptr + sign_id * SIGNPOST_TEXT_SLOT_SIZE
         for i, b in enumerate(encoded):
@@ -989,6 +999,268 @@ def send_pc_dialog(loader: BTEmuLoaderClient, text: str, icon_id: int) -> bool:
     current_pc_q = loader.read_u8(pc_ptr + PC_SHOW_TXT_OFFSET)
     loader.write_u8(pc_ptr + PC_SHOW_TXT_OFFSET, (current_pc_q + 1) & 0xFF)
     return True
+
+
+# ///////////////// Dialogs \\\\\\\\\\\\\\\\\\\
+
+STATION_NAMES: Dict[int, str] = {
+    1230794: "Train Station in Isle O' Hags",
+    1230791: "Train Station in Terrydactyland",
+    1230790: "Train Station in Grunty Industries",
+    1230792: "Train Station on the Lava Side of Hailfire Peaks",
+    1230793: "Train Station on the Icy Side of Hailfire Peaks",
+    1230795: "Train Station in Witchyworld",
+}
+
+MAGIC_NAMES: Dict[int, str] = {
+    1230855: "Golden Goliath",
+    1230856: "Levitate",
+    1230857: "Power",
+    1230858: "Oxygenate",
+    1230859: "Enlarge",
+    1230860: "EMP",
+    1230861: "Life Force",
+    1230862: "Rain Dance",
+    1230863: "Heal",
+}
+
+TRANSFORMATION_NAMES: Dict[int, Tuple[str, str]] = {
+    1230174: ("Stony", "strong"),
+    1230175: ("Detonator", "explosive"),
+    1230176: ("Money Van", "fast"),
+    1230177: ("Submarine", "high-tech"),
+    1230178: ("T-Rex", "scary"),
+    1230179: ("Washing Machine", "useful"),
+    1230180: ("Snowball", "cool"),
+    1230181: ("Bee", "cute"),
+    1230182: ("Dragon", "dangerous"),
+}
+
+CHEAT_NAMES: Dict[int, str] = {
+    1230917: "Feathers Cheat",
+    1230918: "Egg Cheat",
+    1230919: "Fallproof Cheat",
+    1230920: "Honeyback Cheat. Press D-Pad Down to Toggle this Cheat",
+    1230921: "Jukebox Cheat",
+}
+
+
+def format_item_message(
+    item_id: int, item_name: str, sender_name: str, own: bool, dialog_character: int
+) -> Optional[str]:
+    """Return the dialog text for a single received item, or None if the item
+    has no dedicated message (jiggies, notes, traps, etc.)."""
+    if (
+        1230753 <= item_id <= 1230780  # BT moves
+        or 1230810 <= item_id <= 1230827  # BK moves
+        or 1230782 <= item_id <= 1230785  # Progressive moves I
+        or 1230828 <= item_id <= 1230832  # Progressive moves II
+        or item_id in (1230800, 1230802)  # Stop'n'Swap moves
+    ):
+        return (
+            f"You can now use {item_name}."
+            if own
+            else f"{sender_name} taught you how to use {item_name}."
+        )
+
+    if 1230944 <= item_id <= 1230952:  # World keys
+        return (
+            f"{item_name} is now open!"
+            if own
+            else f"{sender_name} has just opened {item_name}!"
+        )
+
+    if item_id == 1230796:  # Chuffy
+        extra = "\nDon't forget that you can call Chuffy at any unlocked station."
+        return (
+            f"You can now use {item_name}.{extra}"
+            if own
+            else f"{sender_name} has just repaired {item_name}.{extra}"
+        )
+
+    if 1230790 <= item_id <= 1230795:  # Stations
+        sname = STATION_NAMES.get(item_id, item_name)
+        return (
+            f"You can now use the {sname}."
+            if own
+            else f"{sender_name} has just opened the {sname}."
+        )
+
+    if 1230855 <= item_id <= 1230863:  # Mumbo magic
+        mname = MAGIC_NAMES.get(item_id, item_name)
+        if dialog_character in (110, 8):  # Mumbo flavor
+            return (
+                f"Mumbo now use mighty {mname} spell. Bear go visit Mumbo to try."
+                if own
+                else f"{sender_name} told Mumbo mighty {mname} spell. Bear go visit Mumbo to try."
+            )
+        return (
+            f"Mumbo can now use the {mname} spell."
+            if own
+            else f"{sender_name} has just unlocked Mumbo's {mname} spell."
+        )
+
+    if 1230174 <= item_id <= 1230182:  # Humba transformations
+        tname, attribute = TRANSFORMATION_NAMES.get(item_id, (item_name, ""))
+        is_bird = item_id == 1230182
+        who = "bird" if is_bird else "bear"
+        target = "Kazooie" if is_bird else "Banjo"
+        if dialog_character in (110, 37):  # Wumba flavor
+            return (
+                f"Wumba now make {who} {tname}. Very {attribute}!"
+                if own
+                else f"{sender_name} told Wumba how to make {who} {tname}. Very {attribute}!"
+            )
+        return (
+            f"{target} can now be transformed into a {tname}."
+            if own
+            else f"{sender_name} has just unlocked the {tname} transformation."
+        )
+
+    if 1230870 <= item_id <= 1230876:  # Silos
+        return (
+            f"{item_name} is now open!"
+            if own
+            else f"{sender_name} has just opened the {item_name}!"
+        )
+
+    if 1230877 <= item_id <= 1230915:  # Warp pads
+        return (
+            f"You can now use the {item_name}."
+            if own
+            else f"{sender_name} has just unlocked the {item_name}."
+        )
+
+    if 1230917 <= item_id <= 1230921:  # Cheats
+        cname = CHEAT_NAMES.get(item_id, item_name)
+        return (
+            f"You can now use the {cname}."
+            if own
+            else f"{sender_name} has just sent you the {cname}."
+        )
+
+    return None
+
+
+def pick_message_icon(item_id: int, dialog_character: int) -> int:
+    """Pick the dialog-character icon for an item message.
+
+    Mirrors the lua's get_item_message_char: when dialog_character is 110
+    (auto), pick a thematically appropriate face per item range; if 255,
+    random; otherwise the user-configured icon."""
+    if dialog_character == 255:
+        return random.randint(0, 109)
+    if dialog_character != 110:
+        return dialog_character
+
+    # Auto-pick by item category.
+    if 1230753 <= item_id <= 1230776:
+        return 17  # Jamjars (BT moves)
+    if item_id == 1230779:
+        return 99  # Goggles (Amaze-O-Gaze)
+    if item_id == 1230780:
+        return 50  # Bargasaurus (Roar)
+    if item_id in (1230800, 1230802):
+        return 109  # Heggy (Stop'n'Swap moves)
+    if 1230810 <= item_id <= 1230827:
+        return 7  # Bottles (BK moves)
+    if (1230777 <= item_id <= 1230778) or item_id == 1230831:
+        return 56  # Roysten (water moves)
+    if (
+        1230828 <= item_id <= 1230830
+        or item_id == 1230832
+        or 1230782 <= item_id <= 1230785
+    ):
+        return 7  # Bottles (progressive moves)
+    if item_id == 1230944:
+        return 100  # Targitzan -> MT
+    if item_id == 1230945:
+        return 39  # Old King Coal -> GGM
+    if item_id in (1230946, 1230795):
+        return 31  # Mr Patch -> WW
+    if item_id == 1230947:
+        return 102  # Lord Woo Fak Fak -> JRL
+    if item_id in (1230948, 1230791):
+        return 49  # Terry -> TDL
+    if item_id in (1230949, 1230790):
+        return 103  # Weldar -> GI
+    if item_id in (1230950, 1230793):
+        return 65  # Chilly Willy -> HFP icy
+    if item_id == 1230792:
+        return 66  # HFP lava
+    if item_id == 1230951:
+        return 27  # Canary Mary -> CCL
+    if item_id == 1230952:
+        return 71  # Klungo -> CK
+    if item_id == 1230794:
+        return 8  # Mumbo (IoH station)
+    if item_id == 1230796:
+        return 39  # Old King Coal (Chuffy)
+    if 1230855 <= item_id <= 1230863:
+        return 8  # Mumbo (magic)
+    if 1230174 <= item_id <= 1230182:
+        return 37  # Wumba (transformations)
+    if 1230870 <= item_id <= 1230876:
+        return 17  # Jamjars (silos)
+    if 1230877 <= item_id <= 1230881:
+        return 100  # Targitzan (MT warps)
+    if 1230882 <= item_id <= 1230886:
+        return 39  # Old King Coal (GGM warps)
+    if 1230887 <= item_id <= 1230891:
+        return 31  # Mr Patch (WW warps)
+    if 1230892 <= item_id <= 1230896:
+        return 102  # Lord Woo Fak Fak (JRL warps)
+    if 1230897 <= item_id <= 1230901:
+        return 49  # Terry (TDL warps)
+    if 1230902 <= item_id <= 1230906:
+        return 103  # Weldar (GI warps)
+    if 1230907 <= item_id <= 1230911:
+        return 65  # Chilly Willy (HFP warps)
+    if 1230912 <= item_id <= 1230915:
+        return 27  # Canary Mary (CCL warps)
+    if 1230917 <= item_id <= 1230921:
+        return 28  # Cheato (cheats)
+    return 7  # Default: Bottles
+
+
+def drain_item_messages(
+    loader: BTEmuLoaderClient,
+    pending: Dict[int, Any],
+    local_player_name: str,
+    dialog_character: int,
+) -> int:
+    """Pop up to one queued item message off `pending` and push it to the ROM
+    dialog buffer if the queue is free. Returns the dict key that was consumed
+    (so the caller can `del pending[key]`), or 0 if nothing was sent."""
+    if not pending:
+        return 0
+
+    # Don't stomp the previous message; wait for the ROM to read it.
+    if read_pc_text_queue(loader) != read_n64_text_queue(loader):
+        return 0
+
+    for key in sorted(pending.keys()):
+        msg = pending[key]
+        if not isinstance(msg, dict):
+            return key  # Drop unstructured entries
+        if msg.get("to_player") != local_player_name:
+            return key  # Item we sent to someone else
+
+        item_id = int(msg.get("item_id", 0))
+        item_name = str(msg.get("item", ""))
+        sender = str(msg.get("player", ""))
+        text = format_item_message(
+            item_id, item_name, sender, sender == local_player_name, dialog_character
+        )
+        if text is None:
+            return key  # No dedicated text for this item
+
+        icon = pick_message_icon(item_id, dialog_character)
+        if send_pc_dialog(loader, text, icon):
+            return key
+        return 0  # Couldn't write (ptrs unresolved); try again next tick.
+
+    return 0
 
 
 # Victory detection and HAG-1 access

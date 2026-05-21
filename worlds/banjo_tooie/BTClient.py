@@ -234,9 +234,10 @@ class BanjoTooieCommandProcessor(ClientCommandProcessor):
         return True
 
     def _cmd_n64(self):
-        """Check N64 Connection State"""
+        """Check N64 connection state (emu_loader + socket transports)."""
         if isinstance(self.ctx, BanjoTooieContext):
-            logger.info(f"N64 Status: {self.ctx.n64_status}")
+            logger.info(f"Emulator: {self.ctx.emu_status}")
+            logger.info(f"Socket (EverDrive): {self.ctx.n64_status}")
 
     def _cmd_deathlink(self):
         """Toggle deathlink from client. Overrides default setting."""
@@ -251,11 +252,6 @@ class BanjoTooieCommandProcessor(ClientCommandProcessor):
             self.ctx.taglink_client_override = True
             self.ctx.taglink_enabled = not self.ctx.taglink_enabled
             async_start(self.ctx.update_tag_link(self.ctx.taglink_enabled), name="Update Taglink")
-
-    # def _cmd_tag(self):
-    #     """Toggle a tag for Taglink."""
-    #     if isinstance(self.ctx, BanjoTooieContext):
-    #         async_start(self.ctx.send_tag_link(), name="Send Taglink")
 
     def _cmd_writesettings(self):
         """Manually push slot settings into BTHACK memory via emu_loader (the ROM refuses to boot until settings are populated)."""
@@ -291,6 +287,9 @@ class BanjoTooieContext(CommonContext):
         self.emu_last_items_count: int = -1
         self.emu_sent_world_entrances: set[int] = set()
         self.emu_goal_printed: bool = False
+        self.emu_waiting_logged: bool = False
+        self.emu_attached_logged: bool = False
+        self.emu_status: str = "Not attached"
         self.awaiting_rom = False
         self.location_table = {}
         self.movelist_table: dict[str, bool] = {}
@@ -529,10 +528,6 @@ def get_payload(ctx: BanjoTooieContext):
     else:
         trigger_tag = False
 
-
-    # if(len(ctx.items_received) > 0) and ctx.sync_ready == True:
-    #   print("Receiving Item")
-
     if ctx.sync_ready == True:
         ctx.startup = True
         payload = json.dumps({
@@ -552,9 +547,6 @@ def get_payload(ctx: BanjoTooieContext):
             })
     if len(ctx.messages) > 0:
         ctx.messages = {}
-
-    # if len(ctx.items_received) > 0 and ctx.sync_ready == True:
-    #     ctx.items_received = []
 
     return payload
 
@@ -716,8 +708,6 @@ async def parse_payload(payload: Payload, ctx: BanjoTooieContext, force: bool):
 
 
     # Some JSON encoders serialize an empty dict as a list; coerce back for safety:
-    # if isinstance(locations, list):
-    #     locations = {}
     if isinstance(chuffy, list):
         chuffy = {}
     if isinstance(treblelist, list):
@@ -1049,10 +1039,7 @@ async def parse_payload(payload: Payload, ctx: BanjoTooieContext, force: bool):
                 "operations": [{"operation": "replace",
                     "value": hex(banjo_map)}]
             }])
-    #Send Sync Data.
     if "sync_ready" in payload and payload["sync_ready"] == "true" and ctx.sync_ready == False:
-        # ctx.items_handling = 0b101
-        # await ctx.send_connect()
         ctx.sync_ready = True
 
     # Deathlink handling
@@ -1148,8 +1135,26 @@ def mumbo_tokens_loc(locs: list[int], goaltype: int) -> list[int]:
     return locs
 
 async def n64_sync_task(ctx: BanjoTooieContext):
-    logger.info("Starting n64 connector. Use /n64 for status information.")
+    logger.info("Starting socket transport (EverDrive 64). Use /n64 for status information.")
     while not ctx.exit_event.is_set():
+        # If the emu_loader transport is already attached to an emulator,
+        # there's no reason to keep poking 21221 (and no reason to log about
+        # it). Idle quietly until the emulator detaches.
+        if ctx.emu_loader is not None and ctx.emu_loader.is_connected():
+            if ctx.n64_streams is not None:
+                (_, writer) = ctx.n64_streams
+                try:
+                    writer.close()
+                except Exception:
+                    pass
+                ctx.n64_streams = None
+            ctx.n64_status = "Idle (emu_loader attached)"
+            try:
+                await asyncio.wait_for(ctx.exit_event.wait(), timeout=5.0)
+                return
+            except asyncio.TimeoutError:
+                continue
+
         error_status = None
         if ctx.n64_streams:
             (reader, writer) = ctx.n64_streams
@@ -1245,6 +1250,14 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
     while not ctx.exit_event.is_set():
         try:
             if ctx.emu_loader is None or not ctx.emu_loader.is_connected():
+                if not ctx.emu_waiting_logged:
+                    logger.info(
+                        "Waiting for a supported emulator to attach... "
+                        "(EverDrive users: ignore — use banjo_tooie_connector instead.)"
+                    )
+                    ctx.emu_waiting_logged = True
+                ctx.emu_status = "Waiting for emulator"
+
                 ctx.emu_loader = emu_loader.BTEmuLoaderClient()
                 if not ctx.emu_loader.connect():
                     ctx.emu_loader = None
@@ -1257,6 +1270,12 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
                         return
                     except asyncio.TimeoutError:
                         continue
+
+                if not ctx.emu_attached_logged:
+                    emu_name = ctx.emu_loader.emulator_name
+                    logger.info(f"Connected to {emu_name}.")
+                    ctx.emu_status = f"Connected to {emu_name}"
+                    ctx.emu_attached_logged = True
 
             bth = emu_state.BTHReader(ctx.emu_loader)
 
@@ -1285,6 +1304,23 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
                 emu_game.write_received_items(ctx.emu_loader, ctx.items_received)
                 ctx.emu_last_items_count = current_items_count
 
+            if ctx.emu_settings_written and ctx.deathlink_enabled:
+                pc_ptr = bth.pc_ptr()
+                if pc_ptr is not None:
+                    n64_us = bth.n64_death()
+                    pc_us = bth.pc_death()
+                    if n64_us != pc_us:
+                        ctx.emu_loader.write_u8(pc_ptr + emu_state.PC_DEATH_US, n64_us & 0xFF)
+                        if not ctx.deathlink_sent_this_death and ctx.server is not None:
+                            ctx.deathlink_sent_this_death = True
+                            await ctx.send_death()
+                    else:
+                        ctx.deathlink_sent_this_death = False
+                    if ctx.deathlink_pending:
+                        cur_ap = ctx.emu_loader.read_u8(pc_ptr + emu_state.PC_DEATH_AP)
+                        ctx.emu_loader.write_u8(pc_ptr + emu_state.PC_DEATH_AP, (cur_ap + 1) & 0xFF)
+                        ctx.deathlink_pending = False
+
             if ctx.emu_settings_written and ctx.slot_data:
                 eligible = emu_game.check_world_entrances_open(ctx.emu_loader, ctx.slot_data)
                 new_entrances = [loc for loc in eligible if loc not in ctx.emu_sent_world_entrances]
@@ -1305,9 +1341,11 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
                         await ctx.send_msgs([{"cmd": "StatusUpdate", "status": 30}])
                         ctx.finished_game = True
 
-                # Goal-info dialog: only on map 0x158, once per session, and
-                # only after the ROM has caught up to any pending dialog.
-                if not ctx.emu_goal_printed and bth.current_map() == 0x158:
+                # Goal-info dialog
+                cur_map = bth.current_map()
+                if ctx.emu_goal_printed and cur_map not in (0x158, 0x18B, 0x0):
+                    ctx.emu_goal_printed = False
+                if not ctx.emu_goal_printed and cur_map == 0x158:
                     pc_q = emu_game.read_pc_text_queue(ctx.emu_loader)
                     n64_q = emu_game.read_n64_text_queue(ctx.emu_loader)
                     if pc_q == n64_q:
@@ -1316,6 +1354,18 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
                             text, icon = goal_msg
                             if emu_game.send_pc_dialog(ctx.emu_loader, text, icon):
                                 ctx.emu_goal_printed = True
+
+                # Drain queued item-received messages ("You can now use X.",
+                # world-unlock toasts, etc.). One per tick at most, since the
+                # ROM serialises dialog reads.
+                if ctx.messages and ctx.auth:
+                    options = ctx.slot_data.get("options", {}) or {}
+                    dialog_char = emu_game.opt(options, "dialog_character", 110)
+                    consumed = emu_game.drain_item_messages(
+                        ctx.emu_loader, ctx.messages, ctx.auth, dialog_char,
+                    )
+                    if consumed:
+                        ctx.messages.pop(consumed, None)
 
                 # Ozone & Mia's Banjo-Tooie Tracker
                 if ctx.current_map != bth.current_map():
@@ -1382,6 +1432,7 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
             # ignored so a botched cleanup can't trap us in a loop.
             loader = ctx.emu_loader
             ctx.emu_loader = None
+            ctx.emu_status = "Lost emulator connection"
             if loader is not None:
                 try:
                     loader.disconnect()
