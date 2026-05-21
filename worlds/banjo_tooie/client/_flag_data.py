@@ -122,9 +122,11 @@ BY_CATEGORY: Dict[str, Dict[int, FlagTuple]] = {
         1230027: ("H1", "real", 3, 3, "Hag 1 Defeated"),
     },
     "HONEYB": {
-        1230997: ("HONEYB", "honeyb_special", 152, 2, "IoH: Honey B"),
-        1230998: ("HONEYB", "honeyb_special", 152, 3, "IoH: Honey B"),
-        1231000: ("HONEYB", "honeyb_special", 152, 4, "IoH: Honey B"),
+        1230997: ("HONEYB", "honeyb_special", 152, 2, "IoH: Honey B's Reward 1"),
+        1230998: ("HONEYB", "honeyb_special", 152, 3, "IoH: Honey B's Reward 2"),
+        1230999: ("HONEYB", "honeyb_special", 152, 0, "IoH: Honey B's Reward 3"),
+        1231000: ("HONEYB", "honeyb_special", 152, 4, "IoH: Honey B's Reward 4"),
+        1231001: ("HONEYB", "honeyb_special", 152, 0, "IoH: Honey B's Reward 5"),
     },
     "HONEYCOMB": {
         1230703: ("HONEYCOMB", "real", 63, 2, "MT: Entrance Honeycomb"),
