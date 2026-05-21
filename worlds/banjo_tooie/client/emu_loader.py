@@ -1,5 +1,19 @@
 """Direct-emulator-memory loader for Banjo-Tooie.
-Heavily based on JXJacob's GST autotracking code."""
+Heavily based on JXJacob's GST autotracking code.
+
+Per-emulator attach strategies, RDRAM endian handling, the Linux ptrace
+helper, and the cross-platform ProcessMemory abstraction were ported with
+permission from the DK64 Randomizer (https://github.com/2dos/DK64-Randomizer)
+emu_loader, Copyright (c) DK64 Randomizer Dev Team, MIT-licensed. Many
+thanks to the DK64 team.
+
+Authors:
+- Killklli
+- Ballaam
+- Green Bean
+- Umed
+- JXJacob
+"""
 
 from __future__ import annotations
 
@@ -520,6 +534,7 @@ class Emulators(IntEnum):
     Project64 = auto()
     BizHawk = auto()
     RMG = auto()
+    RMG_Flatpak = auto()
     Simple64 = auto()
     ParallelLauncher903 = auto()
     ParallelLauncher = auto()
@@ -785,6 +800,18 @@ EMULATOR_CONFIGS: Dict[Emulators, EmulatorInfo] = {
         lower_offset_range=0x29C15D8,
         upper_offset_range=0x2FC15D8,
         extra_offset=0x80000000,
+        linux_dll_name="libmupen64plus.so",
+    ),
+    Emulators.RMG_Flatpak: EmulatorInfo(
+        Emulators.RMG_Flatpak,
+        "Rosalie's Mupen GUI (Flatpak)",
+        "rmg",
+        find_dll=True,
+        additional_lookup=True,
+        lower_offset_range=0x0,
+        upper_offset_range=0x60000,
+        range_step=8,
+        extra_offset=0,
         linux_dll_name="libmupen64plus.so",
     ),
     Emulators.Simple64: EmulatorInfo(

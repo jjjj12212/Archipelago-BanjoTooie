@@ -1,4 +1,7 @@
-"""Per-location flag descriptors."""
+"""Per-location flag descriptors.
+
+Author: Umed (UmedMuzl).
+"""
 
 from typing import Dict, Tuple
 

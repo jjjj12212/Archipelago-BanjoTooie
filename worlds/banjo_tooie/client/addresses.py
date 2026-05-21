@@ -1,4 +1,7 @@
-"""Per-location flag descriptors."""
+"""Per-location flag descriptors.
+
+Author: Umed (UmedMuzl).
+"""
 
 from __future__ import annotations
 

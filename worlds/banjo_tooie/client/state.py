@@ -1,4 +1,7 @@
-"""Read-only N64 RAM state pollers."""
+"""Read-only N64 RAM state pollers.
+
+Author: Umed (UmedMuzl).
+"""
 
 from __future__ import annotations
 
