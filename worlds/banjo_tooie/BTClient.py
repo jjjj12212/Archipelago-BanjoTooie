@@ -1256,7 +1256,6 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
                         "(EverDrive users: ignore — use banjo_tooie_connector instead.)"
                     )
                     ctx.emu_waiting_logged = True
-                ctx.emu_attached_logged = False
                 ctx.emu_status = "Waiting for emulator"
 
                 ctx.emu_loader = emu_loader.BTEmuLoaderClient()
@@ -1277,7 +1276,6 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
                     logger.info(f"Connected to {emu_name}.")
                     ctx.emu_status = f"Connected to {emu_name}"
                     ctx.emu_attached_logged = True
-                    ctx.emu_waiting_logged = False
 
             bth = emu_state.BTHReader(ctx.emu_loader)
 
@@ -1434,8 +1432,6 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
             # ignored so a botched cleanup can't trap us in a loop.
             loader = ctx.emu_loader
             ctx.emu_loader = None
-            ctx.emu_attached_logged = False
-            ctx.emu_waiting_logged = False
             ctx.emu_status = "Lost emulator connection"
             if loader is not None:
                 try:
