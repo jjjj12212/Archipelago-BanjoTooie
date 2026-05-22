@@ -339,6 +339,7 @@ class BanjoTooieContext(CommonContext):
         self.taglink_sent_this_tag = False
         self.taglink_client_override = False
         self.version_warning = False
+        self.rom_version = ""
         self.messages: dict[int, dict[str, str | int] | str] = {}
         self.slot_data = {}
         self.sendSlot = False
@@ -448,6 +449,12 @@ class BanjoTooieContext(CommonContext):
                 "Your Banjo-Tooie AP does not match with the generated world.\n" +
                 f"Your version: {version} | Generated version: {self.slot_data['custom_bt_data']['version']}"
             )
+            if self.rom_version != "" and version != self.rom_version:
+                assert False, (
+                    f"ERROR: Your Patched ROM is version {self.rom_version}, expected {version}. " +
+                    "Please update to the latest version. " +
+                    "Your connection to the Archipelago server will not be accepted."
+                )
             self.deathlink_enabled = bool(self.slot_data["options"]["death_link"])
             self.taglink_enabled = bool(self.slot_data["options"]["tag_link"])
             self.n64_sync_task = asyncio.create_task(n64_sync_task(self), name="N64 Sync")
@@ -1249,10 +1256,13 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
     received items into BTHACK memory, reads location flags, and sends
     LocationChecks to the AP server."""
     poll_interval = 0.2
-    reconnect_backoff = 5.0
-
+    reconnect_backoff = 5.0    
     while not ctx.exit_event.is_set():
         try:
+            if ctx.version_warning:
+                logger.error(f"ERROR: Your Patched ROM is version {ctx.rom_version}, expected {version}. " +
+                    "Please update to the latest version.")
+                break
             if ctx.emu_loader is None or not ctx.emu_loader.is_connected():
                 if not ctx.emu_waiting_logged:
                     logger.info(
@@ -1283,6 +1293,12 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
 
             bth = emu_state.BTHReader(ctx.emu_loader)
 
+            rom_version_truple = ctx.emu_loader.get_rom_version()
+            if rom_version_truple[0] > 0 and ctx.version_warning is False:
+                ctx.rom_version = str(rom_version_truple[0]) +"."+ str(rom_version_truple[1]) + "." + str(rom_version_truple[2])
+                if version != ctx.rom_version:
+                    ctx.version_warning = True
+                    continue
             # Compare ROM-side seed to expected
             expected_seed = None
             if ctx.slot_data:
