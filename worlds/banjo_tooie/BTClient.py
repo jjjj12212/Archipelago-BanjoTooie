@@ -1293,9 +1293,9 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
 
             bth = emu_state.BTHReader(ctx.emu_loader)
 
-            rom_version_truple = ctx.emu_loader.get_rom_version()
-            if rom_version_truple[0] > 0 and ctx.version_warning is False:
-                ctx.rom_version = str(rom_version_truple[0]) +"."+ str(rom_version_truple[1]) + "." + str(rom_version_truple[2])
+            rom_version_tuple = ctx.emu_loader.get_rom_version()
+            if rom_version_tuple[0] > 0 and ctx.version_warning is False:
+                ctx.rom_version = str(rom_version_tuple[0]) +"."+ str(rom_version_tuple[1]) + "." + str(rom_version_tuple[2])
                 if version != ctx.rom_version:
                     ctx.version_warning = True
                     continue
