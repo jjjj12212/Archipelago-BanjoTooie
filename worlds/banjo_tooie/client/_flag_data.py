@@ -32,6 +32,11 @@ BY_CATEGORY: Dict[str, Dict[int, FlagTuple]] = {
         1231597: ("BOGGY_KIDS", "real", 12, 5, ""),
         1231598: ("BOGGY_KIDS", "real", 12, 6, ""),
     },
+    "SCROTTY_KIDS": {
+        1231006: ("SCRUT", "real", 12, 2, ""),
+        1231007: ("SCRAT", "scrotty_special", 38, 6, ""),
+        1231008: ("SCRIT", "real", 38, 7, ""),
+    },
     "CHEATO": {
         1230992: ("CHEATO", "fake", 8, 4, "SM: Cheato Reward 1"),
         1230993: ("CHEATO", "fake", 8, 5, "SM: Cheato Reward 2"),

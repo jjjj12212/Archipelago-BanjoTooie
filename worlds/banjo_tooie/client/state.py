@@ -181,4 +181,10 @@ def poll_all_locations(bth: BTHReader) -> Dict[int, bool]:
         per_loc = bth.check_real_flag(spec.addr, spec.bit)
         out[btid] = bool(per_loc or skiv_complete)
 
+    #SCRAT
+    scrat_healed = bth.check_real_flag(0x26, 6)
+    scrat_train = bth.check_real_flag(0x2C, 1)
+    if scrat_healed and scrat_train == False:
+        out[1231007] = True
+
     return out

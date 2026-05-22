@@ -32,6 +32,8 @@ CATEGORY_FLAG_TYPE: Dict[str, str] = {
     "BEANS": "real",
     "CHUFFY": "real",
     "H1": "real",
+    "SCRUT": "real",
+    "SCRIT": "real",
     # fake_flags
     "AMAZE": "fake",
     "ROAR": "fake",
@@ -46,6 +48,7 @@ CATEGORY_FLAG_TYPE: Dict[str, str] = {
     "SKIVVIES": "skivvies_special",
     "NESTS": "nest_flags",
     "SIGNPOSTS": "signpost_flags",
+    "SCROTTY_KIDS": "scrotty_special",
 }
 
 
