@@ -807,6 +807,7 @@ EMULATOR_CONFIGS: Dict[Emulators, EmulatorInfo] = {
         "Rosalie's Mupen GUI (Flatpak)",
         "rmg",
         find_dll=True,
+        dll_name=None,
         additional_lookup=True,
         lower_offset_range=0x0,
         upper_offset_range=0x60000,
