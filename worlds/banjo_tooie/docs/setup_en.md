@@ -9,18 +9,18 @@ Our implementation also supports the Everdrive 3.0 and X7. (USB Support).
 ## Required Software and Hardware
 
 - PC Emulation:
-    -   BizHawk:  [BizHawk Releases from TASVideos](https://tasvideos.org/BizHawk/ReleaseHistory)
+    -   BizHawk:  [BizHawk Releases](https://tasvideos.org/BizHawk/ReleaseHistory)
         -   Version **2.10** and later are supported
         -   Detailed installation instructions for BizHawk can be found at the above link
         -   Windows users must run the prereq installer first, which can also be found at the above link
     -   Project64 3.0: [Public Releases](https://www.pj64-emu.com/public-releases)
         -   Version **3.0.1** supported
-        -   Default settings should work. 
+        -   Default settings should work.
         -   enable Input Plugin N-Rage if you are having issues setting up your controller.
         -   Do not enable debugging in Options > configuration > Debugging
         -   to reduce lag:
             1. Open the ROM
-            2. Options > Config: RANDO TOOIE > Counter Factor = 0 or 1 
+            2. Options > Config: RANDO TOOIE > Counter Factor = 0 or 1
     -   Project64 4.0: [Development Builds](https://www.pj64-emu.com/nightly-builds)
         -   Version **4.0.6701** tested
         -   Interpreter Core needs to be enabled:
@@ -29,7 +29,7 @@ Our implementation also supports the Everdrive 3.0 and X7. (USB Support).
             - Do not enable debugging in Options > configuration > Debugging
         -   to reduce lag:
             1. Open the ROM
-            2. Options > Config: RANDO TOOIE > Counter Factor = 0 or 1 
+            2. Options > Config: RANDO TOOIE > Counter Factor = 0 or 1
 
     -   Luna64: [Latest Releases](https://github.com/Luna-Project64/Luna-Project64/releases)
         -   Version **3.6.5** tested
@@ -38,7 +38,7 @@ Our implementation also supports the Everdrive 3.0 and X7. (USB Support).
             - Do not enable debugging in Options > configuration > Debugging
         -   to reduce lag:
             1. Open the ROM
-            2. Options > Config: RANDO TOOIE > Counter Factor = 0 or 1  
+            2. Options > Config: RANDO TOOIE > Counter Factor = 0 or 1
     -   RMG: [Latest Releases](https://github.com/Rosalie241/RMG/releases)
         -   Version **0.8.9** tested
         -   Default settings should work.
@@ -80,7 +80,7 @@ To help recover from crashes in Bizhawk, play the game while the BT_companion.lu
     - The exact path is also printed on the Banjo-Tooie Client
     - You can also click "Browse Files" in the Launcher which will take you to this folder
 - **one time only** run `/autostart` in the Banjo-Tooie Client and select your preferred emulator. This will automatically open your emulator and the patched Banjo-Tooie ROM
-- For certain emulators that don't automatically open, run `/program_args ` and try again 
+- For certain emulators that don't automatically open, run `/program_args ` and try again
 - Connect the Archipelago Client with the server.
     - To connect the client to the multiserver simply put  `<address>:<port>`  on the textfield on top and press `connect` (if the server uses password, then it will prompt after connection)
 - If you rather not use **/autostart**:
