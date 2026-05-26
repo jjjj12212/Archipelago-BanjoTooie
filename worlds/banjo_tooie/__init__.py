@@ -1,7 +1,33 @@
 import logging
+import os
+import pkgutil
+import sys
+import tempfile
+import zipfile
 from collections import Counter
 from math import ceil
 import time
+
+
+# Vendored Dependencies
+def _bt_install_vendored_deps() -> None:
+    try:
+        zip_data = pkgutil.get_data(__name__, "vendor/deps.zip")
+    except (FileNotFoundError, KeyError, OSError):
+        return
+    if not zip_data:
+        return
+    temp_dir = tempfile.mkdtemp(prefix="banjo_tooie_vendor_")
+    zip_dest = os.path.join(temp_dir, "deps.zip")
+    with open(zip_dest, "wb") as f:
+        f.write(zip_data)
+    with zipfile.ZipFile(zip_dest, "r") as zip_ref:
+        zip_ref.extractall(temp_dir)
+    if temp_dir not in sys.path:
+        sys.path.insert(0, temp_dir)
+
+
+_bt_install_vendored_deps()
 
 from Options import OptionError
 import typing

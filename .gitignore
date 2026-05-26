@@ -30,3 +30,4 @@ __pycache__
 host.yaml
 /Players
 /logs
+/.venv

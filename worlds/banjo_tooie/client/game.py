@@ -7,11 +7,13 @@ from __future__ import annotations
 
 import random
 from collections import Counter
-from typing import Any, Dict, Iterable, List, Mapping, Optional, Set, Tuple
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Mapping, Optional, Set, Tuple
 
 from . import addresses
-from .emu_loader import BTEmuLoaderClient
 from .state import BTHReader
+
+if TYPE_CHECKING:
+    from ..BTClient import BTEmuLoaderClient
 
 # Settings struct field offsets
 SETTING_SEED = 0x00  # u32

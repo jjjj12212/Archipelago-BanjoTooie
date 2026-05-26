@@ -11,10 +11,66 @@ from CommonClient import CommonContext, server_loop, gui_enabled, \
 import Utils
 from Utils import async_start
 from . import BanjoTooieWorld
-from .client import emu_loader, state as emu_state, game as emu_game, addresses as emu_addresses
+from .client import state as emu_state, game as emu_game, addresses as emu_addresses
+
+from emu_loader import EmuLoaderClient
 
 if TYPE_CHECKING:
     from kvui import UILog
+
+
+
+RDRAM_BASE = 0x80000000
+RDRAM_SIZE = 0x800000
+BTHACK_ANCHOR_OFFSET = 0x400000
+BTHACK_SUB_POINTER_OFFSETS = (
+    0x04, 0x08, 0x0C, 0x10, 0x14, 0x18,
+    0x1C, 0x20, 0x24, 0x28, 0x2C, 0x30,
+)
+BT_VALIDATION_OFFSET = 0x400004
+BT_VALIDATION_VALUE  = 0x27BDFFE0
+
+
+def is_rdram_pointer(value: int) -> bool:
+    return RDRAM_BASE <= value < RDRAM_BASE + RDRAM_SIZE
+
+
+class BTEmuLoaderClient(EmuLoaderClient):
+    """EmuLoaderClient with BTHACK pointer-chase helpers."""
+
+    def __init__(self) -> None:
+        super().__init__(validation_offset=BT_VALIDATION_OFFSET,
+                         validation_value=BT_VALIDATION_VALUE)
+
+    def deref(self, address: int) -> int | None:
+        ptr = self.read_u32(address)
+        return ptr & 0x7FFFFFFF if is_rdram_pointer(ptr) else None
+
+    def get_anchor(self) -> int | None:
+        return self.deref(RDRAM_BASE + BTHACK_ANCHOR_OFFSET)
+
+    def get_rom_version(self) -> tuple[int, int, int] | None:
+        anchor = self.get_anchor()
+        if anchor is None:
+            return None
+        major = self.read_u16(RDRAM_BASE + anchor + 0x0)
+        minor = self.read_u8(RDRAM_BASE + anchor + 0x2)
+        patch = self.read_u8(RDRAM_BASE + anchor + 0x3)
+        return (major, minor, patch)
+
+
+def validate_bt_signature(client: BTEmuLoaderClient) -> bool:
+    """Pointer-chase BTHACK validation for wait_for_emulator(validate=...)."""
+    try:
+        anchor = client.get_anchor()
+        if anchor is None:
+            return False
+        for offset in BTHACK_SUB_POINTER_OFFSETS:
+            if not is_rdram_pointer(client.read_u32(RDRAM_BASE + anchor + offset)):
+                return False
+        return True
+    except Exception:
+        return False
 
 SYSTEM_MESSAGE_ID = 0
 
@@ -285,7 +341,7 @@ class BanjoTooieContext(CommonContext):
         self.n64_streams: tuple[asyncio.StreamReader, asyncio.StreamWriter] | None = None
         self.n64_sync_task = None
         self.n64_status = CONNECTION_INITIAL_STATUS
-        self.emu_loader: emu_loader.BTEmuLoaderClient | None = None
+        self.emu_loader: BTEmuLoaderClient | None = None
         self.emu_monitor_task: asyncio.Task | None = None
         self.emu_settings_written: bool = False
         self.emu_last_items_count: int = -1
@@ -1250,46 +1306,35 @@ async def n64_sync_task(ctx: BanjoTooieContext):
                 break
 
 async def emu_loader_monitor_task(ctx: BanjoTooieContext):
-    """Direct-emulator-memory bridge. Runs alongside the TCP/socket path
-    (kept alive for EverDrive 64 hardware users) without interfering with
-    it: attaches to a supported emulator process, pushes slot settings +
-    received items into BTHACK memory, reads location flags, and sends
-    LocationChecks to the AP server."""
+    """Direct-emulator-memory bridge."""
     poll_interval = 0.2
-    reconnect_backoff = 5.0    
+
+    # wait_for_emulator() has its own internal retry loop
+    # lets instead do this just one time so we dont get spammed
+    logger.info(
+        "Waiting for a supported emulator to attach... "
+        "(EverDrive users: ignore — use banjo_tooie_connector instead.)"
+    )
+    ctx.emu_waiting_logged = True
+    ctx.emu_status = "Waiting for emulator"
+    ctx.emu_loader = BTEmuLoaderClient()
+    ctx.emu_settings_written = False
+    ctx.emu_last_items_count = -1
+    ctx.emu_sent_world_entrances.clear()
+    ctx.emu_goal_printed = False
+    await ctx.emu_loader.wait_for_emulator(validate=validate_bt_signature)
+
+    emu_name = ctx.emu_loader.emulator_info.id
+    logger.info(f"Connected to {emu_name}.")
+    ctx.emu_status = f"Connected to {emu_name}"
+    ctx.emu_attached_logged = True
+
     while not ctx.exit_event.is_set():
         try:
             if ctx.version_warning:
                 logger.error(f"ERROR: Your Patched ROM is version {ctx.rom_version}, expected {version}. " +
                     "Please update to the latest version.")
                 break
-            if ctx.emu_loader is None or not ctx.emu_loader.is_connected():
-                if not ctx.emu_waiting_logged:
-                    logger.info(
-                        "Waiting for a supported emulator to attach... "
-                        "(EverDrive users: ignore — use banjo_tooie_connector instead.)"
-                    )
-                    ctx.emu_waiting_logged = True
-                ctx.emu_status = "Waiting for emulator"
-
-                ctx.emu_loader = emu_loader.BTEmuLoaderClient()
-                if not ctx.emu_loader.connect():
-                    ctx.emu_loader = None
-                    ctx.emu_settings_written = False
-                    ctx.emu_last_items_count = -1
-                    ctx.emu_sent_world_entrances.clear()
-                    ctx.emu_goal_printed = False
-                    try:
-                        await asyncio.wait_for(ctx.exit_event.wait(), timeout=reconnect_backoff)
-                        return
-                    except asyncio.TimeoutError:
-                        continue
-
-                if not ctx.emu_attached_logged:
-                    emu_name = ctx.emu_loader.emulator_name
-                    logger.info(f"Connected to {emu_name}.")
-                    ctx.emu_status = f"Connected to {emu_name}"
-                    ctx.emu_attached_logged = True
 
             bth = emu_state.BTHReader(ctx.emu_loader)
 
@@ -1407,10 +1452,10 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
                 new_btids = [b for b, v in collected.items() if v and not prev.get(b, False)]
 
             #Mumbo Tokens
-            if ctx.slot_data["options"]["victory_condition"] == 1 or ctx.slot_data["options"]["victory_condition"] == 2 or \
-                ctx.slot_data["options"]["victory_condition"] == 3 or ctx.slot_data["options"]["victory_condition"] == 4 or \
-                ctx.slot_data["options"]["victory_condition"] == 6:
-                    new_btids = mumbo_tokens_loc(new_btids, ctx.slot_data["options"]["victory_condition"])
+            if ctx.slot_data:
+                vc = ctx.slot_data.get("options", {}).get("victory_condition")
+                if vc in (1, 2, 3, 4, 6):
+                    new_btids = mumbo_tokens_loc(new_btids, vc)
 
             if new_btids and ctx.server is not None:
                 missing = ctx.missing_locations or set()
@@ -1446,18 +1491,15 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
 
             setattr(emu_loader_monitor_task, "_prev", collected)
         except Exception:
-            # Memory I/O against an emulator that just exited (or any other
-            # unexpected failure) lands here. Drop the connection so the
-            # next tick reconnects fresh; close errors are themselves
-            # ignored so a botched cleanup can't trap us in a loop.
-            loader = ctx.emu_loader
-            ctx.emu_loader = None
+            logger.exception("Banjo-Tooie emulator monitor lost its connection")
             ctx.emu_status = "Lost emulator connection"
-            if loader is not None:
-                try:
-                    loader.disconnect()
-                except Exception:
-                    pass
+            try:
+                if ctx.emu_loader is not None:
+                    ctx.emu_loader.disconnect()
+            except Exception:
+                pass
+            ctx.emu_loader = None
+            return
 
         try:
             await asyncio.wait_for(ctx.exit_event.wait(), timeout=poll_interval)
