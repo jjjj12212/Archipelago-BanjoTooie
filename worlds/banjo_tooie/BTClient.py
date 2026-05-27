@@ -13,22 +13,33 @@ from Utils import async_start
 from . import BanjoTooieWorld
 from .client import state as emu_state, game as emu_game, addresses as emu_addresses
 
-from emu_loader import EmuLoaderClient
+from emu_loader import EmuLoaderClient, ProcessMemory
+import emu_loader as _emu_loader_dbg
+print(f"[BT] emu_loader loaded from: {_emu_loader_dbg.__file__}", flush=True)
 
 if TYPE_CHECKING:
     from kvui import UILog
 
 
-
-RDRAM_BASE = 0x80000000
-RDRAM_SIZE = 0x800000
-BTHACK_ANCHOR_OFFSET = 0x400000
+# BTHACK signature validation
+RDRAM_BASE = 0x80000000  # KSEG0 start; RDRAM mirror
+RDRAM_SIZE = 0x800000  # 8 MB with expansion pak (required by BT)
+BTHACK_ANCHOR_OFFSET = 0x400000  # physical RDRAM offset of AP_MEMORY_PTR
+BTHACK_STRUCT_SIZE = 52
 BTHACK_SUB_POINTER_OFFSETS = (
-    0x04, 0x08, 0x0C, 0x10, 0x14, 0x18,
-    0x1C, 0x20, 0x24, 0x28, 0x2C, 0x30,
+    0x04,  # pc
+    0x08,  # pc_message
+    0x0C,  # signpost_messages
+    0x10,  # pc_settings
+    0x14,  # pc_items
+    0x18,  # pc_traps
+    0x1C,  # pc_exit_map
+    0x20,  # n64
+    0x24,  # n64_saves_real
+    0x28,  # n64_saves_fake
+    0x2C,  # n64_saves_nests
+    0x30,  # n64_saves_signposts
 )
-BT_VALIDATION_OFFSET = 0x400004
-BT_VALIDATION_VALUE  = 0x27BDFFE0
 
 
 def is_rdram_pointer(value: int) -> bool:
@@ -39,8 +50,7 @@ class BTEmuLoaderClient(EmuLoaderClient):
     """EmuLoaderClient with BTHACK pointer-chase helpers."""
 
     def __init__(self) -> None:
-        super().__init__(validation_offset=BT_VALIDATION_OFFSET,
-                         validation_value=BT_VALIDATION_VALUE)
+        super().__init__(validation_func= validate_bt_signature)
 
     def deref(self, address: int) -> int | None:
         ptr = self.read_u32(address)
@@ -59,18 +69,35 @@ class BTEmuLoaderClient(EmuLoaderClient):
         return (major, minor, patch)
 
 
-def validate_bt_signature(client: BTEmuLoaderClient) -> bool:
-    """Pointer-chase BTHACK validation for wait_for_emulator(validate=...)."""
+def validate_bt_signature(pm: ProcessMemory, rdram_base: int) -> bool:
+    """Return True if ``rdram_base`` looks like AP-Banjo-Tooie RDRAM.
+
+    - u32 at ``rdram_base + 0x400000`` must be a valid 0x80xxxxxx pointer
+      (BTHACK's ``AP_MEMORY_PTR``).
+    - At the dereferenced ``ap_memory_ptr_t`` struct, all 12 sub-pointers
+      at offsets 0x04..0x30 must themselves be valid RDRAM pointers. The
+      patch's ``inject_hooks()`` populates every one of them at game boot.
+    """
     try:
-        anchor = client.get_anchor()
-        if anchor is None:
-            return False
-        for offset in BTHACK_SUB_POINTER_OFFSETS:
-            if not is_rdram_pointer(client.read_u32(RDRAM_BASE + anchor + offset)):
-                return False
-        return True
+        anchor = int.from_bytes(
+            pm.read_bytes(rdram_base + BTHACK_ANCHOR_OFFSET, 4), "little"
+        )
     except Exception:
         return False
+    if not is_rdram_pointer(anchor):
+        return False
+    physical = anchor & 0x7FFFFFFF
+    if physical + BTHACK_STRUCT_SIZE > RDRAM_SIZE:
+        return False
+    try:
+        struct_bytes = pm.read_bytes(rdram_base + physical, BTHACK_STRUCT_SIZE)
+    except Exception:
+        return False
+    for offset in BTHACK_SUB_POINTER_OFFSETS:
+        sub_ptr = int.from_bytes(struct_bytes[offset : offset + 4], "little")
+        if not is_rdram_pointer(sub_ptr):
+            return False
+    return True
 
 SYSTEM_MESSAGE_ID = 0
 
@@ -1339,7 +1366,7 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
             bth = emu_state.BTHReader(ctx.emu_loader)
 
             rom_version_tuple = ctx.emu_loader.get_rom_version()
-            if rom_version_tuple[0] > 0 and ctx.version_warning is False:
+            if rom_version_tuple is not None and rom_version_tuple[0] > 0 and ctx.version_warning is False:
                 ctx.rom_version = str(rom_version_tuple[0]) +"."+ str(rom_version_tuple[1]) + "." + str(rom_version_tuple[2])
                 if version != ctx.rom_version:
                     ctx.version_warning = True
