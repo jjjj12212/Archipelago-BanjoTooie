@@ -13,9 +13,12 @@ from Utils import async_start
 from . import BanjoTooieWorld
 from .client import state as emu_state, game as emu_game, addresses as emu_addresses
 
-from emu_loader import EmuLoaderClient, ProcessMemory
-import emu_loader as _emu_loader_dbg
-print(f"[BT] emu_loader loaded from: {_emu_loader_dbg.__file__}", flush=True)
+# For when its a global package
+try:
+    from emu_loader import EmuLoaderClient, ProcessMemory
+# For when its in the apworld itself
+except ImportError:
+    from .emu_loader import EmuLoaderClient, ProcessMemory
 
 if TYPE_CHECKING:
     from kvui import UILog
@@ -1349,7 +1352,7 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
     ctx.emu_last_items_count = -1
     ctx.emu_sent_world_entrances.clear()
     ctx.emu_goal_printed = False
-    await ctx.emu_loader.wait_for_emulator(validate=validate_bt_signature)
+    await ctx.emu_loader.wait_for_emulator()
 
     emu_name = ctx.emu_loader.emulator_info.id
     logger.info(f"Connected to {emu_name}.")

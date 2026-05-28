@@ -31,3 +31,5 @@ host.yaml
 /Players
 /logs
 /.venv
+/worlds/banjo_tooie/emu_loader
+/worlds/banjo_tooie/emu_loader-0.1.1.dist-info
