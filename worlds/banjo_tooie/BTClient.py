@@ -1346,25 +1346,31 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
         "(EverDrive users: ignore — use banjo_tooie_connector instead.)"
     )
     ctx.emu_waiting_logged = True
-    ctx.emu_status = "Waiting for emulator"
-    ctx.emu_loader = BTEmuLoaderClient()
-    ctx.emu_settings_written = False
-    ctx.emu_last_items_count = -1
-    ctx.emu_sent_world_entrances.clear()
-    ctx.emu_goal_printed = False
-    await ctx.emu_loader.wait_for_emulator()
-
-    emu_name = ctx.emu_loader.emulator_info.id
-    logger.info(f"Connected to {emu_name}.")
-    ctx.emu_status = f"Connected to {emu_name}"
-    ctx.emu_attached_logged = True
 
     while not ctx.exit_event.is_set():
+      ctx.emu_status = "Waiting for emulator"
+      ctx.emu_loader = BTEmuLoaderClient()
+      ctx.emu_settings_written = False
+      ctx.emu_last_items_count = -1
+      ctx.emu_sent_world_entrances.clear()
+      ctx.emu_goal_printed = False
+      setattr(emu_loader_monitor_task, "_prev", None)
+      await ctx.emu_loader.wait_for_emulator()
+
+      if ctx.exit_event.is_set():
+          return
+
+      emu_name = ctx.emu_loader.emulator_info.id
+      logger.info(f"Connected to {emu_name}.")
+      ctx.emu_status = f"Connected to {emu_name}"
+      ctx.emu_attached_logged = True
+
+      while not ctx.exit_event.is_set():
         try:
             if ctx.version_warning:
                 logger.error(f"ERROR: Your Patched ROM is version {ctx.rom_version}, expected {version}. " +
                     "Please update to the latest version.")
-                break
+                return
 
             bth = emu_state.BTHReader(ctx.emu_loader)
 
@@ -1521,15 +1527,15 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
 
             setattr(emu_loader_monitor_task, "_prev", collected)
         except Exception:
-            logger.exception("Banjo-Tooie emulator monitor lost its connection")
-            ctx.emu_status = "Lost emulator connection"
+            logger.exception("Banjo-Tooie emulator monitor lost its connection; reconnecting")
+            ctx.emu_status = "Lost emulator connection; reconnecting..."
             try:
                 if ctx.emu_loader is not None:
                     ctx.emu_loader.disconnect()
             except Exception:
                 pass
             ctx.emu_loader = None
-            return
+            break
 
         try:
             await asyncio.wait_for(ctx.exit_event.wait(), timeout=poll_interval)
