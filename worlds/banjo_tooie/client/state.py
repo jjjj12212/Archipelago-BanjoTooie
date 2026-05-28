@@ -5,10 +5,12 @@ Author: Umed (UmedMuzl).
 
 from __future__ import annotations
 
-from typing import Dict, Optional
+from typing import TYPE_CHECKING, Dict, Optional
 
 from . import addresses
-from .emu_loader import BTEmuLoaderClient
+
+if TYPE_CHECKING:
+    from ..BTClient import BTEmuLoaderClient
 
 ANCHOR_VERSION = 0x00
 ANCHOR_PC = 0x04
