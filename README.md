@@ -48,7 +48,7 @@ Banjo Tooie for Archipelago
 - Adv. Egg Aiming (Third Person Egg Shooting -> Amaze-O-Gaze -> Egg Aim -> Breegull Blaster)
 
 ## Controller Shortcuts
- - Dpad up: Banjo Tiptoes (Emuhawk/Lua Only)
+ - Dpad up: Banjo Tiptoes
  - Dpad left: Instant Transformation (if hut/skull is tagged and received appropriate item)
  - Dpad right + L: Super Banjo
  - Dpad left + L: Aim Assist (if you have the appropriate item)
