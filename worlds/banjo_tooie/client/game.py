@@ -41,7 +41,8 @@ SETTING_AUTOMATIC_CHEATS = 0x18
 SETTING_EASY_CANARY = 0x19
 SETTING_JIGGY_REQUIREMENTS_BASE = 0x1A  # u8 [11]
 SETTING_SILO_REQUIREMENTS_BASE = 0x26  # u16 BE [24]
-
+SETTING_GREEN_RELICS_CHAMBER_REQUIREMENT = 0x56
+SETTING_GREEN_RELICS_BOSS_REQUIREMENT = 0x57
 
 # World-name -> jiggy_requirements[] index. Aliases cover both naming
 # variants the seed may emit for the same world.
@@ -183,6 +184,12 @@ def write_slot_settings(
     )
     writer.write_setting_u8(
         SETTING_RANDOMIZE_GREEN_RELICS, opt(options, "randomize_green_relics")
+    )
+    writer.write_setting_u8(
+        SETTING_GREEN_RELICS_CHAMBER_REQUIREMENT, opt(options, "green_relics_chamber_requirement")
+    )
+    writer.write_setting_u8(
+        SETTING_GREEN_RELICS_BOSS_REQUIREMENT, opt(options, "green_relics_boss_requirement")
     )
     writer.write_setting_u8(SETTING_RANDOMIZE_BEANS, opt(options, "randomize_beans"))
     writer.write_setting_u8(SETTING_PUZZLE, opt(options, "skip_puzzles"))
@@ -1484,6 +1491,8 @@ def dump_current_settings(loader: BTEmuLoaderClient) -> Dict[str, Any]:
         "cheato_rewards": loader.read_u8(ptr + SETTING_CHEATO_REWARDS),
         "randomize_tickets": loader.read_u8(ptr + SETTING_RANDOMIZE_TICKETS),
         "randomize_green_relics": loader.read_u8(ptr + SETTING_RANDOMIZE_GREEN_RELICS),
+        "green_relics_chamber_requirement": loader.read_u8(ptr + SETTING_GREEN_RELICS_CHAMBER_REQUIREMENT),
+        "green_relics_boss_requirement": loader.read_u8(ptr + SETTING_GREEN_RELICS_BOSS_REQUIREMENT),
         "randomize_beans": loader.read_u8(ptr + SETTING_RANDOMIZE_BEANS),
         "skip_puzzles": loader.read_u8(ptr + SETTING_PUZZLE),
         "backdoors": loader.read_u8(ptr + SETTING_BACKDOORS),

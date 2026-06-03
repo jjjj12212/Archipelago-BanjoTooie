@@ -687,6 +687,8 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_open_gi_entrance": ctx.slot_data["options"]["open_gi_frontdoor"],
             "slot_randomize_tickets": ctx.slot_data["options"]["randomize_tickets"],
             "slot_randomize_green_relics": ctx.slot_data["options"]["randomize_green_relics"],
+            "slot_green_relics_chamber_requirement": ctx.slot_data["options"]["green_relics_chamber_requirement"],
+            "slot_green_relics_boss_requirement": ctx.slot_data["options"]["green_relics_boss_requirement"],
             "slot_randomize_beans": ctx.slot_data["options"]["randomize_beans"]
         })
     ctx.sendSlot = False

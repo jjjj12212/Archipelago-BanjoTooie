@@ -667,6 +667,8 @@ class BanjoTooieWorld(World):
             self.options.open_hag1.value = True
         if self.options.world_requirements.value != WorldRequirements.option_normal and not self.options.skip_puzzles.value:
             raise OptionError("Your world requirements needs to be set to normal if you are not going to skip puzzles.")
+        if self.options.green_relics_chamber_requirement.value >= self.options.green_relics_boss_requirement.value:
+            raise OptionError("Targitzan chamber green relic requirement must be less than the boss requirement.")
 
     def choose_starter_egg(self) -> None:
         if self.options.egg_behaviour.value == EggsBehaviour.option_random_starting_egg or \
