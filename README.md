@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | 4.11.3
+# Archipelago Banjo-Tooie (US-Only) | 4.12.1
 Banjo Tooie for Archipelago 
 
 # Current Implementation
@@ -48,7 +48,7 @@ Banjo Tooie for Archipelago
 - Adv. Egg Aiming (Third Person Egg Shooting -> Amaze-O-Gaze -> Egg Aim -> Breegull Blaster)
 
 ## Controller Shortcuts
- - Dpad up: Banjo Tiptoes (Emuhawk/Lua Only)
+ - Dpad up: Banjo Tiptoes
  - Dpad left: Instant Transformation (if hut/skull is tagged and received appropriate item)
  - Dpad right + L: Super Banjo
  - Dpad left + L: Aim Assist (if you have the appropriate item)
@@ -91,6 +91,7 @@ Go to worlds/banjo_tooie/docs/setup_en.md for detailed instructions how to setup
  - GDO - Tester
  - @Cyb3RGER - AP Launcher
  - Beebaleen - Previous Doc Maintainer
+ - UmedMuzl (Umed) - Emuloader Support
 
 # Shoutouts
 Huge thank you for the following individuals / teams. Without them, this project would not have gotten this far:
