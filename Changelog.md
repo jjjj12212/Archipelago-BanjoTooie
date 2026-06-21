@@ -1,3 +1,9 @@
+# 4.12.1
+  - Thanks to Umed for the following fixes:
+    - Fixes for Ares and Gopher64
+    - removing lua arguments (breaking Bizhawk)
+    - Remove "Press B to Skip" text from Signposts
+
 # 4.12.0
   - Thanks to Umed and the DK64 Randomizer Team, we now support a handful of emulators.
   - Tested Emulators includes:
