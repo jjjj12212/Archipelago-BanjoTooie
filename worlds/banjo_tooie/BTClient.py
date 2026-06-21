@@ -231,6 +231,11 @@ async def patch_and_run(show_path: bool):
       logger.info(f"Automatically starting {program_path}")
       args = [*shlex.split(program_path)]
       program_args = bt_options.program_args
+      if program_args == "--lua=":
+        # Fix old host yaml settings
+        program_args = ""
+        bt_options.program_args = ""
+        bt_options._changed = True
       if program_args:
         args.append(program_args)
       args.append(patch_path)

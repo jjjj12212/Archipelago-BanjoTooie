@@ -59,13 +59,12 @@ class BanjoTooieSettings(settings.Group):
         """
         Arguments to pass to the automatically run program.
         Leave blank to disable.
-        Set to "--lua=" to automatically use the correct path for the lua connector.
         """
 
     rom_path: RomPath | str = ""
     patch_path: PatchPath | str = ""
     program_path: ProgramPath | str = ""
-    program_args: ProgramArgs | str = "--lua="
+    program_args: ProgramArgs | str = ""
 
 
 class BanjoTooieWeb(WebWorld):
