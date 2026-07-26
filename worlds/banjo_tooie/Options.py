@@ -249,7 +249,8 @@ class RandomizeGreenRelics(DefaultOnToggle):
 
 
 class GreenRelicsChamberRequirement(Range):
-    """Green relics required to enter Targitzan's Slightly Sacred Chamber."""
+    """Green relics required to enter Targitzan's Slightly Sacred Chamber.
+    Make sure this value is below Targitzan Boss Green Relic Requirement"""
     display_name = "Targitzan Slightly Sacred Chamber Green Relic Requirement"
     range_start = 1
     range_end = 24
