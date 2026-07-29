@@ -1152,22 +1152,22 @@ def format_item_message(
         if loader.read_u8(settings_ptr + SETTING_RANDOMIZE_GREEN_RELICS) == 1: #if option enabled
             if reader.current_map() != 376: #if your not in Targitzan temple
                 items_ptr = reader.items_ptr()
-                statue_amt = loader.read_u8(items_ptr + AP_ITEM_INDEX[1230923])
+                statue_amt = loader.read_u8(items_ptr + AP_ITEM_INDEX[item_id])
                 sschamber:int = loader.read_u8(settings_ptr + SETTING_GREEN_RELICS_CHAMBER_REQUIREMENT)
                 rschamber:int = loader.read_u8(settings_ptr + SETTING_GREEN_RELICS_BOSS_REQUIREMENT)
                 if statue_amt == sschamber: #relics
-                    if sschamber == 1:
-                        return (
-                            f"Good Job Mortal. {sschamber} statue gains you entry to my Slightly Sacred Chamber..."
-                        )
+                    if dialog_character in (110, 100):
+                        if sschamber == 1:
+                            return (f"Good Job Mortal. {sschamber} statue gains you entry to my Slightly Sacred Chamber...")
+                        else:
+                            return (f"Good Job Mortal. {sschamber} statues gains you entry to my Slightly Sacred Chamber...")
                     else:
-                        return (
-                            f"Good Job Mortal. {sschamber} statues gains you entry to my Slightly Sacred Chamber..."
-                        )
+                        return (f"Targitzans Slightly Sacred Chamber is now open...")
                 if statue_amt == rschamber: #relics
-                    return (
-                        f"Good Job Mortal. {rschamber} statues gains you entry to my Really Sacred Chamber..."
-                    )
+                    if dialog_character in (110, 100):
+                        return (f"Good Job Mortal. {rschamber} statues gains you entry to my Really Sacred Chamber...")
+                    else:
+                        return (f"Targitzans Really Sacred Chamber is now open... Lets egg em!")
 
     return None
 
