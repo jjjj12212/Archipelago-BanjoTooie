@@ -1,3 +1,10 @@
+# 4.13.0
+  - Thanks to Dardy for the following feature:
+    - Targitzan's Chambers (if randomized) Green Relic requirements are now customizable
+    - Slightly Sacred Chamber Statue requirement option
+    - Really Sacred Chamber Statue requirement option (must not be the same or lower than the Slightly Sacred Chamber)
+    - Dialog will appear if you have enough green relics for either doors.
+
 # 4.12.1
   - Thanks to Umed for the following fixes:
     - Fixes for Ares and Gopher64

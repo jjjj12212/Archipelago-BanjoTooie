@@ -1053,7 +1053,7 @@ CHEAT_NAMES: Dict[int, str] = {
 
 
 def format_item_message(
-    item_id: int, item_name: str, sender_name: str, own: bool, dialog_character: int
+    loader: BTEmuLoaderClient, item_id: int, item_name: str, sender_name: str, own: bool, dialog_character: int
 ) -> Optional[str]:
     """Return the dialog text for a single received item, or None if the item
     has no dedicated message (jiggies, notes, traps, etc.)."""
@@ -1146,6 +1146,29 @@ def format_item_message(
             else f"{sender_name} has just sent you the {cname}."
         )
 
+    if item_id == 1230923: #green relic
+        reader = BTHReader(loader)
+        settings_ptr = reader.settings_ptr()
+        if loader.read_u8(settings_ptr + SETTING_RANDOMIZE_GREEN_RELICS) == 1: #if option enabled
+            if reader.current_map() != 376: #if your not in Targitzan temple
+                items_ptr = reader.items_ptr()
+                statue_amt = loader.read_u8(items_ptr + AP_ITEM_INDEX[1230923])
+                sschamber:int = loader.read_u8(settings_ptr + SETTING_GREEN_RELICS_CHAMBER_REQUIREMENT)
+                rschamber:int = loader.read_u8(settings_ptr + SETTING_GREEN_RELICS_BOSS_REQUIREMENT)
+                if statue_amt == sschamber: #relics
+                    if sschamber == 1:
+                        return (
+                            f"Good Job Mortal. {sschamber} statue gains you entry to my Slightly Sacred Chamber..."
+                        )
+                    else:
+                        return (
+                            f"Good Job Mortal. {sschamber} statues gains you entry to my Slightly Sacred Chamber..."
+                        )
+                if statue_amt == rschamber: #relics
+                    return (
+                        f"Good Job Mortal. {rschamber} statues gains you entry to my Really Sacred Chamber..."
+                    )
+
     return None
 
 
@@ -1179,7 +1202,7 @@ def pick_message_icon(item_id: int, dialog_character: int) -> int:
         or 1230782 <= item_id <= 1230785
     ):
         return 7  # Bottles (progressive moves)
-    if item_id == 1230944:
+    if item_id in (1230944, 1230923):
         return 100  # Targitzan -> MT
     if item_id == 1230945:
         return 39  # Old King Coal -> GGM
@@ -1256,7 +1279,7 @@ def drain_item_messages(
         item_id = int(msg.get("item_id", 0))
         item_name = str(msg.get("item", ""))
         sender = str(msg.get("player", ""))
-        text = format_item_message(
+        text = format_item_message(loader,
             item_id, item_name, sender, sender == local_player_name, dialog_character
         )
         if text is None:
