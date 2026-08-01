@@ -140,7 +140,11 @@ Banjo-Tooie:
   randomize_glowbos: 'true'      # adds Mumbo / Humba Magic to the pool
   randomize_stop_n_swap: 'true'  # Ice key + Eggs + Egg rewards are added to the item pool
   randomize_dino_roar: 'true'    # Roar is in the pool
-  randomize_green_relics: 'true' # adds Targitzan's Green Relics to the pool
+
+  randomize_green_relics: 'true'          # adds Targitzan's Green Relics to the pool
+  green_relics_chamber_requirement: 10    # 1 - 24; green relics requirement to access the slightly sacred chamber, must be less than the boss requirement
+  green_relics_boss_requirement: 20       # 2 - 25; green relics requirement to access the boss chamber
+
   randomize_tickets: 'true'      # adds Big Top Tickets to the pool
   randomize_beans: 'true'        # adds CCL Beans to the Pool
   nestsanity: 'false'            # Every egg nest and feather nest give a check when you collect them for the first time. They behave as normal afterwards.

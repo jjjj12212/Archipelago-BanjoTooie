@@ -141,7 +141,7 @@ bt_loc_name_to_id = BanjoTooieWorld.location_name_to_id
 bt_itm_name_to_id = BanjoTooieWorld.item_name_to_id
 script_version: int = 5
 version: str = BanjoTooieWorld.world_version.as_simple_string()
-patch_md5: str = "c57d332eafac77a8899b67012dacd4e5"
+patch_md5: str = "761f2e88490ee64f2e29a418409e5bbf"
 bt_options = BanjoTooieWorld.settings
 program = None
 
@@ -692,6 +692,8 @@ def get_slot_payload(ctx: BanjoTooieContext):
             "slot_open_gi_entrance": ctx.slot_data["options"]["open_gi_frontdoor"],
             "slot_randomize_tickets": ctx.slot_data["options"]["randomize_tickets"],
             "slot_randomize_green_relics": ctx.slot_data["options"]["randomize_green_relics"],
+            "slot_green_relics_chamber_requirement": ctx.slot_data["options"]["green_relics_chamber_requirement"],
+            "slot_green_relics_boss_requirement": ctx.slot_data["options"]["green_relics_boss_requirement"],
             "slot_randomize_beans": ctx.slot_data["options"]["randomize_beans"]
         })
     ctx.sendSlot = False
