@@ -1444,6 +1444,23 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
                         ctx.emu_loader.write_u8(pc_ptr + emu_state.PC_DEATH_AP, (cur_ap + 1) & 0xFF)
                         ctx.deathlink_pending = False
 
+            if ctx.emu_settings_written and ctx.taglink_enabled:
+                pc_ptr = bth.pc_ptr()
+                if pc_ptr is not None:
+                    n64_us = bth.n64_tag()
+                    pc_us = bth.pc_tag()
+                    if n64_us != pc_us:
+                        ctx.emu_loader.write_u8(pc_ptr + emu_state.PC_TAG_US, n64_us & 0xFF)
+                        if not ctx.taglink_sent_this_tag and ctx.server is not None:
+                            ctx.taglink_sent_this_tag = True
+                            await ctx.send_tag_link()
+                    else:
+                        ctx.taglink_sent_this_tag = False
+                    if ctx.pending_tag_link:
+                        cur_ap = ctx.emu_loader.read_u8(pc_ptr + emu_state.PC_TAG_AP)
+                        ctx.emu_loader.write_u8(pc_ptr + emu_state.PC_TAG_AP, (cur_ap + 1) & 0xFF)
+                        ctx.taglink_sent_this_tag = False
+
             if ctx.emu_settings_written and ctx.slot_data:
                 eligible = emu_game.check_world_entrances_open(ctx.emu_loader, ctx.slot_data)
                 new_entrances = [loc for loc in eligible if loc not in ctx.emu_sent_world_entrances]
