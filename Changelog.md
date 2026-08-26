@@ -1,3 +1,10 @@
+# 4.13.1
+  - Fixes for the following:
+    - (Everdrive) receiving a Green Relic text fix
+    - (Emulator) Deathlink and Taglink AP tag enabled when they are enabled in the YAML
+    - (Emulator) Grunty taunts you when you die with deathlink enabled
+    - (Emulator) Taglink is working again
+
 # 4.13.0
   - Thanks to Dardy for the following feature:
     - Targitzan's Chambers (if randomized) Green Relic requirements are now customizable
