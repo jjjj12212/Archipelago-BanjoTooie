@@ -1459,7 +1459,7 @@ async def emu_loader_monitor_task(ctx: BanjoTooieContext):
                     if ctx.pending_tag_link:
                         cur_ap = ctx.emu_loader.read_u8(pc_ptr + emu_state.PC_TAG_AP)
                         ctx.emu_loader.write_u8(pc_ptr + emu_state.PC_TAG_AP, (cur_ap + 1) & 0xFF)
-                        ctx.taglink_sent_this_tag = False
+                        ctx.pending_tag_link = False
 
             if ctx.emu_settings_written and ctx.slot_data:
                 eligible = emu_game.check_world_entrances_open(ctx.emu_loader, ctx.slot_data)
