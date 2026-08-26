@@ -163,7 +163,7 @@ bt_loc_name_to_id = BanjoTooieWorld.location_name_to_id
 bt_itm_name_to_id = BanjoTooieWorld.item_name_to_id
 script_version: int = 5
 version: str = BanjoTooieWorld.world_version.as_simple_string()
-patch_md5: str = "761f2e88490ee64f2e29a418409e5bbf"
+patch_md5: str = "1876534db1ec87691faf474f461619d8"
 bt_options = BanjoTooieWorld.settings
 program = None
 

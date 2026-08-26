@@ -1,4 +1,4 @@
-# Archipelago Banjo-Tooie (US-Only) | 4.13.0
+# Archipelago Banjo-Tooie (US-Only) | 4.13.1
 Banjo Tooie for Archipelago 
 
 # Current Implementation
@@ -81,7 +81,6 @@ Go to worlds/banjo_tooie/docs/setup_en.md for detailed instructions how to setup
 
 # Future goals for this project
 - Make this project a official release for Archipelago 
-
 
 # Contributors
  - @g0goTAS (g0goTBC) - Logic Programmer
