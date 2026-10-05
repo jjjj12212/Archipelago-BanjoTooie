@@ -1133,6 +1133,8 @@ class BanjoTooieWorld(World):
             "options": btoptions,
             "custom_bt_data": custom_bt_data,
         }
+        slot_data.update(btoptions) # for Hydra Client Map Tracker (so the Dev working on this doesn't need to make a whole seperate Hydra Client)
+        slot_data.update(custom_bt_data) # for Hydra Client Map Tracker (so the Dev working on this doesn't need to make a whole seperate Hydra Client)
         return slot_data
 
     # for the universal tracker, doesn't get called in standard gen
